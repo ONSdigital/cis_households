@@ -8,14 +8,21 @@ def read_requirements(file):
     with open(file) as f:
         return f.read().splitlines()
 
-requires=read_requirements("requirements.txt")
+
+requires = read_requirements("requirements.txt")
+
+
+dev_requires = ["pre-commit==2.12.1", "detect-secrets==1.0.3"] + requires
 
 setuptools.setup(
     name="cishouseholds",
     version="0.0.1",
     author="cis dev team",
     author_email="cis.dev@ons.gov.uk",
-    description="Data engineering pipeline for the Office for National Statistics COVID-19 Infection Survey (CIS)",
+    description=(
+        "Data engineering pipeline for the Office for National"
+        " Statistics COVID-19 Infection Survey (CIS)"
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ONS-SST/cis_households",
@@ -28,6 +35,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(where="src"),
-    python_requires=">=3.6",
-    intall_requires=requires
+    python_requires="==3.6.8",
+    install_requires=requires,
+    extras_require={"dev": dev_requires},
 )
