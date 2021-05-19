@@ -73,8 +73,8 @@ pre-commit install
 
 Run `where python` to identify the path to the Python executable.
 
-Open the pre-commit hook files within the repo, at `./.git/hooks/pre-commit` and append the path to the Python executable to the first line.
-For example:
+Open the pre-commit hook files within the repo, at `./.git/hooks/pre-commit` and append the path to the Python executable to the first line. This folder is hidden, so you may need to reveal it in the file explorer.
+For example, the first line of the file should now appear:
 
 ```
 #!/usr/bin/env C:\Anaconda\envs\cis\python.exe
