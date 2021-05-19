@@ -2,7 +2,7 @@
 
 ## Pull requests
 
-1. Branch from the `main` branch. If you are implementing a feature name it using the 
+1. Branch from the `main` branch. If you are implementing a feature name it using the
    Jira ticket `111-name-of-feature`, if you are implementing a bugfix name it
    `bug-issue-name`. If they are associated with a specific issue, you
    may use the issue number in place of the name.
