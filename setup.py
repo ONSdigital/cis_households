@@ -12,7 +12,13 @@ def read_requirements(file):
 requires = read_requirements("requirements.txt")
 
 
-dev_requires = ["pre-commit==2.12.1", "detect-secrets==1.0.3"] + requires
+dev_requires = [
+    "pre-commit==2.12.1",
+    "detect-secrets==1.0.3",
+    "coverage",
+    "pytest>=3.6,<4",
+    "pytest-cov",
+] + requires
 
 setuptools.setup(
     name="cishouseholds",
