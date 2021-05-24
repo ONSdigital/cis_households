@@ -44,6 +44,7 @@ jobs:
         # Wheel is specific here because of conflicts on this Python version
         run: |
           python -m pip install --upgrade pip
+          pip install pypandoc==1.5
           pip install -e .[dev]
       - name: Run pytest with coverage
         run: |
