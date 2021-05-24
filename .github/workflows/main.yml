@@ -48,12 +48,12 @@ jobs:
           pip install -e .[dev]
       - name: Run pytest with coverage
         run: |
-          pytest --cov=test-package --cov-report=xml --cov-report=term-missing
+          pytest --cov=cishouseholds --cov-report=xml --cov-report=term-missing
           coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          name: test-packge-pytests-py3.6.3
+          name: cishouseholds-pytests-py3.6.8
           flags: pytests
           file: ./coverage.xml
           fail_ci_if_error: true
