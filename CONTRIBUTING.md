@@ -14,11 +14,6 @@ These standards are for internal contributors only.
 4. You may merge the Pull/Merge Request in once you have the sign-off of one
    reviewer.
 
-## Releases
-
-1. The versioning scheme we use is [SemVer](http://semver.org/). Use `bump2version` to
-   increment the version number. Use `beta` for UAT releases.
-
 ## Code style
 
 - We name variables using few nouns in lowercase, e.g. `mapping_names`
@@ -84,3 +79,36 @@ Your next commit should prepare the pre-commit hook (takes ages) and then run th
 Subsequent commits will trigger the hooks (considerably faster) and clean up the files before creating the commit.
 
 If one of the hooks (e.g. `black`) alters a file, you will need to `git add` the file again and re-run the commit to confirm the changes.
+
+## Creating releases
+
+We use `bump2version` (a development dependency) to increment the package version. The versioning scheme we use is [Semantic Versioning](http://semver.org/), with `beta` tags representing a non-production version of the package.
+
+The main three digits of the version can be increased using `major`, `minor` and `patch` from left to right. For example, you can bump the minor version (e.g. `0.0.1` to `0.1.0-beta.0`) using:
+```
+bumpversion minor
+```
+
+Bumping any of these three will generate a release with a `beta` tag to indicate pre-release, e.g. `0.0.1-beta.0`.
+A beta release can be bumped to a production release (e.g. `0.0.1-beta.0` to `0.0.1`) using `release`:
+```
+bumpversion release
+```
+
+To bump within a beta (e.g. `0.0.1-beta.0` to `0.0.1-beta.1`) release use `pre`:
+```
+bumpversion pre
+```
+
+If unsure about which to use, you use the `--dry-run --verbose` flags to describe what the result of a bump would be. For example:
+```
+bumpversion --dry-run --verbose minor
+```
+
+After successfully bumping the version you should push the commit and tag that are generated using **both**:
+```
+git push
+git push --tags
+```
+
+Pushing a release tag will trigger deployment of the new version to Artifactory.
