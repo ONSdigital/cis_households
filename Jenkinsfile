@@ -8,10 +8,11 @@ def buildInfo = Artifactory.newBuildInfo()
 def agentPython3Version = 'python_3.6.1'
 
 def pushToPyPiArtifactoryRepo(String projectName, String sourceDist = 'dist/*', String artifactoryHost = 'art-p-01') {
-    withCredentials([string(credentialsId: env.ARTIFACTORY_PYPI_REPO, variable: 'ARTIFACTORY_REPO')] {
-        withCredentials([usernamePassword(credentialsId: env.ARTIFACTORY_CREDS, usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]){
+    withCredentials([
+        usernamePassword(credentialsId: env.ARTIFACTORY_CREDS, usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD'),
+        string(credentialsId: env.ARTIFACTORY_PYPI_REPO, variable: 'ARTIFACTORY_REPO')
+        ]) {
             sh "curl -u ${ARTIFACTORY_USER}:\${ARTIFACTORY_PASSWORD} -T ${sourceDist} 'http://${artifactoryHost}/artifactory/${ARTIFACTORY_REPO}/${projectName}/'"
-        }
     }
 }
 
@@ -50,7 +51,7 @@ pipeline {
             }
 
         }
-        stage("Build") {
+        stage("Build and deploy") {
             agent { label "build.${agentPython3Version}" }
             steps {
                 unstash name: 'Checkout'
