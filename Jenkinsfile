@@ -24,6 +24,7 @@ pipeline {
 
     // Define env variables
     environment {
+        PROJECT_NAME = 'cishouseholds'
         ARTIFACTORY_CREDS = 'ARTIFACTORY_CREDS' // set in Jenkins Credentials
         ARTIFACTORY_PYPI_REPO = 'ARTIFACTORY_REPO' // set in Jenkins Credentials
     }
@@ -67,7 +68,7 @@ pipeline {
             steps {
                 unstash name: "Build"
                 colourText('info', "Deploying to Artifactory")
-                pushToPyPiArtifactoryRepo("${buildInfo.name}")
+                pushToPyPiArtifactoryRepo(PROJECT_NAME)
             }
         }
     }
