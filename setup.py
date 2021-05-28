@@ -18,12 +18,13 @@ dev_requires = [
     "coverage",
     "pytest>=3.6,<4",
     "pytest-cov",
+    "bump2version==1.0.1",
 ] + requires
 
 setuptools.setup(
     name="cishouseholds",
     version="0.0.1",
-    author="cis dev team",
+    author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
     description=(
         "Data engineering pipeline for the Office for National"
