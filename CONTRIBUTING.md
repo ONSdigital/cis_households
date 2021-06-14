@@ -80,6 +80,34 @@ Subsequent commits will trigger the hooks (considerably faster) and clean up the
 
 If one of the hooks (e.g. `black`) alters a file, you will need to `git add` the file again and re-run the commit to confirm the changes.
 
+### Spark Java Dependency
+
+To run PySpark locally on a Windows machine Java is required. You can check whether you already have Java installed on your machine by searching "java" in the Windows search bar.
+
+Without Java installed, you will recieve the following error when trying to run PySpark code:
+`Pyspark: Exception: Java gateway process exited before sending the driver its port number`
+
+Java needs to be requested from the ONS Service Desk. To request the software click:
+
+\> "I want something" > "Computer Software - Add / Transfer / Remove" > "Install"
+\> Enter "SUN/ORACLE JAVA 8 UPDATE 201"\* into the search bar, select it > Give your ONS Laptop Asset Number
+\> Does this software need to be installed on/removed from multiple PCs? "No"
+\> Please provide a business case AND confirm frequency of use; (Daily, Weekly, monthly or less frequently)
+\> "The software is required to run Spark locally, a requirement of our code development project. This will be used daily".
+\> "Order Now"
+
+\* Newer updates may be available at time of request.
+
+The request will take a number of days to complete, requiring a colleague from DST to remote in and restart your machine.
+
+Once installed, and the other instructions have been followed, you will be able to run scripts using PySpark on your machine.
+
+When running PySpark code on your machine the following error may occur:
+
+`ERROR Shell: Failed to locate the winutils binary in the hadoop binary path`
+
+This is not a breaking error, you will still be able to run the pyspark code, however, this has not been tested extensively.
+
 ## Creating releases
 
 We use `bump2version` (a development dependency) to increment the package version. The versioning scheme we use is [Semantic Versioning](http://semver.org/), with `beta` tags representing a non-production version of the package.
