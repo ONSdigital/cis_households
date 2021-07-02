@@ -26,10 +26,7 @@ setuptools.setup(
     version="0.0.1",
     author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
-    description=(
-        "Data engineering pipeline for the Office for National"
-        " Statistics COVID-19 Infection Survey (CIS)"
-    ),
+    description=("Data engineering pipeline for the Office for National" " Statistics COVID-19 Infection Survey (CIS)"),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ONS-SST/cis_households",
