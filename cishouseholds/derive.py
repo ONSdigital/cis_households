@@ -61,42 +61,25 @@ def derive_ctpattern(df: DataFrame, spark_session):
     ------
     df: pyspark.sql.DataFrame
     """
+    indicator_list = ["indicator_ct_or", "indicator_ct_n", "indicator_ct_s"]
+
     lookup_df = spark_session.createDataFrame(
         data=[
-            ("0", "0", "0", "NULL"),
-            ("1", "0", "0", "OR only"),
-            ("0", "1", "0", "N only"),
-            ("0", "0", "1", "S only"),
-            ("1", "1", "0", "OR+N"),
-            ("1", "0", "1", "OR+S"),
-            ("0", "1", "1", "N+S"),
-            ("1", "1", "1", "OR+N+S"),
+            (0, 0, 0, None),
+            (1, 0, 0, "OR only"),
+            (0, 1, 0, "N only"),
+            (0, 0, 1, "S only"),
+            (1, 1, 0, "OR+N"),
+            (1, 0, 1, "OR+S"),
+            (0, 1, 1, "N+S"),
+            (1, 1, 1, "OR+N+S"),
         ],
-        schema=["indicator_ct_or", "indicator_ct_n", "indicator_ct_s", "ctpattern"],
+        schema=indicator_list + ["ctpattern"],
     )
 
-    on_condition = []
     for ct_gene in ["or", "n", "s"]:
-        df = df.withColumn(f"indicator_ct_{ct_gene}", F.when(F.col(f"cf_{ct_gene}") > 0, "1").otherwise("0"))
+        df = df.withColumn(f"indicator_ct_{ct_gene}", F.when(F.col(f"ct_{ct_gene}") > 0, 1).otherwise(0))
 
-        on_condition.append(f"indicator_ct_{ct_gene}")
-
-    df = df.join(F.broadcast(lookup_df), on=on_condition, how="left").drop(
-        "indicator_ct_or", "indicator_ct_n", "indicator_ct_s"
-    )
+    df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(indicator_list)
 
     return df
-
-
-def derive_ctpattern2(df: DataFrame):
-    df = df.withColumn(
-        "ct_pattern",
-        F.when((F.col("ct_or") > 0) & (F.col("ct_n") == 0) & (F.col("ct_s") == 0), "OR only")
-        .when((F.col("ct_or") == 0) & (F.col("ct_n") > 0) & (F.col("ct_s") == 0), "N only")
-        .when((F.col("ct_or") == 0) & (F.col("ct_n") == 0) & (F.col("ct_s") > 0), "S only")
-        .when((F.col("ct_or") > 0) & (F.col("ct_n") > 0) & (F.col("ct_s") == 0), "OR+N")
-        .when((F.col("ct_or") > 0) & (F.col("ct_n") == 0) & (F.col("ct_s") > 0), "OR+S")
-        .when((F.col("ct_or") == 0) & (F.col("ct_n") > 0) & (F.col("ct_s") > 0), "N+S")
-        .when((F.col("ct_or") > 0) & (F.col("ct_n") > 0) & (F.col("ct_s") > 0), "N+S")
-        .otherwise("NULL"),
-    )
