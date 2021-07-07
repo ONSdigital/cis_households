@@ -41,3 +41,8 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     df = df.withColumn(new_column_name, F.substring(column_to_substr, start_position, len_of_substr))
 
     return df
+
+def mean_across_columns(df: DataFrame, new_column_name, column_names):
+    columns = [F.col(name) for name in column_names]
+    average_expression = sum(column for column in columns)/len(columns)
+    return df.withColumn(new_column_name, average_expression)
