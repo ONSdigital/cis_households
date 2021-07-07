@@ -19,6 +19,7 @@ dev_requires = [
     "pytest>=3.6,<4",
     "pytest-cov",
     "bump2version==1.0.1",
+    "chispa",
 ] + requires
 
 setuptools.setup(

@@ -45,7 +45,7 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     return df
 
 
-def derive_ctpattern(df: DataFrame, spark_session):
+def derive_ctpattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -54,14 +54,17 @@ def derive_ctpattern(df: DataFrame, spark_session):
 
     Parameters
     ----------
-    spark_session: pyspark.sql.SparkSession
     df: pyspark.sql.DataFrame
+    column_names: list of string
+    spark_session: pyspark.sql.SparkSession
 
     Return
     ------
     df: pyspark.sql.DataFrame
     """
-    indicator_list = ["indicator_ct_or", "indicator_ct_n", "indicator_ct_s"]
+    assert len(column_names) == 3
+
+    indicator_list = ["indicator_" + column_name for column_name in column_names]
 
     lookup_df = spark_session.createDataFrame(
         data=[
@@ -77,9 +80,15 @@ def derive_ctpattern(df: DataFrame, spark_session):
         schema=indicator_list + ["ctpattern"],
     )
 
-    for ct_gene in ["or", "n", "s"]:
-        df = df.withColumn(f"indicator_ct_{ct_gene}", F.when(F.col(f"ct_{ct_gene}") > 0, 1).otherwise(0))
+    for column_name in column_names:
+        df = df.withColumn("indicator_" + column_name, F.when(F.col(column_name) > 0, 1).otherwise(0))
 
     df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(indicator_list)
 
     return df
+
+
+def mean_across_columns(df: DataFrame, new_column_name, column_names):
+    columns = [F.col(name) for name in column_names]
+    average_expression = sum(column for column in columns) / len(columns)
+    return df.withColumn(new_column_name, average_expression)
