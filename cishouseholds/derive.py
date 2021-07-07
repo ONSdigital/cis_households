@@ -44,7 +44,6 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
 
     return df
 
-
 def derive_ctpattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
@@ -87,8 +86,33 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
 
     return df
 
+def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list):
+    """
+    Create a new column containing the mean of multiple existing columns.
 
-def mean_across_columns(df: DataFrame, new_column_name, column_names):
+    # Caveat:
+    # 0 values are treated as nulls.
+
+    Parameters
+    ----------
+    df
+    new_column_name
+        name of column to be created
+    column_names
+        list of column names to calculate mean across
+    """
     columns = [F.col(name) for name in column_names]
-    average_expression = sum(column for column in columns) / len(columns)
-    return df.withColumn(new_column_name, average_expression)
+
+    df = df.withColumn("temporary_column_count", F.lit(0))
+    for column in column_names:
+        df = df.withColumn(
+            "temporary_column_count",
+            F.when((F.col(column) > 0), F.col("temporary_column_count") + 1).otherwise(F.col("temporary_column_count")),
+        )
+
+    # Sum with NULL values removed
+    average_expression = sum(F.coalesce(column, F.lit(0)) for column in columns) / F.col("temporary_column_count")
+    df = df.withColumn(new_column_name, average_expression)
+    df = df.drop("temporary_column_count")
+    return df
+ 
