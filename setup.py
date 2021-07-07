@@ -19,6 +19,7 @@ dev_requires = [
     "pytest>=3.6,<4",
     "pytest-cov",
     "bump2version==1.0.1",
+    "chispa==0.8.2",
 ] + requires
 
 setuptools.setup(
@@ -41,5 +42,5 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     python_requires="==3.6.8",
     install_requires=requires,
-    extras_require={"dev": dev_requires},
+    extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1"]},
 )
