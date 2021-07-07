@@ -24,9 +24,10 @@ def create_column_from_coalesce(df, new_column_name, *args):
 
 
 def substring_column(df: DataFrame, new_column_name, column_to_substr, start_position, len_of_substr):
-    """Criteria - returns data with new column which is a substring
+    """
+    Criteria - returns data with new column which is a substring
     of an existing variable
-        Parameters
+    Parameters
     ----------
     df: pyspark.sql.DataFrame
     new_column_name: string
@@ -37,8 +38,52 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     Return
     ------
     df: pyspark.sql.DataFrame
+
     """
     df = df.withColumn(new_column_name, F.substring(column_to_substr, start_position, len_of_substr))
+
+    return df
+
+
+def derive_ctpattern(df: DataFrame, column_names, spark_session):
+    """
+    Derive a new column containing string of pattern in
+    ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
+    indicating which ct_* columns indicate a positive result.
+    From households_aggregate_processes.xlsx, derivation number 7.
+
+    Parameters
+    ----------
+    df: pyspark.sql.DataFrame
+    column_names: list of string
+    spark_session: pyspark.sql.SparkSession
+
+    Return
+    ------
+    df: pyspark.sql.DataFrame
+    """
+    assert len(column_names) == 3
+
+    indicator_list = ["indicator_" + column_name for column_name in column_names]
+
+    lookup_df = spark_session.createDataFrame(
+        data=[
+            (0, 0, 0, None),
+            (1, 0, 0, "OR only"),
+            (0, 1, 0, "N only"),
+            (0, 0, 1, "S only"),
+            (1, 1, 0, "OR+N"),
+            (1, 0, 1, "OR+S"),
+            (0, 1, 1, "N+S"),
+            (1, 1, 1, "OR+N+S"),
+        ],
+        schema=indicator_list + ["ctpattern"],
+    )
+
+    for column_name in column_names:
+        df = df.withColumn("indicator_" + column_name, F.when(F.col(column_name) > 0, 1).otherwise(0))
+
+    df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(*indicator_list)
 
     return df
 
