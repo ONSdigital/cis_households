@@ -44,6 +44,7 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
 
     return df
 
+
 def derive_ctpattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
@@ -86,6 +87,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
 
     return df
 
+
 def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list):
     """
     Create a new column containing the mean of multiple existing columns.
@@ -115,4 +117,3 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     df = df.withColumn(new_column_name, average_expression)
     df = df.drop("temporary_column_count")
     return df
- 
