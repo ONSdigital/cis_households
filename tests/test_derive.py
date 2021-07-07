@@ -17,7 +17,7 @@ def test_derive_ctpattern(spark_session):
         schema=column_names + ["ctpattern"],
     )
 
-    input_df = expected_df.drop("ct_pattern")
+    input_df = expected_df.drop("ctpattern")
 
     actual_df = derive_ctpattern(input_df, column_names, spark_session)
 

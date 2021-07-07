@@ -83,7 +83,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
     for column_name in column_names:
         df = df.withColumn("indicator_" + column_name, F.when(F.col(column_name) > 0, 1).otherwise(0))
 
-    df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(indicator_list)
+    df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(*indicator_list)
 
     return df
 
