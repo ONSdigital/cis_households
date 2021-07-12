@@ -1,6 +1,8 @@
 import pytest
-import validate_csv
-from validate_csv import InvalidFileError
+
+from cishouseholds.validate import InvalidFileError
+from cishouseholds.validate import validate_csv_fields
+from cishouseholds.validate import validate_csv_header
 
 
 @pytest.fixture
@@ -17,7 +19,7 @@ def gen_tmp_file(tmp_path):
 def test_validate_csv_header(gen_tmp_file):
     test_text = '"field_1"|"field,2"|"field_3"'
     test_file_path = gen_tmp_file("test_file.csv", test_text)
-    assert validate_csv.validate_csv_header(test_file_path.as_posix(), expected_header=test_text, delimiter="|")
+    assert validate_csv_header(test_file_path.as_posix(), expected_header=test_text, delimiter="|")
 
 
 def test_validate_csv_header_error(gen_tmp_file):
@@ -25,13 +27,13 @@ def test_validate_csv_header_error(gen_tmp_file):
     test_text_error = '"field_1"|"field_2"|"field_3"'
     test_file_path = gen_tmp_file("test_file.csv", test_text)
     with pytest.raises(InvalidFileError):
-        validate_csv.validate_csv_header(test_file_path.as_posix(), expected_header=test_text_error, delimiter="|")
+        validate_csv_header(test_file_path.as_posix(), expected_header=test_text_error, delimiter="|")
 
 
 def test_validate_csv_fields(gen_tmp_file):
     test_text = '"field_1"|"field,2"|"field_3"\n"entry_1"|"entry_2"|"entry_3"\n"entry_4"|"entry_5"|"entry_6"'
     test_file_path = gen_tmp_file("test_file.csv", test_text)
-    assert validate_csv.validate_csv_fields(test_file_path.as_posix(), delimiter="|")
+    assert validate_csv_fields(test_file_path.as_posix(), delimiter="|")
 
 
 def test_validate_csv_fields_error(gen_tmp_file):
@@ -41,4 +43,4 @@ def test_validate_csv_fields_error(gen_tmp_file):
     )
     test_file_path = gen_tmp_file("test_file.csv", test_text_error)
     with pytest.raises(InvalidFileError, match="1, 3"):
-        validate_csv.validate_csv_fields(test_file_path.as_posix(), delimiter="|")
+        validate_csv_fields(test_file_path.as_posix(), delimiter="|")
