@@ -137,7 +137,7 @@ def create_column_uniform_value(df: DataFrame, new_column_name: str, uniform_val
 
     Notes
     -----
-    uniform_value will work as int, float, bool, str -
+    uniform_value will work as int, float, bool, str, datetime -
             iterables/collections raise errors.
     """
     return df.withColumn(new_column_name, F.lit(uniform_value))
