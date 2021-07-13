@@ -117,3 +117,27 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     df = df.withColumn(new_column_name, average_expression)
     df = df.drop("temporary_column_count")
     return df
+
+
+def create_column_uniform_value(df: DataFrame, new_column_name: str, uniform_value):
+    """
+    Create a new column with a uniform value.
+
+    Parameters
+    ----------
+    df: pyspark.sql.DataFrame
+    new_column_name: str
+        Name of column to be created
+    uniform_value
+        Value to be set in column.
+
+    Return
+    ------
+    df: pyspark.sql.DataFrame
+
+    Notes
+    -----
+    uniform_value will work as int, float, bool, str -
+            iterables/collections raise errors.
+    """
+    return df.withColumn(new_column_name, F.lit(uniform_value))
