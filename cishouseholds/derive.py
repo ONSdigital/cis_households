@@ -117,3 +117,25 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     df = df.withColumn(new_column_name, average_expression)
     df = df.drop("temporary_column_count")
     return df
+
+
+def derive_from_list(df: DataFrame, values_list: list, new_column_name: str, df_column: str):
+    """
+    Create a new column containing either 1 or 0 derived from values in a list, matched
+    with existing values in the database
+    From households_aggregate_processes.xlsx, derivation number 10.
+
+    Parameters
+    ----------
+    df: pyspark.sql.DataFrame
+    values_list: list of string
+    new_column_name: string
+    df_column: str
+
+    Return
+    ------
+    df: pyspark.sql.DataFrame
+    """
+    for value in values_list:
+        df = df.withColumn(new_column_name, F.when((F.col(df_column) == value), 1).otherwise(0))
+    return df
