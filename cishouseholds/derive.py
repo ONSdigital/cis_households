@@ -142,3 +142,27 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
             iterables/collections raise errors.
     """
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
+
+
+def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, reference_column: str, pattern: str):
+    """
+    Assign a boolean column based on a regex match on reference column.
+    From households_aggregate_processes.xlsx, derivation number 12.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Name of column that will be matched
+    pattern
+        Regular expression pattern as a string
+        Needs to be a raw string literal (preceeded by r"")
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+    """
+
+    return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
