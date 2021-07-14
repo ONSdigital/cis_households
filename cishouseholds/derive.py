@@ -142,3 +142,14 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
             iterables/collections raise errors.
     """
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
+
+
+def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    TimestampType
+    to
+    DateType
+
+    """
+
+    return df.withColumn(column_name_to_assign, F.to_date(reference_column))
