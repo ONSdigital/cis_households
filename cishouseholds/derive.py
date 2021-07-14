@@ -148,6 +148,40 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     """
     Assign a column with a TimeStamp to a DateType
     From households_aggregate_processes.xlsx, derivation number 13.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Column of TimeStamp type to be converted
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Expects reference column to be a timestamp and therefore castable.
+
+    """
+
+    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+
+
+def assign_single_column_from_split(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, split_on: str = " ", item_number: int = 0
+):
+    """
+    Assign a single column with the values from an item within a reference column that has been split.
+    Can specify the split string and item number.
+
+    Gets the first item after splitting on single space (" ") by default.
+
+    Returns null when the specified item does not exist in the split.
+
+    From households_aggregate_processes.xlsx, derivation number 14.
+        Column of TimeStamp type to be converted
 
     Parameters
     ----------
@@ -156,6 +190,7 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
         Name of column to be assigned
     reference_column
         Column of TimeStamp type to be converted
+
 
     Returns
     -------
