@@ -119,23 +119,29 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     return df
 
 
-def derive_from_list(df: DataFrame, values_list: list, new_column_name: str, df_column: str):
+def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list):
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
-    with existing values in the database
+    with existing values in the database (null values will be carried forward as null)
     From households_aggregate_processes.xlsx, derivation number 10.
 
     Parameters
     ----------
-    df: pyspark.sql.DataFrame
-    values_list: list of string
-    new_column_name: string
-    df_column: str
+    df
+    column_name_to_assign
+        new or existing column name to assign
+    reference_column_name
+        name of column to check for list values
+    values_list
+        list of values to check against reference column
 
     Return
     ------
-    df: pyspark.sql.DataFrame
+    pyspark.sql.DataFrame
     """
-    for value in values_list:
-        df = df.withColumn(new_column_name, F.when((F.col(df_column) == value), 1).otherwise(0))
-    return df
+    return df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(reference_column_name).isin(values_list)), 1)
+        .when((~F.col(reference_column_name).isin(values_list)), 0)
+        .otherwise(None),
+    )
