@@ -119,25 +119,26 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     return df
 
 
-def create_column_uniform_value(df: DataFrame, new_column_name: str, uniform_value):
+def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value):
     """
-    Create a new column with a uniform value.
+    Assign a column with a uniform value.
+    From households_aggregate_processes.xlsx, derivation number 11.
 
     Parameters
     ----------
-    df: pyspark.sql.DataFrame
-    new_column_name: str
-        Name of column to be created
+    df
+    column_name_to_assign
+        Name of column to be assigned
     uniform_value
         Value to be set in column.
 
     Return
     ------
-    df: pyspark.sql.DataFrame
+    pyspark.sql.DataFrame
 
     Notes
     -----
     uniform_value will work as int, float, bool, str, datetime -
             iterables/collections raise errors.
     """
-    return df.withColumn(new_column_name, F.lit(uniform_value))
+    return df.withColumn(column_name_to_assign, F.lit(uniform_value))
