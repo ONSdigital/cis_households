@@ -145,3 +145,27 @@ def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column
         .when((~F.col(reference_column_name).isin(values_list)), 0)
         .otherwise(None),
     )
+
+
+def assign_from_lookup(df: DataFrame, column_name_to_assign: str, column_names: list, lookup_df: DataFrame):
+    """
+    Derive a new column
+    From households_aggregate_processes.xlsx, derivation number 7.
+
+    Parameters
+    ----------
+    df: pyspark.sql.DataFrame
+    column_names: list of string
+    spark_session: pyspark.sql.SparkSession
+
+    Return
+    ------
+    df: pyspark.sql.DataFrame
+    """
+
+    for column_name in column_names:
+        assert column_name not in df.columns
+        assert column_name in lookup_df
+    assert column_name_to_assign in lookup_df
+
+    return df.join(F.broadcast(lookup_df), on=column_names, how="left")
