@@ -153,6 +153,8 @@ def assign_single_column_from_split(
 
     Gets the first item after splitting on single space (" ") by default.
 
+    Returns null when the specified item does not exist in the split.
+
     Parameters
     ----------
     df
