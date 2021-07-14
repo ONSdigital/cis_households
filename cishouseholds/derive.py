@@ -155,6 +155,8 @@ def assign_single_column_from_split(
 
     Returns null when the specified item does not exist in the split.
 
+    From households_aggregate_processes.xlsx, derivation number 14.
+
     Parameters
     ----------
     df

@@ -11,6 +11,7 @@ from cishouseholds.derive import assign_single_column_from_split
         (("AAA BBBB", "BBBB"), 1),
         (("AAA", "AAA"), 0),
         (("AAA", None), 1),
+        ((None, None), 0),
     ],
 )
 def test_assign_single_column_from_split(spark_session, expected_data, item_number):
