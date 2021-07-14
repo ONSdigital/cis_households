@@ -142,3 +142,31 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
             iterables/collections raise errors.
     """
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
+
+
+def assign_single_column_from_split(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, split_on: str = " ", item_number: int = 0
+):
+    """
+    Assign a single column with the values from an item within a reference column that has been split.
+    Can specify the split string and item number.
+
+    Gets the first item after splitting on single space (" ") by default.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Name of column to be
+    split_on, optional
+        Pattern to split reference_column on
+    item_number, optional
+        0-indexed number of the item to be selected from the split
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
