@@ -146,10 +146,25 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
 
 def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
-    TimestampType
-    to
-    DateType
+    Assign a column with a TimeStamp to a DateType
+    From households_aggregate_processes.xlsx, derivation number 13.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Column of TimeStamp type to be converted
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Expects reference column to be a timestamp and therefore castable.
 
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(reference_column))
+    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
