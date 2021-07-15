@@ -12,10 +12,12 @@ class PysparkValidator(Validator):
     types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
 
 
-def filter_and_accumulate_validation(row: Row, accumulator: ListAccumulator, cerberus_validator: Validator) -> bool:
+def filter_and_accumulate_validation_errors(
+    row: Row, accumulator: ListAccumulator, cerberus_validator: Validator
+) -> bool:
     """
     Validate rows of data using a Cerberus validator object, filtering invalid rows out of the returned dataframe.
-    Field errors are recorded in the given accumulator.
+    Field errors are recorded in the given accumulator, as a list of dictionaries.
 
     Examples
     --------
