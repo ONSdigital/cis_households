@@ -202,4 +202,4 @@ def assign_single_column_from_split(
 
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+    return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
