@@ -13,9 +13,10 @@ def test_assign_from_lookup(spark_session):
             ("Yes", "Yes", 1),
             ("Yes", None, 1),
             ("Yes", "Participant would not...", 1),
-            ("No", "Yes", 2),
+            ("No", "Yes", 1),
             ("No", None, None),
-            ("No", "Participant would not...", None),
+            (None, None, None),
+            ("No", "Participant would not...", 0),
         ],
         schema=column_names + [column_name_to_assign],
     )
@@ -25,11 +26,12 @@ def test_assign_from_lookup(spark_session):
     lookup_df = spark_session.createDataFrame(
         data=[
             ("No", "No", 0),
-            ("Yes", "No", 1),
             ("Yes", "Yes", 1),
             ("Yes", None, 1),
+            ("Yes", "No", 1),
             ("Yes", "Participant would not...", 1),
-            ("No", "Yes", 2),
+            ("No", "Participant would not...", 0),
+            ("No", "Yes", 1),
         ],
         schema=column_names + [column_name_to_assign],
     )

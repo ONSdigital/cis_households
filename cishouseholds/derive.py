@@ -147,25 +147,44 @@ def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column
     )
 
 
-def assign_from_lookup(df: DataFrame, column_name_to_assign: str, column_names: list, lookup_df: DataFrame):
+def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_columns: list, lookup_df: DataFrame):
     """
-    Derive a new column
-    From households_aggregate_processes.xlsx, derivation number 7.
+    Assign a new column based on values from a lookup DF (null values will be carried forward as null)
+    From households_aggregate_processes.xlsx, derivation number 10
 
     Parameters
     ----------
-    df: pyspark.sql.DataFrame
-    column_names: list of string
-    spark_session: pyspark.sql.SparkSession
+    pyspark.sql.DataFrame
+    column_name_to_assign
+    reference_columns
+    lookup_df
 
     Return
     ------
     df: pyspark.sql.DataFrame
     """
 
-    for column_name in column_names:
-        assert column_name not in df.columns
-        assert column_name in lookup_df
-    assert column_name_to_assign in lookup_df
+    not_in_df = [reference_column for reference_column in reference_columns if reference_column not in df.columns]
 
-    return df.join(F.broadcast(lookup_df), on=column_names, how="left")
+    if not_in_df is False:
+        raise ValueError("Column does not exist in Dataframe")
+
+    not_in_lookup = [
+        reference_column for reference_column in reference_columns if reference_column not in lookup_df.columns
+    ]
+
+    if not_in_lookup is False:
+        raise ValueError("Column does not exist in Lookup")
+
+    if column_name_to_assign not in lookup_df.columns:
+        raise ValueError("Column to assign does not exist in lookup")
+
+    df = df.withColumn("concat_columns", F.concat_ws("", *reference_columns))
+
+    lookup_df = lookup_df.withColumn("concat_columns", F.concat_ws("", *reference_columns))
+
+    lookup_df = lookup_df.drop(*reference_columns)
+
+    return df.join(F.broadcast(lookup_df), df.concat_columns.eqNullSafe(lookup_df.concat_columns), how="left").drop(
+        "concat_columns"
+    )
