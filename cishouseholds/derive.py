@@ -154,7 +154,7 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     column_name_to_assign
         Name of column to be assigned
     reference_column
-        Column of TimeStamp type to be converted
+        Name of column of TimeStamp type to be converted
 
     Returns
     -------
