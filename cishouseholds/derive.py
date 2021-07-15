@@ -144,6 +144,31 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
 
 
+def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Assign a column with a TimeStamp to a DateType
+    From households_aggregate_processes.xlsx, derivation number 13.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Name of column of TimeStamp type to be converted
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Expects reference column to be a timestamp and therefore castable.
+
+    """
+
+    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+
+
 def assign_single_column_from_split(
     df: DataFrame, column_name_to_assign: str, reference_column: str, split_on: str = " ", item_number: int = 0
 ):
@@ -156,6 +181,7 @@ def assign_single_column_from_split(
     Returns null when the specified item does not exist in the split.
 
     From households_aggregate_processes.xlsx, derivation number 14.
+        Column of TimeStamp type to be converted
 
     Parameters
     ----------
@@ -163,14 +189,17 @@ def assign_single_column_from_split(
     column_name_to_assign
         Name of column to be assigned
     reference_column
-        Name of column to be
-    split_on, optional
-        Pattern to split reference_column on
-    item_number, optional
-        0-indexed number of the item to be selected from the split
+        Name of column of TimeStamp type to be converted
 
-    Return
-    ------
+
+    Returns
+    -------
     pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Expects reference column to be a timestamp and therefore castable.
+
     """
+
     return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
