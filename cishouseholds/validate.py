@@ -1,14 +1,16 @@
+import csv
 from datetime import datetime
+
 from cerberus import TypeDefinition
 from cerberus import Validator
 from pyspark.sql import Row
-import csv
 
 from cishouseholds.pyspark_utils import ListAccumulator
 
 
 class InvalidFileError(Exception):
     pass
+
 
 class PysparkValidator(Validator):
     types_mapping = Validator.types_mapping.copy()
@@ -33,7 +35,7 @@ def filter_and_accumulate_validation_errors(
         accumulator += [(row, cerberus_validator.errors)]
     return result
 
-  
+
 def validate_csv_fields(csv_file: str, delimiter: str = ","):
     """
     Function to validate the number of fields within records of a csv file.
