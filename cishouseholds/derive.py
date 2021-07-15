@@ -189,7 +189,7 @@ def assign_single_column_from_split(
     column_name_to_assign
         Name of column to be assigned
     reference_column
-        Column of TimeStamp type to be converted
+        Name of column of TimeStamp type to be converted
 
 
     Returns
