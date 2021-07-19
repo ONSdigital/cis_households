@@ -1,15 +1,6 @@
 from typing import Mapping
 
-from pyspark import AccumulatorParam
 from pyspark.sql.types import StructType
-
-
-class ListAccumulator(AccumulatorParam):
-    def zero(self, init_value: list) -> list:
-        return init_value
-
-    def addInPlace(self, v1: list, v2: list) -> list:
-        return v1 + v2
 
 
 def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Mapping]) -> StructType:
