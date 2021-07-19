@@ -32,7 +32,9 @@ def filter_and_accumulate_validation_errors(
     Examples
     --------
     >>> validator = cerberus.Validator({"id": {"type": "string"}})
-    >>> error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=AddingAccumulatorParam())
+    >>> error_accumulator = spark_session.sparkContext.accumulator(
+            value=[], accum_param=AddingAccumulatorParam(zero_value=[])
+            )
     >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation(r, error_accumulator, validator))
     """
     row_dict = row.asDict()
