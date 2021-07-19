@@ -11,7 +11,7 @@ class InvalidFileError(Exception):
     pass
 
 
-class PysparkValidator(Validator):
+class PySparkValidator(Validator):
     """
     A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
 
