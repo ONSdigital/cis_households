@@ -10,7 +10,7 @@ def test_validator_with_timestamp(spark_session):
     validator = PySparkValidator(schema)
 
     df = spark_session.createDataFrame(
-        [(datetime(3000, 1, 1, 1, 1, 1, 1).strftime("%Y-%m-%d %H:%M:%S"))], schema=["ts"]
+        [(datetime(3000, 1, 1, 1, 1, 1, 1).strftime("%Y-%m-%d %H:%M:%S"))], schema="ts string"
     )
     df = df.withColumn("ts", F.unix_timestamp(F.col("ts"), "yyyy-MM-dd HH:mm:ss")).cast("timestamp")
 
