@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from cishouseholds.validation import PySparkValidator
+from cishouseholds.validate import PySparkValidator
 
 
 def test_validator_with_timestamp(spark_session):
