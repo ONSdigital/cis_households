@@ -3,7 +3,7 @@ from datetime import datetime
 
 from cerberus import TypeDefinition
 from cerberus import Validator
-from pyspark import AddingAccumulatorParam
+from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import Row
 
 
