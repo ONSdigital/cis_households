@@ -144,6 +144,30 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
 
 
+def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, reference_column: str, pattern: str):
+    """
+    Assign a boolean column based on a regex match on reference column.
+    From households_aggregate_processes.xlsx, derivation number 12.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Name of column that will be matched
+    pattern
+        Regular expression pattern as a string
+        Needs to be a raw string literal (preceeded by r"")
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+    """
+
+    return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
+
+
 def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Assign a column with a TimeStamp to a DateType
@@ -163,7 +187,6 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     Notes
     -----
     Expects reference column to be a timestamp and therefore castable.
-
     """
 
     return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
@@ -189,17 +212,15 @@ def assign_single_column_from_split(
     column_name_to_assign
         Name of column to be assigned
     reference_column
-        Name of column of TimeStamp type to be converted
-
+        Name of column to be
+    split_on, optional
+        Pattern to split reference_column on
+    item_number, optional
+        0-indexed number of the item to be selected from the split
 
     Returns
     -------
     pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Expects reference column to be a timestamp and therefore castable.
-
     """
 
     return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
