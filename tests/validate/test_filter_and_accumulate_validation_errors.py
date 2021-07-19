@@ -1,8 +1,8 @@
 from cerberus import Validator
 from chispa import assert_df_equality
+from pyspark import AddingAccumulatorParam
 from pyspark.sql import Row
 
-from cishouseholds.pyspark_utils import ListAccumulator
 from cishouseholds.validate import filter_and_accumulate_validation_errors
 
 
@@ -13,7 +13,7 @@ def test_filter(spark_session):
     expected_df = spark_session.createDataFrame([("id1", 1)], schema)
 
     validator = Validator({"id": {"type": "string", "regex": r"id\d"}, "value": {"type": "integer", "min": 0}})
-    error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=ListAccumulator())
+    error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=AddingAccumulatorParam())
     actual_df = input_df.rdd.filter(
         lambda r: filter_and_accumulate_validation_errors(
             r, accumulator=error_accumulator, cerberus_validator=validator
@@ -32,7 +32,7 @@ def test_error_accumulation(spark_session):
     ]
 
     validator = Validator({"id": {"type": "string", "regex": r"id\d"}, "value": {"type": "integer", "min": 0}})
-    error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=ListAccumulator())
+    error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=AddingAccumulatorParam())
     input_df.rdd.filter(
         lambda r: filter_and_accumulate_validation_errors(
             r, accumulator=error_accumulator, cerberus_validator=validator

@@ -12,6 +12,12 @@ class InvalidFileError(Exception):
 
 
 class PysparkValidator(Validator):
+    """
+    A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
+
+    This allows reuse of validation schema as PySpark schema.
+    """
+
     types_mapping = Validator.types_mapping.copy()
     types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
 
@@ -25,6 +31,7 @@ def filter_and_accumulate_validation_errors(
 
     Examples
     --------
+    >>> validator = cerberus.Validator({"id": {"type": "string"}})
     >>> error_accumulator = spark_session.sparkContext.accumulator(value=[], accum_param=AddingAccumulatorParam())
     >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation(r, error_accumulator, validator))
     """
