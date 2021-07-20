@@ -1,3 +1,5 @@
+import re
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -224,3 +226,30 @@ def assign_single_column_from_split(
     """
 
     return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
+
+
+def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list):
+
+    # uses generic reference_columns, assumes a pattern for column names
+
+    assert len(set(reference_columns).difference(set(df.schema.names))) == 0, "Reference columns not in df"
+
+    # assumes only one match in the pattern
+    consent_digit_values = list(map(int, [re.findall(r"\d+", column)[-1] for column in reference_columns]))
+
+    temp_column_names = [column + "_temp" for column in reference_columns]
+
+    # there must be a better data structure for this
+    consent_triplets = zip(reference_columns, temp_column_names, consent_digit_values)
+
+    # vectorise?
+    for consent_column, temp_consent_column, consent_value in consent_triplets:
+        df = df.withColumn(temp_consent_column, (F.col(consent_column) * F.lit(consent_value)))
+
+    df = df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
+
+    # initial schema had a nullable type for the assigned column. The below changes the property
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(column_name_to_assign).isNotNull(), F.col(column_name_to_assign)).otherwise(F.lit(None)),
+    )
