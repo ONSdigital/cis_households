@@ -1,45 +1,72 @@
+import pytest
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_from_lookup
 
 
-def test_assign_from_lookup(spark_session):
-    column_name_to_assign = "contact_hospital"
-    column_names = ["contact_participant_hospital", "contact_other_in_hh_hospital"]
-    expected_df = spark_session.createDataFrame(
+@pytest.fixture
+def expected_df(spark_session):
+    return spark_session.createDataFrame(
         data=[
             ("No", "No", 0),
-            ("Yes", "No", 1),
+            ("Yes", "No", 3),
             ("Yes", "Yes", 1),
-            ("Yes", None, 1),
-            ("Yes", "Participant would not...", 1),
-            ("No", "Yes", 1),
+            ("Yes", None, 2),
+            ("No", "Yes", 4),
+            (None, "Yes", None),
             ("No", None, None),
             (None, None, None),
-            ("No", "Participant would not...", 0),
         ],
-        schema=column_names + [column_name_to_assign],
+        schema=["reference_1", "reference_2", "outcome"],
     )
 
-    input_df = expected_df.drop(column_name_to_assign)
 
-    lookup_df = spark_session.createDataFrame(
+@pytest.fixture
+def lookup_df(spark_session):
+    return spark_session.createDataFrame(
         data=[
             ("No", "No", 0),
             ("Yes", "Yes", 1),
-            ("Yes", None, 1),
-            ("Yes", "No", 1),
-            ("Yes", "Participant would not...", 1),
-            ("No", "Participant would not...", 0),
-            ("No", "Yes", 1),
+            ("Yes", None, 2),
+            ("Yes", "No", 3),
+            ("No", "Yes", 4),
         ],
-        schema=column_names + [column_name_to_assign],
+        schema=["reference_1", "reference_2", "outcome"],
     )
 
-    actual_df = assign_from_lookup(input_df, column_name_to_assign, column_names, lookup_df)
+
+def test_assign_from_lookup(spark_session, expected_df, lookup_df):
+
+    input_df = expected_df.drop("outcome")
+
+    actual_df = assign_from_lookup(input_df, "outcome", ["reference_1", "reference_2"], lookup_df)
 
     assert_df_equality(actual_df, expected_df)
 
 
-if __name__ == "__main__":
-    pass
+def test_assign_from_lookup_schema_error_lookup(spark_session, expected_df, lookup_df):
+
+    input_df = expected_df.drop("outcome")
+
+    lookup_df = lookup_df.withColumnRenamed("reference_2", "reference_3")
+
+    with pytest.raises(ValueError, match="reference_2"):
+        assign_from_lookup(input_df, "outcome", ["reference_1", "reference_2"], lookup_df)
+
+
+def test_assign_from_lookup_schema_error_df(spark_session, expected_df, lookup_df):
+
+    input_df = expected_df.drop("outcome")
+
+    input_df = input_df.withColumnRenamed("reference_2", "reference_3")
+
+    with pytest.raises(ValueError, match="reference_2"):
+        assign_from_lookup(input_df, "outcome", ["reference_1", "reference_2"], lookup_df)
+
+
+def test_assign_from_lookup_column_to_assign_error(spark_session, expected_df, lookup_df):
+
+    input_df = expected_df.drop("outcome")
+
+    with pytest.raises(ValueError, match="bad_name"):
+        assign_from_lookup(input_df, "bad_name", ["reference_1", "reference_2"], lookup_df)

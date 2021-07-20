@@ -161,27 +161,32 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
 
     Return
     ------
-    df: pyspark.sql.DataFrame
+    pyspark.sql.DataFrame
     """
 
     not_in_df = [reference_column for reference_column in reference_columns if reference_column not in df.columns]
 
-    if not_in_df is False:
-        raise ValueError("Column does not exist in Dataframe")
+    if not_in_df:
+        raise ValueError(f"Columns don't exist in Dataframe: {', '.join(not_in_df)}")
 
     not_in_lookup = [
         reference_column for reference_column in reference_columns if reference_column not in lookup_df.columns
     ]
 
-    if not_in_lookup is False:
-        raise ValueError("Column does not exist in Lookup")
+    if not_in_lookup:
+        raise ValueError(f"Columns don't exist in Lookup: {', '.join(not_in_lookup)}")
 
     if column_name_to_assign not in lookup_df.columns:
-        raise ValueError("Column to assign does not exist in lookup")
+        raise ValueError(f"Column to assign does not exist in lookup: {column_name_to_assign}")
 
-    df = df.withColumn("concat_columns", F.concat_ws("", *reference_columns))
+    filled_columns = [
+        F.when(F.col(column_name).isNull(), F.lit("_")).otherwise(F.col(column_name))
+        for column_name in reference_columns
+    ]
 
-    lookup_df = lookup_df.withColumn("concat_columns", F.concat_ws("", *reference_columns))
+    df = df.withColumn("concat_columns", F.concat(*filled_columns))
+
+    lookup_df = lookup_df.withColumn("concat_columns", F.concat(*filled_columns))
 
     lookup_df = lookup_df.drop(*reference_columns)
 
