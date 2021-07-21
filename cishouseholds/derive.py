@@ -136,6 +136,7 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
     ------
     pyspark.sql.DataFrame
 
+
     Notes
     -----
     uniform_value will work as int, float, bool, str, datetime -
@@ -224,3 +225,75 @@ def assign_single_column_from_split(
     """
 
     return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
+
+
+def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list):
+    """
+    Create a new column containing either 1 or 0 derived from values in a list, matched
+    with existing values in the database (null values will be carried forward as null)
+    From households_aggregate_processes.xlsx, derivation number 10.
+
+    Parameters
+    ----------
+    df
+    column_name_to _assign
+        new or existing
+    reference_column_name
+        name of column to check for list values
+    values_list
+        list of values to check against reference column
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    return df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(reference_column_name).isin(values_list)), 1)
+        .when((~F.col(reference_column_name).isin(values_list)), 0)
+        .otherwise(None),
+    )
+
+
+def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_columns: list, lookup_df: DataFrame):
+    """
+    Assign a new column based on values from a lookup DF (null values will be carried forward as null)
+    From households_aggregate_processes.xlsx, derivation number 10
+
+    Parameters
+    ----------
+    pyspark.sql.DataFrame
+    column_name_to_assign
+    reference_columns
+    lookup_df
+    """
+
+    not_in_df = [reference_column for reference_column in reference_columns if reference_column not in df.columns]
+
+    if not_in_df:
+        raise ValueError(f"Columns don't exist in Dataframe: {', '.join(not_in_df)}")
+
+    not_in_lookup = [
+        reference_column for reference_column in reference_columns if reference_column not in lookup_df.columns
+    ]
+
+    if not_in_lookup:
+        raise ValueError(f"Columns don't exist in Lookup: {', '.join(not_in_lookup)}")
+
+    if column_name_to_assign not in lookup_df.columns:
+        raise ValueError(f"Column to assign does not exist in lookup: {column_name_to_assign}")
+
+    filled_columns = [
+        F.when(F.col(column_name).isNull(), F.lit("_")).otherwise(F.col(column_name))
+        for column_name in reference_columns
+    ]
+
+    df = df.withColumn("concat_columns", F.concat(*filled_columns))
+
+    lookup_df = lookup_df.withColumn("concat_columns", F.concat(*filled_columns))
+
+    lookup_df = lookup_df.drop(*reference_columns)
+
+    return df.join(F.broadcast(lookup_df), df.concat_columns.eqNullSafe(lookup_df.concat_columns), how="left").drop(
+        "concat_columns"
+    )
