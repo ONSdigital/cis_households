@@ -171,22 +171,36 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
 
 
 def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list):
+    """
+    Assign new column of value for the maximum consent version.
+    From households_aggregate_processes.xlsx, derivation number 19.
 
-    # uses generic reference_columns, assumes a pattern for column names
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_columns list[str]
+        Consent columns with 1,0 values used to determine
+        consent value.
 
-    # is this needed, should it be a key error
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Extracts digit value from column name using r'\\d+' pattern.
+    """
     assert len(set(reference_columns).difference(set(df.schema.names))) == 0, "Reference columns not in df"
 
     # assumes only one match in the pattern
-    # better way to extract digit? Parameterize pattern?
-    consent_digit_values = list(map(int, [re.findall(r"\d+", column)[-1] for column in reference_columns]))
+    consent_digit_values = [int(re.findall(r"\d+", column)[-1]) for column in reference_columns]
 
     temp_column_names = [column + "_temp" for column in reference_columns]
 
-    # there must be a better data structure for this
     consent_triplets = zip(reference_columns, temp_column_names, consent_digit_values)
 
-    # vectorise?
     for consent_column, temp_consent_column, consent_value in consent_triplets:
         df = df.withColumn(temp_consent_column, (F.col(consent_column) * F.lit(consent_value)))
 
