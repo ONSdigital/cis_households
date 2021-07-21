@@ -45,6 +45,43 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     return df
 
 
+def assign_school_year(
+    df: DataFrame, column_name_to_assign, reference_date_column, dob_column, country_column, school_year_ref_dict
+):
+    """ """
+    #
+    # Evaluate what school year the participant is in based on dob
+    # Let participant_school_year =
+
+    # School start year is the first year they are 4 on the reference date
+
+    # School start month/day are fixed based on DA
+
+    # Evaluate when the participant started school based on dob
+    # Evaluate what school year it 'currently' is based on reference_date_column
+    # Subtract the two.
+    # school_year_ref_dict = {'England': [1,9], 'Wales': [1,9], 'Scotland': [1,3], 'NI': [2,8]}
+
+    df = (
+        df.withColumn("school_start_date", F.date_format(F.year(dob_column)))
+        .add_months("school_start_date", 8)
+        .date_add("school_start_date", 0)
+    )
+    df.show()
+    df = df.withColumn(
+        "school_start_date_calc",
+        F.when(
+            F.col("school_start_date") - F.col(dob_column) < 4,
+            F.col("school_start_date").add_months("school_start_date", 12),
+        ),
+    )
+    df.show()
+    return df.withColumn(
+        column_name_to_assign,
+        F.floor(F.datediff(end=F.col(reference_date_column), start=F.col("school_start_date_calc")) / F.lit(365.25)),
+    )
+
+
 def derive_ctpattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
