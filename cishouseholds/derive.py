@@ -266,6 +266,10 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     column_name_to_assign
     reference_columns
     lookup_df
+
+    Return
+    ------
+    pyspark.sql.DataFrame
     """
 
     not_in_df = [reference_column for reference_column in reference_columns if reference_column not in df.columns]
@@ -297,3 +301,21 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     return df.join(F.broadcast(lookup_df), df.concat_columns.eqNullSafe(lookup_df.concat_columns), how="left").drop(
         "concat_columns"
     )
+
+
+def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
+    """
+    docstring goes here
+
+    Parameters
+    ----------
+
+    Return
+    ------
+
+    """
+    df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
+        "age_at_date", F.floor(F.col("date_diff") / 365.25)
+    )
+
+    return df.drop("date_diff")
