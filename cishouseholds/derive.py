@@ -119,6 +119,64 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     return df
 
 
+def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value):
+    """
+    Assign a column with a uniform value.
+    From households_aggregate_processes.xlsx, derivation number 11.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    uniform_value
+        Value to be set in column.
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+
+
+    Notes
+    -----
+    uniform_value will work as int, float, bool, str, datetime -
+            iterables/collections raise errors.
+    """
+    return df.withColumn(column_name_to_assign, F.lit(uniform_value))
+
+
+def assign_single_column_from_split(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, split_on: str = " ", item_number: int = 0
+):
+    """
+    Assign a single column with the values from an item within a reference column that has been split.
+    Can specify the split string and item number.
+
+    Gets the first item after splitting on single space (" ") by default.
+
+    Returns null when the specified item does not exist in the split.
+
+    From households_aggregate_processes.xlsx, derivation number 14.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_column
+        Name of column to be
+    split_on, optional
+        Pattern to split reference_column on
+    item_number, optional
+        0-indexed number of the item to be selected from the split
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
+
+
 def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list):
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
@@ -128,8 +186,8 @@ def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column
     Parameters
     ----------
     df
-    column_name_to_assign
-        new or existing column name to assign
+    column_name_to _assign
+        new or existing
     reference_column_name
         name of column to check for list values
     values_list
@@ -158,10 +216,6 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     column_name_to_assign
     reference_columns
     lookup_df
-
-    Return
-    ------
-    pyspark.sql.DataFrame
     """
 
     not_in_df = [reference_column for reference_column in reference_columns if reference_column not in df.columns]
