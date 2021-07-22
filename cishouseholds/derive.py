@@ -1,3 +1,5 @@
+import re
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -167,6 +169,43 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
     """
 
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
+
+
+def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list):
+    """
+    Assign new column of value for the maximum consent version.
+    From households_aggregate_processes.xlsx, derivation number 19.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_columns list[str]
+        Consent columns with 1,0 values used to determine
+        consent value.
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Extracts digit value from column name using r'\\d+' pattern.
+    """
+    assert len(set(reference_columns).difference(set(df.schema.names))) == 0, "Reference columns not in df"
+
+    # assumes only one match in the pattern
+    consent_digit_values = [int(re.findall(r"\d+", column)[-1]) for column in reference_columns]
+
+    temp_column_names = [column + "_temp" for column in reference_columns]
+
+    consent_triplets = zip(reference_columns, temp_column_names, consent_digit_values)
+
+    for consent_column, temp_consent_column, consent_value in consent_triplets:
+        df = df.withColumn(temp_consent_column, (F.col(consent_column) * F.lit(consent_value)))
+
+    return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
 def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
