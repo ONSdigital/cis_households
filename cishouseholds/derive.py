@@ -305,15 +305,21 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
 
 def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
     """
-    docstring goes here
+    Assign a new column containing age at a specified date
+    Assume that parameters will be in date format
+    The function will not correctly account for leap years
 
     Parameters
     ----------
+    pyspark.sql.DataFrame
+    base_date
+    date_of_birth
 
     Return
     ------
-
+    pyspark.sql.DataFrame
     """
+
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
         "age_at_date", F.floor(F.col("date_diff") / 365.25)
     )
