@@ -7,9 +7,10 @@ For example: "123 Added function to calculate age on a given date"
 
 I have ensured that:
 
-- [ ] New feature runs successfully in the development environment.
-- [ ] New feature is tested to prove that it works.
-- [ ] New feature is documented using the [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format.
+- [ ] Code runs successfully in the development environment.
+- [ ] New code is tested to prove that it works. If not, justify reasoning.
+- [ ] New code is documented using [type hinting](https://realpython.com/lessons/type-hinting/) and following the [numpydoc](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format.
+- [ ] New code follows the project naming standards.
 
 ## Overview of changes
 
@@ -21,5 +22,5 @@ Add any useful details about your changes here.
 
 As I merge these changes, I have:
 
-- [ ] Updated the related Jira ticket, including approximate time spent (including review)
+- [ ] Updated the related Jira ticket, including approximate time spent (including review).
 - [ ] Moved the related Jira ticket to Done.
