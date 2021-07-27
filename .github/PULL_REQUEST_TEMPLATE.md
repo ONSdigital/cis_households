@@ -19,6 +19,7 @@ Add any useful details about your changes here.
 
 ## Post-review checklist
 
-As I merege these changes, I have:
+As I merge these changes, I have:
 
-- [ ] Updated the related Jira ticket.
+- [ ] Updated the related Jira ticket, including approximate time spent (including review)
+- [ ] Moved the related Jira ticket to Done.
