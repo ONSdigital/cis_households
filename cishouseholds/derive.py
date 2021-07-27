@@ -121,6 +121,32 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     return df
 
 
+def assign_date_difference(
+    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
+):
+    """
+    Calculate the difference in days between two dates.
+    From households_aggregate_processes.xlsx, derivation number 27.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    start_reference_column
+        First date column name.
+    end_reference_column
+        Second date column name.
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    return df.withColumn(
+        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
+    )
+
+
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value):
     """
     Assign a column with a uniform value.
