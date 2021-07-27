@@ -120,7 +120,7 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
 
 
 def assign_date_difference(
-    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_colum: str
+    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
 ):
     """
     Calculate the difference in days between two dates.
@@ -133,7 +133,7 @@ def assign_date_difference(
         Name of column to be assigned
     start_reference_column
         First date column name.
-    end_reference_colum
+    end_reference_column
         Second date column name.
 
     Return
@@ -141,7 +141,7 @@ def assign_date_difference(
     pyspark.sql.DataFrame
     """
     return df.withColumn(
-        column_name_to_assign, F.datediff(end=F.col(end_reference_colum), start=F.col(start_reference_column))
+        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
     )
 
 
