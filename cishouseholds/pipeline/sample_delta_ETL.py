@@ -25,25 +25,27 @@ def validate_sample():
 
 def edit_sample_file(df: DataFrame, sample_name: str, sample_direct: int) -> DataFrame:
     """
-    Initial editing of input sample file to prepare for design weight calculation.
+    Edit input sample delta to prepare for design weight calculation.
 
     Parameters
     ----------
     df
     sample_name
-        Identifier to apply to all records in (delta) sample file
+        identifier to apply to all records in (delta) sample
     sample_direct
         indicates whether sample was drawn from the address base
     """
     df = (
         df.withColumn("sample", F.lit(sample_name))
         .withColumn("sample_direct", F.lit(sample_direct))
+        # Convert region codes to pseudocodes for Scotland and Wales
         .withColumn(
             "gor9d",
             F.when(F.col("custodian_region_code") == "S92000003", "S99999999")
             .when(F.col("custodian_region_code") == "W92000004", "W99999999")
             .otherwise(F.col("custodian_region_code")),
         )
+        .drop("custodian_region_code")
         .withColumn(
             "country_sample",
             F.when(F.col("gor9d") == "W99999999", "Wales")
@@ -52,7 +54,6 @@ def edit_sample_file(df: DataFrame, sample_name: str, sample_direct: int) -> Dat
             .otherwise(F.lit("England")),
         )
         .withColumn("rgn", F.when(F.col("rgn").isNull(), F.col("gor9d")).otherwise(F.col("rgn")))
-        .drop("custodian_region_code")
     )
 
     northwest_boost_list = [
@@ -85,12 +86,26 @@ def edit_sample_file(df: DataFrame, sample_name: str, sample_direct: int) -> Dat
 
 
 def calculate_design_weights(sample_file: DataFrame, household_populations: DataFrame) -> DataFrame:
-    """ """
-    sample_file = sample_file.join(household_populations, how="left", on="interim_id")
+    """
+    Calculate design weights, as the number of addresses within a CIS area (``interim_id``) over
+    the number of households sampled within that area.
+
+    Parameters
+    ----------
+    sample_file
+        sample delta to calculate design weights per ``interim_id``
+    household_populations
+        number of addresses (``nb_addresses``) per CIS area (``interim_id``)
+    """
+    sample_file = sample_file.join(
+        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id"
+    )
+
     interim_id_window = Window.partitionBy("interim_id")
     sample_file = sample_file.withColumn("sample_count", F.count("interim_id").over(interim_id_window))
+
     sample_file = sample_file.withColumn("design_weight", F.col("nb_addresses") / F.col("sample_count"))
-    return sample_file.drop("sample_count", "cis20cd")
+    return sample_file.drop("sample_count", "nb_addresses")
 
 
 def extract_existing_design_weights():
