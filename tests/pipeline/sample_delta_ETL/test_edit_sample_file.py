@@ -3,7 +3,7 @@ from chispa import assert_df_equality
 from cishouseholds.pipeline.sample_delta_ETL import edit_sample_file
 
 
-def test_edit_sample_info(spark_session):
+def test_edit_sample_file(spark_session):
 
     input_schema = "custodian_region_code string, laua string, rgn string"
     input_df = spark_session.createDataFrame(

@@ -1,10 +1,13 @@
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 
 def sample_delta_ETL():
     extract_from_csv()
     validate_sample()
+
+    edit_sample_file()
     calculate_design_weights()
 
     extract_existing_design_weights()
@@ -30,9 +33,8 @@ def edit_sample_file(df: DataFrame, sample_name: str, sample_direct: int) -> Dat
     sample_name
         Identifier to apply to all records in (delta) sample file
     sample_direct
-        (Probably) an identifier to apply to all records indicating if direct
+        indicates whether sample was drawn from the address base
     """
-
     df = (
         df.withColumn("sample", F.lit(sample_name))
         .withColumn("sample_direct", F.lit(sample_direct))
@@ -82,8 +84,13 @@ def edit_sample_file(df: DataFrame, sample_name: str, sample_direct: int) -> Dat
     return df
 
 
-def calculate_design_weights():
-    pass
+def calculate_design_weights(sample_file: DataFrame, household_populations: DataFrame) -> DataFrame:
+    """ """
+    sample_file = sample_file.join(household_populations, how="left", on="interim_id")
+    interim_id_window = Window.partitionBy("interim_id")
+    sample_file = sample_file.withColumn("sample_count", F.count("interim_id").over(interim_id_window))
+    sample_file = sample_file.withColumn("design_weight", F.col("nb_addresses") / F.col("sample_count"))
+    return sample_file.drop("sample_count", "cis20cd")
 
 
 def extract_existing_design_weights():
