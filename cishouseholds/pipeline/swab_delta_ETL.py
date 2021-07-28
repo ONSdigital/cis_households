@@ -44,14 +44,13 @@ def transform_swabs_delta(df, spark_session):
     df: pyspark.sql.DataFrame
     """
 
-    df = assign_column_convert_to_date(df, "result_mk_date_time", "result_mk_date_time")
+    df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
     df = derive_ctpattern(df, ["ctORF1ab", "ctNgene", "ctSgene"], spark_session)
     df = mean_across_columns(df, "ct_mean", ["ctpattern", "ctORF1ab", "ctNgene", "ctSgene"])
-    df = df.withColumn("ctonetarget", F.when(F.col("ctpattern").isin([1,2,3]),1)
-                                    .when(F.col("ctpattern").isin([4,5,6,7]),0)
+    df = df.withColumn("ctonetarget", F.when(F.col("ctpattern").isin(["N only", "OR only", "S only"]),1)
+                                    .when(F.col("ctpattern").isin(["OR+N", "OR+S", "N+S", "OR+N+S"]),0)
                                     .otherwise(None))
     return df
-
 
 def load_swabs_delta():
     pass
