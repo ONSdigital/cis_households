@@ -1,13 +1,8 @@
 from pyspark.sql import functions as F
 
-
-
-from cis_households.tests.derive.test_assign_from_lookup import lookup_df
-from ..derive import assign_column_convert_to_date, assign_from_lookup, mean_across_columns
+from ..derive import assign_column_convert_to_date
 from ..derive import derive_ctpattern
-
-# from ..derive import assign_from_lookup
-# from ..derive import mean_across_columns
+from ..derive import mean_across_columns
 
 
 def swabs_delta_ETL():
@@ -47,10 +42,14 @@ def transform_swabs_delta(df, spark_session):
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
     df = derive_ctpattern(df, ["ctORF1ab", "ctNgene", "ctSgene"], spark_session)
     df = mean_across_columns(df, "ct_mean", ["ctpattern", "ctORF1ab", "ctNgene", "ctSgene"])
-    df = df.withColumn("ctonetarget", F.when(F.col("ctpattern").isin(["N only", "OR only", "S only"]),1)
-                                    .when(F.col("ctpattern").isin(["OR+N", "OR+S", "N+S", "OR+N+S"]),0)
-                                    .otherwise(None))
+    df = df.withColumn(
+        "ctonetarget",
+        F.when(F.col("ctpattern").isin(["N only", "OR only", "S only"]), 1)
+        .when(F.col("ctpattern").isin(["OR+N", "OR+S", "N+S", "OR+N+S"]), 0)
+        .otherwise(None),
+    )
     return df
+
 
 def load_swabs_delta():
     pass
