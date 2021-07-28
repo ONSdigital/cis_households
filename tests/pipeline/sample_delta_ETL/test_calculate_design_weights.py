@@ -16,8 +16,8 @@ def test_calculate_design_weights(spark_session):
 
     populations_df = spark_session.createDataFrame(
         data=[
-            (1, 2, ""),
-            (2, 10, ""),
+            (1, 2),
+            (2, 10),
         ],
         schema="interim_id integer, nb_addresses integer",
     )
