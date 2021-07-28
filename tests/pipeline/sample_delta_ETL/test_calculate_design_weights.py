@@ -10,7 +10,7 @@ def test_calculate_design_weights(spark_session):
             ("2", 2, 5.0),
             ("3", 2, 5.0),
         ],
-        schema="uac string, interim_id integer, design_weight, float",
+        schema="uac string, interim_id integer, design_weight float",
     )
     input_df = expected_df.drop("design_weight")
 
