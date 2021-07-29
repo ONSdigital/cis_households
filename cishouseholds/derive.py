@@ -1,3 +1,5 @@
+import re
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -119,6 +121,32 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
     return df
 
 
+def assign_date_difference(
+    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
+):
+    """
+    Calculate the difference in days between two dates.
+    From households_aggregate_processes.xlsx, derivation number 27.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    start_reference_column
+        First date column name.
+    end_reference_column
+        Second date column name.
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    return df.withColumn(
+        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
+    )
+
+
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value):
     """
     Assign a column with a uniform value.
@@ -167,6 +195,43 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
     """
 
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
+
+
+def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list):
+    """
+    Assign new column of value for the maximum consent version.
+    From households_aggregate_processes.xlsx, derivation number 19.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be assigned
+    reference_columns list[str]
+        Consent columns with 1,0 values used to determine
+        consent value.
+
+    Returns
+    -------
+    pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Extracts digit value from column name using r'\\d+' pattern.
+    """
+    assert len(set(reference_columns).difference(set(df.schema.names))) == 0, "Reference columns not in df"
+
+    # assumes only one match in the pattern
+    consent_digit_values = [int(re.findall(r"\d+", column)[-1]) for column in reference_columns]
+
+    temp_column_names = [column + "_temp" for column in reference_columns]
+
+    consent_triplets = zip(reference_columns, temp_column_names, consent_digit_values)
+
+    for consent_column, temp_consent_column, consent_value in consent_triplets:
+        df = df.withColumn(temp_consent_column, (F.col(consent_column) * F.lit(consent_value)))
+
+    return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
 def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):

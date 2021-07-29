@@ -1,8 +1,47 @@
 import csv
+from datetime import datetime
+
+from cerberus import TypeDefinition
+from cerberus import Validator
+from pyspark.accumulators import AddingAccumulatorParam
+from pyspark.sql import Row
 
 
 class InvalidFileError(Exception):
     pass
+
+
+class PySparkValidator(Validator):
+    """
+    A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
+
+    This allows reuse of validation schema as PySpark schema.
+    """
+
+    types_mapping = Validator.types_mapping.copy()
+    types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
+
+
+def filter_and_accumulate_validation_errors(
+    row: Row, accumulator: AddingAccumulatorParam, cerberus_validator: Validator
+) -> bool:
+    """
+    Validate rows of data using a Cerberus validator object, filtering invalid rows out of the returned dataframe.
+    Field errors are recorded in the given accumulator, as a list of dictionaries.
+
+    Examples
+    --------
+    >>> validator = cerberus.Validator({"id": {"type": "string"}})
+    >>> error_accumulator = spark_session.sparkContext.accumulator(
+            value=[], accum_param=AddingAccumulatorParam(zero_value=[])
+            )
+    >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation(r, error_accumulator, validator))
+    """
+    row_dict = row.asDict()
+    result = cerberus_validator.validate(row_dict)
+    if not result:
+        accumulator += [(row, cerberus_validator.errors)]
+    return result
 
 
 def validate_csv_fields(csv_file: str, delimiter: str = ","):
@@ -60,7 +99,3 @@ def validate_csv_header(csv_file: str, expected_header: str, delimiter: str = ",
                 f"Expected header: {expected_header}",
             )
     return True
-
-
-if __name__ == "__main__":
-    pass
