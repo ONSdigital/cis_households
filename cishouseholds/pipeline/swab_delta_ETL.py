@@ -1,3 +1,6 @@
+from pyspark.sql import DataFrame
+from pyspark.sql import SparkSession
+
 from ..derive import assign_column_convert_to_date
 from ..derive import assign_isin_list
 from ..derive import derive_ctpattern
@@ -14,7 +17,7 @@ def extract_swabs_delta():
     pass
 
 
-def transform_swabs_delta(df, spark_session):
+def transform_swabs_delta(df: DataFrame, spark_session: SparkSession) -> DataFrame:
     """
     Call functions to process input for swabs deltas.
 
@@ -30,12 +33,13 @@ def transform_swabs_delta(df, spark_session):
 
     Parameters
     ----------
-    df: pyspark.sql.DataFrame
-    spark_session: pyspark.sql.SparkSession
+    df
+        swabs deltas
+    spark_session
 
     Return
     ------
-    df: pyspark.sql.DataFrame
+    pyspark.sql.DataFrame
     """
 
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
