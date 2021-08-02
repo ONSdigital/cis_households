@@ -1,6 +1,5 @@
-from pyspark.sql import functions as F
-
 from ..derive import assign_column_convert_to_date
+from ..derive import assign_isin_list
 from ..derive import derive_ctpattern
 from ..derive import mean_across_columns
 
@@ -42,12 +41,8 @@ def transform_swabs_delta(df, spark_session):
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
     df = derive_ctpattern(df, ["ctORF1ab", "ctNgene", "ctSgene"], spark_session)
     df = mean_across_columns(df, "ct_mean", ["ctpattern", "ctORF1ab", "ctNgene", "ctSgene"])
-    df = df.withColumn(
-        "ctonetarget",
-        F.when(F.col("ctpattern").isin(["N only", "OR only", "S only"]), 1)
-        .when(F.col("ctpattern").isin(["OR+N", "OR+S", "N+S", "OR+N+S"]), 0)
-        .otherwise(None),
-    )
+    df = assign_isin_list(df, "ctonetarget", "ctpattern", ["N only", "OR only", "S only"])
+
     return df
 
 
