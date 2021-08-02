@@ -40,7 +40,7 @@ def transform_swabs_delta(df, spark_session):
 
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
     df = derive_ctpattern(df, ["ctORF1ab", "ctNgene", "ctSgene"], spark_session)
-    df = mean_across_columns(df, "ct_mean", ["ctpattern", "ctORF1ab", "ctNgene", "ctSgene"])
+    df = mean_across_columns(df, "ct_mean", ["ctORF1ab", "ctNgene", "ctSgene"])
     df = assign_isin_list(df, "ctonetarget", "ctpattern", ["N only", "OR only", "S only"])
 
     return df
