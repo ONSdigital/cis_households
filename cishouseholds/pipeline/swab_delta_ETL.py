@@ -43,6 +43,9 @@ def transform_swabs_delta(df: DataFrame, spark_session: SparkSession) -> DataFra
         D9: mean_across_columns
             derived variable name: ct_mean
             V1-Vn: ctpattern,ctORF1ab,ctNgene,ctSgene
+        D10: assign_isin_list
+            derived variable name: ctonetarget
+            V1-Vn: ctpattern
     """
 
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
