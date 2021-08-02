@@ -21,16 +21,6 @@ def transform_swabs_delta(df: DataFrame, spark_session: SparkSession) -> DataFra
     """
     Call functions to process input for swabs deltas.
 
-    D13: assign_column_convert_to_date
-        derived variable name: result_mk_date_time
-        V1-Vn: result_mk_date_time
-    D7: derive_ctpattern
-        derived variable name: ctpattern
-        V1-Vn: ctORF1ab_result,ctNgene_result,ctSgene_result
-    D9: mean_across_columns
-        derived variable name: ct_mean
-        V1-Vn: ctpattern,ctORF1ab,ctNgene,ctSgene
-
     Parameters
     ----------
     df
@@ -40,6 +30,19 @@ def transform_swabs_delta(df: DataFrame, spark_session: SparkSession) -> DataFra
     Return
     ------
     pyspark.sql.DataFrame
+
+    Notes
+    -----
+    Functions implemented:
+        D13: assign_column_convert_to_date
+            derived variable name: result_mk_date_time
+            V1-Vn: result_mk_date_time
+        D7: derive_ctpattern
+            derived variable name: ctpattern
+            V1-Vn: ctORF1ab_result,ctNgene_result,ctSgene_result
+        D9: mean_across_columns
+            derived variable name: ct_mean
+            V1-Vn: ctpattern,ctORF1ab,ctNgene,ctSgene
     """
 
     df = assign_column_convert_to_date(df, "result_mk_date", "result_mk_date_time")
