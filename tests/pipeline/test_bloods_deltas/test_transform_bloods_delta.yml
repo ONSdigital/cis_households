@@ -1,0 +1,36 @@
+assay_category:
+  0: 1
+  1: 1
+  2: 1
+  3: 1
+  4: 1
+plate:
+  0: 4c2b7
+  1: 74hea
+  2: 2bg26
+  3: 56db1
+  4: h6366
+plate_tdi:
+  0: 2ae44c2b71ab
+  1: d4ad74hea37f
+  2: ecdf2bg266e1
+  3: h2gb56db145b
+  4: 42geh6366deb
+result_combined:
+  0: Positive
+  1: Positive
+  2: Positive
+  3: Positive
+  4: Positive
+result_siemens:
+  0: Positive
+  1: Negative
+  2: Positive
+  3: Positive
+  4: Positive
+result_tdi:
+  0: null
+  1: Positive
+  2: Positive
+  3: Positive
+  4: null

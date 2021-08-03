@@ -20,6 +20,9 @@ dev_requires = [
     "pytest-cov",
     "bump2version==1.0.1",
     "chispa==0.8.2",
+    "mimesis==4.1.3",
+    "pytest-regressions==2.2.0",
+    "pandas>=1.0.0",
 ] + requires
 
 setuptools.setup(

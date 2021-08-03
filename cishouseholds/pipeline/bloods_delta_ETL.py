@@ -28,9 +28,9 @@ def transform_bloods_delta(df):
     ------
     df: pyspark.sql.DataFrame
     """
-    df = substring_column(df, "plate", "plate_tdi", 5, 10)  # Is that 5-10 or 4-9 if 1st char is 0?
+    df = substring_column(df, "plate", "plate_tdi", 5, 5)  # Is that 5-10 or 4-9 if 1st char is 0?
     df = assign_column_uniform_value(df, "assay_category", 1)
-    df = create_column_from_coalesce(df, "result_combined", ["result_tdi", "result_siemens"])
+    df = create_column_from_coalesce(df, "result_combined", "result_tdi", "result_siemens")
 
     return df
 
