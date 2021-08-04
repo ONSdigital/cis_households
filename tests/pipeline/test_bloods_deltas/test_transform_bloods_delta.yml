@@ -25,9 +25,9 @@ Date Samples Received Oxford:
 Detection:
   0: DETECTION
   1: DETECTION
-  2: failed
+  2: DETECTION
   3: failed
-  4: DETECTION
+  4: failed
 Monoclonal Bounded Quantitation(Colourmetric):
   0: 29.5
   1: 73.0
@@ -82,15 +82,3 @@ plate:
   2: '22021'
   3: '39656'
   4: '94225'
-result_combined:
-  0: DETECTION
-  1: DETECTION
-  2: failed
-  3: failed
-  4: DETECTION
-siemens_interpretation:
-  0: Positive
-  1: Insufficient sample
-  2: Insufficient sample
-  3: Negative
-  4: Insufficient sample
