@@ -1,5 +1,4 @@
 from cishouseholds.derive import assign_column_uniform_value
-from cishouseholds.derive import create_column_from_coalesce
 from cishouseholds.derive import substring_column
 
 
@@ -18,7 +17,6 @@ def transform_bloods_delta(df):
     Call functions to process input for bloods deltas.
     D1: substring_column(new_column_name: 'plate', column_to_substr: 'plate_tdi', start_position: 5, len_of_substr: 10)
     D11: assign_column_uniform_value(column_name_to_assign: 'assay_category', uniform_value: 1):
-    D6: create_column_from_coalesce(new_column_name: 'result_combined', *args: ['result_tdi', 'result_siemens'])
 
     Parameters
     ----------
@@ -28,9 +26,8 @@ def transform_bloods_delta(df):
     ------
     df: pyspark.sql.DataFrame
     """
-    df = substring_column(df, "plate", "Plate Barcode", 5, 5)  # Is that 5-10 or 4-9 if 1st char is 0?
+    df = substring_column(df, "plate", "Plate Barcode", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
-    df = create_column_from_coalesce(df, "result_combined", "Detection", "siemens_interpretation")
 
     return df
 

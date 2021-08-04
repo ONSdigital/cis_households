@@ -19,7 +19,6 @@ def bloods_dummy_df(spark_session):
         "Plate Barcode": _("random.custom_code", mask="ONS_######CS", digit="#"),
         "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
         "Detection": _("choice", items=["DETECTION", "NOT detected", "failed"]),
-        "siemens_interpretation": _("choice", items=["Insufficient sample", "Negative", "Positive"]),
         "Monoclonal Quantitation (Colourmetric)": _("float_number", start=0.0, end=3251.11, precision=4),
         "Monoclonal Bounded Quantitation(Colourmetric)": _("float_number", start=20, end=400, precision=1),
         "Monoclonal undiluted Quantitation(Colourmetric)": _("integer_number", start=0, end=20000),
