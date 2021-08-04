@@ -4,6 +4,7 @@ from datetime import datetime
 from cerberus import TypeDefinition
 from cerberus import Validator
 from pyspark.accumulators import AddingAccumulatorParam
+from pyspark.sql import DataFrame
 from pyspark.sql import Row
 
 
@@ -35,13 +36,21 @@ def filter_and_accumulate_validation_errors(
     >>> error_accumulator = spark_session.sparkContext.accumulator(
             value=[], accum_param=AddingAccumulatorParam(zero_value=[])
             )
-    >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation(r, error_accumulator, validator))
+    >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator))
     """
     row_dict = row.asDict()
     result = cerberus_validator.validate(row_dict)
     if not result:
         accumulator += [(row, cerberus_validator.errors)]
     return result
+
+
+def validate_and_filter(spark_session, df: DataFrame, validation_schema, error_accumulator):
+    validator = PySparkValidator(validation_schema)
+    filtered_df = df.rdd.filter(
+        lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
+    ).toDF()
+    return filtered_df
 
 
 def validate_csv_fields(csv_file: str, delimiter: str = ","):
