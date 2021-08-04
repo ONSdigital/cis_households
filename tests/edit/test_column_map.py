@@ -11,11 +11,11 @@ from cishouseholds.edit import assign_from_map
         (("1", "10"), ("string", "string"), {"1": "10"}),
         ((1, 1), ("integer", "integer"), {2: 20}),
         (("1", 1), ("string", "integer"), {"1": 1}),  # df.replace would fail this
+        ((1, "1"), ("integer", "string"), {1: "1"}),
         (("1", None), ("string", "integer"), {"2": 2}),
-        # (("1", 1), ("string", "integer"), {"2": 2}), this will not work
     ],
 )
-def test_assign_consent_code(spark_session, expected_data, expected_schema_types, expected_map):
+def test_assign_from_map(spark_session, expected_data, expected_schema_types, expected_map):
     schema = f"key_column {expected_schema_types[0]}, value_column {expected_schema_types[1]}"
     expected_df = spark_session.createDataFrame(data=[expected_data], schema=schema)
 
