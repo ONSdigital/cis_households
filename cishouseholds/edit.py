@@ -20,6 +20,8 @@ def edit_swab_results_single(df:DataFrame, gene_type:str, result_value:str) -> D
         with the following logic: (result_value == 1) & (gene_type == 0) & (result_mk == 1)
     """
     return df.withColumn(result_value, when(
-                            (col(result_value) == 1) & (col(gene_type) <= 0) & (col('result_mk') == 1), # boolean logic
-                                0).otherwise(col(result_value))) # if boolean condition not met, keep the same value.
+                        # boolean logic:
+                            (col(result_value) == 1) & (col(gene_type) <= 0) & (col('result_mk') == 1), 0
+                        # if boolean condition not met, keep the same value.
+                            ).otherwise(col(result_value))) 
 
