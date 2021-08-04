@@ -1,0 +1,126 @@
+CH1-Cq:
+  0: 29.182803953737
+  1: 32.09413642492
+  2: 22.657654590558
+  3: 10.796079090516
+  4: 16.613218661221
+CH1-Result:
+  0: Negative
+  1: Inconclusive
+  2: Negative
+  3: Rejected
+  4: Positive
+CH1-Target:
+  0: ORF1ab
+  1: ORF1ab
+  2: ORF1ab
+  3: ORF1ab
+  4: ORF1ab
+CH2-Cq:
+  0: 10.75032265668
+  1: 30.300984622687
+  2: 10.893916583142
+  3: 15.965129520599
+  4: 27.677970516277
+CH2-Result:
+  0: Negative
+  1: Rejected
+  2: Positive
+  3: Rejected
+  4: Negative
+CH2-Target:
+  0: N gene
+  1: N gene
+  2: N gene
+  3: N gene
+  4: N gene
+CH3-Cq:
+  0: 18.250879551074
+  1: 36.765387031145
+  2: 16.559139244108
+  3: 29.496533133386
+  4: 34.282913700335
+CH3-Result:
+  0: Inconclusive
+  1: Rejected
+  2: Inconclusive
+  3: Positive
+  4: Rejected
+CH3-Target:
+  0: S gene
+  1: S gene
+  2: S gene
+  3: S gene
+  4: S gene
+CH4-Cq:
+  0: 18.348161072232
+  1: 16.304082489441
+  2: 22.58032932155
+  3: 23.174122209048
+  4: 15.097481395171
+CH4-Result:
+  0: Positive
+  1: Positive
+  2: Positive
+  3: Positive
+  4: Rejected
+CH4-Target:
+  0: S gene
+  1: S gene
+  2: S gene
+  3: S gene
+  4: S gene
+Date Tested:
+  0: 2018-01-24 08:15:14 UTC
+  1: 2018-11-24 17:05:37 UTC
+  2: 2018-01-03 06:14:32 UTC
+  3: 2018-09-07 22:41:44 UTC
+  4: 2021-04-15 18:17:51 UTC
+Lab ID:
+  0: GLS
+  1: GLS
+  2: GLS
+  3: GLS
+  4: GLS
+Result:
+  0: Void
+  1: Negative
+  2: Negative
+  3: Positive
+  4: Void
+Sample:
+  0: ONS60227680
+  1: ONS40250165
+  2: ONS25808631
+  3: ONS93008687
+  4: ONS59358685
+ct_mean:
+  0: 19.394668720497
+  1: 33.053502692917334
+  2: 16.70357013926933
+  3: 18.752580581500336
+  4: 26.191367625944334
+ctonetarget:
+  0: 0
+  1: 0
+  2: 0
+  3: 0
+  4: 0
+ctpattern:
+  0: OR+N+S
+  1: OR+N+S
+  2: OR+N+S
+  3: OR+N+S
+  4: OR+N+S
+result_mk_date:
+  0: 2018-01-24
+  1: 2018-11-24
+  2: 2018-01-03
+  3: 2018-09-07
+  4: 2021-04-15
+testKit:
+  0: rtPCR
+  1: rtPCR
+  2: rtPCR
+  3: rtPCR
+  4: rtPCR
