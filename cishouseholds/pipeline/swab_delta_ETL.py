@@ -32,6 +32,7 @@ def clean_swabs_delta(df: DataFrame) -> DataFrame:
     df = rename_column_names(df, swab_variable_name_map)
     df = df.drop("test_kit")
     df = df.withColumn("swab_pcr_test_date", F.to_timestamp("swab_pcr_test_date", "yyyy-MM-dd HH:mm:ss UTC"))
+    return df
 
 
 def transform_swabs_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
