@@ -21,13 +21,13 @@ def swabs_delta_ETL(delta_file_path: str):
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
 
-    df = clean_swabs_delta(spark_session, df)
+    df = clean_swabs_delta(df)
     df = validate_and_filter(spark_session, df, swabs_validation_schema, error_accumulator)
     df = transform_swabs_delta(spark_session, df)
     df = load_swabs_delta(spark_session, df)
 
 
-def clean_swabs_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
+def clean_swabs_delta(df: DataFrame) -> DataFrame:
     """Clean column names, drop unused data and parse datetime fields on swab delta dataframe."""
     df = rename_column_names(df, swab_variable_name_map)
     df = df.drop("test_kit")
