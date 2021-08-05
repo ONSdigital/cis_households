@@ -27,31 +27,48 @@ def filter_duplicates_by_time_and_threshold(
     third_reference_column: str,
     fourth_reference_column: str,
     time_threshold: float,
+    float_threshold: float,
 ) -> DataFrame:
     """
-    Write a function filters to remove records with a duplicate in V1 and V2 (together),
-    to keep the earliest given the timestamp V3. **STEP ONE**
-    The filter should only drop records when the difference in V3 between the earliest V3
-    and other records is < 1.5h, **STEP 2**
-    and the difference in V4 between the earliest V3 and other records is < 1e-5
+    Drop duplicates based on two identitical column values if third and fourth column and not both within
+    a threshold difference from the first duplicate record.
 
-    TODO
-    Parameterize - float thresh
-    Add in later conditionss
+    Parameters
+    ----------
+    df
+    first_reference_column
+        First column with duplicate value
+    second_reference_column
+        Second column with duplicate value
+    third_reference_column
+        Column used for time based threshold difference, timestamp
+    fourth_reference_column
+        Column used for numeric based threshold difference, float
+
     """
 
     window = Window.partitionBy(first_reference_column, second_reference_column).orderBy(third_reference_column)
     df = (
         df.withColumn("duplicate_id", F.row_number().over(window))
-        .withColumn("first", (F.first(third_reference_column).over(window).cast("long")) / (60 * 60))
-        .withColumn("second", (F.col(third_reference_column).cast("long")) / (60 * 60))
-        .withColumn("result", F.abs(F.col("first") - F.col("second")))
-        .withColumn("within_time_threshold", F.col("result") < time_threshold)
+        .withColumn(
+            "within_time_threshold",
+            (
+                F.abs(
+                    (
+                        (F.first(third_reference_column).over(window).cast("long"))
+                        - F.col(third_reference_column).cast("long")
+                    )
+                )
+                / (60 * 60)
+            )
+            < time_threshold,
+        )
+        .withColumn(
+            "within_float_threshold",
+            F.abs(F.first(fourth_reference_column).over(window) - F.col(fourth_reference_column)) < float_threshold,
+        )
     )
-    # ripe for refactoring
 
-    print(df.show())
+    df = df.filter((F.col("duplicate_id") == 1) | ~(F.col("within_time_threshold") & (F.col("within_float_threshold"))))
 
-    df = df.filter((F.col("duplicate_id") == 1) | ~F.col("within_time_threshold"))
-    df = df.drop("duplicate_id", "first", "second", "result", "within_time_threshold")
-    return df
+    return df.drop("duplicate_id", "within_time_threshold", "within_float_threshold")
