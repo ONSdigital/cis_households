@@ -1,10 +1,11 @@
+from typing import Any
 from typing import Mapping
 
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
 
-def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Mapping]) -> StructType:
+def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
     """
     Convert a cerberus validation schema to a pyspark schema.
 
