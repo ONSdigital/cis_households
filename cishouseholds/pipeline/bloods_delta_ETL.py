@@ -15,8 +15,8 @@ def extract_bloods_delta():
 def transform_bloods_delta(df):
     """
     Call functions to process input for bloods deltas.
-    D1: substring_column(new_column_name: 'plate', column_to_substr: 'plate_tdi', start_position: 5, len_of_substr: 10)
-    D11: assign_column_uniform_value(column_name_to_assign: 'assay_category', uniform_value: 1):
+    D1: substring_column
+    D11: assign_column_uniform_value
 
     Parameters
     ----------

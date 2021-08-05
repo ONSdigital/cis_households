@@ -35,5 +35,4 @@ def bloods_dummy_df(spark_session):
 
 def test_transform_bloods_delta(bloods_dummy_df, data_regression):
     transformed_df = transform_bloods_delta(bloods_dummy_df).toPandas().to_dict()
-    print(transformed_df)
     data_regression.check(transformed_df)
