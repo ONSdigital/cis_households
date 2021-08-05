@@ -32,6 +32,7 @@ def filter_duplicates_by_time_and_threshold(
     """
     Drop duplicates based on two identitical column values if third and fourth column and not both within
     a threshold difference from the first duplicate record.
+    From households_aggregate_processes.xlsx, filter number 4.
 
     Parameters
     ----------
