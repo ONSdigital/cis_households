@@ -21,6 +21,7 @@ class PySparkValidator(Validator):
 
     types_mapping = Validator.types_mapping.copy()
     types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
+    types_mapping["double"] = TypeDefinition("double", (float,), ())
 
 
 def filter_and_accumulate_validation_errors(

@@ -6,7 +6,7 @@ swab_validation_schema = {
     "swab_result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
     "swab_pcr_test_date": {"type": "timestamp"},
     "swab_test_lab_id": {"type": "string"},
-    # test_kit is dropped in initial editing
+    "test_kit": {"type": "string"},
     "orf1ab_gene_pcr_target": {"type": "string", "allowed": ["ORF1ab"]},
     "orf1ab_gene_pcr_result": {"type": "string", "allowed": swab_allowed_pcr_results},
     "orf1ab_gene_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
