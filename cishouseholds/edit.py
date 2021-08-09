@@ -31,5 +31,6 @@ def edit_swab_results_single(
                             (F.col(gene_result_value) <= 0.0) & 
                             (F.col(overall_result_classification) == 'Positive'), 'Negative'
                         # if boolean condition not met, keep the same value.
-                            ).otherwise(F.col(gene_result_classification))) 
+                            ).otherwise(F.col(gene_result_classification))
+                        )
 
