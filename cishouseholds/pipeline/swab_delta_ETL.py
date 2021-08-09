@@ -1,42 +1,17 @@
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
-from pyspark.sql import Schema
 from pyspark.sql import SparkSession
 
 from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import derive_ctpattern
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
 from cishouseholds.pipeline.validation_schema import swab_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import create_spark_session
 from cishouseholds.validate import validate_and_filter
-from cishouseholds.validate import validate_csv_fields
-from cishouseholds.validate import validate_csv_header
-
-
-def read_csv_to_pyspark_df(
-    spark_session: SparkSession, csv_file_path: str, raw_header_row: str, schema: Schema, **kwargs
-) -> DataFrame:
-    """
-    Validate and read a csv file into a PySpark DataFrame.
-
-    Parameters
-    ----------
-    csv_file_path
-        file to read to dataframe
-    raw_header_row
-        expected first line of file
-    schema
-        schema to use for returned dataframe, including desired column names
-
-    Takes keyword arguments from ``spark.read.csv``, for example ``timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'"``.
-    """
-    validate_csv_header(csv_file_path, raw_header_row)
-    validate_csv_fields(csv_file_path)
-
-    return spark_session.read.csv(csv_file_path, header=True, schema=schema, **kwargs)
 
 
 def swab_delta_ETL(delta_file_path: str):
