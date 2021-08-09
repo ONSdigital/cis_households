@@ -3,7 +3,7 @@ import pytest
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.swab_delta_ETL import transform_swabs_delta
+from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
 
 _ = Field("en-gb", seed=42)
 
@@ -39,5 +39,5 @@ def swabs_dummy_df(spark_session):
 
 
 def test_transform_swabs_delta_ETL(swabs_dummy_df, spark_session, data_regression):
-    transformed_df = transform_swabs_delta(swabs_dummy_df, spark_session).toPandas().to_dict()
+    transformed_df = transform_swab_delta(spark_session, swabs_dummy_df).toPandas().to_dict()
     data_regression.check(transformed_df)

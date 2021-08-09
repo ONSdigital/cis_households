@@ -46,7 +46,7 @@ def filter_and_accumulate_validation_errors(
     return result
 
 
-def validate_and_filter(spark_session, df: DataFrame, validation_schema, error_accumulator):
+def validate_and_filter(df: DataFrame, validation_schema, error_accumulator):
     validator = PySparkValidator(validation_schema)
     filtered_df = df.rdd.filter(
         lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)

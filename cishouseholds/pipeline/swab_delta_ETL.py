@@ -30,16 +30,10 @@ def swab_delta_ETL(delta_file_path: str):
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-    df = clean_swab_delta(df)
-    df = validate_and_filter(spark_session, df, swab_validation_schema, error_accumulator)
+
+    df = validate_and_filter(df, swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
     df = load_swab_delta(spark_session, df)
-
-
-def clean_swab_delta(df: DataFrame) -> DataFrame:
-    """Drop unused data from swab delta."""
-    df = df.drop("test_kit")
-    return df
 
 
 def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:

@@ -1,13 +1,13 @@
 from pyspark.sql import DataFrame
-from pyspark.sql import Schema
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
 
 from cishouseholds.validate import validate_csv_fields
 from cishouseholds.validate import validate_csv_header
 
 
 def read_csv_to_pyspark_df(
-    spark_session: SparkSession, csv_file_path: str, raw_header_row: str, schema: Schema, **kwargs
+    spark_session: SparkSession, csv_file_path: str, raw_header_row: str, schema: StructType, **kwargs
 ) -> DataFrame:
     """
     Validate and read a csv file into a PySpark DataFrame.
