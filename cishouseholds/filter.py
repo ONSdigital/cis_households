@@ -1,5 +1,4 @@
 from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import function as F
 from pyspark.sql.window import Window
@@ -21,8 +20,10 @@ def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFram
 
 
 def filter_by_cq_diff(
-    df: DataFrame, comparing_column: str, ordering_column: str, tolerance: float = 0.00001
-) -> DataFrame:
+                        df: DataFrame, 
+                        comparing_column: str, 
+                        ordering_column: str, 
+                        tolerance: float = 0.00001) -> DataFrame:
     """
     This function works out what columns have a float value difference less than 10-^5 or 0.00001
         (or any other tolerance value inputed) given all the other columns are the same and
@@ -43,19 +44,19 @@ def filter_by_cq_diff(
     Return
     ------
     df: pyspark.sql.dataframe
-
     """
     column_list = df.columns
     column_list.remove(comparing_column)
 
     windowSpec = Window.partitionBy(column_list).orderBy(ordering_column)
-    df = df.withColumn("first_value_in_duplicates", F.first(comparing_column).over(windowSpec))
-    df = df.withColumn(
-        "duplicates_first_record", F.abs(F.col("first_value_in_duplicates") - F.col(comparing_column)) < 0.00001
-    )
+    df = df.withColumn("first_value_in_duplicates", 
+                        F.first(comparing_column).over(windowSpec))
+    df = df.withColumn("duplicates_first_record", 
+                        F.abs(F.col("first_value_in_duplicates") - F.col(comparing_column)) < tolerance)
 
     difference_window = Window.partitionBy(column_list + ["duplicates_first_record"]).orderBy(ordering_column)
-    df = df.withColumn("duplicate_number", F.row_number().over(difference_window))
+    df = df.withColumn("duplicate_number", 
+                        F.row_number().over(difference_window))
 
     df = df.filter(~(F.col("duplicates_first_record") & (F.col("duplicate_number") != 1)))
     df = df.drop("first_value_in_duplicates", "duplicates_first_record", "duplicate_number")
