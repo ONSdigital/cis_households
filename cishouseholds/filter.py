@@ -26,8 +26,8 @@ def filter_duplicates_by_time_and_threshold(
     second_reference_column: str,
     third_reference_column: str,
     fourth_reference_column: str,
-    time_threshold: float,
-    float_threshold: float,
+    time_threshold: float = 1.5,
+    float_threshold: float = 0.00001,
 ) -> DataFrame:
     """
     Drop duplicates based on two identitical column values if third and fourth column and not both within
