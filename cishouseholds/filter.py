@@ -49,25 +49,23 @@ def filter_duplicates_by_time_and_threshold(
     """
 
     window = Window.partitionBy(first_reference_column, second_reference_column).orderBy(third_reference_column)
-    df = (
-        df.withColumn("duplicate_id", F.row_number().over(window))
-        .withColumn(
-            "within_time_threshold",
-            (
-                F.abs(
-                    (
-                        (F.first(third_reference_column).over(window).cast("long"))
-                        - F.col(third_reference_column).cast("long")
-                    )
-                )
-                / (60 * 60)
+
+    df = df.withColumn("duplicate_id", F.row_number().over(window))
+
+    df = df.withColumn(
+        "within_time_threshold",
+        (
+            F.abs(
+                F.first(third_reference_column).over(window).cast("long") - F.col(third_reference_column).cast("long")
             )
-            < time_threshold,
+            / (60 * 60)
         )
-        .withColumn(
-            "within_float_threshold",
-            F.abs(F.first(fourth_reference_column).over(window) - F.col(fourth_reference_column)) < float_threshold,
-        )
+        < time_threshold,
+    )
+
+    df = df.withColumn(
+        "within_float_threshold",
+        F.abs(F.first(fourth_reference_column).over(window) - F.col(fourth_reference_column)) < float_threshold,
     )
 
     df = df.filter((F.col("duplicate_id") == 1) | ~(F.col("within_time_threshold") & (F.col("within_float_threshold"))))
