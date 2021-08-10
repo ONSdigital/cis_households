@@ -3,6 +3,7 @@ import pytest
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
+from cishouseholds.edit import rename_column_names
 from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
 from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
@@ -45,7 +46,7 @@ def test_transform_swab_delta_ETL(swab_dummy_df, spark_session, data_regression)
     Test that swab transformation provides reproducible results.
     """
     swab_dummy_df = spark_session.createDataFrame(swab_dummy_df)
-    swab_dummy_df = swab_dummy_df.toDF(*[swab_variable_name_map[column] for column in swab_dummy_df.columns])
+    swab_dummy_df = rename_column_names(swab_dummy_df, swab_variable_name_map)
     transformed_df = transform_swab_delta(spark_session, swab_dummy_df).toPandas().to_dict()
     data_regression.check(transformed_df)
 
