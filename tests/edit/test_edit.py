@@ -8,7 +8,7 @@ from cishouseholds.edit import edit_swab_results_single
 def dummy_df(spark_session):
     return spark_session.createDataFrame(
         data = [
-        ('Negative', 0, 'Positive', 'keep'), # nothing should happen
+        ('Negative', 0.0, 'Positive', 'keep'), # nothing should happen
         ('Positive', 0.0, 'Positive', 'before'), # this row should be edited
         ('Negative', 0.0, 'Positive', 'after'), # after editing
         ('Negative', 1.0, 'Positive', 'keep'), # nothing should happen
