@@ -14,16 +14,16 @@ from cishouseholds.edit import edit_swab_results_single
     ]
 )
 
-# Test
-def test_edit_swab_results(spark_session, input_data, edit_swab_results_single):
+def test_edit_swab_results(spark_session, input_data):
     df = spark_session.createDataFrame(
         data = input_data,
         schema = ['gene_result_classification', 'gene_result_value', 
                     'overall_result_classification', 'selection']
     )
     
-    input_df = df.filter(df.selection == 'keep' or df.selection == 'before').drop('selection')
-    expected_df = df.filter(df.selection == 'keep' or df.selection == 'after').drop('selection')
+    input_df = df.filter((df.selection == 'keep') | (df.selection == 'before')).drop('selection')
+    expected_df = df.filter((df.selection == 'keep') | (df.selection == 'after')).drop('selection')
 
-    actual_df = edit_swab_results_single(input_df, "gene_result_classification")
+    actual_df = edit_swab_results_single(input_df, "gene_result_classification",
+                                        "gene_result_value", 'overall_result_classification')
     assert_df_equality(actual_df, expected_df)
