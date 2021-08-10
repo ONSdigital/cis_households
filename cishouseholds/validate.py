@@ -4,6 +4,7 @@ from datetime import datetime
 from cerberus import TypeDefinition
 from cerberus import Validator
 from pyspark.accumulators import AddingAccumulatorParam
+from pyspark.sql import DataFrame
 from pyspark.sql import Row
 
 
@@ -20,6 +21,7 @@ class PySparkValidator(Validator):
 
     types_mapping = Validator.types_mapping.copy()
     types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
+    types_mapping["double"] = TypeDefinition("double", (float,), ())
 
 
 def filter_and_accumulate_validation_errors(
@@ -42,6 +44,14 @@ def filter_and_accumulate_validation_errors(
     if not result:
         accumulator += [(row, cerberus_validator.errors)]
     return result
+
+
+def validate_and_filter(spark_session, df: DataFrame, validation_schema, error_accumulator):
+    validator = PySparkValidator(validation_schema)
+    filtered_df = df.rdd.filter(
+        lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
+    ).toDF()
+    return filtered_df
 
 
 def validate_csv_fields(csv_file: str, delimiter: str = ","):
