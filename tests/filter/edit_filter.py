@@ -23,6 +23,6 @@ def test_filter_by_cq_diff(spark_session, expected_data, filter_by_cq_diff):  # 
     )
     df_input = df.drop("keep_or_delete")
     expected_df = df.filter(df.keep_or_delete == "keep").drop("keep_or_delete")
-    actual_df = filter_by_cq_diff(df_input)
+    actual_df = filter_by_cq_diff(df_input, "cq_value", "date_tested")
 
     assert_df_equality(actual_df, expected_df)
