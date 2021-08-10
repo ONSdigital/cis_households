@@ -16,7 +16,7 @@ from cishouseholds.filter import filter_by_cq_diff
         ("ONS74697669", "2021-08-17 07:09:41", 200.783275, "keep"),  # larger than 10^-5 - KEEP
     ],
 )
-def test_filter_by_cq_diff(spark_session, expected_data, filter_by_cq_diff):  # test funtion
+def test_filter_by_cq_diff(spark_session, expected_data):  # test funtion
 
     df = spark_session.createDataFrame(
         data=expected_data, schema=["sample", "date_tested", "cq_value", "keep_or_delete"]
