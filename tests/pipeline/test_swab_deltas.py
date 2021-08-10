@@ -50,9 +50,9 @@ def test_transform_swab_delta_ETL(swab_dummy_df, spark_session, data_regression)
     data_regression.check(transformed_df)
 
 
-def test_swab_delta_ETL_end_to_end(swabs_dummy_df, pandas_df_to_temporary_csv):
+def test_swab_delta_ETL_end_to_end(swab_dummy_df, pandas_df_to_temporary_csv):
     """
     Test that valid example data flows through the ETL from a csv file.
     """
-    csv_file = pandas_df_to_temporary_csv(swabs_dummy_df)
+    csv_file = pandas_df_to_temporary_csv(swab_dummy_df)
     swab_delta_ETL(csv_file.as_posix())
