@@ -1,4 +1,4 @@
-from pyspark.AccumulatorParam import AddingAccumulatorParam
+from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
@@ -49,7 +49,7 @@ def transform_bloods_delta(df: DataFrame) -> DataFrame:
     ------
     df: pyspark.sql.DataFrame
     """
-    df = substring_column(df, "plate", "Plate Barcode", 5, 5)
+    df = substring_column(df, "plate", "plate_tdi", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
     return df
