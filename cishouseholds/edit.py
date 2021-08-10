@@ -5,7 +5,7 @@ from pyspark.sql import DataFrame
 def edit_swab_results_single(
                                 df:DataFrame, 
                                 gene_result_classification:str, 
-                                gene_result_value:float, 
+                                gene_result_value:str, 
                                 overall_result_classification:str='result_mk') -> DataFrame:
     """
     The objective of this function is to edit/correct the gene_result_classification from Positive to Negative or 1 to 0
@@ -15,8 +15,10 @@ def edit_swab_results_single(
     ----------
     df : Pyspark Dataframe
     gene_result_classification : String with categorical options "ctOR1ab","ctNgene","ctSgene".
-    gene_result_value : can only be the following discrete integer values 
+        can only be the following discrete integer values 
         (0 - Negative, 1 - Positive, 7 - Rejected, 8 - Inconclusive, 9 - Void, 10 - Insuficient Sample)
+    gene_result_value : a float value that can go from 0.0 to 40.00 (aprox.)
+    overall_result_classification : by default set to result_mk
 
     Returns
     -------
