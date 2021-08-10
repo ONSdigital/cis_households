@@ -1,7 +1,6 @@
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 swab_validation_schema = {
-    "require_all": True,
     "swab_barcode": {"type": "string", "regex": r"ONS\d{8}"},
     "swab_result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
     "swab_pcr_test_date": {"type": "timestamp"},

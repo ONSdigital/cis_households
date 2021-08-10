@@ -50,7 +50,7 @@ def validate_and_filter(df: DataFrame, validation_schema, error_accumulator):
     validator = PySparkValidator(validation_schema)
     filtered_df = df.rdd.filter(
         lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
-    ).toDF()
+    ).toDF(schema=df.schema)
     return filtered_df
 
 
@@ -98,7 +98,7 @@ def validate_csv_header(csv_file: str, expected_header: str, delimiter: str = ",
     """
 
     with open(csv_file) as f:
-        header = f.readline()
+        header = f.readline().strip()
 
     if expected_header is not None:
         is_match = expected_header == header

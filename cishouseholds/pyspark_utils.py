@@ -15,7 +15,11 @@ def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
     * `metadata` is an empty dict by default
     * `name` is the name of the field
     """
-    fields = [{"metadata": {}, "name": name, "nullable": True, **values} for name, values in schema.items()]
+    fields = [
+        {"metadata": {}, "name": name, "nullable": True, **values}
+        for name, values in schema.items()
+        if isinstance(values, dict)
+    ]
     return StructType.fromJson({"fields": fields, "type": "struct"})
 
 
