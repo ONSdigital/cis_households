@@ -15,6 +15,9 @@ from cishouseholds.validate import validate_and_filter
 
 
 def swab_delta_ETL(delta_file_path: str):
+    """
+    End to end processing of a swab delta CSV file.
+    """
     spark_session = create_spark_session()
     swab_spark_schema = convert_cerberus_schema_to_pyspark(swab_validation_schema)
 

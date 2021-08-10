@@ -46,7 +46,11 @@ def filter_and_accumulate_validation_errors(
     return result
 
 
-def validate_and_filter(df: DataFrame, validation_schema, error_accumulator):
+def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accumulator: AddingAccumulatorParam):
+    """
+    High level function to validate a PySpark DataFrame using Cerberus.
+    Filters invalid records out and accumulates errors.
+    """
     validator = PySparkValidator(validation_schema)
     filtered_df = df.rdd.filter(
         lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
@@ -83,7 +87,7 @@ def validate_csv_fields(csv_file: str, delimiter: str = ","):
     return True
 
 
-def validate_csv_header(csv_file: str, expected_header: str, delimiter: str = ","):
+def validate_csv_header(csv_file: str, expected_header: str):
     """
     Function to validate header in csv file matches expected header.
 
@@ -93,8 +97,6 @@ def validate_csv_header(csv_file: str, expected_header: str, delimiter: str = ",
         File path for csv file to be validated
     expected_header
         Exact header expected in csv file
-    delimiter
-        Delimiter used in csv file, default as ','
     """
 
     with open(csv_file) as f:
