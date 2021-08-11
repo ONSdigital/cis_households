@@ -14,7 +14,6 @@ def test_edit_swab_results(spark_session):
                 ],
         schema = schema
         )
-    
     expected_df = spark_session.createDataFrame(
         data = [
                     ('Negative', 0.0, 'Positive'), # nothing should happen
@@ -23,7 +22,8 @@ def test_edit_swab_results(spark_session):
                 ],
         schema = schema
         )
-    
     actual_df = edit_swab_results_single(input_df, "gene_result_classification",
                                         "gene_result_value", 'overall_result_classification')
-    assert_df_equality(actual_df, expected_df)
+
+    assert_df_equality(actual_df, expected_df, 
+                        ignore_row_order=True, ignore_column_order=True)
