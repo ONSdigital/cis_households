@@ -1,4 +1,3 @@
-import pytest
 from chispa import assert_df_equality
 from cishouseholds.edit import edit_swab_results_single
 
