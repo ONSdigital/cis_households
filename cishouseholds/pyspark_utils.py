@@ -23,7 +23,7 @@ def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
     return StructType.fromJson({"fields": fields, "type": "struct"})
 
 
-def create_spark_session() -> SparkSession:
+def get_or_create_spark_session() -> SparkSession:
     """
     Create a spark_session, hiding console progress and enabling HIVE table overwrite.
     """

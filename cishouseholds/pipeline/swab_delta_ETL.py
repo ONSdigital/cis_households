@@ -10,7 +10,7 @@ from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
 from cishouseholds.pipeline.validation_schema import swab_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
-from cishouseholds.pyspark_utils import create_spark_session
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
 
@@ -18,7 +18,7 @@ def swab_delta_ETL(delta_file_path: str):
     """
     End to end processing of a swab delta CSV file.
     """
-    spark_session = create_spark_session()
+    spark_session = get_or_create_spark_session()
     swab_spark_schema = convert_cerberus_schema_to_pyspark(swab_validation_schema)
 
     raw_swab_delta_header = ",".join(swab_variable_name_map.keys())
