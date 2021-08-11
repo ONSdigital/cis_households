@@ -61,4 +61,4 @@ def filter_by_cq_diff(
     df = df.filter(~(F.col("duplicates_first_record") & (F.col("duplicate_number") != 1)))
     df = df.drop("first_value_in_duplicates", "duplicates_first_record", "duplicate_number")
 
-    return df.orderBy(ordering_column, comparing_column)
+    return df
