@@ -5,6 +5,20 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
+    """
+    Rename column names.
+
+    Parameters
+    ----------
+    df
+    variable_name_map
+        map of current column names to new names
+    """
+    cleaned_columns = [variable_name_map[old_column_name] for old_column_name in df.columns]
+    return df.toDF(*cleaned_columns)
+
+
 def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column: str, mapper: Mapping) -> DataFrame:
     """
     Assign column with values based on a dictionary map of reference_column.
