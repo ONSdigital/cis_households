@@ -3,7 +3,7 @@ swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 swab_validation_schema = {
     "swab_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
     "pcr_test_result_classification": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
-    "pcr_test_date": {"type": "timestamp"},
+    "pcr_test_datetime": {"type": "timestamp"},
     "pcr_test_lab_id": {"type": "string"},
     "pcr_test_method": {"type": "string"},
     "orf1ab_gene_pcr_target": {"type": "string", "allowed": ["ORF1ab"]},
