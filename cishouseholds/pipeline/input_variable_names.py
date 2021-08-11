@@ -1,9 +1,9 @@
 swab_variable_name_map = {
     "Sample": "swab_sample_barcode",
-    "Result": "pcr_test_result_classification",
-    "Date Tested": "pcr_test_datetime",
-    "Lab ID": "pcr_test_lab_id",
-    "testKit": "pcr_test_method",
+    "Result": "pcr_result_classification",
+    "Date Tested": "pcr_datetime",
+    "Lab ID": "pcr_lab_id",
+    "testKit": "pcr_method",
     "CH1-Target": "orf1ab_gene_pcr_target",
     "CH1-Result": "orf1ab_gene_pcr_result_classification",
     "CH1-Cq": "orf1ab_gene_pcr_cq_value",

@@ -56,7 +56,7 @@ def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFram
         D9: mean_across_columns
         D10: assign_isin_list
     """
-    df = assign_column_convert_to_date(df, "pcr_test_date", "pcr_test_datetime")
+    df = assign_column_convert_to_date(df, "pcr_date", "pcr_datetime")
     df = derive_ctpattern(df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session)
     df = mean_across_columns(
         df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]

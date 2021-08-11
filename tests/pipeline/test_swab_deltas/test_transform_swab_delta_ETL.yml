@@ -70,31 +70,31 @@ orf1ab_gene_pcr_target:
   2: ORF1ab
   3: ORF1ab
   4: ORF1ab
-pcr_test_date:
+pcr_date:
   0: 2018-01-24
   1: 2018-11-24
   2: 2018-01-03
   3: 2018-09-07
   4: 2021-04-15
-pcr_test_datetime:
+pcr_datetime:
   0: 2018-01-24 08:15:14 UTC
   1: 2018-11-24 17:05:37 UTC
   2: 2018-01-03 06:14:32 UTC
   3: 2018-09-07 22:41:44 UTC
   4: 2021-04-15 18:17:51 UTC
-pcr_test_lab_id:
+pcr_lab_id:
   0: GLS
   1: GLS
   2: GLS
   3: GLS
   4: GLS
-pcr_test_method:
+pcr_method:
   0: rtPCR
   1: rtPCR
   2: rtPCR
   3: rtPCR
   4: rtPCR
-pcr_test_result_classification:
+pcr_result_classification:
   0: Void
   1: Negative
   2: Negative
