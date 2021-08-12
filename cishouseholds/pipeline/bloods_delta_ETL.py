@@ -29,8 +29,7 @@ def bloods_delta_ETL(delta_file_path: str):
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-    #   df = df.drop("monoclonal_bounded_quantitation", "monoclonal_undiluted_quantitation") - drop columns?
-    df = validate_and_filter(spark_session, df, bloods_validation_schema, error_accumulator)
+    df = validate_and_filter(df, bloods_validation_schema, error_accumulator)
     df = transform_bloods_delta(df)
     df = load_bloods_delta(df)
 
@@ -49,7 +48,7 @@ def transform_bloods_delta(df: DataFrame) -> DataFrame:
     ------
     df: pyspark.sql.DataFrame
     """
-    df = substring_column(df, "plate", "plate_tdi", 5, 5)
+    df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
     return df

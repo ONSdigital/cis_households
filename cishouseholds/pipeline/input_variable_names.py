@@ -20,16 +20,16 @@ swab_variable_name_map = {
 
 
 bloods_variable_name_map = {
-    "Serum Source ID": "ons_id",
+    "Serum Source ID": "blood_sample_barcode",
     "Blood Sample Type": "blood_sample_type",
-    "Plate Barcode": "plate_tdi",
-    "Well ID": "well_tdi",
-    "Detection": "interpretation_tdi",
-    "Monoclonal Quantitation (Colourmetric)": "tdi_assay_net_signal",
-    "Monoclonal Bounded Quantitation(Colourmetric)": "monoclonal_bounded_quantitation",  # Drop this column
-    "Monoclonal undiluted Quantitation(Colourmetric)": "monoclonal_undiluted_quantitation",  # Drop this column
-    "Date ELISA Result record created": "run_date_tdi",
-    "Date Samples Arrayed Oxford": "arrayed_dt",
-    "Date Samples Received Oxford": "received_dt",
-    "Voyager Date Created": "voyager_dt",
+    "Plate Barcode": "antibody_test_plate_id",
+    "Well ID": "antibody_test_well_id",
+    "Detection": "antibody_test_result_classification",
+    "Monoclonal Quantitation (Colourmetric)": "antibody_test_result_value",
+    "Monoclonal Bounded Quantitation(Colourmetric)": "antibody_test_bounded_result_value",
+    "Monoclonal undiluted Quantitation(Colourmetric)": "antibody_test_undiluted_result_value",
+    "Date ELISA Result record created": "antibody_test_result_recorded_date",
+    "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
+    "Date Samples Received Oxford": "blood_sample_received_date",
+    "Voyager Date Created": "blood_sample_collected_datetime",
 }
