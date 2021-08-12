@@ -31,19 +31,10 @@ def filter_by_cq_diff(
 
     Parameters
     ----------
-    df:
-        Pyspark DataFrame that will be computed
-    comparing_column:
-        the float value column where the differences of 10^-5 will be computed.
-    ordering_column:
-        just for output ascetics, put the name of the column to be ordered by,
-        recommended to be date.
-    tolerance:
-        for the ticket 753 F3 the value used is 10^-5 as standard but any other
-            tolerance can be applied.
-    Return
-    ------
-    df: pyspark.sql.dataframe
+    df
+    comparing_column
+    ordering_column
+    tolerance
     """
     column_list = df.columns
     column_list.remove(comparing_column)
