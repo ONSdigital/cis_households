@@ -1,4 +1,5 @@
 from chispa import assert_df_equality
+
 from cishouseholds.filter import filter_by_cq_diff
 
 
@@ -19,4 +20,3 @@ def test_filter_by_cq_diff(spark_session):  # test funtion
     actual_df = filter_by_cq_diff(df_input, "cq_value", "date_tested")
 
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
-
