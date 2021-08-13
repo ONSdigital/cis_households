@@ -1,4 +1,3 @@
-import pytest
 from chispa import assert_df_equality
 
 from cishouseholds.filter import filter_by_cq_diff
