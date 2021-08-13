@@ -48,6 +48,7 @@ def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accum
     """
     High level function to validate a PySpark DataFrame using Cerberus.
     Filters invalid records out and accumulates errors.
+
     Notes
     -----
     As a side effect, errors are added to the ``error_accumulator``.

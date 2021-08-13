@@ -47,6 +47,81 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     return df
 
 
+def assign_school_year(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_date_column: str,
+    dob_column: str,
+    country_column: str,
+    school_year_lookup: DataFrame,
+) -> DataFrame:
+    """
+    Assign school year based on date of birth and visit date, accounting for schooling differences by DA.
+    From households_aggregate_processes.xlsx, derivation number 31.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be created
+    reference_date_column
+        Name of column to calculate school year with respect to that point in time
+    dob_column
+        Name of column specifying date of birth
+    country_column
+        Name of column specifying country
+    school_year_lookup:
+        Lookup table defining the school year start day/month and the school year
+        reference day/month (which year participant in by dob) by country
+    """
+
+    df = (
+        df.join(F.broadcast(school_year_lookup), on=country_column, how="left")
+        .withColumn(
+            "school_start_date",
+            F.when(
+                (F.month(dob_column) > F.col("school_year_ref_month"))
+                | (
+                    (F.month(dob_column) == F.col("school_year_ref_month"))
+                    & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
+                ),
+                F.to_date(
+                    F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
+                    format="yyyyMMdd",
+                ),
+            ).otherwise(
+                F.to_date(
+                    F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
+                    format="yyyyMMdd",
+                )
+            ),
+        )
+        .withColumn(
+            column_name_to_assign,
+            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.25).cast("integer"),
+        )
+        # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
+        #  though need to confirm if this is accurate
+        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("NI")) /
+        # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
+        #                                     .otherwise(F.col(column_name_to_assign)))
+        .withColumn(
+            column_name_to_assign,
+            F.when(
+                (F.col(column_name_to_assign) >= F.lit(14)) | (F.col(column_name_to_assign) <= F.lit(0)), None
+            ).otherwise(F.col(column_name_to_assign)),
+        )
+        .drop(
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+            "school_start_date",
+        )
+    )
+
+    return df
+
+
 def derive_ctpattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in

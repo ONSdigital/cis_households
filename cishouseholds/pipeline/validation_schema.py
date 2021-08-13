@@ -22,7 +22,6 @@ swab_validation_schema = {
 
 
 bloods_validation_schema = {
-    #    "require_all": True,
     "blood_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
     "blood_sample_type": {"type": "string", "allowed": ["Venous", "Capillary"]},
     "antibody_test_plate_id": {"type": "string", "regex": r"(ON[BS]|MIX)_[0-9]{6}[C|V]S(-[0-9]+)"},
@@ -35,19 +34,4 @@ bloods_validation_schema = {
     "blood_sample_arrayed_date": {"type": "timestamp"},
     "blood_sample_received_date": {"type": "timestamp"},
     "blood_sample_collected_datetime": {"type": "timestamp"},
-}
-
-{
-    "Serum Source ID": "blood_sample_barcode",
-    "Blood Sample Type": "blood_sample_type",
-    "Plate Barcode": "antibody_test_plate_id",
-    "Well ID": "antibody_test_well_id",
-    "Detection": "antibody_test_result_classification",
-    "Monoclonal Quantitation (Colourmetric)": "antibody_test_result_value",
-    "Monoclonal Bounded Quantitation(Colourmetric)": "antibody_test_bounded_result_value",
-    "Monoclonal undiluted Quantitation(Colourmetric)": "antibody_test_undiluted_result_value",
-    "Date ELISA Result record created": "antibody_test_result_recorded_date",
-    "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
-    "Date Samples Received Oxford": "blood_sample_received_date",
-    "Voyager Date Created": "blood_sample_collected_datetime",
 }
