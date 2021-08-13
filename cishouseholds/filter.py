@@ -9,7 +9,6 @@ def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFram
     """
     Filter rows which have NULL values in all the specified columns.
     From households_aggregate_processes.xlsx, filter number 2.
-
     Parameters
     ----------
     df
@@ -33,7 +32,6 @@ def filter_duplicates_by_time_and_threshold(
     Drop duplicates based on two identitical column values if third and fourth column and not both within
     a threshold difference from the first duplicate record.
     From households_aggregate_processes.xlsx, filter number 4.
-
     Parameters
     ----------
     df
@@ -45,7 +43,6 @@ def filter_duplicates_by_time_and_threshold(
         Column used for time based threshold difference, timestamp
     fourth_reference_column
         Column used for numeric based threshold difference, float
-
     """
 
     window = Window.partitionBy(first_reference_column, second_reference_column).orderBy(third_reference_column)
@@ -71,3 +68,35 @@ def filter_duplicates_by_time_and_threshold(
     df = df.filter((F.col("duplicate_id") == 1) | ~(F.col("within_time_threshold") & (F.col("within_float_threshold"))))
 
     return df.drop("duplicate_id", "within_time_threshold", "within_float_threshold")
+
+
+def filter_by_cq_diff(
+    df: DataFrame, comparing_column: str, ordering_column: str, tolerance: float = 0.00001
+) -> DataFrame:
+    """
+    This function works out what columns have a float value difference less than 10-^5 or 0.00001
+        (or any other tolerance value inputed) given all the other columns are the same and
+        considers it to be the same dropping or deleting the repeated values and only keeping one entry.
+    Parameters
+    ----------
+    df
+    comparing_column
+    ordering_column
+    tolerance
+    """
+    column_list = df.columns
+    column_list.remove(comparing_column)
+
+    windowSpec = Window.partitionBy(column_list).orderBy(ordering_column)
+    df = df.withColumn("first_value_in_duplicates", F.first(comparing_column).over(windowSpec))
+    df = df.withColumn(
+        "duplicates_first_record", F.abs(F.col("first_value_in_duplicates") - F.col(comparing_column)) < tolerance
+    )
+
+    difference_window = Window.partitionBy(column_list + ["duplicates_first_record"]).orderBy(ordering_column)
+    df = df.withColumn("duplicate_number", F.row_number().over(difference_window))
+
+    df = df.filter(~(F.col("duplicates_first_record") & (F.col("duplicate_number") != 1)))
+    df = df.drop("first_value_in_duplicates", "duplicates_first_record", "duplicate_number")
+
+    return df
