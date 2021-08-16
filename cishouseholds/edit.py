@@ -8,7 +8,6 @@ from pyspark.sql import DataFrame
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
     Rename column names.
-
     Parameters
     ----------
     df

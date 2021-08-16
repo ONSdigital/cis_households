@@ -19,3 +19,19 @@ swab_validation_schema = {
     "ms2_pcr_result_classification": {"type": "string", "allowed": swab_allowed_pcr_results},
     "ms2_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
 }
+
+
+bloods_validation_schema = {
+    "blood_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
+    "blood_sample_type": {"type": "string", "allowed": ["Venous", "Capillary"]},
+    "antibody_test_plate_id": {"type": "string", "regex": r"(ON[BS]|MIX)_[0-9]{6}[C|V]S(-[0-9]+)"},
+    "antibody_test_well_id": {"type": "string", "regex": r"[A-Z][0-9]{2}"},
+    "antibody_test_result_classification": {"type": "string", "allowed": ["DETECTED", "NOT detected", "failed"]},
+    "antibody_test_result_value": {"type": "double", "nullable": True, "min": 0},
+    "antibody_test_bounded_result_value": {"type": "string"},
+    "antibody_test_undiluted_result_value": {"type": "string"},
+    "antibody_test_result_recorded_date": {"type": "timestamp"},
+    "blood_sample_arrayed_date": {"type": "timestamp"},
+    "blood_sample_received_date": {"type": "timestamp"},
+    "blood_sample_collected_datetime": {"type": "timestamp"},
+}
