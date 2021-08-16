@@ -10,8 +10,6 @@ from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
-# from pyspark.sql import SparkSession
-
 
 def bloods_delta_ETL(delta_file_path: str):
     spark_session = get_or_create_spark_session()
