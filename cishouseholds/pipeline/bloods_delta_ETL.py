@@ -7,14 +7,14 @@ from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import bloods_variable_name_map
 from cishouseholds.pipeline.validation_schema import bloods_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
-from cishouseholds.pyspark_utils import create_spark_session
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
 # from pyspark.sql import SparkSession
 
 
 def bloods_delta_ETL(delta_file_path: str):
-    spark_session = create_spark_session()
+    spark_session = get_or_create_spark_session()
     bloods_spark_schema = convert_cerberus_schema_to_pyspark(bloods_validation_schema)
 
     raw_bloods_delta_header = ",".join(bloods_variable_name_map.keys())
