@@ -1,31 +1,32 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import impute_from_distribution
+from cishouseholds.impute import calculate_imputation_from_distribution
 
 
 # debating whether to fix seed or mock F.rand
 def test_impute_distribution(spark_session):
     expected_data = [
-        ("E12000007", "white", 1, 1),  # proportion white-1 = 1.0 therefore all rnd < 1.0
-        ("E12000007", "white", 1, 1),
-        ("E12000007", "white", None, 1),
-        ("E12000007", "other", 2, 2),  # proportion other-1 = 0.0 therefore all rnd > 0.0
-        ("E12000007", "other", 2, 2),
-        ("E12000007", "other", None, 2),
+        # current stata uses 1, 2 for "male", "female"
+        ("E12000007", "white", "male", None),  # proportion white-male = 1.0 therefore all rnd < 1.0
+        ("E12000007", "white", "male", None),
+        ("E12000007", "white", None, "male"),
+        ("E12000007", "other", "female", None),  # proportion other-male = 0.0 therefore all rnd > 0.0
+        ("E12000007", "other", "female", None),
+        ("E12000007", "other", None, "female"),
     ]
 
     expected_df = spark_session.createDataFrame(
-        data=expected_data, schema="GOR9D string, white_group string, dvsex integer, impute_value integer"
+        data=expected_data, schema="GOR9D string, white_group string, dvsex string, impute_value string"
     )
     df_input = expected_df.drop("impute_value")
 
-    actual_df = impute_from_distribution(
+    actual_df = calculate_imputation_from_distribution(
         df_input,
         column_name_to_assign="impute_value",
         reference_column="dvsex",
-        grouping_columns=["GOR9D", "white_group"],
-        positive_value=1,
-        negative_value=2,
+        group_columns=["GOR9D", "white_group"],
+        positive_value="male",
+        negative_value="female",
         rng_seed=42,
     )
 
