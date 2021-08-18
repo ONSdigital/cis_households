@@ -35,8 +35,7 @@ bloods_variable_name_map = {
 }
 
 
-v2_variable_name_map = {
-    "raw_variable_name": "pipeline_variable_name",
+iqvia_v2_variable_name_map = {
     "ons_household_id": "ons_household_id",
     "Visit_ID": "visit_id",
     "Visit Status": "visit_status",
