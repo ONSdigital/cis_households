@@ -30,6 +30,3 @@ def test_impute_wrapper(spark_session):
     actual_df = impute_wrapper(df_input, imputation_function=example_imputer, reference_column="value", literal=1)
 
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
-
-
-# TODO add test for real imputation function
