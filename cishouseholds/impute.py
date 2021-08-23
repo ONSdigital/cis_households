@@ -1,4 +1,6 @@
 import sys
+from collections import Counter
+from typing import Any
 from typing import Callable
 from typing import List
 from typing import Union
@@ -6,8 +8,6 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-
-from collections import Counter
 
 
 def calculate_imputation_from_distribution(
@@ -113,13 +113,11 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
     return df.drop("temporary_imputation_values")
 
 
-
-  def calculate_imputation_from_mode(
+def calculate_imputation_from_mode(
     df: DataFrame, column_name_to_assign: str, reference_column: str, group_column: str
 ) -> DataFrame:
     """
     Get imputation value from given column by most repeated value
-
     Parameters
     ----------
     df
@@ -127,7 +125,6 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
         The colum that will be created with the impute values
     reference_column
         The column for which imputation values will be calculated
-
     Notes
     -----
     Function provides a column value for each record that needs to be imputed.
@@ -173,7 +170,7 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
     return actual_df
 
 
-def most_common_unique_item(list_most_common_unrepeated: List[str]):
+def most_common_unique_item(list_most_common_unrepeated: List[str]) -> Any:
     """
     Works out the most common value in a list ignoring if it is repeated
 
