@@ -1,16 +1,42 @@
 from cishouseholds.derive import assign_column_regex_match, assign_column_uniform_value, assign_column_convert_to_date, assign_single_column_from_split, assign_consent_code
+from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
+from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark, get_or_create_spark_session
+from cishouseholds.extract import read_csv_to_pyspark_df
+from pyspark.accumulators import AddingAccumulatorParam
+from cishouseholds.validate import validate_and_filter
+from pyspark.sql import SparkSession, DataFrame
 
-def survey_responses_version_2_ETL():
-    extract_survey_responses_version_2_delta()
-    transform_survey_responses_version_2_delta()
-    load_survey_responses_version_2_delta()
+def survey_responses_version_2_ETL(delta_file_path: str):
+    """
+    End to end processing of a IQVIA survey responses CSV file.
+    """
+    spark_session = get_or_create_spark_session()
+    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_variable_name_map)
+
+    raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
+    df = read_csv_to_pyspark_df(
+        spark_session,
+        delta_file_path,
+        raw_iqvia_v2_data_header,
+        iqvia_v2_spark_schema,
+        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+    )
+
+    error_accumulator = spark_session.sparkContext.accumulator(
+        value=[], accum_param=AddingAccumulatorParam(zero_value=[])
+    )
+
+    df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
+    df = transform_survey_responses_version_2_delta(spark_session, df)
+    df = load_survey_responses_version_2_delta(spark_session, df)
 
 
-def extract_survey_responses_version_2_delta():
+def extract_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
     pass
 
 
-def transform_survey_responses_version_2_delta():
+def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 2 survey deltas.
     D11: assign_column_uniform_value
@@ -61,5 +87,5 @@ def transform_survey_responses_version_2_delta():
     return df
 
 
-def load_survey_responses_version_2_delta():
-    pass
+def load_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
+    return df
