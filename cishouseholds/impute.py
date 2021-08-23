@@ -12,8 +12,8 @@ def calculate_imputation_from_distribution(
     column_name_to_assign: str,
     reference_column: str,
     group_columns: List[str],
-    positive_value: Union[str, bool, int, float],
-    negative_value: Union[str, bool, int, float],
+    first_imputation_value: Union[str, bool, int, float],
+    second_imputation_value: Union[str, bool, int, float],
     rng_seed: int = None,
 ) -> DataFrame:
     """
@@ -29,9 +29,9 @@ def calculate_imputation_from_distribution(
         The column for which imputation values will be calculated
     group_columns
         Grouping columns used to determine the proportion of the reference values
-    positive_value
+    first_imputation_value
         Imputation value if random number less than proportion
-    negative_value
+    second_imputation_value
         Imputation value if random number greater than or equal to proportion
     rng_seed
         Random number generator seed for making function deterministic.
@@ -44,7 +44,7 @@ def calculate_imputation_from_distribution(
     window = Window.partitionBy(*group_columns).orderBy(reference_column).rowsBetween(-sys.maxsize, sys.maxsize)
 
     df = df.withColumn(
-        "numerator", F.sum(F.when(F.col(reference_column) == positive_value, 1).otherwise(0)).over(window)
+        "numerator", F.sum(F.when(F.col(reference_column) == first_imputation_value, 1).otherwise(0)).over(window)
     )
 
     df = df.withColumn("denominator", F.sum(F.when(F.col(reference_column).isNotNull(), 1).otherwise(0)).over(window))
@@ -55,8 +55,8 @@ def calculate_imputation_from_distribution(
 
     df = df.withColumn(
         "individual_impute_value",
-        F.when(F.col("proportion") > F.col("random"), positive_value)
-        .when(F.col("proportion") <= F.col("random"), negative_value)
+        F.when(F.col("proportion") > F.col("random"), first_imputation_value)
+        .when(F.col("proportion") <= F.col("random"), second_imputation_value)
         .otherwise(None),
     )
 

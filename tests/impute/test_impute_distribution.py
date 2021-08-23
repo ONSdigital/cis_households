@@ -25,8 +25,9 @@ def test_impute_distribution(spark_session):
         column_name_to_assign="impute_value",
         reference_column="dvsex",
         group_columns=["GOR9D", "white_group"],
-        positive_value="male",
-        negative_value="female",
+        first_imputation_value="male",
+        second_imputation_value="female",
+        # seed not used directly for test at present
         rng_seed=42,
     )
 
