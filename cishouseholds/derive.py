@@ -58,7 +58,6 @@ def assign_school_year(
     """
     Assign school year based on date of birth and visit date, accounting for schooling differences by DA.
     From households_aggregate_processes.xlsx, derivation number 31.
-
     Parameters
     ----------
     df
