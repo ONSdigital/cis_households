@@ -109,8 +109,8 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
     df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
 
     return df.drop("temporary_imputation_values")
-  
-  
+
+
   def impute_last_obs_carried_forward(
     df: DataFrame, column_name_to_assign: str, column_identity: str, reference_column: str
 ) -> DataFrame:
@@ -140,4 +140,3 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
         column_name_to_assign,
         F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
     )
-
