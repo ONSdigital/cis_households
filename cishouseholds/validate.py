@@ -15,7 +15,6 @@ class InvalidFileError(Exception):
 class PySparkValidator(Validator):
     """
     A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
-
     This allows reuse of validation schema as PySpark schema.
     """
 
@@ -30,7 +29,6 @@ def filter_and_accumulate_validation_errors(
     """
     Validate rows of data using a Cerberus validator object, filtering invalid rows out of the returned dataframe.
     Field errors are recorded in the given accumulator, as a list of dictionaries.
-
     Examples
     --------
     >>> validator = cerberus.Validator({"id": {"type": "string"}})
@@ -65,7 +63,6 @@ def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accum
 def validate_csv_fields(csv_file: str, delimiter: str = ","):
     """
     Function to validate the number of fields within records of a csv file.
-
     Parameters
     ----------
     csv_file
@@ -94,7 +91,6 @@ def validate_csv_fields(csv_file: str, delimiter: str = ","):
 def validate_csv_header(csv_file: str, expected_header: str):
     """
     Function to validate header in csv file matches expected header.
-
     Parameters
     ----------
     csv_file

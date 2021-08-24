@@ -1,70 +1,40 @@
-Blood Sample Type:
-  0: Venous
-  1: Capillary
-  2: Venous
-  3: Venous
-  4: Venous
-Date ELISA Result record created:
-  0: '2018-01-24'
-  1: '2021-04-15'
-  2: '2018-07-03'
-  3: '2019-11-09'
-  4: '2018-04-27'
-Date Samples Arrayed Oxford:
-  0: '2018-11-24'
-  1: '2018-03-23'
-  2: '2022-06-19'
-  3: '2018-10-21'
-  4: '2020-02-07'
-Date Samples Received Oxford:
-  0: '2018-01-03'
-  1: '2019-06-04'
-  2: '2019-05-03'
-  3: '2019-08-13'
-  4: '2019-11-16'
-Detection:
-  0: DETECTION
-  1: DETECTION
-  2: DETECTION
-  3: failed
-  4: failed
-Monoclonal Bounded Quantitation(Colourmetric):
+antibody_test_bounded_result_value:
   0: 29.5
   1: 73.0
   2: 359.0
   3: 32.1
   4: 212.0
-Monoclonal Quantitation (Colourmetric):
-  0: 2078.8469
-  1: 796.1704
-  2: 2200.0245
-  3: 1919.7561
-  4: 710.8161
-Monoclonal undiluted Quantitation(Colourmetric):
-  0: 9012
-  1: 3358
-  2: 2848
-  3: 3070
-  4: 869
-Plate Barcode:
+antibody_test_plate_id:
   0: ONS_402501CS
   1: ONS_300868CS
   2: ONS_220212CS
   3: ONS_396568CS
   4: ONS_942252CS
-Serum Source ID:
-  0: ONS60227680
-  1: ONS58086319
-  2: ONS35868570
-  3: ONS22966171
-  4: ONS32298363
-Voyager Date Created:
-  0: 2018-09-07 22:41:44 UTC
-  1: 2020-10-09 01:46:29 UTC
-  2: 2020-08-21 11:10:23 UTC
-  3: 2022-04-22 10:53:49 UTC
-  4: 2021-03-09 04:15:47 UTC
-Well ID:
+antibody_test_result_classification:
+  0: DETECTION
+  1: DETECTION
+  2: DETECTION
+  3: failed
+  4: failed
+antibody_test_result_recorded_date:
+  0: '2018-01-24'
+  1: '2021-04-15'
+  2: '2018-07-03'
+  3: '2019-11-09'
+  4: '2018-04-27'
+antibody_test_result_value:
+  0: 2078.8469
+  1: 796.1704
+  2: 2200.0245
+  3: 1919.7561
+  4: 710.8161
+antibody_test_undiluted_result_value:
+  0: 9012
+  1: 3358
+  2: 2848
+  3: 3070
+  4: 869
+antibody_test_well_id:
   0: Q52
   1: S59
   2: Q33
@@ -76,6 +46,36 @@ assay_category:
   2: 1
   3: 1
   4: 1
+blood_sample_arrayed_date:
+  0: '2018-11-24'
+  1: '2018-03-23'
+  2: '2022-06-19'
+  3: '2018-10-21'
+  4: '2020-02-07'
+blood_sample_barcode:
+  0: ONS60227680
+  1: ONS58086319
+  2: ONS35868570
+  3: ONS22966171
+  4: ONS32298363
+blood_sample_collected_datetime:
+  0: 2018-09-07 22:41:44 UTC
+  1: 2020-10-09 01:46:29 UTC
+  2: 2020-08-21 11:10:23 UTC
+  3: 2022-04-22 10:53:49 UTC
+  4: 2021-03-09 04:15:47 UTC
+blood_sample_received_date:
+  0: '2018-01-03'
+  1: '2019-06-04'
+  2: '2019-05-03'
+  3: '2019-08-13'
+  4: '2019-11-16'
+blood_sample_type:
+  0: Venous
+  1: Capillary
+  2: Venous
+  3: Venous
+  4: Venous
 plate:
   0: '40250'
   1: '30086'
