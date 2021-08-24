@@ -111,7 +111,7 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
     return df.drop("temporary_imputation_values")
 
 
-  def impute_last_obs_carried_forward(
+def impute_last_obs_carried_forward(
     df: DataFrame, column_name_to_assign: str, column_identity: str, reference_column: str
 ) -> DataFrame:
     """
