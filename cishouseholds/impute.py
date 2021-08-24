@@ -117,7 +117,7 @@ def calculate_imputation_from_mode(
     df: DataFrame, column_name_to_assign: str, reference_column: str, group_column: str
 ) -> DataFrame:
     """
-    Get imputation value from given column by most repeated value
+    Get imputation value from given column by most repeated UNIQUE value
     Parameters
     ----------
     df
@@ -130,13 +130,14 @@ def calculate_imputation_from_mode(
     Function provides a column value for each record that needs to be imputed.
     Where the value does not need to be imputed the column value created will be null.
     """
-    # get rid of uac with no nulls
-    df_notnulls = df.filter(F.col(reference_column).isNull()).select(F.col(group_column))
+    # get rid of cases (household_id) with no nulls to be imputed and only show the cases
+    df_group_imput = df.filter(F.col(reference_column).isNull()).select(F.col(group_column))
 
     # naming convention
     list_reference_column = "list_" + reference_column
 
-    # window function to collect_list() of all the reference_column items per HH
+    # window function to collect_list() of all the reference_column (ethnicity) items
+    # per group (household_id)
     window = Window.partitionBy(group_column)
     df_window = (
         df.withColumn(list_reference_column, F.collect_list(F.col(reference_column)).over(window))
@@ -145,27 +146,26 @@ def calculate_imputation_from_mode(
         .drop(reference_column)
     )
 
-    # JOIN: inner join with the previous df with no nulls filtered
-    df_notnulls = df_notnulls.join(df_window, [group_column])
+    # JOIN 1: List of households with imputation (Nulls) to impute inner joined to
+    # the previous df_window that has the list of items in reference_column (ethnicity)
+    df_group_imput = df_group_imput.join(df_window, [group_column], "inner")
 
-    # UDF - User defined function to workout the logic for imputation
+    # Function to implement as UDF - User defined function to workout the logic for imputation
     udf_most_common_unique = F.udf(lambda x: most_common_unique_item(x))
 
     # UDF implementation: with most_common_unique_item() inputation per row is performed
-    df_imputed = df_notnulls.withColumn(
+    df_imputed = df_group_imput.withColumn(
         column_name_to_assign, udf_most_common_unique(F.col(list_reference_column))
     ).drop(list_reference_column)
 
-    # JOIN: from initial input df join it with the imputed values for the filtered group_column df
-    # filtered group_column: has None columns, no same number of elements to be imputed
+    # JOIN 2: from initial input df outer join it with the imputed values with UDF
+    # df_imputed with group_column (household_id) column
     actual_df = df.join(df_imputed, [group_column], "outer")
 
     # Only impute when the cell of the imputed column is null
     actual_df = actual_df.withColumn(
         column_name_to_assign,
-        F.when(
-            ((F.col(reference_column) == F.col(column_name_to_assign)) | F.col(reference_column).isNotNull()), None
-        ).otherwise(F.col(column_name_to_assign)),
+        F.when((F.col(reference_column).isNotNull()), None).otherwise(F.col(column_name_to_assign)),
     )
     return actual_df
 

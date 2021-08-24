@@ -7,24 +7,20 @@ from cishouseholds.impute import most_common_unique_item
 def test_impute_mode(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            # if in same hh majority are white/other
-            ("000000000001", "white", None),
+            ("000000000001", "white", None),  # Case where one white, imputation with white in the other record
             ("000000000001", None, "white"),
-            ("000000000007", "white", None),
-            ("000000000007", "white", None),
+            ("000000000007", "white", None),  # Case where there are white/other ethnicities
+            ("000000000007", "white", None),  # but white is the most common
             ("000000000007", "white", None),
             ("000000000007", "other", None),
             ("000000000007", None, "white"),
-            ("222222222222", "other", None),
-            ("222222222222", "other", None),
+            ("222222222222", "other", None),  # Case where the majority of ethnicity is other,
+            ("222222222222", "other", None),  # imputate to other
             ("222222222222", None, "other"),
-            # there's a tie on the ehtnicity for a specific hh
-            # all of these 3 rows need to be dropped.
-            ("999999999999", "white", None),
-            ("999999999999", "other", None),
+            ("999999999999", "white", None),  # Case where theres a tie on ethnicities,
+            ("999999999999", "other", None),  # no imputation should happen at all
             ("999999999999", None, None),
-            # example where nothing should happen
-            ("XXXXXXXXXXXX", "other", None),
+            ("XXXXXXXXXXXX", "other", None),  # example where nothing should happen
         ],
         schema="uac_household string, ethnic string, impute_value string",
     )
