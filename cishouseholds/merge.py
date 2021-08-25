@@ -3,7 +3,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
-def derive_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
+def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
     Derive column to count the number of occurrences of the value in the reference_column over the entire dataframe.
 
@@ -21,7 +21,7 @@ def derive_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
 
 
-def derive_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
+def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
     """
     Derive column with unique identifier for each record.
 

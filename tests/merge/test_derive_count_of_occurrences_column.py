@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.merge import derive_count_of_occurrences_column
+from cishouseholds.merge import assign_count_of_occurrences_column
 
 
 def test_derive_count_of_occurrences_column(spark_session):
@@ -20,6 +20,6 @@ def test_derive_count_of_occurrences_column(spark_session):
 
     input_df = expected_df.drop("count_id")
 
-    output_df = derive_count_of_occurrences_column(input_df, "id", "count_id")
+    output_df = assign_count_of_occurrences_column(input_df, "id", "count_id")
 
     assert_df_equality(output_df.orderBy("id"), expected_df, ignore_nullable=True)

@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.merge import derive_unique_identifier_column
+from cishouseholds.merge import assign_unique_identifier_column
 
 
 def test_derive_unique_identifier_column(spark_session):
@@ -22,7 +22,7 @@ def test_derive_unique_identifier_column(spark_session):
     input_df = expected_df.drop("unique_id")
     ordering_columns = ["id", "visit_date"]
 
-    output_df = derive_unique_identifier_column(input_df, "unique_id", ordering_columns)
+    output_df = assign_unique_identifier_column(input_df, "unique_id", ordering_columns)
 
     assert_df_equality(
         output_df.orderBy(*ordering_columns), expected_df.orderBy(*ordering_columns), ignore_nullable=True
