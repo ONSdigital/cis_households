@@ -39,7 +39,7 @@ def derive_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, join_type: str, reference_column: str):
+def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
     """
     Join two datasets.
 
@@ -47,9 +47,9 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, join_type: str, reference_co
     ----------
     df1
     df2
-    join_type
-        Specify join type to apply to .join() method
     reference_column
         Column for join to occur on
+    join_type
+        Specify join type to apply to .join() method
     """
     return df1.join(df2, on=reference_column, how=join_type)
