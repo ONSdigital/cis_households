@@ -11,8 +11,12 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
+
+    print("delta path: ", delta_file_path)
     spark_session = get_or_create_spark_session()
-    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_variable_name_map)
+    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
+
+    print("iqvia schema: ",iqvia_v2_spark_schema)
 
     raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
@@ -22,6 +26,8 @@ def survey_responses_version_2_ETL(delta_file_path: str):
         iqvia_v2_spark_schema,
         timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
     )
+    print("print df: ")
+    df.show()
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
@@ -65,17 +71,16 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df: pyspark.sql.DataFrame
     """
 
-    df = 1 # delete -- placeholder
-    df = assign_column_uniform_value(df, "dataset", n=1) #replace 'n' with chosen value
-    df = assign_column_regex_match(df, "bad_email", "email", "/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i") #using default email pattern regex to filter 'good' and 'bad' emails
-    df = assign_column_convert_to_date(df, "visit_date", "visit_date_time")
-    df = assign_column_convert_to_date(df, "sample_taken_date",	"sample_taken_date_time")
+    df = assign_column_uniform_value(df, "dataset", 1) #replace 'n' with chosen value
+    df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i") #using default email pattern regex to filter 'good' and 'bad' emails
+    df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
+    df = assign_column_convert_to_date(df, "sample_taken_date",	"samples_taken_datetime")
     # df = placeholder_for_derivation_number_7-2(df, "week")#derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
-    df = assign_single_column_from_split(df, "outer_postcode", "pcds", " ", 0)# splits on space between postcode segments and gets left half
+    df = assign_single_column_from_split(df, "outer_postcode", "postcode", " ", 0)# splits on space between postcode segments and gets left half
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"], {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     # df = placeholder_for_derivation_number_18(df, "hh_id_fake",	"ons_household_id")
-    df = assign_consent_code(df, "consent",	["consent_v16", "consent_v5", "consent_v1"])
+    df = assign_consent_code(df, "consent",	["consent_16_visits", "consent_5_visits", "consent_1_visit"])
     # df = placeholder_for_derivation_number_20(df, "work_healthcare", ["work_healthcare_v1", "work_direct_contact"])
     # df = placeholder_for_derivation_number_21(df, "work_socialcare", ["work_sector", "work_care_nursing_home" , "work_direct_contact"])
     # df = placeholder_for_derivation_number_10(df, "self_isolating", "self_isolating_v1")

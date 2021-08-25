@@ -169,7 +169,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                                                 'Mixed-White & Black African', 'Mixed-White & Black Caribbean', 
                                                 'Other ethnic group-Arab', 'White-British', 'White-Gypsy or Irish Traveller', 
                                                 'White-Irish']),
-                'Ethnicity_Other': _('random.randstr', unique=False), #free text field, can be null 1 to 249
+                'Ethnicity_Other': _('text.sentence'), #free text field, can be null 1 to 249
                 'Consent_to_First_Visit': _('choice', items = ['Yes', 'No']),
                 'Consent_to_Five_Visits': _('choice', items = ['Yes', 'No']),
                 'Consent_to_April_22': _('choice', items = ['Yes', 'No']),
@@ -187,8 +187,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 'Consent_to_fingerprick_blood_samples': _('choice', items=['False', 'True']),
                 'Accepted_invite_to_fingerprick': _('choice', items = ['Yes', 'No', None]),
                 'Re_consented_for_blood': _('choice', items=['False', 'True']),
-                'What_is_the_title_of_your_main_job': _('random.randstr', unique=False), #free text field, can be null 1 to 73
-                'What_do_you_do_in_your_main_job_business': _('random.randstr', unique=False), #free text field, can be null 1 to 333
+                'What_is_the_title_of_your_main_job': _('text.sentence'), #free text field, can be null 1 to 73
+                'What_do_you_do_in_your_main_job_business': _('text.sentence'), #free text field, can be null 1 to 333
                 'Occupations_sectors_do_you_work_in': _('choice', items=['Armed forces', 'Art or entertainment or recreation', 
                                                         'Arts or Entertainment or Recreation', 'Arts or entertainment or recreation', 
                                                         'Civil Service or Local Government', 'Financial Services (incl. insurance)',  
@@ -202,7 +202,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                                                         'Retail Sector (incl. wholesale)', 'Retail sector (incl. wholesale)', 'Social Care', 
                                                         'Social care', 'Teaching and education', 'Transport (incl. storage and logistic)', 
                                                         'Transport (incl. storage and logistics)', 'Transport (incl. storage or logistic)', None]),
-                'occupation_sector_other': _('random.randstr', unique=False), #free text field, can be null 1 to 75 
+                'occupation_sector_other': _('text.sentence'), #free text field, can be null 1 to 75 
                 'Work_in_a_nursing_residential_care_home': _('choice', items=[None, 'Yes', 'No']),
                 'Do_you_currently_work_in_healthcare': _('choice', items=[None, 'Primary care (e.g. GP, dentist)', 'Secondary care (e.g. hospital)',
                                                                         ' Other healthcare (e.g. mental health)']),
@@ -283,6 +283,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Social_Distance_Contact_70_yrs" : _('choice', items=[None, "0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"]),
                 "1Hour_or_Longer_another_person_home" : _('choice', items=[None, "1","2","3","4","5","6","7 times or more","None",
                                                                            "Participant Would Not/Could Not Answer"]),
+                "1Hour_or_Longer_another_person_yourhome" : _('choice', items=[None, "1","2","3","4","5","6","7 times or more","None",
+                                                                           "Participant Would Not/Could Not Answer"]),                
                 "Times_Outside_Home_For_Shopping" : _('choice', items=[None, "0", "1","2","3","4","5","6","7 times or more","None", 
                                                                        "Participant Would Not/Could Not Answer"]),
                 "Shopping_last_7_days" : _('choice', items=[None, "0", "1","2","3","4","5","6","7 times or more","None","Participant Would Not/Could Not Answer"]),
@@ -326,7 +328,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 'If_positive_Date_of_1st_ve_test': _('choice', items=[_('datetime.formatted_datetime', fmt="%d/%m/%Y", start=2020, end=2022), None]),
                 'If_all_negative_Date_last_test': _('choice', items=[_('datetime.formatted_datetime', fmt="%d/%m/%Y", start=2020, end=2022), None]),
 
-                'Have_you_had_a_blood_test_for_Covid': _('choice', items=["No","Yes", None]),
+                'Have_you_had_a_antibody_test_for_Covid': _('choice', items=["No","Yes", None]),
                 'What_was_the_result_of_the_blood_test': _('choice', items=["All tests failed", "One or more negative tests but none positive", 
                                                                             "One or more negative tests but none were positive", 
                                                                             "One or more positive test(s)", "Waiting for all results", 
@@ -385,15 +387,16 @@ def iqvia_v2_survey_dummy_df(spark_session):
     )
 
     schema = Schema(schema=v2_data_description)
-    pandas_df = pd.DataFrame(schema.create(iterations=5))
+    #iterations increased to 50 to prevent issue of all null values occuring inline
+    pandas_df = pd.DataFrame(schema.create(iterations=50))
     return  pandas_df
 
 
 def test_transform_survey_responses_version_2_delta(iqvia_v2_survey_dummy_df, spark_session, data_regression):
 
     iqvia_v2_survey_dummy_df = spark_session.createDataFrame(iqvia_v2_survey_dummy_df)
-    bloods_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
-    transformed_df = transform_survey_responses_version_2_delta(bloods_dummy_df).toPandas().to_dict()
+    iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
+    transformed_df = transform_survey_responses_version_2_delta(spark_session, iqvia_v2_survey_dummy_df).toPandas().to_dict()
     data_regression.check(transformed_df)
 
 
