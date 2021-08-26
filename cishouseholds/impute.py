@@ -137,7 +137,9 @@ def impute_last_obs_carried_forward(
     order_type
         the "direction" of the observation can be ascending by default or
         descending. Chose ONLY 'asc' or 'desc'.
-    NOTE: if the observation carried forward by a specific column like date, and
+    Notes
+    ----
+    If the observation carried forward by a specific column like date, and
         the type of order (order_type) is descending, the direction will be
         reversed and the function would do a last observation carried backwards.
     """
