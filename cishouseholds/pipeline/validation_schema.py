@@ -67,8 +67,8 @@ sample_northern_ireland_schema = {
     "lsoa11nm": {"type": "string", "regex": r"[a-zA-Z]{2,}}"},
     "cis20cd": {"type": "string", "regex": r"^J\d{8}"},
     "rgn": {"type": "string", "regex": r"^N\d{8}"},
-    "imd": {"type": "integer", "min": 256, "max": 256},
-    "interim_id": {"type": "integer", "min": 1, "max": 999},
+    "imd": {"type": "integer", "min": 1, "max": 890},
+    "interim_id": {"type": "integer", "min": 999, "max": 999},
 }
 
 iqvia_v2_validation_schema = {
