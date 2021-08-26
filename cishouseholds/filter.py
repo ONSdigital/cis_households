@@ -100,3 +100,50 @@ def filter_by_cq_diff(
     df = df.drop("first_value_in_duplicates", "duplicates_first_record", "duplicate_number")
 
     return df
+
+
+def flag_out_of_date_range(
+    df: DataFrame,
+    column_name_to_assign: str,
+    col_start_date: str,
+    col_end_date: str,
+    lower_interval: int,
+    upper_interval: int,
+    interval_format: str = "hours",
+) -> DataFrame:
+    """
+    Tell if the interval between two given columns with dates is within an upper/lower
+    interval. If out of range, it will return a flag column with 1. If within range
+    it will return a flag column with None.
+    Parameters
+    ----------
+    df
+    col_start_date
+    col_end_date
+    lower_interval
+        Marks how much NEGATIVE time difference can have between col_end_date and
+        col_start_date
+    upper_interval
+        Marks how much POSITIVE time difference can have between col_end_date and
+        col_start_date
+    interval_format
+        By default will be a string called 'hours' if upper and lower intervals
+        are input as days, define interval_format to 'days'. These are the only
+        two possible formats.
+    NOTE: lower_interval should be a negative value if col_start_date is after
+        col_end_date.
+    """
+    # by default, Hours but if days, apply change factor:
+    if interval_format == "hours":  # to convert hours to seconds
+        conversion_factor = 3600  # 1h has 60s*60min seconds = 3600 seconds
+    elif interval_format == "days":
+        conversion_factor = 43200  # 1 day has 60s*60min*12h seconds = 43200 seconds
+
+    # FORMULA: (col_end_date - col_start_date) in seconds/conversion_factor in seconds
+    df = df.withColumn(
+        "difference", (F.col(col_end_date).cast("long") - F.col(col_start_date).cast("long")) / conversion_factor
+    )
+
+    return df.withColumn(
+        column_name_to_assign, F.when(~F.col("difference").between(lower_interval, upper_interval), 1).otherwise(None)
+    ).drop("difference")
