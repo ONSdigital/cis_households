@@ -34,6 +34,8 @@ bloods_variable_name_map = {
     "Voyager Date Created": "blood_sample_collected_datetime",
 }
 
+# sample_direct_eng_wc_variable_name_map = {}
+
 
 iqvia_v2_variable_name_map = {
     "ons_household_id": "ons_household_id",

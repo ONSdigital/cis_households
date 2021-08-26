@@ -36,6 +36,40 @@ bloods_validation_schema = {
     "blood_sample_collected_datetime": {"type": "timestamp"},
 }
 
+sample_direct_eng_wc_schema = {
+    "uac": {"type": "string", "regex": r"^\d{12}"},
+    "la_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "bloods": {"type": "integer", "min": 0, "max": 1},
+    "oa11": {"type": "string", "regex": r"^[E,W,S]00\d{6}"},
+    "laua": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "ctry": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "custodian_region_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "lsoa11": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "msoa11": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "ru11ind": {"type": "string", "regex": r"^([a-zA-Z]\d{1}|\d{1})"},
+    "oac11": {"type": "string", "regex": r"^\d{1}[a-zA-Z]\d{1}"},
+    "rgn": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "imd": {"type": "integer", "min": 0, "max": 32844},
+    "interim_id": {"type": "integer", "min": 1, "max": 128},
+}
+
+sample_northern_ireland_schema = {
+    "uac": {"type": "string", "regex": r"^\d{12}"},
+    "sample": {"type": "string", "regex": r"^\d{1}[a-zA-Z]{3}"},
+    "oa11": {"type": "string", "regex": r"^N00\d{6}"},
+    "laua": {"type": "string", "regex": r"^N\d{8}"},
+    "ctry": {"type": "string", "regex": r"^N\d{8}"},
+    "GOR9D": {"type": "string", "regex": r"^N\d{8}"},
+    "custodian_region_code": {"type": "string", "regex": r"^N\d{8}"},
+    "lsoa11": {"type": "string", "regex": r"^N\d{8}"},
+    "msoa11": {"type": "string", "regex": r"^N\d{8}"},
+    "oac11": {"type": "string", "regex": r"^\d{1}[a-zA-Z]\d{1}"},
+    "lsoa11nm": {"type": "string", "regex": r"[a-zA-Z]{2,}}"},
+    "cis20cd": {"type": "string", "regex": r"^J\d{8}"},
+    "rgn": {"type": "string", "regex": r"^N\d{8}"},
+    "imd": {"type": "integer", "min": 256, "max": 256},
+    "interim_id": {"type": "integer", "min": 1, "max": 999},
+}
 
 iqvia_v2_validation_schema = {
     "ons_household_id": {"type": "integer", "min": 100000000000, "max": 999999999999},
