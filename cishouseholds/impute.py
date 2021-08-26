@@ -112,31 +112,52 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
 
 
 def impute_last_obs_carried_forward(
-    df: DataFrame, column_name_to_assign: str, column_identity: str, reference_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    column_identity: str,
+    reference_column: str,
+    orderby_column: str,
+    order_type="asc",
 ) -> DataFrame:
     """
-    Imputate the LAST observation of a given field by given identity column.
+    Imputate the last observation of a given field by given identity column.
     Parameters
     ----------
     df
     column_name_to_assign
         The colum that will be created with the impute values
     column_identity
-        The column that may or may not have a Null value that at some point will
-        have a value and the last one should be captured
+        Identifies any records that the reference_column is missing forward
+        This column is normally intended for user_id, participant_id, etc.
     reference_column
-        The column for which imputation values will be calculated
+        The column for which imputation values will be calculated.
+    orderby_column
+        the "direction" of the observation will be defined by a ordering column
+        within the dataframe. For example: date.
+    order_type
+        the "direction" of the observation can be ascending by default or
+        descending. Chose ONLY 'asc' or 'desc'.
+    NOTE: if the observation carried forward by a specific column like date, and
+        the type of order (order_type) is descending, the direction will be
+        reversed and the function would do a last observation carried backwards.
     """
-    window = Window.partitionBy(column_identity)
+    # the id column with a unique monotonically_increasing_id is auxiliary and
+    # intends to add an arbitrary number to each row.
+    # this will NOT affect the ordering of the rows by orderby_column parameter.
+    df = df.withColumn("id", F.monotonically_increasing_id())
 
-    # same way F.last(ignorenulls=True) is used, it would be possible to use F.first()
-    # should this be included as an option?
+    if order_type == "asc":
+        ordering_function = F.col(orderby_column).asc()
+    else:
+        ordering_function = F.col(orderby_column).desc()
 
-    # I am assuming that theres just one df where observations and imputations
-    # happen at the same time but in case theres a df with observation separately
-    # a concat() can be used and then apply the window function along side
+    window = Window.partitionBy(column_identity).orderBy(ordering_function)
 
-    return df.withColumn(
-        column_name_to_assign,
-        F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
+    return (
+        df.withColumn(
+            column_name_to_assign,
+            F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
+        )
+        .orderBy(ordering_function, "id")
+        .drop("id")
     )
