@@ -17,7 +17,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
     Generate dummy IQVIA v2 survey file.
     """
 
-    v2_data_description = lambda: {
+    v2_data_description = lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "Visit_ID": _(
             "choice",
@@ -523,7 +523,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 None,
                 "Difficult to maintain 2 meters - but I can usually be at least 1m from other people",
                 "Easy to maintain 2m - it is not a problem to stay this far away from other people",
-                "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis",
+                """Very difficult to be more than 1 meter away as my work means
+                 I am in close contact with others on a regular basis""",
             ],
         ),
         "Had_symptoms_in_the_last_7_days": _("choice", items=[None, "Yes", "No"]),
@@ -551,9 +552,12 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 [
                     "No",
                     "Yes because you have/have had symptoms of COVID-19 or a positive test",
-                    "Yes because you live with someone who has/has had symptoms or a positive test but you haven't had symptoms yourself",
-                    "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)",
-                    "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)",
+                    """Yes because you live with someone who has/has had symptoms or a positive
+                     test but you haven't had symptoms yourself""",
+                    """Yes for other reasons related to reducing your risk of getting COVID-19
+                     (e.g. going into hospital or shielding)""",
+                    """Yes for other reasons related to you having had an increased risk of getting COVID-19
+                    (e.g. having been in contact with a known case or quarantining after travel abroad)""",
                 ]
                 * 4
                 + [None] * 3
