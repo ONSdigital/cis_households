@@ -1,4 +1,5 @@
 from typing import List
+from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -107,8 +108,8 @@ def flag_out_of_date_range(
     column_name_to_assign: str,
     start_datetime_reference_column: str,
     end_datetime_reference_column: str,
-    lower_interval: int,
-    upper_interval: int,
+    lower_interval: Union[int, float],
+    upper_interval: Union[int, float],
     interval_format: str = "hours",
 ) -> DataFrame:
     """
