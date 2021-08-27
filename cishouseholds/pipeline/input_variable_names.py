@@ -34,8 +34,47 @@ bloods_variable_name_map = {
     "Voyager Date Created": "blood_sample_collected_datetime",
 }
 
-# sample_direct_eng_wc_variable_name_map = {}
+sample_eng_wl_sc_variable_name_map = {
+    "UAC": "unique_access_code",
+    "LA_CODE": "local_authority_code",
+    "Bloods": "in_blood_cohort",
+    "oa11": "output_area_code",
+    "laua": "local_authority_unity_authority_code",
+    "ctry": "country_code",
+    "CUSTODIAN_REGION_CODE": "custodian_region_code",
+    "lsoa11": "lower_super_output_area_code",
+    "msoa11": "middle_super_output_area_code",
+    "ru11ind": "rural_urban_classification",
+    "oac11": "census_output_area_classification",
+    "rgn": "region_code",
+    "imd": "index_multiple_deprivation",
+    "interim_id": "cis_area_indicator",
+}
 
+sample_ni_variable_name_map = {
+    "UAC": "unique_access_code",
+    "sample": "sample_week_indicator",
+    "oa11": "output_area_code",
+    "laua": "local_authority_unity_authority_code",
+    "ctry": "country_code",
+    "GOR9D": "region_code",
+    "lsoa11": "lower_super_output_area_code",
+    "msoa11": "middle_super_output_area_code",
+    "oac11": "census_output_area_classification",
+    "LSOA11NM": "lower_super_output_area_name",
+    "CIS20CD": "cis_area_code",
+    "rgn": "region_code",
+    "imd": "index_multiple_deprivation",
+    "interim_id": "cis_area_indicator",
+}
+
+unprocessed_bloods_variable_name_map = {
+    "Date Recieved": "date_received",
+    "Sample ID": "sample_id",
+    "Rejection code": "rejection_code",
+    "Reason for rejection": "rejection_reason",
+    "Sample Type V/C": "sample_type",
+}
 
 iqvia_v2_variable_name_map = {
     "ons_household_id": "ons_household_id",
