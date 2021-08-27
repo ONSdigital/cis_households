@@ -1,4 +1,6 @@
 import sys
+from collections import Counter
+from typing import Any
 from typing import Callable
 from typing import List
 from typing import Union
@@ -73,7 +75,6 @@ def calculate_imputation_from_distribution(
 def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_column: str, **kwargs) -> DataFrame:
     """
     Wrapper function for calling imputations, flagging imputed records and recording methods.
-
     Parameters
     ----------
     df
@@ -110,3 +111,81 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
     df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
 
     return df.drop("temporary_imputation_values")
+
+
+def calculate_imputation_from_mode(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, group_column: str
+) -> DataFrame:
+    """
+    Get imputation value from given column by most repeated UNIQUE value
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        The colum that will be created with the impute values
+    reference_column
+        The column for which imputation values will be calculated
+    Notes
+    -----
+    Function provides a column value for each record that needs to be imputed.
+    Where the value does not need to be imputed the column value created will be null.
+    """
+    # get rid of cases (household_id) with no nulls to be imputed and only show the cases
+    df_group_imput = df.filter(F.col(reference_column).isNull()).select(F.col(group_column))
+
+    # naming convention
+    list_reference_column = "list_" + reference_column
+
+    # window function to collect_list() of all the reference_column (ethnicity) items
+    # per group (household_id)
+    window = Window.partitionBy(group_column)
+    df_window = (
+        df.withColumn(list_reference_column, F.collect_list(F.col(reference_column)).over(window))
+        .filter(F.col(reference_column).isNotNull())
+        .dropDuplicates([group_column, list_reference_column])
+        .drop(reference_column)
+    )
+
+    # JOIN 1: List of households with imputation (Nulls) to impute inner joined to
+    # the previous df_window that has the list of items in reference_column (ethnicity)
+    df_group_imput = df_group_imput.join(df_window, [group_column], "inner")
+
+    # Function to implement as UDF - User defined function to workout the logic for imputation
+    udf_most_common_unique = F.udf(lambda x: most_common_unique_item(x))
+
+    # UDF implementation: with most_common_unique_item() inputation per row is performed
+    df_imputed = df_group_imput.withColumn(
+        column_name_to_assign, udf_most_common_unique(F.col(list_reference_column))
+    ).drop(list_reference_column)
+
+    # JOIN 2: from initial input df outer join it with the imputed values with UDF
+    # df_imputed with group_column (household_id) column
+    actual_df = df.join(df_imputed, [group_column], "outer")
+
+    # Only impute when the cell of the imputed column is null
+    actual_df = actual_df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(reference_column).isNotNull()), None).otherwise(F.col(column_name_to_assign)),
+    )
+    return actual_df
+
+
+def most_common_unique_item(list_most_common_unrepeated: List[str]) -> Any:
+    """
+    Works out the most common value in a list ignoring if it is repeated
+
+    Parameters
+    ----------
+    list_most_common_unrepeated
+        List of strings that will be ignored if repeated same amount of times
+        And worked out which is the most common occurence in case it is unique
+    Notes
+    -----
+    This function is implemented as a User Defined Function in Pyspark to carry
+        the imputation for every row.
+    """
+    count = Counter(list_most_common_unrepeated).most_common(2)
+    if len(count) > 1:
+        if count[0][1] - count[1][1] == 0:  # if they are the same, there's a tie
+            return None
+    return Counter(list_most_common_unrepeated).most_common(1)[0][0]
