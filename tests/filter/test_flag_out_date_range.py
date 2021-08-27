@@ -4,7 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.filter import flag_out_of_date_range
 
 
-def test_last_obs_forward(spark_session):
+def test_flag_out_of_date_range(spark_session):
     expected_schema = "date_1 string, date_2 string, outside_interval_flag integer"
     expected_data_h = [
         # difference to be out of range - up

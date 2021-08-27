@@ -112,9 +112,9 @@ def flag_out_of_date_range(
     interval_format: str = "hours",
 ) -> DataFrame:
     """
-    Tell if the interval between two given columns with dates is within an upper/lower
-    interval. If out of range, it will return a flag column with 1. If within range
-    it will return a flag column with None.
+    Tell if the time interval between two given timestamp columns is within a
+    given range if so, the function will return a flag column with None.
+    If out of range, it will return a flag column with 1.
     Parameters
     ----------
     df
