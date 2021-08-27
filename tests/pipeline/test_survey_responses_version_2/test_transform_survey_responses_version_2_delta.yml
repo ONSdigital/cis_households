@@ -1769,7 +1769,7 @@ date_of_birth:
   8: null
   9: null
   10: 19Oct2005
-  11: 25Dec1986
+  11: 25Dec1986  #pragma: allowlist secret
   12: 18Aug2006
   13: 11Aug2010
   14: 26Nov2017
