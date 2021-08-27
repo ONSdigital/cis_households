@@ -8,7 +8,7 @@ from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_m
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
 
-_ = Field("en-gb", seed=42)
+_ = Field("en-gb", seed=69)
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
     Generate dummy IQVIA v2 survey file.
     """
 
-    v2_data_description = lambda: {  # noqa: E731
+    v2_data_description = lambda: {  # noqa: E731v
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "Visit_ID": _(
             "choice",
