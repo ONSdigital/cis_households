@@ -228,17 +228,17 @@ def impute_last_obs_carried_forward(
     df = df.withColumn("id", F.monotonically_increasing_id())
 
     if order_type == "asc":
-        ordering_function = F.col(orderby_column).asc()
+        ordering_expression = F.col(orderby_column).asc()
     else:
-        ordering_function = F.col(orderby_column).desc()
+        ordering_expression = F.col(orderby_column).desc()
 
-    window = Window.partitionBy(column_identity).orderBy(ordering_function)
+    window = Window.partitionBy(column_identity).orderBy(ordering_expression)
 
     return (
         df.withColumn(
             column_name_to_assign,
             F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
         )
-        .orderBy(ordering_function, "id")
+        .orderBy(ordering_expression, "id")
         .drop("id")
     )
