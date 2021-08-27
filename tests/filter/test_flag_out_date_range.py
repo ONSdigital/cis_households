@@ -31,5 +31,7 @@ def test_flag_out_of_date_range(spark_session):
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
     # GIVEN UPPER/LOWER INTERVALS IN DAYS
-    actual_df = flag_out_of_date_range(input_df, "outside_interval_flag", "date_1", "date_2", -0.5, 2, "days")
+    actual_df = flag_out_of_date_range(
+        input_df, "outside_interval_flag", "date_1", "date_2", -0.5, 2, interval_format="days"
+    )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

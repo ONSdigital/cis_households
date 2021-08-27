@@ -105,8 +105,8 @@ def filter_by_cq_diff(
 def flag_out_of_date_range(
     df: DataFrame,
     column_name_to_assign: str,
-    col_start_date: str,
-    col_end_date: str,
+    start_datetime_reference_column: str,
+    end_datetime_reference_column: str,
     lower_interval: int,
     upper_interval: int,
     interval_format: str = "hours",
@@ -118,30 +118,35 @@ def flag_out_of_date_range(
     Parameters
     ----------
     df
-    col_start_date
-    col_end_date
+    start_datetime_reference_column
+    end_datetime_reference_column
     lower_interval
-        Marks how much NEGATIVE time difference can have between col_end_date and
-        col_start_date
+        Marks how much NEGATIVE time difference can have between
+        end_datetime_reference_column and start_datetime_reference_column
     upper_interval
-        Marks how much POSITIVE time difference can have between col_end_date and
-        col_start_date
+        Marks how much POSITIVE time difference can have between
+        end_datetime_reference_column and start_datetime_reference_column
     interval_format
         By default will be a string called 'hours' if upper and lower intervals
         are input as days, define interval_format to 'days'. These are the only
         two possible formats.
-    NOTE: lower_interval should be a negative value if col_start_date is after
-        col_end_date.
+    Notes
+    -----
+    Lower_interval should be a negative value if start_datetime_reference_column
+    is after end_datetime_reference_column.
     """
     # by default, Hours but if days, apply change factor:
     if interval_format == "hours":  # to convert hours to seconds
         conversion_factor = 3600  # 1h has 60s*60min seconds = 3600 seconds
     elif interval_format == "days":
-        conversion_factor = 43200  # 1 day has 60s*60min*12h seconds = 43200 seconds
+        conversion_factor = 86400  # 1 day has 60s*60min*24h seconds = 86400 seconds
 
-    # FORMULA: (col_end_date - col_start_date) in seconds/conversion_factor in seconds
+    # FORMULA: (end_datetime_reference_column - start_datetime_reference_column) in
+    # seconds/conversion_factor in seconds
     df = df.withColumn(
-        "difference", (F.col(col_end_date).cast("long") - F.col(col_start_date).cast("long")) / conversion_factor
+        "difference",
+        (F.col(end_datetime_reference_column).cast("long") - F.col(start_datetime_reference_column).cast("long"))
+        / conversion_factor,
     )
 
     return df.withColumn(
