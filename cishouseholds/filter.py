@@ -110,6 +110,7 @@ def flag_out_of_date_range(
     end_datetime_reference_column: str,
     lower_interval: Union[int, float],
     upper_interval: Union[int, float],
+    total_interval_column: str,
     interval_format: str = "hours",
 ) -> DataFrame:
     """
@@ -136,20 +137,27 @@ def flag_out_of_date_range(
     Lower_interval should be a negative value if start_datetime_reference_column
     is after end_datetime_reference_column.
     """
+
     # by default, Hours but if days, apply change factor:
     if interval_format == "hours":  # to convert hours to seconds
         conversion_factor = 3600  # 1h has 60s*60min seconds = 3600 seconds
     elif interval_format == "days":
         conversion_factor = 86400  # 1 day has 60s*60min*24h seconds = 86400 seconds
 
+    total_interval_column = total_interval_column + "_" + interval_format
+
     # FORMULA: (end_datetime_reference_column - start_datetime_reference_column) in
     # seconds/conversion_factor in seconds
     df = df.withColumn(
-        "difference",
-        (F.col(end_datetime_reference_column).cast("long") - F.col(start_datetime_reference_column).cast("long"))
-        / conversion_factor,
+        total_interval_column,
+        (
+            F.to_timestamp(F.col(end_datetime_reference_column)).cast("long")
+            - F.to_timestamp(F.col(start_datetime_reference_column)).cast("long")
+        )
+        / conversion_factor,  # 1 day has 60s*60min*24h seconds = 86400 seconds
     )
 
     return df.withColumn(
-        column_name_to_assign, F.when(~F.col("difference").between(lower_interval, upper_interval), 1).otherwise(None)
-    ).drop("difference")
+        column_name_to_assign,
+        F.when(~F.col(total_interval_column).between(lower_interval, upper_interval), 1).otherwise(None),
+    )
