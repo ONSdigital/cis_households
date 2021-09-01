@@ -29,12 +29,12 @@ def test_give_date_interval_and_flag_if_outside(spark_session):
 
     # GIVEN UPPER/LOWER INTERVALS IN HOURS (STANDARD)
     actual_df = give_date_interval_and_flag_if_outside(
-        input_df, "outside_interval_flag", "date_1", "date_2", -12, 48, "diff_interval"
+        input_df, "outside_interval_flag", "diff_interval", "date_1", "date_2", -12, 48
     )
     assert_df_equality(actual_df, expected_df_h, ignore_row_order=True, ignore_column_order=True)
 
     # GIVEN UPPER/LOWER INTERVALS IN DAYS
     actual_df = give_date_interval_and_flag_if_outside(
-        input_df, "outside_interval_flag", "date_1", "date_2", -0.5, 2, "diff_interval", interval_format="days"
+        input_df, "outside_interval_flag", "diff_interval", "date_1", "date_2", -0.5, 2, interval_format="days"
     )
     assert_df_equality(actual_df, expected_df_d, ignore_row_order=True, ignore_column_order=True)
