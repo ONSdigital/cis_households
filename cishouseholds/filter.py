@@ -103,28 +103,42 @@ def filter_by_cq_diff(
     return df
 
 
-def flag_out_of_date_range(
+def assign_date_interval_and_flag(
     df: DataFrame,
-    column_name_to_assign: str,
+    column_name_inside_interval: str,
+    column_name_time_interval: str,
     start_datetime_reference_column: str,
     end_datetime_reference_column: str,
     lower_interval: Union[int, float],
     upper_interval: Union[int, float],
-    total_interval_column: str,
     interval_format: str = "hours",
 ) -> DataFrame:
     """
-    Tell if the time interval between two given timestamp columns is within a
-    given range if so, the function will return a flag column with None.
-    If out of range, it will return a flag column with 1.
+    This function gives the time interval in either hours (by default) or days
+    in a column by given two date columns and says whether it is inside and
+    upper and lower interval. If the difference of dates is within the upper and
+    lower time intervals, the function will output None and an integer 1 if the
+    difference in dates are outside of those intervals.
     Parameters
     ----------
     df
+    column_name_inside_interval
+        Name of the column that returns whether the difference in dates are
+        within the upper/lower limits if within, it will return None, if outside
+        will return an integer 1.
+    column_name_time_interval
+        Name of the column that returns the difference between start and end
+        date and adds at the end of the column name whether it is in hours or
+        days
     start_datetime_reference_column
+        Earliest date in string format yyyy-mm-dd hh:mm:ss.
     end_datetime_reference_column
+        Latest date in string format yyyy-mm-dd hh:mm:ss.
     lower_interval
         Marks how much NEGATIVE time difference can have between
-        end_datetime_reference_column and start_datetime_reference_column
+        end_datetime_reference_column and start_datetime_reference_column.
+        Meaning how the end_datetime_reference_column can be earlier than
+        start_datetime_reference_column
     upper_interval
         Marks how much POSITIVE time difference can have between
         end_datetime_reference_column and start_datetime_reference_column
@@ -137,19 +151,18 @@ def flag_out_of_date_range(
     Lower_interval should be a negative value if start_datetime_reference_column
     is after end_datetime_reference_column.
     """
-
     # by default, Hours but if days, apply change factor:
     if interval_format == "hours":  # to convert hours to seconds
         conversion_factor = 3600  # 1h has 60s*60min seconds = 3600 seconds
     elif interval_format == "days":
         conversion_factor = 86400  # 1 day has 60s*60min*24h seconds = 86400 seconds
 
-    total_interval_column = total_interval_column + "_" + interval_format
+    column_name_time_interval = column_name_time_interval + "_" + interval_format
 
     # FORMULA: (end_datetime_reference_column - start_datetime_reference_column) in
     # seconds/conversion_factor in seconds
     df = df.withColumn(
-        total_interval_column,
+        column_name_time_interval,
         (
             F.to_timestamp(F.col(end_datetime_reference_column)).cast("long")
             - F.to_timestamp(F.col(start_datetime_reference_column)).cast("long")
@@ -158,6 +171,6 @@ def flag_out_of_date_range(
     )
 
     return df.withColumn(
-        column_name_to_assign,
-        F.when(~F.col(total_interval_column).between(lower_interval, upper_interval), 1).otherwise(None),
+        column_name_inside_interval,
+        F.when(~F.col(column_name_time_interval).between(lower_interval, upper_interval), 1).otherwise(None),
     )
