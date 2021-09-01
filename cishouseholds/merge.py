@@ -116,3 +116,20 @@ def assign_merge_process_group_flag(
             1,
         ).otherwise(None),
     ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
+
+
+# def one_to_many_bloods(df):
+#     """
+#     Create one to many bloods matching process
+#     """
+#     df = assign_merge_process_group_flag(
+#         df,
+#         "identify_one_to_many_bloods_flag",
+#         "out_of_date_range_bloods",
+#         "count_barcode_bloods",
+#         ">1",
+#         "count_barcode_voyager",
+#         "==1",
+#     )
+#     window = Window.partitionBy(F.col("blood_barcode_cleaned"
+#         ).orderBy("diff_vs_visit", "received_ox_date", "lims_id"))
