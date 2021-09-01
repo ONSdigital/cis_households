@@ -103,7 +103,7 @@ def filter_by_cq_diff(
     return df
 
 
-def assign_date_interval_and_flag(
+def give_date_interval_and_flag_if_outside(
     df: DataFrame,
     column_name_inside_interval: str,
     column_name_time_interval: str,
