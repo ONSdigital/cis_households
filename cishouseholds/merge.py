@@ -22,7 +22,23 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
 
 
 def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
+    """
+    Assign column based on the absolute value of an offsetted number.
 
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to be created
+    reference_column
+        Name of column to calculate values for new column from
+    offset
+        Amount to offset each reference_column value by
+
+    Notes
+    -----
+    Offset will be subtracted.
+    """
     return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
 
 
