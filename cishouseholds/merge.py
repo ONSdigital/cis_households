@@ -116,3 +116,36 @@ def assign_merge_process_group_flag(
             1,
         ).otherwise(None),
     ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
+
+
+def many_to_one_bloods_flag(df: DataFrame, column_name_to_assign: str):
+    """
+    Many_to_one matching process for bloods. Creates a flag to identify rows which doesn't match
+    required criteria (to be filtered later)
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+
+    """
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_many_to_one_bloods_flag",
+        "out_of_date_range_bloods",
+        "count_barcode_blood",
+        "==1",
+        "count_barcode_v2",
+        ">1",
+    )
+
+    window = Window.partitionBy("blood_barcode_cleaned")
+
+    df = df.withColumn(
+        "blood_barcode_cleaned_count",
+        F.sum(F.when(F.col("identify_many_to_one_bloods_flag") == 1, 1).otherwise(None)).over(window),
+    )
+
+    df = df.withColumn(column_name_to_assign, F.when(F.col("blood_barcode_cleaned_count") > 1, 1).otherwise(None))
+
+    return df.drop("blood_barcode_cleaned_count", "identify_many_to_one_bloods_flag")
