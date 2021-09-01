@@ -58,11 +58,11 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
 def assign_merge_process_group_flag(
     df: DataFrame,
     column_name_to_assign: str,
-    out_of_date_range_flag,
-    count_barcode_labs_column_name,
-    count_barcode_labs_condition,
-    count_barcode_voyager_column_name,
-    count_barcode_voyager_condition,
+    out_of_date_range_flag: str,
+    count_barcode_labs_column_name: str,
+    count_barcode_labs_condition: str,
+    count_barcode_voyager_column_name: str,
+    count_barcode_voyager_condition: str,
 ):
     """
     Combine three conditions to create flag indicating record to be processed in forthcoming matching process.
@@ -71,6 +71,11 @@ def assign_merge_process_group_flag(
     ----------
     df
     column_name_to_assign
+    out_of_date_range_flag
+    count_barcode_labs_column_name
+    count_barcode_labs_condition
+    count_barcode_voyager_column_name
+    count_barcode_voyager_condition
     """
 
     count_barcode_labs_condition = F.expr(f"{count_barcode_labs_column_name} {count_barcode_labs_condition}")
