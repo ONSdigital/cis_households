@@ -66,6 +66,7 @@ def assign_merge_process_group_flag(
 ):
     """
     Combine three conditions to create flag indicating record to be processed in forthcoming matching process.
+    This is run for each of 1:1, 1:many, many:1 and many:many to identify the relevant processing group.
 
     Parameters
     ----------
