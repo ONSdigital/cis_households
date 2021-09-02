@@ -157,8 +157,6 @@ def give_date_interval_and_flag_if_outside(
     elif interval_format == "days":
         conversion_factor = 86400  # 1 day has 60s*60min*24h seconds = 86400 seconds
 
-    column_name_time_interval = column_name_time_interval + "_" + interval_format
-
     # FORMULA: (end_datetime_reference_column - start_datetime_reference_column) in
     # seconds/conversion_factor in seconds
     df = df.withColumn(
