@@ -2,6 +2,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.filter import assign_date_interval_and_flag
+
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
@@ -118,18 +120,67 @@ def assign_merge_process_group_flag(
     ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
 
 
-# def one_to_many_bloods(df):
-#     """
-#     Create one to many bloods matching process
-#     """
-#     df = assign_merge_process_group_flag(
-#         df,
-#         "identify_one_to_many_bloods_flag",
-#         "out_of_date_range_bloods",
-#         "count_barcode_bloods",
-#         ">1",
-#         "count_barcode_voyager",
-#         "==1",
-#     )
-#     window = Window.partitionBy(F.col("blood_barcode_cleaned"
-#         ).orderBy("diff_vs_visit", "received_ox_date", "lims_id"))
+def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
+    """
+    Many (Voyager) to one (antibody) matching process. Creates a flag to identify rows which doesn't match
+    required criteria (to be filtered later)
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+
+    """
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_many_to_one_antibody_flag",
+        "out_of_date_range_antibody",
+        "count_barcode_antibody",
+        "==1",
+        "count_barcode_voyager",
+        ">1",
+    )
+
+    window = Window.partitionBy(group_by_column)
+
+    df = df.withColumn(
+        "antibody_barcode_cleaned_count",
+        F.sum(F.when(F.col("identify_many_to_one_antibody_flag") == 1, 1).otherwise(None)).over(window),
+    )
+
+    df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
+
+    return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
+
+
+def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
+    print("COUNT0 ==> ", df.count())
+    print("in function....")
+    df = assign_date_interval_and_flag(
+        df, "out_of_date_range_blood", "diff_interval", "visit_date", "received_ox_date", -24, 48
+    )
+    df.show()
+
+    print("COUNT1 ==> ", df.count())
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_one_to_many_bloods_flag",
+        "out_of_date_range_blood",
+        "count_iqvia",
+        "==1",
+        "count_blood",
+        ">1",
+    )
+    df.show()
+    print("COUNT2 ==> ", df.count())
+    df = df.withColumn(
+        "1_to_m_bloods_bool_flag",
+        F.when((F.col("identify_one_to_many_bloods_flag") == 1), 0).otherwise(1),
+    )
+    window = Window.partitionBy(group_by_column).orderBy("1_to_m_bloods_bool_flag", "diff_interval_hours", "visit_date")
+    df = df.withColumn("row_num", F.row_number().over(window))
+    df = df.withColumn(
+        "drop flag", F.when(((F.col(column_name_to_assign) == 1) & (F.col("row_num") != 1)), 1).otherwise(None)
+    )
+    df.show()
+    return df.drop("out_of_date_range_blood", "identify_one_to_many_bloods_flag", "row_num", "1_to_m_bloods_bool_flag")
