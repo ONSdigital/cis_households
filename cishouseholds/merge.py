@@ -154,14 +154,9 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
 
 def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
-    print("COUNT0 ==> ", df.count())
-    print("in function....")
     df = assign_date_interval_and_flag(
         df, "out_of_date_range_blood", "diff_interval", "visit_date", "received_ox_date", -24, 48
     )
-    df.show()
-
-    print("COUNT1 ==> ", df.count())
     df = assign_merge_process_group_flag(
         df,
         "identify_one_to_many_bloods_flag",
@@ -171,8 +166,6 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
         "count_blood",
         ">1",
     )
-    df.show()
-    print("COUNT2 ==> ", df.count())
     df = df.withColumn(
         "1_to_m_bloods_bool_flag",
         F.when((F.col("identify_one_to_many_bloods_flag") == 1), 0).otherwise(1),
