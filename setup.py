@@ -15,9 +15,7 @@ requires = read_requirements("requirements.txt")
 dev_requires = [
     "pre-commit==2.12.1",
     "detect-secrets==1.0.3",
-    "coverage",
     "pytest>=3.6,<4",
-    "pytest-cov",
     "bump2version==1.0.1",
     "chispa==0.8.2",
     "mimesis==4.1.3",
@@ -45,5 +43,5 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     python_requires="==3.6.8",
     install_requires=requires,
-    extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1"]},
+    extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1", "pytest-cov", "coverage"]},
 )
