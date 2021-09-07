@@ -1,3 +1,5 @@
+from typing import Union
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
@@ -40,6 +42,77 @@ def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_
     Offset will be subtracted.
     """
     return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
+
+
+def assign_time_difference_and_flag_if_outside_interval(
+    df: DataFrame,
+    column_name_outside_interval_flag: str,
+    column_name_time_difference: str,
+    start_datetime_reference_column: str,
+    end_datetime_reference_column: str,
+    interval_lower_bound: Union[int, float],
+    interval_upper_bound: Union[int, float],
+    interval_bound_format: str = "hours",
+) -> DataFrame:
+    """
+    Creates column to give the time difference in either hours (by default) or days
+    between two columns, and creates associated column to flag whether the difference is
+    between specified lower and upper bounds (inclusive). If the difference is outside
+    of these bounds, return 1, otherwise None.
+
+    Parameters
+    ----------
+    df
+    column_name_outside_interval_flag
+        Name of the column that returns whether the difference in datetimes is
+        within the upper/lower bounds. If within, return None, otherwise
+        an integer 1.
+    column_name_time_difference
+        Name of the column that returns the difference between start and end
+        datetimes
+    start_datetime_reference_column
+        Reference column with datetime in string format yyyy-mm-dd hh:mm:ss.
+    end_datetime_reference_column
+        Reference column with datetime in string format yyyy-mm-dd hh:mm:ss.
+    interval_lower_bound
+        The minimum accepted time difference interval between
+        end_datetime_reference_column and start_datetime_reference_column.
+    interval_upper_bound
+        The maximum accepted time difference interval between
+        end_datetime_reference_column and start_datetime_reference_column
+    interval_bound_format
+        By default will be a string called 'hours'. If upper and lower interval
+        bounds are input as days, define interval_format to 'days'.
+        These are the only two possible formats.
+
+    Notes
+    -----
+    Lower_interval should be a negative value if start_datetime_reference_column
+    is after end_datetime_reference_column.
+    """
+
+    if interval_bound_format == "hours":
+        conversion_factor = 3600  # 1h has 60s*60min seconds = 3600 seconds
+    elif interval_bound_format == "days":
+        conversion_factor = 86400  # 1 day has 60s*60min*24h seconds = 86400 seconds
+
+    # FORMULA: (end_datetime_reference_column - start_datetime_reference_column) in
+    # seconds/conversion_factor in seconds
+    df = df.withColumn(
+        column_name_time_difference,
+        (
+            F.to_timestamp(F.col(end_datetime_reference_column)).cast("long")
+            - F.to_timestamp(F.col(start_datetime_reference_column)).cast("long")
+        )
+        / conversion_factor,
+    )
+
+    return df.withColumn(
+        column_name_outside_interval_flag,
+        F.when(~F.col(column_name_time_difference).between(interval_lower_bound, interval_upper_bound), 1).otherwise(
+            None
+        ),
+    )
 
 
 def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
