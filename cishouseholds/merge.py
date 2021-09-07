@@ -216,7 +216,6 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
 
 
-
 def merge_one_to_many_swab(
     df: DataFrame,
     out_of_date_range_flag: str,
@@ -286,5 +285,3 @@ def merge_one_to_many_swab_result_mk_logic(
 
 def search_void_in_list(list1: list, var: str = "void"):
     return 1 if (len(list1) > 1) and (var in list1) else None
-
-
