@@ -232,7 +232,25 @@ def many_to_many_flag(
     process_type: str,
     failed_flag_column_name_to_assign: str,
 ):
-    """ """
+    """
+    Many (Voyager) to Many (antibody) matching process.
+    Creates flag for records to be dropped as non-optimal matches, and separate flag for records where process fails.
+
+    Parameters
+    ----------
+    df
+    drop_flag_column_name_to_assign
+        Name of column to indicate record is to be dropped
+    group_by_column
+        Names of columns to group dataframe
+    ordering_columns
+        Names of columns to order each group
+    process_type
+        Defines which many-to-many matching process is being carried out.
+        Must be 'antibody' or 'swab'
+    failed_flag_column_name_to_assign
+        Name of column to indicate record has failed validation logic
+    """
 
     df = assign_merge_process_group_flag(
         df,
