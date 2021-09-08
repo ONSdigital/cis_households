@@ -222,3 +222,52 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
 
     return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
+
+
+def many_to_many_flag(
+    df: DataFrame,
+    drop_flag_column_name_to_assign: str,
+    group_by_column: str,
+    ordering_columns: str,
+    process_type: str,
+    failed_flag_column_name_to_assign: str,
+):
+    """ """
+
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_many_to_many_flag",
+        "out_of_date_range_" + process_type,
+        "count_barcode_" + process_type,
+        ">1",
+        "count_barcode_voyager",
+        ">1",
+    )
+    df.show()
+
+    # Need to reapply ordering
+    window = Window.partitionBy(group_by_column, "identify_many_to_many_flag")
+
+    if process_type == "antibody":
+        column_to_validate = "antibody_test_result_classification"
+    elif process_type == "swab":
+        column_to_validate = "pcr_result_classification"
+    else:
+        print("Error")
+
+    df = df.withColumn(
+        "classification_different_to_first",
+        F.sum(F.when(F.col(column_to_validate) == F.first(column_to_validate).over(window), None).otherwise(1)).over(
+            window
+        ),
+    )
+    df.show()
+
+    df = df.withColumn(
+        failed_flag_column_name_to_assign,
+        F.when(
+            F.last("classification_different_to_first").over(window).isNotNull()
+            & (F.col("identify_many_to_many_flag") == 1),
+            1,
+        ).otherwise(None),
+    )
