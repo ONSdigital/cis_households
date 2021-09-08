@@ -243,7 +243,6 @@ def many_to_many_flag(
         "count_barcode_voyager",
         ">1",
     )
-    df.show()
 
     # Need to reapply ordering
     window = Window.partitionBy(group_by_column, "identify_many_to_many_flag")
@@ -261,7 +260,6 @@ def many_to_many_flag(
             window
         ),
     )
-    df.show()
 
     df = df.withColumn(
         failed_flag_column_name_to_assign,
@@ -271,3 +269,34 @@ def many_to_many_flag(
             1,
         ).otherwise(None),
     )
+
+    df = df.withColumn("record_processed", F.lit(None))
+    unique_id_lab_str = "unique_id_" + process_type
+
+    while df.filter(df.record_processed.isNull()).count() > 0:
+        window = Window.partitionBy(group_by_column, "identify_many_to_many_flag", "record_processed").orderBy(
+            *ordering_columns
+        )
+        df = df.withColumn("row_number", F.row_number().over(window))
+        df = df.withColumn(
+            "record_processed",
+            F.when(
+                (
+                    (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
+                    | (F.col("unique_id_voyager") == (F.first("unique_id_voyager").over(window)))
+                )
+                & (F.col("row_number") != 1),
+                1,
+            ).otherwise(F.col("record_processed")),
+        )
+
+        df = df.withColumn(drop_flag_column_name_to_assign, F.when(F.col("record_processed") == 1, 1).otherwise(None))
+
+        df = df.withColumn(
+            "record_processed",
+            F.when((F.col("row_number") == 1) & (F.col(drop_flag_column_name_to_assign).isNull()), 0).otherwise(
+                F.col("record_processed")
+            ),
+        )
+
+    return df.drop("identify_many_to_many_flag", "classification_different_to_first", "record_processed", "row_number")
