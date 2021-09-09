@@ -1,9 +1,10 @@
 from chispa import assert_df_equality
-from cis_households import merge_one_to_many_swab_result_mk_logic
-from cis_households import merge_one_to_many_swab_time_date_logic
-from cis_households import merge_one_to_many_swab_time_difference_logic
-from cis_households import one_to_many_swabs
-from cis_households import search_void_in_list
+
+from cishouseholds.merge import merge_one_to_many_swab_result_mk_logic
+from cishouseholds.merge import merge_one_to_many_swab_time_date_logic
+from cishouseholds.merge import merge_one_to_many_swab_time_difference_logic
+from cishouseholds.merge import one_to_many_swabs
+from cishouseholds.merge import search_void_in_list
 
 
 def test_search_void_in_list():
