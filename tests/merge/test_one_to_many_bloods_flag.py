@@ -24,7 +24,7 @@ def test_one_to_many_bloods_flag(spark_session):
         ],
         schema="count_barcode_voyager integer, visit_date string, barcode_iq string, tdi string, barcode_ox string, \
             received_ox_date string, count_barcode_blood integer, siemens string, \
-                diff_interval_hours double, dr3 integer",
+                diff_interval_hours double, identify_one_to_many_bloods_flag integer",
     )
     schema_iq = """count_barcode_voyager integer, visit_date string, barcode_iq string, tdi string"""
     data_iq = [
