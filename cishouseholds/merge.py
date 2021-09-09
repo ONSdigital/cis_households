@@ -152,6 +152,16 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
 
 def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_column: str):
+    """
+    create columns for row number and group number of rows within a window
+
+    Parameters
+    ----------
+    df
+    window
+    group_by_column
+
+    """
     df = df.withColumn("row_num", F.row_number().over(window))
     dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
     dft = dft.withColumn("dummy", F.lit(1))
@@ -162,13 +172,25 @@ def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_
     return df, dft
 
 
-def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_num_column, row_num: int):
+def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
+    """
+    create reference column for the first row of each partion in a window
+
+    Parameters
+    ----------
+    df
+    reference_column
+    group_column
+    row_column
+    row_num
+
+    """
     dft = (
-        df.select(F.col(group_column), F.col(row_num_column), F.col(reference_column))
-        .filter(F.col(row_num_column) == row_num)
+        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
+        .filter(F.col(row_column) == row_num)
         .withColumnRenamed(group_column, "g")
         .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column, row_num))
-        .drop(row_num_column)
+        .drop(row_column)
     )
     df = df.join(dft, dft.g == F.col(group_column)).drop("g")
     df.show()
@@ -184,6 +206,20 @@ def flag_columns_different_to_ref(
     exclusion_column: str,
     exclusion_row_value: int,
 ):
+    """
+    create flag column for rows where value differs from that of first row in group
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    check_column
+    selection_column
+    exclusion_column
+    exclusion_row_value
+
+    """
     df = df.withColumn(
         column_name_to_assign,
         F.when(
@@ -202,6 +238,17 @@ def flag_columns_different_to_ref(
 
 
 def create_count_group(df: DataFrame, group_column: str, reference_column: str, rename_group: bool):
+    """
+    create seperate grouped dataframe to hold number of occurances of reference column value within group
+
+    Parameters
+    ----------
+    df
+    group_column
+    reference_column
+    rename_group
+
+    """
     dft = (
         df.where(df.identify_one_to_many_bloods_flag == 1)
         .groupBy(group_column, reference_column)
@@ -215,6 +262,17 @@ def create_count_group(df: DataFrame, group_column: str, reference_column: str, 
 
 
 def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str, group_by_column: str):
+    """
+    check consistency of multipl columns and create seperate joined dataframe of chosen columns
+
+    Parameters
+    ----------
+    df
+    check_column1
+    check_column2
+    group_by_column
+
+    """
     dft1 = create_count_group(df, group_by_column, check_column1, True)
     dft2 = create_count_group(df, group_by_column, check_column2, False)
     dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
@@ -225,6 +283,16 @@ def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str,
 def create_inconsistent_data_drop_flag(
     df: DataFrame, selection_column: str, item1_count_column: str, item2_count_column: str
 ):
+    """
+    create flag column for groups where data of chosen columns is inconsistent
+
+    Parameters
+    ----------
+    df
+    item1_count_column
+    item2_count_column
+
+    """
     df = df.withColumn(
         "dr2",
         F.when(
@@ -259,7 +327,7 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
     # adding first diff interval ref and flagging records with different diff interval to first
 
     df, reference_col_name = assign_first_row_value_ref(
-        df=df, reference_column="diff_interval_hours", group_column="group", row_num_column="row_num", row_num=1
+        df=df, reference_column="diff_interval_hours", group_column="group", row_column="row_num", row_num=1
     )
 
     df = flag_columns_different_to_ref(
