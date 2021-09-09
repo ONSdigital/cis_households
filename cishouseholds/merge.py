@@ -2,8 +2,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-from cishouseholds.filter import assign_date_interval_and_flag
-
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
@@ -154,26 +152,129 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
 
 def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
-    df = assign_date_interval_and_flag(
-        df, "out_of_date_range_blood", "diff_interval", "visit_date", "received_ox_date", -24, 48
-    )
+    # create a boolean column to flag whether or not a 1 to many match exists
+    # between 1 iqvia and many bloods records
     df = assign_merge_process_group_flag(
         df,
         "identify_one_to_many_bloods_flag",
         "out_of_date_range_blood",
-        "count_iqvia",
+        "count_barcode_voyager",
         "==1",
-        "count_blood",
+        "count_barcode_blood",
         ">1",
     )
+    df.show()
+    # create a true 1 0 boolean representation of this column to be used later
     df = df.withColumn(
         "1_to_m_bloods_bool_flag",
         F.when((F.col("identify_one_to_many_bloods_flag") == 1), 0).otherwise(1),
     )
-    window = Window.partitionBy(group_by_column).orderBy("1_to_m_bloods_bool_flag", "diff_interval_hours", "visit_date")
+    # create columns for row number and group number in new grouped df
+    window = Window.partitionBy(group_by_column).orderBy(
+        "identify_one_to_many_bloods_flag", "diff_interval_hours", "visit_date"
+    )
     df = df.withColumn("row_num", F.row_number().over(window))
+    df.show()
+
+    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
+    dft = dft.withColumn("dummy", F.lit(1))
+    dft.show()
+    mini_window = Window.partitionBy("dummy").orderBy("b")
+    dft = dft.withColumn("group", F.row_number().over(mini_window))
+    dft.show()
+    df = df.join(dft, dft.b == df.barcode_iq).drop("b", "dummy")
+    df.show()
+    dff = (
+        df.select(F.col("group"), F.col("row_num"), F.col("diff_interval_hours"))
+        .filter(F.col("row_num") == 1)
+        .withColumnRenamed("group", "g")
+        .withColumnRenamed("diff_interval_hours", "d1_ref")
+        .drop("row_num")
+    )
+    dff.show()
+
+    # adding first diff interval ref and flagging records with different diff interval to first
+    df = df.join(dff, dff.g == df.group).drop("g")
+    df.show()
     df = df.withColumn(
-        "drop flag", F.when(((F.col(column_name_to_assign) == 1) & (F.col("row_num") != 1)), 1).otherwise(None)
+        "dr1",
+        F.when(
+            (
+                (F.col("identify_one_to_many_bloods_flag") == 1)
+                & (F.col("d1_ref") != F.col("diff_interval_hours"))
+                & (F.col("row_num") != 1)
+            ),
+            1,
+        ).otherwise(
+            None
+        ),  # drop rows after first where diff vs visit is
     )
     df.show()
-    return df.drop("out_of_date_range_blood", "identify_one_to_many_bloods_flag", "row_num", "1_to_m_bloods_bool_flag")
+
+    # check for consistent siemens, tdi data
+    dfts = (
+        df.where(df.identify_one_to_many_bloods_flag == 1)
+        .groupBy("group", "siemens")
+        .count()
+        .withColumnRenamed("group", "g")
+        .withColumnRenamed("siemens", "s")
+        .withColumnRenamed("count", "cs")
+    )
+    dftt = (
+        df.where(df.identify_one_to_many_bloods_flag == 1)
+        .groupBy("group", "tdi")
+        .count()
+        .withColumnRenamed("tdi", "t")
+        .withColumnRenamed("count", "ct")
+    )
+    dfj = dfts.join(dftt, (dfts.g == dftt.group)).drop("group")
+    # siemens count
+    dfts.show()
+    # tdi count
+    dftt.show()
+    dfj.show()
+
+    # adding drop flag 2 column to indicate inconsitent siemens or tdi data within group
+    dfn = dft.join(dfj, (dfj.g == dft.group)).drop("dummy", "group", "count")
+    dfn.show()
+
+    df = df.join(
+        dfn,
+        (dfn.b == df.barcode_iq) & (dfn.g == df.group) & (dfn.s.eqNullSafe(df.siemens)) & (dfn.t.eqNullSafe(df.tdi)),
+    ).orderBy("group", "row_num")
+    df = df.withColumn(
+        "dr2",
+        F.when(
+            (F.col("identify_one_to_many_bloods_flag") == 1)
+            & ((F.col("ct") != F.col("count")) | (F.col("cs") != F.col("count"))),
+            1,
+        ).otherwise(None),
+    ).drop("s", "t", "ct", "cs", "b", "g")
+    df.show()
+
+    # dropping extra columns after validation success
+    df = df.withColumn(
+        "one_to_many_bloods_drop_flag",
+        F.when(
+            (
+                (F.col("identify_one_to_many_bloods_flag") == 1)
+                & (((F.col("dr2") == 1) & (F.col("row_num") != 1)) | (F.col("dr1") == 1))
+            ),
+            1,
+        ).otherwise(
+            None
+        ),  # drop rows after first where diff vs visit is
+    )
+    df.show()
+
+    return df.drop(
+        "out_of_date_range_blood",
+        "identify_one_to_many_bloods_flag",
+        "1_to_m_bloods_bool_flag",
+        "group",
+        "count",
+        "row_num",
+        "d1_ref",
+        "dr1",
+        "dr2",
+    )
