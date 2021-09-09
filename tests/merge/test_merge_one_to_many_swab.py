@@ -1,5 +1,8 @@
 from chispa import assert_df_equality
 from cis_households import merge_one_to_many_swab_result_mk_logic
+from cis_households import merge_one_to_many_swab_time_date_logic
+from cis_households import merge_one_to_many_swab_time_difference_logic
+from cis_households import one_to_many_swabs
 from cis_households import search_void_in_list
 
 
@@ -96,7 +99,6 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
     df_output = merge_one_to_many_swab_time_difference_logic(
         df=df_input,
         ordering_columns=["barcode_iq", "time_diff_abs", "time_diff", "date_received"],
-        window_column="barcode_iq",
         assign_column_name_time_difference_logic_flag="flag_time_diff",
     )
 

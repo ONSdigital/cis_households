@@ -1,3 +1,5 @@
+from typing import List
+from typing import Optional
 from typing import Union
 
 from pyspark.sql import DataFrame
@@ -221,7 +223,7 @@ def one_to_many_swabs(
     out_of_date_range_flag: str,
     count_barcode_labs_column_name: str,
     count_barcode_voyager_column_name: str,
-    window_column: str,  # make as kwargs
+    window_column: str,
     ordering_columns: List[str],
     mk_column_name: str,
     assign_column_name_merge_process_group_flag: str,  # step 1
@@ -230,7 +232,53 @@ def one_to_many_swabs(
     assign_column_name_time_difference_logic_flag: str,  # step 4
     assign_column_name_combination_flag: str,  # combination Step
 ) -> DataFrame:
+    """
+    One (Voyager) to Many (Antibody) matching process. Creates a flag to identify rows which do not match
+    required criteria (to be filtered later). The required criteria is a combination of 4 steps
+    (subfunctions) that creates one column for each step. And a combination of these 4 steps/columns
+    are used to create the final one to many swabs column.
+    Step 1: uses assign_merge_process_group_flag() to make sure that the left side, or one (from one to many)
+    has only one record and the right side, or many (from one to many) has more than one record.
+    Step 2: uses merge_one_to_many_swab_time_date_logic() and applies an ordering function with the parameter
+    ordering_columns (a list of strings with the table column names) to organise ascending each record within
+    a window and flag out the rows that come after the first record.
+    Step 3: uses merge_one_to_many_swab_result_mk_logic() and drops result mk if there are void values having
+    at least a positive/negative within the same barcode.
+    Step 4: uses merge_one_to_many_swab_time_difference_logic() and after having ordered in Step 2 by the
+    ordering_columns, if the first record has a positive date difference, flag all the other records.
+    And if the first record has a negative time difference, ensuring that the following records have also a
+    negative time difference, flag the one after the first to be dropped.
 
+    Parameters
+    ----------
+    df
+    out_of_date_range_flag
+        Column to work out whether the date difference is within an upper/lower range. This column can be
+        created by assign_time_difference_and_flag_if_outside_interval() by inputing two date columns.
+    count_barcode_labs_column_name
+        the Many column from One-to-Many
+    count_barcode_voyager_column_name
+        the One column from One-to-Many
+    window_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    mk_column_name
+    assign_column_name_merge_process_group_flag
+        Output column in Step 1
+    assign_column_name_time_order_logic_flag
+        Output column in Step 2
+    assign_column_name_result_mk_logic_flag
+        Output column in Step 3
+    assign_column_name_time_difference_logic_flag
+        Output column in Step 4
+    assign_column_name_combination_flag
+        Combination of steps 1, 2, 3, 4 using a OR boolean operation to apply the whole One-to-Many swabs
+
+    Notes
+    -----
+    The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
+    """
     # STEP 1 - one_to_many combined condition
     df = assign_merge_process_group_flag(
         df,
@@ -262,7 +310,6 @@ def one_to_many_swabs(
     df = merge_one_to_many_swab_time_difference_logic(
         df=df,
         ordering_columns=ordering_columns,
-        window_column=window_column,
         assign_column_name_time_difference_logic_flag=assign_column_name_time_difference_logic_flag,
     )
 
@@ -280,10 +327,24 @@ def one_to_many_swabs(
 
 
 def merge_one_to_many_swab_time_date_logic(
-    df, window_column, ordering_columns, assign_column_name_time_order_logic_flag
-):
+    df: DataFrame, window_column: str, ordering_columns: List[str], assign_column_name_time_order_logic_flag: str
+) -> DataFrame:
+    """
+    Step 2: applies an ordering function with the parameter ordering_columns
+    (a list of strings with the table column names) to organise ascending each record
+    within a window and flag out the rows that come after the first record.
+    Parameters
+    ----------
+    df
+    window_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    assign_column_name_time_order_logic_flag
+        Output column in Step 2
+    """
     # STEP 2 - flagging by abs time difference, time difference and received date
-    # the list of columns to be ordered by will be provided
+    # NOTE: the list of columns to be ordered by should be provided
     window = Window.partitionBy(window_column).orderBy(*ordering_columns)
     return df.withColumn(assign_column_name_time_order_logic_flag, F.rank().over(window)).withColumn(
         assign_column_name_time_order_logic_flag,
@@ -294,6 +355,18 @@ def merge_one_to_many_swab_time_date_logic(
 def merge_one_to_many_swab_result_mk_logic(
     df: DataFrame, window_column: str, mk_column: str, assign_column_name_result_mk_logic_flag: str
 ) -> DataFrame:
+    """
+    Step 3: drops result mk if there are void values having at least a positive/negative within the
+    same barcode.
+    Parameters
+    ----------
+    df
+    window_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    mk_column
+    assign_column_name_result_mk_logic_flag
+        Output column in Step 3
+    """
 
     window_mk = Window.partitionBy(window_column)
     df_filt = df.withColumn("collect_set", F.collect_set(F.col(mk_column)).over(window_mk)).filter(
@@ -315,13 +388,35 @@ def merge_one_to_many_swab_result_mk_logic(
     )
 
 
-def search_void_in_list(list1: list, var: str = "void"):
-    return 1 if (len(list1) > 1) and (var in list1) else None
+def search_void_in_list(list_mk: list, searched_value: str = "void") -> Optional[int]:
+    """
+    Step 3 UDF (user defined function): identifies whether there is a 'void' if there
+    Parameters
+    ----------
+    list_mk
+        list grouped per user_id or barcode of result_mk's
+    searched_value
+        Search by default whether there is 'void' in list_mk
+    """
+    return 1 if (len(list_mk) > 1) and (searched_value in list_mk) else None
 
 
 def merge_one_to_many_swab_time_difference_logic(
-    df, ordering_columns, window_column, assign_column_name_time_difference_logic_flag
-):
+    df: DataFrame, ordering_columns: List[str], assign_column_name_time_difference_logic_flag: str
+) -> DataFrame:
+    """
+    Step 4: After having ordered in Step 2 by the ordering_columns, if the first record has a positive date
+    difference, flag all the other records. And if the first record has a negative time difference,
+    ensuring that the following records have also a negative time difference, flag the one after the first
+    to be dropped.
+    Parameters
+    ----------
+    df
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    assign_column_name_time_difference_logic_flag
+        Output column in Step 4
+    """
     # STEP 4: time difference logic
     window = Window.partitionBy("barcode_iq").orderBy(*ordering_columns)
 
