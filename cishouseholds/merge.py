@@ -216,72 +216,117 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
 
 
-def merge_one_to_many_swab(
+
+def one_to_many_swabs(
     df: DataFrame,
     out_of_date_range_flag: str,
     count_barcode_labs_column_name: str,
     count_barcode_voyager_column_name: str,
     window_column: str,  # make as kwargs
-    ordering_columns: list,
-    mk_column_name,
-    assign_mk_column_name: str,
+    ordering_columns: List[str],
+    mk_column_name: str,
+    assign_column_name_merge_process_group_flag: str, # step 1
+    assign_column_name_time_order_logic_flag: str, # step 2
+    assign_column_name_result_mk_logic_flag: str, # step 3
+    assign_column_name_time_difference_logic_flag: str, # step 4
+    assign_column_name_combination_flag: str # combination Step
 ) -> DataFrame:
 
-    # STEP 1 - boolean pass
+    # STEP 1 - one_to_many combined condition
     df = assign_merge_process_group_flag(
         df,
-        column_name_to_assign="boolean_pass",
-        out_of_date_range_flag=out_of_date_range_flag,
-        count_barcode_labs_column_name=count_barcode_labs_column_name,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
-        count_barcode_voyager_condition="==1",
+        column_name_to_assign = assign_column_name_merge_process_group_flag,
+        out_of_date_range_flag = out_of_date_range_flag,
+        count_barcode_labs_column_name = count_barcode_labs_column_name,
+        count_barcode_labs_condition = ">1",
+        count_barcode_voyager_column_name = count_barcode_voyager_column_name,
+        count_barcode_voyager_condition = "==1",
     )
-
-    # STEP 2 - window_ordering
+    # reverse flag as assign_merge_process_group_flag() considers 1 as pass and None as flag
+    df = df\
+            .withColumn(assign_column_name_merge_process_group_flag, 
+                        F.when(F.col(assign_column_name_merge_process_group_flag) == 1, None)\
+                        .otherwise(1))
+    
+    # STEP 2 - flagging by abs time difference, time difference and received date
     # the list of columns to be ordered by will be provided
-    # ordering_columns = ['date_abs_diff_24', 'date_diff', 'date_visit']
-    window = Window.partitionBy(window_column).orderBy(*ordering_columns)
-
-    df = df.withColumn("window_ordering", F.row_number().over(window)).withColumn(
-        "window_ordering", F.when((F.col("boolean_pass") == 1) & (F.col("window_ordering") == 1), 1).otherwise(None)
-    )
+    df = merge_one_to_many_swab_time_date_logic(df, window_column, ordering_columns, assign_column_name_time_order_logic_flag)
 
     # STEP 3 - drop void result_mk within window/group if there's any positive/negative case
-    df = merge_one_to_many_swab_result_mk_logic(df, window_column, mk_column_name, assign_mk_column_name)
+    df = merge_one_to_many_swab_result_mk_logic(
+            df, 
+            window_column, 
+            mk_column_name, 
+            assign_column_name_result_mk_logic_flag
+        )
 
-    # STEP 4: different signs
+    # STEP 4: different time difference logic
+    df = merge_one_to_many_swab_time_difference_logic(
+        df = df, 
+        ordering_columns = ordering_columns,
+        window_column = window_column,
+        assign_column_name_time_difference_logic_flag = assign_column_name_time_difference_logic_flag
+        )
 
     # FINAL STEP: combine every column flag
     return df.withColumn(
-        "1_to_m",
-        F.when((F.col("boolean_pass") == 1) & (F.col("window_ordering") == 1) & (F.col("ordering_mk") == 1, 1)),
-    )
+        assign_column_name_combination_flag,
+        F.when(
+            (F.col(assign_column_name_merge_process_group_flag) == 1) |
+            (F.col(assign_column_name_time_order_logic_flag) == 1) |
+            (F.col(assign_column_name_result_mk_logic_flag) == 1) |
+            (F.col(assign_column_name_time_difference_logic_flag) == 1), 1)
+        )
+
+
+def merge_one_to_many_swab_time_date_logic(df, window_column, ordering_columns, assign_column_name_time_order_logic_flag):
+    # STEP 2 - flagging by abs time difference, time difference and received date
+    # the list of columns to be ordered by will be provided
+    window = Window.partitionBy(window_column).orderBy(*ordering_columns)
+    return df\
+        .withColumn(assign_column_name_time_order_logic_flag, F.rank().over(window))\
+        .withColumn(assign_column_name_time_order_logic_flag, 
+                    F.when(F.col(assign_column_name_time_order_logic_flag) == 1, None)\
+                    .otherwise(1)
+        )
 
 
 def merge_one_to_many_swab_result_mk_logic(
-    df: DataFrame, window_column: str, mk_column: str, assign_mk_column_name: str
+    df: DataFrame, 
+    window_column: str, 
+    mk_column: str, 
+    assign_column_name_result_mk_logic_flag: str
 ) -> DataFrame:
 
     window_mk = Window.partitionBy(window_column)
-    df = df.withColumn("collect_set", F.collect_set(F.col(mk_column)).over(window_mk)).filter(
-        F.col(mk_column) == "void"
-    )
+    df_filt = df\
+        .withColumn("collect_set", F.collect_set(F.col(mk_column)).over(window_mk))\
+        .filter(F.col(mk_column) == "void")
 
     convert_udf = F.udf(lambda z: search_void_in_list(z))
 
-    df = (
-        df.withColumn(assign_mk_column_name, convert_udf(F.col("collect_set")))
-        .drop("collect_set")
-        .filter(F.col(assign_mk_column_name) == 1)
-    )
+    df_filt = df_filt\
+        .withColumn(assign_column_name_result_mk_logic_flag, convert_udf(F.col("collect_set")))\
+        .drop("collect_set")\
+        .filter(F.col(assign_column_name_result_mk_logic_flag) == 1)\
+        .select(window_column, mk_column, assign_column_name_result_mk_logic_flag)
+    df = df.join(df_filt, [window_column, mk_column], "left").orderBy(window_column)
 
-    df = df.join(df, [window_column, mk_column], "left").orderBy(window_column)
+    return df.withColumn(assign_column_name_result_mk_logic_flag, F.col(assign_column_name_result_mk_logic_flag).cast('integer'))
 
-    # Just to convert from None to 1 and viceversa
-    # to keep consistency with the other flags
-    return df.withColumn("mk_flag", F.when(F.col(assign_mk_column_name) == 1, None).otherwise(1))
 
 
 def search_void_in_list(list1: list, var: str = "void"):
     return 1 if (len(list1) > 1) and (var in list1) else None
+
+
+
+def merge_one_to_many_swab_time_difference_logic(df, ordering_columns, window_column, assign_column_name_time_difference_logic_flag):
+    # STEP 4: time difference logic
+    window = Window.partitionBy('barcode_iq').orderBy(*ordering_columns)
+
+    return df\
+        .withColumn('Ranking', F.rank().over(window))\
+        .withColumn(assign_column_name_time_difference_logic_flag, F.when(F.col('Ranking')!=1, 1).otherwise(None))\
+        .drop('Ranking')\
+        .orderBy(*ordering_columns)
