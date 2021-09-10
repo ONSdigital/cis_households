@@ -4,6 +4,7 @@ from cishouseholds.validate import validate_merge_logic
 
 
 def test_validate_merge_logic(spark_session):
+    """Test that validator works to assign failed flags to columns where result is not unique"""
     df = spark_session.createDataFrame(
         data=[
             ("ONS00000002", 1, 1, None, None, None, None),
