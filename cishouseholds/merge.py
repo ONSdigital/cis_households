@@ -191,6 +191,138 @@ def assign_merge_process_group_flag(
     ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
 
 
+def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str, ordering_columns: list):
+    """
+    Many (Voyager) to one (swab) matching process.
+    Creates flag for records to be dropped as non-optimal matches.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        Name of column to flag records to be 'dropped'
+    group_by_column
+        Name of columns to group dataframe
+    ordering_columns
+        Names of columns to order each group
+    """
+
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_many_to_one_swab_flag",
+        "out_of_date_range_swab",
+        "count_barcode_swab",
+        "==1",
+        "count_barcode_voyager",
+        ">1",
+    )
+
+    # Row number won't apply with frame set to unbounded (rowsBetween)
+    window = Window.partitionBy(group_by_column, "identify_many_to_one_swab_flag").orderBy(
+        *ordering_columns
+    )  # .rowsBetween(Window.unboundedPreceding, Window.unboundedFollowing)
+    df = df.withColumn("row_number", F.row_number().over(window))
+    window = (
+        Window.partitionBy(group_by_column, "identify_many_to_one_swab_flag")
+        .orderBy(*ordering_columns)
+        .rowsBetween(Window.unboundedPreceding, Window.unboundedFollowing)
+    )
+
+    # Set columns for use in below logic
+    df = df.withColumn(
+        "count_diff_same_as_first",
+        F.sum(F.when(F.col("diff_vs_visit_hr") == F.first("diff_vs_visit_hr").over(window), 1).otherwise(None)).over(
+            window
+        ),
+    )
+    df = df.withColumn(
+        "diff_between_first_and_second_records",
+        F.sum(
+            F.when(
+                F.col("row_number") == 2, F.col("diff_vs_visit_hr") - F.first("diff_vs_visit_hr").over(window)
+            ).otherwise(None)
+        ).over(window),
+    )
+    df = df.withColumn(
+        "abs_offset_diff_between_first_and_second_records",
+        F.sum(
+            F.when(
+                F.col("row_number") == 2,
+                F.col("abs_offset_diff_vs_visit_hr") - F.first("abs_offset_diff_vs_visit_hr").over(window),
+            ).otherwise(None)
+        ).over(window),
+    )
+
+    # Set flag to one for all records in cases where all diff_vs_visit_hr the same
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.count(group_by_column).over(window) == F.col("count_diff_same_as_first"))
+            & (F.col("identify_many_to_one_swab_flag") == 1),
+            1,
+        ).otherwise(None),
+    )
+
+    # Set flag to one for all records in cases where two closest matches have diff_vs_visit_hr within 8 hours (absolute)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.abs(F.col("diff_between_first_and_second_records")) < 8)
+            & (F.col("identify_many_to_one_swab_flag") == 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    # Set all but first flag to one if first record diff_vs_visit_hr>=0 & two closest matches >=8 hours
+    # apart for abs_offset_diff
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
+            & (F.first("diff_vs_visit_hr").over(window) >= 0)
+            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("row_number") > 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    # Set all but first flag to one if first record diff_vs_visit_hr<0 & two closest matches >=8 hours
+    # apart for abs_offset_diff & two closest matches >48 hours apart for diff_vs_visit_hr
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
+            & (F.first("diff_vs_visit_hr").over(window) < 0)
+            & (F.col("diff_between_first_and_second_records") > 48)
+            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("row_number") > 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    # Set all but first flag to one if first record diff_vs_visit_hr=[7,20] & two closest matches >16 hours
+    # apart for diff_vs_visit_hr
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.first("diff_vs_visit_hr").over(window).between(7, 20))
+            & (F.col("diff_between_first_and_second_records") > 16)
+            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("row_number") > 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    return df.drop(
+        "row_number",
+        "count_occurrences",
+        "count_diff_same_as_first",
+        "diff_between_first_and_second_records",
+        "abs_offset_diff_between_first_and_second_records",
+        "identify_many_to_one_swab_flag",
+    )
+
+
 def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
     """
     Many (Voyager) to one (antibody) matching process. Creates a flag to identify rows which doesn't match
