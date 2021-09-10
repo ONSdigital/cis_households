@@ -168,7 +168,7 @@ def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_
     mini_window = Window.partitionBy("dummy").orderBy("b")
     dft = dft.withColumn("group", F.row_number().over(mini_window))
     df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
-    df.show()
+    # df.show()
     return df, dft
 
 
@@ -189,12 +189,12 @@ def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_colum
         df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
         .filter(F.col(row_column) == row_num)
         .withColumnRenamed(group_column, "g")
-        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column, row_num))
+        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column[0], row_num))
         .drop(row_column)
     )
     df = df.join(dft, dft.g == F.col(group_column)).drop("g")
-    df.show()
-    return df, "{}{}_ref".format(reference_column, row_num)
+    # df.show()
+    return df, "{}{}_ref".format(reference_column[0], row_num)
 
 
 def flag_columns_different_to_ref(
@@ -233,7 +233,7 @@ def flag_columns_different_to_ref(
             None
         ),  # drop rows after first where diff vs visit is
     )
-    df.show()
+    # df.show()
     return df
 
 
@@ -276,7 +276,7 @@ def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str,
     dft1 = create_count_group(df, group_by_column, check_column1, True)
     dft2 = create_count_group(df, group_by_column, check_column2, False)
     dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
-    dfj.show()
+    # dfj.show()
     return dfj
 
 
@@ -301,7 +301,7 @@ def create_inconsistent_data_drop_flag(
             1,
         ).otherwise(None),
     ).drop(item1_count_column, item2_count_column)
-    df.show()
+    # df.show()
     return df
 
 
@@ -317,7 +317,7 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
         "count_barcode_blood",
         ">1",
     )
-    df.show()
+    # df.show()
     # create columns for row number and group number in new grouped df
     window = Window.partitionBy(group_by_column).orderBy(
         "identify_one_to_many_bloods_flag", "diff_interval_hours", "visit_date"
@@ -345,7 +345,7 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
 
     # adding drop flag 2 column to indicate inconsitent siemens or tdi data within group
     dfn = dft.join(dfj, (dfj.g == dft.group)).drop("dummy", "group", "count")
-    dfn.show()
+    # dfn.show()
 
     df = df.join(
         dfn,
@@ -359,7 +359,7 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
 
     # dropping extra columns after validation success
     df = df.withColumn(
-        "one_to_many_bloods_drop_flag",
+        column_name_to_assign,
         F.when(
             (
                 (F.col("identify_one_to_many_bloods_flag") == 1)
@@ -370,12 +370,25 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
             None
         ),  # drop rows after first where diff vs visit is
     )
-    df.show()
+    # df.show()
+    df = df.withColumn(
+        "failed",
+        F.when(
+            (
+                (F.col("identify_one_to_many_bloods_flag") == 1)
+                & ((F.col(column_name_to_assign).isNull()) & (F.col("row_num") != 1) & (F.col("count") != 1))
+            ),
+            1,
+        ).otherwise(
+            None
+        ),  # drop rows after first where diff vs visit is
+    )
 
     return df.drop(
         "out_of_date_range_blood",
         "identify_one_to_many_bloods_flag",
         "group",
+        "d1_ref",
         "count",
         "row_num",
         "d1_ref",
