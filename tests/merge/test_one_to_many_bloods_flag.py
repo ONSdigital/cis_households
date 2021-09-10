@@ -6,7 +6,6 @@ from cishouseholds.merge import one_to_many_bloods_flag
 
 
 def test_one_to_many_bloods_flag(spark_session):
-    print("CORRECT")
     expected_df = spark_session.createDataFrame(
         data=[
             (1, "2029-01-01", "ONS00000003", "negative", "ONS00000003", "2029-01-01", 4, "positive", 0.0, None),
