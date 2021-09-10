@@ -228,7 +228,7 @@ def many_to_many_flag(
     df: DataFrame,
     drop_flag_column_name_to_assign: str,
     group_by_column: str,
-    ordering_columns: str,
+    ordering_columns: list,
     process_type: str,
     failed_flag_column_name_to_assign: str,
 ):
@@ -262,7 +262,6 @@ def many_to_many_flag(
         ">1",
     )
 
-    # Need to reapply ordering
     window = Window.partitionBy(group_by_column, "identify_many_to_many_flag")
 
     if process_type == "antibody":
@@ -270,7 +269,7 @@ def many_to_many_flag(
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
     else:
-        print("Error")
+        print(f"Error: {process_type} isn't a valid option")
 
     df = df.withColumn(
         "classification_different_to_first",
@@ -288,7 +287,9 @@ def many_to_many_flag(
         ).otherwise(None),
     )
 
-    df = df.withColumn("record_processed", F.lit(None))
+    # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
+    # otherwise None
+    df = df.withColumn("record_processed", F.when(F.col("identify_many_to_many_flag").isNull(), 0).otherwise(None))
     unique_id_lab_str = "unique_id_" + process_type
 
     while df.filter(df.record_processed.isNull()).count() > 0:
