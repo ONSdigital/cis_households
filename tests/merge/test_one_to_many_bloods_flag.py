@@ -1,5 +1,4 @@
 from chispa import assert_df_equality
-from pyspark.sql import SparkSession
 
 from cishouseholds.filter import assign_date_interval_and_flag
 from cishouseholds.merge import one_to_many_bloods_flag
@@ -68,6 +67,3 @@ def test_one_to_many_bloods_flag(spark_session):
     output_df = one_to_many_bloods_flag(input_df, "dr", "barcode_iq")
     output_df.show()
     assert_df_equality(output_df, expected_df, ignore_row_order=True)
-
-
-test_one_to_many_bloods_flag(SparkSession.builder.getOrCreate())
