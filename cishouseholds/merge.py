@@ -268,8 +268,6 @@ def many_to_many_flag(
         column_to_validate = "antibody_test_result_classification"
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
-    else:
-        print(f"Error: {process_type} isn't a valid option")
 
     df = df.withColumn(
         "classification_different_to_first",
