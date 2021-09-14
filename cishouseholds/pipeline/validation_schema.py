@@ -36,6 +36,39 @@ bloods_validation_schema = {
     "blood_sample_collected_datetime": {"type": "timestamp"},
 }
 
+sample_direct_eng_wc_schema = {
+    "unique_access_code": {"type": "string", "regex": r"^\d{12}"},
+    "local_authority_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "in_blood_cohort": {"type": "integer", "min": 0, "max": 1},
+    "output_area_code": {"type": "string", "regex": r"^[E,W,S]00\d{6}"},
+    "local_authority_unity_authority_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "country_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "custodian_region_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "lower_super_output_area_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "middle_super_output_area_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "rural_urban_classification": {"type": "string", "regex": r"^([a-zA-Z]\d{1}|\d{1})"},
+    "census_output_area_classification": {"type": "string", "regex": r"^\d{1}[a-zA-Z]\d{1}"},
+    "region_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},
+    "index_multiple_deprivation": {"type": "integer", "min": 0, "max": 32844},
+    "cis_area_indicator": {"type": "integer", "min": 1, "max": 128},
+}
+
+sample_northern_ireland_schema = {
+    "unique_access_code": {"type": "string", "regex": r"^\d{12}"},
+    "sample_week_indicator": {"type": "string", "regex": r"^\d{1}[a-zA-Z]{3}"},
+    "output_area_code": {"type": "string", "regex": r"^N00\d{6}"},
+    "local_authority_unity_authority_code": {"type": "string", "regex": r"^N\d{8}"},
+    "country_code": {"type": "string", "regex": r"^N\d{8}"},
+    "custodian_region_code": {"type": "string", "regex": r"^N\d{8}"},
+    "lower_super_output_area_code": {"type": "string", "regex": r"^N\d{8}"},
+    "middle_super_output_area_code": {"type": "string", "regex": r"^N\d{8}"},
+    "census_output_area_classification": {"type": "string", "regex": r"^\d{1}[a-zA-Z]\d{1}"},
+    "lower_super_output_area_name": {"type": "string", "regex": r"[a-zA-Z]{2,}}"},
+    "cis_area_code": {"type": "string", "regex": r"^J\d{8}"},
+    "region_code": {"type": "string", "regex": r"^N\d{8}"},
+    "index_multiple_deprivation": {"type": "integer", "min": 1, "max": 890},
+    "cis_area_indicator": {"type": "integer", "min": 999, "max": 999},
+}
 
 iqvia_v2_validation_schema = {
     "ons_household_id": {"type": "integer", "min": 100000000000, "max": 999999999999},
@@ -190,10 +223,10 @@ iqvia_v2_validation_schema = {
         ],
     },
     "ethnicity_other": {"type": "string", "nullable": True},
-    "consent_first_visit": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_five_visits": {"type": "string", "allowed": ["No", "Yes"]},
+    "consent_1_visit": {"type": "string", "allowed": ["No", "Yes"]},
+    "consent_5_visits": {"type": "string", "allowed": ["No", "Yes"]},
     "consent_april_22": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_sixteen_visits": {"type": "string", "allowed": ["No", "Yes"]},
+    "consent_16_visits": {"type": "string", "allowed": ["No", "Yes"]},
     "consent_blood_test": {"type": "string", "allowed": ["No", "Yes"]},
     "consent_finger_prick_a1_a3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "consent_extend_study_under_16_b1_b3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},

@@ -152,3 +152,58 @@ def calculate_imputation_from_mode(
         .withColumn(column_name_to_assign, F.when(F.col(column_flag_impute).isNull(), F.col(column_name_to_assign)))
         .drop("iswhite", "isother")
     )
+
+
+def impute_last_obs_carried_forward(
+    df: DataFrame,
+    column_name_to_assign: str,
+    column_identity: str,
+    reference_column: str,
+    orderby_column: str,
+    order_type="asc",
+) -> DataFrame:
+    """
+    Imputate the last observation of a given field by given identity column.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+        The colum that will be created with the impute values
+    column_identity
+        Identifies any records that the reference_column is missing forward
+        This column is normally intended for user_id, participant_id, etc.
+    reference_column
+        The column for which imputation values will be calculated.
+    orderby_column
+        the "direction" of the observation will be defined by a ordering column
+        within the dataframe. For example: date.
+    order_type
+        the "direction" of the observation can be ascending by default or
+        descending. Chose ONLY 'asc' or 'desc'.
+    Notes
+    ----
+    If the observation carried forward by a specific column like date, and
+        the type of order (order_type) is descending, the direction will be
+        reversed and the function would do a last observation carried backwards.
+    """
+    # the id column with a unique monotonically_increasing_id is auxiliary and
+    # intends to add an arbitrary number to each row.
+    # this will NOT affect the ordering of the rows by orderby_column parameter.
+    df = df.withColumn("id", F.monotonically_increasing_id())
+
+    if order_type == "asc":
+        ordering_expression = F.col(orderby_column).asc()
+    else:
+        ordering_expression = F.col(orderby_column).desc()
+
+    window = Window.partitionBy(column_identity).orderBy(ordering_expression)
+
+    return (
+        df.withColumn(
+            column_name_to_assign,
+            F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
+        )
+        .orderBy(ordering_expression, "id")
+        .drop("id")
+    )
+
