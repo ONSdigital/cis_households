@@ -1,7 +1,6 @@
 from chispa import assert_df_equality
 
 from cishouseholds.impute import calculate_imputation_from_mode
-from cishouseholds.impute import most_common_unique_item
 
 
 def test_impute_mode(spark_session):
@@ -27,13 +26,3 @@ def test_impute_mode(spark_session):
     df_input = expected_df.drop("impute_value")
     actual_df = calculate_imputation_from_mode(df_input, "impute_value", "ethnic", "uac_household")
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
-
-
-# Imputation function logic
-def test_mode_logic():
-    assert most_common_unique_item(["a", "a", "b"]) == "a"  # pass
-    assert most_common_unique_item(["a", "a", "b", "b", "c"]) is None  # tie, RETURN: None
-    assert most_common_unique_item(["white"]) == "white"  # pass
-    assert most_common_unique_item(["white", "other"]) is None  # tie, RETURN: None
-    assert most_common_unique_item(["white", "white", "other"]) == "white"  # pass
-    assert most_common_unique_item(["other", "other"]) == "other"  # pass
