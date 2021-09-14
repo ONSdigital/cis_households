@@ -206,4 +206,3 @@ def impute_last_obs_carried_forward(
         .orderBy(ordering_expression, "id")
         .drop("id")
     )
-
