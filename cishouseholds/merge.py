@@ -222,3 +222,98 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
 
     return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
+
+
+def many_to_many_flag(
+    df: DataFrame,
+    drop_flag_column_name_to_assign: str,
+    group_by_column: str,
+    ordering_columns: list,
+    process_type: str,
+    failed_flag_column_name_to_assign: str,
+):
+    """
+    Many (Voyager) to Many (antibody) matching process.
+    Creates flag for records to be dropped as non-optimal matches, and separate flag for records where process fails.
+
+    Parameters
+    ----------
+    df
+    drop_flag_column_name_to_assign
+        Name of column to indicate record is to be dropped
+    group_by_column
+        Names of columns to group dataframe
+    ordering_columns
+        Names of columns to order each group
+    process_type
+        Defines which many-to-many matching process is being carried out.
+        Must be 'antibody' or 'swab'
+    failed_flag_column_name_to_assign
+        Name of column to indicate record has failed validation logic
+    """
+
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_many_to_many_flag",
+        "out_of_date_range_" + process_type,
+        "count_barcode_" + process_type,
+        ">1",
+        "count_barcode_voyager",
+        ">1",
+    )
+
+    window = Window.partitionBy(group_by_column, "identify_many_to_many_flag")
+
+    if process_type == "antibody":
+        column_to_validate = "antibody_test_result_classification"
+    elif process_type == "swab":
+        column_to_validate = "pcr_result_classification"
+
+    df = df.withColumn(
+        "classification_different_to_first",
+        F.sum(F.when(F.col(column_to_validate) == F.first(column_to_validate).over(window), None).otherwise(1)).over(
+            window
+        ),
+    )
+
+    df = df.withColumn(
+        failed_flag_column_name_to_assign,
+        F.when(
+            F.last("classification_different_to_first").over(window).isNotNull()
+            & (F.col("identify_many_to_many_flag") == 1),
+            1,
+        ).otherwise(None),
+    )
+
+    # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
+    # otherwise None
+    df = df.withColumn("record_processed", F.when(F.col("identify_many_to_many_flag").isNull(), 0).otherwise(None))
+    unique_id_lab_str = "unique_id_" + process_type
+
+    while df.filter(df.record_processed.isNull()).count() > 0:
+        window = Window.partitionBy(group_by_column, "identify_many_to_many_flag", "record_processed").orderBy(
+            *ordering_columns
+        )
+        df = df.withColumn("row_number", F.row_number().over(window))
+        df = df.withColumn(
+            "record_processed",
+            F.when(
+                (
+                    (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
+                    | (F.col("unique_id_voyager") == (F.first("unique_id_voyager").over(window)))
+                )
+                & (F.col("row_number") != 1),
+                1,
+            ).otherwise(F.col("record_processed")),
+        )
+
+        df = df.withColumn(drop_flag_column_name_to_assign, F.when(F.col("record_processed") == 1, 1).otherwise(None))
+
+        df = df.withColumn(
+            "record_processed",
+            F.when((F.col("row_number") == 1) & (F.col(drop_flag_column_name_to_assign).isNull()), 0).otherwise(
+                F.col("record_processed")
+            ),
+        )
+
+    return df.drop("identify_many_to_many_flag", "classification_different_to_first", "record_processed", "row_number")
