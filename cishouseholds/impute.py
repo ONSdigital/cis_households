@@ -112,7 +112,7 @@ def impute_wrapper(df: DataFrame, imputation_function: Callable, reference_colum
 
 
 def calculate_imputation_from_mode(
-    df: DataFrame, column_name_to_assign: str, column_flag_impute: str, group_column: str
+    df: DataFrame, column_name_to_assign: str, reference_column: str, group_column: str
 ) -> DataFrame:
     """
     Get imputation value from given column by most repeated UNIQUE value
@@ -120,9 +120,9 @@ def calculate_imputation_from_mode(
     ----------
     df
     column_name_to_assign
-        The colum that will be created with the impute values
-    column_flag_impute
-        The column for which imputation values will be calculated
+        The column that will be created with the impute values
+    reference_column
+        The column to be imputed
     group_column
         Column name for the grouping
     Notes
@@ -130,7 +130,7 @@ def calculate_imputation_from_mode(
     Function provides a column value for each record that needs to be imputed.
     Where the value does not need to be imputed the column value created will be null.
     """
-    grouped = df.groupBy(group_column, column_flag_impute).count()
+    grouped = df.groupBy(group_column, reference_column).count()
 
     window = Window.partitionBy(group_column).orderBy(F.desc("count"))
 
@@ -138,12 +138,12 @@ def calculate_imputation_from_mode(
         grouped.withColumn("order", F.row_number().over(window))
         .where(F.col("order") == 1)
         .drop("order", "count")
-        .withColumnRenamed(column_flag_impute, "flag")
+        .withColumnRenamed(reference_column, "flag")
     )
 
     return (
         df.join(grouped, [group_column], "inner")
-        .withColumn(column_name_to_assign, F.when(F.col(column_flag_impute).isNull(), F.col("flag")))
+        .withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), F.col("flag")))
         .drop("flag")
     )
 
