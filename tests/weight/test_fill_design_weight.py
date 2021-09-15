@@ -5,7 +5,11 @@ from cishouseholds.weight import fill_design_weight
 
 def test_fill_design_weight(spark_session):
     expected_df = spark_session.createDataFrame(
-        data=[(1.0, 0.0, 1.0), (None, 1.0, 1.0), (None, None, None), (None, None, 1.0)],
+        data=[
+            (1.0, 0.0, 1.0),
+            (None, 1.0, 1.0),
+            (None, None, None),
+        ],
         schema="""
         previous_antibody_design_weight double,
         swab_design_weight double,
