@@ -130,27 +130,21 @@ def calculate_imputation_from_mode(
     Function provides a column value for each record that needs to be imputed.
     Where the value does not need to be imputed the column value created will be null.
     """
-    # Count
-    df = df.withColumn("iswhite", F.when(F.col(column_flag_impute) == "white", 1)).withColumn(
-        "isother", F.when(F.col(column_flag_impute) == "other", 1)
+    grouped = df.groupBy(group_column, column_flag_impute).count()
+
+    window = Window.partitionBy(group_column).orderBy(F.desc("count"))
+
+    grouped = (
+        grouped.withColumn("order", F.row_number().over(window))
+        .where(F.col("order") == 1)
+        .drop("order", "count")
+        .withColumnRenamed(column_flag_impute, "flag")
     )
-    # Group
-    df_count = df.groupBy(F.col(group_column)).agg(F.sum("iswhite").alias("iswhite"), F.sum("isother").alias("isother"))
-    # Nulls to 0
-    df_count = df_count.withColumn(
-        "iswhite", F.when(F.col("iswhite").isNull(), 0).otherwise(F.col("iswhite"))
-    ).withColumn("isother", F.when(F.col("isother").isNull(), 0).otherwise(F.col("isother")))
-    # sum of count
-    df_count = df_count.withColumn(
-        column_name_to_assign,
-        F.when(F.col("iswhite") > F.col("isother"), "white")
-        .when(F.col("iswhite") == F.col("isother"), None)
-        .when(F.col("iswhite") < F.col("isother"), "other"),
-    )
+
     return (
-        df.join(df_count, [group_column], "inner")
-        .withColumn(column_name_to_assign, F.when(F.col(column_flag_impute).isNull(), F.col(column_name_to_assign)))
-        .drop("iswhite", "isother")
+        df.join(grouped, [group_column], "inner")
+        .withColumn(column_name_to_assign, F.when(F.col(column_flag_impute).isNull(), F.col("flag")))
+        .drop("flag")
     )
 
 
