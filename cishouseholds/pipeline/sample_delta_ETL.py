@@ -2,6 +2,11 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.extract import read_csv_to_pyspark_df
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+spark_session = get_or_create_spark_session()
+
 
 def sample_delta_ETL():
     extract_from_csv()
@@ -16,7 +21,76 @@ def sample_delta_ETL():
 
 
 def extract_from_csv():
-    pass
+    """
+    reads in the households, lookup, previous sample and new sample direct files
+    from csv files stored in the working tree
+
+    outputs:
+    dictionary of named dataframed obejcts with values corresponding to each .csv file
+    """
+    input_schema = """uac string, la_code string, bloods integer, oa11 string, laua	string, ctry string,\
+        custodian_region_code string, lsoa11 string, msoa11 string,	ru11ind	string, oac11 string,\
+        rgn	string, imd	integer, interim_id integer"""
+    # file_path = "raw_households\ons_gl_report\design_weights_input\sample_direct_eng_wc280621.csv"
+    raw_header = (
+        "uac,la_code,bloods,oa11,laua,ctry,custodian_region_code,lsoa11,msoa11,ru11ind,oac11,rgn,imd,interim_id"
+    )
+
+    household_schema = """interim_id integer, nb_addresses integer,	CIS20CD string"""
+    # household_file_path = "raw_households\ons_gl_report\design_weights_input\household_nb_by_cis_id_Jun21.csv"
+    household_header = "interim_id,nb_addresses,CIS20CD"
+
+    previous_schema = """sample	string, uac string,	region string, dvhsize integer, \
+        country_sample string, laua	string, rgn	string, lsoa11 string, msoa11 string, imd integer,\
+        interim_id integer,	dweight_hh double, sample_direct integer, tranche string, dweight_hh_atb double"""
+    # previous_file_path = "raw_households\ons_gl_report\design_weights_input\Previous samples and weights.csv"
+    previous_header = "sample,uac,region,dvhsize,country_sample,laua,rgn,lsoa11,msoa11,imd,interim_id,\
+        dweight_hh,sample_direct,tranche,dweight_hh_atb"
+
+    lookup_schema = (
+        """LSOA11CD string,	LSOA11NM string, CIS20CD string, RGN19CD string, imd string, interim_id string"""
+    )
+    # lookup_file_path = "raw_households\ons_gl_report\design_weights_input\lsoa_cis_imd_lookup_14Jun21.csv"
+    lookup_header = "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD,imd,interim_id"
+
+    dataframes = {}
+
+    # setup empty vars because flake 8 is bad
+    previous_file_path = ""
+    lookup_file_path = ""
+    household_file_path = ""
+    file_path = ""
+
+    dataframes["previous"] = read_csv_to_pyspark_df(
+        spark_session,
+        previous_file_path,
+        previous_header,
+        previous_schema,
+        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+    )
+    dataframes["lookup"] = read_csv_to_pyspark_df(
+        spark_session,
+        lookup_file_path,
+        lookup_header,
+        lookup_schema,
+        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+    )
+    dataframes["household"] = read_csv_to_pyspark_df(
+        spark_session,
+        household_file_path,
+        household_header,
+        household_schema,
+        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+    )
+
+    dataframes["sample_direct"] = read_csv_to_pyspark_df(
+        spark_session,
+        file_path,
+        raw_header,
+        input_schema,
+        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+    )
+    return dataframes
 
 
 def validate_sample():
@@ -98,14 +172,14 @@ def calculate_design_weights(sample_file: DataFrame, household_populations: Data
         number of addresses (``nb_addresses``) per CIS area (``interim_id``)
     """
     sample_file = sample_file.join(
-        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id"
+        household_populations.select("interim_id", "CIS20CD", "nb_addresses"), how="left", on="interim_id"
     )
 
     interim_id_window = Window.partitionBy("interim_id")
-    sample_file = sample_file.withColumn("sample_count", F.count("interim_id").over(interim_id_window))
+    sample_file = sample_file.withColumn("sample_size", F.count("interim_id").over(interim_id_window))
 
-    sample_file = sample_file.withColumn("design_weight", F.col("nb_addresses") / F.col("sample_count"))
-    return sample_file.drop("sample_count", "nb_addresses")
+    sample_file = sample_file.withColumn("dweight_hh", F.col("nb_addresses") / F.col("sample_size"))
+    return sample_file.drop("nb_addresses")
 
 
 def extract_existing_design_weights():
