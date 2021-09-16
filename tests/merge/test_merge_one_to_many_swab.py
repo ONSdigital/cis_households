@@ -55,7 +55,7 @@ def test_merge_one_to_many_mk_void(spark_session):
 
     df_expected = spark_session.createDataFrame(data, schema=schema)
     df_input = df_expected.drop("flag_mk")
-    df_actual = merge_one_to_many_swab_result_mk_logic(df_input, "barcode_iq", "result_mk", "flag_mk")
+    df_actual = merge_one_to_many_swab_result_mk_logic(df_input, "void", "barcode_iq", "result_mk", "flag_mk")
 
     assert_df_equality(df_actual, df_expected, ignore_row_order=True, ignore_column_order=True)
 
@@ -88,8 +88,9 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
 
     df_output = merge_one_to_many_swab_time_difference_logic(
         df=df_input,
+        window_column="barcode_iq",
         ordering_columns=["barcode_iq", "time_diff_abs", "time_diff", "date_received"],
-        assign_column_name_time_difference_logic_flag="flag_time_diff",
+        time_difference_logic_flag_column_name="flag_time_diff",
     )
 
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True)
@@ -155,11 +156,7 @@ def test_merge_one_to_many_swab(spark_session):
         ordering_columns=ordering_columns,
         mk_result_column_name="result_mk",
         void_value="void",
-        assign_column_name_merge_process_group_flag="merge_flag",
-        assign_column_name_time_order_logic_flag="time_order_flag",
-        assign_column_name_result_mk_logic_flag="mk_flag",
-        assign_column_name_time_difference_logic_flag="time_difference_flag",
-        assign_column_name_combination_flag="one_to_many_swabs_flag",
+        combination_flag_column_name="one_to_many_swabs_flag",
     )
     df_output = df_output.drop("merge_flag", "time_order_flag", "mk_flag", "time_difference_flag")
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
