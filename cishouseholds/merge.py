@@ -1,5 +1,5 @@
-from typing import Union
 from typing import List
+from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
