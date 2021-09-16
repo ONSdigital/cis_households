@@ -437,6 +437,7 @@ def one_to_many_swabs(
     window_column: str,
     ordering_columns: List[str],
     mk_result_column_name: str,
+    void_value: Union[str, int],
     combination_flag_column_name: str,
 ) -> DataFrame:
     """
@@ -494,9 +495,9 @@ def one_to_many_swabs(
     df = merge_one_to_many_swab_time_date_logic(df, window_column, ordering_columns, "time_order_flag")
     df = merge_one_to_many_swab_result_mk_logic(
         df=df,
-        void_value="void",
-        window_column="barcode_iq",
-        mk_result_column_name="result_mk",
+        void_value=void_value,
+        window_column=window_column,
+        mk_result_column_name=mk_result_column_name,
         result_mk_logic_flag_column_name="mk_flag",
     )
     df = merge_one_to_many_swab_time_difference_logic(
