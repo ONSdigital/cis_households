@@ -44,8 +44,8 @@ def extract_from_csv():
         country_sample string, laua	string, rgn	string, lsoa11 string, msoa11 string, imd integer,\
         interim_id integer,	dweight_hh double, sample_direct integer, tranche string, dweight_hh_atb double"""
     # previous_file_path = "raw_households\ons_gl_report\design_weights_input\Previous samples and weights.csv"
-    previous_header = "sample,uac,region,dvhsize,country_sample,laua,rgn,lsoa11,msoa11,imd,interim_id,\
-        dweight_hh,sample_direct,tranche,dweight_hh_atb"
+    previous_header = "sample,uac,region,dvhsize,country_sample,laua,rgn,lsoa11,msoa11,imd,interim_id,dweight_hh,\
+        sample_direct,tranche,dweight_hh_atb"
 
     lookup_schema = (
         """LSOA11CD string,	LSOA11NM string, CIS20CD string, RGN19CD string, imd string, interim_id string"""

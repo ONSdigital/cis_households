@@ -45,6 +45,12 @@ def combine_design_weights(new_sample_name: str):
         )
         return df.join(dft, dft.i_id == df.interim_id)
 
+    def add_hosehold_populations(df: DataFrame, household_population_df: DataFrame):
+        df = df.join(
+            household_population_df.select("interim_id", "nb_addresses"), how="left", on="interim_id"
+        ).withColumnRenamed("nb_addresses", "household_population")
+        return df
+
     def update_interim_id(df_old: DataFrame, df_new: DataFrame, lookup_df: DataFrame):
         """
         join previous (old) df and new dample (new) df onto lookup for interim_id to update value of
@@ -102,15 +108,31 @@ def combine_design_weights(new_sample_name: str):
     def calculate_combining_factor(df: DataFrame):
         """
         use a subset of the data partioned by interim id and is_new column to calculate
-        the combining facto to be applied to each design weight row-wise
+        the combining factor to be applied to each design weight row-wise
         """
-        samples_window = Window.partitionBy("interim_id", "is_new")
+        samples_window = Window.partitionBy("interim_id")
         df = df.withColumn("sum_effective_sample_size", (F.sum("effective_sample_size").over(samples_window)))
         df = df.withColumn("combining_factor", (F.col("effective_sample_size") / F.col("sum_effective_sample_size")))
         return df
 
     def apply_combining_factor(df: DataFrame):
         return df.withColumn("factored_design_weight", F.col("combining_factor") * F.col("dweight_hh"))
+
+    def calculate_scaled_survey_weights(df: DataFrame):
+        """
+        use a subset of the data partioned by interim id and is_new column to calculate
+        the combining factor to be applied to each design weight row-wise
+        """
+        id_window = Window.partitionBy("interim_id")
+        df = df.withColumn("sum_factored_design_weights", (F.sum("factored_design_weight").over(id_window)))
+        df = df.withColumn("scaling_factor", (F.col("household_population") / F.col("sum_factored_design_weights")))
+        return df
+
+    def apply_scaled_survey_weights(df: DataFrame):
+        return df.withColumn("swab_design_weight", F.col("scaling_factor") * F.col("factored_design_weight"))
+
+    def validate_scaled_weights(df: DataFrame):
+        pass
 
     updated_previous_df, updated_new_df = update_interim_id(
         df_old=previous_sample_df, df_new=weighted_new_df, lookup_df=lookup_df
@@ -119,11 +141,15 @@ def combine_design_weights(new_sample_name: str):
     previous_df_with_sample_size = calculate_sample_size(recoded_previous_df)
     solved_old_df = solve_for_interim_id(previous_df_with_sample_size, False)
     solved_new_df = solve_for_interim_id(updated_new_df, True)
-    combined_df = combine_with_previous(df_old=solved_old_df, df_new=solved_new_df)
+    combined_df = combine_with_previous(solved_old_df, solved_new_df)
     summated_effective_sample = calculate_combining_factor(combined_df)
-    final = apply_combining_factor(summated_effective_sample)
-    final.toPandas().to_csv("final.csv")
-    final.show()
+    factored_design_weight_df = apply_combining_factor(summated_effective_sample)
+    scaled_design_weight_df = calculate_scaled_survey_weights(
+        add_hosehold_populations(factored_design_weight_df, household_population_df)
+    )
+    scaled_design_weight_df = apply_scaled_survey_weights(scaled_design_weight_df)
+    scaled_design_weight_df.toPandas().to_csv("final.csv")
+    scaled_design_weight_df.show()
 
 
 combine_design_weights("new_sample_name")
