@@ -437,7 +437,7 @@ def one_to_many_swabs(
     window_column: str,
     ordering_columns: List[str],
     mk_result_column_name: str,
-    combination_flag_column_name: str,  # combination Step
+    combination_flag_column_name: str, 
 ) -> DataFrame:
     """
     One (Voyager) to Many (Antibody) matching process. Creates a flag to identify rows which do not match
@@ -478,7 +478,6 @@ def one_to_many_swabs(
     -----
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
     """
-    # STEP 1
     df = assign_merge_process_group_flag(
         df,
         column_name_to_assign="merge_flag",
@@ -488,14 +487,11 @@ def one_to_many_swabs(
         count_barcode_voyager_column_name=count_barcode_voyager_column_name,
         count_barcode_voyager_condition="==1",
     )
-    # reverse flag as assign_merge_process_group_flag() considers 1 as pass and None as flag
     df = df.withColumn(
         "merge_flag",
         F.when(F.col("merge_flag") == 1, None).otherwise(1),
     )
-    # STEP 2
     df = merge_one_to_many_swab_time_date_logic(df, window_column, ordering_columns, "time_order_flag")
-    # STEP 3
     df = merge_one_to_many_swab_result_mk_logic(
         df=df,
         void_value="void",
@@ -503,14 +499,12 @@ def one_to_many_swabs(
         mk_result_column_name="result_mk",
         result_mk_logic_flag_column_name="mk_flag",
     )
-    # STEP 4
     df = merge_one_to_many_swab_time_difference_logic(
         df=df,
         window_column=window_column,
         ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="time_difference_flag",
     )
-    # FINAL STEP: combine every column flag
     return df.withColumn(
         combination_flag_column_name,
         F.when(
@@ -540,7 +534,6 @@ def merge_one_to_many_swab_time_date_logic(
     time_order_logic_flag_column_name
         Output column in Step 2
     """
-    # STEP 2 - flagging by abs time difference, time difference and received date
     window = Window.partitionBy(window_column).orderBy(*ordering_columns)
     return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window)).withColumn(
         time_order_logic_flag_column_name,
