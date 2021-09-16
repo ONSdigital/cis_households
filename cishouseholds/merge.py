@@ -428,7 +428,6 @@ def many_to_many_flag(
     return df.drop("identify_many_to_many_flag", "classification_different_to_first", "record_processed", "row_number")
 
 
-
 def one_to_many_swabs(
     df: DataFrame,
     out_of_date_range_flag: str,
@@ -617,4 +616,3 @@ def merge_one_to_many_swab_time_difference_logic(
         .drop("Ranking")
         .orderBy(*ordering_columns)
     )
-
