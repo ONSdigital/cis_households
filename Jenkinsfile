@@ -64,7 +64,7 @@ pipeline {
         }
         stage("Deploy") {
             when { tag "v*" }
-            agent { label "deploy.jenkins.slave" }
+            agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
             steps {
                 unstash name: "Build"
                 colourText('info', "Deploying to Artifactory")
