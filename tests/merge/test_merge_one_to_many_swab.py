@@ -153,7 +153,7 @@ def test_merge_one_to_many_swab(spark_session):
         count_barcode_voyager_column_name="count_blood",
         window_column="barcode_iq",
         ordering_columns=ordering_columns,
-        mk_column_name="result_mk",
+        mk_result_column_name="result_mk",
         assign_column_name_merge_process_group_flag="merge_flag",
         assign_column_name_time_order_logic_flag="time_order_flag",
         assign_column_name_result_mk_logic_flag="mk_flag",
