@@ -437,7 +437,7 @@ def one_to_many_swabs(
     window_column: str,
     ordering_columns: List[str],
     mk_result_column_name: str,
-    combination_flag_column_name: str, 
+    combination_flag_column_name: str,
 ) -> DataFrame:
     """
     One (Voyager) to Many (Antibody) matching process. Creates a flag to identify rows which do not match
