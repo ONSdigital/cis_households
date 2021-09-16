@@ -4,17 +4,6 @@ from cishouseholds.merge import merge_one_to_many_swab_result_mk_logic
 from cishouseholds.merge import merge_one_to_many_swab_time_date_logic
 from cishouseholds.merge import merge_one_to_many_swab_time_difference_logic
 from cishouseholds.merge import one_to_many_swabs
-from cishouseholds.merge import search_void_in_list
-
-
-def test_search_void_in_list():
-    list1 = ["positive", "negative", "void"]
-    list2 = ["positive", "negative"]
-    list3 = ["void"]
-
-    assert search_void_in_list(list1) == 1
-    assert search_void_in_list(list2) is None
-    assert search_void_in_list(list3) is None
 
 
 def test_merge_one_to_many_swab_time_date_logic(spark_session):
