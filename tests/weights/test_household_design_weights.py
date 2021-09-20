@@ -44,13 +44,14 @@ def test_merge_one_to_many_swab(spark_session):
     ]
     df_input_lsoa = spark_session.createDataFrame(data_lsoa, schema=schema_lsoa)
 
-    schema_expected_aftgroup = """nb_address integer,
+    schema_expected_aftgroup = """interim_id integer,
+                                nb_address integer,
                                 cis20cd string"""
     data_expected_aftgroup = [
-        (1, "J06000172"),
-        (1, "J06000172"),
-        (1, "J06000172"),
-        (2, "J06000172"),
+        (72, 1, "J2"),
+        (72, 1, "J2"),
+        (72, 1, "J2"),
+        (72, 2, "J2"),
     ]
     df_expected = spark_session.createDataFrame(data_expected_aftgroup, schema=schema_expected_aftgroup)
 
