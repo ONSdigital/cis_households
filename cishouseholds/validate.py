@@ -5,6 +5,7 @@ from cerberus import TypeDefinition
 from cerberus import Validator
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from pyspark.sql import Row
 
 
@@ -111,3 +112,33 @@ def validate_csv_header(csv_file: str, expected_header: str):
                 f"Expected header: {expected_header}",
             )
     return True
+
+
+def check_singular_match(
+    df: DataFrame, flag_column_name: str, failure_column_name: str, match_type_column: str, group_by_column: str, i: int
+):
+    dft = (
+        df.filter((F.col(flag_column_name).isNull()) & (F.col(match_type_column) == 1))
+        .groupBy(group_by_column)
+        .count()
+        .withColumnRenamed(group_by_column, "b")
+        .withColumnRenamed(failure_column_name, "f")
+    )
+    dft = dft.withColumn(failure_column_name, F.when(F.col("count") > 1, 1).otherwise(None))
+    dft.show()
+    df = (
+        df.drop(failure_column_name)
+        .join(dft, dft.b == F.col(group_by_column), "outer")
+        .orderBy(group_by_column)
+        .withColumnRenamed("f", failure_column_name)
+        .drop("b", "count")
+    )
+    df.show()
+    return df
+
+
+def validate_merge_logic(df: DataFrame, flag_column_names: list, failed_column_names: list, match_type_colums: list):
+    columns = df.columns
+    for i, flag_column in enumerate(flag_column_names):
+        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], "barcode", i)
+    return df.select(*columns)
