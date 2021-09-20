@@ -434,11 +434,11 @@ def one_to_many_swabs(
     out_of_date_range_flag: str,
     count_barcode_labs_column_name: str,
     count_barcode_voyager_column_name: str,
-    window_column: str,
+    group_by_column: str,
     ordering_columns: List[str],
-    mk_result_column_name: str,
+    pcr_result_column_name: str,
     void_value: Union[str, int],
-    combination_flag_column_name: str,
+    flag_column_name: str,
 ) -> DataFrame:
     """
     One (Voyager) to Many (Antibody) matching process. Creates a flag to identify rows which do not match
@@ -450,7 +450,7 @@ def one_to_many_swabs(
     Step 2: uses merge_one_to_many_swab_time_date_logic() and applies an ordering function with the parameter
     ordering_columns (a list of strings with the table column names) to organise ascending each record within
     a window and flag out the rows that come after the first record.
-    Step 3: uses merge_one_to_many_swab_result_mk_logic() and drops result mk if there are void values having
+    Step 3: uses merge_one_to_many_swab_result_pcr_logic() and drops result pcr if there are void values having
     at least a positive/negative within the same barcode.
     Step 4: uses merge_one_to_many_swab_time_difference_logic() and after having ordered in Step 2 by the
     ordering_columns, if the first record has a positive date difference, flag all the other records.
@@ -467,12 +467,12 @@ def one_to_many_swabs(
         the Many column from One-to-Many
     count_barcode_voyager_column_name
         the One column from One-to-Many
-    window_column
+    group_by_column
         the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
     ordering_columns
         a list of strings with the column name for ordering used in steps 2 and 4.
-    mk_result_column_name
-    combination_flag_column_name
+    pcr_result_column_name
+    flag_column_name
         Combination of steps 1, 2, 3, 4 using a OR boolean operation to apply the whole One-to-Many swabs
 
     Notes
@@ -492,26 +492,26 @@ def one_to_many_swabs(
         "merge_flag",
         F.when(F.col("merge_flag") == 1, None).otherwise(1),
     )
-    df = merge_one_to_many_swab_time_date_logic(df, window_column, ordering_columns, "time_order_flag")
-    df = merge_one_to_many_swab_result_mk_logic(
+    df = merge_one_to_many_swab_time_date_logic(df, group_by_column, ordering_columns, "time_order_flag")
+    df = merge_one_to_many_swab_result_pcr_logic(
         df=df,
         void_value=void_value,
-        window_column=window_column,
-        mk_result_column_name=mk_result_column_name,
-        result_mk_logic_flag_column_name="mk_flag",
+        group_by_column=group_by_column,
+        pcr_result_column_name=pcr_result_column_name,
+        result_pcr_logic_flag_column_name="pcr_flag",
     )
     df = merge_one_to_many_swab_time_difference_logic(
         df=df,
-        window_column=window_column,
+        group_by_column=group_by_column,
         ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="time_difference_flag",
     )
     return df.withColumn(
-        combination_flag_column_name,
+        flag_column_name,
         F.when(
             (F.col("merge_flag") == 1)
             | (F.col("time_order_flag") == 1)
-            | (F.col("mk_flag") == 1)
+            | (F.col("pcr_flag") == 1)
             | (F.col("time_difference_flag") == 1),
             1,
         ),
@@ -519,7 +519,7 @@ def one_to_many_swabs(
 
 
 def merge_one_to_many_swab_time_date_logic(
-    df: DataFrame, window_column: str, ordering_columns: List[str], time_order_logic_flag_column_name: str
+    df: DataFrame, group_by_column: str, ordering_columns: List[str], time_order_logic_flag_column_name: str
 ) -> DataFrame:
     """
     Step 2: applies an ordering function with the parameter ordering_columns
@@ -528,67 +528,68 @@ def merge_one_to_many_swab_time_date_logic(
     Parameters
     ----------
     df
-    window_column
+    group_by_column
         the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
     ordering_columns
         a list of strings with the column name for ordering used in steps 2 and 4.
     time_order_logic_flag_column_name
         Output column in Step 2
     """
-    window = Window.partitionBy(window_column).orderBy(*ordering_columns)
+    window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
     return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window)).withColumn(
         time_order_logic_flag_column_name,
         F.when(F.col(time_order_logic_flag_column_name) == 1, None).otherwise(1),
     )
 
 
-def merge_one_to_many_swab_result_mk_logic(
+def merge_one_to_many_swab_result_pcr_logic(
     df: DataFrame,
     void_value: Union[str, int],
-    window_column: str,
-    mk_result_column_name: str,
-    result_mk_logic_flag_column_name: str,
+    group_by_column: str,
+    pcr_result_column_name: str,
+    result_pcr_logic_flag_column_name: str,
 ) -> DataFrame:
     """
-    Step 3: drops result mk if there are void values having at least a positive/negative within the
+    Step 3: drops result pcr if there are void values having at least a positive/negative within the
     same barcode.
     ----------
     df
     void_value
-        the way void is represented in column mk_result
-    window_column
+        the way void is represented in column pcr_result
+    group_by_column
         the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
-    mk_result_column_name
-    result_mk_logic_flag_column_name
+    pcr_result_column_name
+    result_pcr_logic_flag_column_name
         Output column in Step 3
     """
     df_output = df
 
-    df = df.withColumn("other_than", F.when(~(F.col(mk_result_column_name) == void_value), 1)).withColumn(
-        "void", F.when(F.col(mk_result_column_name) == void_value, 1)
+    df = df.withColumn("other_than", F.when(~(F.col(pcr_result_column_name) == void_value), 1)).withColumn(
+        "void", F.when(F.col(pcr_result_column_name) == void_value, 1)
     )
 
     df = (
-        df.dropDuplicates([window_column, "other_than", "void"])
-        .drop(mk_result_column_name)
-        .groupBy(window_column)
+        df.dropDuplicates([group_by_column, "other_than", "void"])
+        .drop(pcr_result_column_name)
+        .groupBy(group_by_column)
         .agg(F.sum("other_than").alias("other_than"), F.sum("void").alias("void"))
         .withColumn(
-            result_mk_logic_flag_column_name, F.when((F.col("other_than").isNotNull()) & (F.col("void").isNotNull()), 1)
+            result_pcr_logic_flag_column_name,
+            F.when((F.col("other_than").isNotNull()) & (F.col("void").isNotNull()), 1),
         )
-        .select(window_column, result_mk_logic_flag_column_name)
+        .select(group_by_column, result_pcr_logic_flag_column_name)
     )
 
-    return df_output.join(df, [window_column], "inner").withColumn(
-        result_mk_logic_flag_column_name,
-        F.when((F.col(mk_result_column_name) == "void") & (F.col(result_mk_logic_flag_column_name) == 1), 1).otherwise(
-            None
-        ),
+    return df_output.join(df, [group_by_column], "inner").withColumn(
+        result_pcr_logic_flag_column_name,
+        F.when(
+            (F.col(pcr_result_column_name) == "void") & (F.col(result_pcr_logic_flag_column_name) == 1), 1
+        ).otherwise(None),
     )
 
 
 def merge_one_to_many_swab_time_difference_logic(
-    df: DataFrame, window_column: str, ordering_columns: List[str], time_difference_logic_flag_column_name: str
+    df: DataFrame, group_by_column: str, ordering_columns: List[str], time_difference_logic_flag_column_name: str
 ) -> DataFrame:
     """
     Step 4: After having ordered in Step 2 by the ordering_columns, if the first record has a positive date
@@ -603,7 +604,7 @@ def merge_one_to_many_swab_time_difference_logic(
     time_difference_logic_flag_column_name
         Output column in Step 4
     """
-    window = Window.partitionBy(window_column).orderBy(*ordering_columns)
+    window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
 
     return (
         df.withColumn("Ranking", F.rank().over(window))

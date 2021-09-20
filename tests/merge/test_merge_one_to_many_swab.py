@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.merge import merge_one_to_many_swab_result_mk_logic
+from cishouseholds.merge import merge_one_to_many_swab_result_pcr_logic
 from cishouseholds.merge import merge_one_to_many_swab_time_date_logic
 from cishouseholds.merge import merge_one_to_many_swab_time_difference_logic
 from cishouseholds.merge import one_to_many_swabs
@@ -29,17 +29,17 @@ def test_merge_one_to_many_swab_time_date_logic(spark_session):
 
     df_input = expected_df.drop("flag")
     ordering_columns = ["abs_diff_24", "time_diff", "date_received"]
-    window_column = "barcode_iq"
+    group_by_column = "barcode_iq"
 
-    df_output = merge_one_to_many_swab_time_date_logic(df_input, window_column, ordering_columns, "flag_time_date")
+    df_output = merge_one_to_many_swab_time_date_logic(df_input, group_by_column, ordering_columns, "flag_time_date")
 
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
 
 
-def test_merge_one_to_many_mk_void(spark_session):
+def test_merge_one_to_many_pcr_void(spark_session):
     schema = """barcode_iq string,
-                result_mk string,
-                flag_mk integer"""
+                result_pcr string,
+                flag_pcr integer"""
     data = [
         ("A", "positive", None),
         ("A", "negative", None),
@@ -54,8 +54,8 @@ def test_merge_one_to_many_mk_void(spark_session):
     ]
 
     df_expected = spark_session.createDataFrame(data, schema=schema)
-    df_input = df_expected.drop("flag_mk")
-    df_actual = merge_one_to_many_swab_result_mk_logic(df_input, "void", "barcode_iq", "result_mk", "flag_mk")
+    df_input = df_expected.drop("flag_pcr")
+    df_actual = merge_one_to_many_swab_result_pcr_logic(df_input, "void", "barcode_iq", "result_pcr", "flag_pcr")
 
     assert_df_equality(df_actual, df_expected, ignore_row_order=True, ignore_column_order=True)
 
@@ -88,7 +88,7 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
 
     df_output = merge_one_to_many_swab_time_difference_logic(
         df=df_input,
-        window_column="barcode_iq",
+        group_by_column="barcode_iq",
         ordering_columns=["barcode_iq", "time_diff_abs", "time_diff", "date_received"],
         time_difference_logic_flag_column_name="flag_time_diff",
     )
@@ -104,7 +104,7 @@ def test_merge_one_to_many_swab(spark_session):
                 date_diff integer,
                 date_abs_diff_24 integer,
                 out_of_range integer,
-                result_mk string,
+                result_pcr string,
                 one_to_many_swabs_flag integer"""
 
     data = [
@@ -130,11 +130,11 @@ def test_merge_one_to_many_swab(spark_session):
         ("C", 1, 2, "2029-01-01", 288, 264, 1, "positive", 1),  # not passed because out_of_range
         # record D - ignore as count_blood > 1
         ("D", 2, 2, "2029-01-01", 12, 12, 1, "negative", 1),  # drop - not passed because count_blood > 1
-        # record E - one of the result_mk being Null/void and the other not:
-        # not passed because result_mk different than void available for barcode_iq
+        # record E - one of the result_pcr being Null/void and the other not:
+        # not passed because result_pcr different than void available for barcode_iq
         ("E", 1, 2, "2029-01-01", 12, 12, None, "void", 1),  # drop
         ("E", 1, 2, "2029-01-01", 12, 12, None, "positive", None),  # kept
-        # record F - both result_mk being null do not flag
+        # record F - both result_pcr being null do not flag
         ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None),  # keep
         ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None),  # keep
         # record G - to be dropped because date_diff have different signs:
@@ -152,11 +152,11 @@ def test_merge_one_to_many_swab(spark_session):
         out_of_date_range_flag="out_of_range",
         count_barcode_labs_column_name="count_swab",
         count_barcode_voyager_column_name="count_blood",
-        window_column="barcode_iq",
+        group_by_column="barcode_iq",
         ordering_columns=ordering_columns,
-        mk_result_column_name="result_mk",
+        pcr_result_column_name="result_pcr",
         void_value="void",
-        combination_flag_column_name="one_to_many_swabs_flag",
+        flag_column_name="one_to_many_swabs_flag",
     )
-    df_output = df_output.drop("merge_flag", "time_order_flag", "mk_flag", "time_difference_flag")
+    df_output = df_output.drop("merge_flag", "time_order_flag", "pcr_flag", "time_difference_flag")
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
