@@ -46,7 +46,7 @@ jobs:
 
       - uses: vemonet/setup-spark@v1
         with:
-          spark-version: '3.0.2'
+          spark-version: '2.4.0'
           hadoop-version: '3.2'
 
       - name: Install Python dependencies
@@ -75,7 +75,7 @@ jobs:
 
       - uses: vemonet/setup-spark@v1
         with:
-          spark-version: '3.0.2'
+          spark-version: '2.4.0'
           hadoop-version: '3.2'
 
       - name: Install Python dependencies
