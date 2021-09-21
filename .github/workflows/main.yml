@@ -29,8 +29,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel==0.29.0
           python setup.py sdist bdist_wheel
-  test-with-cov:
-    runs-on: ubuntu-16.04
+          
+  test:
+    runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
@@ -49,6 +50,24 @@ jobs:
       - name: Run pytest
         run: |
           pytest -v
+  
+  test-with-cov:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.6.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.8
+
+      - name: Install Python dependencies
+        # Wheel is specific here because of conflicts on this Python version
+        run: |
+          python -m pip install --upgrade pip
+          pip install pypandoc==1.5
+          pip install -e .[ci]
       - name: Run pytest with coverage
         run: |
           pytest --cov=cishouseholds --cov-report=xml --cov-report=term-missing
