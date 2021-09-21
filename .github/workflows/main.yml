@@ -15,7 +15,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -46,6 +46,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pypandoc==1.5
           pip install -e .[ci]
+      - name: Run pytest
+        run: |
+          pytest -v
       - name: Run pytest with coverage
         run: |
           pytest --cov=cishouseholds --cov-report=xml --cov-report=term-missing
