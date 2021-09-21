@@ -46,8 +46,8 @@ jobs:
 
       - uses: vemonet/setup-spark@v1
         with:
-          spark-version: '2.4.0'
-          hadoop-version: '2.1.1'
+          spark-version: '3.0.2'
+          hadoop-version: '3.2'
 
       - name: Install Python dependencies
         # Wheel is specific here because of conflicts on this Python version
@@ -58,7 +58,7 @@ jobs:
       - name: Run pytest
         run: |
           pytest -v
-  
+
   test-with-cov:
     runs-on: ubuntu-latest
     steps:
@@ -75,8 +75,8 @@ jobs:
 
       - uses: vemonet/setup-spark@v1
         with:
-          spark-version: '2.4.0'
-          hadoop-version: '2.1.1'
+          spark-version: '3.0.2'
+          hadoop-version: '3.2'
 
       - name: Install Python dependencies
         # Wheel is specific here because of conflicts on this Python version
