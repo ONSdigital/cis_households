@@ -42,12 +42,12 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: '10'
+          java-version: '8'
 
       - uses: vemonet/setup-spark@v1
         with:
           spark-version: '2.4.0'
-          hadoop-version: '3.2'
+          hadoop-version: '2.1.1'
 
       - name: Install Python dependencies
         # Wheel is specific here because of conflicts on this Python version
@@ -71,12 +71,12 @@ jobs:
 
       - uses: actions/setup-java@v1
         with:
-          java-version: '10'
+          java-version: '8'
 
       - uses: vemonet/setup-spark@v1
         with:
           spark-version: '2.4.0'
-          hadoop-version: '3.2'
+          hadoop-version: '2.1.1'
 
       - name: Install Python dependencies
         # Wheel is specific here because of conflicts on this Python version
