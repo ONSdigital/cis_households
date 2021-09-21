@@ -445,18 +445,10 @@ def one_to_many_swabs(
     required criteria to be filtered out. The required criteria is a combination of 4 steps
     or subfunctions that creates one column for each step. And a combination of these 4 steps/columns
     are used to create the final one to many swabs column.
-    Step 1: uses assign_merge_process_group_flag() to make sure that the left side, or one (from one to many)
-    has only one record and the right side, or many (from one to many) has more than one record.
-    Step 2: uses merge_one_to_many_swab_time_date_logic() and applies an ordering function with the parameter
-    ordering_columns (a list of strings with the table column names) to organise ascending each record within
-    a window and flag out the rows that come after the first record.
-    Step 3: uses merge_one_to_many_swab_result_pcr_logic() and drops result pcr if there are void values having
-    at least a positive/negative within the same barcode.
-    Step 4: uses merge_one_to_many_swab_time_difference_logic() and after having ordered in Step 2 by the
-    ordering_columns, if the first record has a positive date difference, flag all the other records.
-    And if the first record has a negative time difference, ensuring that the following records have also a
-    negative time difference, flag the one after the first to be dropped.
-
+    Step 1: uses assign_merge_process_group_flag()
+    Step 2: uses merge_one_to_many_swab_time_date_logic()
+    Step 3: uses merge_one_to_many_swab_result_pcr_logic()
+    Step 4: uses merge_one_to_many_swab_time_difference_logic()
     Parameters
     ----------
     df
@@ -472,9 +464,10 @@ def one_to_many_swabs(
     ordering_columns
         a list of strings with the column name for ordering used in steps 2 and 4.
     pcr_result_column_name
+    void_value
+        value given the pcr_result_name for void that could be a string 'void' or a number.
     flag_column_name
         Combination of steps 1, 2, 3, 4 using a OR boolean operation to apply the whole One-to-Many swabs
-
     Notes
     -----
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
