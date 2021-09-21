@@ -32,15 +32,12 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ONS-SST/cis_households",
-    project_urls={
-        "Bug Tracker": "https://github.com/ONS-SST/cis_households/issues",
-    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=setuptools.find_packages(where="src"),
+    packages=setuptools.find_packages(exclude="tests"),
     python_requires="==3.6.8",
     install_requires=requires,
     extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1", "pytest-cov", "coverage"]},
