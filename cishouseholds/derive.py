@@ -4,16 +4,16 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def create_column_from_coalesce(df, new_column_name, *args):
+def assign_column_from_coalesce(df, column_name_to_assign, *args):
     """
-    Create new column with values from coalesced columns.
+    Assign new column with values from coalesced columns.
     From households_aggregate_processes.xlsx, derivation number 6.
     D6: V1, or V2 if V1 is missing
 
     Parameters
     ----------
     df: pyspark.sql.DataFrame
-    new_column_name: string
+    column_name_to_assign: string
     *args: string
         name of columns to coalesce
 
@@ -22,7 +22,7 @@ def create_column_from_coalesce(df, new_column_name, *args):
     df: pyspark.sql.DataFrame
 
     """
-    return df.withColumn(colName=new_column_name, col=F.coalesce(*args))
+    return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
 
 
 def substring_column(df: DataFrame, new_column_name, column_to_substr, start_position, len_of_substr):
