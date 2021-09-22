@@ -30,4 +30,5 @@ def household_design_weights(df_address_base: DataFrame, df_nspl: DataFrame, df_
             "nb_address", F.when(F.col("nb_address").isNotNull(), F.col("nb_address").cast("int")).otherwise(None)
         )
     )
+
     return df
