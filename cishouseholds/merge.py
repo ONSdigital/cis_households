@@ -446,7 +446,7 @@ def one_to_many_swabs(
     or subfunctions that creates one column for each step. And a combination of these 4 steps/columns
     are used to create the final one to many swabs column.
     Step 1: uses assign_merge_process_group_flag()
-    Step 2: uses merge_one_to_many_swab_time_date_logic()
+    Step 2: uses merge_one_to_many_swab_ordering_logic()
     Step 3: uses merge_one_to_many_swab_result_pcr_logic()
     Step 4: uses merge_one_to_many_swab_time_difference_logic()
     Parameters
@@ -485,7 +485,7 @@ def one_to_many_swabs(
         "merge_flag",
         F.when(F.col("merge_flag") == 1, None).otherwise(1),
     )
-    df = merge_one_to_many_swab_time_date_logic(df, group_by_column, ordering_columns, "time_order_flag")
+    df = merge_one_to_many_swab_ordering_logic(df, group_by_column, ordering_columns, "time_order_flag")
     df = merge_one_to_many_swab_result_pcr_logic(
         df=df,
         void_value=void_value,
@@ -511,7 +511,7 @@ def one_to_many_swabs(
     )
 
 
-def merge_one_to_many_swab_time_date_logic(
+def merge_one_to_many_swab_ordering_logic(
     df: DataFrame, group_by_column: str, ordering_columns: List[str], time_order_logic_flag_column_name: str
 ) -> DataFrame:
     """

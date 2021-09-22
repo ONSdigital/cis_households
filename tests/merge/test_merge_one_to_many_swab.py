@@ -1,12 +1,12 @@
 from chispa import assert_df_equality
 
+from cishouseholds.merge import merge_one_to_many_swab_ordering_logic
 from cishouseholds.merge import merge_one_to_many_swab_result_pcr_logic
-from cishouseholds.merge import merge_one_to_many_swab_time_date_logic
 from cishouseholds.merge import merge_one_to_many_swab_time_difference_logic
 from cishouseholds.merge import one_to_many_swabs
 
 
-def test_merge_one_to_many_swab_time_date_logic(spark_session):
+def test_merge_one_to_many_swab_ordering_logic(spark_session):
     schema = """barcode_iq string,
                 abs_diff_24 integer,
                 time_diff integer,
@@ -31,7 +31,7 @@ def test_merge_one_to_many_swab_time_date_logic(spark_session):
     ordering_columns = ["abs_diff_24", "time_diff", "date_received"]
     group_by_column = "barcode_iq"
 
-    df_output = merge_one_to_many_swab_time_date_logic(df_input, group_by_column, ordering_columns, "flag_time_date")
+    df_output = merge_one_to_many_swab_ordering_logic(df_input, group_by_column, ordering_columns, "flag_time_date")
 
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
 
