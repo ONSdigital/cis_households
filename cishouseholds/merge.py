@@ -1,3 +1,4 @@
+from typing import List
 from typing import Union
 
 from pyspark.sql import DataFrame
@@ -8,7 +9,6 @@ from pyspark.sql.window import Window
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
     Derive column to count the number of occurrences of the value in the reference_column over the entire dataframe.
-
     Parameters
     ----------
     df
@@ -23,10 +23,29 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
 
 
+def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_column: str):
+    """
+    create columns for row number and group number of rows within a window
+
+    Parameters
+    ----------
+    df
+    window
+    group_by_column
+
+    """
+    df = df.withColumn("row_num", F.row_number().over(window))
+    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
+    dft = dft.withColumn("dummy", F.lit(1))
+    mini_window = Window.partitionBy("dummy").orderBy("b")
+    dft = dft.withColumn("group", F.row_number().over(mini_window))
+    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
+    return df, dft
+
+
 def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
     """
     Assign column based on the absolute value of an offsetted number.
-
     Parameters
     ----------
     df
@@ -36,7 +55,6 @@ def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_
         Name of column to calculate values for new column from
     offset
         Amount to offset each reference_column value by
-
     Notes
     -----
     Offset will be subtracted.
@@ -44,62 +62,85 @@ def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_
     return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
-    """
-    Join two datasets.
-
-    Parameters
-    ----------
-    df1
-    df2
-    reference_column
-        Column for join to occur on
-    join_type
-        Specify join type to apply to .join() method
-    """
-    return df1.join(df2, on=reference_column, how=join_type)
-
-
-def assign_merge_process_group_flag(
+def flag_columns_different_to_ref(
     df: DataFrame,
     column_name_to_assign: str,
-    out_of_date_range_flag: str,
-    count_barcode_labs_column_name: str,
-    count_barcode_labs_condition: str,
-    count_barcode_voyager_column_name: str,
-    count_barcode_voyager_condition: str,
+    reference_column: str,
+    check_column: str,
+    selection_column: str,
+    exclusion_column: str,
+    exclusion_row_value: int,
 ):
     """
-    Combine three conditions to create flag indicating record to be processed in forthcoming matching process.
-    This is run for each of 1:1, 1:many, many:1 and many:many to identify the relevant processing group.
+    create flag column for rows where value differs from that of first row in group
 
     Parameters
     ----------
     df
     column_name_to_assign
-    out_of_date_range_flag
-    count_barcode_labs_column_name
-    count_barcode_labs_condition
-    count_barcode_voyager_column_name
-    count_barcode_voyager_condition
+    reference_column
+    check_column
+    selection_column
+    exclusion_column
+    exclusion_row_value
+
     """
-
-    count_barcode_labs_condition = F.expr(f"{count_barcode_labs_column_name} {count_barcode_labs_condition}")
-    count_barcode_voyager_condition = F.expr(f"{count_barcode_voyager_column_name} {count_barcode_voyager_condition}")
-
-    df = df.withColumn("count_barcode_labs_flag", F.when(count_barcode_labs_condition, 1))
-    df = df.withColumn("count_barcode_voyager_flag", F.when(count_barcode_voyager_condition, 1))
-
-    return df.withColumn(
+    df = df.withColumn(
         column_name_to_assign,
         F.when(
             (
-                F.col(out_of_date_range_flag).isNull()
-                & (F.col("count_barcode_labs_flag") + F.col("count_barcode_voyager_flag") == 2)
+                (F.col(selection_column) == 1)
+                & (F.col(reference_column) != F.col(check_column))
+                & (F.col(exclusion_column) != exclusion_row_value)
             ),
             1,
-        ).otherwise(None),
-    ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
+        ).otherwise(
+            None
+        ),  # drop rows after first where diff vs visit is
+    )
+    return df
+
+
+def create_count_group(df: DataFrame, group_column: str, reference_column: str, rename_group: bool):
+    """
+    create seperate grouped dataframe to hold number of occurances of reference column value within group
+
+    Parameters
+    ----------
+    df
+    group_column
+    reference_column
+    rename_group
+
+    """
+    dft = (
+        df.where(df.identify_one_to_many_bloods_flag == 1)
+        .groupBy(group_column, reference_column)
+        .count()
+        .withColumnRenamed(reference_column, reference_column[0])
+        .withColumnRenamed("count", "c{}".format(reference_column[0]))
+    )
+    if rename_group:
+        dft = dft.withColumnRenamed("group", "g")
+    return dft
+
+
+def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str, group_by_column: str):
+    """
+    check consistency of multipl columns and create seperate joined dataframe of chosen columns
+
+    Parameters
+    ----------
+    df
+    check_column1
+    check_column2
+    group_by_column
+
+    """
+    dft1 = create_count_group(df, group_by_column, check_column1, True)
+    dft2 = create_count_group(df, group_by_column, check_column2, False)
+    dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
+    return dfj
 
 
 def assign_time_difference_and_flag_if_outside_interval(
@@ -117,7 +158,6 @@ def assign_time_difference_and_flag_if_outside_interval(
     between two columns, and creates associated column to flag whether the difference is
     between specified lower and upper bounds (inclusive). If the difference is outside
     of these bounds, return 1, otherwise None.
-
     Parameters
     ----------
     df
@@ -142,7 +182,6 @@ def assign_time_difference_and_flag_if_outside_interval(
         By default will be a string called 'hours'. If upper and lower interval
         bounds are input as days, define interval_format to 'days'.
         These are the only two possible formats.
-
     Notes
     -----
     Lower_interval should be a negative value if start_datetime_reference_column
@@ -176,7 +215,6 @@ def assign_time_difference_and_flag_if_outside_interval(
 def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
     """
     Derive column with unique identifier for each record.
-
     Parameters
     ----------
     df
@@ -191,11 +229,90 @@ def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
+def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
+    """
+    Join two datasets.
+    Parameters
+    ----------
+    df1
+    df2
+    reference_column
+        Column for join to occur on
+    join_type
+        Specify join type to apply to .join() method
+    """
+    return df1.join(df2, on=reference_column, how=join_type)
+
+
+def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
+    """
+    create reference column for the first row of each partion in a window
+
+    Parameters
+    ----------
+    df
+    reference_column
+    group_column
+    row_column
+    row_num
+
+    """
+    dft = (
+        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
+        .filter(F.col(row_column) == row_num)
+        .withColumnRenamed(group_column, "g")
+        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column[0], row_num))
+        .drop(row_column)
+    )
+    df = df.join(dft, dft.g == F.col(group_column)).drop("g")
+    return df, "{}{}_ref".format(reference_column[0], row_num)
+
+
+def assign_merge_process_group_flag(
+    df: DataFrame,
+    column_name_to_assign: str,
+    out_of_date_range_flag: str,
+    count_barcode_labs_column_name: str,
+    count_barcode_labs_condition: str,
+    count_barcode_voyager_column_name: str,
+    count_barcode_voyager_condition: str,
+):
+    """
+    Combine three conditions to create flag indicating record to be processed in forthcoming matching process.
+    This is run for each of 1:1, 1:many, many:1 and many:many to identify the relevant processing group.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    out_of_date_range_flag
+    count_barcode_labs_column_name
+    count_barcode_labs_condition
+    count_barcode_voyager_column_name
+    count_barcode_voyager_condition
+    """
+
+    count_barcode_labs_condition = F.expr(f"{count_barcode_labs_column_name} {count_barcode_labs_condition}")
+    count_barcode_voyager_condition = F.expr(f"{count_barcode_voyager_column_name} {count_barcode_voyager_condition}")
+
+    df = df.withColumn("count_barcode_labs_flag", F.when(count_barcode_labs_condition, 1))
+    df = df.withColumn("count_barcode_voyager_flag", F.when(count_barcode_voyager_condition, 1))
+
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (
+                F.col(out_of_date_range_flag).isNull()
+                & (F.col("count_barcode_labs_flag") + F.col("count_barcode_voyager_flag") == 2)
+            ),
+            1,
+        ).otherwise(None),
+    ).drop("count_barcode_labs_flag", "count_barcode_voyager_flag")
+
+
 def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str, ordering_columns: list):
     """
     Many (Voyager) to one (swab) matching process.
     Creates flag for records to be dropped as non-optimal matches.
-
     Parameters
     ----------
     df
@@ -316,12 +433,10 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     """
     Many (Voyager) to one (antibody) matching process. Creates a flag to identify rows which doesn't match
     required criteria (to be filtered later)
-
     Parameters
     ----------
     df
     column_name_to_assign
-
     """
     df = assign_merge_process_group_flag(
         df,
@@ -345,135 +460,6 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
 
 
-def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_column: str):
-    """
-    create columns for row number and group number of rows within a window
-
-    Parameters
-    ----------
-    df
-    window
-    group_by_column
-
-    """
-    df = df.withColumn("row_num", F.row_number().over(window))
-    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
-    dft = dft.withColumn("dummy", F.lit(1))
-    mini_window = Window.partitionBy("dummy").orderBy("b")
-    dft = dft.withColumn("group", F.row_number().over(mini_window))
-    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
-    # df.show()
-    return df, dft
-
-
-def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
-    """
-    create reference column for the first row of each partion in a window
-
-    Parameters
-    ----------
-    df
-    reference_column
-    group_column
-    row_column
-    row_num
-
-    """
-    dft = (
-        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
-        .filter(F.col(row_column) == row_num)
-        .withColumnRenamed(group_column, "g")
-        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column[0], row_num))
-        .drop(row_column)
-    )
-    df = df.join(dft, dft.g == F.col(group_column)).drop("g")
-    # df.show()
-    return df, "{}{}_ref".format(reference_column[0], row_num)
-
-
-def flag_columns_different_to_ref(
-    df: DataFrame,
-    column_name_to_assign: str,
-    reference_column: str,
-    check_column: str,
-    selection_column: str,
-    exclusion_column: str,
-    exclusion_row_value: int,
-):
-    """
-    create flag column for rows where value differs from that of first row in group
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    reference_column
-    check_column
-    selection_column
-    exclusion_column
-    exclusion_row_value
-
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (
-                (F.col(selection_column) == 1)
-                & (F.col(reference_column) != F.col(check_column))
-                & (F.col(exclusion_column) != exclusion_row_value)
-            ),
-            1,
-        ).otherwise(
-            None
-        ),  # drop rows after first where diff vs visit is
-    )
-    # df.show()
-    return df
-
-
-def create_count_group(df: DataFrame, group_column: str, reference_column: str, rename_group: bool):
-    """
-    create seperate grouped dataframe to hold number of occurances of reference column value within group
-
-    Parameters
-    ----------
-    df
-    group_column
-    reference_column
-    rename_group
-
-    """
-    dft = (
-        df.where(df.identify_one_to_many_bloods_flag == 1)
-        .groupBy(group_column, reference_column)
-        .count()
-        .withColumnRenamed(reference_column, reference_column[0])
-        .withColumnRenamed("count", "c{}".format(reference_column[0]))
-    )
-    if rename_group:
-        dft = dft.withColumnRenamed("group", "g")
-    return dft
-
-
-def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str, group_by_column: str):
-    """
-    check consistency of multipl columns and create seperate joined dataframe of chosen columns
-
-    Parameters
-    ----------
-    df
-    check_column1
-    check_column2
-    group_by_column
-
-    """
-    dft1 = create_count_group(df, group_by_column, check_column1, True)
-    dft2 = create_count_group(df, group_by_column, check_column2, False)
-    dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
-    # dfj.show()
-    return dfj
-
-
 def many_to_many_flag(
     df: DataFrame,
     drop_flag_column_name_to_assign: str,
@@ -485,7 +471,9 @@ def many_to_many_flag(
     """
     Many (Voyager) to Many (antibody) matching process.
     Creates flag for records to be dropped as non-optimal matches, and separate flag for records where process fails.
-
+    Parameters
+    ----------
+    df
     drop_flag_column_name_to_assign
         Name of column to indicate record is to be dropped
     group_by_column
@@ -673,4 +661,182 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
         "d1_ref",
         "dr1",
         "dr2",
+    )
+
+
+def one_to_many_swabs(
+    df: DataFrame,
+    out_of_date_range_flag: str,
+    count_barcode_labs_column_name: str,
+    count_barcode_voyager_column_name: str,
+    group_by_column: str,
+    ordering_columns: List[str],
+    pcr_result_column_name: str,
+    void_value: Union[str, int],
+    flag_column_name: str,
+) -> DataFrame:
+    """
+    One (Voyager) to Many (Antibody) matching process. Creates a flag to identify rows which do not match
+    required criteria to be filtered out. The required criteria is a combination of 4 steps
+    or subfunctions that creates one column for each step. And a combination of these 4 steps/columns
+    are used to create the final one to many swabs column.
+    Step 1: uses assign_merge_process_group_flag()
+    Step 2: uses merge_one_to_many_swab_ordering_logic()
+    Step 3: uses merge_one_to_many_swab_result_pcr_logic()
+    Step 4: uses merge_one_to_many_swab_time_difference_logic()
+    Parameters
+    ----------
+    df
+    out_of_date_range_flag
+        Column to work out whether the date difference is within an upper/lower range. This column can be
+        created by assign_time_difference_and_flag_if_outside_interval() by inputing two date columns.
+    count_barcode_labs_column_name
+        the Many column from One-to-Many
+    count_barcode_voyager_column_name
+        the One column from One-to-Many
+    group_by_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    pcr_result_column_name
+    void_value
+        value given the pcr_result_name for void that could be a string 'void' or a number.
+    flag_column_name
+        Combination of steps 1, 2, 3, 4 using a OR boolean operation to apply the whole One-to-Many swabs
+    Notes
+    -----
+    The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
+    """
+    df = assign_merge_process_group_flag(
+        df,
+        column_name_to_assign="merge_flag",
+        out_of_date_range_flag=out_of_date_range_flag,
+        count_barcode_labs_column_name=count_barcode_labs_column_name,
+        count_barcode_labs_condition=">1",
+        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
+        count_barcode_voyager_condition="==1",
+    )
+    df = df.withColumn(
+        "merge_flag",
+        F.when(F.col("merge_flag") == 1, None).otherwise(1),
+    )
+    df = merge_one_to_many_swab_ordering_logic(df, group_by_column, ordering_columns, "time_order_flag")
+    df = merge_one_to_many_swab_result_pcr_logic(
+        df=df,
+        void_value=void_value,
+        group_by_column=group_by_column,
+        pcr_result_column_name=pcr_result_column_name,
+        result_pcr_logic_flag_column_name="pcr_flag",
+    )
+    df = merge_one_to_many_swab_time_difference_logic(
+        df=df,
+        group_by_column=group_by_column,
+        ordering_columns=ordering_columns,
+        time_difference_logic_flag_column_name="time_difference_flag",
+    )
+    return df.withColumn(
+        flag_column_name,
+        F.when(
+            (F.col("merge_flag") == 1)
+            | (F.col("time_order_flag") == 1)
+            | (F.col("pcr_flag") == 1)
+            | (F.col("time_difference_flag") == 1),
+            1,
+        ),
+    )
+
+
+def merge_one_to_many_swab_ordering_logic(
+    df: DataFrame, group_by_column: str, ordering_columns: List[str], time_order_logic_flag_column_name: str
+) -> DataFrame:
+    """
+    Step 2: applies an ordering function with the parameter ordering_columns
+    (a list of strings with the table column names) to organise ascending each record
+    within a window and flag out the rows that come after the first record.
+    Parameters
+    ----------
+    df
+    group_by_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    time_order_logic_flag_column_name
+        Output column in Step 2
+    """
+    window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
+    return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window)).withColumn(
+        time_order_logic_flag_column_name,
+        F.when(F.col(time_order_logic_flag_column_name) == 1, None).otherwise(1),
+    )
+
+
+def merge_one_to_many_swab_result_pcr_logic(
+    df: DataFrame,
+    void_value: Union[str, int],
+    group_by_column: str,
+    pcr_result_column_name: str,
+    result_pcr_logic_flag_column_name: str,
+) -> DataFrame:
+    """
+    Step 3: drops result pcr if there are void values having at least a positive/negative within the
+    same barcode.
+    ----------
+    df
+    void_value
+        the way void is represented in column pcr_result
+    group_by_column
+        the barcode, user_id used for grouping for the steps 2, 3, 4 where window function is used
+    pcr_result_column_name
+    result_pcr_logic_flag_column_name
+        Output column in Step 3
+    """
+    df_output = df
+
+    df = df.withColumn("other_than", F.when(~(F.col(pcr_result_column_name) == void_value), 1)).withColumn(
+        "void", F.when(F.col(pcr_result_column_name) == void_value, 1)
+    )
+
+    df = (
+        df.dropDuplicates([group_by_column, "other_than", "void"])
+        .drop(pcr_result_column_name)
+        .groupBy(group_by_column)
+        .agg(F.sum("other_than").alias("other_than"), F.sum("void").alias("void"))
+        .withColumn(
+            result_pcr_logic_flag_column_name,
+            F.when((F.col("other_than").isNotNull()) & (F.col("void").isNotNull()), 1),
+        )
+        .select(group_by_column, result_pcr_logic_flag_column_name)
+    )
+
+    return df_output.join(df, [group_by_column], "inner").withColumn(
+        result_pcr_logic_flag_column_name,
+        F.when(
+            (F.col(pcr_result_column_name) == "void") & (F.col(result_pcr_logic_flag_column_name) == 1), 1
+        ).otherwise(None),
+    )
+
+
+def merge_one_to_many_swab_time_difference_logic(
+    df: DataFrame, group_by_column: str, ordering_columns: List[str], time_difference_logic_flag_column_name: str
+) -> DataFrame:
+    """
+    Step 4: After having ordered in Step 2 by the ordering_columns, if the first record has a positive date
+    difference, flag all the other records. And if the first record has a negative time difference,
+    ensuring that the following records have also a negative time difference, flag the one after the first
+    to be dropped.
+    Parameters
+    ----------
+    df
+    ordering_columns
+        a list of strings with the column name for ordering used in steps 2 and 4.
+    time_difference_logic_flag_column_name
+        Output column in Step 4
+    """
+    window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
+
+    return (
+        df.withColumn("Ranking", F.rank().over(window))
+        .withColumn(time_difference_logic_flag_column_name, F.when(F.col("Ranking") != 1, 1).otherwise(None))
+        .drop("Ranking")
+        .orderBy(*ordering_columns)
     )

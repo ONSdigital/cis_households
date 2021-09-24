@@ -4,15 +4,16 @@ from pyspark.sql import Window
 
 
 def sample_delta_ETL():
-    extract_from_csv()
-    validate_sample()
+    df = extract_from_csv()
+    df = validate_sample()
 
-    edit_sample_file()
-    calculate_design_weights()
+    df = edit_sample_file()
+    df = calculate_design_weights()
 
-    extract_existing_design_weights()
+    df = extract_existing_design_weights()
 
-    load_updated_design_weights()
+    df = load_updated_design_weights()
+    return df
 
 
 def extract_from_csv():

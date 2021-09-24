@@ -14,6 +14,7 @@ from cishouseholds.validate import validate_and_filter
 def bloods_delta_ETL(delta_file_path: str):
     spark_session = get_or_create_spark_session()
     bloods_spark_schema = convert_cerberus_schema_to_pyspark(bloods_validation_schema)
+    # reference_file_path = ""  # to be named as path to parque file for current bloods df
 
     raw_bloods_delta_header = ",".join(bloods_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
@@ -30,6 +31,7 @@ def bloods_delta_ETL(delta_file_path: str):
     df = validate_and_filter(df, bloods_validation_schema, error_accumulator)
     df = transform_bloods_delta(df)
     df = load_bloods_delta(df)
+    return df
 
 
 def transform_bloods_delta(df: DataFrame) -> DataFrame:
