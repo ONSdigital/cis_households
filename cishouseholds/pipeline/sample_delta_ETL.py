@@ -12,7 +12,7 @@ def sample_delta_ETL():
 
     extract_existing_design_weights()
 
-    load_updated_design_weights()
+    # load_updated_design_weights()
     return df
 
 
