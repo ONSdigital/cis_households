@@ -23,6 +23,26 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
 
 
+def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_column: str):
+    """
+    create columns for row number and group number of rows within a window
+
+    Parameters
+    ----------
+    df
+    window
+    group_by_column
+
+    """
+    df = df.withColumn("row_num", F.row_number().over(window))
+    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
+    dft = dft.withColumn("dummy", F.lit(1))
+    mini_window = Window.partitionBy("dummy").orderBy("b")
+    dft = dft.withColumn("group", F.row_number().over(mini_window))
+    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
+    return df, dft
+
+
 def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
     """
     Assign column based on the absolute value of an offsetted number.
@@ -40,6 +60,87 @@ def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_
     Offset will be subtracted.
     """
     return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
+
+
+def flag_columns_different_to_ref(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    check_column: str,
+    selection_column: str,
+    exclusion_column: str,
+    exclusion_row_value: int,
+):
+    """
+    create flag column for rows where value differs from that of first row in group
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    check_column
+    selection_column
+    exclusion_column
+    exclusion_row_value
+
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (
+                (F.col(selection_column) == 1)
+                & (F.col(reference_column) != F.col(check_column))
+                & (F.col(exclusion_column) != exclusion_row_value)
+            ),
+            1,
+        ).otherwise(
+            None
+        ),  # drop rows after first where diff vs visit is
+    )
+    return df
+
+
+def create_count_group(df: DataFrame, group_column: str, reference_column: str, rename_group: bool):
+    """
+    create seperate grouped dataframe to hold number of occurances of reference column value within group
+
+    Parameters
+    ----------
+    df
+    group_column
+    reference_column
+    rename_group
+
+    """
+    dft = (
+        df.where(df.identify_one_to_many_bloods_flag == 1)
+        .groupBy(group_column, reference_column)
+        .count()
+        .withColumnRenamed(reference_column, reference_column[0])
+        .withColumnRenamed("count", "c{}".format(reference_column[0]))
+    )
+    if rename_group:
+        dft = dft.withColumnRenamed("group", "g")
+    return dft
+
+
+def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str, group_by_column: str):
+    """
+    check consistency of multipl columns and create seperate joined dataframe of chosen columns
+
+    Parameters
+    ----------
+    df
+    check_column1
+    check_column2
+    group_by_column
+
+    """
+    dft1 = create_count_group(df, group_by_column, check_column1, True)
+    dft2 = create_count_group(df, group_by_column, check_column2, False)
+    dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
+    return dfj
 
 
 def assign_time_difference_and_flag_if_outside_interval(
@@ -141,6 +242,30 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
         Specify join type to apply to .join() method
     """
     return df1.join(df2, on=reference_column, how=join_type)
+
+
+def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
+    """
+    create reference column for the first row of each partion in a window
+
+    Parameters
+    ----------
+    df
+    reference_column
+    group_column
+    row_column
+    row_num
+
+    """
+    dft = (
+        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
+        .filter(F.col(row_column) == row_num)
+        .withColumnRenamed(group_column, "g")
+        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column[0], row_num))
+        .drop(row_column)
+    )
+    df = df.join(dft, dft.g == F.col(group_column)).drop("g")
+    return df, "{}{}_ref".format(reference_column[0], row_num)
 
 
 def assign_merge_process_group_flag(
@@ -427,6 +552,116 @@ def many_to_many_flag(
         )
 
     return df.drop("identify_many_to_many_flag", "classification_different_to_first", "record_processed", "row_number")
+
+
+def create_inconsistent_data_drop_flag(
+    df: DataFrame, selection_column: str, item1_count_column: str, item2_count_column: str
+):
+    """
+    create flag column for groups where data of chosen columns is inconsistent
+
+    Parameters
+    ----------
+    df
+    item1_count_column
+    item2_count_column
+
+    """
+    df = df.withColumn(
+        "dr2",
+        F.when(
+            (F.col(selection_column) == 1)
+            & ((F.col(item1_count_column) != F.col("count")) | (F.col(item2_count_column) != F.col("count"))),
+            1,
+        ).otherwise(None),
+    ).drop(item1_count_column, item2_count_column)
+    # df.show()
+    return df
+
+
+def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
+    """
+    steps to complete:
+    create columns for row number and group number in new grouped df
+    adding first diff interval ref and flagging records with different diff interval to first
+    check for consistent siemens, tdi data
+    adding drop flag 2 column to indicate inconsitent siemens or tdi data within group
+
+    """
+    df = assign_merge_process_group_flag(
+        df,
+        "identify_one_to_many_bloods_flag",
+        "out_of_date_range_blood",
+        "count_barcode_voyager",
+        "==1",
+        "count_barcode_blood",
+        ">1",
+    )
+    window = Window.partitionBy(group_by_column).orderBy(
+        "identify_one_to_many_bloods_flag", "diff_interval_hours", "visit_date"
+    )
+    df, dft = assign_group_and_row_number_columns(df, window, group_by_column)
+
+    df, reference_col_name = assign_first_row_value_ref(
+        df=df, reference_column="diff_interval_hours", group_column="group", row_column="row_num", row_num=1
+    )
+
+    df = flag_columns_different_to_ref(
+        df=df,
+        exclusion_column="row_num",
+        exclusion_row_value=1,
+        selection_column="identify_one_to_many_bloods_flag",
+        reference_column=reference_col_name,
+        check_column="diff_interval_hours",
+        column_name_to_assign="dr1",
+    )
+
+    dfj = check_consistent_data(df=df, check_column1="siemens", check_column2="tdi", group_by_column="group")
+
+    dfn = dft.join(dfj, (dfj.g == dft.group)).drop("dummy", "group", "count")
+
+    df = df.join(
+        dfn,
+        (dfn.b == df.barcode_iq) & (dfn.g == df.group) & (dfn.s.eqNullSafe(df.siemens)) & (dfn.t.eqNullSafe(df.tdi)),
+    ).orderBy("group", "row_num")
+
+    df = create_inconsistent_data_drop_flag(
+        df=df, selection_column="identify_one_to_many_bloods_flag", item1_count_column="cs", item2_count_column="ct"
+    ).drop("s", "t", "b", "g")
+    df.show()
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (
+                (F.col("identify_one_to_many_bloods_flag") == 1)
+                & (((F.col("dr2") == 1) & (F.col("row_num") != 1)) | (F.col("dr1") == 1))
+            ),
+            1,
+        ).otherwise(None),
+    )
+    df = df.withColumn(
+        "failed",
+        F.when(
+            (
+                (F.col("identify_one_to_many_bloods_flag") == 1)
+                & ((F.col(column_name_to_assign).isNull()) & (F.col("row_num") != 1) & (F.col("count") != 1))
+            ),
+            1,
+        ).otherwise(None),
+    )
+
+    return df.drop(
+        "out_of_date_range_blood",
+        "identify_one_to_many_bloods_flag",
+        "group",
+        "d1_ref",
+        "count",
+        "row_num",
+        "d1_ref",
+        "dr1",
+        "dr2",
+    )
 
 
 def one_to_many_swabs(

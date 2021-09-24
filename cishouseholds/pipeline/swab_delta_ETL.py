@@ -37,6 +37,7 @@ def swab_delta_ETL(delta_file_path: str):
     df = validate_and_filter(df, swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
     df = load_swab_delta(spark_session, df)
+    return df
 
 
 def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:

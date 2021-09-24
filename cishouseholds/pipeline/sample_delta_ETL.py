@@ -13,6 +13,8 @@ def sample_delta_ETL():
     extract_existing_design_weights()
 
     load_updated_design_weights()
+    df = None
+    return df
 
 
 def extract_from_csv():
