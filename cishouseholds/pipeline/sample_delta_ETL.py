@@ -7,12 +7,13 @@ def sample_delta_ETL():
     extract_from_csv()
     validate_sample()
 
-    df = edit_sample_file()
+    edit_sample_file()
     calculate_design_weights()
 
     extract_existing_design_weights()
 
-    # load_updated_design_weights()
+    load_updated_design_weights()
+    df = None
     return df
 
 
