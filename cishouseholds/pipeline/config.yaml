@@ -1,0 +1,14 @@
+- function: bloods_delta_ETL
+  run: True
+  resource_path: ""
+  output_path: ""
+
+- function: swab_delta_ETL
+  run: False
+  resource_path: ""
+  output_path: ""
+
+- function: survey_version_2_ETL
+  run: True
+  resource_path: ""
+  output_path: ""
