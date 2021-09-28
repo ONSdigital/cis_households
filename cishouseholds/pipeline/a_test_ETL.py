@@ -3,7 +3,7 @@ from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def test_ETL(path: str):
+def a_test_ETL(path: str):
 
     schema = {
         "Date_Recieved": {"type": "timestamp"},

@@ -2,7 +2,7 @@ import os
 
 import yaml
 
-from cishouseholds.pipeline.a_test_ETL import test_ETL  # noqa F401
+from cishouseholds.pipeline.a_test_ETL import a_test_ETL  # noqa F401
 from cishouseholds.pipeline.bloods_delta_ETL import bloods_delta_ETL  # noqa F401
 from cishouseholds.pipeline.sample_delta_ETL import sample_delta_ETL  # noqa F401
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL  # noqa F401
