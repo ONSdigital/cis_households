@@ -1,7 +1,6 @@
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 
-from cishouseholds.compare import prepare_for_union
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import substring_column
 from cishouseholds.extract import read_csv_to_pyspark_df
@@ -10,6 +9,8 @@ from cishouseholds.pipeline.validation_schema import bloods_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
+
+# from cishouseholds.compare import prepare_for_union
 
 
 def bloods_delta_ETL(delta_file_path: str):
@@ -31,7 +32,7 @@ def bloods_delta_ETL(delta_file_path: str):
     )
     df = validate_and_filter(df, bloods_validation_schema, error_accumulator)
     df = transform_bloods_delta(df)
-    df = prepare_for_union(df, None)
+    # df = prepare_for_union(df, None)
     df = load_bloods_delta(df)
 
     return df

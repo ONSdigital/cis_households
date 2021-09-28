@@ -8,13 +8,11 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 spark = get_or_create_spark_session()
 
 
-def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame], rearrange_ref: bool = False):
-    df.show()
+def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame]):
     if type(reference) == str:
-        df_ref = spark.read.parquet("/temp/out/people.parquet")
+        df_ref = spark.read.parquet(reference)
     else:
         df_ref = reference
-    df_ref.show()
     copy_df = df
     copy_ref = df_ref
     missmatches_df, missmatches_ref = get_inconsistent_columns(df, df_ref)
@@ -28,8 +26,6 @@ def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame], rearrange
     )
     df_ref = df_ref.select([col for col in col_order])
     df = df.select([col for col in col_order])
-    df.show()
-    df_ref.show()
     return df, df_ref
 
 
@@ -73,6 +69,3 @@ def get_inconsistent_columns(df1: DataFrame, df2: DataFrame):
 def add_matching_col(df: DataFrame, df_ref: DataFrame, col_name: str):
     col_name, type = df_ref.select(col_name).dtypes[0]
     return df.withColumn(col_name, F.lit(None).cast(type))
-
-
-# comments
