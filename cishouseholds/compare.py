@@ -73,3 +73,6 @@ def get_inconsistent_columns(df1: DataFrame, df2: DataFrame):
 def add_matching_col(df: DataFrame, df_ref: DataFrame, col_name: str):
     col_name, type = df_ref.select(col_name).dtypes[0]
     return df.withColumn(col_name, F.lit(None).cast(type))
+
+
+# comments
