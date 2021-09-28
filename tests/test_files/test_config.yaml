@@ -1,4 +1,4 @@
-function: test_ETL
+function: a_test_ETL
 run: true
 resource_path: C:\code\cis_households\tests/test_files/test_data_20210927.csv
 output_path: C:\code\cis_households\tests/test_files

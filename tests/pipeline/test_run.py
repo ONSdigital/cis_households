@@ -48,7 +48,6 @@ def test_run_from_config(spark_session):
     file_date = datetime.now()
     test_dir = os.path.join(os.getcwd(), "tests/test_files")
     if os.path.isdir(test_dir):
-        print("removing...")
         shutil.rmtree(test_dir)
     os.mkdir(test_dir)
     file_date = datetime.strftime(file_date, format="%Y%m%d")
