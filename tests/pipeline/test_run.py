@@ -8,7 +8,7 @@ from chispa import assert_df_equality
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.a_test_ETL import test_ETL
+from cishouseholds.pipeline.a_test_ETL import a_test_ETL
 from cishouseholds.pipeline.run import run_from_config
 
 _ = Field("en-gb", seed=11)
@@ -56,7 +56,7 @@ def test_run_from_config(spark_session):
     generate_test_yaml(file_date)
     run_from_config(os.path.join(os.getcwd(), "tests/test_files/test_config.yaml"))
 
-    output_df = test_ETL("tests/test_files/output.csv")
-    ref_df = test_ETL("tests/test_files/test_data_{}.csv".format(file_date))
+    output_df = a_test_ETL("tests/test_files/output.csv")
+    ref_df = a_test_ETL("tests/test_files/test_data_{}.csv".format(file_date))
 
     assert_df_equality(ref_df, output_df, ignore_row_order=True)
