@@ -34,7 +34,7 @@ def generate_test_csv(directory, file_date, records):
 
 def generate_test_yaml(file_date: str):
     test_ETL_config = {
-        "function": "test_ETL",
+        "function": "a_test_ETL",
         "run": True,
         "resource_path": os.path.join(os.getcwd(), "tests/test_files/test_data_{}.csv".format(file_date)),
         "output_path": os.path.join(os.getcwd(), "tests/test_files"),
