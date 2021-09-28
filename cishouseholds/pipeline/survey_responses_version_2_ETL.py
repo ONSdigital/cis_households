@@ -79,8 +79,10 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_column_regex_match(
         df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )  # using default email pattern regex to filter 'good' and 'bad' emails
+    df.select("date_of_birth").show()
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
+    df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
@@ -100,9 +102,8 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    df = assign_correct_age_at_date(df, "age_at_visit", "visit_date", "dob")
+    df = assign_correct_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
-
     return df
 
 

@@ -8,8 +8,8 @@ from chispa import assert_df_equality
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
+from cishouseholds.pipeline.a_test_ETL import test_ETL
 from cishouseholds.pipeline.run import run_from_config
-from cishouseholds.pipeline.test_ETL import test_ETL
 
 _ = Field("en-gb", seed=11)
 

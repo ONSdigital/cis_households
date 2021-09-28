@@ -74,7 +74,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "Work_Type_Picklist": _("choice", items=[None, "Blood and Swab", "Fingerprick and Swab", "Swab Only"]),
-        "Visit_Date_Time": _("datetime.formatted_datetime", fmt="%Y-%m-%dT%H:%M:%S.%f%z"),
+        "Visit_Date_Time": _("datetime.formatted_datetime", fmt="%Y-%m-%dT%H:%M:%S.%f%z", start=2019, end=2022),
         "Street": _("choice", items=[None, _("address.street_name")]),
         "City": _("choice", items=[None, _("address.city")]),
         "County": _("choice", items=[None, _("address.province")]),
@@ -309,8 +309,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
         "First_Name": _("choice", items=["First", None]),
         "Middle_Name": _("choice", items=["Secondfirst", None]),
         "Last_Name": _("choice", items=["Secondlast"]),
-        # CHECK!! make sure date format works --FORMAT: DD/MMM/YYYY
-        "DoB": _("choice", items=[_("datetime.formatted_datetime", fmt="%d%b%Y", start=1980, end=2021), None]),
+        # CHECK!! make sure date format works --FORMAT: DD/MM/YYYY
+        "DoB": _("choice", items=[_("datetime.formatted_datetime", fmt="%Y-%m-%dT%H:%M", start=1900, end=2018), None]),
         # SUGGESTION: add random string generation
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "Have_landline_number": _("choice", items=["No", "Yes", None]),
