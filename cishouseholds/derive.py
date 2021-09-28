@@ -465,3 +465,24 @@ def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
     )
 
     return df.drop("date_diff")
+
+
+def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth):
+    df = df.withColumn(
+        "month_more",
+        F.when(F.month(F.col(reference_date)) > F.month(F.col(date_of_birth)), 2).otherwise(
+            F.when(F.month(F.col(reference_date)) == F.month(F.col(date_of_birth)), 1).otherwise(0)
+        ),
+    )
+    df = df.withColumn(
+        "day_more",
+        F.when(F.date_format(F.col(reference_date), "d") >= F.date_format(F.col(date_of_birth), "d"), 1).otherwise(0),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.year(F.col(reference_date))
+        - F.year(F.col(date_of_birth))
+        - F.lit(1)
+        + F.round((F.col("month_more") + F.col("day_more")) / 3, 0).cast("int"),
+    )
+    return df.drop("month_more", "day_more")

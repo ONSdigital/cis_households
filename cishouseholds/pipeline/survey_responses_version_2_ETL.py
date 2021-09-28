@@ -6,6 +6,7 @@ from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
+from cishouseholds.derive import assign_correct_age_at_date
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
@@ -99,7 +100,7 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    # df = placeholder_for_derivation_number_22(df, "age_at_visit", "visit_date,dob")
+    df = assign_correct_age_at_date(df, "age_at_visit", "visit_date", "dob")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
 
     return df
