@@ -14,10 +14,10 @@ def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame], rearrange
         df_ref = spark.read.parquet("/temp/out/people.parquet")
     else:
         df_ref = reference
+    df_ref.show()
     copy_df = df
     copy_ref = df_ref
     missmatches_df, missmatches_ref = get_inconsistent_columns(df, df_ref)
-    print("missmatches: ", missmatches_df, missmatches_ref)
     for col in missmatches_ref:
         df = add_matching_col(df, df_ref, col)
     for col in missmatches_df:
@@ -34,37 +34,28 @@ def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame], rearrange
 
 
 def add_after(list: list, element: str, add: str):
-    print("input = ", list, element, add)
-    if element in list:
-        el_index = list.index(element)
-        print("el index: ", el_index)
-        list = list[:el_index]
-        print("list: ", list)
-        try:
-            list += list[el_index + 1 :]  # noqa: E203
-        except Exception as e:
-            print(e)
-        print("new: ", list)
-        added = True
-    else:
-        added = False
-
-    return list, added
+    el_index = list.index(element)
+    new_list = list[: el_index + 1]
+    new_list.append(add)
+    try:
+        new_list += list[el_index + 1 :]  # noqa: E203
+    except Exception as e:
+        print(e)
+    return new_list
 
 
 def get_new_order(df1_names: list, df2_names: list, df2_missmatches: list):
     right_of = {}
-    print("X", df2_names)
     for col in df2_missmatches:
-        print("COL: ", col)
         right_of[df2_names[df2_names.index(col) - 1]] = col
-    print("right of: ", right_of)
-    num_to_add = len(right_of)
-    while num_to_add > 0:
+    while len(right_of) > 0:
+        added = []
         for key, val in right_of.items():
-            df1_names, added = add_after(df1_names, key, val)
-            if added:
-                num_to_add -= 1
+            if key in df1_names:
+                df1_names = add_after(df1_names, key, val)
+                added.append(key)
+        for key in added:
+            right_of.pop(key)
     return df1_names
 
 
