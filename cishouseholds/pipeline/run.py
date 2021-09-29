@@ -21,7 +21,6 @@ def run_from_config(config_location: str):
         read_data = [read_data]
     for ETL in read_data:
         if ETL["run"]:
-            print("csv path: ", ETL["resource_path"])
             output_df = ETL_scripts[ETL["function"]](ETL["resource_path"])
             output_df.toPandas().to_csv(os.path.join(os.environ["CISHOUSEHOLDS_OUTPUT"], "output.csv"), index=False)
 
