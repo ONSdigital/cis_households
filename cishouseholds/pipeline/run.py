@@ -1,12 +1,14 @@
 import os
-from datetime import datetime
-import yaml
 import pathlib
+from datetime import datetime
 
-from cishouseholds.pipeline.declare_ETL import ETL_scripts
+import yaml
+
 from cishouseholds.pipeline.bloods_delta_ETL import bloods_delta_ETL
-from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
+from cishouseholds.pipeline.declare_ETL import ETL_scripts
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL
+from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
+
 
 def run_from_config(config_location: str):
     """
@@ -18,7 +20,9 @@ def run_from_config(config_location: str):
     for ETL in config["stages"]:
         if ETL["run"]:
             output_df = ETL_scripts[ETL["function"]](ETL["resource_path"])
-            output_df.toPandas().to_csv("{}/{}_output_{}.csv".format(config["csv_output_path"], ETL["function"], datetime.now()), index=False)
+            output_df.toPandas().to_csv(
+                "{}/{}_output_{}.csv".format(config["csv_output_path"], ETL["function"], datetime.now()), index=False
+            )
 
 
 run_from_config(os.environ["PIPELINE_CONFIG_LOCATION"])
