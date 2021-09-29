@@ -1,14 +1,13 @@
 import os
-import pathlib
 from datetime import datetime
 
 import yaml
 
-from cishouseholds.pipeline.a_test_ETL import a_test_ETL
-from cishouseholds.pipeline.bloods_delta_ETL import bloods_delta_ETL
+from cishouseholds.pipeline.a_test_ETL import a_test_ETL  # noqa: F401
+from cishouseholds.pipeline.bloods_delta_ETL import bloods_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.declare_ETL import ETL_scripts
-from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL
-from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
+from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL  # noqa: F401
+from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL  # noqa: F401
 
 
 def run_from_config():
