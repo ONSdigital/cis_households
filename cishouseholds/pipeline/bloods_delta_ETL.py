@@ -35,7 +35,7 @@ def bloods_delta_ETL(delta_file_path: str):
     df = validate_and_filter(df, bloods_validation_schema, error_accumulator)
     df = transform_bloods_delta(df)
     # df = prepare_for_union(df, None)
-    df = load_bloods_delta(df)
+    # df = load_bloods_delta(df)
 
     return df
 
