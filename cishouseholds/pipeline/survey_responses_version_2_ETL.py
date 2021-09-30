@@ -9,12 +9,14 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
 
+@register_pipeline_stage("survey_responses_version_2_ETL")
 def survey_responses_version_2_ETL(delta_file_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
@@ -22,14 +24,11 @@ def survey_responses_version_2_ETL(delta_file_path: str):
 
     spark_session = get_or_create_spark_session()
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
+    iqvia_v2_spark_schema = None
 
     raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
-        spark_session,
-        delta_file_path,
-        raw_iqvia_v2_data_header,
-        iqvia_v2_spark_schema,
-        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+        spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
     )
 
     error_accumulator = spark_session.sparkContext.accumulator(
@@ -37,8 +36,9 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     )
 
     df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
-    df = transform_survey_responses_version_2_delta(spark_session, df)
+    # df = transform_survey_responses_version_2_delta(spark_session, df)
     df = load_survey_responses_version_2_delta(spark_session, df)
+    return df
 
 
 def extract_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
