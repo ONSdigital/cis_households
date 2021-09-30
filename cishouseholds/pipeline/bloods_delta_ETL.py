@@ -4,8 +4,8 @@ from pyspark.sql import DataFrame
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import substring_column
 from cishouseholds.extract import read_csv_to_pyspark_df
-from cishouseholds.pipeline.declare_ETL import add_ETL
 from cishouseholds.pipeline.input_variable_names import bloods_variable_name_map
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.validation_schema import bloods_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -14,7 +14,7 @@ from cishouseholds.validate import validate_and_filter
 # from cishouseholds.compare import prepare_for_union
 
 
-@add_ETL("bloods_delta_ETL")
+@register_pipeline_stage("bloods_delta_ETL")
 def bloods_delta_ETL(delta_file_path: str):
     spark_session = get_or_create_spark_session()
     bloods_spark_schema = convert_cerberus_schema_to_pyspark(bloods_validation_schema)
