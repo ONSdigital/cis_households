@@ -443,7 +443,7 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     )
 
 
-def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
+def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, date_of_birth):
     """
     Assign a new column containing age at a specified date
     Assume that parameters will be in date format
@@ -461,13 +461,16 @@ def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        "age_at_date", F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
     )
 
     return df.drop("date_diff")
 
 
 def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth):
+    """
+    Uses correct logic to calculate complete years elapsed between 2 dates
+    """
     df = df.withColumn(
         "month_more",
         F.when(F.month(F.col(reference_date)) > F.month(F.col(date_of_birth)), 2).otherwise(

@@ -1,3 +1,7 @@
+import random
+from datetime import datetime
+from datetime import timedelta
+
 import pandas as pd
 import pytest
 from mimesis.schema import Field
@@ -7,8 +11,20 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
+from tests.pipeline import helpers_weight
 
-_ = Field("en-gb", seed=69)
+_ = Field("en-gb", seed=42, providers=[helpers_weight.Distribution])
+
+
+def random_date(start, end, format="%d/%m/%Y"):
+    """Generate a random datetime between datetime object `start` and `end`"""
+    return (
+        start
+        + timedelta(
+            # Get a random amount of seconds between `start` and `end`
+            seconds=random.randint(0, int((end - start).total_seconds())),
+        )
+    ).strftime(format)
 
 
 @pytest.fixture
@@ -16,14 +32,19 @@ def iqvia_v2_survey_dummy_df(spark_session):
     """
     Generate dummy IQVIA v2 survey file.
     """
+    yes_no_choice = ["Yes", "No"]
+    yes_no_none_choice = yes_no_choice + [None]
 
-    v2_data_description = lambda: {  # noqa: E731v
+    start_date_list = datetime(2022, 1, 1)
+    end_date_list = datetime(2022, 1, 10)
+
+    ons_voyager_2_data_description = lambda: {  # noqa E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "Visit_ID": _(
             "choice",
             items=[
-                _("random.custom_code", mask="DVS-##########", digit="#"),
-                _("random.custom_code", mask="DVSF-##########", digit="#"),
+                _("random.custom_code", mask="DVH-##########", digit="#"),
+                _("random.custom_code", mask="DHVF-##########", digit="#"),
             ],
         ),
         "Visit Status": _(
@@ -74,20 +95,20 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "Work_Type_Picklist": _("choice", items=[None, "Blood and Swab", "Fingerprick and Swab", "Swab Only"]),
-        "Visit_Date_Time": _("datetime.formatted_datetime", fmt="%Y-%m-%dT%H:%M:%S.%f%z", start=2019, end=2022),
+        # Should follow YYYY-mm-ddTHH:MM:SS.sssZ
+        "Visit_Date_Time": _(
+            "choice",
+            items=[random_date(start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"],
+        ),
         "Street": _("choice", items=[None, _("address.street_name")]),
         "City": _("choice", items=[None, _("address.city")]),
         "County": _("choice", items=[None, _("address.province")]),
         "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Cohort": _("choice", items=["Blood and Swab", "Swab Only"]),
-        "Current_Cohort": _("choice", items=["Blood and Swab", "Fingerprick and Swab", "Swab"]),
         "Fingerprick_Status": _(
             "choice", items=[None, "Accepted", "At least one person consented", "Declined", "Invited", "Not invited"]
         ),
-        "Fingerprick_Status_Participant": _(
-            "choice", items=[None, "Accepted", "Consented", "Declined", "Invited", "Not invited"]
-        ),
-        "Household_Members_Under_2_Years": _("choice", items=[None, "Yes", "No"]),
+        "Household_Members_Under_2_Years": _("choice", items=yes_no_none_choice),
         "Infant_1": _("choice", items=[None, _("integer_number", start=0, end=100)]),
         "Infant_2": _("choice", items=[None, _("integer_number", start=0, end=100)]),
         "Infant_3": _("choice", items=[None, _("integer_number", start=0, end=100)]),
@@ -111,7 +132,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -121,10 +141,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -134,7 +151,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -144,10 +160,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -157,7 +170,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -167,10 +179,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -180,7 +189,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -190,10 +198,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -203,7 +208,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -213,10 +217,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -226,7 +227,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -236,10 +236,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -263,7 +260,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
             items=[
                 "0",
                 "Don't want to participate",
-                "[REDACTED]",
                 "N",
                 "N/A",
                 "N/a",
@@ -273,10 +269,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Na",
                 "No",
                 "Not interested",
-                "[REDACTED]",
                 "an",
-                "[REDACTED]",
-                "[REDACTED]",
                 None,
             ],
         ),
@@ -287,7 +280,6 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "0",
                 "Consenting",
                 "Don't want to participate",
-                "[REDACTED]",
                 "Left To go to uni",
                 "N",
                 "N/A",
@@ -298,29 +290,29 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "No",
                 "Not interested",
                 "The",
-                "[REDACTED]",
-                "[REDACTED]",
                 "na",
                 None,
             ],
         ),
         "Participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
         "Title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
-        "First_Name": _("choice", items=["First", None]),
-        "Middle_Name": _("choice", items=["Secondfirst", None]),
-        "Last_Name": _("choice", items=["Secondlast"]),
-        # CHECK!! make sure date format works --FORMAT: DD/MM/YYYY
-        "DoB": _("choice", items=[_("datetime.formatted_datetime", fmt="%Y-%m-%dT%H:%M", start=1900, end=2018), None]),
-        # SUGGESTION: add random string generation
+        "First_Name": _("person.first_name"),
+        "Middle_Name": _("person.first_name"),
+        "Last_Name": _("person.last_name"),
+        # Format dd/mm/YYY HH:MM
+        "DoB": _(
+            "discrete_distribution",
+            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            weights=[0.9, 0.1],
+        ),
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
-        "Have_landline_number": _("choice", items=["No", "Yes", None]),
-        "Have_mobile_number": _("choice", items=["No", "Yes", None]),
-        "Have_email_address": _("choice", items=["No", "Yes", None]),
+        "Have_landline_number": _("choice", items=yes_no_none_choice),
+        "Have_mobile_number": _("choice", items=yes_no_none_choice),
+        "Have_email_address": _("choice", items=yes_no_none_choice),
         "Prefer_receive_vouchers": _("choice", items=["Email", "Paper(Post)"]),
         "Confirm_receive_vouchers": _("choice", items=["false", "true"]),
-        # integer choice
-        "No_Email_address": _("choice", items=["No email address"]),
-        "Able_to_take_blood": _("choice", items=["No", "Yes", None]),
+        "No_Email_address": _("choice", items=[0]),
+        "Able_to_take_blood": _("choice", items=yes_no_none_choice),
         "No_Blood_reason_fingerprick": _(
             "choice",
             items=[
@@ -351,29 +343,16 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 None,
             ],
         ),
-        "bloods_barcode_1": _(
-            "choice",
-            items=[
-                _("random.custom_code", mask="ONS############", digit="#"),
-                _("random.custom_code", mask="ONW############", digit="#"),
-                _("random.custom_code", mask="ONC############", digit="#"),
-                _("random.custom_code", mask="ONN############", digit="#"),
-                None,
-            ],
-        ),
-        "Swab_Barcode_1": _(
-            "choice",
-            items=[
-                _("random.custom_code", mask="ONS############", digit="#"),
-                _("random.custom_code", mask="ONW############", digit="#"),
-                _("random.custom_code", mask="ONC############", digit="#"),
-                _("random.custom_code", mask="ONN############", digit="#"),
-                None,
-            ],
-        ),
-        # UNCOMMON date format:  yyyy-mm-ddThh:mm:??.????
+        "bloods_barcode_1": "blood_barcodes",
+        "Swab_Barcode_1": "swab_barcodes",
+        # Format:  YYYY-mm-ddTHH:MM:SS.sssZ
         "Date_Time_Samples_Taken": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%Y-%m-%d%w%M:%S.%f", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[
+                random_date(start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+                None,
+            ],
+            weights=[0.5, 0.5],
         ),
         "Sex": _("choice", items=["Female", "Male", None]),
         "Gender": _("choice", items=["Female", "Male", "Prefer not to say", None]),
@@ -411,22 +390,22 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "Ethnicity_Other": _("text.sentence"),  # free text field, can be null 1 to 249
-        "Consent_to_First_Visit": _("choice", items=["Yes", "No"]),
-        "Consent_to_Five_Visits": _("choice", items=["Yes", "No"]),
-        "Consent_to_April_22": _("choice", items=["Yes", "No"]),
-        "Consent_to_Sixteen_Visits": _("choice", items=["Yes", "No"]),
-        "Consent_to_Blood_Test": _("choice", items=["Yes", "No"]),
-        "Consent_to_Finger_prick_A1_A3": _("choice", items=["Yes", "No", None]),
-        "Consent_to_extend_study_under_16_B1_B3": _("choice", items=["Yes", "No", None]),
-        "Consent_to_be_Contacted_Extra_Research": _("choice", items=["Yes", "No"]),
-        "Consent_to_be_Contacted_Extra_ResearchYN": _("choice", items=["Yes", "No", None]),
-        "Consent_to_use_of_Surplus_Blood_Samples": _("choice", items=["Yes", "No"]),
-        "Consent_to_use_of_Surplus_Blood_SamplesYN": _("choice", items=["Yes", "No", None]),
-        "Approached_for_blood_samples?": _("choice", items=["Yes", "No", None]),
+        "Consent_to_First_Visit": _("choice", items=yes_no_choice),
+        "Consent_to_Five_Visits": _("choice", items=yes_no_choice),
+        "Consent_to_April_22": _("choice", items=yes_no_choice),
+        "Consent_to_Sixteen_Visits": _("choice", items=yes_no_choice),
+        "Consent_to_Blood_Test": _("choice", items=yes_no_choice),
+        "Consent_to_Finger_prick_A1_A3": _("choice", items=yes_no_none_choice),
+        "Consent_to_extend_study_under_16_B1_B3": _("choice", items=yes_no_none_choice),
+        "Consent_to_be_Contacted_Extra_Research": _("choice", items=yes_no_choice),
+        "Consent_to_be_Contacted_Extra_ResearchYN": _("choice", items=yes_no_none_choice),
+        "Consent_to_use_of_Surplus_Blood_Samples": _("choice", items=yes_no_choice),
+        "Consent_to_use_of_Surplus_Blood_SamplesYN": _("choice", items=yes_no_none_choice),
+        "Approached_for_blood_samples?": _("choice", items=yes_no_none_choice),
         "Consent_to_blood_samples_if_positive": _("choice", items=["False", "True"]),
-        "Consent_to_blood_samples_if_positiveYN": _("choice", items=["Yes", "No", None]),
+        "Consent_to_blood_samples_if_positiveYN": _("choice", items=yes_no_none_choice),
         "Consent_to_fingerprick_blood_samples": _("choice", items=["False", "True"]),
-        "Accepted_invite_to_fingerprick": _("choice", items=["Yes", "No", None]),
+        "Accepted_invite_to_fingerprick": _("choice", items=yes_no_none_choice),
         "Re_consented_for_blood": _("choice", items=["False", "True"]),
         "What_is_the_title_of_your_main_job": _("text.sentence"),  # free text field, can be null 1 to 73
         "What_do_you_do_in_your_main_job_business": _("text.sentence"),  # free text field, can be null 1 to 333
@@ -462,7 +441,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "occupation_sector_other": _("text.sentence"),  # free text field, can be null 1 to 75
-        "Work_in_a_nursing_residential_care_home": _("choice", items=[None, "Yes", "No"]),
+        "Work_in_a_nursing_residential_care_home": _("choice", items=yes_no_none_choice),
         "Do_you_currently_work_in_healthcare": _(
             "choice",
             items=[
@@ -472,23 +451,23 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 " Other healthcare (e.g. mental health)",
             ],
         ),
-        "Direct_contact_patients_clients_resid": _("choice", items=[None, "Yes", "No"]),
-        "Have_physical_mental_health_or_illnesses": _("choice", items=[None, "Yes", "No"]),
+        "Direct_contact_patients_clients_resid": _("choice", items=yes_no_none_choice),
+        "Have_physical_mental_health_or_illnesses": _("choice", items=yes_no_none_choice),
         "physical_mental_health_or_illness_reduces_activity_ability": _(
             "choice", items=[None, "Not at all", "Yes, a little", "Yes, a lot"]
         ),
-        "Have_you_ever_smoked_regularly": _("choice", items=[None, "Yes", "No"]),
+        "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _(
             "choice", items=[None, "Yes,  cigarettes", "Yes, cigar", "Yes, pipe", "Yes, vape/e-cigarettes"]
         ),
         "Do_you_currently_smoke_or_vape_at_all": _(
             "choice", items=[None, "Cigarettes", "Cigar", "Pipe", "Vape/e-cigarettes", "Hookah/shisha pipes"]
         ),
-        "Smoke_Yes_cigarettes": _("choice", items=[None, "Yes", "No"]),
-        "Smoke_Yes_cigar": _("choice", items=[None, "Yes", "No"]),
-        "Smoke_Yes_pipe": _("choice", items=[None, "Yes", "No"]),
-        "Smoke_Yes_vape_e_cigarettes": _("choice", items=[None, "Yes", "No"]),
-        "Smoke_Hookah/shisha pipes": _("choice", items=[None, "Yes", "No"]),
+        "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
+        "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
+        "Smoke_Yes_pipe": _("choice", items=yes_no_none_choice),
+        "Smoke_Yes_vape_e_cigarettes": _("choice", items=yes_no_none_choice),
+        "Smoke_Hookah/shisha pipes": _("choice", items=yes_no_none_choice),
         "What_is_your_current_working_status": _(
             "choice",
             items=[
@@ -499,8 +478,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)",
             ],
         ),
-        "Paid_employment": _("choice", items=[None, "Yes", "No"]),
-        "Main_Job_Changed": _("choice", items=[None, "Yes", "No"]),
+        "Paid_employment": _("choice", items=yes_no_none_choice),
+        "Main_Job_Changed": _("choice", items=yes_no_none_choice),
         "Where_are_you_mainly_working_now": _(
             "choice",
             items=[
@@ -523,41 +502,43 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 None,
                 "Difficult to maintain 2 meters - but I can usually be at least 1m from other people",
                 "Easy to maintain 2m - it is not a problem to stay this far away from other people",
-                """Very difficult to be more than 1 meter away as my work means
-                 I am in close contact with others on a regular basis""",
+                "Very difficult to be more than 1 meter away as my work means I am in close contact \
+                with others on a regular basis",
             ],
         ),
-        "Had_symptoms_in_the_last_7_days": _("choice", items=[None, "Yes", "No"]),
+        "Had_symptoms_in_the_last_7_days": _("choice", items=yes_no_none_choice),
         "Which_symptoms_in_the_last_7_days": _(
             "choice", items=[None, "Fever ", "Muscle ache", "Weakness/tiredness", "Sore  Throat"]
         ),
         "Date_of_first_symptom_onset": _(
-            "choice", items=[None, _("datetime.formatted_datetime", fmt="%d/%b/%Y", start=2020, end=2022)]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
-        "Symptoms_7_Fever": _("choice", items=["Yes", "No"]),
-        "Symptoms_7_Muscle_ache_myalgia": _("choice", items=["Yes", "No"]),
-        "Symptoms_7_Fatigue_weakness": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Sore_throat": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Cough": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Shortness_of_breath": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Headache": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Nausea_vomiting": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Abdominal_pain": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Diarrhoea": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Loss_of_taste": _("choice", items=["Yes", "No", None]),
-        "Symptoms_7_Loss_of_smell": _("choice", items=["Yes", "No", None]),
+        "Symptoms_7_Fever": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Fatigue_weakness": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Sore_throat": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Cough": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Headache": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Nausea_vomiting": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Abdominal_pain": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Diarrhoea": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Loss_of_taste": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "Are_you_self_Isolating_S2": _(
             "choice",
             items=[
                 [
                     "No",
                     "Yes because you have/have had symptoms of COVID-19 or a positive test",
-                    """Yes because you live with someone who has/has had symptoms or a positive
-                     test but you haven't had symptoms yourself""",
-                    """Yes for other reasons related to reducing your risk of getting COVID-19
-                     (e.g. going into hospital or shielding)""",
-                    """Yes for other reasons related to you having had an increased risk of getting COVID-19
-                    (e.g. having been in contact with a known case or quarantining after travel abroad)""",
+                    "Yes because you live with someone who has/has had symptoms or a positive test but you haven't had \
+                        symptoms yourself",
+                    "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital \
+                    or shielding)",
+                    "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact\
+                         with a known case or quarantining after travel abroad)",
                 ]
                 * 4
                 + [None] * 3
@@ -572,17 +553,21 @@ def iqvia_v2_survey_dummy_df(spark_session):
         "Do_you_think_you_have_Covid_Symptoms": _(
             "choice", items=["Yes", "Participant Would Not/Could Not Answer", "No"] * 2 + [None]
         ),
-        "Contact_Known_Positive_COVID19_28_days": _("choice", items=["Yes", "No"] * 3 + [None]),
+        "Contact_Known_Positive_COVID19_28_days": _("choice", items=yes_no_none_choice),
         "If_Known_last_contact_date": _(
-            "choice", items=[_("datetime.formatted_date", fmt="%d-%m-%Y", start=2018, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
         "If_Known_type_of_contact_S2": _("choice", items=["Living in your own home", "Outside your home", None]),
-        "Contact_Suspect_Positive_COVID19_28_d": _("choice", items=["Yes", "No"] * 3 + [None]),
+        "Contact_Suspect_Positive_COVID19_28_d": _("choice", items=yes_no_none_choice),
         "If_suspect_last_contact_date": _(
-            "choice", items=[_("datetime.formatted_date", fmt="%d-%m-%Y", start=2018, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
         "If_suspect_type_of_contact_S2": _("choice", items=["Living in your own home", "Outside your home", None]),
-        "You_been_Hospital_last_28_days": _("choice", items=["Yes", "No"] * 3 + [None]),
+        "You_been_Hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "OtherHouse_been_Hospital_last_28_days": _(
             "choice", items=["Yes", "Participant Would Not/Could Not Answer", "No"] + [None]
         ),
@@ -689,7 +674,7 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Participant Would Not/Could Not Answer",
             ],
         ),
-        "Regular_testing_COVID": _("choice", items=[None, "No", "Yes"]),
+        "Regular_testing_COVID": _("choice", items=yes_no_none_choice),
         "Face_Covering_or_Mask_outside_of_home": _(
             "choice",
             items=[
@@ -727,29 +712,31 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 "Yes sometimes",
             ],
         ),
-        "Do_you_think_you_have_had_Covid_19": _("choice", items=[None, "No", "Yes"]),
-        "think_had_covid_19_any_symptoms": _("choice", items=[None, "No", "Yes"]),
+        "Do_you_think_you_have_had_Covid_19": _("choice", items=yes_no_none_choice),
+        "think_had_covid_19_any_symptoms": _("choice", items=yes_no_none_choice),
         "think_had_covid_19_which_symptoms": _(
             "choice", items=[None, _("text.answer")]
         ),  # does this need multiple values concatted?
-        "Previous_Symptoms_Fever": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Muscle_ache_myalgia": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Fatigue_weakness": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Sore_throat": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Cough": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Shortness_of_breath": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Headache": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Nausea_vomiting": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Abdominal_pain": _("choice", items=[None, "No", "Yes"]),
-        "Previous_Symptoms_Diarrhoea": _("choice", items=["No", "Yes", None]),
-        "Previous_Symptoms_Loss_of_taste": _("choice", items=["No", "Yes", None]),
-        "Previous_Symptoms_Loss_of_smell": _("choice", items=["No", "Yes", None]),
+        "Previous_Symptoms_Fever": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Fatigue_weakness": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Sore_throat": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Cough": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Headache": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Nausea_vomiting": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Abdominal_pain": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Diarrhoea": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Loss_of_taste": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "If_yes_Date_of_first_symptoms": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
-        "Did_you_contact_NHS": _("choice", items=["No", "Yes", None]),
-        "Were_you_admitted_to_hospital": _("choice", items=["No", "Yes", None]),
-        "Have_you_had_a_swab_test": _("choice", items=["No", "Yes", None]),
+        "Did_you_contact_NHS": _("choice", items=yes_no_none_choice),
+        "Were_you_admitted_to_hospital": _("choice", items=yes_no_none_choice),
+        "Have_you_had_a_swab_test": _("choice", items=yes_no_none_choice),
         "If_Yes_What_was_result": _(
             "choice",
             items=[
@@ -762,12 +749,16 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "If_positive_Date_of_1st_ve_test": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
         "If_all_negative_Date_last_test": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
-        "Have_you_had_a_antibody_test_for_Covid": _("choice", items=["No", "Yes", None]),
+        "Have_you_had_a_blood_test_for_Covid": _("choice", items=yes_no_none_choice),
         "What_was_the_result_of_the_blood_test": _(
             "choice",
             items=[
@@ -790,12 +781,16 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "If_ve_Blood_Date_of_1st_ve_test": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
         "If_all_ve_blood_Date_last_ve_test": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
-        "Have_Long_Covid_Symptoms": _("choice", items=["No", "Yes", None]),
+        "Have_Long_Covid_Symptoms": _("choice", items=yes_no_none_choice),
         "Long_Covid_Reduce_Activities": _("choice", items=["Not at all", "Yes a little", "Yes a lot", None]),
         "Long_Covid_Symptoms": _(
             "choice",
@@ -826,29 +821,29 @@ def iqvia_v2_survey_dummy_df(spark_session):
                 None,
             ],
         ),
-        "Long_Covid_Fever": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Weakness_tiredness": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Diarrhoea": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Loss_of_smell": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Shortness_of_breath": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Vertigo_dizziness": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Trouble_sleeping": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Headache": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Nausea_vomiting": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Loss_of_appetite": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Sore_throat": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Chest_pain": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Worry_anxiety": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Memory_loss_or_confusion": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Muscle_ache": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Abdominal_pain": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Loss_of_taste": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Cough": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Palpitations": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Low_mood_not_enjoying_anything": _("choice", items=["No", "Yes", None]),
-        "Long_Covid_Difficulty_concentrating": _("choice", items=["No", "Yes", None]),
-        "Have_you_been_offered_a_vaccination": _("choice", items=["No", "Yes", None]),
-        "Vaccinated_Against_Covid": _("choice", items=["No", "Yes", None]),
+        "Long_Covid_Fever": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Weakness_tiredness": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Diarrhoea": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_smell": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Trouble_sleeping": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Headache": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Nausea_vomiting": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_appetite": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Sore_throat": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Muscle_ache": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Abdominal_pain": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_taste": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Cough": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Palpitations": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
+        "Have_you_been_offered_a_vaccination": _("choice", items=yes_no_none_choice),
+        "Vaccinated_Against_Covid": _("choice", items=yes_no_none_choice),
         "Type_Of_Vaccination": _(
             "choice",
             items=[
@@ -872,9 +867,11 @@ def iqvia_v2_survey_dummy_df(spark_session):
         ),  # This is usually freetext, depends on the previous question, may need to change
         "Number_Of_Doses": _("choice", items=["1", "2", "3 or more", None]),
         "Date_Of_Vaccination": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[random_date(start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
         ),
-        "Have_you_been_outside_UK_since_April": _("choice", items=["No", "Yes", None]),
+        "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _(
             "choice",
             items=[
@@ -904,12 +901,14 @@ def iqvia_v2_survey_dummy_df(spark_session):
             ],
         ),
         "been_outside_uk_last_date": _(
-            "choice", items=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None]
+            "discrete_distribution",
+            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None],
+            weights=[0.5, 0.5],
         ),
-        "Have_you_been_outside_UK_Lastspoke": _("choice", items=["No", "Yes", None]),
+        "Have_you_been_outside_UK_Lastspoke": _("choice", items=yes_no_none_choice),
     }
 
-    schema = Schema(schema=v2_data_description)
+    schema = Schema(schema=ons_voyager_2_data_description)
     # iterations increased to 50 to prevent issue of all null values occuring inline
     pandas_df = pd.DataFrame(schema.create(iterations=50))
     return pandas_df
