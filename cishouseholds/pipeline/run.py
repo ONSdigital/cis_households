@@ -3,7 +3,6 @@ from datetime import datetime
 
 import yaml
 
-from cishouseholds.pipeline.a_test_ETL import a_test_ETL  # noqa: F401
 from cishouseholds.pipeline.bloods_delta_ETL import bloods_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.declare_ETL import ETL_scripts
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL  # noqa: F401
@@ -21,7 +20,10 @@ def run_from_config():
         if ETL["run"]:
             output_df = ETL_scripts[ETL["function"]](ETL["resource_path"])
             output_df.toPandas().to_csv(
-                "{}/{}_output_{}.csv".format(config["csv_output_path"], ETL["function"], datetime.now()), index=False
+                "{}/{}_output_{}.csv".format(
+                    config["csv_output_path"], ETL["function"], datetime.now().strftime("%y%m%d_%H%M%S")
+                ),
+                index=False,
             )
 
 

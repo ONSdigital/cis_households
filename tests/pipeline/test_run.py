@@ -3,8 +3,20 @@ import pathlib
 
 import yaml
 
-from cishouseholds.pipeline.a_test_ETL import a_test_ETL
+from cishouseholds.pipeline.declare_ETL import add_ETL
 from cishouseholds.pipeline.run import run_from_config
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+@add_ETL("a_test_ETL")
+def a_test_ETL(path: str):
+    spark_session = get_or_create_spark_session()
+    a_test_ETL.has_been_called = True
+
+    return spark_session.createDataFrame([], "col string")
+
+
+a_test_ETL.has_been_called = False
 
 
 def generate_test_yaml(tmp_path: pathlib.Path):
