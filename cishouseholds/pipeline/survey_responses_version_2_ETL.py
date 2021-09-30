@@ -9,15 +9,15 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_correct_age_at_date
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.extract import read_csv_to_pyspark_df
-from cishouseholds.pipeline.declare_ETL import add_ETL
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
 
-@add_ETL("survey_responses_version_2_ETL")
+@register_pipeline_stage("survey_responses_version_2_ETL")
 def survey_responses_version_2_ETL(delta_file_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
