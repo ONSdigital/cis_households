@@ -13,6 +13,7 @@ from cishouseholds.validate import validate_and_filter
 
 # from cishouseholds.compare import prepare_for_union
 
+
 @register_pipeline_stage("bloods_delta_ETL")
 def bloods_delta_ETL(delta_file_path: str):
     spark_session = get_or_create_spark_session()
