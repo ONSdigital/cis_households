@@ -177,6 +177,57 @@ accepted_invite_fingerprick:
   47: 'No'
   48: 'No'
   49: 'Yes'
+age_at_visit:
+  0: null
+  1: null
+  2: null
+  3: null
+  4: null
+  5: null
+  6: null
+  7: null
+  8: null
+  9: null
+  10: null
+  11: null
+  12: null
+  13: null
+  14: null
+  15: null
+  16: null
+  17: null
+  18: null
+  19: null
+  20: null
+  21: null
+  22: null
+  23: null
+  24: null
+  25: null
+  26: null
+  27: null
+  28: null
+  29: null
+  30: null
+  31: null
+  32: null
+  33: null
+  34: null
+  35: null
+  36: null
+  37: null
+  38: null
+  39: null
+  40: null
+  41: null
+  42: null
+  43: null
+  44: null
+  45: null
+  46: null
+  47: null
+  48: null
+  49: null
 antibody_test_first_positive_date:
   0: null
   1: null
@@ -1761,35 +1812,35 @@ dataset:
 date_of_birth:
   0: null
   1: null
-  2: 11Dec2014
+  2: null
   3: null
-  4: 10Jun2020
+  4: null
   5: null
-  6: 24Feb2020
-  7: 26Aug2005
-  8: 09Jan2011
+  6: null
+  7: null
+  8: null
   9: null
-  10: 06Mar2020
+  10: null
   11: null
-  12: 15Oct1994
+  12: null
   13: null
-  14: 03May2007
+  14: null
   15: null
-  16: 16Nov2021
+  16: null
   17: null
-  18: 01Dec2011
-  19: 19May1995
-  20: 25Mar2006
-  21: 29Jun2014
-  22: 06Oct2015
+  18: null
+  19: null
+  20: null
+  21: null
+  22: null
   23: null
-  24: 02Mar2012
-  25: 29Apr1980
+  24: null
+  25: null
   26: null
-  27: 17May1982
+  27: null
   28: null
   29: null
-  30: 23Jan1985
+  30: null
   31: null
   32: null
   33: null
@@ -1799,15 +1850,15 @@ date_of_birth:
   37: null
   38: null
   39: null
-  40: 08Apr1994
-  41: 01Aug1995
+  40: null
+  41: null
   42: null
   43: null
-  44: 01Jul1983
-  45: 02Apr2016
-  46: 15May2006
+  44: null
+  45: null
+  46: null
   47: null
-  48: 12Apr1991
+  48: null
   49: null
 email:
   0: amarvel1885@gsnail.ac.uk
