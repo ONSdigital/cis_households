@@ -23,5 +23,4 @@ def a_test_ETL(path: str):
         spark_schema,
         timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
     )
-    df.show()
     return df

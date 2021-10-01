@@ -268,8 +268,6 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
     -------
     pyspark.sql.DataFrame
     """
-    print("COLUMNS:")
-    df.printSchema()
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
 
 
