@@ -3,7 +3,7 @@ swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 swab_validation_schema = {
     "swab_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
     "pcr_result_classification": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
-    "pcr_datetime": {"type": "timestamp"},
+    "pcr_datetime": {"type": "string", "nullable": True},
     "pcr_lab_id": {"type": "string"},
     "pcr_method": {"type": "string"},
     "orf1ab_gene_pcr_target": {"type": "string", "allowed": ["ORF1ab"]},
@@ -30,10 +30,10 @@ bloods_validation_schema = {
     "antibody_test_result_value": {"type": "double", "nullable": True, "min": 0},
     "antibody_test_bounded_result_value": {"type": "string"},
     "antibody_test_undiluted_result_value": {"type": "string"},
-    "antibody_test_result_recorded_date": {"type": "timestamp"},
-    "blood_sample_arrayed_date": {"type": "timestamp"},
-    "blood_sample_received_date": {"type": "timestamp"},
-    "blood_sample_collected_datetime": {"type": "timestamp"},
+    "antibody_test_result_recorded_date": {"type": "string", "nullable": True},
+    "blood_sample_arrayed_date": {"type": "string", "nullable": True},
+    "blood_sample_received_date": {"type": "string", "nullable": True},
+    "blood_sample_collected_datetime": {"type": "string", "nullable": True},
 }
 
 sample_direct_eng_wc_schema = {
@@ -89,7 +89,7 @@ iqvia_v2_validation_schema = {
     # Allowed options for below now different to what is in excel (now can have at least month 19)
     "visit_order": {"type": "string"},
     "participant_testing_group": {"type": "string", "allowed": ["Blood and Swab", "Fingerprick and Swab", "Swab Only"]},
-    "visit_datetime": {"type": "timestamp"},
+    "visit_datetime": {"type": "string", "nullable": True},
     # street, city, postcode are mandatory, but in the actual data there are a couple
     # records (3/30) that are null/empty strings
     "street": {"type": "string"},
@@ -159,7 +159,7 @@ iqvia_v2_validation_schema = {
     "first_name": {"type": "string"},  # why the example says [REDACTED] name?
     "middle_name": {"type": "string", "nullable": True},
     "last_name": {"type": "string"},
-    "date_of_birth": {"type": "timestamp"},
+    "date_of_birth": {"type": "string", "nullable": True},
     # not sure about regex for emails, depends on how specific it is wanted
     "email": {"type": "string", "nullable": True},  # "regex": r"([a-zA-Z 0-9]|[@-_.]){8,49}"
     "have_landline_number": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
@@ -186,7 +186,7 @@ iqvia_v2_validation_schema = {
     "no_blood_reason_venous": {"type": "string", "nullable": True},
     "blood_sample_barcode": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
     "swab_sample_barcode": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
-    "samples_taken_datetime": {"type": "timestamp", "nullable": True},
+    "samples_taken_datetime": {"type": "string", "nullable": True},
     "sex": {"type": "string", "allowed": ["Male", "Female"], "nullable": True},
     "gender": {"type": "string", "allowed": ["Male", "Female", "Prefer not to say"], "nullable": True},
     "ethnic_group": {
@@ -358,7 +358,7 @@ iqvia_v2_validation_schema = {
     "ability_to_socially_distance_at_work_or_school": {"type": "string", "nullable": True},
     "had_symptoms_last_7_days": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     "which_symptoms_last_7_days": {"type": "string", "nullable": True},
-    "symptoms_last_7_days_onset_date": {"type": "timestamp", "nullable": True},
+    "symptoms_last_7_days_onset_date": {"type": "string", "nullable": True},
     "symptoms_last_7_days_fever": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     "symptoms_last_7_days_muscle_ache_myalgia": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     "symptoms_last_7_days_fatigue_weakness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
@@ -423,7 +423,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "last_covid_contact_date": {"type": "timestamp", "nullable": True},
+    "last_covid_contact_date": {"type": "string", "nullable": True},
     "last_covid_contact_location": {
         "type": "string",
         "nullable": True,
@@ -440,7 +440,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "last_suspected_covid_contact_date": {"type": "timestamp", "nullable": True},
+    "last_suspected_covid_contact_date": {"type": "string", "nullable": True},
     "last_suspected_covid_contact_location": {
         "type": "string",
         "nullable": True,
@@ -563,13 +563,13 @@ iqvia_v2_validation_schema = {
     "symptoms_since_last_visit_diarrhoea": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "symptoms_since_last_visit_loss_of_taste": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "symptoms_since_last_visit_loss_of_smell": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "think_had_covid_date": {"type": "timestamp", "nullable": True},
+    "think_had_covid_date": {"type": "string", "nullable": True},
     "think_had_covid_contacted_nhs": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "think_had_covid_admitted_to_hospital": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "pcr_test_since_last_visit": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "pcr_test_since_last_visit_results": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "pcr_test_first_positive_date": {"type": "timestamp", "nullable": True},
-    "pcr_test_last_negative_date": {"type": "timestamp", "nullable": True},
+    "pcr_test_first_positive_date": {"type": "string", "nullable": True},
+    "pcr_test_last_negative_date": {"type": "string", "nullable": True},
     "antibody_test_since_last_visit": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "antibody_test_since_last_visit_results": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "antibody_test_since_last_visit_location": {
@@ -582,8 +582,8 @@ iqvia_v2_validation_schema = {
         ],
         "nullable": True,
     },
-    "antibody_test_first_positive_date": {"type": "timestamp", "nullable": True},
-    "antibody_test_last_negative_date": {"type": "timestamp", "nullable": True},
+    "antibody_test_first_positive_date": {"type": "string", "nullable": True},
+    "antibody_test_last_negative_date": {"type": "string", "nullable": True},
     "have_long_covid_symptoms": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     "long_covid_reduce_activities": {
         "type": "string",
@@ -636,9 +636,9 @@ iqvia_v2_validation_schema = {
     },
     "vaccine_type_other_since_last_visit": {"type": "string", "nullable": True},
     "vaccine_number_of_doses": {"type": "string", "nullable": True, "allowed": ["1", "2", "3 or more"]},
-    "vaccine_last_vaccination_date": {"type": "timestamp", "nullable": True},
+    "vaccine_last_vaccination_date": {"type": "string", "nullable": True},
     "outside_uk_since_april_2020": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     "outside_uk_last_country": {"type": "string", "nullable": True},
-    "outside_uk_last_date": {"type": "timestamp", "nullable": True},
+    "outside_uk_last_date": {"type": "string", "nullable": True},
     "outside_uk_since_last_visit": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
 }
