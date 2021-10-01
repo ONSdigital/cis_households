@@ -912,13 +912,12 @@ def iqvia_v2_survey_dummy_df(spark_session):
     schema = Schema(schema=v2_data_description)
     # iterations increased to 50 to prevent issue of all null values occuring inline
     pandas_df = pd.DataFrame(schema.create(iterations=50))
-    return pandas_df
+    iqvia_v2_survey_dummy_df = spark_session.createDataFrame(pandas_df)
+    iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
+    return iqvia_v2_survey_dummy_df
 
 
 def test_transform_survey_responses_version_2_delta(iqvia_v2_survey_dummy_df, spark_session, data_regression):
-
-    iqvia_v2_survey_dummy_df = spark_session.createDataFrame(iqvia_v2_survey_dummy_df)
-    iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
     transformed_df = (
         transform_survey_responses_version_2_delta(spark_session, iqvia_v2_survey_dummy_df).toPandas().to_dict()
     )
@@ -929,5 +928,6 @@ def test_iqvia_version_2_ETL_delta_ETL_end_to_end(iqvia_v2_survey_dummy_df, pand
     """
     Test that valid example data flows through the ETL from a csv file.
     """
+    iqvia_v2_survey_dummy_df = iqvia_v2_survey_dummy_df.toPandas()
     csv_file = pandas_df_to_temporary_csv(iqvia_v2_survey_dummy_df)
     survey_responses_version_2_ETL(csv_file.as_posix())

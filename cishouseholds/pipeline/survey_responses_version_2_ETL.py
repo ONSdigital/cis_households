@@ -29,7 +29,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
 
     raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
-        spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
+        spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep=","
     )
 
     error_accumulator = spark_session.sparkContext.accumulator(
@@ -74,7 +74,6 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     ------
     df: pyspark.sql.DataFrame
     """
-
     df = assign_column_uniform_value(df, "dataset", 1)  # replace 'n' with chosen value
     df = assign_column_regex_match(
         df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
