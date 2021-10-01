@@ -25,31 +25,18 @@ def survey_responses_version_2_ETL(delta_file_path: str):
 
     spark_session = get_or_create_spark_session()
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
-    print("SCHEMA:")
-    print(iqvia_v2_spark_schema)
-    # iqvia_v2_spark_schema = None
 
     raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
         spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
-    )
-    test = read_csv_to_pyspark_df(
-        spark_session, delta_file_path, raw_iqvia_v2_data_header, None, sep="|"
-    )
-    print("*"*70,"input","*"*70)
-    #df.show()
-    print("*"*70,"schema1","*"*70)
-    df.printSchema()
-    print("*"*70,"schema2","*"*70)
-    test.printSchema()
-    
+    )    
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
 
     df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
-    #df = transform_survey_responses_version_2_delta(spark_session, df)
+    df = transform_survey_responses_version_2_delta(spark_session, df)
     df = load_survey_responses_version_2_delta(spark_session, df)
     return df
 
