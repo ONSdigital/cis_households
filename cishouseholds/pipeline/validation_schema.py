@@ -97,18 +97,12 @@ iqvia_v2_validation_schema = {
     "county": {"type": "string", "nullable": True},
     "postcode": {"type": "string"},
     "study_cohort": {"type": "string", "allowed": ["Blood and Swab", "Swab Only"]},
-    "study_cohort_current": {"type": "string", "allowed": ["Blood and Swab", "Fingerprick and Swab", "Swab"]},
     "fingerprick_status_household": {
         "type": "string",
         "nullable": True,
         "allowed": ["Accepted", "At least one person consented", "Declined", "Invited", "Not invited"],
     },
     # Below variable removed in Protocol 9 - assume we can get rid of this validation (and dummy data) at some point
-    "fingerprick_status_participant": {
-        "type": "string",
-        "nullable": True,
-        "allowed": ["Accepted", "Consented", "Declined", "Invited", "Not invited"],
-    },
     "household_members_under_2_years": {"type": "string", "nullable": True, "allowed": ["Yes", "No"]},
     # Change this variable name in order to reflect what the age is measured in, then can also incorporate max?
     "infant_1_age": {"type": "float", "min": 0, "nullable": True},

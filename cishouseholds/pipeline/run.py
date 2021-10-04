@@ -19,6 +19,7 @@ def run_from_config():
         config = yaml.load(fh, Loader=yaml.FullLoader)
     for ETL in config["stages"]:
         if ETL["run"]:
+            print("RUNNING...",ETL["resource_path"])
             output_df = pipeline_stages[ETL["function"]](ETL["resource_path"])
             output_df = process_post_merge(output_df)
             output_df.toPandas().to_csv(
