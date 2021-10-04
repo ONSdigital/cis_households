@@ -161,7 +161,7 @@ iqvia_v2_validation_schema = {
     "have_email_address": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "prefer_receive_vouchers": {"type": "string", "allowed": ["Email", "Paper(Post)"], "nullable": True},
     "confirm_receive_vouchers": {"type": "string", "allowed": ["false", "true"]},
-    "no_email_address": {"type": "integer", "min": 0, "max": 1},  # amend dummy data to reflect 0/1 options
+    "no_email_address": {"type": "float", "min": 0, "max": 1},  # amend dummy data to reflect 0/1 options
     "able_to_take_blood": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
     "no_blood_reason_fingerprick": {
         "type": "string",
@@ -475,7 +475,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "hours_a_day_with_someone_else_at_home": {"type": "integer", "nullable": True, "min": 0, "max": 24},
+    "hours_a_day_with_someone_else_at_home": {"type": "string", "nullable": True, "min": 0, "max": 24},
     "physical_contact_under_18_years": {
         "type": "string",
         "nullable": True,
