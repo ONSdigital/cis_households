@@ -37,7 +37,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     )
 
     df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
-    df = transform_survey_responses_version_2_delta(spark_session, df)
+    # df = transform_survey_responses_version_2_delta(spark_session, df)
     df = load_survey_responses_version_2_delta(spark_session, df)
     return df
 
