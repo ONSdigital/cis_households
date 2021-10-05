@@ -11,7 +11,7 @@ stages:
 
   - function: survey_responses_version_2_ETL
     run: True
-    resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v2/ONSECRF5_Datafile_20211004.csv"
+    resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v2/ONSECRF5_Datafile_20211005.csv"
     output_path: "/ons/covserolink/lamots"
 
 csv_output_path: "/home/cdsw/output"
