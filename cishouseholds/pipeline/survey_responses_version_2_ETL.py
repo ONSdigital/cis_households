@@ -2,6 +2,7 @@ from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 
+from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
@@ -80,6 +81,7 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     )  # using default email pattern regex to filter 'good' and 'bad' emails
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
+    df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
@@ -99,9 +101,8 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    # df = placeholder_for_derivation_number_22(df, "age_at_visit", "visit_date,dob")
+    df = assign_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
-
     return df
 
 
