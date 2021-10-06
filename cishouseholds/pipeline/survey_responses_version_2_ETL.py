@@ -40,7 +40,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
     df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
-    iqvia_v2_time_map_list = chain(*list(iqvia_v2_time_map.values()))
+    iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
     _iqvia_v2_validation_schema = update_schema_types(
         iqvia_v2_validation_schema, iqvia_v2_time_map_list, {"type": "timestamp"}
     )
