@@ -627,7 +627,6 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
     df = create_inconsistent_data_drop_flag(
         df=df, selection_column="identify_one_to_many_bloods_flag", item1_count_column="cs", item2_count_column="ct"
     ).drop("s", "t", "b", "g")
-    df.show()
 
     df = df.withColumn(
         column_name_to_assign,
