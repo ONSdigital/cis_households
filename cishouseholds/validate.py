@@ -1,5 +1,8 @@
 # import csv
+import csv
 from datetime import datetime
+from io import StringIO
+from operator import add
 
 from cerberus import TypeDefinition
 from cerberus import Validator
@@ -59,33 +62,27 @@ def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accum
     return filtered_df
 
 
-def validate_csv_fields(csv_file: str, delimiter: str = ","):
+def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     """
     Function to validate the number of fields within records of a csv file.
     Parameters
     ----------
-    csv_file
-        File path for csv file to be validated
+    text_file
+        A text file (csv) that has been ready by spark context
     delimiter
         Delimiter used in csv file, default as ','
     """
-    return True
-    # row_errors = []
-    # with open(csv_file) as f:
-    #     reader = csv.reader(f, delimiter=delimiter)
-    #     n_fields = len(next(reader))
 
-    #     for line_num, row in enumerate(reader):
-    #         row_fields = len(row)
-    #         if row_fields != n_fields:
-    #             row_errors.append(f"{line_num+1}")
+    def count_fields_in_row(delimiter, row):
+        f = StringIO(row)
+        reader = csv.reader(f, delimiter=delimiter)
+        n_fields = len(next(reader))
+        return n_fields
 
-    # if row_errors:
-    #     raise InvalidFileError(
-    #         f"Expected number of fields in each row is {n_fields}",
-    #         f"Rows not matching this are: {', '.join(row_errors)}",
-    #     )
-    # return True
+    header = text_file.first()
+    number_of_columns = count_fields_in_row(delimiter, header)
+    error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
+    return True if error_count == 0 else False
 
 
 def validate_csv_header(text_file: RDD, expected_header: str):

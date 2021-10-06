@@ -26,7 +26,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     spark_session = get_or_create_spark_session()
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
 
-    raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
+    raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
         spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
     )
