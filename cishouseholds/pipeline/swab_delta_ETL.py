@@ -41,7 +41,7 @@ def swab_delta_ETL(delta_file_path: str):
     )
 
     df = convert_columns_to_timestamps(df, swab_time_map)
-    swab_time_map_list = chain(*list(swab_time_map.values()))
+    swab_time_map_list = list(chain(*list(swab_time_map.values())))
     _swab_validation_schema = update_schema_types(swab_validation_schema, swab_time_map_list, {"type": "timestamp"})
     df = validate_and_filter(df, _swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
