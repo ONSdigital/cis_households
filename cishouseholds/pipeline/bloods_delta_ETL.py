@@ -35,7 +35,7 @@ def bloods_delta_ETL(delta_file_path: str):
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-    df = convert_columns_to_timestamps(df, antibody_time_map, bloods_validation_schema)
+    df = convert_columns_to_timestamps(df, antibody_time_map)
     antibody_time_map_list = chain(*list(antibody_time_map.values()))
     _bloods_validation_schema = update_schema_types(bloods_validation_schema, antibody_time_map_list,{"type": "timestamp"})
     df = validate_and_filter(df, _bloods_validation_schema, error_accumulator)
