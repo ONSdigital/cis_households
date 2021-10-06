@@ -59,7 +59,6 @@ def test_one_to_many_bloods_flag(spark_session):
     #    df_mrg.show()
 
     input_df = df_mrg
-    print("HERE")
 
     # assign a column that contains the difference between the visit and recieved dates
     input_df = assign_date_interval_and_flag(

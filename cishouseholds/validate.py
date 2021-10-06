@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from typing import List
 
 from cerberus import TypeDefinition
 from cerberus import Validator
@@ -135,7 +136,6 @@ def check_singular_match(
     group_by_column
         Column to check is singular given criteria
     """
-    print("start")
     dft = (
         df.filter((F.col(flag_column_name).isNull()) & (F.col(match_type_column) == 1))
         .groupBy(group_by_column)
@@ -154,7 +154,9 @@ def check_singular_match(
     return df
 
 
-def validate_merge_logic(df: DataFrame, flag_column_names: list, failed_column_names: list, match_type_colums: list):
+def validate_merge_logic(
+    df: DataFrame, flag_column_names: List[str], failed_column_names: List[str], match_type_colums: List[str]
+):
     """
     Wrapper function to call check_singular_match for each set of parameters in list
     Parameters
