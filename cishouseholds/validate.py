@@ -132,7 +132,7 @@ def check_singular_match(
     match_type_column
         Column to identify type of merge
     group_by_column
-        Column to check is singular given criteria    
+        Column to check is singular given criteria
     """
     print("start")
     dft = (
@@ -166,7 +166,7 @@ def validate_merge_logic(df: DataFrame, flag_column_names: list, failed_column_n
     match_type_column
         List of columns to identify type of merge
     group_by_column
-        List of columns to check is singular given criteria   
+        List of columns to check is singular given criteria
     """
     columns = df.columns
     for i, flag_column in enumerate(flag_column_names):
