@@ -13,7 +13,7 @@ from cishouseholds.edit import convert_columns_to_timestamps
     [
         (
             ("2022-01-08T07:51:35.000Z", "ONS123", "1966-07-30"),
-            {"yyyy-MM-dd'T'HH:mm:ss.SSSS": ["time_example"],"yyyy-MM-dd": ["second_time_example"]},
+            {"yyyy-MM-dd'T'HH:mm:ss.SSSS": ["time_example"], "yyyy-MM-dd": ["second_time_example"]},
         )
     ],
 )
