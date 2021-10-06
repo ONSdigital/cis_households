@@ -1,16 +1,13 @@
-import csv
+# import csv
 from datetime import datetime
-
-from cerberus import TypeDefinition
-from cerberus import Validator
+from pyspark import RDD
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Row
 
-
-class InvalidFileError(Exception):
-    pass
+from cerberus import TypeDefinition
+from cerberus import Validator
 
 
 class PySparkValidator(Validator):
@@ -73,47 +70,37 @@ def validate_csv_fields(csv_file: str, delimiter: str = ","):
         Delimiter used in csv file, default as ','
     """
     return True
-    row_errors = []
-    with open(csv_file) as f:
-        reader = csv.reader(f, delimiter=delimiter)
-        n_fields = len(next(reader))
+    # row_errors = []
+    # with open(csv_file) as f:
+    #     reader = csv.reader(f, delimiter=delimiter)
+    #     n_fields = len(next(reader))
 
-        for line_num, row in enumerate(reader):
-            row_fields = len(row)
-            if row_fields != n_fields:
-                row_errors.append(f"{line_num+1}")
+    #     for line_num, row in enumerate(reader):
+    #         row_fields = len(row)
+    #         if row_fields != n_fields:
+    #             row_errors.append(f"{line_num+1}")
 
-    if row_errors:
-        raise InvalidFileError(
-            f"Expected number of fields in each row is {n_fields}",
-            f"Rows not matching this are: {', '.join(row_errors)}",
-        )
-    return True
+    # if row_errors:
+    #     raise InvalidFileError(
+    #         f"Expected number of fields in each row is {n_fields}",
+    #         f"Rows not matching this are: {', '.join(row_errors)}",
+    #     )
+    # return True
 
 
-def validate_csv_header(csv_file: str, expected_header: str):
+def validate_csv_header(text_file: RDD, expected_header: str):
     """
     Function to validate header in csv file matches expected header.
+
     Parameters
     ----------
-    csv_file
-        File path for csv file to be validated
+    text_file
+        A text file (csv) that has been ready by spark context
     expected_header
         Exact header expected in csv file
     """
-    return True
-    with open(csv_file) as f:
-        header = f.readline().strip()
-
-    if expected_header is not None:
-        is_match = expected_header == header
-        if is_match is False:
-            raise InvalidFileError(
-                f"Header of csv file {csv_file} does not match expected header",
-                f"Actual header: {header}",
-                f"Expected header: {expected_header}",
-            )
-    return True
+    header = text_file.first()
+    return expected_header == header
 
 
 def check_singular_match(

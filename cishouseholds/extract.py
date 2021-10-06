@@ -2,8 +2,13 @@ from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
 from cishouseholds.validate import validate_csv_header
+
+
+class InvalidFileError(Exception):
+    pass
 
 
 def read_csv_to_pyspark_df(
@@ -24,8 +29,17 @@ def read_csv_to_pyspark_df(
     Takes keyword arguments from ``pyspark.sql.DataFrameReader.csv``,
     for example ``timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'"``.
     """
-    validate_csv_header(csv_file_path, expected_raw_header_row)
-    validate_csv_fields(csv_file_path)
+    spark_session = get_or_create_spark_session()
+    text_file = spark_session.sparkContext.textFile(csv_file_path)
+    validate_csv_header(text_file, expected_raw_header_row)
+    validate_csv_fields(text_file)
+
+    # if not is_valid_header:
+    #     raise InvalidFileError(
+    #         f"Header of csv file {csv_file_path} does not match expected header",
+    #         f"Actual header:     {header}",
+    #         f"Expected header:   {expected_header}",
+    #     )
 
     return spark_session.read.csv(
         csv_file_path, header=True, schema=schema, ignoreLeadingWhiteSpace=True, ignoreTrailingWhiteSpace=True, **kwargs
