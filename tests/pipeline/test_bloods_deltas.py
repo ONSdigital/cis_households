@@ -19,16 +19,16 @@ def bloods_dummy_df(spark_session):
     lab_bloods_description = lambda: {  # noqa: E731
         "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
         "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
-        "Plate Barcode": _("random.custom_code", mask="ONS_######CS", digit="#"),
+        "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
         "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
-        "Detection": _("choice", items=["DETECTION", "NOT detected", "failed"]),
-        "Monoclonal Quantitation (Colourmetric)": _("float_number", start=0.0, end=3251.11, precision=4),
-        "Monoclonal Bounded Quantitation(Colourmetric)": _("float_number", start=20, end=400, precision=1),
-        "Monoclonal undiluted Quantitation(Colourmetric)": _("integer_number", start=0, end=20000),
+        "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
+        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3251.11, precision=4),
+        "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
+        "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
         "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
         "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
         "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
+        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
     }
     schema = Schema(schema=lab_bloods_description)
     pandas_df = pd.DataFrame(schema.create(iterations=5))
