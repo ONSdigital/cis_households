@@ -20,6 +20,6 @@ def test_assign_age_at_date(spark_session, expected_df):
 
     input_df = expected_df.drop(F.col("age_at_date"))
 
-    actual_df = assign_age_at_date(input_df, "base_date", "date_of_birth")
+    actual_df = assign_age_at_date(input_df, "age_at_date", "base_date", "date_of_birth")
 
     assert_df_equality(actual_df, expected_df)

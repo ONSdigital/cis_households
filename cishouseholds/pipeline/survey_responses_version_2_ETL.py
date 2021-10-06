@@ -1,7 +1,9 @@
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
+from itertools import chain
 
+from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
@@ -9,12 +11,16 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.pipeline.timestamp_map import iqvia_v2_time_map
+from cishouseholds.edit import update_schema_types
 
-
+@register_pipeline_stage("survey_responses_version_2_ETL")
 def survey_responses_version_2_ETL(delta_file_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
@@ -25,20 +31,19 @@ def survey_responses_version_2_ETL(delta_file_path: str):
 
     raw_iqvia_v2_data_header = ",".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
-        spark_session,
-        delta_file_path,
-        raw_iqvia_v2_data_header,
-        iqvia_v2_spark_schema,
-        timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'",
+        spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
     )
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-
-    df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
-    df = transform_survey_responses_version_2_delta(spark_session, df)
+    df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
+    iqvia_v2_time_map_list = chain(*list(iqvia_v2_time_map.values()))
+    _iqvia_v2_validation_schema = update_schema_types(iqvia_v2_validation_schema, iqvia_v2_time_map_list,{"type": "timestamp"})
+    df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
+    # df = transform_survey_responses_version_2_delta(spark_session, df)
     df = load_survey_responses_version_2_delta(spark_session, df)
+    return df
 
 
 def extract_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
@@ -80,6 +85,7 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     )  # using default email pattern regex to filter 'good' and 'bad' emails
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
+    df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
@@ -99,9 +105,8 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    # df = placeholder_for_derivation_number_22(df, "age_at_visit", "visit_date,dob")
+    df = assign_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
-
     return df
 
 
