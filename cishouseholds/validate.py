@@ -144,3 +144,6 @@ def validate_merge_logic(df: DataFrame, flag_column_names: list, failed_column_n
     for i, flag_column in enumerate(flag_column_names):
         df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], "barcode", i)
     return df.select(*columns)
+
+
+# cc
