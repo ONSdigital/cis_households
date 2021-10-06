@@ -135,7 +135,6 @@ def check_singular_match(
         Column to check is singular given criteria    
     """
     print("start")
-    df.show()
     dft = (
         df.filter((F.col(flag_column_name).isNull()) & (F.col(match_type_column) == 1))
         .groupBy(group_by_column)
@@ -144,7 +143,6 @@ def check_singular_match(
         .withColumnRenamed(failure_column_name, "f")
     )
     dft = dft.withColumn(failure_column_name, F.when(F.col("count") > 1, 1).otherwise(None))
-    dft.show()
     df = (
         df.drop(failure_column_name)
         .join(dft, dft.b == F.col(group_by_column), "outer")
@@ -152,7 +150,6 @@ def check_singular_match(
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
-    df.show()
     return df
 
 

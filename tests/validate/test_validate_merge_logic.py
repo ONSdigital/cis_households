@@ -44,7 +44,5 @@ def test_validate_merge_logic(spark_session):
         schema="barcode string, 1tomb integer, flag1 integer, failed1 integer, mto1s integer,\
              flag2 integer, failed2 integer",
     )
-    df.show()
     result = validate_merge_logic(df, ["flag1", "flag2"], ["failed1", "failed2"], ["1tomb", "mto1s"])
-    result.show()
     assert_df_equality(result, expected, ignore_row_order=False)

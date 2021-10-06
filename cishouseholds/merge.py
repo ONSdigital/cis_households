@@ -575,7 +575,6 @@ def create_inconsistent_data_drop_flag(
             1,
         ).otherwise(None),
     ).drop(item1_count_column, item2_count_column)
-    # df.show()
     return df
 
 
