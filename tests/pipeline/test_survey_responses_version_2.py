@@ -80,12 +80,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
         "County": _("choice", items=[None, _("address.province")]),
         "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Cohort": _("choice", items=["Blood and Swab", "Swab Only"]),
-        "Current_Cohort": _("choice", items=["Blood and Swab", "Fingerprick and Swab", "Swab"]),
         "Fingerprick_Status": _(
             "choice", items=[None, "Accepted", "At least one person consented", "Declined", "Invited", "Not invited"]
-        ),
-        "Fingerprick_Status_Participant": _(
-            "choice", items=[None, "Accepted", "Consented", "Declined", "Invited", "Not invited"]
         ),
         "Household_Members_Under_2_Years": _("choice", items=[None, "Yes", "No"]),
         "Infant_1": _("choice", items=[None, _("integer_number", start=0, end=100)]),

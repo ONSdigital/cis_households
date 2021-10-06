@@ -33,10 +33,7 @@ def add_after(list: list, element: str, add: str):
     el_index = list.index(element)
     new_list = list[: el_index + 1]
     new_list.append(add)
-    try:
-        new_list += list[el_index + 1 :]  # noqa: E203
-    except Exception as e:
-        print(e)
+    new_list += list[el_index + 1 :]  # noqa: E203
     return new_list
 
 
