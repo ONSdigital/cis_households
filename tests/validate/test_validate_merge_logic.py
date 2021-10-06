@@ -7,7 +7,9 @@ def test_validate_merge_logic(spark_session):
     """Test that validator works to assign failed flags to columns where result is not unique"""
     df = spark_session.createDataFrame(
         data=[
-            ("ONS00000002", 1, 1, None, None, None, None),
+            ("ONS00000001", 1, 0, None, None, None, None),
+            ("ONS00000002", 1, 0, None, None, None, None),
+            ("ONS00000002", 1, 1, 1, None, None, None),
             ("ONS00000003", None, None, None, 1, None, 1),
             ("ONS00000003", None, None, None, 1, None, 1),
             ("ONS00000004", None, None, None, 1, 1, 1),
@@ -25,6 +27,8 @@ def test_validate_merge_logic(spark_session):
 
     expected = spark_session.createDataFrame(
         data=[
+            ("ONS00000001", 1, 0, None, None, None, None),
+            ("ONS00000002", 1, 0, None, None, None, None),
             ("ONS00000002", 1, 1, None, None, None, None),
             ("ONS00000003", None, None, None, 1, None, 1),
             ("ONS00000003", None, None, None, 1, None, 1),
@@ -41,5 +45,4 @@ def test_validate_merge_logic(spark_session):
              flag2 integer, failed2 integer",
     )
     result = validate_merge_logic(df, ["flag1", "flag2"], ["failed1", "failed2"], ["1tomb", "mto1s"])
-    result.show()
     assert_df_equality(result, expected, ignore_row_order=False)
