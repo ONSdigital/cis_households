@@ -4,12 +4,13 @@ Generate fake data for households survey raw input data.
 import random
 from datetime import datetime
 
-import helpers_weight
-from helpers import random_date
-from helpers import random_integer
 from mimesis.schema import Field
 
-_ = Field("en-gb", seed=42, providers=[helpers_weight.Distribution])
+from dummy_data_generation.helpers import random_date
+from dummy_data_generation.helpers import random_integer
+from dummy_data_generation.helpers_weight import Distribution
+
+_ = Field("en-gb", seed=42, providers=[Distribution])
 
 yes_no_choice = ["Yes", "No"]
 yes_no_none_choice = ["Yes", "No", None]
