@@ -4,6 +4,7 @@ from typing import Mapping
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
@@ -13,12 +14,13 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     column_format_map
         format of datetime string and associated list of column names to which it applies
     """
-    for format,columns_list in column_format_map.items():
+    for format, columns_list in column_format_map.items():
         for column_name in columns_list:
             df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
     return df
 
-def update_schema_types(schema:dict, column_names: list, new_type: dict):
+
+def update_schema_types(schema: dict, column_names: list, new_type: dict):
     """
     Update entries within schema dictionary to reflect a common change across all rows in list (column_names)
     Parameters
@@ -32,6 +34,7 @@ def update_schema_types(schema:dict, column_names: list, new_type: dict):
     for column_name in column_names:
         schema[column_name] = new_type
     return schema
+
 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
