@@ -120,8 +120,9 @@ def check_singular_match(
     df: DataFrame, flag_column_name: str, failure_column_name: str, match_type_column: str, group_by_column: str
 ):
     """
-    Given a set of columns related to the final drop flag of a given merge function on the complete (merged) dataframe produce
-    an indication column (failure column) which stipulates whether the merge function has returned a unique match
+    Given a set of columns related to the final drop flag of a given merge function on the complete
+    (merged) dataframe produce an indication column (failure column) which stipulates whether the 
+    merge function has returned a unique match
     Parameters
     ----------
     df
