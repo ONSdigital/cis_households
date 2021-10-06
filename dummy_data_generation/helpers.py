@@ -1,7 +1,5 @@
 import datetime
 import random
-import time
-from calendar import monthrange
 from typing import List
 
 
@@ -74,28 +72,27 @@ def coded_string_in_range(length, use_incremental_letters, min_string="", max_st
 def pick_specific_character(mask):
     while "[" in mask and "]" in mask:
         new_flag_indexes = [mask.index("["), mask.index("]")]
-
-        # print("new flag indexes: ", new_flag_indexes)
         sub_string = ""
         for c in range(new_flag_indexes[0] + 1, new_flag_indexes[1]):
             sub_string += mask[c]
-        # print("substring: ",sub_string)
         character_choices = sub_string.split(",")
-        mask = mask[: new_flag_indexes[0]] + random.choice(character_choices) + mask[new_flag_indexes[1] + 1 :]
-        # print("new mask: ",mask)
-        # print("-"*25)
+        mask = (
+            mask[: new_flag_indexes[0]]
+            + random.choice(character_choices)
+            + mask[new_flag_indexes[1] + 1 :]  # noqa: E203
+        )
+
     return mask
 
 
 def replace_static_characters(mask, min_code):
     for i, c in enumerate(mask):
         if c == "X":
-            mask = mask[:i] + min_code[i] + mask[i + 1 :]
+            mask = mask[:i] + min_code[i] + mask[i + 1 :]  # noqa: E203
         return mask
 
 
 def code_mask(**kwargs):
-    # mask,min_code,max_code,use_incremental_letters=False
     try:
         mask = kwargs["mask"]
     except KeyError:
@@ -109,12 +106,12 @@ def code_mask(**kwargs):
     if "[" in mask and "]" in mask:
         mask = pick_specific_character(mask)
 
-    if type(kwargs["min_code"]) == type([]):
-        if type(kwargs["max_code"]) == type([]) and (len(kwargs["max_code"]) == len(kwargs["min_code"])):
+    if isinstance(kwargs["min_code"], List):
+        if isinstance(kwargs["max_code"], List) and (len(kwargs["max_code"]) == len(kwargs["min_code"])):
             randindex = kwargs["min_code"].index(random.choices(kwargs["min_code"], weights=weights, k=1)[0])
             min_code = kwargs["min_code"][randindex]
             max_code = kwargs["max_code"][randindex]
-            if min_code == None:
+            if min_code is None:
                 return None
             mask = replace_static_characters(mask, min_code)
         else:
@@ -128,13 +125,9 @@ def code_mask(**kwargs):
         use_incremental_letters = False
 
     breakpoints = get_breakpoints(mask)
-    # print("here: ", breakpoints["#"])
-    # print("min code = ",min_code," max code = ",max_code)
     min_nums = get_nums(breakpoints["#"], min_code)  # numbers are strings --> convert to int
     max_nums = get_nums(breakpoints["#"], max_code)
-    # print("min , max = ",min_nums,", ",max_nums)
     for pos_range in breakpoints["&"]:
-        # print("letters")
         try:
             stop = pos_range[1] + 1
         except IndexError:
@@ -144,7 +137,7 @@ def code_mask(**kwargs):
             stop - start, use_incremental_letters, min_code[start:stop], max_code[start:stop]
         )
         for i, j in enumerate(range(start, stop)):
-            mask = mask[:j] + coded_string[i] + mask[j + 1 :]
+            mask = mask[:j] + coded_string[i] + mask[j + 1 :]  # noqa: E203
 
     for i, pos_range in enumerate(breakpoints["#"]):
         try:
@@ -154,7 +147,7 @@ def code_mask(**kwargs):
         start = pos_range[0]
         coded_num = coded_num_in_range(min_nums[i], max_nums[i])
         for j, k in enumerate(range(start, stop)):
-            mask = mask[:k] + coded_num[j] + mask[k + 1 :]
+            mask = mask[:k] + coded_num[j] + mask[k + 1 :]  # noqa: E203
 
     return mask
 

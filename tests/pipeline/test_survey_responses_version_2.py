@@ -7,7 +7,7 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
 from cishouseholds.pipeline.survey_responses_version_2_ETL import survey_responses_version_2_ETL
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
-from dummy_data_generation.schemas import voyager_2_data_description
+from dummy_data_generation.schemas import get_voyager_2_data_description
 
 _ = Field("en-gb", seed=69)
 
@@ -17,9 +17,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
     """
     Generate dummy IQVIA v2 survey file.
     """
-    schema = Schema(schema=voyager_2_data_description)
-    # iterations increased to 50 to prevent issue of all null values occuring inline
-    pandas_df = pd.DataFrame(schema.create(iterations=50))
+    schema = Schema(schema=get_voyager_2_data_description(["ONS00000000"], ["ONS00000000"]))
+    pandas_df = pd.DataFrame(schema.create(iterations=20))
     iqvia_v2_survey_dummy_df = spark_session.createDataFrame(pandas_df)
     iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
     return iqvia_v2_survey_dummy_df
