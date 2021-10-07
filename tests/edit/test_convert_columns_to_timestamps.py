@@ -12,8 +12,8 @@ from cishouseholds.edit import convert_columns_to_timestamps
     "input_data, column_map",
     [
         (
-            ("1966-07-30 15:00:00", "ONS123", "1966-07-30"),
-            {"time_example": "YYYY-mm-dd HH:MM:SS", "second_time_example": "YYYY-mm-dd"},
+            ("2022-01-08T07:51:35.000Z", "ONS123", "1966-07-30"),
+            {"yyyy-MM-dd'T'HH:mm:ss.SSSS": ["time_example"], "yyyy-MM-dd": ["second_time_example"]},
         )
     ],
 )
@@ -35,6 +35,7 @@ def test_convert_to_timestamp(spark_session, input_data, column_map):
     assert actual_df.schema == expected_schema
 
     contains_nulls = False
+
     for c in actual_df.columns:
         if len(actual_df.where(F.col(c).isNull()).limit(1).collect()) != 0:
             contains_nulls = True
