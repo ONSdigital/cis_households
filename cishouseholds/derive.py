@@ -4,6 +4,24 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_outer_postcode(df: DataFrame, column_name_to_assign: str, reference_colum: str):
+    """
+    Assign column outer postcode with cleaned data from reference postcode column.
+    take only left part of postcode and capitalise
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    """
+    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_colum, " ").getItem(0)))
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
+    )
+
+    return df
+
+
 def assign_column_from_coalesce(df, column_name_to_assign, *args):
     """
     Assign new column with values from coalesced columns.
