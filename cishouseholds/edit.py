@@ -12,14 +12,28 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     ----------
     df
     column_format_map
-        Column names and associated format of timestamp string
+        format of datetime string and associated list of column names to which it applies
     """
-    column_names = column_format_map.keys()
-
-    for column_name in column_names:
-        df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=column_format_map[column_name]))
-
+    for format, columns_list in column_format_map.items():
+        for column_name in columns_list:
+            df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
     return df
+
+
+def update_schema_types(schema: dict, column_names: list, new_type: dict):
+    """
+    Update entries within schema dictionary to reflect a common change across all rows in list (column_names)
+    Parameters
+    ----------
+    schema
+    column_names
+        list of names of keys within schema to assign new type to
+    new_type
+        type dictionary to update the schame entry to
+    """
+    for column_name in column_names:
+        schema[column_name] = new_type
+    return schema
 
 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
