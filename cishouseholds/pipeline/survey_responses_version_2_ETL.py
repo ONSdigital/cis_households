@@ -1,3 +1,5 @@
+from itertools import chain
+
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -8,9 +10,12 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_single_column_from_split
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.timestamp_map import iqvia_v2_time_map
 from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -34,8 +39,12 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-
-    df = validate_and_filter(df, iqvia_v2_validation_schema, error_accumulator)
+    df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
+    iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
+    _iqvia_v2_validation_schema = update_schema_types(
+        iqvia_v2_validation_schema, iqvia_v2_time_map_list, {"type": "timestamp"}
+    )
+    df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
     # df = transform_survey_responses_version_2_delta(spark_session, df)
     df = load_survey_responses_version_2_delta(spark_session, df)
     return df
