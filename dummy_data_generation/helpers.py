@@ -1,10 +1,13 @@
 import datetime
-import random
+import random as random_module
+from typing import Any
 from typing import List
+
+from mimesis.providers.base import BaseDataProvider
 
 
 def coded_num_in_range(min, max):
-    value = random.randint(int(min), int(max))
+    value = random_module.randint(int(min), int(max))
     if len(str(value)) < len(str(max)):
         str_val = "0" * (len(max) - len(str(value))) + str(value)
     else:
@@ -65,7 +68,7 @@ def coded_string_in_range(length, use_incremental_letters, min_string="", max_st
             else:
                 max_char = "Z"
 
-        string += chr(random.randint(ord(min_char), ord(max_char)))
+        string += chr(random_module.randint(ord(min_char), ord(max_char)))
     return string
 
 
@@ -78,7 +81,7 @@ def pick_specific_character(mask):
         character_choices = sub_string.split(",")
         mask = (
             mask[: new_flag_indexes[0]]
-            + random.choice(character_choices)
+            + random_module.choice(character_choices)
             + mask[new_flag_indexes[1] + 1 :]  # noqa: E203
         )
 
@@ -108,7 +111,7 @@ def code_mask(**kwargs):
 
     if isinstance(kwargs["min_code"], List):
         if isinstance(kwargs["max_code"], List) and (len(kwargs["max_code"]) == len(kwargs["min_code"])):
-            randindex = kwargs["min_code"].index(random.choices(kwargs["min_code"], weights=weights, k=1)[0])
+            randindex = kwargs["min_code"].index(random_module.choices(kwargs["min_code"], weights=weights, k=1)[0])
             min_code = kwargs["min_code"][randindex]
             max_code = kwargs["max_code"][randindex]
             if min_code is None:
@@ -152,20 +155,31 @@ def code_mask(**kwargs):
     return mask
 
 
-def random_date(start, end, format="%d/%m/%Y"):
-    """Generate a random datetime between datetime object `start` and `end`"""
-    return (
-        start
-        + datetime.timedelta(
-            # Get a random amount of seconds between `start` and `end`
-            seconds=random.randint(0, int((end - start).total_seconds())),
-        )
-    ).strftime(format)
+class CustomRandom(BaseDataProvider):
+    """
+    Class for generating random numbers and dates.
+    """
 
+    class Meta:
+        name = "custom_random"
 
-def random_integer(lower: int, upper: int, null_percent: int):
-    choice = random.random()
-    if null_percent <= choice:
-        return str(random.randint(lower, upper))
-    else:
-        return None
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+
+        super().__init__(*args, **kwargs)
+
+    def random_date(self, start, end, format="%d/%m/%Y"):
+        """Generate a random_module datetime between datetime object `start` and `end`"""
+        return (
+            start
+            + datetime.timedelta(
+                # Get a random_module amount of seconds between `start` and `end`
+                seconds=int(self.random.random() * (end - start).total_seconds()),
+            )
+        ).strftime(format)
+
+    def random_integer(self, lower: int, upper: int, null_percent: int = -1):
+        choice = self.random.random()
+        if null_percent <= choice:
+            return int(self.random.random() * (upper - lower))
+        else:
+            return None

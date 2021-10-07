@@ -12,7 +12,7 @@ from helpers import code_mask
 from mimesis.schema import Schema
 
 from dummy_data_generation.schemas import _
-from dummy_data_generation.schemas import blood_data_description
+from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
 from dummy_data_generation.schemas import swab_data_description
 
@@ -44,7 +44,7 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
     """
     Generate survey v2 data. Depends on lab swabs and lab bloods.
     """
-    schema = Schema(schema=blood_data_description)
+    schema = Schema(schema=get_blood_data_description(target))
     survey_unioxf_medtest = pd.DataFrame(schema.create(iterations=records))
 
     survey_unioxf_medtest.to_csv(directory / f"Unioxf_medtest{target}_{file_date}.csv", index=False)

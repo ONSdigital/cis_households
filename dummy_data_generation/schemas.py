@@ -1,16 +1,12 @@
-"""
-Generate fake data for households survey raw input data.
-"""
-import random
 from datetime import datetime
 
 from mimesis.schema import Field
 
-from dummy_data_generation.helpers import random_date
-from dummy_data_generation.helpers import random_integer
+from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 
-_ = Field("en-gb", seed=42, providers=[Distribution])
+
+_ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
 
 yes_no_choice = ["Yes", "No"]
 yes_no_none_choice = ["Yes", "No", None]
@@ -18,6 +14,44 @@ yes_no_none_choice = ["Yes", "No", None]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
+
+
+swab_data_description = lambda: {  # noqa: E731
+    "Sample": _("random.custom_code", mask="ONS########", digit="#"),
+    "Result": _("choice", items=["Negative", "Positive", "Void"]),
+    "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
+    "Lab ID": _("choice", items=["GLS"]),
+    "testKit": _("choice", items=["rtPCR", None]),
+    "CH1-Target": _("choice", items=["ORF1ab", None]),
+    "CH1-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+    "CH1-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+    "CH2-Target": _("choice", items=["N gene", None]),
+    "CH2-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+    "CH2-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+    "CH3-Target": _("choice", items=["S gene", None]),
+    "CH3-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+    "CH3-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+    "CH4-Target": _("choice", items=["S gene", None]),
+    "CH4-Result": _("choice", items=["Positive", "Rejected"]),
+    "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
+}
+
+
+def get_blood_data_description(target):
+    return lambda: {  # noqa: E731
+        "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
+        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
+        "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
+        "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
+        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3251.11, precision=4),
+        "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
+        "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
+        "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
+    }
 
 
 def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
@@ -81,9 +115,12 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Work_Type_Picklist": _("choice", items=[None, "Blood and Swab", "Fingerprick and Swab", "Swab Only"]),
         # Should follow YYYY-mm-ddTHH:MM:SS.sssZ
         "Visit_Date_Time": _(
-            "choice",
-            items=[random_date(start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"],
-        ),
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        )[:-3]
+        + "Z",
         "Street": _("choice", items=[None, _("address.street_name")]),
         "City": _("choice", items=[None, _("address.city")]),
         "County": _("choice", items=[None, _("address.province")]),
@@ -93,24 +130,24 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
             "choice", items=[None, "Accepted", "At least one person consented", "Declined", "Invited", "Not invited"]
         ),
         "Household_Members_Under_2_Years": _("choice", items=yes_no_none_choice),
-        "Infant_1": random_integer(0, 8, 0.1),
-        "Infant_2": random_integer(0, 8, 0.1),
-        "Infant_3": random_integer(0, 8, 0.1),
-        "Infant_4": random_integer(0, 8, 0.1),
-        "Infant_5": random_integer(0, 8, 0.1),
-        "Infant_6": random_integer(0, 8, 0.1),
-        "Infant_7": random_integer(0, 8, 0.1),
-        "Infant_8": random_integer(0, 8, 0.1),
+        "Infant_1": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_2": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_3": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_4": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_5": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_6": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_7": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_8": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
         "Household_Members_Over_2_and_Not_Present": _("choice", items=[None, "Yes", "No"]),
-        "Person_1": random_integer(9, 100, 0.1),
-        "Person_2": random_integer(9, 100, 0.1),
-        "Person_3": random_integer(9, 100, 0.1),
-        "Person_4": random_integer(9, 100, 0.1),
-        "Person_5": random_integer(9, 100, 0.1),
-        "Person_6": random_integer(9, 100, 0.1),
-        "Person_7": random_integer(9, 100, 0.1),
-        "Person_8": random_integer(9, 110, 0.1),
-        "Person_1_Not_Consenting_Age": random_integer(9, 110, 0.1),
+        "Person_1": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_2": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_3": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_4": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_5": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_8": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
+        "Person_1_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
         "Person1_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -129,7 +166,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_2_Not_Consenting_Age": random_integer(9, 110, 0.2),
+        "Person_2_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.2),
         "Person2_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -148,7 +185,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_3_Not_Consenting_Age": random_integer(9, 110, 0.3),
+        "Person_3_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.3),
         "Person3_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -167,7 +204,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_4_Not_Consenting_Age": random_integer(9, 110, 0.4),
+        "Person_4_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.4),
         "Person4_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -186,7 +223,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_5_Not_Consenting_Age": random_integer(9, 110, 0.5),
+        "Person_5_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
         "Person5_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -205,7 +242,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_6_Not_Consenting_Age": random_integer(9, 110, 0.5),
+        "Person_6_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
         "Person6_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -224,7 +261,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_7_Not_Consenting_Age": random_integer(9, 110, 0.6),
+        "Person_7_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.6),
         "Person7_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -238,7 +275,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_8_Not_Consenting_Age": random_integer(9, 110, 0.7),
+        "Person_8_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.7),
         "Person8_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -257,7 +294,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Person_9_Not_Consenting_Age": random_integer(9, 110, 0.8),
+        "Person_9_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
         "Person9_Reason_for_Not_Consenting": _(
             "choice",
             items=[
@@ -295,7 +332,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Have_email_address": _("choice", items=yes_no_none_choice),
         "Prefer_receive_vouchers": _("choice", items=["Email", "Paper(Post)"]),
         "Confirm_receive_vouchers": _("choice", items=["false", "true"]),
-        "No_Email_address": random.randint(0, 1),
+        "No_Email_address": _("custom_random.random_integer", lower=0, upper=1),
         "Able_to_take_blood": _("choice", items=yes_no_none_choice),
         "No_Blood_reason_fingerprick": _(
             "choice",
@@ -343,7 +380,10 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Date_Time_Samples_Taken": _(
             "discrete_distribution",
             population=[
-                random_date(start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%S.%f")[
+                    :-3
+                ]
+                + "Z",
                 None,
             ],
             weights=[0.5, 0.5],
@@ -506,7 +546,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         ),
         "Date_of_first_symptom_onset": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "Symptoms_7_Fever": _("choice", items=yes_no_none_choice),
@@ -545,14 +585,14 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Contact_Known_Positive_COVID19_28_days": _("choice", items=yes_no_none_choice),
         "If_Known_last_contact_date": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "If_Known_type_of_contact_S2": _("choice", items=["Living in your own home", "Outside your home", None]),
         "Contact_Suspect_Positive_COVID19_28_d": _("choice", items=yes_no_none_choice),
         "If_suspect_last_contact_date": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "If_suspect_type_of_contact_S2": _("choice", items=["Living in your own home", "Outside your home", None]),
@@ -720,7 +760,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Previous_Symptoms_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "If_yes_Date_of_first_symptoms": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "Did_you_contact_NHS": _("choice", items=yes_no_none_choice),
@@ -739,12 +779,12 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         ),
         "If_positive_Date_of_1st_ve_test": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "If_all_negative_Date_last_test": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "Have_you_had_a_blood_test_for_Covid": _("choice", items=yes_no_none_choice),
@@ -771,12 +811,12 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         ),
         "If_ve_Blood_Date_of_1st_ve_test": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "If_all_ve_blood_Date_last_ve_test": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "Have_Long_Covid_Symptoms": _("choice", items=yes_no_none_choice),
@@ -857,7 +897,7 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         "Number_Of_Doses": _("choice", items=["1", "2", "3 or more", None]),
         "Date_Of_Vaccination": _(
             "discrete_distribution",
-            population=[random_date(start=start_date_list, end=end_date_list), None],
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
         "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
@@ -896,39 +936,3 @@ def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
         ),
         "Have_you_been_outside_UK_Lastspoke": _("choice", items=yes_no_none_choice),
     }
-
-
-swab_data_description = lambda: {  # noqa: E731
-    "Sample": _("random.custom_code", mask="ONS########", digit="#"),
-    "Result": _("choice", items=["Negative", "Positive", "Void"]),
-    "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-    "Lab ID": _("choice", items=["GLS"]),
-    "testKit": _("choice", items=["rtPCR", None]),
-    "CH1-Target": _("choice", items=["ORF1ab", None]),
-    "CH1-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH1-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH2-Target": _("choice", items=["N gene", None]),
-    "CH2-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH2-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH3-Target": _("choice", items=["S gene", None]),
-    "CH3-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH3-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH4-Target": _("choice", items=["S gene", None]),
-    "CH4-Result": _("choice", items=["Positive", "Rejected"]),
-    "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
-}
-
-blood_data_description = lambda: {  # noqa: E731
-    "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
-    "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
-    "Plate Barcode": _("random.custom_code", mask="ONS_######CN-#", digit="#"),
-    "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
-    "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
-    "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3251.11, precision=4),
-    "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
-    "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
-    "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-    "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-    "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-    "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
-}
