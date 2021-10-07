@@ -13,7 +13,6 @@ def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to
     white_bool_column
     """
     df = df.withColumn(column_name_to_assign, F.when(F.col(white_bool_column) == 1, "white").otherwise("non-white"))
-    df.show()
     return df
 
 
