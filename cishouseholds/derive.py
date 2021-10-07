@@ -4,6 +4,19 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
+    """
+    Assign string variable for ethnicity white / non-white depending on bool value 0 / 1
+    Parameters
+    ----------
+    df
+    white_bool_column
+    """
+    df = df.withColumn(column_name_to_assign, F.when(F.col(white_bool_column) == 1, "white").otherwise("non-white"))
+    df.show()
+    return df
+
+
 def assign_column_from_coalesce(df, column_name_to_assign, *args):
     """
     Assign new column with values from coalesced columns.
