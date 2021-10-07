@@ -147,7 +147,6 @@ def check_singular_match(
     df = (
         df.drop(failure_column_name)
         .join(dft, dft.b == F.col(group_by_column), "outer")
-        .orderBy(group_by_column)
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
@@ -155,11 +154,15 @@ def check_singular_match(
 
 
 def validate_merge_logic(
-    df: DataFrame, flag_column_names: List[str], failed_column_names: List[str], match_type_colums: List[str]
+    df: DataFrame,
+    flag_column_names: List[str],
+    failed_column_names: List[str],
+    match_type_colums: List[str],
+    group_by_column: str,
 ):
     """
     Wrapper function to call check_singular_match for each set of parameters in list
-    Parameters
+    Parameters. For creating a new failure column specify a name of a column which does not currently exist
     ----------
     df
     flag_column_names
@@ -173,5 +176,5 @@ def validate_merge_logic(
     """
     columns = df.columns
     for i, flag_column in enumerate(flag_column_names):
-        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], "barcode")
+        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], group_by_column)
     return df.select(*columns)
