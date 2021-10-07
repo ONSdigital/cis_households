@@ -268,7 +268,6 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
     -------
     pyspark.sql.DataFrame
     """
-
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
 
 
@@ -443,7 +442,7 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     )
 
 
-def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
+def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, date_of_birth):
     """
     Assign a new column containing age at a specified date
     Assume that parameters will be in date format
@@ -461,7 +460,31 @@ def assign_age_at_date(df: DataFrame, base_date, date_of_birth):
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        "age_at_date", F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
     )
 
     return df.drop("date_diff")
+
+
+def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth):
+    """
+    Uses correct logic to calculate complete years elapsed between 2 dates
+    """
+    df = df.withColumn(
+        "month_more",
+        F.when(F.month(F.col(reference_date)) > F.month(F.col(date_of_birth)), 2).otherwise(
+            F.when(F.month(F.col(reference_date)) == F.month(F.col(date_of_birth)), 1).otherwise(0)
+        ),
+    )
+    df = df.withColumn(
+        "day_more",
+        F.when(F.date_format(F.col(reference_date), "d") >= F.date_format(F.col(date_of_birth), "d"), 1).otherwise(0),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.year(F.col(reference_date))
+        - F.year(F.col(date_of_birth))
+        - F.lit(1)
+        + F.round((F.col("month_more") + F.col("day_more")) / 3, 0).cast("int"),
+    )
+    return df.drop("month_more", "day_more")

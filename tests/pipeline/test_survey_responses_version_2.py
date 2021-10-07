@@ -80,12 +80,8 @@ def iqvia_v2_survey_dummy_df(spark_session):
         "County": _("choice", items=[None, _("address.province")]),
         "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Cohort": _("choice", items=["Blood and Swab", "Swab Only"]),
-        "Current_Cohort": _("choice", items=["Blood and Swab", "Fingerprick and Swab", "Swab"]),
         "Fingerprick_Status": _(
             "choice", items=[None, "Accepted", "At least one person consented", "Declined", "Invited", "Not invited"]
-        ),
-        "Fingerprick_Status_Participant": _(
-            "choice", items=[None, "Accepted", "Consented", "Declined", "Invited", "Not invited"]
         ),
         "Household_Members_Under_2_Years": _("choice", items=[None, "Yes", "No"]),
         "Infant_1": _("choice", items=[None, _("integer_number", start=0, end=100)]),
@@ -912,13 +908,12 @@ def iqvia_v2_survey_dummy_df(spark_session):
     schema = Schema(schema=v2_data_description)
     # iterations increased to 50 to prevent issue of all null values occuring inline
     pandas_df = pd.DataFrame(schema.create(iterations=50))
-    return pandas_df
+    iqvia_v2_survey_dummy_df = spark_session.createDataFrame(pandas_df)
+    iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
+    return iqvia_v2_survey_dummy_df
 
 
 def test_transform_survey_responses_version_2_delta(iqvia_v2_survey_dummy_df, spark_session, data_regression):
-
-    iqvia_v2_survey_dummy_df = spark_session.createDataFrame(iqvia_v2_survey_dummy_df)
-    iqvia_v2_survey_dummy_df = rename_column_names(iqvia_v2_survey_dummy_df, iqvia_v2_variable_name_map)
     transformed_df = (
         transform_survey_responses_version_2_delta(spark_session, iqvia_v2_survey_dummy_df).toPandas().to_dict()
     )
@@ -929,5 +924,6 @@ def test_iqvia_version_2_ETL_delta_ETL_end_to_end(iqvia_v2_survey_dummy_df, pand
     """
     Test that valid example data flows through the ETL from a csv file.
     """
+    iqvia_v2_survey_dummy_df = iqvia_v2_survey_dummy_df.toPandas()
     csv_file = pandas_df_to_temporary_csv(iqvia_v2_survey_dummy_df)
     survey_responses_version_2_ETL(csv_file.as_posix())

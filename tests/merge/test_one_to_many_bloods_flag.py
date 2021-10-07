@@ -51,12 +51,9 @@ def test_one_to_many_bloods_flag(spark_session):
     df_iq = spark_session.createDataFrame(data_iq, schema=schema_iq)
     df_ox = spark_session.createDataFrame(data_ox, schema=schema_ox)
 
-    df_iq.show()
-    df_ox.show()
     # IQ - 1:m - bloods
 
     df_mrg = df_iq.join(df_ox, df_iq.barcode_iq == df_ox.barcode_ox, "inner")
-    #    df_mrg.show()
 
     input_df = df_mrg
 
@@ -66,5 +63,4 @@ def test_one_to_many_bloods_flag(spark_session):
     )
 
     output_df = one_to_many_bloods_flag(input_df, "one_to_many_bloods_drop_flag", "barcode_iq")
-    output_df.show()
     assert_df_equality(output_df, expected_df, ignore_row_order=True)

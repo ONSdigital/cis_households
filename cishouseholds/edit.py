@@ -5,6 +5,23 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
+    """
+    Convert string columns to timestamp given format.
+    Parameters
+    ----------
+    df
+    column_format_map
+        Column names and associated format of timestamp string
+    """
+    column_names = column_format_map.keys()
+
+    for column_name in column_names:
+        df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=column_format_map[column_name]))
+
+    return df
+
+
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
     Rename column names.

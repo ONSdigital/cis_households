@@ -7,6 +7,7 @@ import cishouseholds.pipeline.bloods_delta_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pipeline.post_merge_processing import process_post_merge
 
 
 def run_from_config():
@@ -18,7 +19,9 @@ def run_from_config():
         config = yaml.load(fh, Loader=yaml.FullLoader)
     for ETL in config["stages"]:
         if ETL["run"]:
+            print("RUNNING...", ETL["resource_path"])
             output_df = pipeline_stages[ETL["function"]](ETL["resource_path"])
+            output_df = process_post_merge(output_df)
             output_df.toPandas().to_csv(
                 "{}/{}_output_{}.csv".format(
                     config["csv_output_path"], ETL["function"], datetime.now().strftime("%y%m%d_%H%M%S")
