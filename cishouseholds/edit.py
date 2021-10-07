@@ -22,13 +22,16 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     return df
 
 
-def format_string_upper_and_clean(string: str) -> str:
+def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
     """
-    remove all instances of whitespace before and after a string including all duplicate spaces
+    remove all instances of whitespace before and after a string field including all duplicate spaces
     """
-    string = string.replace("  ", "").rstrip().lstrip()
-    string = string.replace(".", "")
-    return string.upper()
+    df = df.withColumn(
+        column_name_to_assign,
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(F.regexp_replace(column_name_to_assign, "  ", ""), "\\.", "")))),
+    )
+
+    return df
 
 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
