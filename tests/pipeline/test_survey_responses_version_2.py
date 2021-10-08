@@ -7,11 +7,11 @@ from dummy_data_generation.schemas import get_voyager_2_data_description
 
 
 @pytest.fixture
-def responses_v2_survey_dummy_df():
+def responses_v2_survey_dummy_df(mimesis_field):
     """
     Generate dummy survey responses v2 delta.
     """
-    schema = Schema(schema=get_voyager_2_data_description(["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_2_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     return pandas_df
 

@@ -7,11 +7,11 @@ from dummy_data_generation.schemas import get_blood_data_description
 
 
 @pytest.fixture
-def bloods_dummy_df():
+def bloods_dummy_df(mimesis_field):
     """
     Generate lab bloods file.
     """
-    schema = Schema(schema=get_blood_data_description("N"))
+    schema = Schema(schema=get_blood_data_description(mimesis_field, "N"))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
     return pandas_df
 

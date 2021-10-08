@@ -3,15 +3,15 @@ import pytest
 from mimesis.schema import Schema
 
 from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
-from dummy_data_generation.schemas import swab_data_description
+from dummy_data_generation.schemas import get_swab_data_description
 
 
 @pytest.fixture
-def swab_dummy_df():
+def swab_dummy_df(mimesis_field):
     """
     Generate lab swab file as pandas df.
     """
-    schema = Schema(schema=swab_data_description)
+    schema = Schema(schema=get_swab_data_description(mimesis_field))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
 
     return pandas_df

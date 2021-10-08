@@ -9,19 +9,23 @@ from pathlib import Path
 
 import pandas as pd
 from helpers import code_mask
+from mimesis.schema import Field
 from mimesis.schema import Schema
 
-from dummy_data_generation.schemas import _
+from dummy_data_generation.helpers import CustomRandom
+from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
+from dummy_data_generation.schemas import get_swab_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
-from dummy_data_generation.schemas import swab_data_description
+
+_ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
 
 
 def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_barcodes):
     """
     Generate survey v2 data.
     """
-    schema = Schema(schema=get_voyager_2_data_description([swab_barcodes], [blood_barcodes]))
+    schema = Schema(schema=get_voyager_2_data_description(_, [swab_barcodes], [blood_barcodes]))
     survey_responses = pd.DataFrame(schema.create(iterations=records))
 
     survey_responses.to_csv(directory / f"ONSECRF5_Datafile_{file_date}.csv", index=False, sep="|")
@@ -33,7 +37,7 @@ def generate_ons_gl_report_data(directory, file_date, records):
     """
     Generate dummy swab test results.
     """
-    schema = Schema(schema=swab_data_description)
+    schema = Schema(schema=get_swab_data_description(_))
     survey_ons_gl_report = pd.DataFrame(schema.create(iterations=records))
 
     survey_ons_gl_report.to_csv(directory / f"ONS_GL_Report_{file_date}_0000.csv", index=False)
@@ -44,7 +48,7 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
     """
     Generate survey v2 data. Depends on lab swabs and lab bloods.
     """
-    schema = Schema(schema=get_blood_data_description(target))
+    schema = Schema(schema=get_blood_data_description(_, target))
     survey_unioxf_medtest = pd.DataFrame(schema.create(iterations=records))
 
     survey_unioxf_medtest.to_csv(directory / f"Unioxf_medtest{target}_{file_date}.csv", index=False)

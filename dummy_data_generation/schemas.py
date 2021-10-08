@@ -1,13 +1,5 @@
 from datetime import datetime
 
-from mimesis.schema import Field
-
-from dummy_data_generation.helpers import CustomRandom
-from dummy_data_generation.helpers_weight import Distribution
-
-
-_ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
-
 yes_no_choice = ["Yes", "No"]
 yes_no_none_choice = ["Yes", "No", None]
 
@@ -16,28 +8,29 @@ start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
 
-swab_data_description = lambda: {  # noqa: E731
-    "Sample": _("random.custom_code", mask="ONS########", digit="#"),
-    "Result": _("choice", items=["Negative", "Positive", "Void"]),
-    "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-    "Lab ID": _("choice", items=["GLS"]),
-    "testKit": _("choice", items=["rtPCR", None]),
-    "CH1-Target": _("choice", items=["ORF1ab", None]),
-    "CH1-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH1-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH2-Target": _("choice", items=["N gene", None]),
-    "CH2-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH2-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH3-Target": _("choice", items=["S gene", None]),
-    "CH3-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-    "CH3-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-    "CH4-Target": _("choice", items=["S gene", None]),
-    "CH4-Result": _("choice", items=["Positive", "Rejected"]),
-    "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
-}
+def get_swab_data_description(_):
+    return lambda: {  # noqa: E731
+        "Sample": _("random.custom_code", mask="ONS########", digit="#"),
+        "Result": _("choice", items=["Negative", "Positive", "Void"]),
+        "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
+        "Lab ID": _("choice", items=["GLS"]),
+        "testKit": _("choice", items=["rtPCR", None]),
+        "CH1-Target": _("choice", items=["ORF1ab", None]),
+        "CH1-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+        "CH1-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+        "CH2-Target": _("choice", items=["N gene", None]),
+        "CH2-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+        "CH2-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+        "CH3-Target": _("choice", items=["S gene", None]),
+        "CH3-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
+        "CH3-Cq": _("float_number", start=10.0, end=40.0, precision=12),
+        "CH4-Target": _("choice", items=["S gene", None]),
+        "CH4-Result": _("choice", items=["Positive", "Rejected"]),
+        "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
+    }
 
 
-def get_blood_data_description(target):
+def get_blood_data_description(_, target):
     return lambda: {  # noqa: E731
         "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
         "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
@@ -54,7 +47,7 @@ def get_blood_data_description(target):
     }
 
 
-def get_voyager_2_data_description(blood_barcodes, swab_barcodes):
+def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
 
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
