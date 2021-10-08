@@ -3,6 +3,7 @@ import csv
 from datetime import datetime
 from io import StringIO
 from operator import add
+from typing import List
 
 from cerberus import TypeDefinition
 from cerberus import Validator
@@ -101,8 +102,24 @@ def validate_csv_header(text_file: RDD, expected_header: str):
 
 
 def check_singular_match(
-    df: DataFrame, flag_column_name: str, failure_column_name: str, match_type_column: str, group_by_column: str, i: int
+    df: DataFrame, flag_column_name: str, failure_column_name: str, match_type_column: str, group_by_column: str
 ):
+    """
+    Given a set of columns related to the final drop flag of a given merge function on the complete
+    (merged) dataframe produce an indication column (failure column) which stipulates whether the
+    merge function has returned a unique match
+    Parameters
+    ----------
+    df
+    flag_column_name
+        Column with final flag from merge function
+    failure_column_name
+        Column in which to store bool flag that shows if singular match occured for given merge
+    match_type_column
+        Column to identify type of merge
+    group_by_column
+        Column to check is singular given criteria
+    """
     dft = (
         df.filter((F.col(flag_column_name).isNull()) & (F.col(match_type_column) == 1))
         .groupBy(group_by_column)
@@ -114,15 +131,34 @@ def check_singular_match(
     df = (
         df.drop(failure_column_name)
         .join(dft, dft.b == F.col(group_by_column), "outer")
-        .orderBy(group_by_column)
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
     return df
 
 
-def validate_merge_logic(df: DataFrame, flag_column_names: list, failed_column_names: list, match_type_colums: list):
+def validate_merge_logic(
+    df: DataFrame,
+    flag_column_names: List[str],
+    failed_column_names: List[str],
+    match_type_colums: List[str],
+    group_by_column: str,
+):
+    """
+    Wrapper function to call check_singular_match for each set of parameters in list
+    Parameters. For creating a new failure column specify a name of a column which does not currently exist
+    ----------
+    df
+    flag_column_names
+        List of columns with final flag from merge function
+    failure_column_name
+        List of columns in which to store bool flag that shows if singular match occured for given merge
+    match_type_column
+        List of columns to identify type of merge
+    group_by_column
+        List of columns to check is singular given criteria
+    """
     columns = df.columns
     for i, flag_column in enumerate(flag_column_names):
-        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], "barcode", i)
+        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], group_by_column)
     return df.select(*columns)
