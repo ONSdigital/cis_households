@@ -4,7 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_outer_postcode(df: DataFrame, column_name_to_assign: str, reference_colum: str):
+def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_colum: str):
     """
     Assign column outer postcode with cleaned data from reference postcode column.
     take only left part of postcode and capitalise
