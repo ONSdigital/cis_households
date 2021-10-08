@@ -5,6 +5,24 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
+    """
+    Converts barcode to null if numeric characters are all 0 otherwise performs no change
+    Parameters
+    ----------
+    df
+    barcode_column_name
+    """
+    df = df.withColumn(
+        barcode_column_name,
+        F.when(F.substring(barcode_column_name, 4, 999) == "0" * (F.length(barcode_column_name) - 3), None).otherwise(
+            F.col(barcode_column_name)
+        ),
+    )
+
+    return df
+
+
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
