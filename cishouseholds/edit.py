@@ -24,7 +24,12 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
 
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
     """
-    remove all instances of whitespace before and after a string field including all duplicate spaces
+    Remove all instances of whitespace before and after a string field including all duplicate spaces
+    along with dots (.) aswell
+    Parameters
+    ----------
+    df
+    column_name_to_assign
     """
     df = df.withColumn(
         column_name_to_assign,
