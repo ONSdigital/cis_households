@@ -4,6 +4,18 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
+    """
+    Assign string variable for ethnicity white / non-white depending on bool value 0 / 1
+    Parameters
+    ----------
+    df
+    white_bool_column
+    """
+    df = df.withColumn(column_name_to_assign, F.when(F.col(white_bool_column) == 1, "white").otherwise("non-white"))
+    return df
+
+
 def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Uses references column value to assign a taken column "yes" or "no" depending on whether
