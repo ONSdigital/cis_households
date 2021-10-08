@@ -1,7 +1,7 @@
 import json
 
+import numpy as np
 import pytest
-from pandas import NaT
 from pandas import Timestamp
 from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
@@ -13,14 +13,6 @@ def timestamp_representer(dumper, timestamp):
 
 
 RegressionYamlDumper.add_custom_yaml_representer(Timestamp, timestamp_representer)
-
-
-def nat_representer(dumper, nat):
-    """Custom represented for using Timestamp type in data_regression testing"""
-    return dumper.represent_data("NaT")
-
-
-RegressionYamlDumper.add_custom_yaml_representer(NaT, timestamp_representer)
 
 
 @pytest.fixture(scope="session")
@@ -59,8 +51,9 @@ def regression_test_df(data_regression):
     def _regression_test_df(df, sort_by, test_file_label):
         assert df.filter(df[sort_by].isNull()).count() == 0
         data_regression.check(json.loads(df.schema.json()), f"{test_file_label}_schema_regression")
+        pandas_df = df.toPandas().replace({np.nan: None})  # Convert nan and nat to null
         data_regression.check(
-            df.toPandas().sort_values(sort_by, axis="index").to_dict("records"), f"{test_file_label}_data_regression"
+            pandas_df.sort_values(sort_by, axis="index").to_dict("records"), f"{test_file_label}_data_regression"
         )
 
     return _regression_test_df

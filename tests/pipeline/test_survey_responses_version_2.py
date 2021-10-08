@@ -12,7 +12,7 @@ def responses_v2_survey_dummy_df():
     Generate dummy survey responses v2 delta.
     """
     schema = Schema(schema=get_voyager_2_data_description(["ONS00000000"], ["ONS00000000"]))
-    pandas_df = pd.DataFrame(schema.create(iterations=50))
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
     return pandas_df
 
 

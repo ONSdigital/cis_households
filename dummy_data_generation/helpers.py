@@ -168,7 +168,7 @@ class CustomRandom(BaseDataProvider):
         super().__init__(*args, **kwargs)
 
     def random_date(self, start, end, format="%d/%m/%Y"):
-        """Generate a random_module datetime between datetime object `start` and `end`"""
+        """Generate a random datetime between datetime object `start` and `end`"""
         return (
             start
             + datetime.timedelta(
