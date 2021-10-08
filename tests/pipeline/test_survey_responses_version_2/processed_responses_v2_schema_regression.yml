@@ -38,7 +38,7 @@ fields:
 - metadata: {}
   name: visit_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: street
   nullable: true
@@ -230,7 +230,7 @@ fields:
 - metadata: {}
   name: date_of_birth
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: email
   nullable: true
@@ -282,7 +282,7 @@ fields:
 - metadata: {}
   name: samples_taken_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: sex
   nullable: true
@@ -478,7 +478,7 @@ fields:
 - metadata: {}
   name: symptoms_last_7_days_onset_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: symptoms_last_7_days_fever
   nullable: true
@@ -542,7 +542,7 @@ fields:
 - metadata: {}
   name: last_covid_contact_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: last_covid_contact_location
   nullable: true
@@ -554,7 +554,7 @@ fields:
 - metadata: {}
   name: last_suspected_covid_contact_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: last_suspected_covid_contact_location
   nullable: true
@@ -702,7 +702,7 @@ fields:
 - metadata: {}
   name: think_had_covid_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: think_had_covid_contacted_nhs
   nullable: true
@@ -722,11 +722,11 @@ fields:
 - metadata: {}
   name: pcr_test_first_positive_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: pcr_test_last_negative_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: antibody_test_since_last_visit
   nullable: true
@@ -742,11 +742,11 @@ fields:
 - metadata: {}
   name: antibody_test_first_positive_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: antibody_test_last_negative_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: have_long_covid_symptoms
   nullable: true
@@ -866,7 +866,7 @@ fields:
 - metadata: {}
   name: vaccine_last_vaccination_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: outside_uk_since_april_2020
   nullable: true
@@ -878,7 +878,7 @@ fields:
 - metadata: {}
   name: outside_uk_last_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: outside_uk_since_last_visit
   nullable: true

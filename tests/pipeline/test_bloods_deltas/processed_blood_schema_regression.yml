@@ -34,19 +34,19 @@ fields:
 - metadata: {}
   name: antibody_test_result_recorded_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: blood_sample_arrayed_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: blood_sample_received_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: blood_sample_collected_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: plate
   nullable: true

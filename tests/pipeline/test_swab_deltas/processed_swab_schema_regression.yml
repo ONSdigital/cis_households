@@ -10,7 +10,7 @@ fields:
 - metadata: {}
   name: pcr_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: pcr_lab_id
   nullable: true

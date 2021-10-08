@@ -180,6 +180,6 @@ class CustomRandom(BaseDataProvider):
     def random_integer(self, lower: int, upper: int, null_percent: int = -1):
         choice = self.random.random()
         if null_percent <= choice:
-            return int(self.random.random() * (upper - lower))
+            return str(int(self.random.random() * (upper - lower)))
         else:
             return None

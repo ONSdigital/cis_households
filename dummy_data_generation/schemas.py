@@ -44,7 +44,7 @@ def get_blood_data_description(target):
         "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
         "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
         "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
-        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3251.11, precision=4),
+        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3500, precision=4),
         "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
         "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
         "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
