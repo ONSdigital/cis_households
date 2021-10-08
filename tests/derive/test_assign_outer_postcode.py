@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.derive import assign_outer_postcode
+from cishouseholds.derive import assign_outward_postcode
 
 
 @pytest.fixture
@@ -13,5 +13,5 @@ def expected_df(spark_session):
 
 
 def test_assign_outer_postcode(expected_df):
-    output_df = assign_outer_postcode(expected_df.drop("outer_postcode"), "outer_postcode", "ref")
+    output_df = assign_outward_postcode(expected_df.drop("outer_postcode"), "outer_postcode", "ref")
     assert_df_equality(expected_df, output_df)
