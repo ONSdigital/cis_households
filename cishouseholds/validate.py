@@ -1,10 +1,9 @@
 # import csv
 import csv
 from datetime import datetime
-from typing import List
 from io import StringIO
 from operator import add
-
+from typing import List
 
 from cerberus import TypeDefinition
 from cerberus import Validator
