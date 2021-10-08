@@ -1,0 +1,2266 @@
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+    meter away as my work means I am in close contact with others on aregular basis
+  able_to_take_blood: 'Yes'
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  antibody_test_since_last_visit: 'No'
+  antibody_test_since_last_visit_location: null
+  antibody_test_since_last_visit_results: null
+  approached_for_blood_samples?: null
+  blood_sample_barcode: null
+  care_home_last_28_days: 'No'
+  care_home_last_28_days_other_household_member: 'No'
+  city: null
+  confirm_receive_vouchers: 'true'
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'No'
+  consent_5_visits: 'No'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_researchyn: 'Yes'
+  consent_extend_study_under_16_b1_b3: null
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samplesyn: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: 'No'
+  county: null
+  date_of_birth: '1982-12-15 17:07:00.000000'
+  email: calefacient1935@gsnail.ac.uk
+  ethnic_group: White
+  ethnicity: Any other Asian background
+  ethnicity_other: Erlang is known for its designs that are well suited for systems.
+  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
+    using public transport
+  face_covering_outside_of_home: Participant Would Not/Could Not Answer
+  face_covering_work: Yes always
+  fingerprick_status_household: Not invited
+  first_name: Clemmie
+  gender: Female
+  had_symptoms_last_7_days: 'No'
+  have_email_address: 'No'
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: null
+  have_long_covid_symptoms: 'No'
+  have_mobile_number: 'Yes'
+  hospital_last_28_days: 'No'
+  hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  hours_a_day_with_someone_else_at_home: '[1, 10, 23, 23, 1, 5, 6, 22]'
+  household_members_over_2_years_and_not_present: 'No'
+  household_members_under_2_years: 'Yes'
+  illness_lasting_over_12_months: null
+  illness_reduces_activity_or_ability: Yes, a little
+  infant_1_age: 0.0
+  infant_2_age: 4.0
+  infant_3_age: 1.0
+  infant_4_age: 7
+  infant_5_age: 4.0
+  infant_6_age: 3.0
+  infant_7_age: 4.0
+  infant_8_age: 1.0
+  is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: Yes because you have/have had symptoms of COVID-19
+  last_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_covid_contact_location: Outside your home
+  last_name: Gross
+  last_suspected_covid_contact_date: '2022-01-02 00:00:00.000000'
+  last_suspected_covid_contact_location: Living in your own home
+  long_covid_abdominal_pain: 'Yes'
+  long_covid_chest_pain: null
+  long_covid_cough: 'No'
+  long_covid_diarrhoea: 'No'
+  long_covid_difficulty_concentrating: null
+  long_covid_fever: 'No'
+  long_covid_headache: 'Yes'
+  long_covid_loss_of_appetite: 'Yes'
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: null
+  long_covid_memory_loss_or_confusion: 'Yes'
+  long_covid_muscle_ache: 'Yes'
+  long_covid_nausea_vomiting: 'No'
+  long_covid_palpitations: 'No'
+  long_covid_reduce_activities: Yes a lot
+  long_covid_shortness_of_breath: 'Yes'
+  long_covid_sore_throat: null
+  long_covid_symptoms: 'Yes'
+  long_covid_trouble_sleeping: null
+  long_covid_vertigo_dizziness: 'Yes'
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: null
+  middle_name: Clarence
+  no_blood_reason_fingerprick: Couldn't get enough blood
+  no_blood_reason_venous: Non-contact visit. Household self-isolating
+  no_email_address: 0
+  ons_household_id: '392744995712'
+  outside_uk_last_country: Iceland
+  outside_uk_last_date: '2020-09-10 00:00:00.000000'
+  outside_uk_since_april_2020: 'No'
+  outside_uk_since_last_visit: 'No'
+  participant_id: DHR-455927236237
+  participant_status: Completed
+  participant_testing_group: null
+  participant_visit_status: Completed
+  pcr_test_first_positive_date: null
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: null
+  pcr_test_since_last_visit_results: One or more negative tests but none were positive
+  person_1_age: 21
+  person_1_not_consenting_age: 37.0
+  person_1_reason_for_not_consenting: '0'
+  person_2_age: 61.0
+  person_2_not_consenting_age: null
+  person_2_reason_for_not_consenting: null
+  person_3_age: 28.0
+  person_3_not_consenting_age: 71.0
+  person_3_reason_for_not_consenting: '0'
+  person_4_age: 6.0
+  person_4_not_consenting_age: 99.0
+  person_4_reason_for_not_consenting: N/A
+  person_5_age: 90
+  person_5_not_consenting_age: 0.0
+  person_5_reason_for_not_consenting: N/A
+  person_6_age: 6.0
+  person_6_not_consenting_age: 30.0
+  person_6_reason_for_not_consenting: '0'
+  person_7_age: 24.0
+  person_7_not_consenting_age: 94.0
+  person_7_reason_for_not_consenting: Doesn't want to participate
+  person_8_age: 88.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: N/A
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: Don't want to participate
+  physical_contact_18_to_69_years: 6-10
+  physical_contact_over_70_years: 6-10
+  physical_contact_under_18_years: 11-20
+  postcode: PS0F 2CG
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'True'
+  samples_taken_datetime: null
+  sex: Male
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: 'No'
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Pipe
+  smokes_or_vapes_description: Yes, pipe
+  smokes_pipe: 'No'
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: 21 or more
+  social_distance_contact_over_70_years: null
+  social_distance_contact_under_18_years: 1-5
+  street: Harford
+  study_cohort: Blood and Swab
+  swab_sample_barcode: null
+  symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cough: 'Yes'
+  symptoms_last_7_days_diarrhoea: 'No'
+  symptoms_last_7_days_fatigue_weakness: 'No'
+  symptoms_last_7_days_fever: null
+  symptoms_last_7_days_headache: 'No'
+  symptoms_last_7_days_loss_of_smell: null
+  symptoms_last_7_days_loss_of_taste: null
+  symptoms_last_7_days_muscle_ache_myalgia: null
+  symptoms_last_7_days_nausea_vomiting: 'No'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'Yes'
+  symptoms_last_7_days_sore_throat: 'No'
+  symptoms_since_last_visit_abdominal_pain: 'No'
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: null
+  symptoms_since_last_visit_fatigue_weakness: 'Yes'
+  symptoms_since_last_visit_fever: 'No'
+  symptoms_since_last_visit_headache: null
+  symptoms_since_last_visit_loss_of_smell: 'No'
+  symptoms_since_last_visit_loss_of_taste: null
+  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
+  symptoms_since_last_visit_nausea_vomiting: 'Yes'
+  symptoms_since_last_visit_shortness_of_breath: 'No'
+  symptoms_since_last_visit_sore_throat: 'No'
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_date: null
+  think_had_covid_which_symptoms: Maybe
+  think_have_covid_symptoms: 'No'
+  times_hour_or_longer_another_home_last_7_days: None
+  times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_shopping_last_7_days: '2'
+  times_socialise_last_7_days: '5'
+  title: Mrs.
+  transport_to_work_or_school: Bicycle
+  type_of_visit: Follow-up Visit
+  vaccine_last_vaccination_date: '2022-01-01 00:00:00.000000'
+  vaccine_number_of_doses: '2'
+  vaccine_offered_since_last_visit: null
+  vaccine_received_since_last_visit: null
+  vaccine_type_other_since_last_visit: OtherVaxx
+  vaccine_type_since_last_visit: Novavax
+  visit_datetime: '2022-01-02 10:00:19.000000'
+  visit_id: DHVF-0156218256
+  visit_order: Month 12
+  visit_status: Household did not attend
+  which_symptoms_last_7_days: Weakness/tiredness
+  withdrawal_reason: No longer wants to take part
+  work_direct_contact_persons: null
+  work_healthcare: null
+  work_in_additional_paid_employment: 'No'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: 'Yes'
+  work_main_job_role: Do you come here often?
+  work_main_job_title: Ports are created with the built-in function open_port.
+  work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
+  work_nursing_or_residential_care_home: 'No'
+  work_sectors: Teaching and education
+  work_sectors_other: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
+  work_status: 5y and older in full-time education
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+    a problem to stay this far away from other people
+  able_to_take_blood: 'Yes'
+  accepted_invite_fingerprick: 'Yes'
+  antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  antibody_test_last_negative_date: null
+  antibody_test_since_last_visit: 'Yes'
+  antibody_test_since_last_visit_location: Private Lab
+  antibody_test_since_last_visit_results: Waiting for all results
+  approached_for_blood_samples?: 'No'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'No'
+  care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  city: null
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'No'
+  consent_1_visit: 'No'
+  consent_5_visits: 'Yes'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
+  consent_contact_extra_researchyn: 'No'
+  consent_extend_study_under_16_b1_b3: 'Yes'
+  consent_finger_prick_a1_a3: 'Yes'
+  consent_fingerprick_blood_samples: 'True'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: null
+  contact_suspect_positive_covid_last_28_days: 'No'
+  county: Avon
+  date_of_birth: '2021-12-18 13:14:00.000000'
+  email: null
+  ethnic_group: White
+  ethnicity: Asian or Asian British-Chinese
+  ethnicity_other: I don't even care.
+  face_covering_other_enclosed_places: My face is already covered for other reasons
+    (e.g. religious or cultural reasons)
+  face_covering_outside_of_home: null
+  face_covering_work: Yes always
+  fingerprick_status_household: null
+  first_name: Honey
+  gender: Prefer not to say
+  had_symptoms_last_7_days: 'Yes'
+  have_email_address: 'Yes'
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: null
+  have_long_covid_symptoms: 'No'
+  have_mobile_number: 'Yes'
+  hospital_last_28_days: null
+  hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  hours_a_day_with_someone_else_at_home: '[4, 7, 23, 15, 10, 12, 2, 5]'
+  household_members_over_2_years_and_not_present: 'Yes'
+  household_members_under_2_years: 'Yes'
+  illness_lasting_over_12_months: 'Yes'
+  illness_reduces_activity_or_ability: null
+  infant_1_age: 7.0
+  infant_2_age: 2.0
+  infant_3_age: 4.0
+  infant_4_age: 6
+  infant_5_age: 6.0
+  infant_6_age: 0.0
+  infant_7_age: 0.0
+  infant_8_age: 7.0
+  is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'No'
+  last_covid_contact_date: '2022-01-01 00:00:00.000000'
+  last_covid_contact_location: Outside your home
+  last_name: Hunt
+  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_location: null
+  long_covid_abdominal_pain: null
+  long_covid_chest_pain: null
+  long_covid_cough: null
+  long_covid_diarrhoea: 'Yes'
+  long_covid_difficulty_concentrating: 'No'
+  long_covid_fever: null
+  long_covid_headache: 'Yes'
+  long_covid_loss_of_appetite: 'No'
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: 'No'
+  long_covid_memory_loss_or_confusion: null
+  long_covid_muscle_ache: null
+  long_covid_nausea_vomiting: null
+  long_covid_palpitations: 'Yes'
+  long_covid_reduce_activities: Yes a lot
+  long_covid_shortness_of_breath: null
+  long_covid_sore_throat: 'Yes'
+  long_covid_symptoms: Chest pain
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: 'Yes'
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: null
+  middle_name: Gale
+  no_blood_reason_fingerprick: null
+  no_blood_reason_venous: Non-contact visit. Household self-isolating
+  no_email_address: 0
+  ons_household_id: '261449825198'
+  outside_uk_last_country: Kenya
+  outside_uk_last_date: null
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: null
+  participant_id: DHR-077145284257
+  participant_status: Active
+  participant_testing_group: null
+  participant_visit_status: Completed
+  pcr_test_first_positive_date: '2022-01-09 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: 'No'
+  pcr_test_since_last_visit_results: All tests failed
+  person_1_age: 27
+  person_1_not_consenting_age: 42.0
+  person_1_reason_for_not_consenting: N/a
+  person_2_age: null
+  person_2_not_consenting_age: 54.0
+  person_2_reason_for_not_consenting: N
+  person_3_age: 86.0
+  person_3_not_consenting_age: 20.0
+  person_3_reason_for_not_consenting: NONE
+  person_4_age: null
+  person_4_not_consenting_age: null
+  person_4_reason_for_not_consenting: Na
+  person_5_age: 6
+  person_5_not_consenting_age: 65.0
+  person_5_reason_for_not_consenting: an
+  person_6_age: 69.0
+  person_6_not_consenting_age: null
+  person_6_reason_for_not_consenting: N/a
+  person_7_age: 43.0
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: '0'
+  person_8_age: 26.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: Not interested
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: na
+  physical_contact_18_to_69_years: null
+  physical_contact_over_70_years: null
+  physical_contact_under_18_years: 21 or more
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'True'
+  samples_taken_datetime: '2022-01-03 01:42:17.000000'
+  sex: Male
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: 'No'
+  smokes_hookah_shisha_pipes: 'Yes'
+  smokes_or_vapes: Vape/e-cigarettes
+  smokes_or_vapes_description: Yes,  cigarettes
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: '0'
+  social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
+  street: null
+  study_cohort: Swab Only
+  swab_sample_barcode: ONS00000000
+  symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cough: 'No'
+  symptoms_last_7_days_diarrhoea: 'Yes'
+  symptoms_last_7_days_fatigue_weakness: 'No'
+  symptoms_last_7_days_fever: null
+  symptoms_last_7_days_headache: null
+  symptoms_last_7_days_loss_of_smell: 'No'
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'Yes'
+  symptoms_last_7_days_nausea_vomiting: 'Yes'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: null
+  symptoms_last_7_days_sore_throat: null
+  symptoms_since_last_visit_abdominal_pain: 'No'
+  symptoms_since_last_visit_cough: null
+  symptoms_since_last_visit_diarrhoea: 'Yes'
+  symptoms_since_last_visit_fatigue_weakness: 'No'
+  symptoms_since_last_visit_fever: 'Yes'
+  symptoms_since_last_visit_headache: null
+  symptoms_since_last_visit_loss_of_smell: 'No'
+  symptoms_since_last_visit_loss_of_taste: 'Yes'
+  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
+  symptoms_since_last_visit_nausea_vomiting: null
+  symptoms_since_last_visit_shortness_of_breath: 'No'
+  symptoms_since_last_visit_sore_throat: null
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: 'No'
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_which_symptoms: Maybe
+  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  times_hour_or_longer_another_home_last_7_days: '3'
+  times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
+  times_outside_shopping_or_socialising_last_7_days: '4'
+  times_shopping_last_7_days: '3'
+  times_socialise_last_7_days: '2'
+  title: Ms.
+  transport_to_work_or_school: null
+  type_of_visit: Follow-up Visit
+  vaccine_last_vaccination_date: '2022-01-07 00:00:00.000000'
+  vaccine_number_of_doses: '1'
+  vaccine_offered_since_last_visit: 'Yes'
+  vaccine_received_since_last_visit: null
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: Other / specify
+  visit_datetime: '2022-01-05 12:07:35.000000'
+  visit_id: DHVF-0988308904
+  visit_order: Month 8
+  visit_status: Partially Completed
+  which_symptoms_last_7_days: Fever
+  withdrawal_reason: null
+  work_direct_contact_persons: null
+  work_healthcare: Other healthcare (e.g. mental health)
+  work_in_additional_paid_employment: 'Yes'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: 'Yes'
+  work_main_job_role: '"Messages can be sent to and received from ports, but these
+    messages must obey the so-called ""port protocol."""'
+  work_main_job_title: Make me a sandwich.
+  work_not_from_home_days_per_week: '4'
+  work_nursing_or_residential_care_home: null
+  work_sectors: Retail Sector (incl. wholesale)
+  work_sectors_other: Type classes first appeared in the Haskell programming language.
+  work_status: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+    a problem to stay this far away from other people
+  able_to_take_blood: null
+  accepted_invite_fingerprick: null
+  antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
+  antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
+  antibody_test_since_last_visit: 'No'
+  antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
+  antibody_test_since_last_visit_results: One or more negative tests but none positive
+  approached_for_blood_samples?: 'Yes'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'Yes'
+  care_home_last_28_days_other_household_member: null
+  city: Inverurie
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'No'
+  consent_1_visit: 'No'
+  consent_5_visits: 'No'
+  consent_april_22: 'Yes'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'No'
+  consent_contact_extra_researchyn: null
+  consent_extend_study_under_16_b1_b3: 'No'
+  consent_finger_prick_a1_a3: 'Yes'
+  consent_fingerprick_blood_samples: 'True'
+  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: null
+  county: Buckinghamshire
+  date_of_birth: null
+  email: null
+  ethnic_group: Asian or Asian British
+  ethnicity: Any other Black background
+  ethnicity_other: Initially composing light-hearted and irreverent works, he also
+    wrote serious, sombre and religious pieces beginning in the 1930s.
+  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
+    using public transport
+  face_covering_outside_of_home: 'No'
+  face_covering_work: Not going to place of work or education
+  fingerprick_status_household: null
+  first_name: Myung
+  gender: Male
+  had_symptoms_last_7_days: null
+  have_email_address: 'No'
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: 'Yes'
+  have_long_covid_symptoms: 'Yes'
+  have_mobile_number: null
+  hospital_last_28_days: null
+  hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  hours_a_day_with_someone_else_at_home: '[15, 8, 19, 18, 16, 5, 4, 0]'
+  household_members_over_2_years_and_not_present: 'Yes'
+  household_members_under_2_years: null
+  illness_lasting_over_12_months: null
+  illness_reduces_activity_or_ability: Yes, a little
+  infant_1_age: 5.0
+  infant_2_age: 6.0
+  infant_3_age: 5.0
+  infant_4_age: 1
+  infant_5_age: null
+  infant_6_age: 3.0
+  infant_7_age: 0.0
+  infant_8_age: 5.0
+  is_regularly_lateral_flow_testing: null
+  is_self_isolating: Yes for other reasons related to reducing your risk of getting
+    COVID-19 (e.g. going into hospital orshielding)
+  last_covid_contact_date: null
+  last_covid_contact_location: null
+  last_name: Mosley
+  last_suspected_covid_contact_date: null
+  last_suspected_covid_contact_location: Outside your home
+  long_covid_abdominal_pain: 'Yes'
+  long_covid_chest_pain: null
+  long_covid_cough: 'Yes'
+  long_covid_diarrhoea: 'Yes'
+  long_covid_difficulty_concentrating: 'Yes'
+  long_covid_fever: null
+  long_covid_headache: 'No'
+  long_covid_loss_of_appetite: null
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: 'No'
+  long_covid_low_mood: null
+  long_covid_memory_loss_or_confusion: null
+  long_covid_muscle_ache: 'Yes'
+  long_covid_nausea_vomiting: 'Yes'
+  long_covid_palpitations: 'Yes'
+  long_covid_reduce_activities: Yes a lot
+  long_covid_shortness_of_breath: 'No'
+  long_covid_sore_throat: 'Yes'
+  long_covid_symptoms: Low mood/not enjoying anything
+  long_covid_trouble_sleeping: 'Yes'
+  long_covid_vertigo_dizziness: 'Yes'
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: null
+  middle_name: Quinn
+  no_blood_reason_fingerprick: Participant felt unwell/fainted
+  no_blood_reason_venous: null
+  no_email_address: 0
+  ons_household_id: '352709577630'
+  outside_uk_last_country: Ecuador
+  outside_uk_last_date: null
+  outside_uk_since_april_2020: 'No'
+  outside_uk_since_last_visit: null
+  participant_id: DHR-456442497105
+  participant_status: Completed
+  participant_testing_group: null
+  participant_visit_status: Patient did not attend
+  pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
+  pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  pcr_test_since_last_visit: 'Yes'
+  pcr_test_since_last_visit_results: One or more positive test(s)
+  person_1_age: 63
+  person_1_not_consenting_age: 80.0
+  person_1_reason_for_not_consenting: N/a
+  person_2_age: 22.0
+  person_2_not_consenting_age: 99.0
+  person_2_reason_for_not_consenting: '0'
+  person_3_age: 0.0
+  person_3_not_consenting_age: 95.0
+  person_3_reason_for_not_consenting: 'No'
+  person_4_age: 70.0
+  person_4_not_consenting_age: 61.0
+  person_4_reason_for_not_consenting: Not interested
+  person_5_age: 38
+  person_5_not_consenting_age: 50.0
+  person_5_reason_for_not_consenting: null
+  person_6_age: 87.0
+  person_6_not_consenting_age: 55.0
+  person_6_reason_for_not_consenting: an
+  person_7_age: 4.0
+  person_7_not_consenting_age: 75.0
+  person_7_reason_for_not_consenting: '0'
+  person_8_age: 85.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: 'No'
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: Not interested
+  physical_contact_18_to_69_years: 21 or more
+  physical_contact_over_70_years: null
+  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  postcode: UK0X 5SF
+  prefer_receive_vouchers: Email
+  reconsented_blood: 'True'
+  samples_taken_datetime: '2022-01-07 21:24:56.000000'
+  sex: null
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: null
+  smokes_or_vapes: null
+  smokes_or_vapes_description: Yes, pipe
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: null
+  social_distance_contact_over_70_years: null
+  social_distance_contact_under_18_years: '0'
+  street: null
+  study_cohort: Swab Only
+  swab_sample_barcode: ONS00000000
+  symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cough: null
+  symptoms_last_7_days_diarrhoea: 'No'
+  symptoms_last_7_days_fatigue_weakness: null
+  symptoms_last_7_days_fever: 'No'
+  symptoms_last_7_days_headache: null
+  symptoms_last_7_days_loss_of_smell: null
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'No'
+  symptoms_last_7_days_nausea_vomiting: 'No'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'No'
+  symptoms_last_7_days_sore_throat: null
+  symptoms_since_last_visit_abdominal_pain: null
+  symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: null
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: 'Yes'
+  symptoms_since_last_visit_loss_of_smell: 'Yes'
+  symptoms_since_last_visit_loss_of_taste: 'No'
+  symptoms_since_last_visit_muscle_ache_myalgia: null
+  symptoms_since_last_visit_nausea_vomiting: 'No'
+  symptoms_since_last_visit_shortness_of_breath: null
+  symptoms_since_last_visit_sore_throat: 'Yes'
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: null
+  think_had_covid_contacted_nhs: null
+  think_had_covid_date: null
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_symptoms: null
+  times_hour_or_longer_another_home_last_7_days: '4'
+  times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
+  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_shopping_last_7_days: '0'
+  times_socialise_last_7_days: '2'
+  title: Mrs.
+  transport_to_work_or_school: null
+  type_of_visit: Follow-up Visit
+  vaccine_last_vaccination_date: null
+  vaccine_number_of_doses: '2'
+  vaccine_offered_since_last_visit: 'Yes'
+  vaccine_received_since_last_visit: null
+  vaccine_type_other_since_last_visit: OtherVaxx
+  vaccine_type_since_last_visit: Moderna
+  visit_datetime: '2022-01-01 18:18:57.000000'
+  visit_id: DHVF-1496963502
+  visit_order: Month 4
+  visit_status: Household did not attend
+  which_symptoms_last_7_days: null
+  withdrawal_reason: No longer convenient
+  work_direct_contact_persons: 'No'
+  work_healthcare: Other healthcare (e.g. mental health)
+  work_in_additional_paid_employment: null
+  work_location: null
+  work_main_job_changed: 'No'
+  work_main_job_role: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
+  work_main_job_title: The Galactic Empire is nearing completion of the Death Star,
+    a space station with the power to destroy entire planets.
+  work_not_from_home_days_per_week: '5'
+  work_nursing_or_residential_care_home: 'No'
+  work_sectors: Financial Services (incl. insurance)
+  work_sectors_other: In 1989 the building was heavily damaged by fire, but it has
+    since been restored.
+  work_status: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+    meter away as my work means I am in close contact with others on aregular basis
+  able_to_take_blood: 'No'
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
+  antibody_test_since_last_visit: 'Yes'
+  antibody_test_since_last_visit_location: In the NHS (e.g. GP or hospital)
+  antibody_test_since_last_visit_results: One or more positive test(s)
+  approached_for_blood_samples?: 'No'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'No'
+  care_home_last_28_days_other_household_member: 'Yes'
+  city: null
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'No'
+  consent_5_visits: 'Yes'
+  consent_april_22: 'Yes'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'No'
+  consent_contact_extra_researchyn: null
+  consent_extend_study_under_16_b1_b3: 'Yes'
+  consent_finger_prick_a1_a3: 'Yes'
+  consent_fingerprick_blood_samples: 'True'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: 'No'
+  county: North Yorkshire
+  date_of_birth: '1997-03-07 10:06:00.000000'
+  email: depict1972@gsnail.ac.uk
+  ethnic_group: Asian or Asian British
+  ethnicity: Asian or Asian British-Indian
+  ethnicity_other: The arguments can be primitive data types or compound data types.
+  face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: Yes usually both at work/school and in other situations
+  face_covering_work: Not going to place of work or education
+  fingerprick_status_household: At least one person consented
+  first_name: Remedios
+  gender: Prefer not to say
+  had_symptoms_last_7_days: null
+  have_email_address: null
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: null
+  have_long_covid_symptoms: 'No'
+  have_mobile_number: 'No'
+  hospital_last_28_days: 'No'
+  hospital_last_28_days_other_household_member: 'No'
+  hours_a_day_with_someone_else_at_home: '[23, 22, 20, 3, 11, 5, 9, 1]'
+  household_members_over_2_years_and_not_present: null
+  household_members_under_2_years: 'No'
+  illness_lasting_over_12_months: 'No'
+  illness_reduces_activity_or_ability: Not at all
+  infant_1_age: 7.0
+  infant_2_age: 3.0
+  infant_3_age: 6.0
+  infant_4_age: 0
+  infant_5_age: 3.0
+  infant_6_age: 5.0
+  infant_7_age: 7.0
+  infant_8_age: null
+  is_regularly_lateral_flow_testing: null
+  is_self_isolating: Yes for other reasons related to you having had an increased
+    risk of getting COVID-19 (e.g. havingbeen in contact with a known case or quarantining
+    after travel abroad)
+  last_covid_contact_date: null
+  last_covid_contact_location: null
+  last_name: Cervantes
+  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_location: Living in your own home
+  long_covid_abdominal_pain: null
+  long_covid_chest_pain: null
+  long_covid_cough: 'Yes'
+  long_covid_diarrhoea: 'No'
+  long_covid_difficulty_concentrating: 'No'
+  long_covid_fever: 'Yes'
+  long_covid_headache: 'Yes'
+  long_covid_loss_of_appetite: 'Yes'
+  long_covid_loss_of_smell: null
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: null
+  long_covid_memory_loss_or_confusion: 'No'
+  long_covid_muscle_ache: null
+  long_covid_nausea_vomiting: 'No'
+  long_covid_palpitations: 'Yes'
+  long_covid_reduce_activities: null
+  long_covid_shortness_of_breath: null
+  long_covid_sore_throat: null
+  long_covid_symptoms: Vertigo/dizziness
+  long_covid_trouble_sleeping: null
+  long_covid_vertigo_dizziness: 'No'
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: 'Yes'
+  middle_name: Jae
+  no_blood_reason_fingerprick: null
+  no_blood_reason_venous: null
+  no_email_address: 0
+  ons_household_id: '352206298026'
+  outside_uk_last_country: Latvia
+  outside_uk_last_date: '2020-06-28 00:00:00.000000'
+  outside_uk_since_april_2020: 'No'
+  outside_uk_since_last_visit: 'Yes'
+  participant_id: DHR-144229485098
+  participant_status: Completed
+  participant_testing_group: Swab Only
+  participant_visit_status: Completed
+  pcr_test_first_positive_date: '2022-01-07 00:00:00.000000'
+  pcr_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  pcr_test_since_last_visit: null
+  pcr_test_since_last_visit_results: Waiting for all results
+  person_1_age: 30
+  person_1_not_consenting_age: 93.0
+  person_1_reason_for_not_consenting: NA
+  person_2_age: 22.0
+  person_2_not_consenting_age: 16.0
+  person_2_reason_for_not_consenting: null
+  person_3_age: 40.0
+  person_3_not_consenting_age: 21.0
+  person_3_reason_for_not_consenting: 'No'
+  person_4_age: 25.0
+  person_4_not_consenting_age: 5.0
+  person_4_reason_for_not_consenting: 'No'
+  person_5_age: 84
+  person_5_not_consenting_age: null
+  person_5_reason_for_not_consenting: Not interested
+  person_6_age: 78.0
+  person_6_not_consenting_age: 26.0
+  person_6_reason_for_not_consenting: N:a
+  person_7_age: 4.0
+  person_7_not_consenting_age: 45.0
+  person_7_reason_for_not_consenting: null
+  person_8_age: 84.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: NONE
+  person_9_not_consenting_age: 100.0
+  person_9_reason_for_not_consenting: NA
+  physical_contact_18_to_69_years: 1-5
+  physical_contact_over_70_years: 11-20
+  physical_contact_under_18_years: 1-5
+  postcode: WP8S 5ZJ
+  prefer_receive_vouchers: Email
+  reconsented_blood: 'True'
+  samples_taken_datetime: null
+  sex: null
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Pipe
+  smokes_or_vapes_description: Yes, vape/e-cigarettes
+  smokes_pipe: 'Yes'
+  smokes_vape_e_cigarettes: 'Yes'
+  social_distance_contact_18_to_69_years: '0'
+  social_distance_contact_over_70_years: 6-10
+  social_distance_contact_under_18_years: 6-10
+  street: Druminiskill
+  study_cohort: Blood and Swab
+  swab_sample_barcode: ONS00000000
+  symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cough: 'No'
+  symptoms_last_7_days_diarrhoea: 'No'
+  symptoms_last_7_days_fatigue_weakness: 'No'
+  symptoms_last_7_days_fever: 'Yes'
+  symptoms_last_7_days_headache: null
+  symptoms_last_7_days_loss_of_smell: 'Yes'
+  symptoms_last_7_days_loss_of_taste: null
+  symptoms_last_7_days_muscle_ache_myalgia: null
+  symptoms_last_7_days_nausea_vomiting: 'No'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'Yes'
+  symptoms_last_7_days_sore_throat: 'No'
+  symptoms_since_last_visit_abdominal_pain: 'No'
+  symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: 'Yes'
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: 'Yes'
+  symptoms_since_last_visit_loss_of_smell: null
+  symptoms_since_last_visit_loss_of_taste: 'No'
+  symptoms_since_last_visit_muscle_ache_myalgia: null
+  symptoms_since_last_visit_nausea_vomiting: 'No'
+  symptoms_since_last_visit_shortness_of_breath: 'No'
+  symptoms_since_last_visit_sore_throat: null
+  think_had_covid: 'Yes'
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: 'No'
+  think_had_covid_contacted_nhs: null
+  think_had_covid_date: '2022-01-05 00:00:00.000000'
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_symptoms: null
+  times_hour_or_longer_another_home_last_7_days: '3'
+  times_hour_or_longer_another_person_your_home_last_7_days: '1'
+  times_outside_shopping_or_socialising_last_7_days: '5'
+  times_shopping_last_7_days: '5'
+  times_socialise_last_7_days: '4'
+  title: Prof.
+  transport_to_work_or_school: Bicycle
+  type_of_visit: First Visit
+  vaccine_last_vaccination_date: null
+  vaccine_number_of_doses: 3 or more
+  vaccine_offered_since_last_visit: 'Yes'
+  vaccine_received_since_last_visit: 'No'
+  vaccine_type_other_since_last_visit: OtherVaxx
+  vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_datetime: '2022-01-02 22:16:30.000000'
+  visit_id: DHVF-4476904382
+  visit_order: Month 10
+  visit_status: Partially Completed
+  which_symptoms_last_7_days: Weakness/tiredness
+  withdrawal_reason: No longer wants to take part
+  work_direct_contact_persons: 'Yes'
+  work_healthcare: null
+  work_in_additional_paid_employment: 'No'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: null
+  work_main_job_role: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
+  work_main_job_title: Haskell features a type system with type inference and lazy
+    evaluation.
+  work_not_from_home_days_per_week: '6'
+  work_nursing_or_residential_care_home: 'Yes'
+  work_sectors: Food Production and agriculture (incl. farming)
+  work_sectors_other: Type classes first appeared in the Haskell programming language.
+  work_status: 5y and older in full-time education
+- ability_to_socially_distance_at_work_or_school: null
+  able_to_take_blood: null
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  antibody_test_since_last_visit: null
+  antibody_test_since_last_visit_location: Home Test
+  antibody_test_since_last_visit_results: One or more negative tests but none positive
+  approached_for_blood_samples?: 'No'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'Yes'
+  care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  city: null
+  confirm_receive_vouchers: 'true'
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
+  consent_april_22: 'Yes'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_researchyn: 'Yes'
+  consent_extend_study_under_16_b1_b3: null
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: null
+  county: null
+  date_of_birth: '1985-10-14 01:01:00.000000'
+  email: fortes2058@gsnail.ac.uk
+  ethnic_group: Asian or Asian British
+  ethnicity: Black,Caribbean,Afro-Caribbean
+  ethnicity_other: Erlang is known for its designs that are well suited for systems.
+  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
+    using public transport
+  face_covering_outside_of_home: Yes usually both at work/school and in other situations
+  face_covering_work: Never
+  fingerprick_status_household: Invited
+  first_name: Reiko
+  gender: Male
+  had_symptoms_last_7_days: 'Yes'
+  have_email_address: 'No'
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: null
+  have_long_covid_symptoms: null
+  have_mobile_number: 'No'
+  hospital_last_28_days: 'Yes'
+  hospital_last_28_days_other_household_member: 'Yes'
+  hours_a_day_with_someone_else_at_home: '[23, 12, 23, 20, 0, 17, 16, 12]'
+  household_members_over_2_years_and_not_present: null
+  household_members_under_2_years: 'Yes'
+  illness_lasting_over_12_months: null
+  illness_reduces_activity_or_ability: Yes, a lot
+  infant_1_age: 5.0
+  infant_2_age: 3.0
+  infant_3_age: 5.0
+  infant_4_age: 5
+  infant_5_age: 6.0
+  infant_6_age: 0.0
+  infant_7_age: 2.0
+  infant_8_age: 7.0
+  is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: Yes because you live with someone who has/has had symptoms but
+    you haven't had them yourself
+  last_covid_contact_date: '2022-01-03 00:00:00.000000'
+  last_covid_contact_location: Outside your home
+  last_name: Brady
+  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_location: Living in your own home
+  long_covid_abdominal_pain: null
+  long_covid_chest_pain: 'Yes'
+  long_covid_cough: null
+  long_covid_diarrhoea: 'Yes'
+  long_covid_difficulty_concentrating: 'No'
+  long_covid_fever: 'Yes'
+  long_covid_headache: null
+  long_covid_loss_of_appetite: null
+  long_covid_loss_of_smell: null
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: 'No'
+  long_covid_memory_loss_or_confusion: 'Yes'
+  long_covid_muscle_ache: 'No'
+  long_covid_nausea_vomiting: 'Yes'
+  long_covid_palpitations: null
+  long_covid_reduce_activities: Not at all
+  long_covid_shortness_of_breath: 'Yes'
+  long_covid_sore_throat: null
+  long_covid_symptoms: Abdominal pain
+  long_covid_trouble_sleeping: 'Yes'
+  long_covid_vertigo_dizziness: 'No'
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: null
+  middle_name: Argentina
+  no_blood_reason_fingerprick: Two attempts made
+  no_blood_reason_venous: No stock
+  no_email_address: 0
+  ons_household_id: '296617139656'
+  outside_uk_last_country: Namibia
+  outside_uk_last_date: '2020-09-20 00:00:00.000000'
+  outside_uk_since_april_2020: 'No'
+  outside_uk_since_last_visit: 'Yes'
+  participant_id: DHR-329500167403
+  participant_status: Active
+  participant_testing_group: null
+  participant_visit_status: null
+  pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: 'No'
+  pcr_test_since_last_visit_results: Waiting for all results
+  person_1_age: 28
+  person_1_not_consenting_age: null
+  person_1_reason_for_not_consenting: Not interested
+  person_2_age: 36.0
+  person_2_not_consenting_age: null
+  person_2_reason_for_not_consenting: NONE
+  person_3_age: 41.0
+  person_3_not_consenting_age: null
+  person_3_reason_for_not_consenting: Na
+  person_4_age: 22.0
+  person_4_not_consenting_age: 80.0
+  person_4_reason_for_not_consenting: N
+  person_5_age: 23
+  person_5_not_consenting_age: null
+  person_5_reason_for_not_consenting: N/a
+  person_6_age: 81.0
+  person_6_not_consenting_age: null
+  person_6_reason_for_not_consenting: Na
+  person_7_age: 19.0
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: na
+  person_8_age: 51.0
+  person_8_not_consenting_age: 53.0
+  person_8_reason_for_not_consenting: N/A
+  person_9_not_consenting_age: 86.0
+  person_9_reason_for_not_consenting: null
+  physical_contact_18_to_69_years: 21 or more
+  physical_contact_over_70_years: 11-20
+  physical_contact_under_18_years: 21 or more
+  postcode: FN0F 6OF
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'True'
+  samples_taken_datetime: '2022-01-07 03:14:57.000000'
+  sex: Female
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Pipe
+  smokes_or_vapes_description: Yes, pipe
+  smokes_pipe: 'Yes'
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: Participant Would Not/Could Not Answer
+  social_distance_contact_over_70_years: 11-20
+  social_distance_contact_under_18_years: '0'
+  street: null
+  study_cohort: Blood and Swab
+  swab_sample_barcode: ONS00000000
+  symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cough: 'Yes'
+  symptoms_last_7_days_diarrhoea: 'No'
+  symptoms_last_7_days_fatigue_weakness: 'Yes'
+  symptoms_last_7_days_fever: null
+  symptoms_last_7_days_headache: null
+  symptoms_last_7_days_loss_of_smell: 'No'
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'No'
+  symptoms_last_7_days_nausea_vomiting: 'No'
+  symptoms_last_7_days_onset_date: '2022-01-05 00:00:00.000000'
+  symptoms_last_7_days_shortness_of_breath: 'Yes'
+  symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_since_last_visit_abdominal_pain: 'Yes'
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: null
+  symptoms_since_last_visit_fatigue_weakness: 'No'
+  symptoms_since_last_visit_fever: 'Yes'
+  symptoms_since_last_visit_headache: null
+  symptoms_since_last_visit_loss_of_smell: 'Yes'
+  symptoms_since_last_visit_loss_of_taste: 'No'
+  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
+  symptoms_since_last_visit_nausea_vomiting: null
+  symptoms_since_last_visit_shortness_of_breath: null
+  symptoms_since_last_visit_sore_throat: 'Yes'
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_date: null
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  times_hour_or_longer_another_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_outside_shopping_or_socialising_last_7_days: '5'
+  times_shopping_last_7_days: null
+  times_socialise_last_7_days: '5'
+  title: Ms.
+  transport_to_work_or_school: Other method
+  type_of_visit: Follow-up Visit
+  vaccine_last_vaccination_date: null
+  vaccine_number_of_doses: '2'
+  vaccine_offered_since_last_visit: 'Yes'
+  vaccine_received_since_last_visit: null
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: Valneva
+  visit_datetime: '2022-01-06 11:34:20.000000'
+  visit_id: DHVF-6394225258
+  visit_order: Month 11
+  visit_status: Partially Completed
+  which_symptoms_last_7_days: Weakness/tiredness
+  withdrawal_reason: Participant does not want to self swab
+  work_direct_contact_persons: null
+  work_healthcare: Primary care (e.g. GP, dentist)
+  work_in_additional_paid_employment: 'No'
+  work_location: Somewhere else (not your home)
+  work_main_job_changed: 'No'
+  work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
+    language.
+  work_main_job_title: Erlang is known for its designs that are well suited for systems.
+  work_not_from_home_days_per_week: null
+  work_nursing_or_residential_care_home: null
+  work_sectors: Financial services (incl. insurance)
+  work_sectors_other: Make me a sandwich.
+  work_status: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+    but I can usually be at least 1m from other people
+  able_to_take_blood: 'No'
+  accepted_invite_fingerprick: null
+  antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
+  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  antibody_test_since_last_visit: 'Yes'
+  antibody_test_since_last_visit_location: Private Lab
+  antibody_test_since_last_visit_results: Waiting for all results
+  approached_for_blood_samples?: null
+  blood_sample_barcode: null
+  care_home_last_28_days: 'Yes'
+  care_home_last_28_days_other_household_member: 'No'
+  city: null
+  confirm_receive_vouchers: 'true'
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'True'
+  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_researchyn: 'No'
+  consent_extend_study_under_16_b1_b3: 'No'
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'True'
+  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samplesyn: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: 'No'
+  county: null
+  date_of_birth: '1997-08-21 11:10:00.000000'
+  email: null
+  ethnic_group: Other Ethnic Group
+  ethnicity: Asian or Asian British-Chinese
+  ethnicity_other: The arguments can be primitive data types or compound data types.
+  face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: Yes at work/school only
+  face_covering_work: My face is already covered for other reasons (e.g. religious
+    or cultural reasons)
+  fingerprick_status_household: At least one person consented
+  first_name: Caron
+  gender: Male
+  had_symptoms_last_7_days: 'No'
+  have_email_address: null
+  have_ever_smoked_regularly: null
+  have_landline_number: null
+  have_long_covid_symptoms: null
+  have_mobile_number: 'No'
+  hospital_last_28_days: null
+  hospital_last_28_days_other_household_member: null
+  hours_a_day_with_someone_else_at_home: '[23, 6, 2, 10, 17, 7, 14, 12]'
+  household_members_over_2_years_and_not_present: null
+  household_members_under_2_years: null
+  illness_lasting_over_12_months: 'No'
+  illness_reduces_activity_or_ability: Not at all
+  infant_1_age: 7.0
+  infant_2_age: 7.0
+  infant_3_age: 7.0
+  infant_4_age: 7
+  infant_5_age: 0.0
+  infant_6_age: 5.0
+  infant_7_age: 4.0
+  infant_8_age: 3.0
+  is_regularly_lateral_flow_testing: null
+  is_self_isolating: Yes because you have/have had symptoms of COVID-19
+  last_covid_contact_date: null
+  last_covid_contact_location: Outside your home
+  last_name: Romero
+  last_suspected_covid_contact_date: null
+  last_suspected_covid_contact_location: Outside your home
+  long_covid_abdominal_pain: 'No'
+  long_covid_chest_pain: 'No'
+  long_covid_cough: 'Yes'
+  long_covid_diarrhoea: null
+  long_covid_difficulty_concentrating: null
+  long_covid_fever: 'Yes'
+  long_covid_headache: 'No'
+  long_covid_loss_of_appetite: 'Yes'
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: 'No'
+  long_covid_memory_loss_or_confusion: 'No'
+  long_covid_muscle_ache: 'No'
+  long_covid_nausea_vomiting: null
+  long_covid_palpitations: 'No'
+  long_covid_reduce_activities: Yes a little
+  long_covid_shortness_of_breath: null
+  long_covid_sore_throat: 'Yes'
+  long_covid_symptoms: Abdominal pain
+  long_covid_trouble_sleeping: 'Yes'
+  long_covid_vertigo_dizziness: null
+  long_covid_weakness_tiredness: 'Yes'
+  long_covid_worry_anxiety: null
+  middle_name: Jessika
+  no_blood_reason_fingerprick: Two attempts made
+  no_blood_reason_venous: Other
+  no_email_address: 0
+  ons_household_id: '217846198988'
+  outside_uk_last_country: Kenya
+  outside_uk_last_date: '2020-11-09 00:00:00.000000'
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: null
+  participant_id: DHR-389263959191
+  participant_status: Active
+  participant_testing_group: Swab Only
+  participant_visit_status: null
+  pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: 'No'
+  pcr_test_since_last_visit_results: One or more negative tests but none positive
+  person_1_age: 23
+  person_1_not_consenting_age: 30.0
+  person_1_reason_for_not_consenting: Na
+  person_2_age: 0.0
+  person_2_not_consenting_age: 41.0
+  person_2_reason_for_not_consenting: NA
+  person_3_age: 48.0
+  person_3_not_consenting_age: 29.0
+  person_3_reason_for_not_consenting: Don't want to participate
+  person_4_age: 67.0
+  person_4_not_consenting_age: null
+  person_4_reason_for_not_consenting: N/A
+  person_5_age: 33
+  person_5_not_consenting_age: null
+  person_5_reason_for_not_consenting: Don't want to participate
+  person_6_age: null
+  person_6_not_consenting_age: 68.0
+  person_6_reason_for_not_consenting: NONE
+  person_7_age: 30.0
+  person_7_not_consenting_age: 62.0
+  person_7_reason_for_not_consenting: Consenting
+  person_8_age: 85.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: Not interested
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: na
+  physical_contact_18_to_69_years: Participant Would Not/Could Not Answer
+  physical_contact_over_70_years: 6-10
+  physical_contact_under_18_years: 11-20
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'True'
+  samples_taken_datetime: null
+  sex: Male
+  smoke_cigarettes: 'No'
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Vape/e-cigarettes
+  smokes_or_vapes_description: Yes,  cigarettes
+  smokes_pipe: 'No'
+  smokes_vape_e_cigarettes: 'Yes'
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: Participant Would Not/Could Not Answer
+  social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
+  street: Ballywatermoy
+  study_cohort: Blood and Swab
+  swab_sample_barcode: null
+  symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_cough: 'Yes'
+  symptoms_last_7_days_diarrhoea: 'Yes'
+  symptoms_last_7_days_fatigue_weakness: null
+  symptoms_last_7_days_fever: 'Yes'
+  symptoms_last_7_days_headache: 'Yes'
+  symptoms_last_7_days_loss_of_smell: 'Yes'
+  symptoms_last_7_days_loss_of_taste: null
+  symptoms_last_7_days_muscle_ache_myalgia: null
+  symptoms_last_7_days_nausea_vomiting: null
+  symptoms_last_7_days_onset_date: '2022-01-06 00:00:00.000000'
+  symptoms_last_7_days_shortness_of_breath: 'No'
+  symptoms_last_7_days_sore_throat: 'No'
+  symptoms_since_last_visit_abdominal_pain: 'Yes'
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: 'Yes'
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: 'No'
+  symptoms_since_last_visit_loss_of_smell: 'No'
+  symptoms_since_last_visit_loss_of_taste: 'Yes'
+  symptoms_since_last_visit_muscle_ache_myalgia: null
+  symptoms_since_last_visit_nausea_vomiting: 'Yes'
+  symptoms_since_last_visit_shortness_of_breath: null
+  symptoms_since_last_visit_sore_throat: 'No'
+  think_had_covid: 'Yes'
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: 'No'
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_date: '2022-01-04 00:00:00.000000'
+  think_had_covid_which_symptoms: null
+  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  times_hour_or_longer_another_home_last_7_days: None
+  times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: None
+  times_shopping_last_7_days: '0'
+  times_socialise_last_7_days: '2'
+  title: Miss.
+  transport_to_work_or_school: Other method
+  type_of_visit: First Visit
+  vaccine_last_vaccination_date: '2022-01-02 00:00:00.000000'
+  vaccine_number_of_doses: 3 or more
+  vaccine_offered_since_last_visit: null
+  vaccine_received_since_last_visit: 'Yes'
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: From a research study/trial
+  visit_datetime: '2022-01-06 18:33:36.000000'
+  visit_id: DHVF-8828437201
+  visit_order: Month 13
+  visit_status: Partially Completed
+  which_symptoms_last_7_days: null
+  withdrawal_reason: No longer wants to take part
+  work_direct_contact_persons: 'No'
+  work_healthcare: Other healthcare (e.g. mental health)
+  work_in_additional_paid_employment: null
+  work_location: Somewhere else (not your home)
+  work_main_job_changed: 'No'
+  work_main_job_role: Any element of a tuple can be accessed in constant time.
+  work_main_job_title: Erlang is known for its designs that are well suited for systems.
+  work_not_from_home_days_per_week: up to 1
+  work_nursing_or_residential_care_home: 'No'
+  work_sectors: Information technology and communication
+  work_sectors_other: Do you have any idea why this is not working?
+  work_status: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: null
+  able_to_take_blood: 'No'
+  accepted_invite_fingerprick: null
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  antibody_test_since_last_visit: null
+  antibody_test_since_last_visit_location: null
+  antibody_test_since_last_visit_results: One or more negative tests but none were
+    positive
+  approached_for_blood_samples?: 'No'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days_other_household_member: 'No'
+  city: Coatbridge
+  confirm_receive_vouchers: 'true'
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'True'
+  consent_blood_samples_if_positiveyn: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_researchyn: 'No'
+  consent_extend_study_under_16_b1_b3: 'No'
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: 'No'
+  county: null
+  date_of_birth: '2020-02-01 23:17:00.000000'
+  email: null
+  ethnic_group: Asian or Asian British
+  ethnicity: Mixed-White & Black African
+  ethnicity_other: Where are my pants?
+  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
+    using public transport
+  face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
+  face_covering_work: Participant Would Not/Could Not Answer
+  fingerprick_status_household: Accepted
+  first_name: Annika
+  gender: Female
+  had_symptoms_last_7_days: null
+  have_email_address: null
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: 'Yes'
+  have_long_covid_symptoms: 'Yes'
+  have_mobile_number: 'Yes'
+  hospital_last_28_days: 'No'
+  hospital_last_28_days_other_household_member: 'Yes'
+  hours_a_day_with_someone_else_at_home: '[1, 5, 2, 6, 15, 8, 8, 5]'
+  household_members_over_2_years_and_not_present: 'No'
+  household_members_under_2_years: 'Yes'
+  illness_lasting_over_12_months: 'Yes'
+  illness_reduces_activity_or_ability: Not at all
+  infant_1_age: null
+  infant_2_age: 1.0
+  infant_3_age: 5.0
+  infant_4_age: 0
+  infant_5_age: 0.0
+  infant_6_age: 4.0
+  infant_7_age: null
+  infant_8_age: 5.0
+  is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: Participant Would Not/Could Not Answer
+  last_covid_contact_date: null
+  last_covid_contact_location: Living in your own home
+  last_name: Day
+  last_suspected_covid_contact_date: null
+  last_suspected_covid_contact_location: Outside your home
+  long_covid_abdominal_pain: null
+  long_covid_chest_pain: null
+  long_covid_cough: null
+  long_covid_diarrhoea: null
+  long_covid_difficulty_concentrating: null
+  long_covid_fever: null
+  long_covid_headache: 'Yes'
+  long_covid_loss_of_appetite: 'Yes'
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: 'Yes'
+  long_covid_low_mood: null
+  long_covid_memory_loss_or_confusion: null
+  long_covid_muscle_ache: 'Yes'
+  long_covid_nausea_vomiting: 'No'
+  long_covid_palpitations: 'No'
+  long_covid_reduce_activities: Not at all
+  long_covid_shortness_of_breath: 'Yes'
+  long_covid_sore_throat: null
+  long_covid_symptoms: ALL No
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: 'No'
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: 'No'
+  middle_name: Hank
+  no_blood_reason_fingerprick: No stock
+  no_blood_reason_venous: Other
+  no_email_address: 0
+  ons_household_id: '602276804025'
+  outside_uk_last_country: Romania
+  outside_uk_last_date: '2020-12-04 00:00:00.000000'
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: 'Yes'
+  participant_id: DHR-593586857022
+  participant_status: Completed
+  participant_testing_group: null
+  participant_visit_status: Scheduled
+  pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: null
+  pcr_test_since_last_visit_results: One or more positive test(s)
+  person_1_age: 20
+  person_1_not_consenting_age: 60.0
+  person_1_reason_for_not_consenting: 'No'
+  person_2_age: 73.0
+  person_2_not_consenting_age: 73.0
+  person_2_reason_for_not_consenting: '0'
+  person_3_age: null
+  person_3_not_consenting_age: 98.0
+  person_3_reason_for_not_consenting: Na
+  person_4_age: 63.0
+  person_4_not_consenting_age: null
+  person_4_reason_for_not_consenting: N/A
+  person_5_age: 14
+  person_5_not_consenting_age: 83.0
+  person_5_reason_for_not_consenting: an
+  person_6_age: 30.0
+  person_6_not_consenting_age: 87.0
+  person_6_reason_for_not_consenting: Not interested
+  person_7_age: null
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: na
+  person_8_age: null
+  person_8_not_consenting_age: 4.0
+  person_8_reason_for_not_consenting: N/A
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: NA
+  physical_contact_18_to_69_years: 21 or more
+  physical_contact_over_70_years: 11-20
+  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'False'
+  samples_taken_datetime: '2022-01-03 02:16:58.000000'
+  sex: Male
+  smoke_cigarettes: 'No'
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Cigar
+  smokes_or_vapes_description: Yes, pipe
+  smokes_pipe: 'No'
+  smokes_vape_e_cigarettes: 'Yes'
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: '0'
+  social_distance_contact_under_18_years: 6-10
+  street: null
+  study_cohort: Blood and Swab
+  swab_sample_barcode: null
+  symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cough: 'No'
+  symptoms_last_7_days_diarrhoea: null
+  symptoms_last_7_days_fatigue_weakness: 'Yes'
+  symptoms_last_7_days_fever: null
+  symptoms_last_7_days_headache: 'No'
+  symptoms_last_7_days_loss_of_smell: null
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: null
+  symptoms_last_7_days_nausea_vomiting: null
+  symptoms_last_7_days_onset_date: '2022-01-01 00:00:00.000000'
+  symptoms_last_7_days_shortness_of_breath: 'No'
+  symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_since_last_visit_abdominal_pain: null
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: 'Yes'
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: null
+  symptoms_since_last_visit_loss_of_smell: 'Yes'
+  symptoms_since_last_visit_loss_of_taste: null
+  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
+  symptoms_since_last_visit_nausea_vomiting: 'Yes'
+  symptoms_since_last_visit_shortness_of_breath: 'Yes'
+  symptoms_since_last_visit_sore_throat: 'Yes'
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_date: null
+  think_had_covid_which_symptoms: null
+  think_have_covid_symptoms: 'Yes'
+  times_hour_or_longer_another_home_last_7_days: '4'
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_outside_shopping_or_socialising_last_7_days: '2'
+  times_shopping_last_7_days: 7 times or more
+  times_socialise_last_7_days: 7 times or more
+  title: Ms.
+  transport_to_work_or_school: Other method
+  type_of_visit: First Visit
+  vaccine_last_vaccination_date: '2022-01-06 00:00:00.000000'
+  vaccine_number_of_doses: '2'
+  vaccine_offered_since_last_visit: null
+  vaccine_received_since_last_visit: 'Yes'
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_datetime: '2022-01-06 18:06:58.000000'
+  visit_id: DVH-0165258086
+  visit_order: Follow-up 3
+  visit_status: Completed
+  which_symptoms_last_7_days: Fever
+  withdrawal_reason: No longer convenient
+  work_direct_contact_persons: 'No'
+  work_healthcare: Primary care (e.g. GP, dentist)
+  work_in_additional_paid_employment: 'Yes'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: null
+  work_main_job_role: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
+  work_main_job_title: Its main implementation is the Glasgow Haskell Compiler.
+  work_not_from_home_days_per_week: up to 1
+  work_nursing_or_residential_care_home: null
+  work_sectors: Art or entertainment or recreation
+  work_sectors_other: Make me a sandwich.
+  work_status: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+    meter away as my work means I am in close contact with others on aregular basis
+  able_to_take_blood: 'Yes'
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: null
+  antibody_test_since_last_visit: 'No'
+  antibody_test_since_last_visit_location: Home Test
+  antibody_test_since_last_visit_results: One or more positive test(s)
+  approached_for_blood_samples?: 'No'
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'Yes'
+  care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  city: Hove
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: 'No'
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_researchyn: null
+  consent_extend_study_under_16_b1_b3: 'No'
+  consent_finger_prick_a1_a3: 'Yes'
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspect_positive_covid_last_28_days: null
+  county: Derbyshire
+  date_of_birth: '1997-02-07 18:56:00.000000'
+  email: coater1966@gsnail.ac.uk
+  ethnic_group: Mixed/Multiple Ethnic Groups
+  ethnicity: Black,Caribbean,Afro-Caribbean
+  ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
+    assignment, and dynamic typing.
+  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
+  face_covering_outside_of_home: Yes usually both at work/school and in other situations
+  face_covering_work: Yes always
+  fingerprick_status_household: Accepted
+  first_name: Shawnee
+  gender: Prefer not to say
+  had_symptoms_last_7_days: null
+  have_email_address: null
+  have_ever_smoked_regularly: 'No'
+  have_landline_number: 'Yes'
+  have_long_covid_symptoms: 'Yes'
+  have_mobile_number: 'No'
+  hospital_last_28_days: 'Yes'
+  hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  hours_a_day_with_someone_else_at_home: '[18, 9, 18, 19, 6, 1, 0, 12]'
+  household_members_over_2_years_and_not_present: null
+  household_members_under_2_years: null
+  illness_lasting_over_12_months: 'No'
+  illness_reduces_activity_or_ability: Yes, a lot
+  infant_1_age: 6.0
+  infant_2_age: 1.0
+  infant_3_age: null
+  infant_4_age: 1
+  infant_5_age: 4.0
+  infant_6_age: 5.0
+  infant_7_age: 1.0
+  infant_8_age: 5.0
+  is_regularly_lateral_flow_testing: null
+  is_self_isolating: Yes for other reasons (e.g. going into hospital or quarantining)
+  last_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_covid_contact_location: Outside your home
+  last_name: Waters
+  last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
+  last_suspected_covid_contact_location: null
+  long_covid_abdominal_pain: 'Yes'
+  long_covid_chest_pain: 'Yes'
+  long_covid_cough: null
+  long_covid_diarrhoea: 'Yes'
+  long_covid_difficulty_concentrating: 'Yes'
+  long_covid_fever: 'Yes'
+  long_covid_headache: 'No'
+  long_covid_loss_of_appetite: null
+  long_covid_loss_of_smell: null
+  long_covid_loss_of_taste: 'No'
+  long_covid_low_mood: null
+  long_covid_memory_loss_or_confusion: null
+  long_covid_muscle_ache: null
+  long_covid_nausea_vomiting: null
+  long_covid_palpitations: 'No'
+  long_covid_reduce_activities: Yes a lot
+  long_covid_shortness_of_breath: null
+  long_covid_sore_throat: null
+  long_covid_symptoms: Shortness of breath
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: null
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: 'No'
+  middle_name: Isaac
+  no_blood_reason_fingerprick: Participant felt unwell/fainted
+  no_blood_reason_venous: Other
+  no_email_address: 0
+  ons_household_id: '704542495687'
+  outside_uk_last_country: Venezuela
+  outside_uk_last_date: null
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: 'Yes'
+  participant_id: DHR-603506140323
+  participant_status: Active
+  participant_testing_group: Swab Only
+  participant_visit_status: Cancelled
+  pcr_test_first_positive_date: null
+  pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  pcr_test_since_last_visit: 'Yes'
+  pcr_test_since_last_visit_results: One or more negative tests but none were positive
+  person_1_age: 74
+  person_1_not_consenting_age: 60.0
+  person_1_reason_for_not_consenting: N:a
+  person_2_age: 9.0
+  person_2_not_consenting_age: null
+  person_2_reason_for_not_consenting: NA
+  person_3_age: null
+  person_3_not_consenting_age: 79.0
+  person_3_reason_for_not_consenting: Don't want to participate
+  person_4_age: 61.0
+  person_4_not_consenting_age: null
+  person_4_reason_for_not_consenting: N/a
+  person_5_age: 36
+  person_5_not_consenting_age: null
+  person_5_reason_for_not_consenting: Not interested
+  person_6_age: 6.0
+  person_6_not_consenting_age: null
+  person_6_reason_for_not_consenting: Not interested
+  person_7_age: 57.0
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: null
+  person_8_age: 78.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: Na
+  person_9_not_consenting_age: 83.0
+  person_9_reason_for_not_consenting: 'No'
+  physical_contact_18_to_69_years: 1-5
+  physical_contact_over_70_years: 21 or more
+  physical_contact_under_18_years: 1-5
+  postcode: NC0C 6UK
+  prefer_receive_vouchers: Email
+  reconsented_blood: 'False'
+  samples_taken_datetime: '2022-01-06 17:17:10.000000'
+  sex: Female
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: 'No'
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Pipe
+  smokes_or_vapes_description: null
+  smokes_pipe: 'Yes'
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: Participant Would Not/Could Not Answer
+  social_distance_contact_over_70_years: Participant Would Not/Could Not Answer
+  social_distance_contact_under_18_years: '0'
+  street: Drumagrove
+  study_cohort: Swab Only
+  swab_sample_barcode: null
+  symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cough: 'Yes'
+  symptoms_last_7_days_diarrhoea: null
+  symptoms_last_7_days_fatigue_weakness: null
+  symptoms_last_7_days_fever: 'No'
+  symptoms_last_7_days_headache: 'Yes'
+  symptoms_last_7_days_loss_of_smell: null
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'No'
+  symptoms_last_7_days_nausea_vomiting: 'Yes'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'No'
+  symptoms_last_7_days_sore_throat: 'No'
+  symptoms_since_last_visit_abdominal_pain: 'No'
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: 'Yes'
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: 'No'
+  symptoms_since_last_visit_loss_of_smell: 'Yes'
+  symptoms_since_last_visit_loss_of_taste: null
+  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
+  symptoms_since_last_visit_nausea_vomiting: null
+  symptoms_since_last_visit_shortness_of_breath: 'No'
+  symptoms_since_last_visit_sore_throat: 'No'
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_date: '2022-01-07 00:00:00.000000'
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  times_hour_or_longer_another_home_last_7_days: '1'
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_outside_shopping_or_socialising_last_7_days: Participant Would Not/Could Not
+    Answer
+  times_shopping_last_7_days: '6'
+  times_socialise_last_7_days: '6'
+  title: Mr.
+  transport_to_work_or_school: On foot
+  type_of_visit: First Visit
+  vaccine_last_vaccination_date: '2022-01-05 00:00:00.000000'
+  vaccine_number_of_doses: '1'
+  vaccine_offered_since_last_visit: 'Yes'
+  vaccine_received_since_last_visit: 'No'
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: From a research study/trial
+  visit_datetime: '2022-01-08 00:44:46.000000'
+  visit_id: DVH-3037894756
+  visit_order: Month 12
+  visit_status: Completed
+  which_symptoms_last_7_days: null
+  withdrawal_reason: null
+  work_direct_contact_persons: null
+  work_healthcare: Other healthcare (e.g. mental health)
+  work_in_additional_paid_employment: 'Yes'
+  work_location: null
+  work_main_job_changed: 'No'
+  work_main_job_role: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
+  work_main_job_title: In 1989 the building was heavily damaged by fire, but it has
+    since been restored.
+  work_not_from_home_days_per_week: '2'
+  work_nursing_or_residential_care_home: null
+  work_sectors: Hospitality (e.g. hotel or restaurant or cafe)
+  work_sectors_other: Its main implementation is the Glasgow Haskell Compiler.
+  work_status: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+    but I can usually be at least 1m from other people
+  able_to_take_blood: 'Yes'
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: null
+  antibody_test_since_last_visit: 'No'
+  antibody_test_since_last_visit_location: Private Lab
+  antibody_test_since_last_visit_results: One or more negative tests but none were
+    positive
+  approached_for_blood_samples?: null
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: null
+  care_home_last_28_days_other_household_member: 'No'
+  city: null
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
+  consent_contact_extra_researchyn: null
+  consent_extend_study_under_16_b1_b3: 'No'
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: null
+  contact_known_positive_covid_last_28_days: null
+  contact_suspect_positive_covid_last_28_days: null
+  county: Humberside
+  date_of_birth: '2003-10-07 22:04:00.000000'
+  email: null
+  ethnic_group: White
+  ethnicity: Mixed-White & Black Caribbean
+  ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
+    assignment, and dynamic typing.
+  face_covering_other_enclosed_places: My face is already covered for other reasons
+    (e.g. religious or cultural reasons)
+  face_covering_outside_of_home: null
+  face_covering_work: null
+  fingerprick_status_household: Invited
+  first_name: Shaun
+  gender: Female
+  had_symptoms_last_7_days: 'No'
+  have_email_address: null
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: 'No'
+  have_long_covid_symptoms: 'No'
+  have_mobile_number: 'Yes'
+  hospital_last_28_days: 'No'
+  hospital_last_28_days_other_household_member: 'Yes'
+  hours_a_day_with_someone_else_at_home: '[3, 3, 7, 21, 19, 20, 21, 5]'
+  household_members_over_2_years_and_not_present: 'Yes'
+  household_members_under_2_years: 'No'
+  illness_lasting_over_12_months: 'Yes'
+  illness_reduces_activity_or_ability: Not at all
+  infant_1_age: 0.0
+  infant_2_age: 5.0
+  infant_3_age: 5.0
+  infant_4_age: 3
+  infant_5_age: null
+  infant_6_age: null
+  infant_7_age: 7.0
+  infant_8_age: 6.0
+  is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: Yes because you live with someone who has/has had symptoms or
+    a positive test but you haven't hadsymptoms yourself
+  last_covid_contact_date: null
+  last_covid_contact_location: null
+  last_name: Bolton
+  last_suspected_covid_contact_date: null
+  last_suspected_covid_contact_location: Outside your home
+  long_covid_abdominal_pain: 'No'
+  long_covid_chest_pain: 'No'
+  long_covid_cough: 'No'
+  long_covid_diarrhoea: 'No'
+  long_covid_difficulty_concentrating: null
+  long_covid_fever: 'Yes'
+  long_covid_headache: null
+  long_covid_loss_of_appetite: null
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: 'Yes'
+  long_covid_low_mood: 'Yes'
+  long_covid_memory_loss_or_confusion: 'No'
+  long_covid_muscle_ache: 'No'
+  long_covid_nausea_vomiting: 'No'
+  long_covid_palpitations: null
+  long_covid_reduce_activities: Yes a lot
+  long_covid_shortness_of_breath: null
+  long_covid_sore_throat: 'Yes'
+  long_covid_symptoms: ALL No
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: 'No'
+  long_covid_weakness_tiredness: 'Yes'
+  long_covid_worry_anxiety: 'Yes'
+  middle_name: My
+  no_blood_reason_fingerprick: Participant felt unwell/fainted
+  no_blood_reason_venous: No stock
+  no_email_address: 0
+  ons_household_id: '883187696082'
+  outside_uk_last_country: Madagascar
+  outside_uk_last_date: '2020-05-03 00:00:00.000000'
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: null
+  participant_id: DHR-627540089585
+  participant_status: Withdrawn
+  participant_testing_group: null
+  participant_visit_status: null
+  pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: 'No'
+  pcr_test_since_last_visit_results: All tests failed
+  person_1_age: 13
+  person_1_not_consenting_age: 87.0
+  person_1_reason_for_not_consenting: NONE
+  person_2_age: 28.0
+  person_2_not_consenting_age: 81.0
+  person_2_reason_for_not_consenting: NONE
+  person_3_age: 72.0
+  person_3_not_consenting_age: 2.0
+  person_3_reason_for_not_consenting: N:a
+  person_4_age: 81.0
+  person_4_not_consenting_age: 33.0
+  person_4_reason_for_not_consenting: N
+  person_5_age: 22
+  person_5_not_consenting_age: 81.0
+  person_5_reason_for_not_consenting: '0'
+  person_6_age: 70.0
+  person_6_not_consenting_age: 81.0
+  person_6_reason_for_not_consenting: N/a
+  person_7_age: 36.0
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: null
+  person_8_age: 15.0
+  person_8_not_consenting_age: 10.0
+  person_8_reason_for_not_consenting: Don't want to participate
+  person_9_not_consenting_age: 86.0
+  person_9_reason_for_not_consenting: na
+  physical_contact_18_to_69_years: 6-10
+  physical_contact_over_70_years: 21 or more
+  physical_contact_under_18_years: 11-20
+  postcode: null
+  prefer_receive_vouchers: Email
+  reconsented_blood: 'False'
+  samples_taken_datetime: '2022-01-05 03:25:31.000000'
+  sex: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: 'Yes'
+  smokes_or_vapes: Pipe
+  smokes_or_vapes_description: Yes, pipe
+  smokes_pipe: 'No'
+  smokes_vape_e_cigarettes: 'No'
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: null
+  social_distance_contact_under_18_years: 11-20
+  street: Benwee
+  study_cohort: Blood and Swab
+  swab_sample_barcode: ONS00000000
+  symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_cough: null
+  symptoms_last_7_days_diarrhoea: 'Yes'
+  symptoms_last_7_days_fatigue_weakness: 'No'
+  symptoms_last_7_days_fever: null
+  symptoms_last_7_days_headache: null
+  symptoms_last_7_days_loss_of_smell: 'Yes'
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'Yes'
+  symptoms_last_7_days_nausea_vomiting: 'Yes'
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'Yes'
+  symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_since_last_visit_abdominal_pain: 'No'
+  symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_diarrhoea: 'No'
+  symptoms_since_last_visit_fatigue_weakness: null
+  symptoms_since_last_visit_fever: null
+  symptoms_since_last_visit_headache: null
+  symptoms_since_last_visit_loss_of_smell: null
+  symptoms_since_last_visit_loss_of_taste: 'Yes'
+  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
+  symptoms_since_last_visit_nausea_vomiting: null
+  symptoms_since_last_visit_shortness_of_breath: 'No'
+  symptoms_since_last_visit_sore_throat: 'Yes'
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_date: '2022-01-01 00:00:00.000000'
+  think_had_covid_which_symptoms: null
+  think_have_covid_symptoms: 'No'
+  times_hour_or_longer_another_home_last_7_days: Participant Would Not/Could Not Answer
+  times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: '5'
+  times_shopping_last_7_days: '4'
+  times_socialise_last_7_days: None
+  title: Dr.
+  transport_to_work_or_school: null
+  type_of_visit: Follow-up Visit
+  vaccine_last_vaccination_date: null
+  vaccine_number_of_doses: '2'
+  vaccine_offered_since_last_visit: null
+  vaccine_received_since_last_visit: 'No'
+  vaccine_type_other_since_last_visit: OtherVaxx
+  vaccine_type_since_last_visit: Oxford/AstraZeneca
+  visit_datetime: '2022-01-04 19:29:32.000000'
+  visit_id: DVH-6911152672
+  visit_order: First Visit
+  visit_status: Household did not attend
+  which_symptoms_last_7_days: Sore  Throat
+  withdrawal_reason: Moving location
+  work_direct_contact_persons: null
+  work_healthcare: Primary care (e.g. GP, dentist)
+  work_in_additional_paid_employment: 'No'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: null
+  work_main_job_role: Where are my pants?
+  work_main_job_title: He looked inquisitively at his keyboard and wrote another sentence.
+  work_not_from_home_days_per_week: '6'
+  work_nursing_or_residential_care_home: 'Yes'
+  work_sectors: Financial Services (incl. insurance)
+  work_sectors_other: He looked inquisitively at his keyboard and wrote another sentence.
+  work_status: 5y and older in full-time education
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+    meter away as my work means I am in close contact with others on aregular basis
+  able_to_take_blood: null
+  accepted_invite_fingerprick: 'No'
+  antibody_test_first_positive_date: null
+  antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
+  antibody_test_since_last_visit: null
+  antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
+  antibody_test_since_last_visit_results: null
+  approached_for_blood_samples?: null
+  blood_sample_barcode: ONS00000000
+  care_home_last_28_days: 'No'
+  care_home_last_28_days_other_household_member: 'Yes'
+  city: null
+  confirm_receive_vouchers: 'false'
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
+  consent_april_22: 'No'
+  consent_blood_samples_if_positive: 'False'
+  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'No'
+  consent_contact_extra_researchyn: 'Yes'
+  consent_extend_study_under_16_b1_b3: null
+  consent_finger_prick_a1_a3: 'No'
+  consent_fingerprick_blood_samples: 'False'
+  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samplesyn: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspect_positive_covid_last_28_days: null
+  county: Suffolk
+  date_of_birth: '2015-04-22 10:53:00.000000'
+  email: null
+  ethnic_group: Other Ethnic Group
+  ethnicity: Any other Asian background
+  ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: Participant Would Not/Could Not Answer
+  face_covering_work: My face is already covered for other reasons (e.g. religious
+    or cultural reasons)
+  fingerprick_status_household: null
+  first_name: Forest
+  gender: Prefer not to say
+  had_symptoms_last_7_days: null
+  have_email_address: 'Yes'
+  have_ever_smoked_regularly: 'Yes'
+  have_landline_number: null
+  have_long_covid_symptoms: 'Yes'
+  have_mobile_number: null
+  hospital_last_28_days: 'Yes'
+  hospital_last_28_days_other_household_member: 'Yes'
+  hours_a_day_with_someone_else_at_home: '[1, 6, 6, 7, 12, 3, 5, 16]'
+  household_members_over_2_years_and_not_present: 'Yes'
+  household_members_under_2_years: 'Yes'
+  illness_lasting_over_12_months: null
+  illness_reduces_activity_or_ability: Yes, a lot
+  infant_1_age: 5.0
+  infant_2_age: null
+  infant_3_age: 4.0
+  infant_4_age: 1
+  infant_5_age: 7.0
+  infant_6_age: 5.0
+  infant_7_age: 6.0
+  infant_8_age: 0.0
+  is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: Yes because you have/have had symptoms of COVID-19 or a positive
+    test
+  last_covid_contact_date: '2022-01-08 00:00:00.000000'
+  last_covid_contact_location: null
+  last_name: Meyers
+  last_suspected_covid_contact_date: null
+  last_suspected_covid_contact_location: Outside your home
+  long_covid_abdominal_pain: 'Yes'
+  long_covid_chest_pain: 'Yes'
+  long_covid_cough: null
+  long_covid_diarrhoea: 'No'
+  long_covid_difficulty_concentrating: 'No'
+  long_covid_fever: null
+  long_covid_headache: null
+  long_covid_loss_of_appetite: 'No'
+  long_covid_loss_of_smell: 'No'
+  long_covid_loss_of_taste: null
+  long_covid_low_mood: 'No'
+  long_covid_memory_loss_or_confusion: null
+  long_covid_muscle_ache: 'Yes'
+  long_covid_nausea_vomiting: null
+  long_covid_palpitations: 'Yes'
+  long_covid_reduce_activities: Yes a little
+  long_covid_shortness_of_breath: 'Yes'
+  long_covid_sore_throat: 'Yes'
+  long_covid_symptoms: Cough
+  long_covid_trouble_sleeping: 'Yes'
+  long_covid_vertigo_dizziness: 'Yes'
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: null
+  middle_name: Buck
+  no_blood_reason_fingerprick: Bruising or pain after first attempt
+  no_blood_reason_venous: null
+  no_email_address: 0
+  ons_household_id: '248046164260'
+  outside_uk_last_country: Latvia
+  outside_uk_last_date: '2020-04-27 00:00:00.000000'
+  outside_uk_since_april_2020: null
+  outside_uk_since_last_visit: null
+  participant_id: DHR-858742267562
+  participant_status: Active
+  participant_testing_group: null
+  participant_visit_status: Cancelled
+  pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  pcr_test_last_negative_date: null
+  pcr_test_since_last_visit: 'Yes'
+  pcr_test_since_last_visit_results: Waiting for all results
+  person_1_age: 68
+  person_1_not_consenting_age: 12.0
+  person_1_reason_for_not_consenting: '0'
+  person_2_age: 86.0
+  person_2_not_consenting_age: 2.0
+  person_2_reason_for_not_consenting: N
+  person_3_age: 68.0
+  person_3_not_consenting_age: 57.0
+  person_3_reason_for_not_consenting: an
+  person_4_age: 54.0
+  person_4_not_consenting_age: null
+  person_4_reason_for_not_consenting: NA
+  person_5_age: 19
+  person_5_not_consenting_age: 13.0
+  person_5_reason_for_not_consenting: Na
+  person_6_age: 2.0
+  person_6_not_consenting_age: null
+  person_6_reason_for_not_consenting: Don't want to participate
+  person_7_age: 61.0
+  person_7_not_consenting_age: null
+  person_7_reason_for_not_consenting: Consenting
+  person_8_age: 16.0
+  person_8_not_consenting_age: null
+  person_8_reason_for_not_consenting: NONE
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: NA
+  physical_contact_18_to_69_years: null
+  physical_contact_over_70_years: 6-10
+  physical_contact_under_18_years: 11-20
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'True'
+  samples_taken_datetime: '2022-01-04 09:53:28.000000'
+  sex: null
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: 'No'
+  smokes_or_vapes: Hookah/shisha pipes
+  smokes_or_vapes_description: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: 'Yes'
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: Participant Would Not/Could Not Answer
+  social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
+  street: null
+  study_cohort: Swab Only
+  swab_sample_barcode: null
+  symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_cough: 'No'
+  symptoms_last_7_days_diarrhoea: 'Yes'
+  symptoms_last_7_days_fatigue_weakness: 'No'
+  symptoms_last_7_days_fever: 'No'
+  symptoms_last_7_days_headache: 'Yes'
+  symptoms_last_7_days_loss_of_smell: 'Yes'
+  symptoms_last_7_days_loss_of_taste: 'Yes'
+  symptoms_last_7_days_muscle_ache_myalgia: 'No'
+  symptoms_last_7_days_nausea_vomiting: null
+  symptoms_last_7_days_onset_date: null
+  symptoms_last_7_days_shortness_of_breath: 'No'
+  symptoms_last_7_days_sore_throat: null
+  symptoms_since_last_visit_abdominal_pain: null
+  symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_diarrhoea: null
+  symptoms_since_last_visit_fatigue_weakness: 'No'
+  symptoms_since_last_visit_fever: 'No'
+  symptoms_since_last_visit_headache: 'Yes'
+  symptoms_since_last_visit_loss_of_smell: null
+  symptoms_since_last_visit_loss_of_taste: null
+  symptoms_since_last_visit_muscle_ache_myalgia: null
+  symptoms_since_last_visit_nausea_vomiting: 'No'
+  symptoms_since_last_visit_shortness_of_breath: null
+  symptoms_since_last_visit_sore_throat: 'Yes'
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_contacted_nhs: null
+  think_had_covid_date: null
+  think_had_covid_which_symptoms: null
+  think_have_covid_symptoms: null
+  times_hour_or_longer_another_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days: '4'
+  times_outside_shopping_or_socialising_last_7_days: None
+  times_shopping_last_7_days: '3'
+  times_socialise_last_7_days: '4'
+  title: null
+  transport_to_work_or_school: On foot
+  type_of_visit: First Visit
+  vaccine_last_vaccination_date: '2022-01-06 00:00:00.000000'
+  vaccine_number_of_doses: 3 or more
+  vaccine_offered_since_last_visit: 'No'
+  vaccine_received_since_last_visit: 'No'
+  vaccine_type_other_since_last_visit: null
+  vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_datetime: '2022-01-03 01:57:08.000000'
+  visit_id: DVH-7714195028
+  visit_order: Follow-up 2
+  visit_status: Household did not attend
+  which_symptoms_last_7_days: null
+  withdrawal_reason: No longer wants to take part
+  work_direct_contact_persons: 'No'
+  work_healthcare: Secondary care (e.g. hospital)
+  work_in_additional_paid_employment: 'Yes'
+  work_location: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
+  work_main_job_changed: 'No'
+  work_main_job_role: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
+  work_main_job_title: The arguments can be primitive data types or compound data
+    types.
+  work_not_from_home_days_per_week: '6'
+  work_nursing_or_residential_care_home: null
+  work_sectors: Manufacturing or construction
+  work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_status: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
