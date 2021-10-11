@@ -135,7 +135,6 @@ def check_singular_match(
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
-    df.show()
     return df
 
 
