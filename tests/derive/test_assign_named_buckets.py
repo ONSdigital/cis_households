@@ -15,6 +15,7 @@ def expected_df(spark_session):
             ("e", 20, "20-49"),
             ("f", 55, "50-69"),
             ("g", 70, "70+"),
+            ("g", 1, None),
         ],
         schema="name string, age integer, age_range string",
     )

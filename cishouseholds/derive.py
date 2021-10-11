@@ -17,17 +17,61 @@ def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_as
     map
         dictionary containing the map of minimum value in given range (inclusive) to range label string
     """
-    bucketizer = Bucketizer(splits=[*list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets")
+    bucketizer = Bucketizer(
+        splits=[float("-Inf"), *list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
+    )
     dfb = bucketizer.setHandleInvalid("keep").transform(df)
 
-    bucket_dic = {}
+    bucket_dic = {0.0: None}
     for i, value in enumerate(map.values()):
-        bucket_dic[float(i)] = value
+        bucket_dic[float(i + 1)] = value
 
     mapping_expr = F.create_map([F.lit(x) for x in chain(*bucket_dic.items())])  # type: ignore
 
     dfb = dfb.withColumn(column_name_to_assign, mapping_expr[dfb["buckets"]])
     return dfb.drop("buckets")
+
+
+def assign_age_group_school_year(
+    df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
+):
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY"
+        ).otherwise(
+            F.when(
+                ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
+                | (
+                    (F.col(country_column).isin("England", "Wales"))
+                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 15))
+                    & (F.col(school_year_column) <= 6)
+                )
+                | (
+                    (F.col(country_column).isin("Scotland", "NI"))
+                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
+                    & (F.col(school_year_column) <= 6)
+                ),
+                "07SY-11SY",
+            ).otherwise(
+                F.when(
+                    (
+                        (F.col(country_column).isin("England", "Wales"))
+                        & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
+                        & (F.col(school_year_column) >= 12)
+                    )
+                    | (
+                        (F.col(country_column).isin("Scotland", "NI"))
+                        & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
+                        & (F.col(school_year_column) >= 12)
+                    ),
+                    "12SY-24",
+                ).otherwise("false")
+            )
+        ),
+    )
+    df.show()
+    return df
 
 
 def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
