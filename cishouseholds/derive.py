@@ -18,6 +18,9 @@ def assign_named_buckets(
     column_name_to_assign
     map
         dictionary containing the map of minimum value in given range (inclusive) to range label string
+    use_current_values
+        boolean operation preset to False to specify if current values in column_name_to_assign should be carried
+        forward if not in range of lookup buckets specified in map
     """
     bucketizer = Bucketizer(
         splits=[float("-Inf"), *list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
