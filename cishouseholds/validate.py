@@ -128,7 +128,6 @@ def check_singular_match(
         .withColumnRenamed(failure_column_name, "f")
     )
     dft = dft.withColumn(failure_column_name, F.when(F.col("count") > 1, 1).otherwise(None))
-    dft.show()
     df = (
         df.drop(failure_column_name)
         .join(dft, dft.b == F.col(group_by_column), "outer")
