@@ -157,7 +157,7 @@ class Distribution(BaseStatsDataProvider):
         Single element from population or null_value
         Examples
         --------
-        >>>Distribution.distrete_distribution(population=["one", "two", "three"], weights=[0.01, 0.01, 0.98])
+        >>>Distribution.discrete_distribution(population=["one", "two", "three"], weights=[0.01, 0.01, 0.98])
         "three"
         """
         return self._replace(
