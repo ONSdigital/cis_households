@@ -113,6 +113,12 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_named_buckets(
         df,
         "age_at_visit",
+        "ageg_7",
+        {2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        "age_at_visit",
         "age_group_large_range",
         {
             2: "2-4",
