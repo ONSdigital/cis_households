@@ -144,12 +144,14 @@ def check_singular_match(
         .withColumnRenamed(failure_column_name, "f")
     )
     dft = dft.withColumn(failure_column_name, F.when(F.col("count") > 1, 1).otherwise(None))
+    dft.show()
     df = (
         df.drop(failure_column_name)
         .join(dft, dft.b == F.col(group_by_column), "outer")
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
+    df.show()
     return df
 
 
@@ -174,7 +176,6 @@ def validate_merge_logic(
     group_by_column
         List of columns to check is singular given criteria
     """
-    columns = df.columns
     for i, flag_column in enumerate(flag_column_names):
         df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], group_by_column)
-    return df.select(*columns)
+    return df
