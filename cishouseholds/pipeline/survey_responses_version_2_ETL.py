@@ -11,6 +11,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
@@ -85,6 +86,8 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
     df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
+    df = format_string_upper_and_clean(df, "work_main_job_title")
+    df = format_string_upper_and_clean(df, "work_main_job_role")
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
