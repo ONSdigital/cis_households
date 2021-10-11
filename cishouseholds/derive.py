@@ -6,7 +6,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict):
+def assign_named_buckets(
+    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, use_current_values=False
+):
     """
     Assign a new column with named ranges for given integer ranges contianed within a reference column
     Parameters
@@ -22,7 +24,7 @@ def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_as
     )
     dfb = bucketizer.setHandleInvalid("keep").transform(df)
 
-    bucket_dic = {0.0: None}
+    bucket_dic = {0.0: F.col(column_name_to_assign) if use_current_values else None}
     for i, value in enumerate(map.values()):
         bucket_dic[float(i + 1)] = value
 
@@ -35,6 +37,17 @@ def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_as
 def assign_age_group_school_year(
     df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
 ):
+    """
+    Assign column_age_group_school_year using multiple references column values in a specific pattern
+    to determin a string coded representation of school year
+    Parameters
+    ----------
+    df:
+    country_column
+    age_column
+    school_year_column
+    column_name_to_assign
+    """
     df = df.withColumn(
         column_name_to_assign,
         F.when(
@@ -70,7 +83,9 @@ def assign_age_group_school_year(
             )
         ),
     )
-    df.show()
+    df = assign_named_buckets(
+        df, age_column, column_name_to_assign, {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"}, True
+    )
     return df
 
 
