@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
+from pyspark.sql import functions as F
 
-from cishouseholds.filter import assign_date_interval_and_flag
 from cishouseholds.merge import one_to_many_antibody_flag
 
 
@@ -117,15 +117,19 @@ def test_one_to_many_antibody_flag(spark_session):
     df_iq = spark_session.createDataFrame(data_iq, schema=schema_iq)
     df_ox = spark_session.createDataFrame(data_ox, schema=schema_ox)
 
-    # IQ - 1:m - bloods
-
     df_mrg = df_iq.join(df_ox, df_iq.barcode_iq == df_ox.barcode_ox, "inner")
 
     input_df = df_mrg
 
-    # assign a column that contains the difference between the visit and received dates
-    input_df = assign_date_interval_and_flag(
-        input_df, "out_of_date_range_blood", "diff_interval", "visit_date", "received_ox_date", -24, 48
+    input_df = input_df.withColumn(
+        "diff_interval_hours",
+        (F.to_timestamp(F.col("received_ox_date")).cast("long") - F.to_timestamp(F.col("visit_date")).cast("long"))
+        / 3600,  # 1 day has 60s*60min*24h seconds = 86400 seconds
+    )
+
+    input_df = input_df.withColumn(
+        "out_of_date_range_blood",
+        F.when(~F.col("diff_interval_hours").between(-24, 48), 1).otherwise(None),
     )
 
     input_df = input_df.drop("identify_one_to_many_bloods_flag")
