@@ -644,7 +644,10 @@ def one_to_many_antibody_flag(
 
     df = df.join(
         dfn,
-        (dfn.b == df.barcode_iq) & (dfn.g == df.group) & (dfn.s.eqNullSafe(df.siemens)) & (dfn.t.eqNullSafe(df.tdi)),
+        (dfn["b"] == df[group_by_column])
+        & (dfn["g"] == df["group"])
+        & (dfn["s"].eqNullSafe(df[siemens_column]))
+        & (dfn["t"].eqNullSafe(df[tdi_column])),
     ).orderBy("group", "row_num")
 
     df = create_inconsistent_data_drop_flag(
