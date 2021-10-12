@@ -34,7 +34,6 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
             F.col(column_name_to_assign)
         ),
     )
-    df.show()
     return df
 
 
