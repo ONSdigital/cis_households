@@ -4,7 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.edit import convert_null_if_not_in_list
 
 
-@pytest.fixture
+@pytest.mark.parameterize
 def input_df(spark_session):
     return spark_session.createDataFrame(
         data=[("male", 1), ("female", 2), ("helicopter", 3), ("dont know", 4)],
@@ -12,7 +12,7 @@ def input_df(spark_session):
     )
 
 
-@pytest.fixture
+@pytest.mark.parameterize
 def expected_df(spark_session):
     return spark_session.createDataFrame(
         data=[("male", 1), ("female", 2), (None, 3), (None, 4)],
