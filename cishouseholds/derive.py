@@ -5,13 +5,20 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_work_patient_facing_now(df: DataFrame, work_healthcare_column: str, column_name_to_assign: str):
-    map = {-9: "<=15y", -8: ">=75y", 0: "No", 1: "Yes"}
-
+def assign_column_from_mapped_reference_column(
+    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict
+):
+    """
+    Assign column_name_to_assign to mapped values of reference column
+    Parameters
+    ----------
+    df
+    reference_column
+    column_name_to_assign
+    map
+    """
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
-
-    df = df.withColumn(column_name_to_assign, mapping_expr[df[work_healthcare_column]])
-    df.show()
+    df = df.withColumn(column_name_to_assign, mapping_expr[df[reference_column]])
     return df
 
 

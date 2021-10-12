@@ -4,6 +4,8 @@ from typing import Mapping
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.derive import assign_column_from_mapped_reference_column
+
 
 def update_work_patient_facing_now(df: DataFrame, age_column: str, work_status_column: str, column_name_to_update: str):
     """
@@ -32,6 +34,33 @@ def update_work_patient_facing_now(df: DataFrame, age_column: str, work_status_c
             ),
             "No",
         ).otherwise(F.col(column_name_to_update)),
+    )
+    df.show()
+    return df
+
+
+def update_work_person_facing_now(df: DataFrame, age_column: str, work_status_column: str, column_name_to_update: str):
+    """
+    Update value of variable depending on state of reference columns age_column and work_status_column
+    Parameters
+    ----------
+    df
+    age_column
+    work_status_column
+    column_name_to_update
+    """
+
+    assign_column_from_mapped_reference_column(
+        df,
+        age_column,
+        column_name_to_update,
+        {
+            0: "No",
+            1: "Yes, care/residential home, resident-facing",
+            2: "Yes, other social care, resident-facing",
+            3: "Yes, care/residential home, non-resident-facing",
+            4: "Yes, other social care, non-resident-facing",
+        },
     )
     df.show()
     return df
