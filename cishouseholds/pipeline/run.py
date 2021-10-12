@@ -10,8 +10,19 @@ from cishouseholds.pipeline.post_merge_processing import process_post_merge  # n
 
 def run_from_config():
     """
-    Reads yaml config file containing variables (run, function and resource path) per ETL function
-    requires setting of PIPELINE_CONFIG_LOCATION environment var with file path of output
+    Run ordered pipeline stages, from pipeline configuration. Config file location must be specified in the environment
+    variable ``PIPELINE_CONFIG_LOCATION``.
+
+    ``function`` and ``run`` are essential keys for each stage. All other key value pairs are passed to the function.
+
+
+    An example stage is configured:
+
+    stages:
+    - function: process_csv
+      run: True
+      resource_path: "path_to.csv"
+
     """
     run_stages = [stage for stage in config["stages"] if stage.pop("run")]
     number_of_stages = len(run_stages)

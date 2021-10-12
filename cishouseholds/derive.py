@@ -352,7 +352,7 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Assign a column with a TimeStamp to a DateType
     From households_aggregate_processes.xlsx, derivation number 13.
