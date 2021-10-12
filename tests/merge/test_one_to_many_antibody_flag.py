@@ -181,7 +181,9 @@ def test_one_to_many_antibody_flag(spark_session):
                 one_to_many_antibody_drop_flag integer, failed_due_to_indistinct_match integer",
     )
 
-    input_df = expected_df.drop("identify_one_to_many_antibody_flag", "one_to_many_antibody_drop_flag", "failed")
+    input_df = expected_df.drop(
+        "identify_one_to_many_antibody_flag", "one_to_many_antibody_drop_flag", "failed_due_to_indistinct_match"
+    )
 
     output_df = one_to_many_antibody_flag(
         df=input_df,
