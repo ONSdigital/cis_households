@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import cishouseholds.pipeline.bloods_delta_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
@@ -15,8 +17,13 @@ def run_from_config():
     number_of_stages = len(run_stages)
     max_digits = len(str(number_of_stages))
     for n, stage_config in enumerate(run_stages):
-        print(f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_config['function']}")  # functional
-        pipeline_stages[stage_config.pop("function")](**stage_config)
+        stage_name = stage_config.pop("function")
+        print(f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}")  # functional
+        output_df = pipeline_stages[stage_name](**stage_config)
+        output_df.toPandas().to_csv(
+            f"{config['csv_output_path']}/{stage_name}_output_{datetime.now().strftime('%y%m%d_%H%M%S')}.csv",
+            index=False,
+        )
 
 
 if __name__ == "__main__":
