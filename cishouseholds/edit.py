@@ -5,6 +5,38 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_work_patient_facing_now(df: DataFrame, age_column: str, work_status_column: str, column_name_to_update: str):
+    """
+    Update value of variable depending on state of reference columns age_column and work_status_column
+    Parameters
+    ----------
+    df
+    age_column
+    work_status_column
+    column_name_to_update
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when((F.col(age_column) >= 2) & (F.col(age_column) <= 102), F.col(age_column)).otherwise(
+            F.col(column_name_to_update)
+        ),
+    )
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(work_status_column).isin(
+                "Furloughed",
+                "(temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+                "Student",
+            ),
+            "No",
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    df.show()
+    return df
+
+
 def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     """
     Converts barcode to null if numeric characters are all 0 otherwise performs no change

@@ -1,7 +1,18 @@
 import re
+from itertools import chain
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+
+
+def assign_work_patient_facing_now(df: DataFrame, work_healthcare_column: str, column_name_to_assign: str):
+    map = {-9: "<=15y", -8: ">=75y", 0: "No", 1: "Yes"}
+
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+
+    df = df.withColumn(column_name_to_assign, mapping_expr[df[work_healthcare_column]])
+    df.show()
+    return df
 
 
 def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
