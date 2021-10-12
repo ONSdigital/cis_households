@@ -114,7 +114,7 @@ def create_count_group(df: DataFrame, group_column: str, reference_column: str, 
 
     """
     dft = (
-        df.where(df.identify_one_to_many_bloods_flag == 1)
+        df.where(F.col("identify_one_to_many_antibody_flag") == 1)
         .groupBy(group_column, reference_column)
         .count()
         .withColumnRenamed(reference_column, reference_column[0])
@@ -261,11 +261,11 @@ def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_colum
         df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
         .filter(F.col(row_column) == row_num)
         .withColumnRenamed(group_column, "g")
-        .withColumnRenamed(reference_column, "{}{}_ref".format(reference_column[0], row_num))
+        .withColumnRenamed(reference_column, "{}_row_{}_ref".format(reference_column, row_num))
         .drop(row_column)
     )
     df = df.join(dft, dft.g == F.col(group_column)).drop("g")
-    return df, "{}{}_ref".format(reference_column[0], row_num)
+    return df, "{}_row_{}_ref".format(reference_column, row_num)
 
 
 def assign_merge_process_group_flag(
@@ -425,7 +425,6 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         "count_diff_same_as_first",
         "diff_between_first_and_second_records",
         "abs_offset_diff_between_first_and_second_records",
-        "identify_many_to_one_swab_flag",
     )
 
 
@@ -457,7 +456,7 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
 
-    return df.drop("antibody_barcode_cleaned_count", "identify_many_to_one_antibody_flag")
+    return df.drop("antibody_barcode_cleaned_count")
 
 
 def many_to_many_flag(
@@ -551,7 +550,7 @@ def many_to_many_flag(
             ),
         )
 
-    return df.drop("identify_many_to_many_flag", "classification_different_to_first", "record_processed", "row_number")
+    return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 
 def create_inconsistent_data_drop_flag(
@@ -568,7 +567,7 @@ def create_inconsistent_data_drop_flag(
 
     """
     df = df.withColumn(
-        "dr2",
+        "iconsistent_data_drop",
         F.when(
             (F.col(selection_column) == 1)
             & ((F.col(item1_count_column) != F.col("count")) | (F.col(item2_count_column) != F.col("count"))),
@@ -578,44 +577,68 @@ def create_inconsistent_data_drop_flag(
     return df
 
 
-def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_column: str):
+def one_to_many_antibody_flag(
+    df: DataFrame,
+    column_name_to_assign: str,
+    group_by_column: str,
+    diff_interval_hours: str,
+    siemens_column: str,
+    tdi_column: str,
+    visit_date: str,
+    out_of_date_range_column: str,
+    count_barcode_voyager_column_name: str,
+    count_barcode_labs_column_name: str,
+) -> DataFrame:
     """
     steps to complete:
-    create columns for row number and group number in new grouped df
-    adding first diff interval ref and flagging records with different diff interval to first
-    check for consistent siemens, tdi data
-    adding drop flag 2 column to indicate inconsitent siemens or tdi data within group
-
+    Step 1: create columns for row number and group number in new grouped df
+    Step 2: add first diff interval ref and flag records with different diff interval to first
+    Step 3: check for consistent siemens, tdi data within groups of matched barcodes
+    Step 4: add drop flag 2 column to indicate inconsitent siemens or tdi data within group
+    Step 5: create overall drop flag to drop any records which have inconsistent data or
+    interval different to that of first row reference
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    group_by_column
+    diff_interval_hours
+    siemens_column
+    tdi_column
+    visit_date
+    out_of_date_range_column
+    count_barcode_voyager_column_name
+    count_barcode_labs_column_name
     """
     df = assign_merge_process_group_flag(
         df,
-        "identify_one_to_many_bloods_flag",
-        "out_of_date_range_blood",
-        "count_barcode_voyager",
+        "identify_one_to_many_antibody_flag",
+        out_of_date_range_column,
+        count_barcode_voyager_column_name,
         "==1",
-        "count_barcode_blood",
+        count_barcode_labs_column_name,
         ">1",
     )
     window = Window.partitionBy(group_by_column).orderBy(
-        "identify_one_to_many_bloods_flag", "diff_interval_hours", "visit_date"
+        "identify_one_to_many_antibody_flag", diff_interval_hours, visit_date
     )
     df, dft = assign_group_and_row_number_columns(df, window, group_by_column)
 
     df, reference_col_name = assign_first_row_value_ref(
-        df=df, reference_column="diff_interval_hours", group_column="group", row_column="row_num", row_num=1
+        df=df, reference_column=diff_interval_hours, group_column="group", row_column="row_num", row_num=1
     )
 
     df = flag_columns_different_to_ref(
         df=df,
         exclusion_column="row_num",
         exclusion_row_value=1,
-        selection_column="identify_one_to_many_bloods_flag",
+        selection_column="identify_one_to_many_antibody_flag",
         reference_column=reference_col_name,
-        check_column="diff_interval_hours",
-        column_name_to_assign="dr1",
+        check_column=diff_interval_hours,
+        column_name_to_assign="time_different_to_first_drop",
     )
 
-    dfj = check_consistent_data(df=df, check_column1="siemens", check_column2="tdi", group_by_column="group")
+    dfj = check_consistent_data(df=df, check_column1=siemens_column, check_column2=tdi_column, group_by_column="group")
 
     dfn = dft.join(dfj, (dfj.g == dft.group)).drop("dummy", "group", "count")
 
@@ -625,24 +648,27 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
     ).orderBy("group", "row_num")
 
     df = create_inconsistent_data_drop_flag(
-        df=df, selection_column="identify_one_to_many_bloods_flag", item1_count_column="cs", item2_count_column="ct"
+        df=df, selection_column="identify_one_to_many_antibody_flag", item1_count_column="cs", item2_count_column="ct"
     ).drop("s", "t", "b", "g")
 
     df = df.withColumn(
         column_name_to_assign,
         F.when(
             (
-                (F.col("identify_one_to_many_bloods_flag") == 1)
-                & (((F.col("dr2") == 1) & (F.col("row_num") != 1)) | (F.col("dr1") == 1))
+                (F.col("identify_one_to_many_antibody_flag") == 1)
+                & (
+                    ((F.col("iconsistent_data_drop") == 1) & (F.col("row_num") != 1))
+                    | (F.col("time_different_to_first_drop") == 1)
+                )
             ),
             1,
         ).otherwise(None),
     )
     df = df.withColumn(
-        "failed",
+        "failed_due_to_indistinct_match",
         F.when(
             (
-                (F.col("identify_one_to_many_bloods_flag") == 1)
+                (F.col("identify_one_to_many_antibody_flag") == 1)
                 & ((F.col(column_name_to_assign).isNull()) & (F.col("row_num") != 1) & (F.col("count") != 1))
             ),
             1,
@@ -650,15 +676,13 @@ def one_to_many_bloods_flag(df: DataFrame, column_name_to_assign: str, group_by_
     )
 
     return df.drop(
-        "out_of_date_range_blood",
-        "identify_one_to_many_bloods_flag",
+        out_of_date_range_column,
+        reference_col_name,
         "group",
-        "d1_ref",
         "count",
         "row_num",
-        "d1_ref",
-        "dr1",
-        "dr2",
+        "time_different_to_first_drop",
+        "iconsistent_data_drop",
     )
 
 
@@ -707,7 +731,7 @@ def one_to_many_swabs(
     """
     df = assign_merge_process_group_flag(
         df,
-        column_name_to_assign="merge_flag",
+        column_name_to_assign="identify_one_to_many_swabs_flag",
         out_of_date_range_flag=out_of_date_range_flag,
         count_barcode_labs_column_name=count_barcode_labs_column_name,
         count_barcode_labs_condition=">1",
@@ -715,8 +739,8 @@ def one_to_many_swabs(
         count_barcode_voyager_condition="==1",
     )
     df = df.withColumn(
-        "merge_flag",
-        F.when(F.col("merge_flag") == 1, None).otherwise(1),
+        "identify_one_to_many_swabs_flag",
+        F.when(F.col("identify_one_to_many_swabs_flag") == 1, None).otherwise(1),
     )
     df = merge_one_to_many_swab_ordering_logic(df, group_by_column, ordering_columns, "time_order_flag")
     df = merge_one_to_many_swab_result_pcr_logic(
@@ -735,7 +759,7 @@ def one_to_many_swabs(
     return df.withColumn(
         flag_column_name,
         F.when(
-            (F.col("merge_flag") == 1)
+            (F.col("identify_one_to_many_swabs_flag") == 1)
             | (F.col("time_order_flag") == 1)
             | (F.col("pcr_flag") == 1)
             | (F.col("time_difference_flag") == 1),
