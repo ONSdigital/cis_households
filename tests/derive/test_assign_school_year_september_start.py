@@ -1,27 +1,20 @@
-import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_school_year_september_start
 
 
-@pytest.fixture
-def expected_df(spark_session):
-    return spark_session.createDataFrame(
+def test_assign_named_buckets(spark_session):
+    expected_df = spark_session.createDataFrame(
         data=[
-            ("a", 6, "2-11"),
-            ("b", 11, "2-11"),
-            ("c", 18, "12-19"),
-            ("d", 19, "12-19"),
-            ("e", 20, "20-49"),
-            ("f", 55, "50-69"),
-            ("g", 70, "70+"),
-            ("g", 1, None),
+            ("2021-07-21", "2015-02-05", 26),
+            ("2021-07-21", "2015-09-05", 26),
+            ("2021-07-21", "2015-08-30", 26),
+            ("2021-07-21", "2005-01-05", 26),
+            ("2021-07-21", "2002-11-21", 26),
+            ("2021-07-21", "2012-05-05", 26),
         ],
-        schema="name string, age integer, age_range string",
+        schema="visit_date string, dob string, school_year integer",
     )
 
-
-def test_assign_named_buckets(expected_df):
-    map = {2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
-    output_df = assign_named_buckets(expected_df.drop("age_range"), "age", "age_range", map)
+    output_df = assign_school_year_september_start(expected_df.drop("school_year"), "dob", "visit_date", "school_year")
     assert_df_equality(output_df, expected_df)

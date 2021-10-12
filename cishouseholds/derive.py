@@ -15,7 +15,20 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
     df
     age_column
     """
-    df = df.withColumn("month_diff", F.months_between(F.col(dob_column), F.col(visit_date)))
+    df = df.withColumn("test", F.month(F.col(visit_date)))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+        ).otherwise(
+            F.when(
+                (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+                (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+            ).otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5)
+        ),
+    )
+    # map = {4: "", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
     df.show()
 
 
