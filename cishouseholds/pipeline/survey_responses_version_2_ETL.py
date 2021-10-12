@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -30,7 +29,6 @@ def survey_responses_version_2_ETL(resource_path: str):
     """
     spark_session = get_or_create_spark_session()
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
-    iqvia_v2_spark_schema = None
     raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
     df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
 
