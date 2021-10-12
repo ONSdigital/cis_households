@@ -665,7 +665,7 @@ def one_to_many_antibody_flag(
         ).otherwise(None),
     )
     df = df.withColumn(
-        "failed",
+        "failed_due_to_indistinct_match",
         F.when(
             (
                 (F.col("identify_one_to_many_antibody_flag") == 1)

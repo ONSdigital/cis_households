@@ -178,7 +178,7 @@ def test_one_to_many_antibody_flag(spark_session):
                 received_ox_date string, count_barcode_antibody integer, siemens string,\
                 diff_interval_hours double, out_of_date_range_antibody integer, \
                 identify_one_to_many_antibody_flag integer, \
-                one_to_many_antibody_drop_flag integer, failed integer",
+                one_to_many_antibody_drop_flag integer, failed_due_to_indistinct_match integer",
     )
 
     input_df = expected_df.drop("identify_one_to_many_antibody_flag", "one_to_many_antibody_drop_flag", "failed")
