@@ -90,7 +90,7 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
     df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
-    df = convert_null_if_not_in_list(df, "sex", ["male", "female", "MALE", "FEMALE", "F", "M", "Female", "Male"])
+    df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
