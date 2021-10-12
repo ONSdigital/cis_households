@@ -232,16 +232,16 @@ if __name__ == "__main__":
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
     # Historic files
-    historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
-    historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
+    # historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
+    # historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
 
-    historic_v2 = generate_survey_v2_data(
-        directory=historic_survey_dir,
-        file_date=file_date,
-        records=100,
-        swab_barcodes=historic_swabs["Sample"].unique().tolist(),
-        blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
-    )
+    # historic_v2 = generate_survey_v2_data(
+    #     directory=historic_survey_dir,
+    #     file_date=file_date,
+    #     records=100,
+    #     swab_barcodes=historic_swabs["Sample"].unique().tolist(),
+    #     blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
+    # )
 
     # Delta files
     lab_swabs_1 = generate_ons_gl_report_data(swab_dir, file_date, 10)
@@ -259,9 +259,9 @@ if __name__ == "__main__":
         [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
     )
 
-    unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
-    northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
-    sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
+    # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
+    # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
+    # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
 
     # swab/blood barcode lists
     swab_barcode = lab_swabs["Sample"].unique().tolist()
