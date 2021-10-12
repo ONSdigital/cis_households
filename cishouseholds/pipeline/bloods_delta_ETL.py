@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 
@@ -9,6 +8,7 @@ from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import bloods_variable_name_map
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import antibody_time_map
 from cishouseholds.pipeline.validation_schema import bloods_validation_schema
@@ -20,7 +20,7 @@ from cishouseholds.validate import validate_and_filter
 
 
 @register_pipeline_stage("bloods_delta_ETL")
-def bloods_delta_ETL(delta_file_path: str):
+def bloods_delta_ETL(resource_path: str):
     spark_session = get_or_create_spark_session()
     bloods_spark_schema = convert_cerberus_schema_to_pyspark(bloods_validation_schema)
     # ref_file_path = "" # reference to parquet file path
@@ -28,7 +28,7 @@ def bloods_delta_ETL(delta_file_path: str):
     raw_bloods_delta_header = ",".join(bloods_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
         spark_session,
-        delta_file_path,
+        resource_path,
         raw_bloods_delta_header,
         bloods_spark_schema,
     )
@@ -45,7 +45,7 @@ def bloods_delta_ETL(delta_file_path: str):
     df = transform_bloods_delta(df)
     # df = prepare_for_union(df, None)
     # df = load_bloods_delta(df)
-
+    update_table(df, "processed_blood_test_results")
     return df
 
 
@@ -67,7 +67,3 @@ def transform_bloods_delta(df: DataFrame) -> DataFrame:
     df = assign_column_uniform_value(df, "assay_category", 1)
 
     return df
-
-
-def load_bloods_delta(df: DataFrame) -> DataFrame:
-    pass

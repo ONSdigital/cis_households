@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -14,6 +13,7 @@ from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import iqvia_v2_time_map
 from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
@@ -23,7 +23,7 @@ from cishouseholds.validate import validate_and_filter
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
-def survey_responses_version_2_ETL(delta_file_path: str):
+def survey_responses_version_2_ETL(resource_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
@@ -31,9 +31,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
 
     raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
-    df = read_csv_to_pyspark_df(
-        spark_session, delta_file_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|"
-    )
+    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
 
     df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
     iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
@@ -46,7 +44,7 @@ def survey_responses_version_2_ETL(delta_file_path: str):
     )
     df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
     # df = transform_survey_responses_version_2_delta(spark_session, df)
-    df = load_survey_responses_version_2_delta(spark_session, df)
+    update_table(df, "processed_survey_responses_v2")
     return df
 
 
@@ -106,8 +104,4 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
     df = assign_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
-    return df
-
-
-def load_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
     return df

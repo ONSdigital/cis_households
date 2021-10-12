@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -12,6 +11,7 @@ from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import swab_time_map
 from cishouseholds.pipeline.validation_schema import swab_validation_schema
@@ -21,7 +21,7 @@ from cishouseholds.validate import validate_and_filter
 
 
 @register_pipeline_stage("swab_delta_ETL")
-def swab_delta_ETL(delta_file_path: str):
+def swab_delta_ETL(resource_path: str):
     """
     End to end processing of a swab delta CSV file.
     """
@@ -31,7 +31,7 @@ def swab_delta_ETL(delta_file_path: str):
     raw_swab_delta_header = ",".join(swab_variable_name_map.keys())
     df = read_csv_to_pyspark_df(
         spark_session,
-        delta_file_path,
+        resource_path,
         raw_swab_delta_header,
         swab_spark_schema,
     )
@@ -45,7 +45,7 @@ def swab_delta_ETL(delta_file_path: str):
     _swab_validation_schema = update_schema_types(swab_validation_schema, swab_time_map_list, {"type": "timestamp"})
     df = validate_and_filter(df, _swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
-    df = load_swab_delta(spark_session, df)
+    update_table(df, "processed_swab_test_results")
     return df
 
 
@@ -73,8 +73,4 @@ def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFram
     )
     df = assign_isin_list(df, "ctonetarget", "ctpattern", ["N only", "OR only", "S only"])
 
-    return df
-
-
-def load_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
     return df
