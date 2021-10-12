@@ -15,7 +15,6 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
     df
     age_column
     """
-    df = df.withColumn("test", F.month(F.col(visit_date)))
     df = df.withColumn(
         column_name_to_assign,
         F.when(
@@ -28,8 +27,15 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
             ).otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5)
         ),
     )
-    # map = {4: "", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
     df.show()
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
+            F.col(column_name_to_assign)
+        ),
+    )
+    df.show()
+    return df
 
 
 def assign_named_buckets(
