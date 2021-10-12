@@ -4,6 +4,22 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def derive_school_year_september_start(df: DataFrame, age_column: str, column_name_to_assign: str):
+    """
+    Assign a column for the approximate school year of an individual given their age at the time
+    of visit
+    Parameters
+    ----------
+    df
+    age_column
+    column_name_to_assign
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+    )
+    return df
+
+
 def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
     """
     Assign string variable for ethnicity white / non-white depending on bool value 0 / 1
