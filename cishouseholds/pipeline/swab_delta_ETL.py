@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 
 from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_isin_list
-from cishouseholds.derive import derive_ctpattern
+from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import mean_across_columns
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_schema_types
@@ -51,26 +51,16 @@ def swab_delta_ETL(resource_path: str):
 
 def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
     """
-    Call functions to process input for swab deltas.
+    Tranform swab delta - derive new fields that do not depend on merging with survey responses.
 
-    Parameters
-    ----------
-    df
-    spark_session
-
-    Notes
-    -----
-    Functions implemented:
-        D13: assign_column_convert_to_date
-        D7: derive_ctpattern
-        D9: mean_across_columns
-        D10: assign_isin_list
     """
     df = assign_column_convert_to_date(df, "pcr_date", "pcr_datetime")
-    df = derive_ctpattern(df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session)
+    df = derive_cq_pattern(
+        df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
+    )
     df = mean_across_columns(
         df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
     )
-    df = assign_isin_list(df, "ctonetarget", "ctpattern", ["N only", "OR only", "S only"])
+    df = assign_isin_list(df, "one_positive_pcr_target_only", "ctpattern", ["N only", "OR only", "S only"])
 
     return df

@@ -166,7 +166,7 @@ def assign_school_year(
     return df
 
 
-def derive_ctpattern(df: DataFrame, column_names, spark_session):
+def derive_cq_pattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -198,7 +198,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
             (0, 1, 1, "N+S"),
             (1, 1, 1, "OR+N+S"),
         ],
-        schema=indicator_list + ["ctpattern"],
+        schema=indicator_list + ["cq_pattern"],
     )
 
     for column_name in column_names:
