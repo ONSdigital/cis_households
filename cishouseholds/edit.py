@@ -8,7 +8,7 @@ from pyspark.sql import DataFrame
 
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
     """
-    Convert column values to nulll if the entry is no present in provided list
+    Convert column values to null if the entry is no present in provided list
     Parameters
     ----------
     df
