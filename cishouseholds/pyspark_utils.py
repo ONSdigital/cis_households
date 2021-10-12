@@ -1,8 +1,7 @@
-from typing import Any
-from typing import Mapping
-
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
+from typing import Any
+from typing import Mapping
 
 
 def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
@@ -31,6 +30,7 @@ def get_or_create_spark_session() -> SparkSession:
     spark_session = (
         SparkSession.builder.config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
+        .appName("cishouseholds")
         .getOrCreate()
     )
 
