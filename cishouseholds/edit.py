@@ -5,7 +5,7 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
-def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
+def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str) -> DataFrame:
     """
     Converts barcode to null if numeric characters are all 0 otherwise performs no change
     Parameters
