@@ -1,5 +1,4 @@
 import re
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -374,7 +373,7 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     Expects reference column to be a timestamp and therefore castable.
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
 
 
 def assign_single_column_from_split(
