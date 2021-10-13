@@ -65,7 +65,14 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(F.regexp_replace(column_name_to_assign, "  ", ""), "\\.", "")))),
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.substring(column_name_to_assign, -1, 1) == ".",
+            F.rtrim(F.col(column_name_to_assign).substr(F.lit(1), F.length(column_name_to_assign) - 1)),
+        ).otherwise(F.col(column_name_to_assign)),
     )
 
     return df
