@@ -71,7 +71,7 @@ sample_northern_ireland_schema = {
 }
 
 iqvia_v2_validation_schema = {
-    "ons_household_id": {"type": "long", "min": 100000000000, "max": 999999999999},
+    "ons_household_id": {"type": "string"},
     "visit_id": {"type": "string", "regex": r"DHV(F)?-\d{10}"},
     "visit_status": {
         "type": "string",
