@@ -16,7 +16,7 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) >= 9),
+            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
             (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
         )
         .when(
