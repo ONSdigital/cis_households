@@ -6,7 +6,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict):
+def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_assign: str, bucket_map: dict):
     """
     Assign a new column with named ranges for given integer ranges contianed within a reference column
     Parameters
@@ -21,7 +21,7 @@ def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_as
     dfb = bucketizer.setHandleInvalid("keep").transform(df)
 
     bucket_dic = {}
-    for i, value in enumerate(map.values()):
+    for i, value in enumerate(bucket_map.values()):
         bucket_dic[float(i)] = value
 
     mapping_expr = F.create_map([F.lit(x) for x in chain(*bucket_dic.items())])  # type: ignore
