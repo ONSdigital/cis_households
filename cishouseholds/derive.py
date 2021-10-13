@@ -6,7 +6,7 @@ from pyspark.sql import functions as F
 
 
 def assign_column_from_mapped_reference_column(
-    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict
+    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, ignore_not_in_map: bool = False
 ):
     """
     Assign column_name_to_assign to mapped values of reference column
@@ -16,9 +16,46 @@ def assign_column_from_mapped_reference_column(
     reference_column
     column_name_to_assign
     map
+    ignore_not_in_map
+        allows values not mapped in map to remain as their current values
     """
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
-    df = df.withColumn(column_name_to_assign, mapping_expr[df[reference_column]])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ignore_not_in_map | F.col(reference_column).isin(*list(map.keys())), mapping_expr[df[reference_column]]
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    return df
+
+
+def assign_work_person_facing_now(
+    df: DataFrame, work_patient_facing_now_column: str, work_social_care_column: str, column_name_to_assign: str
+):
+    """
+    Assign column for work patient facing depending on values of given input reference
+    columns mapped to a list of outputs
+    Parameters
+    ----------
+    df
+    work_patient_facing_now_column
+    work_social_care_column
+    column_name_to_assign
+    """
+    df = df.withColumn(column_name_to_assign, work_patient_facing_now_column)
+    df = assign_column_from_mapped_reference_column(
+        df,
+        work_social_care_column,
+        column_name_to_assign,
+        {
+            0: "No",
+            1: "Yes, care/residential home, resident-facing",
+            2: "Yes, other social care, resident-facing",
+            3: "Yes, care/residential home, non-resident-facing",
+            4: "Yes, other social care, non-resident-facing",
+        },
+        True,
+    )
     return df
 
 
