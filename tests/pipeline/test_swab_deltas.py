@@ -6,7 +6,7 @@ from cishouseholds.pipeline.swab_delta_ETL import extract_validate_transform_swa
 from dummy_data_generation.schemas import get_swab_data_description
 
 
-@pytest.fixture.scope("module")
+@pytest.fixture(scope="module")
 def swab_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     """
     Generate lab swab file as pandas df.
