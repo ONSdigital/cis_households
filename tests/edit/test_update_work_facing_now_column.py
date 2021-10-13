@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import update_work_patient_facing_now
+from cishouseholds.edit import update_work_facing_now_column
 
 
 def test_update_work_patient_facing_now(spark_session):
@@ -24,5 +24,17 @@ def test_update_work_patient_facing_now(spark_session):
         schema="facing string, status string, age integer",
     )
 
-    output_df = update_work_patient_facing_now(input_df, "age", "status", "facing")
+    output_df = update_work_facing_now_column(
+        input_df,
+        "age",
+        "status",
+        "facing",
+        [2, 102],
+        [
+            "Furloughed",
+            "(temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        ],
+    )
     assert_df_equality(output_df, expected_df)

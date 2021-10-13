@@ -6,7 +6,7 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
-def update_work_facing_now_columns(
+def update_work_facing_now_column(
     df: DataFrame,
     age_column: str,
     work_status_column: str,
@@ -25,19 +25,14 @@ def update_work_facing_now_columns(
     """
     df = df.withColumn(
         column_name_to_update,
-        F.when((F.col(age_column) >= 2) & (F.col(age_column) <= 102), F.col(age_column)).otherwise(
+        F.when((F.col(age_column) >= age_range[0]) & (F.col(age_column) <= age_range[1]), F.col(age_column)).otherwise(
             F.col(column_name_to_update)
         ),
     )
     df = df.withColumn(
         column_name_to_update,
         F.when(
-            F.col(work_status_column).isin(
-                "Furloughed",
-                "(temporarily not working)",
-                "Not working (unemployed, retired, long-term sick etc.)",
-                "Student",
-            ),
+            F.col(work_status_column).isin(*work_status_list),
             "No",
         ).otherwise(F.col(column_name_to_update)),
     )
