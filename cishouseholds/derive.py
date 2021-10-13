@@ -6,7 +6,7 @@ from pyspark.sql import functions as F
 
 
 def assign_column_from_mapped_reference_column(
-    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, ignore_not_in_map: bool = False
+    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, include_not_in_map: bool = False
 ):
     """
     Assign column_name_to_assign to mapped values of reference column
@@ -16,14 +16,17 @@ def assign_column_from_mapped_reference_column(
     reference_column
     column_name_to_assign
     map
-    ignore_not_in_map
+    include_not_in_map
         allows values not mapped in map to remain as their current values
     """
+    if column_name_to_assign not in df.columns:
+        df = df.withColumn(column_name_to_assign, F.lit(None))
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            ignore_not_in_map | F.col(reference_column).isin(*list(map.keys())), mapping_expr[df[reference_column]]
+            (F.lit(not include_not_in_map) | (F.col(reference_column).isin(*list(map.keys())))),
+            mapping_expr[df[reference_column]],
         ).otherwise(F.col(column_name_to_assign)),
     )
     return df
