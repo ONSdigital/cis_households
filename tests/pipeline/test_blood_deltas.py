@@ -16,7 +16,8 @@ def blood_dummy_df(mimesis_field):
     return pandas_df
 
 
-def test_blood_delta_ETL_end_to_end(regression_test_df, blood_dummy_df, pandas_df_to_temporary_csv):
+@pytest.mark.integration
+def test_blood_delta_ETL_without_load(regression_test_df, blood_dummy_df, pandas_df_to_temporary_csv):
     """
     Test that valid example data flows through the ETL from a csv file.
     """

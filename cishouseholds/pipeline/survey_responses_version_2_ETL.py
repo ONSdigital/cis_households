@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -86,14 +85,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     ------
     df: pyspark.sql.DataFrame
     """
-    df = assign_column_uniform_value(df, "dataset", 1)  # replace 'n' with chosen value
-    df = assign_column_regex_match(
-        df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
-    )  # using default email pattern regex to filter 'good' and 'bad' emails
-    df = assign_column_to_date_string(df, "visit_date", "visit_datetime")
-    df = assign_column_to_date_string(df, "sample_taken_date", "samples_taken_datetime")
-    # Keep this as timestamp for use in the pipeline
-    # df = assign_column_to_date_string(df, "date_of_birth", "date_of_birth")
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
+    df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
+    df = assign_column_to_date_string(df, "sample_taken_date_string", "samples_taken_datetime")
+    df = assign_column_to_date_string(df, "date_of_birth_string", "date_of_birth")
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")

@@ -18,7 +18,8 @@ def responses_v2_survey_dummy_df(mimesis_field):
     return pandas_df
 
 
-def test_responses_version_2_delta_ETL_end_to_end(
+@pytest.mark.integration
+def test_responses_version_2_delta_ETL_without_load(
     regression_test_df, responses_v2_survey_dummy_df, pandas_df_to_temporary_csv
 ):
     """
