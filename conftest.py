@@ -39,7 +39,7 @@ def pandas_df_to_temporary_csv(tmp_path):
     return _pandas_df_to_temporary_csv
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def regression_test_df(data_regression):
     """
     Regression test both the schema and data from a PySpark dataframe
@@ -62,7 +62,7 @@ def regression_test_df(data_regression):
     return _regression_test_df
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def regression_test_df_schema(data_regression):
     """
     Regression test both the schema and data from a PySpark dataframe
@@ -81,7 +81,7 @@ def regression_test_df_schema(data_regression):
     return _regression_test_df
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def mimesis_field():
     """Generate a new field for mimesis data generation, to ensure test data are independently generated"""
     return Field("en-gb", seed=42, providers=[Distribution, CustomRandom])

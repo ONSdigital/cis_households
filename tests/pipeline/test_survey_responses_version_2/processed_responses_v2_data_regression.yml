@@ -2,17 +2,20 @@
     meter away as my work means I am in close contact with others on aregular basis
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 39.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
   antibody_test_since_last_visit: 'No'
   antibody_test_since_last_visit_location: null
   antibody_test_since_last_visit_results: null
   approached_for_blood_samples?: null
+  bad_email: false
   blood_sample_barcode: null
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   city: null
   confirm_receive_vouchers: 'true'
+  consent: null
   consent_16_visits: 'Yes'
   consent_1_visit: 'No'
   consent_5_visits: 'No'
@@ -31,6 +34,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
+  date_of_birth_string: '1982-12-15'
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: White
   ethnicity: Any other Asian background
@@ -98,6 +102,7 @@
   no_blood_reason_venous: Non-contact visit. Household self-isolating
   no_email_address: 0
   ons_household_id: '392744995712'
+  outer_postcode: PS0F
   outside_uk_last_country: Iceland
   outside_uk_last_date: '2020-09-10 00:00:00.000000'
   outside_uk_since_april_2020: 'No'
@@ -142,6 +147,7 @@
   postcode: PS0F 2CG
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  sample_taken_date_string: null
   samples_taken_datetime: null
   sex: Male
   smoke_cigarettes: 'Yes'
@@ -156,6 +162,7 @@
   social_distance_contact_under_18_years: 1-5
   street: Harford
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -203,6 +210,7 @@
   vaccine_received_since_last_visit: null
   vaccine_type_other_since_last_visit: OtherVaxx
   vaccine_type_since_last_visit: Novavax
+  visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
   visit_order: Month 12
@@ -227,17 +235,20 @@
     a problem to stay this far away from other people
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: 'Yes'
+  age_at_visit: 0.0
   antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   antibody_test_last_negative_date: null
   antibody_test_since_last_visit: 'Yes'
   antibody_test_since_last_visit_location: Private Lab
   antibody_test_since_last_visit_results: Waiting for all results
   approached_for_blood_samples?: 'No'
+  bad_email: null
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   city: null
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'No'
   consent_5_visits: 'Yes'
@@ -256,6 +267,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
+  date_of_birth_string: '2021-12-18'
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Chinese
@@ -323,6 +335,7 @@
   no_blood_reason_venous: Non-contact visit. Household self-isolating
   no_email_address: 0
   ons_household_id: '261449825198'
+  outer_postcode: null
   outside_uk_last_country: Kenya
   outside_uk_last_date: null
   outside_uk_since_april_2020: null
@@ -367,6 +380,7 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  sample_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 01:42:17.000000'
   sex: Male
   smoke_cigarettes: 'Yes'
@@ -381,6 +395,7 @@
   social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: ONS00000000
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -428,6 +443,7 @@
   vaccine_received_since_last_visit: null
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: Other / specify
+  visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DHVF-0988308904
   visit_order: Month 8
@@ -453,17 +469,20 @@
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_invite_fingerprick: null
+  age_at_visit: null
   antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
   antibody_test_since_last_visit: 'No'
   antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
   antibody_test_since_last_visit_results: One or more negative tests but none positive
   approached_for_blood_samples?: 'Yes'
+  bad_email: null
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
   city: Inverurie
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'No'
   consent_5_visits: 'No'
@@ -482,6 +501,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Buckinghamshire
   date_of_birth: null
+  date_of_birth_string: null
   email: null
   ethnic_group: Asian or Asian British
   ethnicity: Any other Black background
@@ -551,6 +571,7 @@
   no_blood_reason_venous: null
   no_email_address: 0
   ons_household_id: '352709577630'
+  outer_postcode: UK0X
   outside_uk_last_country: Ecuador
   outside_uk_last_date: null
   outside_uk_since_april_2020: 'No'
@@ -595,6 +616,7 @@
   postcode: UK0X 5SF
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
+  sample_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 21:24:56.000000'
   sex: null
   smoke_cigarettes: 'Yes'
@@ -609,6 +631,7 @@
   social_distance_contact_under_18_years: '0'
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: ONS00000000
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: null
@@ -656,6 +679,7 @@
   vaccine_received_since_last_visit: null
   vaccine_type_other_since_last_visit: OtherVaxx
   vaccine_type_since_last_visit: Moderna
+  visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
   visit_order: Month 4
@@ -682,17 +706,20 @@
     meter away as my work means I am in close contact with others on aregular basis
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 24.0
   antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
   antibody_test_since_last_visit: 'Yes'
   antibody_test_since_last_visit_location: In the NHS (e.g. GP or hospital)
   antibody_test_since_last_visit_results: One or more positive test(s)
   approached_for_blood_samples?: 'No'
+  bad_email: false
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   city: null
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'Yes'
   consent_1_visit: 'No'
   consent_5_visits: 'Yes'
@@ -711,6 +738,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
+  date_of_birth_string: '1997-03-07'
   email: depict1972@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Asian or Asian British-Indian
@@ -779,6 +807,7 @@
   no_blood_reason_venous: null
   no_email_address: 0
   ons_household_id: '352206298026'
+  outer_postcode: WP8S
   outside_uk_last_country: Latvia
   outside_uk_last_date: '2020-06-28 00:00:00.000000'
   outside_uk_since_april_2020: 'No'
@@ -823,6 +852,7 @@
   postcode: WP8S 5ZJ
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
+  sample_taken_date_string: null
   samples_taken_datetime: null
   sex: null
   smoke_cigarettes: 'Yes'
@@ -837,6 +867,7 @@
   social_distance_contact_under_18_years: 6-10
   street: Druminiskill
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: ONS00000000
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: 'No'
@@ -884,6 +915,7 @@
   vaccine_received_since_last_visit: 'No'
   vaccine_type_other_since_last_visit: OtherVaxx
   vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DHVF-4476904382
   visit_order: Month 10
@@ -908,17 +940,20 @@
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 36.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
   antibody_test_since_last_visit: null
   antibody_test_since_last_visit_location: Home Test
   antibody_test_since_last_visit_results: One or more negative tests but none positive
   approached_for_blood_samples?: 'No'
+  bad_email: false
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   city: null
   confirm_receive_vouchers: 'true'
+  consent: null
   consent_16_visits: 'Yes'
   consent_1_visit: 'Yes'
   consent_5_visits: 'Yes'
@@ -937,6 +972,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
+  date_of_birth_string: '1985-10-14'
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Black,Caribbean,Afro-Caribbean
@@ -1005,6 +1041,7 @@
   no_blood_reason_venous: No stock
   no_email_address: 0
   ons_household_id: '296617139656'
+  outer_postcode: FN0F
   outside_uk_last_country: Namibia
   outside_uk_last_date: '2020-09-20 00:00:00.000000'
   outside_uk_since_april_2020: 'No'
@@ -1049,6 +1086,7 @@
   postcode: FN0F 6OF
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  sample_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 03:14:57.000000'
   sex: Female
   smoke_cigarettes: 'Yes'
@@ -1063,6 +1101,7 @@
   social_distance_contact_under_18_years: '0'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: ONS00000000
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -1110,6 +1149,7 @@
   vaccine_received_since_last_visit: null
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: Valneva
+  visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DHVF-6394225258
   visit_order: Month 11
@@ -1134,17 +1174,20 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: null
+  age_at_visit: 24.0
   antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
   antibody_test_since_last_visit: 'Yes'
   antibody_test_since_last_visit_location: Private Lab
   antibody_test_since_last_visit_results: Waiting for all results
   approached_for_blood_samples?: null
+  bad_email: null
   blood_sample_barcode: null
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: 'No'
   city: null
   confirm_receive_vouchers: 'true'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'Yes'
   consent_5_visits: 'Yes'
@@ -1163,6 +1206,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
+  date_of_birth_string: '1997-08-21'
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Asian or Asian British-Chinese
@@ -1230,6 +1274,7 @@
   no_blood_reason_venous: Other
   no_email_address: 0
   ons_household_id: '217846198988'
+  outer_postcode: null
   outside_uk_last_country: Kenya
   outside_uk_last_date: '2020-11-09 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -1274,6 +1319,7 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  sample_taken_date_string: null
   samples_taken_datetime: null
   sex: Male
   smoke_cigarettes: 'No'
@@ -1288,6 +1334,7 @@
   social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
   street: Ballywatermoy
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_cough: 'Yes'
@@ -1335,6 +1382,7 @@
   vaccine_received_since_last_visit: 'Yes'
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: From a research study/trial
+  visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DHVF-8828437201
   visit_order: Month 13
@@ -1357,6 +1405,7 @@
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: null
+  age_at_visit: 1.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
   antibody_test_since_last_visit: null
@@ -1364,11 +1413,13 @@
   antibody_test_since_last_visit_results: One or more negative tests but none were
     positive
   approached_for_blood_samples?: 'No'
+  bad_email: null
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: 'No'
   city: Coatbridge
   confirm_receive_vouchers: 'true'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'Yes'
   consent_5_visits: 'No'
@@ -1387,6 +1438,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
+  date_of_birth_string: '2020-02-01'
   email: null
   ethnic_group: Asian or Asian British
   ethnicity: Mixed-White & Black African
@@ -1454,6 +1506,7 @@
   no_blood_reason_venous: Other
   no_email_address: 0
   ons_household_id: '602276804025'
+  outer_postcode: null
   outside_uk_last_country: Romania
   outside_uk_last_date: '2020-12-04 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -1498,6 +1551,7 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
+  sample_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 02:16:58.000000'
   sex: Male
   smoke_cigarettes: 'No'
@@ -1512,6 +1566,7 @@
   social_distance_contact_under_18_years: 6-10
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: 'No'
@@ -1559,6 +1614,7 @@
   vaccine_received_since_last_visit: 'Yes'
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   visit_order: Follow-up 3
@@ -1584,17 +1640,20 @@
     meter away as my work means I am in close contact with others on aregular basis
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 24.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: null
   antibody_test_since_last_visit: 'No'
   antibody_test_since_last_visit_location: Home Test
   antibody_test_since_last_visit_results: One or more positive test(s)
   approached_for_blood_samples?: 'No'
+  bad_email: false
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   city: Hove
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'Yes'
   consent_5_visits: 'Yes'
@@ -1613,6 +1672,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Derbyshire
   date_of_birth: '1997-02-07 18:56:00.000000'
+  date_of_birth_string: '1997-02-07'
   email: coater1966@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Black,Caribbean,Afro-Caribbean
@@ -1680,6 +1740,7 @@
   no_blood_reason_venous: Other
   no_email_address: 0
   ons_household_id: '704542495687'
+  outer_postcode: NC0C
   outside_uk_last_country: Venezuela
   outside_uk_last_date: null
   outside_uk_since_april_2020: null
@@ -1724,6 +1785,7 @@
   postcode: NC0C 6UK
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
+  sample_taken_date_string: '2022-01-06'
   samples_taken_datetime: '2022-01-06 17:17:10.000000'
   sex: Female
   smoke_cigarettes: 'Yes'
@@ -1738,6 +1800,7 @@
   social_distance_contact_under_18_years: '0'
   street: Drumagrove
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: 'Yes'
@@ -1786,6 +1849,7 @@
   vaccine_received_since_last_visit: 'No'
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: From a research study/trial
+  visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
   visit_order: Month 12
@@ -1812,6 +1876,7 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 18.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: null
   antibody_test_since_last_visit: 'No'
@@ -1819,11 +1884,13 @@
   antibody_test_since_last_visit_results: One or more negative tests but none were
     positive
   approached_for_blood_samples?: null
+  bad_email: null
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
   city: null
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'Yes'
   consent_5_visits: 'No'
@@ -1842,6 +1909,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
+  date_of_birth_string: '2003-10-07'
   email: null
   ethnic_group: White
   ethnicity: Mixed-White & Black Caribbean
@@ -1911,6 +1979,7 @@
   no_blood_reason_venous: No stock
   no_email_address: 0
   ons_household_id: '883187696082'
+  outer_postcode: null
   outside_uk_last_country: Madagascar
   outside_uk_last_date: '2020-05-03 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -1955,6 +2024,7 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
+  sample_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 03:25:31.000000'
   sex: Female
   smoke_cigarettes: null
@@ -1969,6 +2039,7 @@
   social_distance_contact_under_18_years: 11-20
   street: Benwee
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: ONS00000000
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_cough: null
@@ -2016,6 +2087,7 @@
   vaccine_received_since_last_visit: 'No'
   vaccine_type_other_since_last_visit: OtherVaxx
   vaccine_type_since_last_visit: Oxford/AstraZeneca
+  visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DVH-6911152672
   visit_order: First Visit
@@ -2039,17 +2111,20 @@
     meter away as my work means I am in close contact with others on aregular basis
   able_to_take_blood: null
   accepted_invite_fingerprick: 'No'
+  age_at_visit: 6.0
   antibody_test_first_positive_date: null
   antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
   antibody_test_since_last_visit: null
   antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
   antibody_test_since_last_visit_results: null
   approached_for_blood_samples?: null
+  bad_email: null
   blood_sample_barcode: ONS00000000
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   city: null
   confirm_receive_vouchers: 'false'
+  consent: null
   consent_16_visits: 'No'
   consent_1_visit: 'Yes'
   consent_5_visits: 'No'
@@ -2068,6 +2143,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Suffolk
   date_of_birth: '2015-04-22 10:53:00.000000'
+  date_of_birth_string: '2015-04-22'
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Any other Asian background
@@ -2136,6 +2212,7 @@
   no_blood_reason_venous: null
   no_email_address: 0
   ons_household_id: '248046164260'
+  outer_postcode: null
   outside_uk_last_country: Latvia
   outside_uk_last_date: '2020-04-27 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -2180,6 +2257,7 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  sample_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 09:53:28.000000'
   sex: null
   smoke_cigarettes: null
@@ -2194,6 +2272,7 @@
   social_distance_contact_under_18_years: Participant Would Not/Could Not Answer
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_cough: 'No'
@@ -2241,6 +2320,7 @@
   vaccine_received_since_last_visit: 'No'
   vaccine_type_other_since_last_visit: null
   vaccine_type_since_last_visit: Janssen/Johnson&Johnson
+  visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DVH-7714195028
   visit_order: Follow-up 2

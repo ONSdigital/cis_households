@@ -883,4 +883,36 @@ fields:
   name: outside_uk_since_last_visit
   nullable: true
   type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
+- metadata: {}
+  name: bad_email
+  nullable: true
+  type: boolean
+- metadata: {}
+  name: visit_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_taken_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: date_of_birth_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: outer_postcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent
+  nullable: true
+  type: double
+- metadata: {}
+  name: age_at_visit
+  nullable: true
+  type: long
 type: struct
