@@ -524,6 +524,10 @@ def many_to_many_flag(
     df = df.withColumn("record_processed", F.when(F.col("identify_many_to_many_flag").isNull(), 0).otherwise(None))
     unique_id_lab_str = "unique_id_" + process_type
 
+    df = df.withColumn(
+        drop_flag_column_name_to_assign, F.lit(None)
+    )  # BUG Needed in case the while loop does not execute
+
     while df.filter(df.record_processed.isNull()).count() > 0:
         window = Window.partitionBy(group_by_column, "identify_many_to_many_flag", "record_processed").orderBy(
             *ordering_columns
@@ -644,7 +648,10 @@ def one_to_many_antibody_flag(
 
     df = df.join(
         dfn,
-        (dfn.b == df.barcode_iq) & (dfn.g == df.group) & (dfn.s.eqNullSafe(df.siemens)) & (dfn.t.eqNullSafe(df.tdi)),
+        (dfn["b"] == df[group_by_column])
+        & (dfn["g"] == df["group"])
+        & (dfn["s"].eqNullSafe(df[siemens_column]))
+        & (dfn["t"].eqNullSafe(df[tdi_column])),
     ).orderBy("group", "row_num")
 
     df = create_inconsistent_data_drop_flag(
@@ -676,7 +683,6 @@ def one_to_many_antibody_flag(
     )
 
     return df.drop(
-        out_of_date_range_column,
         reference_col_name,
         "group",
         "count",
