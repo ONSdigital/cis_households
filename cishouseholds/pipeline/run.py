@@ -3,7 +3,7 @@ from datetime import datetime
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
-from cishouseholds import config
+from cishouseholds.pipeline.load import get_config
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pipeline.post_merge_processing import process_post_merge  # noqa: F401
 
@@ -24,6 +24,7 @@ def run_from_config():
       resource_path: "path_to.csv"
 
     """
+    config = get_config()
     run_stages = [stage for stage in config["stages"] if stage.pop("run")]
     number_of_stages = len(run_stages)
     max_digits = len(str(number_of_stages))
