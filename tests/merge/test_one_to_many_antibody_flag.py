@@ -198,4 +198,4 @@ def test_one_to_many_antibody_flag(spark_session):
         count_barcode_labs_column_name="count_barcode_antibody",
     )
 
-    assert_df_equality(output_df, expected_df.drop("out_of_date_range_antibody"), ignore_row_order=True)
+    assert_df_equality(output_df, expected_df, ignore_row_order=True)
