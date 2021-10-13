@@ -34,7 +34,7 @@ def survey_responses_version_2_ETL(resource_path: str):
 
 def extract_validate_transform_survey_responses_version_2_delta(resource_path: str):
     spark_session = get_or_create_spark_session()
-    df, _iqvia_v2_validation_schema = extract_survey_responses_version_2_delta(spark_session, resource_path)
+    df = extract_survey_responses_version_2_delta(spark_session, resource_path)
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
