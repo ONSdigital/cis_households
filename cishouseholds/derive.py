@@ -1,5 +1,4 @@
 import re
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -355,7 +354,8 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
 
 def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
-    Assign a column with a TimeStamp to a DateType
+    Assign a column with a TimeStampType to a formatted date string.
+    Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
     ----------
@@ -368,10 +368,6 @@ def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, refe
     Returns
     -------
     pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Expects reference column to be a timestamp and therefore castable.
     """
 
     return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
