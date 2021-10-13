@@ -1,10 +1,10 @@
 import json
+from pyspark.sql import SparkSession
 
 import numpy as np
 import pytest
 from mimesis.schema import Field
 from pandas import Timestamp
-from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
 from dummy_data_generation.helpers import CustomRandom
@@ -54,11 +54,29 @@ def regression_test_df(data_regression):
 
     def _regression_test_df(df, sort_by, test_file_label):
         assert df.filter(df[sort_by].isNull()).count() == 0
-        data_regression.check(json.loads(df.schema.json()), f"{test_file_label}_schema_regression")
         pandas_df = df.toPandas().replace({np.nan: None})  # Convert nan and nat to null
         data_regression.check(
             pandas_df.sort_values(sort_by, axis="index").to_dict("records"), f"{test_file_label}_data_regression"
         )
+
+    return _regression_test_df
+
+
+@pytest.fixture(scope="function")
+def regression_test_df_schema(data_regression):
+    """
+    Regression test both the schema and data from a PySpark dataframe
+
+    Parameters
+    ----------
+    sort_by
+        unique ID column to sort by. Must not contain nulls
+    test_file_label
+        text used to label regression test outputs
+    """
+
+    def _regression_test_df(df, test_file_label):
+        data_regression.check(json.loads(df.schema.json()), f"{test_file_label}_schema_regression")
 
     return _regression_test_df
 
