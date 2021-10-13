@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -26,16 +25,14 @@ def swab_delta_ETL(resource_path: str):
     """
     End to end processing of a swab delta CSV file.
     """
-    spark_session = get_or_create_spark_session()
-    swab_spark_schema = convert_cerberus_schema_to_pyspark(swab_validation_schema)
+    df = extract_validate_transform_swab_delta(resource_path)
+    update_table(df, "processed_swab_test_results")
+    return df
 
-    raw_swab_delta_header = ",".join(swab_variable_name_map.keys())
-    df = read_csv_to_pyspark_df(
-        spark_session,
-        resource_path,
-        raw_swab_delta_header,
-        swab_spark_schema,
-    )
+
+def extract_validate_transform_swab_delta(resource_path: str):
+    spark_session = get_or_create_spark_session()
+    df = extract_swab_delta(spark_session, resource_path)
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
@@ -46,7 +43,20 @@ def swab_delta_ETL(resource_path: str):
     _swab_validation_schema = update_schema_types(swab_validation_schema, swab_time_map_list, {"type": "timestamp"})
     df = validate_and_filter(df, _swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
-    update_table(df, "processed_swab_test_results")
+    return df
+
+
+def extract_swab_delta(spark_session: SparkSession, resource_path: str):
+    swab_spark_schema = convert_cerberus_schema_to_pyspark(swab_validation_schema)
+
+    raw_swab_delta_header = ",".join(swab_variable_name_map.keys())
+    df = read_csv_to_pyspark_df(
+        spark_session,
+        resource_path,
+        raw_swab_delta_header,
+        swab_spark_schema,
+    )
+
     return df
 
 

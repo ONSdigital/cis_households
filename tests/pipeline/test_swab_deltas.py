@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.swab_delta_ETL import swab_delta_ETL
+from cishouseholds.pipeline.swab_delta_ETL import extract_validate_transform_swab_delta
 from dummy_data_generation.schemas import get_swab_data_description
 
 
@@ -22,5 +22,5 @@ def test_swab_delta_ETL_end_to_end(regression_test_df, swab_dummy_df, pandas_df_
     Test that valid example data flows through the ETL from a csv file.
     """
     csv_file = pandas_df_to_temporary_csv(swab_dummy_df)
-    processed_df = swab_delta_ETL(csv_file.as_posix())
+    processed_df = extract_validate_transform_swab_delta(csv_file.as_posix())
     regression_test_df(processed_df, "swab_sample_barcode", "processed_swab")

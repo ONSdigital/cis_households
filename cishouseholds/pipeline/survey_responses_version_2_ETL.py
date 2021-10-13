@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -28,27 +27,37 @@ def survey_responses_version_2_ETL(resource_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
-    spark_session = get_or_create_spark_session()
-    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
-    raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
-    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
-
-    df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
-    iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
-    _iqvia_v2_validation_schema = update_schema_types(
-        iqvia_v2_validation_schema, iqvia_v2_time_map_list, {"type": "timestamp"}
-    )
-
-    error_accumulator = spark_session.sparkContext.accumulator(
-        value=[], accum_param=AddingAccumulatorParam(zero_value=[])
-    )
-    df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
-    # df = transform_survey_responses_version_2_delta(spark_session, df)
+    df = extract_validate_transform_survey_responses_version_2_delta(resource_path)
     update_table(df, "processed_survey_responses_v2")
     return df
 
 
-def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
+def extract_validate_transform_survey_responses_version_2_delta(resource_path: str):
+    spark_session = get_or_create_spark_session()
+    df, _iqvia_v2_validation_schema = extract_survey_responses_version_2_delta(spark_session, resource_path)
+
+    error_accumulator = spark_session.sparkContext.accumulator(
+        value=[], accum_param=AddingAccumulatorParam(zero_value=[])
+    )
+
+    iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
+    _iqvia_v2_validation_schema = update_schema_types(
+        iqvia_v2_validation_schema, iqvia_v2_time_map_list, {"type": "timestamp"}
+    )
+    df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
+    df = transform_survey_responses_version_2_delta(df)
+    return df
+
+
+def extract_survey_responses_version_2_delta(spark_session: SparkSession, resource_path: str):
+    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
+    raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
+    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
+    df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
+    return df
+
+
+def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 2 survey deltas.
     D11: assign_column_uniform_value

@@ -1,6 +1,7 @@
 from itertools import chain
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
+from pyspark.sql.session import SparkSession
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import substring_column
@@ -46,7 +47,7 @@ def extract_validate_transform_blood_delta(resource_path: str):
     return df
 
 
-def extract_blood_delta(spark_session, resource_path: str):
+def extract_blood_delta(spark_session: SparkSession, resource_path: str):
     bloods_spark_schema = convert_cerberus_schema_to_pyspark(blood_validation_schema)
 
     raw_bloods_delta_header = ",".join(blood_variable_name_map.keys())
