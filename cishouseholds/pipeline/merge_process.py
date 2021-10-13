@@ -4,80 +4,6 @@ import cishouseholds.merge as M
 from cishouseholds.validate import validate_merge_logic
 
 
-def execute_and_resolve_flags_merge(survey_df: DataFrame, labs_df: DataFrame, swabs=True, antibody=True):
-    """ """
-    labs_df = M.assign_unique_identifier_column(labs_df, "unique_id_swab", ordering_columns=["barcode"])
-    labs_df = M.assign_count_of_occurrences_column(labs_df, "barcode", "count_barcode_swab")
-
-    outer_df = M.join_dataframes(survey_df, labs_df, "barcode", "outer")
-
-    outer_df = M.assign_time_difference_and_flag_if_outside_interval(
-        df=outer_df,
-        column_name_outside_interval_flag="out_of_date_range_swab",
-        column_name_time_difference="diff_vs_visit_hr",
-        start_datetime_reference_column="date_visit",
-        end_datetime_reference_column="date_received",
-        interval_lower_bound=-24,
-        interval_upper_bound=480,
-        interval_bound_format="hours",
-    )
-    outer_df = M.assign_absolute_offset(outer_df, "abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr", 24)
-
-    ordering_columns = [
-        "abs_offset_diff_vs_visit_hr",
-        "diff_vs_visit_hr",
-        "date_visit",
-        # 4th here is uncleaned barcode from labs
-    ]
-
-    if swabs:
-        outer_df = execute_and_resolve_flags_merge_specific_swabs(outer_df, ordering_columns)
-
-    if antibody:
-        outer_df = execute_and_resolve_flags_merge_specific_swabs(outer_df, ordering_columns)
-
-    # make a FOR loop so that the assign_merge_process_group_flag() does not repeat
-    outer_df = M.assign_merge_process_group_flag(
-        outer_df,
-        "1_to_ms",
-        "out_of_date_range_swab",
-        "count_barcode_swab",
-        "==1",
-        "count_barcode_voyager",
-        ">1",
-    )
-    outer_df = M.assign_merge_process_group_flag(
-        outer_df,
-        "m_to_1s",
-        "out_of_date_range_swab",
-        "count_barcode_swab",
-        ">1",
-        "count_barcode_voyager",
-        "==1",
-    )
-    outer_df = M.assign_merge_process_group_flag(
-        outer_df,
-        "m_to_ms",
-        "out_of_date_range_swab",
-        "count_barcode_swab",
-        ">1",
-        "count_barcode_voyager",
-        ">1",
-    )
-    outer_df = validate_merge_logic(
-        df=outer_df,
-        flag_column_names=[
-            "drop_flag_one_to_many_swabs",
-            "drop_flag_many_to_one_swabs",
-            "drop_flag_many_to_many_swabs",
-        ],
-        failed_column_names=["failed_one_to_many_swabs", "failed_many_to_one_swabs", "failed_many_to_many_swabs"],
-        match_type_colums=["1_to_ms", "m_to_1s", "m_to_ms"],
-        group_by_column="barcode",
-    )
-    return outer_df
-
-
 def execute_and_resolve_flags_merge_specific_swabs(outer_df: DataFrame, ordering_columns):
     """ """
     outer_df = M.one_to_many_swabs(
@@ -134,5 +60,82 @@ def execute_and_resolve_flags_merge_specific_antibody(outer_df: DataFrame, order
         ordering_columns=ordering_columns,
         process_type="antibody",
         failed_flag_column_name_to_assign="failed_flag_many_to_many_antibody",
+    )
+    return outer_df
+
+
+def execute_and_resolve_flags_merge(
+    survey_df: DataFrame, labs_df: DataFrame, column_name_date_visit, swabs=True, antibody=True
+):
+    """ """
+    labs_df = M.assign_unique_identifier_column(labs_df, "unique_id_swab", ordering_columns=["barcode"])
+    labs_df = M.assign_count_of_occurrences_column(labs_df, "barcode", "count_barcode_swab")
+
+    outer_df = M.join_dataframes(survey_df, labs_df, "barcode", "outer")
+
+    outer_df = M.assign_time_difference_and_flag_if_outside_interval(
+        df=outer_df,
+        column_name_outside_interval_flag="out_of_date_range_swab",
+        column_name_time_difference="diff_vs_visit_hr",
+        start_datetime_reference_column="date_visit",
+        end_datetime_reference_column="date_received",
+        interval_lower_bound=-24,
+        interval_upper_bound=480,
+        interval_bound_format="hours",
+    )
+    outer_df = M.assign_absolute_offset(outer_df, "abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr", 24)
+
+    ordering_columns = [
+        "abs_offset_diff_vs_visit_hr",
+        "diff_vs_visit_hr",
+        column_name_date_visit,  # ="date_visit"
+        # 4th here is uncleaned barcode from labs
+    ]
+
+    # decide how to execute either swabs/antibody
+    if swabs:
+        outer_df = execute_and_resolve_flags_merge_specific_swabs(outer_df, ordering_columns)
+
+    if antibody:
+        outer_df = execute_and_resolve_flags_merge_specific_swabs(outer_df, ordering_columns)
+
+    # make a FOR loop so that the assign_merge_process_group_flag() does not repeat
+    outer_df = M.assign_merge_process_group_flag(
+        outer_df,
+        "1_to_ms",
+        "out_of_date_range_swab",
+        "count_barcode_swab",
+        "==1",
+        "count_barcode_voyager",
+        ">1",
+    )
+    outer_df = M.assign_merge_process_group_flag(
+        outer_df,
+        "m_to_1s",
+        "out_of_date_range_swab",
+        "count_barcode_swab",
+        ">1",
+        "count_barcode_voyager",
+        "==1",
+    )
+    outer_df = M.assign_merge_process_group_flag(
+        outer_df,
+        "m_to_ms",
+        "out_of_date_range_swab",
+        "count_barcode_swab",
+        ">1",
+        "count_barcode_voyager",
+        ">1",
+    )
+    outer_df = validate_merge_logic(
+        df=outer_df,
+        flag_column_names=[
+            "drop_flag_one_to_many_swabs",
+            "drop_flag_many_to_one_swabs",
+            "drop_flag_many_to_many_swabs",
+        ],
+        failed_column_names=["failed_one_to_many_swabs", "failed_many_to_one_swabs", "failed_many_to_many_swabs"],
+        match_type_colums=["1_to_ms", "m_to_1s", "m_to_ms"],
+        group_by_column="barcode",
     )
     return outer_df
