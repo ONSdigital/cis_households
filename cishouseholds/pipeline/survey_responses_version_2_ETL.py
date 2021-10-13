@@ -109,6 +109,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    df = assign_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
+    df = assign_age_at_date(df, "age_at_visit", "visit_datetime", "date_of_birth")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
