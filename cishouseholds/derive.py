@@ -53,38 +53,35 @@ def assign_age_group_school_year(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY"
-        ).otherwise(
-            F.when(
-                ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
-                | (
-                    (F.col(country_column).isin("England", "Wales"))
-                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 15))
-                    & (F.col(school_year_column) <= 6)
-                )
-                | (
-                    (F.col(country_column).isin("Scotland", "NI"))
-                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
-                    & (F.col(school_year_column) <= 6)
-                ),
-                "07SY-11SY",
-            ).otherwise(
-                F.when(
-                    (
-                        (F.col(country_column).isin("England", "Wales"))
-                        & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
-                        & (F.col(school_year_column) >= 12)
-                    )
-                    | (
-                        (F.col(country_column).isin("Scotland", "NI"))
-                        & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
-                        & (F.col(school_year_column) >= 12)
-                    ),
-                    "12SY-24",
-                ).otherwise("false")
+        F.when((F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY")
+        .when(
+            ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
+            | (
+                (F.col(country_column).isin("England", "Wales"))
+                & ((F.col(age_column) >= 12) & (F.col(age_column) <= 15))
+                & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             )
-        ),
+            | (
+                (F.col(country_column).isin("Scotland", "NI"))
+                & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
+                & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
+            ),
+            "07SY-11SY",
+        )
+        .when(
+            (
+                (F.col(country_column).isin("England", "Wales"))
+                & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
+                & (F.col(school_year_column) >= 12)
+            )
+            | (
+                (F.col(country_column).isin("Scotland", "NI"))
+                & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
+                & (F.col(school_year_column) >= 12)
+            ),
+            "12SY-24",
+        )
+        .otherwise(None),
     )
     df = assign_named_buckets(
         df, age_column, column_name_to_assign, {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"}, True
