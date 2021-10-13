@@ -9,7 +9,7 @@ def test_convert_null_if_not_in_list(spark_session):
         schema="""sex string, id integer""",
     )
     input_df = spark_session.createDataFrame(
-        data=[("male", 1), ("female", 2), ("helicopter", 3), ("dont know", 4)],
+        data=[("male", 1), ("female", 2), ("something else", 3), ("dont know", 4)],
         schema="""sex string, id integer""",
     )
     output_df = convert_null_if_not_in_list(input_df, "sex", ["male", "female"])
