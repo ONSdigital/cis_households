@@ -89,11 +89,13 @@ def execute_and_resolve_flags_merge_specific_antibody(survey_df, labs_df, column
 
 def execute_and_resolve_flags_merge_part1(survey_df, labs_df):
     """ """
+    survey_df = M.assign_unique_identifier_column(survey_df, "unique_id_voyager", ordering_columns=["barcode"])
+
+    survey_df = M.assign_count_of_occurrences_column(survey_df, "barcode", "count_barcode_voyager")
     labs_df = M.assign_unique_identifier_column(labs_df, "unique_id_swab", ordering_columns=["barcode"])
     labs_df = M.assign_count_of_occurrences_column(labs_df, "barcode", "count_barcode_swab")
 
     outer_df = M.join_dataframes(survey_df, labs_df, "barcode", "outer")
-
     outer_df = M.assign_time_difference_and_flag_if_outside_interval(
         df=outer_df,
         column_name_outside_interval_flag="out_of_date_range_swab",
