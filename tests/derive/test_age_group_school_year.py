@@ -11,7 +11,7 @@ def test_assign_age_group_school_year(spark_session):
             ("Scotland", 11, 7, "07SY-11SY"),
             ("Wales", 15, 10, "07SY-11SY"),
             ("Wales", 15, 6, "07SY-11SY"),
-            ("Scotland", 15, 6, "false"),
+            ("Scotland", 15, 6, None),
             ("England", 17, 12, "12SY-24"),
             ("NI", 18, 13, "12SY-24"),
             ("England", 25, 12, "25-34"),
