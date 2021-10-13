@@ -17,7 +17,9 @@ def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_as
     map
         dictionary containing the map of minimum value in given range (inclusive) to range label string
     """
-    bucketizer = Bucketizer(splits=[*list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets")
+    bucketizer = Bucketizer(
+        splits=[*list(bucket_map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
+    )
     dfb = bucketizer.setHandleInvalid("keep").transform(df)
 
     bucket_dic = {}
