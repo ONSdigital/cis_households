@@ -3,7 +3,7 @@ from chispa import assert_df_equality
 from cishouseholds.derive import assign_school_year_september_start
 
 
-def test_assign_named_buckets(spark_session):
+def test_assign_school_year_september_start(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("2021-07-21", "2015-02-05", 1),

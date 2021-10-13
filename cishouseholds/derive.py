@@ -1,7 +1,5 @@
 import re
-from itertools import chain
 
-from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -20,105 +18,18 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
         F.when(
             ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) >= 9),
             (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
-        ).otherwise(
-            F.when(
-                (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
-                (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
-            ).otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5)
-        ),
+        )
+        .when(
+            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+        )
+        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
     )
-    df.show()
     df = df.withColumn(
         column_name_to_assign,
         F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
             F.col(column_name_to_assign)
         ),
-    )
-    return df
-
-
-def assign_named_buckets(
-    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, use_current_values=False
-):
-    """
-    Assign a new column with named ranges for given integer ranges contianed within a reference column
-    Parameters
-    ----------
-    df
-    reference_column
-    column_name_to_assign
-    map
-        dictionary containing the map of minimum value in given range (inclusive) to range label string
-    use_current_values
-        boolean operation preset to False to specify if current values in column_name_to_assign should be carried
-        forward if not in range of lookup buckets specified in map
-    """
-    bucketizer = Bucketizer(
-        splits=[float("-Inf"), *list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
-    )
-    dfb = bucketizer.setHandleInvalid("keep").transform(df)
-
-    bucket_dic = {0.0: F.col(column_name_to_assign) if use_current_values else None}
-    for i, value in enumerate(map.values()):
-        bucket_dic[float(i + 1)] = value
-
-    mapping_expr = F.create_map([F.lit(x) for x in chain(*bucket_dic.items())])  # type: ignore
-
-    dfb = dfb.withColumn(column_name_to_assign, mapping_expr[dfb["buckets"]])
-    return dfb.drop("buckets")
-
-
-def assign_age_group_school_year(
-    df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
-):
-    """
-    Assign column_age_group_school_year using multiple references column values in a specific pattern
-    to determin a string coded representation of school year
-    Parameters
-    ----------
-    df:
-    country_column
-    age_column
-    school_year_column
-    column_name_to_assign
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY"
-        ).otherwise(
-            F.when(
-                ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
-                | (
-                    (F.col(country_column).isin("England", "Wales"))
-                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 15))
-                    & (F.col(school_year_column) <= 6)
-                )
-                | (
-                    (F.col(country_column).isin("Scotland", "NI"))
-                    & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
-                    & (F.col(school_year_column) <= 6)
-                ),
-                "07SY-11SY",
-            ).otherwise(
-                F.when(
-                    (
-                        (F.col(country_column).isin("England", "Wales"))
-                        & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
-                        & (F.col(school_year_column) >= 12)
-                    )
-                    | (
-                        (F.col(country_column).isin("Scotland", "NI"))
-                        & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
-                        & (F.col(school_year_column) >= 12)
-                    ),
-                    "12SY-24",
-                ).otherwise("false")
-            )
-        ),
-    )
-    df = assign_named_buckets(
-        df, age_column, column_name_to_assign, {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"}, True
     )
     return df
 
