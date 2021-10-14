@@ -9,8 +9,12 @@ from cishouseholds.derive import assign_column_convert_to_date
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
+from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import convert_null_if_not_in_list
+from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
@@ -85,6 +89,9 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
     df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
+    df = format_string_upper_and_clean(df, "work_main_job_title")
+    df = format_string_upper_and_clean(df, "work_main_job_role")
+    df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
@@ -105,6 +112,43 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     # df = placeholder_for_derivation_number_10(df, "contact_carehome",
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
     df = assign_age_at_date(df, "age_at_visit", "visit_date", "date_of_birth")
+    df = assign_named_buckets(
+        df, "age_at_visit", "ageg_small", {2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
+    )
+    df = assign_named_buckets(df, "age_at_visit", "age_group_large_range", {16: "16-49", 50: "50-70", 70: "70+"})
+    df = assign_named_buckets(
+        df,
+        "age_at_visit",
+        "ageg_7",
+        {2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        "age_at_visit",
+        "age_group_large_range",
+        {
+            2: "2-4",
+            5: "5-9",
+            10: "10-14",
+            15: "15-19",
+            20: "20-24",
+            25: "25-29",
+            30: "30-34",
+            35: "35-39",
+            40: "40-44",
+            45: "45-49",
+            50: "50-54",
+            55: "55-59",
+            60: "60-64",
+            65: "65-69",
+            70: "70-74",
+            75: "75-79",
+            80: "80-84",
+            85: "85-89",
+            90: "90+",
+        },
+    )
+    df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
 
