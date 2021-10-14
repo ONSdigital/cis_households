@@ -32,7 +32,7 @@ def test_swabs_merging(spark_session):  # noqa E302
     df_input_labs = spark_session.createDataFrame(data, schema=schema)
 
     schema = """
-    barcode string,
+     barcode string,
     date_visit string,
     date_received string,
     pcr_result_recorded_datetime string,
@@ -41,25 +41,25 @@ def test_swabs_merging(spark_session):  # noqa E302
     count_barcode_voyager integer,
     unique_id_swab	integer,
     count_barcode_swab	integer,
-    diff_vs_visit_hr integer,
-    out_of_date_range_swab	integer,
-    abs_offset_diff_vs_visit_hr integer,
-    dentify_one_to_many_swabs_flag integer,
-    time_order_flag integer,
-    pcr_flag integer,
-    time_difference_flag integer,
+    diff_vs_visit_hr float,
+    out_of_date_range_swab	float,
+    abs_offset_diff_vs_visit_hr float,
+    dentify_one_to_many_swabs_flag float,
+    time_order_flag float,
+    pcr_flag float,
+    time_difference_flag float,
     drop_flag_one_to_many_swabs	integer,
     identify_many_to_one_swab_flag integer,
     drop_flag_many_to_one_swabs	integer,
     identify_many_to_many_flag	integer,
-    failed_flag_many_to_many_swabs integer,
-    drop_flag_many_to_many_swabs integer,
-    1_to_ms integer,
-    m_to_1s integer,
-    m_to_ms	integer,
-    failed_one_to_many_swabs integer,
-    failed_many_to_one_swabs integer,
-    failed_many_to_many_swabs integer
+    failed_flag_many_to_many_swabs float,
+    drop_flag_many_to_many_swabs float,
+    1_to_ms float,
+    m_to_1s float,
+    m_to_ms	float,
+    failed_one_to_many_swabs float,
+    failed_many_to_one_swabs float,
+    failed_many_to_many_swabs float
     """
     data = [
         (
