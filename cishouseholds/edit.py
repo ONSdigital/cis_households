@@ -1,11 +1,28 @@
 from itertools import chain
+from typing import List
 from typing import Mapping
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
-def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str) -> DataFrame:
+def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
+    """
+    Convert column values to null if the entry is no present in provided list
+    Parameters
+    ----------
+    df
+    column_name
+    options_list
+    """
+    df = df.withColumn(
+        column_name, F.when((F.col(column_name).isin(*options_list)), F.col(column_name)).otherwise(None)
+    )
+
+    return df
+
+
+def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     """
     Converts barcode to null if numeric characters are all 0 otherwise performs no change
     Parameters
