@@ -6,6 +6,36 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str):
+    """
+    Assign a column for the approximate school year of an individual given their age at the time
+    of visit
+    Parameters
+    ----------
+    df
+    age_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+        )
+        .when(
+            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+        )
+        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
+            F.col(column_name_to_assign)
+        ),
+    )
+    return df
+
+
 def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_assign: str, bucket_map: dict):
     """
     Assign a new column with named ranges for given integer ranges contianed within a reference column

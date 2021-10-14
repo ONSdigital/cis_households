@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_single_column_from_split
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_schema_types
@@ -142,6 +143,7 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
             90: "90+",
         },
     )
+    df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
 
