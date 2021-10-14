@@ -10,8 +10,10 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
-from cishouseholds.derive import assign_single_column_from_split
+from cishouseholds.derive import assign_taken_column
+from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
@@ -89,14 +91,18 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
     df = assign_column_convert_to_date(df, "visit_date", "visit_datetime")
     df = assign_column_convert_to_date(df, "sample_taken_date", "samples_taken_datetime")
     df = assign_column_convert_to_date(df, "date_of_birth", "date_of_birth")
+    df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
+    df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
+    df = assign_taken_column(df, "swab_taken", "swab_sample_barcode")
+    df = assign_taken_column(df, "blood_taken", "blood_sample_barcode")
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
     # df = placeholder_for_derivation_number_7-2(df, "week")
     # derviation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
-    df = assign_single_column_from_split(
-        df, "outer_postcode", "postcode", " ", 0
+    df = assign_outward_postcode(
+        df, "outward_postcode", "postcode"
     )  # splits on space between postcode segments and gets left half
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
