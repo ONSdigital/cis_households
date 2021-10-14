@@ -158,7 +158,6 @@ def validate_merge_logic(
     group_by_column
         List of columns to check is singular given criteria
     """
-    columns = df.columns
     for i, flag_column in enumerate(flag_column_names):
         df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], group_by_column)
-    return df.select(*columns)
+    return df

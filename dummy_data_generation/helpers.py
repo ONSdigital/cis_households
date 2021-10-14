@@ -33,11 +33,9 @@ def get_breakpoints(mask):
                 pos.append(i)
                 add = True
             if add:
-                try:
+                if dic.get(char) is not None:
                     dic[char].append(pos)
-                    pos = []
-                except KeyError as e:
-                    print(e)
+
     return dic
 
 

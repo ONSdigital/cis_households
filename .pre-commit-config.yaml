@@ -1,5 +1,18 @@
 exclude: .bumpversion.cfg
 repos:
+-   repo: local
+    hooks:
+    -   id: print_statements
+        name: Check for print statements
+        types: [python]
+        entry: 'print\(.*?\)(?!.*# functional)'
+        language: pygrep
+    -   id: show_statements
+        name: Check for show statements
+        types: [python]
+        entry: '\.show\(.*\)'
+        language: pygrep
+
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
