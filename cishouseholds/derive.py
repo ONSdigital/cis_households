@@ -1,5 +1,7 @@
 import re
+from itertools import chain
 
+from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -32,6 +34,32 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
         ),
     )
     return df
+
+
+def assign_named_buckets(df: DataFrame, reference_column: str, column_name_to_assign: str, bucket_map: dict):
+    """
+    Assign a new column with named ranges for given integer ranges contianed within a reference column
+    Parameters
+    ----------
+    df
+    reference_column
+    column_name_to_assign
+    map
+        dictionary containing the map of minimum value in given range (inclusive) to range label string
+    """
+    bucketizer = Bucketizer(
+        splits=[*list(bucket_map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
+    )
+    dfb = bucketizer.setHandleInvalid("keep").transform(df)
+
+    bucket_dic = {}
+    for i, value in enumerate(bucket_map.values()):
+        bucket_dic[float(i)] = value
+
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*bucket_dic.items())])  # type: ignore
+
+    dfb = dfb.withColumn(column_name_to_assign, mapping_expr[dfb["buckets"]])
+    return dfb.drop("buckets")
 
 
 def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
