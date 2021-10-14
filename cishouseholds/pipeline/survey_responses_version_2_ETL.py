@@ -6,16 +6,19 @@ from pyspark.sql import SparkSession
 
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_convert_to_date
+from cishouseholds.derive import assign_column_from_mapped_reference_column
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_single_column_from_split
+from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_schema_types
+from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
@@ -149,6 +152,21 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
         },
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
+    df = assign_column_from_mapped_reference_column(
+        df, "work_status", "work_patient_facing_now", {-9: "<=15y", -8: ">=75y", 0: "No", 1: "Yes"}
+    )
+    df = update_work_facing_now_column(
+        df,
+        "age_at_visit",
+        "work_status",
+        "work_patient_facing_now",
+        [2, 103],
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
+    df = assign_work_person_facing_now(df, "work_patient_facing_now", "work_social_care", "work_person_facing_now")
+    df = update_work_facing_now_column(
+        df, "age_at_visit", "work_status", "work_patient_facing_now", [15, 75], ["Furloughed", "not working", "student"]
+    )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
 
