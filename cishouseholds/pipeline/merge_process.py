@@ -161,7 +161,7 @@ def merge_process_validation(outer_df, merge_type: str):
 
 def merge_process_filtering(outer_df):
     # filter output dataframe
-
+    # outer_df = outer_df.filter(F.col())
     # filter not-best match dataframe
 
     # filter unmatched dataframe
