@@ -904,7 +904,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: outer_postcode
+  name: dataset
+  nullable: false
+  type: integer
+- metadata: {}
+  name: swab_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: outward_postcode
   nullable: true
   type: string
 - metadata: {}
@@ -915,4 +927,20 @@ fields:
   name: age_at_visit
   nullable: true
   type: long
+- metadata: {}
+  name: ageg_small
+  nullable: true
+  type: string
+- metadata: {}
+  name: age_group_large_range
+  nullable: true
+  type: string
+- metadata: {}
+  name: ageg_7
+  nullable: true
+  type: string
+- metadata: {}
+  name: school_year_september
+  nullable: true
+  type: integer
 type: struct

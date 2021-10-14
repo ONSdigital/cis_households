@@ -4,4 +4,9 @@ stages:
     resource_path:
     output_path:
 
+storage:
+  database:
+  table_prefix:
+  write_mode:
+
 csv_output_path:
