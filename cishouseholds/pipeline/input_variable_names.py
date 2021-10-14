@@ -19,7 +19,7 @@ swab_variable_name_map = {
 }
 
 
-bloods_variable_name_map = {
+blood_variable_name_map = {
     "Serum Source ID": "blood_sample_barcode",
     "Blood Sample Type": "blood_sample_type",
     "Plate Barcode": "antibody_test_plate_id",

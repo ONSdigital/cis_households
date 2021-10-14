@@ -282,7 +282,7 @@ def assign_school_year(
     return df
 
 
-def derive_ctpattern(df: DataFrame, column_names, spark_session):
+def derive_cq_pattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -314,7 +314,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
             (0, 1, 1, "N+S"),
             (1, 1, 1, "OR+N+S"),
         ],
-        schema=indicator_list + ["ctpattern"],
+        schema=indicator_list + ["cq_pattern"],
     )
 
     for column_name in column_names:
@@ -468,9 +468,10 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
-    Assign a column with a TimeStamp to a DateType
+    Assign a column with a TimeStampType to a formatted date string.
+    Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
     ----------
@@ -483,13 +484,9 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     Returns
     -------
     pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Expects reference column to be a timestamp and therefore castable.
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
 
 
 def assign_single_column_from_split(

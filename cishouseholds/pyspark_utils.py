@@ -31,6 +31,7 @@ def get_or_create_spark_session() -> SparkSession:
     spark_session = (
         SparkSession.builder.config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
+        .appName("cishouseholds")
         .getOrCreate()
     )
 

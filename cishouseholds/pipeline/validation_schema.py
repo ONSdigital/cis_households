@@ -21,7 +21,7 @@ swab_validation_schema = {
 }
 
 
-bloods_validation_schema = {
+blood_validation_schema = {
     "blood_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
     "blood_sample_type": {"type": "string", "allowed": ["Venous", "Capillary"]},
     "antibody_test_plate_id": {"type": "string", "regex": r"(ON[BS]|MIX)_[0-9]{6}[C|V]S(-[0-9]+)"},
