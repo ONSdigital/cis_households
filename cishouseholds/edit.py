@@ -71,6 +71,30 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     return schema
 
 
+def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
+    """
+    Remove all instances of whitespace before and after a string field including all duplicate spaces
+    along with dots (.) aswell
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.substring(column_name_to_assign, -1, 1) == ".",
+            F.rtrim(F.col(column_name_to_assign).substr(F.lit(1), F.length(column_name_to_assign) - 1)),
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    return df
+
+
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
     Rename column names.
