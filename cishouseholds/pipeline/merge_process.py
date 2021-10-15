@@ -1,3 +1,8 @@
+from typing import List
+
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
+
 import cishouseholds.merge as M
 from cishouseholds.validate import validate_merge_logic
 
@@ -66,15 +71,6 @@ def merge_process_validation(outer_df, merge_type: str):
         match_type_colums=match_type_colums_syntax,
         group_by_column="barcode",  # hardcoded
     )
-    return outer_df
-
-
-def merge_process_filtering(outer_df, merge_type):
-    # filter output dataframe
-    # outer_df = outer_df.filter(F.col())
-    # filter not-best match dataframe
-
-    # filter unmatched dataframe
     return outer_df
 
 
@@ -157,3 +153,44 @@ def execute_and_resolve_flags_merge_specific_antibody(survey_df, labs_df, column
     outer_df = merge_process_validation(outer_df, merge_type="antibody")
     outer_df = merge_process_filtering(outer_df, merge_type="antibody")
     return merge_process_filtering(outer_df, merge_type="antibody")
+
+
+def merge_process_filtering(df: DataFrame, merge_type: str, drop_list_columns: List[str] = []) -> DataFrame:
+    """
+    Final stage of merging process in which 3 dataframes are returned. These
+    are df_best_match with the best matching records following the specific logic.
+    Then df_not_best_match which are the records that have matched but are not the
+    most suitable ones according to the logic. And finally (if swabs processing) a
+    dataframe with failed records is returned.
+    Parameters
+    ----------
+    df
+        input dataframe with drop, merge_type and failed to merge columns
+    merge_type
+        either swab or antibody, anything else will fail.
+    drop_list_columns
+        present in a list the exact name of columns to be dropped for the final
+        3 dataframes df_best_match, df_not_best_match, df_failed_records.
+    Notes: this function will return 2 dataframes, one with best match records
+    another one with not best matched records
+    """
+    for element in ["1tom", "mto1", "mtom"]:
+        df_best_match = df.filter(
+            (F.col(element + "_" + merge_type) == 1)
+            & (F.col("drop_flag_" + element + "_" + merge_type).isNull())
+            & (F.col("failed_" + element + "_" + merge_type).isNull())
+        ).drop(*drop_list_columns)
+
+        df_not_best_match = df.filter(
+            (F.col(element + "_" + merge_type) == 1) & (F.col("drop_flag_" + element + "_" + merge_type) == 1)
+        ).drop(*drop_list_columns)
+
+        if merge_type == "swab":
+            df_failed_records = df.filter(
+                (F.col(element + "_" + merge_type) == 1) & (F.col("failed_" + element + "_" + merge_type) == 1)
+            ).drop(*drop_list_columns)
+
+    if merge_type == "swab":
+        return df_best_match, df_not_best_match, df_failed_records
+    else:
+        return df_best_match, df_not_best_match

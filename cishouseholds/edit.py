@@ -159,3 +159,19 @@ def edit_swab_results_single(
             # if boolean condition not met, keep the same value.
         ).otherwise(F.col(gene_result_classification)),
     )
+
+
+def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") -> DataFrame:
+    """
+    Searches for null type schema in all columns of given dataframe df
+    and returns desired format by cast().
+    Parameters
+    ----------
+    df
+    desired_column_type
+        valid inputs in string: integer, string, double
+    """
+    for column_name, column_type in df.dtypes:
+        if column_type == "null":
+            df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
+    return df

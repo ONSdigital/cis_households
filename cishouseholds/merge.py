@@ -329,9 +329,9 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         "identify_many_to_one_swab_flag",
         "out_of_date_range_swab",
         "count_barcode_swab",
-        "==1",
+        "==1",  # wrong
         "count_barcode_voyager",
-        ">1",
+        ">1",  # wrong
     )
 
     # Row number won't apply with frame set to unbounded (rowsBetween)
@@ -442,9 +442,9 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
         "identify_many_to_one_antibody_flag",
         "out_of_date_range_antibody",
         "count_barcode_antibody",
-        "==1",
+        "==1",  # wrong
         "count_barcode_voyager",
-        ">1",
+        ">1",  # wrong
     )
 
     window = Window.partitionBy(group_by_column)
