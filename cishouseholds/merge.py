@@ -581,7 +581,10 @@ def one_to_many_antibody_flag(
         df, [siemens_column, tdi_column], rows_diff_to_ref, group_num_column, inconsistent_rows
     )
     df = df.withColumn(
-        column_name_to_assign, F.when((F.col(rows_diff_to_ref) == 1) | (F.col(inconsistent_rows) == 1), 1).otherwise(0)
+        column_name_to_assign,
+        F.when(
+            ((F.col(rows_diff_to_ref) == 1) | (F.col(inconsistent_rows) == 1)) & (F.col(selection_column) == 1), 1
+        ).otherwise(None),
     )
     df = df.orderBy(selection_column, diff_interval_hours, visit_date)
     return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
