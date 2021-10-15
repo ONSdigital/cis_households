@@ -6,23 +6,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
-def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
-    """
-    Derive column to count the number of occurrences of the value in the reference_column over the entire dataframe.
-    Parameters
-    ----------
-    df
-    reference_column
-        Name of column to count value occurrences
-    column_name_to_assign
-        Name of column to be created
-    """
-
-    window = Window.partitionBy(reference_column)
-
-    return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
-
-
 def assign_group_and_row_number_columns(
     df: DataFrame, window: Window, row_num_column: str, group_column: str, group_by_column: str
 ):
@@ -42,26 +25,7 @@ def assign_group_and_row_number_columns(
     mini_window = Window.partitionBy("dummy").orderBy("b")
     dft = dft.withColumn(group_column, F.row_number().over(mini_window))
     df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
-    return df, dft
-
-
-def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
-    """
-    Assign column based on the absolute value of an offsetted number.
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-        Name of column to be created
-    reference_column
-        Name of column to calculate values for new column from
-    offset
-        Amount to offset each reference_column value by
-    Notes
-    -----
-    Offset will be subtracted.
-    """
-    return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
+    return df
 
 
 def flag_rows_different_to_reference_row(
@@ -230,30 +194,6 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
         Specify join type to apply to .join() method
     """
     return df1.join(df2, on=reference_column, how=join_type)
-
-
-def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
-    """
-    create reference column for the first row of each partion in a window
-
-    Parameters
-    ----------
-    df
-    reference_column
-    group_column
-    row_column
-    row_num
-
-    """
-    dft = (
-        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
-        .filter(F.col(row_column) == row_num)
-        .withColumnRenamed(group_column, "g")
-        .withColumnRenamed(reference_column, "{}_row_{}_ref".format(reference_column, row_num))
-        .drop(row_column)
-    )
-    df = df.join(dft, dft.g == F.col(group_column)).drop("g")
-    return df, "{}_row_{}_ref".format(reference_column, row_num)
 
 
 def assign_merge_process_group_flag(
@@ -545,30 +485,6 @@ def many_to_many_flag(
     return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 
-def create_inconsistent_data_drop_flag(
-    df: DataFrame, selection_column: str, item1_count_column: str, item2_count_column: str
-):
-    """
-    create flag column for groups where data of chosen columns is inconsistent
-
-    Parameters
-    ----------
-    df
-    item1_count_column
-    item2_count_column
-
-    """
-    df = df.withColumn(
-        "iconsistent_data_drop",
-        F.when(
-            (F.col(selection_column) == 1)
-            & ((F.col(item1_count_column) != F.col("count")) | (F.col(item2_count_column) != F.col("count"))),
-            1,
-        ).otherwise(None),
-    ).drop(item1_count_column, item2_count_column)
-    return df
-
-
 def one_to_many_antibody_flag(
     df: DataFrame,
     column_name_to_assign: str,
@@ -616,11 +532,20 @@ def one_to_many_antibody_flag(
     selection_column = "identify_one_to_many_antibody_flag"
     row_num_column = "row_num"
     diff_interval_hours = "abs_diff_interval"
+    rows_diff_to_ref = "rows_diff_to_ref_flag"
+    inconsistent_rows = "inconsistent_data_flag"
 
     window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
-    df, dft = assign_group_and_row_number_columns(df, window, row_num_column, group_by_column, group_by_column)
-    df = flag_rows_different_to_reference_row(df, "test", diff_interval_hours, row_num_column, group_by_column, 1)
-    df = check_consistency_in_retained_rows(df, [siemens_column, tdi_column], "test", group_by_column, "inconsistent")
+    df = assign_group_and_row_number_columns(df, window, row_num_column, group_by_column, group_by_column)
+    df = flag_rows_different_to_reference_row(
+        df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_by_column, 1
+    )
+    df = check_consistency_in_retained_rows(
+        df, [siemens_column, tdi_column], rows_diff_to_ref, group_by_column, inconsistent_rows
+    )
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.col(rows_diff_to_ref) == 1 | F.col(inconsistent_rows) == 1, 1).otherwise(0)
+    )
     df.toPandas().to_csv("output.csv", index=False)
 
 
