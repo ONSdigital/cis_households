@@ -31,7 +31,7 @@ def update_table(df, table_name):
 
 def add_run_log_entry(config: dict, run_datetime: datetime):
     """
-    Adds an entry to the pipeline's run_log. Pipeline name is inferred from the Spark App name.
+    Adds an entry to the pipeline's run log. Pipeline name is inferred from the Spark App name.
     """
     spark_session = get_or_create_spark_session()
     storage_config = config["storage"]
@@ -68,15 +68,16 @@ def _create_run_log_entry(
     return spark_session.createDataFrame(run_log_entry, schema)
 
 
-def add_run_status(run_id: int, run_status: str, run_error: str = None):
+def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_error: str = None):
     """Append new record to run status table, with run status and any error messages"""
     schema = """
         run_id integer,
         run_status_datetime timestamp,
         run_status string,
+        error_stage string,
         run_error string
     """
-    run_status_entry = [[run_id, datetime.now(), run_status, run_error]]
+    run_status_entry = [[run_id, datetime.now(), run_status, error_stage, run_error]]
 
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]

@@ -27,27 +27,39 @@ def run_from_config():
       resource_path: "path_to.csv"
 
     """
-    config = get_config()
-    run_datetime = datetime.now()
-    run_id = add_run_log_entry(config, run_datetime)
-    print(f"Run ID: {run_id}")  # functional
-    add_run_status(run_id, "started")
     try:
-        run_stages = [stage for stage in config["stages"] if stage.pop("run")]
-        number_of_stages = len(run_stages)
-        max_digits = len(str(number_of_stages))
-        for n, stage_config in enumerate(run_stages):
+        config = get_config()
+        run_datetime = datetime.now()
+        run_id = add_run_log_entry(config, run_datetime)
+        print(f"Run ID: {run_id}")  # functional
+        add_run_status(run_id, "started")
+
+        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+        run_pipeline_stages(pipeline_stage_list, config, run_id)
+    except Exception as e:
+        add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
+        raise e
+
+    add_run_status(run_id, "finished")
+
+
+def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
+    """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
+    number_of_stages = len(pipeline_stage_list)
+    max_digits = len(str(number_of_stages))
+    for n, stage_config in enumerate(pipeline_stage_list):
+        try:
             stage_name = stage_config.pop("function")
-            print(f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}")  # functional
+            stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
+            print(stage_text)  # functional
             output_df = pipeline_stages[stage_name](**stage_config)
             output_df.toPandas().to_csv(
                 f"{config['csv_output_path']}/{stage_name}_output_{datetime.now().strftime('%y%m%d_%H%M%S')}.csv",
                 index=False,
             )
-    except Exception as e:
-        add_run_status(run_id, "errored", "\n".join(traceback.format_exc()))
-        raise e
-    add_run_status(run_id, "successful")
+        except Exception:
+            add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
+            print(f"Error: {traceback.format_exc()}")  # functional
 
 
 if __name__ == "__main__":
