@@ -63,8 +63,28 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
     return df
 
 
+def assign_work_patient_facing_now(
+    df: DataFrame, column_name_to_assign: str, age_column: str, work_healthcare_column: str
+):
+    """
+    Assign column for work person facing depending on values of given input reference
+    columns mapped to a list of outputs
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    age_column
+    work_healthcare_column
+    """
+    df = df.withColumn(column_name_to_assign, F.col(work_healthcare_column))
+    df = assign_named_buckets(
+        df, age_column, column_name_to_assign, {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"}
+    )
+    return df
+
+
 def assign_work_person_facing_now(
-    df: DataFrame, work_patient_facing_now_column: str, work_social_care_column: str, column_name_to_assign: str
+    df: DataFrame, column_name_to_assign: str, work_patient_facing_now_column: str, work_social_care_column: str
 ):
     """
     Assign column for work patient facing depending on values of given input reference
@@ -76,7 +96,7 @@ def assign_work_person_facing_now(
     work_social_care_column
     column_name_to_assign
     """
-    df = df.withColumn(column_name_to_assign, work_patient_facing_now_column)
+    df = df.withColumn(column_name_to_assign, F.col(work_patient_facing_now_column))
     df = assign_column_from_mapped_reference_column(
         df,
         work_social_care_column,

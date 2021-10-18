@@ -7,7 +7,7 @@ def test_update_work_patient_facing_now(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             ("Yes", "(temporarily not working)", 12),
-            ("Yes", "something else", 25),
+            ("Yes, other social care, resident-facing", "something else", 25),
             ("Yes", "something else", 1),
             ("<=15y", "Furloughed", 69),
         ],
@@ -17,7 +17,7 @@ def test_update_work_patient_facing_now(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("No", "(temporarily not working)", 12),
-            (25, "something else", 25),
+            ("Yes, other social care, resident-facing", "something else", 25),
             ("Yes", "something else", 1),
             ("No", "Furloughed", 69),
         ],
@@ -26,10 +26,8 @@ def test_update_work_patient_facing_now(spark_session):
 
     output_df = update_work_facing_now_column(
         input_df,
-        "age",
-        "status",
         "facing",
-        [2, 102],
+        "status",
         [
             "Furloughed",
             "(temporarily not working)",
@@ -37,4 +35,4 @@ def test_update_work_patient_facing_now(spark_session):
             "Student",
         ],
     )
-    assert_df_equality(output_df, expected_df)
+    assert_df_equality(output_df, expected_df, ignore_column_order=True)

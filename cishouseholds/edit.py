@@ -8,31 +8,20 @@ from pyspark.sql import DataFrame
 
 def update_work_facing_now_column(
     df: DataFrame,
-    age_column: str,
-    work_status_column: str,
     column_name_to_update: str,
-    age_range: List[int],
+    work_status_column: str,
     work_status_list: List[str],
 ) -> DataFrame:
     """
-    Update value of variable depending on state of reference columns age_column and work_status_column
+    Update value of variable depending on state of reference column work_status_column
     Parameters
     ----------
     df
-    age_column
-    work_status_column
     column_name_to_update
-    age_range
-        range of ages as list (inclusive)
+    work_status_column
     work_status_list
         list of possible work statuses which result in "no" as column to update
     """
-    df = df.withColumn(
-        column_name_to_update,
-        F.when((F.col(age_column) >= age_range[0]) & (F.col(age_column) <= age_range[1]), F.col(age_column)).otherwise(
-            F.col(column_name_to_update)
-        ),
-    )
     df = df.withColumn(
         column_name_to_update,
         F.when(
