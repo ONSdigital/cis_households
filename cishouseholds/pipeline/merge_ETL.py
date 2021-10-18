@@ -5,7 +5,15 @@ from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
-@register_pipeline_stage("merge_antibody_etl")
+@register_pipeline_stage("merge_antibody_swab_etl")
+def merge_antibody_swab_etl():
+    """
+    High level function call for running merging process for antibody and swab
+    """
+    merge_antibody_etl()
+    merge_swab_etl()
+
+
 def merge_antibody_etl():
     """
     Process for matching and merging survey & swab data
@@ -23,12 +31,11 @@ def merge_antibody_etl():
         survey_df = update_table(name, table_name)
 
 
-@register_pipeline_stage("merge_swab_etl")
 def merge_swab_etl():
     """
-    Process for matching and merging survey & swab data
+    Process for matching and merging survey & swab data (after merging with antibody)
     """
-    survey_table = "processed_survey_responses_v2"
+    survey_table = "processed_survey_antibody_merge"
     swab_table = "processed_swab_test_results"
     survey_df = extract_from_table(survey_table)
     swab_df = extract_from_table(swab_table)
@@ -37,8 +44,8 @@ def merge_swab_etl():
     )
     output_df_list = ["df_best_match", "df_not_best_match", "df_failed_match"]
     output_table_list = [
-        "processed_survey_antibody_merge",
-        "processed_survey_antibody_merge_unmatched" "processed_survey_antibody_merge_failed",
+        "processed_survey_antibody_swab_merge",
+        "processed_survey_antibody_swab_merge_unmatched" "processed_survey_antibody_swab_merge_failed",
     ]
     for name, table_name in zip(output_df_list, output_table_list):
         survey_df = update_table(name, table_name)

@@ -11,14 +11,13 @@ stages:
     run: True
     resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v2/ONSECRF5_Datafile_20210929.csv"
 
-  - function: process_post_merge
+  - function: merge_antibody_swab_etl
+    run: True
+
+    - function: process_post_merge
     run: False
 
-  - function: merge_antibody_etl
-    run: True
 
-  - function: merge_swab_etl
-    run: True
 
 
 storage:
