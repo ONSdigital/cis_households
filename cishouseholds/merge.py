@@ -56,7 +56,7 @@ def assign_group_and_row_number_columns(
 
     """
     df = df.withColumn(row_num_column, F.row_number().over(window))
-    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
+    dft = df.withColumnRenamed(group_by_column, "b").groupBy("b").count()
     dft = dft.withColumn("dummy", F.lit(1))
     mini_window = Window.partitionBy("dummy").orderBy("b")
     dft = dft.withColumn(group_column, F.row_number().over(mini_window))
@@ -112,6 +112,7 @@ def check_consistency_in_retained_rows(
     group_column
     column_name_to_assign
     """
+    df.select(group_column)
     check_distinct = []
     df_retained_rows = df.filter(F.col(selection_column) == 0)
     for col in check_columns:
@@ -125,6 +126,7 @@ def check_consistency_in_retained_rows(
         )
         df = df.join(df_grouped, on=[group_column], how="inner")
         check_distinct.append("num_" + col + "_distinct")
+    df.select(group_column)
     columns = [F.col(col) for col in check_distinct]
     df = df.withColumn("array_distinct", F.array(columns)).drop(*check_distinct)
     df = df.withColumn(column_name_to_assign, F.when(F.array_contains("array_distinct", 2), 1).otherwise(0))
@@ -564,7 +566,6 @@ def one_to_many_antibody_flag(
         ">1",
     )
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
-
     selection_column = "identify_one_to_many_antibody_flag"
     row_num_column = "row_num"
     group_num_column = "group_num"
@@ -587,6 +588,7 @@ def one_to_many_antibody_flag(
         ).otherwise(None),
     )
     df = df.orderBy(selection_column, diff_interval_hours, visit_date)
+    df.toPandas().to_csv("output.csv", index=False)
     return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
 
 
