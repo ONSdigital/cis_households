@@ -112,7 +112,6 @@ def check_consistency_in_retained_rows(
     group_column
     column_name_to_assign
     """
-    df.select(group_column)
     check_distinct = []
     df_retained_rows = df.filter(F.col(selection_column) == 0)
     for col in check_columns:
@@ -120,13 +119,12 @@ def check_consistency_in_retained_rows(
             df_retained_rows.groupBy(group_column, col)
             .count()
             .withColumnRenamed("count", "num_objs")
-            .groupBy(group_column, "num_objs")
+            .groupBy(group_column)
             .count()
             .withColumnRenamed("count", "num_" + col + "_distinct")
         )
         df = df.join(df_grouped, on=[group_column], how="inner")
         check_distinct.append("num_" + col + "_distinct")
-    df.select(group_column)
     columns = [F.col(col) for col in check_distinct]
     df = df.withColumn("array_distinct", F.array(columns)).drop(*check_distinct)
     df = df.withColumn(column_name_to_assign, F.when(F.array_contains("array_distinct", 2), 1).otherwise(0))
@@ -588,7 +586,6 @@ def one_to_many_antibody_flag(
         ).otherwise(None),
     )
     df = df.orderBy(selection_column, diff_interval_hours, visit_date)
-    df.toPandas().to_csv("output.csv", index=False)
     return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
 
 

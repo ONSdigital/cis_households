@@ -129,7 +129,6 @@ def execute_and_resolve_flags_merge_specific_antibody(survey_df, labs_df, column
         column_name_date_visit,  # ="date_visit"
         # 4th here is uncleaned barcode from labs
     ]
-    outer_df.toPandas().to_csv("output1.csv", index=False)
     outer_df = M.one_to_many_antibody_flag(  # CHECK: should it be called antibody
         df=outer_df,
         column_name_to_assign="drop_flag_one_to_many_antibody",
@@ -142,7 +141,6 @@ def execute_and_resolve_flags_merge_specific_antibody(survey_df, labs_df, column
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_antibody",
     )
-    outer_df.toPandas().to_csv("output.csv", index=False)
     outer_df = M.many_to_one_antibody_flag(
         df=outer_df,
         column_name_to_assign="drop_flag_many_to_one_antibody",
