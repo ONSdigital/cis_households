@@ -1,6 +1,7 @@
 import os
 
 import yaml
+from pyspark.sql import SQLContext
 
 
 def get_config() -> dict:
@@ -18,3 +19,10 @@ def update_table(df, table_name):
     df.write.mode(storage_config["write_mode"]).saveAsTable(
         f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
     )
+
+
+def extract_from_table(table_name: str):
+    storage_config = get_config()["storage"]
+    df = SQLContext.sql(f"SELECT * FROM {storage_config['database']}.{storage_config['table_prefix']}{table_name}")
+
+    return df
