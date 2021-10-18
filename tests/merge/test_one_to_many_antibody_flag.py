@@ -107,7 +107,6 @@ def test_one_to_many_antibody_flag(spark_session):
     input_df = expected_df.drop(
         "identify_one_to_many_antibody_flag", "one_to_many_antibody_drop_flag", "failed_due_to_indistinct_match"
     )
-    input_df.toPandas().to_csv("input.csv", index=False)
     output_df = one_to_many_antibody_flag(
         df=input_df,
         column_name_to_assign="one_to_many_antibody_drop_flag",
@@ -120,5 +119,4 @@ def test_one_to_many_antibody_flag(spark_session):
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_antibody",
     )
-
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
