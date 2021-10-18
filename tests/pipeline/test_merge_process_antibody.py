@@ -157,7 +157,13 @@ def test_merge_process_antibody(spark_session):
     ]
     expected_df = spark_session.createDataFrame(data, schema=schema)
 
-    output_df = execute_and_resolve_flags_merge_specific_antibody(df_input_survey, df_input_antibody, "date_visit")
+    output_df = execute_and_resolve_flags_merge_specific_antibody(
+        survey_df=df_input_survey,
+        labs_df=df_input_antibody,
+        barcode_column_name="barcode",
+        visit_date_column_name="date_visit",
+        received_date_column_name="date_received",
+    )
 
     # in case a column's schema gets converted to a NullType
     output_df = re_cast_column_if_null(output_df, desired_column_type="integer")
