@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
+import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.load import get_config

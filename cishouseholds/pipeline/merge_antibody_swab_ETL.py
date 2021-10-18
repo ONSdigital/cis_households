@@ -6,17 +6,17 @@ from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
-@register_pipeline_stage("merge_antibody_swab_etl")
-def merge_antibody_swab_etl():
+@register_pipeline_stage("merge_antibody_swab_ETL")
+def merge_antibody_swab_ETL():
     """
     High level function call for running merging process for antibody and swab
     """
     storage_config = get_config()["storage"]
-    merge_antibody_etl(storage_config)
-    merge_swab_etl(storage_config)
+    merge_antibody_ETL(storage_config)
+    merge_swab_ETL(storage_config)
 
 
-def merge_antibody_etl(storage_config):
+def merge_antibody_ETL(storage_config):
     """
     Process for matching and merging survey & swab data
     """
@@ -33,7 +33,7 @@ def merge_antibody_etl(storage_config):
         survey_df = update_table(name, table_name)
 
 
-def merge_swab_etl(storage_config):
+def merge_swab_ETL(storage_config):
     """
     Process for matching and merging survey & swab data (after merging with antibody)
     """
