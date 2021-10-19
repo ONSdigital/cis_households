@@ -244,8 +244,8 @@ def execute_and_resolve_flags_merge_specific_antibody(
 def merge_process_filtering(
     df: DataFrame,
     merge_type: str,
-    drop_list_columns: List[str],
     merge_combination: List[str] = ["1tom", "mto1", "mtom"],
+    drop_list_columns: List[str] = [],
 ) -> DataFrame:
     """
     Final filtering process of merging generating sucessful merges ...
@@ -271,10 +271,12 @@ def merge_process_filtering(
         ).drop(*drop_list_columns)
 
         df_not_best_match = df.filter(
-            (F.col(element + "_" + merge_type) == 1) & (F.col("drop_flag_" + element + "_" + merge_type) == 1)
+            (F.col(element + "_" + merge_type) == 1)
+            & (F.col("drop_flag_" + element + "_" + merge_type) == 1)
+            & (F.col("failed_" + element + "_" + merge_type).isNull())
         ).drop(*drop_list_columns)
 
-        if merge_type == "swab":
+        if merge_type == "swab":  # only happens when antibody match already ocurred
             df_failed_records = df.filter(
                 (F.col(element + "_" + merge_type) == 1) & (F.col("failed_" + element + "_" + merge_type) == 1)
             ).drop(*drop_list_columns)
