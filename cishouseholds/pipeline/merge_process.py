@@ -241,7 +241,12 @@ def execute_and_resolve_flags_merge_specific_antibody(
     return outer_df
 
 
-def merge_process_filtering(df: DataFrame, merge_type: str, drop_list_columns: List[str] = []) -> DataFrame:
+def merge_process_filtering(
+    df: DataFrame,
+    merge_type: str,
+    drop_list_columns: List[str],
+    merge_combination: List[str] = ["1tom", "mto1", "mtom"],
+) -> DataFrame:
     """
     Final filtering process of merging generating sucessful merges ...
     Parameters
@@ -250,13 +255,15 @@ def merge_process_filtering(df: DataFrame, merge_type: str, drop_list_columns: L
         input dataframe with drop, merge_type and failed to merge columns
     merge_type
         either swab or antibody, anything else will fail.
+    merge_combination
+        only elements in the list accepted 1tom, mto1, mtom
     drop_list_columns
         present in a list the exact name of columns to be dropped for the final
         3 dataframes df_best_match, df_not_best_match, df_failed_records
     Notes: this function will return 2 dataframes, one with best match records
     another one with not best matched records
     """
-    for element in ["1tom", "mto1", "mtom"]:
+    for element in merge_combination:
         df_best_match = df.filter(
             (F.col(element + "_" + merge_type) == 1)
             & (F.col("drop_flag_" + element + "_" + merge_type).isNull())
