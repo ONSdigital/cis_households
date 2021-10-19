@@ -6,6 +6,20 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_column_from_mapped_list_key(
+    df: DataFrame, column_name_to_asign: str, reference_column: str, map: dict, sep="|"
+):
+    """ """
+    cast_type = type(list(map.keys())[0]).__name__
+    df = df.withColumn(column_name_to_asign, F.lit(None).cast(cast_type))
+    for val, key_list in map.items():
+        df = df.withColumn(
+            column_name_to_asign,
+            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_asign)),
+        )
+    return df
+
+
 def assign_column_from_mapped_reference_column(
     df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, include_not_in_map: bool = False
 ):
@@ -76,7 +90,20 @@ def assign_work_patient_facing_now(
     age_column
     work_healthcare_column
     """
-    df = df.withColumn(column_name_to_assign, F.col(work_healthcare_column))
+    df = assign_column_from_mapped_list_key(
+        df,
+        column_name_to_assign,
+        work_healthcare_column,
+        {
+            "No": ["No", "Yes, primary care, patient-facing", "Yes, secondary care, patient-facing"],
+            "Yes": [
+                "Yes, other healthcare, patient-facing",
+                "Yes, primary care, non-patient-facing",
+                "Yes, secondary care, non-patient-facing",
+                "Yes, other healthcare, non-patient-facing",
+            ],
+        },
+    )
     df = assign_named_buckets(
         df, age_column, column_name_to_assign, {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"}
     )
@@ -84,7 +111,11 @@ def assign_work_patient_facing_now(
 
 
 def assign_work_person_facing_now(
-    df: DataFrame, column_name_to_assign: str, work_patient_facing_now_column: str, work_social_care_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    age_column: str,
+    work_patient_facing_now_column: str,
+    work_social_care_column: str,
 ):
     """
     Assign column for work patient facing depending on values of given input reference
@@ -97,18 +128,8 @@ def assign_work_person_facing_now(
     column_name_to_assign
     """
     df = df.withColumn(column_name_to_assign, F.col(work_patient_facing_now_column))
-    df = assign_column_from_mapped_reference_column(
-        df,
-        work_social_care_column,
-        column_name_to_assign,
-        {
-            0: "No",
-            1: "Yes, care/residential home, resident-facing",
-            2: "Yes, other social care, resident-facing",
-            3: "Yes, care/residential home, non-resident-facing",
-            4: "Yes, other social care, non-resident-facing",
-        },
-        True,
+    df = assign_named_buckets(
+        df, age_column, column_name_to_assign, {0: "<=15y", 16: F.col(work_social_care_column), 75: ">=75y"}
     )
     return df
 
