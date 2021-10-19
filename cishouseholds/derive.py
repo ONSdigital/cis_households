@@ -108,7 +108,6 @@ def assign_work_person_facing_now(
     work_social_care_column
     column_name_to_assign
     """
-    df = df.withColumn(column_name_to_assign, F.col(work_patient_facing_now_column))
     df = assign_column_from_mapped_list_key(
         df,
         column_name_to_assign,
