@@ -241,7 +241,6 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
     join_type
         Specify join type to apply to .join() method
     """
-    # refactoring needed: the barcode column name for df1 and df2 might be different
     return df1.join(df2, on=reference_column, how=join_type)
 
 
