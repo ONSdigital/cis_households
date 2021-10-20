@@ -1,12 +1,12 @@
 import functools
 import json
 import os
+import pyspark.sql.functions as F
 from datetime import datetime
+from pyspark.sql.session import SparkSession
 
 import pkg_resources
-import pyspark.sql.functions as F
 import yaml
-from pyspark.sql.session import SparkSession
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -35,16 +35,16 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     """
     spark_session = get_or_create_spark_session()
     storage_config = config["storage"]
-    pipeline = spark_session.sparkContext.appName
-    version = pkg_resources.get_distribution(pipeline).version
+    pipeline_name = spark_session.sparkContext.appName
+    pipeline_version = pkg_resources.get_distribution(pipeline_name).version
 
-    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{pipeline}_run_log'
+    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{pipeline_name}_run_log'
     run_id = 0
     if spark_session.catalog._jcatalog.tableExists(run_log_table):
         last_run_id = spark_session.read.table(run_log_table).select(F.max("run_id")).first()[0]
-        run_id = last_run_id + 1 if last_run_id is not None else 0
+        run_id = last_run_id + 1
 
-    run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, version, pipeline)
+    run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
     run_log_entry.write.mode("append").saveAsTable(run_log_table)  # Always append
     return run_id
 
