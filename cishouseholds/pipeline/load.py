@@ -1,7 +1,6 @@
 import os
 
 import yaml
-from pyspark.sql import SQLContext
 
 
 def get_config() -> dict:
@@ -21,8 +20,8 @@ def update_table(df, table_name):
     )
 
 
-def extract_from_table(table_name: str):
+def extract_from_table(table_name: str, spark_session):
     storage_config = get_config()["storage"]
-    df = SQLContext.sql(f"SELECT * FROM {storage_config['database']}.{storage_config['table_prefix']}{table_name}")
+    df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{table_name}")
 
     return df

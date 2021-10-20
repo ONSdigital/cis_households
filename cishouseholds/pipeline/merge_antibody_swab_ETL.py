@@ -4,6 +4,7 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_antibody
 from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_swabs
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 @register_pipeline_stage("merge_antibody_swab_ETL")
@@ -11,19 +12,20 @@ def merge_antibody_swab_ETL():
     """
     High level function call for running merging process for antibody and swab
     """
+    spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
-    merge_antibody_ETL(storage_config)
-    merge_swab_ETL(storage_config)
+    merge_antibody_ETL(storage_config, spark_session)
+    merge_swab_ETL(storage_config, spark_session)
 
 
-def merge_antibody_ETL(storage_config):
+def merge_antibody_ETL(storage_config, spark_session):
     """
     Process for matching and merging survey & swab data
     """
     survey_table = f"{storage_config['table_prefix']}processed_survey_responses_v2"
     antibody_table = f"{storage_config['table_prefix']}processed_blood_test_results"
-    survey_df = extract_from_table(survey_table)
-    antibody_df = extract_from_table(antibody_table)
+    survey_df = extract_from_table(survey_table, spark_session)
+    antibody_df = extract_from_table(antibody_table, spark_session)
     df_best_match, df_not_best_match = execute_and_resolve_flags_merge_specific_antibody(
         survey_df, antibody_df, "date_visit"
     )
@@ -33,14 +35,14 @@ def merge_antibody_ETL(storage_config):
         survey_df = update_table(name, table_name)
 
 
-def merge_swab_ETL(storage_config):
+def merge_swab_ETL(storage_config, spark_session):
     """
     Process for matching and merging survey & swab data (after merging with antibody)
     """
     survey_table = f"{storage_config['table_prefix']}processed_survey_antibody_merge"
     swab_table = f"{storage_config['table_prefix']}processed_swab_test_results"
-    survey_df = extract_from_table(survey_table)
-    swab_df = extract_from_table(swab_table)
+    survey_df = extract_from_table(survey_table, spark_session)
+    swab_df = extract_from_table(swab_table, spark_session)
     df_best_match, df_not_best_match, df_failed_match = execute_and_resolve_flags_merge_specific_swabs(
         survey_df, swab_df, "date_visit"
     )
