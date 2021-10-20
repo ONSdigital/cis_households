@@ -238,6 +238,7 @@ def execute_and_resolve_flags_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
+    outer_df.toPandas().to_csv("output.csv", index=False)
     return outer_df
 
 
