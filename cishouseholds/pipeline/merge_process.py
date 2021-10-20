@@ -285,6 +285,3 @@ def merge_process_filtering(
         return df_best_match, df_not_best_match, df_failed_records
     else:
         return df_best_match, df_not_best_match
-
-
-# comment
