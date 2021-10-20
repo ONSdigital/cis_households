@@ -265,6 +265,13 @@ def merge_process_filtering(
     Notes: this function will return 2 dataframes, one with best match records
     another one with not best matched records
     """
+    # DO: include in the filtering failed_flag_mtom_swab
+    # DO: for bloods include in failed_df the columns failed_due_to_indistinct_match,
+    #       failed_due_to_indistinct_match, failed_flag_mtom_antibody,
+
+    # for test data only apply flag_columns
+    # DO: add arbitrary iqvia/lab columns
+
     for element in merge_combination:
         df_best_match = df.filter(
             (F.col(element + "_" + merge_type) == 1)
@@ -298,6 +305,7 @@ def merge_process_filtering(
 
     # apply logic: if more than 1 in unique id count, and not best_match then delete
     df_all_iqvia = df_all_iqvia.filter((F.col("unique_id_count") > 1) & (F.col("not_best_match") == 1))
+
     if merge_type == "swab":
         return df_all_iqvia, df_lab_residuals, df_failed_records
     else:
