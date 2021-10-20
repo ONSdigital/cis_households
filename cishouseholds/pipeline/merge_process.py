@@ -215,7 +215,7 @@ def execute_merge_specific_antibody(
         group_by_column=barcode_column_name,
         diff_interval_hours="diff_vs_visit_hr",
         siemens_column="siemens",
-        tdi_column="tdi",
+        tdi_column="antibody_test_result_classification",
         visit_date=visit_date_column_name,
         out_of_date_range_column="out_of_date_range_" + merge_type,
         count_barcode_voyager_column_name="count_barcode_voyager",

@@ -1,8 +1,9 @@
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_config
 from cishouseholds.pipeline.load import update_table
-from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_antibody
-from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_swabs
+from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
+from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
+from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -26,11 +27,40 @@ def merge_antibody_ETL(storage_config, spark_session):
     antibody_table = f"{storage_config['table_prefix']}processed_blood_test_results"
     survey_df = extract_from_table(survey_table, spark_session)
     antibody_df = extract_from_table(antibody_table, spark_session)
-    df_best_match, df_not_best_match = execute_and_resolve_flags_merge_specific_antibody(
-        survey_df, antibody_df, "date_visit"
+    survey_antibody_df = execute_merge_specific_antibody(
+        survey_df,
+        antibody_df,
+        "blood_sample_barcode",
+        "visit_date_string",
+        "blood_sample_received_date",
     )
-    output_df_list = ["df_best_match", "df_not_best_match"]
-    output_table_list = ["processed_survey_antibody_merge", "processed_survey_antibody_merge_unmatched"]
+
+    antibody_columns_list = [
+        "blood_sample_barcode",
+        "blood_sample_type",
+        "antibody_test_plate_id",
+        "antibody_test_well_id",
+        "antibody_test_result_classification",
+        "antibody_test_result_value",
+        "antibody_test_bounded_result_value",
+        "antibody_test_undiluted_result_value",
+        "antibody_test_result_recorded_date",
+        "blood_sample_arrayed_date",
+        "blood_sample_received_date",
+        "blood_sample_collected_datetime",
+        "plate",
+        "assay_category",
+        "siemens",
+    ]
+    merge_combination_list = ["1tom", "mto1", "mtom"]
+    drop_list_columns_antibody = []  # need to know what to put in this list
+
+    survey_antibody_df, survey_antibody_residuals = merge_process_filtering(
+        survey_antibody_df, "antibody", antibody_columns_list, merge_combination_list, drop_list_columns_antibody
+    )
+
+    output_df_list = ["survey_antibody_df", "survey_antibody_residuals"]
+    output_table_list = ["processed_survey_antibody_merge", "processed_survey_antibody_merge_residuals"]
     for name, table_name in zip(output_df_list, output_table_list):
         survey_df = update_table(name, table_name)
 
@@ -43,13 +73,27 @@ def merge_swab_ETL(storage_config, spark_session):
     swab_table = f"{storage_config['table_prefix']}processed_swab_test_results"
     survey_df = extract_from_table(survey_table, spark_session)
     swab_df = extract_from_table(swab_table, spark_session)
-    df_best_match, df_not_best_match, df_failed_match = execute_and_resolve_flags_merge_specific_swabs(
-        survey_df, swab_df, "date_visit"
+    survey_antibody_swab_df = execute_merge_specific_swabs(
+        survey_df,
+        swab_df,
+        "swab_sample_barcode",
+        "visit_datetime",
+        "pcr_datetime",
+        "void",
     )
-    output_df_list = ["df_best_match", "df_not_best_match", "df_failed_match"]
+
+    swab_columns_list = []  # need to know what to put in this list
+    merge_combination_list = ["1tom", "mto1", "mtom"]
+    drop_list_columns_swab = []  # need to know what to put in this list
+
+    survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
+        survey_antibody_swab_df, "swab", swab_columns_list, merge_combination_list, drop_list_columns_swab
+    )
+
+    output_df_list = ["survey_antibody_swab_df", "survey_antibody_swab_residuals", "survey_antibody_swab_failed"]
     output_table_list = [
         "processed_survey_antibody_swab_merge",
-        "processed_survey_antibody_swab_merge_unmatched" "processed_survey_antibody_swab_merge_failed",
+        "processed_survey_antibody_swab_merge_residuals" "processed_survey_antibody_swab_merge_failed",
     ]
     for name, table_name in zip(output_df_list, output_table_list):
         survey_df = update_table(name, table_name)
