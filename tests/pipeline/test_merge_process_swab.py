@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_swabs
+from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 
 
 def test_merge_process_swab(spark_session):
@@ -537,5 +537,11 @@ def test_merge_process_swab(spark_session):
         ),
     ]
     expected_df = spark_session.createDataFrame(data, schema=schema)
-    output_df = execute_and_resolve_flags_merge_specific_swabs(df_input_survey, df_input_labs, "date_visit")
+    output_df = execute_merge_specific_swabs(
+        survey_df=df_input_survey,
+        labs_df=df_input_labs,
+        barcode_column_name="barcode",
+        visit_date_column_name="date_visit",
+        received_date_column_name="date_received",
+    )
     assert_df_equality(output_df, expected_df)
