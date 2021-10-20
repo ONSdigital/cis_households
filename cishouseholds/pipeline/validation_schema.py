@@ -145,7 +145,7 @@ iqvia_v2_validation_schema = {
     "person_9_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
     "person_9_reason_for_not_consenting": {"type": "string", "nullable": True},
     "participant_id": {"type": "string", "regex": r"DHR-\d{12}"},
-    "title": {"type": "string", "allowed": ["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof."], "nullable": True},
+    "title": {"type": "string", "nullable": True},
     # No mandatory field: Title, Middle_Name, DoB, Email, Have_landline_number, Have_mobile_number,
     # Have_email_address, Prefer_receive_vouchers, Able_to_take_blood
     # double check the characters allowed for first/middle/last name. Make sure that the upper
