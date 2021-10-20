@@ -1,9 +1,24 @@
 from itertools import chain
 from typing import List
 from typing import Mapping
+from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+
+
+def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
+    """
+    Remove rows based on duplicate values present in reference columns
+    Parameters
+    ---------
+    df
+    reference_columns
+    """
+    if reference_columns == "all":
+        return df.distinct()
+    else:
+        return df.dropDuplicates(reference_columns)
 
 
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:

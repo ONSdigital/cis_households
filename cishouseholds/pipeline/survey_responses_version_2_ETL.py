@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
+from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
@@ -59,7 +60,13 @@ def extract_validate_transform_survey_responses_version_2_delta(resource_path: s
 def extract_survey_responses_version_2_delta(spark_session: SparkSession, resource_path: str):
     iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
     raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
-    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
+    df = read_csv_to_pyspark_df(
+        spark_session,
+        resource_path,
+        raw_iqvia_v2_data_header,
+        iqvia_v2_spark_schema,
+        sep="|",
+    )
     df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
     return df
 
@@ -92,6 +99,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     ------
     df: pyspark.sql.DataFrame
     """
+    df = assign_filename_column(df, "csv_filename")
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
