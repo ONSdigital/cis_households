@@ -29,6 +29,7 @@ def test_merge_process_filtering(spark_session):
     df_output_success, df_output_unsuccess, df_output_fail = merge_process_filtering(
         df=df_input,
         merge_type="swab",
+        lab_columns_list=[],
         merge_combination=["1tom"],
         drop_list_columns=["anything"],
     )

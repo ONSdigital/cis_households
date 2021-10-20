@@ -2,12 +2,13 @@ from typing import List
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql.window import Window
 
 import cishouseholds.merge as M
 from cishouseholds.validate import validate_merge_logic
 
 
-def merge_process_perparation(
+def merge_process_preparation(
     survey_df: DataFrame,
     labs_df: DataFrame,
     merge_type: str,
@@ -129,7 +130,7 @@ def execute_and_resolve_flags_merge_specific_swabs(
         by default is "void" but it is possible to specify what is considered as void in the PCR result test.
     """
     merge_type = "swab"
-    outer_df = merge_process_perparation(
+    outer_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -194,7 +195,7 @@ def execute_and_resolve_flags_merge_specific_antibody(
     received_date_column_name
     """
     merge_type = "antibody"
-    outer_df = merge_process_perparation(
+    outer_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -244,6 +245,7 @@ def execute_and_resolve_flags_merge_specific_antibody(
 def merge_process_filtering(
     df: DataFrame,
     merge_type: str,
+    lab_columns_list: List[str],
     merge_combination: List[str] = ["1tom", "mto1", "mtom"],
     drop_list_columns: List[str] = [],
 ) -> DataFrame:
@@ -266,22 +268,37 @@ def merge_process_filtering(
     for element in merge_combination:
         df_best_match = df.filter(
             (F.col(element + "_" + merge_type) == 1)
-            & (F.col("drop_flag_" + element + "_" + merge_type).isNull())
+            & (F.col("drop_flag_" + element + "_" + merge_type).isNull())  # not drop the whole row,
             & (F.col("failed_" + element + "_" + merge_type).isNull())
         ).drop(*drop_list_columns)
 
         df_not_best_match = df.filter(
             (F.col(element + "_" + merge_type) == 1)
-            & (F.col("drop_flag_" + element + "_" + merge_type) == 1)
+            & (F.col("drop_flag_" + element + "_" + merge_type) == 1)  # drop all labs columns
             & (F.col("failed_" + element + "_" + merge_type).isNull())
-        ).drop(*drop_list_columns)
+        ).drop(
+            *drop_list_columns
+        )  # see what columns need to be droped to be joined to df_best_match
 
         if merge_type == "swab":  # only happens when antibody match already ocurred
             df_failed_records = df.filter(
-                (F.col(element + "_" + merge_type) == 1) & (F.col("failed_" + element + "_" + merge_type) == 1)
+                (F.col(element + "_" + merge_type) == 1) & (F.col("failed_" + element + "_" + merge_type) == 1)  #
             ).drop(*drop_list_columns)
 
+    df_not_best_match = df_not_best_match.withColumn("not_best_match", F.lit(1).cast("int"))
+
+    df_lab_residuals = df_not_best_match.select(*lab_columns_list).distinct()
+
+    df_not_best_match = df_not_best_match.drop(*lab_columns_list)
+    df_all_iqvia = df_best_match.unionByName(df_not_best_match, allowMissingColumns=True)
+
+    # window function count number of unique id
+    window = Window.partitionBy("unique_id_voyager")
+    df_all_iqvia = df_all_iqvia.withColumn("unique_id_count", F.count("unique_id_voyager").over(window))
+
+    # apply logic: if more than 1 in unique id count, and not best_match then delete
+    df_all_iqvia = df_all_iqvia.filter((F.col("unique_id_count") > 1) & (F.col("not_best_match") == 1))
     if merge_type == "swab":
-        return df_best_match, df_not_best_match, df_failed_records
+        return df_all_iqvia, df_lab_residuals, df_failed_records
     else:
-        return df_best_match, df_not_best_match
+        return df_all_iqvia, df_lab_residuals
