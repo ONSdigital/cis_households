@@ -109,7 +109,7 @@ def merge_process_validation(outer_df: DataFrame, merge_type: str, barcode_colum
     return outer_df
 
 
-def execute_and_resolve_flags_merge_specific_swabs(
+def execute_merge_specific_swabs(
     survey_df: DataFrame,
     labs_df: DataFrame,
     barcode_column_name: str,
@@ -177,7 +177,7 @@ def execute_and_resolve_flags_merge_specific_swabs(
     return outer_df
 
 
-def execute_and_resolve_flags_merge_specific_antibody(
+def execute_merge_specific_antibody(
     survey_df: DataFrame,
     labs_df: DataFrame,
     barcode_column_name: str,

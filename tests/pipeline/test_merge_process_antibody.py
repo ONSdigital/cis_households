@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 
 from cishouseholds.edit import re_cast_column_if_null
-from cishouseholds.pipeline.merge_process import execute_and_resolve_flags_merge_specific_antibody
+from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 
 
 def test_merge_process_antibody(spark_session):
@@ -157,7 +157,7 @@ def test_merge_process_antibody(spark_session):
     ]
     expected_df = spark_session.createDataFrame(data, schema=schema)
 
-    output_df = execute_and_resolve_flags_merge_specific_antibody(
+    output_df = execute_merge_specific_antibody(
         survey_df=df_input_survey,
         labs_df=df_input_antibody,
         barcode_column_name="barcode",
