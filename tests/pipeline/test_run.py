@@ -21,7 +21,7 @@ a_test_ETL.has_been_called = False
 
 def generate_test_yaml(tmp_path: pathlib.Path):
     test_ETL_config = {
-        "stages": [{"function": "a_test_ETL", "run": True, "resource_path": ""}],
+        "stages": [{"function": "a_test_ETL", "run": True, "path": ""}],
         "csv_output_path": tmp_path.as_posix(),
     }
 

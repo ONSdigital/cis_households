@@ -1,8 +1,40 @@
 from itertools import chain
+from typing import List
 from typing import Mapping
+from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+
+
+def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
+    """
+    Remove rows based on duplicate values present in reference columns
+    Parameters
+    ---------
+    df
+    reference_columns
+    """
+    if reference_columns == "all":
+        return df.distinct()
+    else:
+        return df.dropDuplicates(reference_columns)
+
+
+def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
+    """
+    Convert column values to null if the entry is no present in provided list
+    Parameters
+    ----------
+    df
+    column_name
+    options_list
+    """
+    df = df.withColumn(
+        column_name, F.when((F.col(column_name).isin(*options_list)), F.col(column_name)).otherwise(None)
+    )
+
+    return df
 
 
 def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
@@ -52,6 +84,30 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     for column_name in column_names:
         schema[column_name] = new_type
     return schema
+
+
+def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
+    """
+    Remove all instances of whitespace before and after a string field including all duplicate spaces
+    along with dots (.) aswell
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.substring(column_name_to_assign, -1, 1) == ".",
+            F.rtrim(F.col(column_name_to_assign).substr(F.lit(1), F.length(column_name_to_assign) - 1)),
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    return df
 
 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:

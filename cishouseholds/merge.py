@@ -23,26 +23,6 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
 
 
-def assign_group_and_row_number_columns(df: DataFrame, window: Window, group_by_column: str):
-    """
-    create columns for row number and group number of rows within a window
-
-    Parameters
-    ----------
-    df
-    window
-    group_by_column
-
-    """
-    df = df.withColumn("row_num", F.row_number().over(window))
-    dft = df.groupBy(group_by_column).count().withColumnRenamed(group_by_column, "b")
-    dft = dft.withColumn("dummy", F.lit(1))
-    mini_window = Window.partitionBy("dummy").orderBy("b")
-    dft = dft.withColumn("group", F.row_number().over(mini_window))
-    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
-    return df, dft
-
-
 def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
     """
     Assign column based on the absolute value of an offsetted number.
@@ -62,13 +42,34 @@ def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_
     return df.withColumn(column_name_to_assign, F.abs(F.col(reference_column) - offset))
 
 
-def flag_columns_different_to_ref(
+def assign_group_and_row_number_columns(
+    df: DataFrame, window: Window, row_num_column: str, group_column: str, group_by_column: str
+):
+    """
+    create columns for row number and group number of rows within a window
+
+    Parameters
+    ----------
+    df
+    window
+    group_by_column
+
+    """
+    df = df.withColumn(row_num_column, F.row_number().over(window))
+    dft = df.withColumnRenamed(group_by_column, "b").groupBy("b").count()
+    dft = dft.withColumn("dummy", F.lit(1))
+    mini_window = Window.partitionBy("dummy").orderBy("b")
+    dft = dft.withColumn(group_column, F.row_number().over(mini_window))
+    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
+    return df
+
+
+def flag_rows_different_to_reference_row(
     df: DataFrame,
     column_name_to_assign: str,
     reference_column: str,
-    check_column: str,
-    selection_column: str,
-    exclusion_column: str,
+    row_column: str,
+    group_column: str,
     exclusion_row_value: int,
 ):
     """
@@ -85,62 +86,49 @@ def flag_columns_different_to_ref(
     exclusion_row_value
 
     """
+    df_reference_row_and_col_only = df.filter(F.col(row_column) == exclusion_row_value).select(
+        group_column, reference_column
+    )
+    df = df_reference_row_and_col_only.join(
+        df.withColumnRenamed(reference_column, reference_column + "_reference"), on=[group_column], how="inner"
+    )
     df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (
-                (F.col(selection_column) == 1)
-                & (F.col(reference_column) != F.col(check_column))
-                & (F.col(exclusion_column) != exclusion_row_value)
-            ),
-            1,
-        ).otherwise(
-            None
-        ),  # drop rows after first where diff vs visit is
+        column_name_to_assign, F.when(F.col(reference_column + "_reference") != F.col(reference_column), 1).otherwise(0)
     )
-    return df
+    return df.drop(reference_column + "_reference")
 
 
-def create_count_group(df: DataFrame, group_column: str, reference_column: str, rename_group: bool):
-    """
-    create seperate grouped dataframe to hold number of occurances of reference column value within group
-
-    Parameters
-    ----------
-    df
-    group_column
-    reference_column
-    rename_group
-
-    """
-    dft = (
-        df.where(F.col("identify_one_to_many_antibody_flag") == 1)
-        .groupBy(group_column, reference_column)
-        .count()
-        .withColumnRenamed(reference_column, reference_column[0])
-        .withColumnRenamed("count", "c{}".format(reference_column[0]))
-    )
-    if rename_group:
-        dft = dft.withColumnRenamed("group", "g")
-    return dft
-
-
-def check_consistent_data(df: DataFrame, check_column1: str, check_column2: str, group_by_column: str):
+def check_consistency_in_retained_rows(
+    df: DataFrame, check_columns: List[str], selection_column: str, group_column: str, column_name_to_assign: str
+):
     """
     check consistency of multipl columns and create seperate joined dataframe of chosen columns
 
     Parameters
     ----------
     df
-    check_column1
-    check_column2
-    group_by_column
-
+    check_columns
+    selection_column
+    group_column
+    column_name_to_assign
     """
-    dft1 = create_count_group(df, group_by_column, check_column1, True)
-    dft2 = create_count_group(df, group_by_column, check_column2, False)
-    dfj = dft1.join(dft2, (dft1.g == dft2.group)).drop("group")
-    return dfj
+    check_distinct = []
+    df_retained_rows = df.filter(F.col(selection_column) == 0)
+    for col in check_columns:
+        df_grouped = (
+            df_retained_rows.groupBy(group_column, col)
+            .count()
+            .withColumnRenamed("count", "num_objs")
+            .groupBy(group_column)
+            .count()
+            .withColumnRenamed("count", "num_" + col + "_distinct")
+        )
+        df = df.join(df_grouped, on=[group_column], how="inner")
+        check_distinct.append("num_" + col + "_distinct")
+    columns = [F.col(col) for col in check_distinct]
+    df = df.withColumn("array_distinct", F.array(columns)).drop(*check_distinct)
+    df = df.withColumn(column_name_to_assign, F.when(F.array_contains("array_distinct", 2), 1).otherwise(0))
+    return df.drop("num_objs", "array_distinct")
 
 
 def assign_time_difference_and_flag_if_outside_interval(
@@ -242,30 +230,6 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
         Specify join type to apply to .join() method
     """
     return df1.join(df2, on=reference_column, how=join_type)
-
-
-def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
-    """
-    create reference column for the first row of each partion in a window
-
-    Parameters
-    ----------
-    df
-    reference_column
-    group_column
-    row_column
-    row_num
-
-    """
-    dft = (
-        df.select(F.col(group_column), F.col(row_column), F.col(reference_column))
-        .filter(F.col(row_column) == row_num)
-        .withColumnRenamed(group_column, "g")
-        .withColumnRenamed(reference_column, "{}_row_{}_ref".format(reference_column, row_num))
-        .drop(row_column)
-    )
-    df = df.join(dft, dft.g == F.col(group_column)).drop("g")
-    return df, "{}_row_{}_ref".format(reference_column, row_num)
 
 
 def assign_merge_process_group_flag(
@@ -557,30 +521,6 @@ def many_to_many_flag(
     return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 
-def create_inconsistent_data_drop_flag(
-    df: DataFrame, selection_column: str, item1_count_column: str, item2_count_column: str
-):
-    """
-    create flag column for groups where data of chosen columns is inconsistent
-
-    Parameters
-    ----------
-    df
-    item1_count_column
-    item2_count_column
-
-    """
-    df = df.withColumn(
-        "iconsistent_data_drop",
-        F.when(
-            (F.col(selection_column) == 1)
-            & ((F.col(item1_count_column) != F.col("count")) | (F.col(item2_count_column) != F.col("count"))),
-            1,
-        ).otherwise(None),
-    ).drop(item1_count_column, item2_count_column)
-    return df
-
-
 def one_to_many_antibody_flag(
     df: DataFrame,
     column_name_to_assign: str,
@@ -623,73 +563,30 @@ def one_to_many_antibody_flag(
         count_barcode_labs_column_name,
         ">1",
     )
-    window = Window.partitionBy(group_by_column).orderBy(
-        "identify_one_to_many_antibody_flag", diff_interval_hours, visit_date
+    df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
+    selection_column = "identify_one_to_many_antibody_flag"
+    row_num_column = "row_num"
+    group_num_column = "group_num"
+    diff_interval_hours = "abs_diff_interval"
+    rows_diff_to_ref = "rows_diff_to_ref_flag"
+    inconsistent_rows = "inconsistent_data_flag"
+
+    window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
+    df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
+    df = flag_rows_different_to_reference_row(
+        df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_num_column, 1
     )
-    df, dft = assign_group_and_row_number_columns(df, window, group_by_column)
-
-    df, reference_col_name = assign_first_row_value_ref(
-        df=df, reference_column=diff_interval_hours, group_column="group", row_column="row_num", row_num=1
+    df = check_consistency_in_retained_rows(
+        df, [siemens_column, tdi_column], rows_diff_to_ref, group_num_column, inconsistent_rows
     )
-
-    df = flag_columns_different_to_ref(
-        df=df,
-        exclusion_column="row_num",
-        exclusion_row_value=1,
-        selection_column="identify_one_to_many_antibody_flag",
-        reference_column=reference_col_name,
-        check_column=diff_interval_hours,
-        column_name_to_assign="time_different_to_first_drop",
-    )
-
-    dfj = check_consistent_data(df=df, check_column1=siemens_column, check_column2=tdi_column, group_by_column="group")
-
-    dfn = dft.join(dfj, (dfj.g == dft.group)).drop("dummy", "group", "count")
-
-    df = df.join(
-        dfn,
-        (dfn["b"] == df[group_by_column])
-        & (dfn["g"] == df["group"])
-        & (dfn["s"].eqNullSafe(df[siemens_column]))
-        & (dfn["t"].eqNullSafe(df[tdi_column])),
-    ).orderBy("group", "row_num")
-
-    df = create_inconsistent_data_drop_flag(
-        df=df, selection_column="identify_one_to_many_antibody_flag", item1_count_column="cs", item2_count_column="ct"
-    ).drop("s", "t", "b", "g")
-
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (
-                (F.col("identify_one_to_many_antibody_flag") == 1)
-                & (
-                    ((F.col("iconsistent_data_drop") == 1) & (F.col("row_num") != 1))
-                    | (F.col("time_different_to_first_drop") == 1)
-                )
-            ),
-            1,
+            ((F.col(rows_diff_to_ref) == 1) | (F.col(inconsistent_rows) == 1)) & (F.col(selection_column) == 1), 1
         ).otherwise(None),
     )
-    df = df.withColumn(
-        "failed_due_to_indistinct_match",
-        F.when(
-            (
-                (F.col("identify_one_to_many_antibody_flag") == 1)
-                & ((F.col(column_name_to_assign).isNull()) & (F.col("row_num") != 1) & (F.col("count") != 1))
-            ),
-            1,
-        ).otherwise(None),
-    )
-
-    return df.drop(
-        reference_col_name,
-        "group",
-        "count",
-        "row_num",
-        "time_different_to_first_drop",
-        "iconsistent_data_drop",
-    )
+    df = df.orderBy(selection_column, diff_interval_hours, visit_date)
+    return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
 
 
 def one_to_many_swabs(
