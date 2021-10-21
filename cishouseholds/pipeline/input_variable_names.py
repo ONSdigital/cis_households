@@ -76,7 +76,7 @@ unprocessed_bloods_variable_name_map = {
     "Sample Type V/C": "sample_type",
 }
 
-iqvia_v2_variable_name_map = {
+survey_responses_v2_variable_name_map = {
     "ons_household_id": "ons_household_id",
     "Visit_ID": "visit_id",
     "Visit Status": "visit_status",
@@ -288,12 +288,12 @@ iqvia_v2_variable_name_map = {
     "Long_Covid_Palpitations": "long_covid_palpitations",
     "Long_Covid_Low_mood_not_enjoying_anything": "long_covid_low_mood",
     "Long_Covid_Difficulty_concentrating": "long_covid_difficulty_concentrating",
-    "Have_you_been_offered_a_vaccination": "covid_vaccine_offered",
-    "Vaccinated_Against_Covid": "covid_vaccine_received",
-    "Type_Of_Vaccination": "covid_vaccine_type",
-    "Vaccination_Other": "covid_vaccine_type_other",
-    "Number_Of_Doses": "covid_vaccine_number_of_doses",
-    "Date_Of_Vaccination": "covid_vaccine_last_vaccination_date",
+    "Have_you_been_offered_a_vaccination": "cis_covid_vaccine_offered",
+    "Vaccinated_Against_Covid": "cis_covid_vaccine_received",
+    "Type_Of_Vaccination": "cis_covid_vaccine_type",
+    "Vaccination_Other": "cis_covid_vaccine_type_other",
+    "Number_Of_Doses": "cis_covid_vaccine_number_of_doses",
+    "Date_Of_Vaccination": "cis_covid_vaccine_date",
     "Have_you_been_outside_UK_since_April": "outside_uk_since_april_2020",
     "been_outside_uk_last_country": "outside_uk_last_country",
     "been_outside_uk_last_date": "outside_uk_last_date",
