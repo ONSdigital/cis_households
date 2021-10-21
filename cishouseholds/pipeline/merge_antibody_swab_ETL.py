@@ -16,7 +16,9 @@ def merge_antibody_swab_ETL():
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
     merge_antibody_ETL(storage_config, spark_session)
-    merge_swab_ETL(storage_config, spark_session)
+    merge_df = merge_swab_ETL(storage_config, spark_session)
+
+    return merge_df
 
 
 def merge_antibody_ETL(storage_config, spark_session):
@@ -62,6 +64,8 @@ def merge_antibody_ETL(storage_config, spark_session):
     output_table_list = ["processed_survey_antibody_merge", "processed_survey_antibody_merge_residuals"]
     for df, table_name in zip(output_df_list, output_table_list):
         survey_df = update_table(df, table_name)
+
+    return survey_antibody_df
 
 
 def merge_swab_ETL(storage_config, spark_session):
@@ -118,3 +122,5 @@ def merge_swab_ETL(storage_config, spark_session):
     ]
     for df, table_name in zip(output_df_list, output_table_list):
         survey_df = update_table(df, table_name)
+
+    return survey_antibody_swab_df
