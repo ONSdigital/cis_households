@@ -3,20 +3,22 @@
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: 'No'
   age_at_visit: 39.0
-  age_group_large_range: 35-39
-  ageg_7: 35-49
-  ageg_small: 20-49
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
-  antibody_test_since_last_visit: 'No'
-  antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
-  antibody_test_since_last_visit_results: One or more negative tests but none positive
-  approached_for_blood_samples?: null
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 35-39
+  age_group_7_intervals: 35-49
+  age_group_over_16: 16-49
+  approached_for_blood_samples: null
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
+  cis_covid_vaccine_date: '2022-01-01 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: '2'
+  cis_covid_vaccine_offered: 'Yes'
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Moderna
+  cis_covid_vaccine_type_other: null
   city: Marlow
   confirm_receive_vouchers: 'true'
   consent: null
@@ -107,6 +109,15 @@
   no_blood_reason_venous: Participant dehydrated
   no_email_address: 0
   ons_household_id: '392744995712'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_location: Participant Would Not/Could Not Answer
+  other_antibody_test_results: One or more negative tests but none positive
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: null
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: 'No'
   outside_uk_last_country: Zimbabwe
   outside_uk_last_date: '2020-09-10 00:00:00.000000'
   outside_uk_since_april_2020: 'No'
@@ -116,10 +127,6 @@
   participant_status: Completed
   participant_testing_group: Blood and Swab
   participant_visit_status: Patient did not attend
-  pcr_test_first_positive_date: null
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: 'No'
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 21
   person_1_not_consenting_age: 37.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
@@ -213,12 +220,6 @@
   title: Dr.
   transport_to_work_or_school: Other method
   type_of_visit: First Visit
-  vaccine_last_vaccination_date: '2022-01-01 00:00:00.000000'
-  vaccine_number_of_doses: '2'
-  vaccine_offered_since_last_visit: 'Yes'
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: null
-  vaccine_type_since_last_visit: Moderna
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -244,20 +245,22 @@
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: 'No'
   age_at_visit: null
-  age_group_large_range: null
-  ageg_7: null
-  ageg_small: null
-  antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
-  antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
-  antibody_test_since_last_visit: null
-  antibody_test_since_last_visit_location: Private Lab
-  antibody_test_since_last_visit_results: null
-  approached_for_blood_samples?: 'No'
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
+  approached_for_blood_samples: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  cis_covid_vaccine_date: null
+  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_offered: null
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_type_other: OtherVaxx
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
@@ -350,6 +353,15 @@
   no_blood_reason_venous: Non-contact visit. Household self-isolating
   no_email_address: 0
   ons_household_id: '352709577630'
+  other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
+  other_antibody_test_location: Private Lab
+  other_antibody_test_results: null
+  other_antibody_test_since_last_visit: null
+  other_pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
+  other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: 'Yes'
   outside_uk_last_country: Pakistan
   outside_uk_last_date: null
   outside_uk_since_april_2020: null
@@ -359,10 +371,6 @@
   participant_status: Active
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
-  pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  pcr_test_since_last_visit: 'Yes'
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 63
   person_1_not_consenting_age: 80.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
@@ -460,12 +468,6 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
-  vaccine_last_vaccination_date: null
-  vaccine_number_of_doses: '1'
-  vaccine_offered_since_last_visit: null
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Sinovac
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -492,20 +494,22 @@
   able_to_take_blood: null
   accepted_invite_fingerprick: 'No'
   age_at_visit: 6.0
-  age_group_large_range: 5-9
-  ageg_7: 2-11
-  ageg_small: 2-11
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
-  antibody_test_since_last_visit: 'No'
-  antibody_test_since_last_visit_location: null
-  antibody_test_since_last_visit_results: One or more positive test(s)
-  approached_for_blood_samples?: 'No'
+  age_group_5_intervals: 2-11
+  age_group_5_year_intervals: 5-9
+  age_group_7_intervals: 2-11
+  age_group_over_16: null
+  approached_for_blood_samples: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: null
+  cis_covid_vaccine_date: '2022-01-06 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_offered: 'No'
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Other / specify
+  cis_covid_vaccine_type_other: null
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
@@ -599,6 +603,15 @@
   no_blood_reason_venous: Participant time constraints
   no_email_address: 0
   ons_household_id: '248046164260'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_location: null
+  other_antibody_test_results: One or more positive test(s)
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: null
+  other_pcr_test_since_last_visit: null
   outside_uk_last_country: Zimbabwe
   outside_uk_last_date: '2020-04-27 00:00:00.000000'
   outside_uk_since_april_2020: 'Yes'
@@ -608,10 +621,6 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: null
-  pcr_test_since_last_visit_results: null
   person_1_age: 68
   person_1_not_consenting_age: 12.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
@@ -708,12 +717,6 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: First Visit
-  vaccine_last_vaccination_date: '2022-01-06 00:00:00.000000'
-  vaccine_number_of_doses: 3 or more
-  vaccine_offered_since_last_visit: 'No'
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: null
-  vaccine_type_since_last_visit: Other / specify
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DHVF-4869598675
@@ -740,20 +743,22 @@
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: null
   age_at_visit: 18.0
-  age_group_large_range: 15-19
-  ageg_7: 17-25
-  ageg_small: 12-19
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: null
-  antibody_test_since_last_visit: 'No'
-  antibody_test_since_last_visit_location: Home Test
-  antibody_test_since_last_visit_results: One or more negative tests but none positive
-  approached_for_blood_samples?: null
+  age_group_5_intervals: 12-19
+  age_group_5_year_intervals: 15-19
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  approached_for_blood_samples: null
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  cis_covid_vaccine_date: null
+  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_offered: 'No'
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: Novavax
+  cis_covid_vaccine_type_other: OtherVaxx
   city: Saltash
   confirm_receive_vouchers: 'false'
   consent: null
@@ -844,6 +849,15 @@
   no_blood_reason_venous: Participant dehydrated
   no_email_address: 0
   ons_household_id: '883187696082'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: null
+  other_antibody_test_location: Home Test
+  other_antibody_test_results: One or more negative tests but none positive
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: null
   outside_uk_last_country: Zimbabwe
   outside_uk_last_date: '2020-05-03 00:00:00.000000'
   outside_uk_since_april_2020: 'Yes'
@@ -853,10 +867,6 @@
   participant_status: Withdrawn
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: null
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 13
   person_1_not_consenting_age: 87.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
@@ -952,12 +962,6 @@
   title: Miss.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
-  vaccine_last_vaccination_date: null
-  vaccine_number_of_doses: '1'
-  vaccine_offered_since_last_visit: 'No'
-  vaccine_received_since_last_visit: null
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Novavax
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DHVF-6249804207
@@ -986,20 +990,22 @@
   able_to_take_blood: 'No'
   accepted_invite_fingerprick: 'No'
   age_at_visit: 1.0
-  age_group_large_range: null
-  ageg_7: null
-  ageg_small: null
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  antibody_test_since_last_visit: null
-  antibody_test_since_last_visit_location: null
-  antibody_test_since_last_visit_results: One or more positive test(s)
-  approached_for_blood_samples?: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
+  approached_for_blood_samples: null
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  cis_covid_vaccine_date: '2022-01-06 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_offered: null
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_type_other: OtherVaxx
   city: Coatbridge
   confirm_receive_vouchers: 'false'
   consent: null
@@ -1090,6 +1096,15 @@
   no_blood_reason_venous: Bruising or pain after first attempt
   no_email_address: 0
   ons_household_id: '602276804025'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  other_antibody_test_location: null
+  other_antibody_test_results: One or more positive test(s)
+  other_antibody_test_since_last_visit: null
+  other_pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: null
   outside_uk_last_country: Kenya
   outside_uk_last_date: '2020-12-04 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -1099,10 +1114,6 @@
   participant_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: null
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 20
   person_1_not_consenting_age: 60.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
@@ -1198,12 +1209,6 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
-  vaccine_last_vaccination_date: '2022-01-06 00:00:00.000000'
-  vaccine_number_of_doses: '1'
-  vaccine_offered_since_last_visit: null
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Sinopharm
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1231,20 +1236,22 @@
   able_to_take_blood: null
   accepted_invite_fingerprick: null
   age_at_visit: 24.0
-  age_group_large_range: 20-24
-  ageg_7: 17-25
-  ageg_small: 20-49
-  antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
-  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
-  antibody_test_since_last_visit: null
-  antibody_test_since_last_visit_location: Private Lab
-  antibody_test_since_last_visit_results: One or more positive test(s)
-  approached_for_blood_samples?: 'Yes'
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  approached_for_blood_samples: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: 'Yes'
+  cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_offered: null
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Sputnik
+  cis_covid_vaccine_type_other: OtherVaxx
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
@@ -1337,6 +1344,15 @@
   no_blood_reason_venous: Participant dehydrated
   no_email_address: 0
   ons_household_id: '217846198988'
+  other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_location: Private Lab
+  other_antibody_test_results: One or more positive test(s)
+  other_antibody_test_since_last_visit: null
+  other_pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: One or more negative tests but none were positive
+  other_pcr_test_since_last_visit: 'Yes'
   outside_uk_last_country: Samoa
   outside_uk_last_date: '2020-11-09 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -1346,10 +1362,6 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: Re-scheduled
-  pcr_test_first_positive_date: '2022-01-02 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: 'Yes'
-  pcr_test_since_last_visit_results: One or more negative tests but none were positive
   person_1_age: 23
   person_1_not_consenting_age: 30.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
@@ -1446,12 +1458,6 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
-  vaccine_last_vaccination_date: '2022-01-02 00:00:00.000000'
-  vaccine_number_of_doses: 3 or more
-  vaccine_offered_since_last_visit: null
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Sputnik
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DVH-0739888271
@@ -1478,20 +1484,22 @@
   able_to_take_blood: null
   accepted_invite_fingerprick: null
   age_at_visit: 24.0
-  age_group_large_range: 20-24
-  ageg_7: 17-25
-  ageg_small: 20-49
-  antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
-  antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
-  antibody_test_since_last_visit: 'No'
-  antibody_test_since_last_visit_location: In the NHS (e.g. GP or hospital)
-  antibody_test_since_last_visit_results: null
-  approached_for_blood_samples?: null
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  approached_for_blood_samples: null
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
+  cis_covid_vaccine_date: null
+  cis_covid_vaccine_number_of_doses: null
+  cis_covid_vaccine_offered: null
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: Valneva
+  cis_covid_vaccine_type_other: OtherVaxx
   city: Charlbury
   confirm_receive_vouchers: 'true'
   consent: null
@@ -1582,6 +1590,15 @@
   no_blood_reason_venous: Two attempts made
   no_email_address: 0
   ons_household_id: '352206298026'
+  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
+  other_antibody_test_location: In the NHS (e.g. GP or hospital)
+  other_antibody_test_results: null
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: '2022-01-07 00:00:00.000000'
+  other_pcr_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: 'Yes'
   outside_uk_last_country: Jamaica
   outside_uk_last_date: '2020-06-28 00:00:00.000000'
   outside_uk_since_april_2020: 'Yes'
@@ -1591,10 +1608,6 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  pcr_test_first_positive_date: '2022-01-07 00:00:00.000000'
-  pcr_test_last_negative_date: '2022-01-01 00:00:00.000000'
-  pcr_test_since_last_visit: 'Yes'
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 30
   person_1_not_consenting_age: 93.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
@@ -1690,12 +1703,6 @@
   title: Mrs.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
-  vaccine_last_vaccination_date: null
-  vaccine_number_of_doses: null
-  vaccine_offered_since_last_visit: null
-  vaccine_received_since_last_visit: null
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Valneva
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DVH-2195478104
@@ -1722,20 +1729,22 @@
   able_to_take_blood: null
   accepted_invite_fingerprick: 'No'
   age_at_visit: 0.0
-  age_group_large_range: null
-  ageg_7: null
-  ageg_small: null
-  antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
-  antibody_test_last_negative_date: null
-  antibody_test_since_last_visit: 'Yes'
-  antibody_test_since_last_visit_location: In the NHS (e.g. GP or hospital)
-  antibody_test_since_last_visit_results: All tests failed
-  approached_for_blood_samples?: 'No'
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
+  approached_for_blood_samples: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
+  cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: null
+  cis_covid_vaccine_offered: 'No'
+  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_type_other: OtherVaxx
   city: Luton
   confirm_receive_vouchers: 'false'
   consent: null
@@ -1827,6 +1836,15 @@
   no_blood_reason_venous: Non-contact visit. Household self-isolating
   no_email_address: 0
   ons_household_id: '261449825198'
+  other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  other_antibody_test_last_negative_date: null
+  other_antibody_test_location: In the NHS (e.g. GP or hospital)
+  other_antibody_test_results: All tests failed
+  other_antibody_test_since_last_visit: 'Yes'
+  other_pcr_test_first_positive_date: '2022-01-09 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: 'No'
   outside_uk_last_country: Honduras
   outside_uk_last_date: null
   outside_uk_since_april_2020: null
@@ -1836,10 +1854,6 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: null
-  pcr_test_first_positive_date: '2022-01-09 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: 'No'
-  pcr_test_since_last_visit_results: One or more negative tests but none positive
   person_1_age: 27
   person_1_not_consenting_age: 42.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
@@ -1935,12 +1949,6 @@
   title: Dr.
   transport_to_work_or_school: Car or Van
   type_of_visit: Follow-up Visit
-  vaccine_last_vaccination_date: '2022-01-07 00:00:00.000000'
-  vaccine_number_of_doses: null
-  vaccine_offered_since_last_visit: 'No'
-  vaccine_received_since_last_visit: 'No'
-  vaccine_type_other_since_last_visit: OtherVaxx
-  vaccine_type_since_last_visit: Sinovac
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DVH-2661757503
@@ -1965,20 +1973,22 @@
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: 'Yes'
   age_at_visit: 24.0
-  age_group_large_range: 20-24
-  ageg_7: 17-25
-  ageg_small: 20-49
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: null
-  antibody_test_since_last_visit: 'No'
-  antibody_test_since_last_visit_location: Participant Would Not/Could Not Answer
-  antibody_test_since_last_visit_results: All tests failed
-  approached_for_blood_samples?: null
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  approached_for_blood_samples: null
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: null
+  cis_covid_vaccine_date: '2022-01-05 00:00:00.000000'
+  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_offered: null
+  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_type: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: null
   city: Hove
   confirm_receive_vouchers: 'false'
   consent: null
@@ -2069,6 +2079,15 @@
   no_blood_reason_venous: Other
   no_email_address: 0
   ons_household_id: '704542495687'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: null
+  other_antibody_test_location: Participant Would Not/Could Not Answer
+  other_antibody_test_results: All tests failed
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: null
+  other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_pcr_test_results: All tests failed
+  other_pcr_test_since_last_visit: 'No'
   outside_uk_last_country: Latvia
   outside_uk_last_date: null
   outside_uk_since_april_2020: 'Yes'
@@ -2078,10 +2097,6 @@
   participant_status: Active
   participant_testing_group: Blood and Swab
   participant_visit_status: null
-  pcr_test_first_positive_date: null
-  pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  pcr_test_since_last_visit: 'No'
-  pcr_test_since_last_visit_results: All tests failed
   person_1_age: 74
   person_1_not_consenting_age: 60.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
@@ -2177,12 +2192,6 @@
   title: Dr.
   transport_to_work_or_school: Bicycle
   type_of_visit: First Visit
-  vaccine_last_vaccination_date: '2022-01-05 00:00:00.000000'
-  vaccine_number_of_doses: 3 or more
-  vaccine_offered_since_last_visit: null
-  vaccine_received_since_last_visit: 'Yes'
-  vaccine_type_other_since_last_visit: null
-  vaccine_type_since_last_visit: Oxford/AstraZeneca
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -2209,20 +2218,22 @@
   able_to_take_blood: null
   accepted_invite_fingerprick: null
   age_at_visit: 36.0
-  age_group_large_range: 35-39
-  ageg_7: 35-49
-  ageg_small: 20-49
-  antibody_test_first_positive_date: null
-  antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
-  antibody_test_since_last_visit: null
-  antibody_test_since_last_visit_location: Private Lab
-  antibody_test_since_last_visit_results: null
-  approached_for_blood_samples?: 'No'
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 35-39
+  age_group_7_intervals: 35-49
+  age_group_over_16: 16-49
+  approached_for_blood_samples: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
+  cis_covid_vaccine_date: null
+  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_offered: 'Yes'
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: Moderna
+  cis_covid_vaccine_type_other: null
   city: Barnet
   confirm_receive_vouchers: 'true'
   consent: null
@@ -2313,6 +2324,15 @@
   no_blood_reason_venous: Participant dehydrated
   no_email_address: 0
   ons_household_id: '296617139656'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_location: Private Lab
+  other_antibody_test_results: null
+  other_antibody_test_since_last_visit: null
+  other_pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_pcr_test_last_negative_date: null
+  other_pcr_test_results: Waiting for all results
+  other_pcr_test_since_last_visit: null
   outside_uk_last_country: Iceland
   outside_uk_last_date: '2020-09-20 00:00:00.000000'
   outside_uk_since_april_2020: null
@@ -2322,10 +2342,6 @@
   participant_status: Active
   participant_testing_group: null
   participant_visit_status: Completed
-  pcr_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  pcr_test_last_negative_date: null
-  pcr_test_since_last_visit: null
-  pcr_test_since_last_visit_results: Waiting for all results
   person_1_age: 28
   person_1_not_consenting_age: null
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
@@ -2423,12 +2439,6 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
-  vaccine_last_vaccination_date: null
-  vaccine_number_of_doses: '1'
-  vaccine_offered_since_last_visit: 'Yes'
-  vaccine_received_since_last_visit: null
-  vaccine_type_other_since_last_visit: null
-  vaccine_type_since_last_visit: Moderna
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983

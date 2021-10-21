@@ -22,9 +22,13 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 
 @pytest.mark.integration
 def test_responses_version_2_delta_df(responses_v2_survey_ETL_output, regression_test_df):
-    regression_test_df(responses_v2_survey_ETL_output, "visit_id", "processed_responses_v2")
+    regression_test_df(
+        responses_v2_survey_ETL_output.drop("csv_filename"), "visit_id", "processed_responses_v2"
+    )  # removes filename column to account for variation in filename caused by regression
 
 
 @pytest.mark.integration
 def test_responses_version_2_delta_schema(regression_test_df_schema, responses_v2_survey_ETL_output):
-    regression_test_df_schema(responses_v2_survey_ETL_output, "processed_responses_v2")
+    regression_test_df_schema(
+        responses_v2_survey_ETL_output.drop("csv_filename"), "processed_responses_v2"
+    )  # removes filename column to account for variation in filename caused by regression
