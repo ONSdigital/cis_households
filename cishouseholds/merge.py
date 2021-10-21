@@ -5,6 +5,26 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+def merge_assayed_bloods(df: DataFrame, blood_group_column:str):
+    """
+    Given a dataframe containing records for both blood groups create a new dataframe with columns for 
+    each specific blood group seperated with the appriopiate extension appended to the end of the 
+    column name
+    Parameters
+    ----------
+    df
+    blood_group_column
+    """
+    join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    split_dataframes = []
+    for blood_group in ["S","N"]:
+        split_df = df.filter(F.col(blood_group_column)==blood_group)
+        for col in split_df.columns:
+            if col not in join_on_colums:
+                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower())
+        split_dataframes.append(split_df)
+    joined_df = join_dataframes(df1=split_dataframes[0],df2=split_dataframes[1],on=join_on_colums)
+    return joined_df
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
@@ -229,7 +249,7 @@ def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
+def join_dataframes(df1: DataFrame, df2: DataFrame, on: str, join_type: str = "outer"):
     """
     Join two datasets.
     Parameters
@@ -241,7 +261,7 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
     join_type
         Specify join type to apply to .join() method
     """
-    return df1.join(df2, on=reference_column, how=join_type)
+    return df1.join(df2, on=on, how=join_type)
 
 
 def assign_first_row_value_ref(df: DataFrame, reference_column: str, group_column: str, row_column, row_num: int):
