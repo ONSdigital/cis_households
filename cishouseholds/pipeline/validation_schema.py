@@ -1,39 +1,39 @@
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 swab_validation_schema = {
-    "swab_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
-    "pcr_result_classification": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
-    "pcr_datetime": {"type": "string", "nullable": True},
-    "pcr_lab_id": {"type": "string"},
-    "pcr_method": {"type": "string"},
-    "orf1ab_gene_pcr_target": {"type": "string", "allowed": ["ORF1ab"]},
-    "orf1ab_gene_pcr_result_classification": {"type": "string", "allowed": swab_allowed_pcr_results},
-    "orf1ab_gene_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
-    "n_gene_pcr_target": {"type": "string", "allowed": ["N gene"]},
-    "n_gene_pcr_result_classification": {"type": "string", "allowed": swab_allowed_pcr_results},
-    "n_gene_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
-    "s_gene_pcr_target": {"type": "string", "allowed": ["S gene"]},
-    "s_gene_pcr_result_classification": {"type": "string", "allowed": swab_allowed_pcr_results},
-    "s_gene_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
-    "ms2_pcr_target": {"type": "string", "allowed": ["MS2"]},
-    "ms2_pcr_result_classification": {"type": "string", "allowed": swab_allowed_pcr_results},
-    "ms2_pcr_cq_value": {"type": "double", "nullable": True, "min": 0},
+    "Sample": {"type": "string", "regex": r"ONS\d{8}"},
+    "Result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
+    "Date Tested": {"type": "string", "nullable": True},
+    "Lab ID": {"type": "string"},
+    "testKit": {"type": "string"},
+    "CH1-Target": {"type": "string", "allowed": ["ORF1ab"]},
+    "CH1-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
+    "CH1-Cq": {"type": "double", "nullable": True, "min": 0},
+    "CH2-Target": {"type": "string", "allowed": ["N gene"]},
+    "CH2-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
+    "CH2-Cq": {"type": "double", "nullable": True, "min": 0},
+    "CH3-Target": {"type": "string", "allowed": ["S gene"]},
+    "CH3-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
+    "CH3-Cq": {"type": "double", "nullable": True, "min": 0},
+    "CH4-Target": {"type": "string", "allowed": ["MS2"]},
+    "CH4-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
+    "CH4-Cq": {"type": "double", "nullable": True, "min": 0},
 }
 
 
 blood_validation_schema = {
-    "blood_sample_barcode": {"type": "string", "regex": r"ONS\d{8}"},
-    "blood_sample_type": {"type": "string", "allowed": ["Venous", "Capillary"]},
-    "antibody_test_plate_id": {"type": "string", "regex": r"(ON[BS]|MIX)_[0-9]{6}[C|V]S(-[0-9]+)"},
-    "antibody_test_well_id": {"type": "string", "regex": r"[A-Z][0-9]{2}"},
-    "antibody_test_result_classification": {"type": "string", "allowed": ["DETECTED", "NOT detected", "failed"]},
-    "antibody_test_result_value": {"type": "double", "nullable": True, "min": 0},
-    "antibody_test_bounded_result_value": {"type": "string"},
-    "antibody_test_undiluted_result_value": {"type": "string"},
-    "antibody_test_result_recorded_date": {"type": "string", "nullable": True},
-    "blood_sample_arrayed_date": {"type": "string", "nullable": True},
-    "blood_sample_received_date": {"type": "string", "nullable": True},
-    "blood_sample_collected_datetime": {"type": "string", "nullable": True},
+    "Serum Source ID": {"type": "string", "regex": r"ONS\d{8}"},
+    "Blood Sample Type": {"type": "string", "allowed": ["Venous", "Capillary"]},
+    "Plate Barcode": {"type": "string", "regex": r"(ON[BS]|MIX)_[0-9]{6}[C|V]S(-[0-9]+)"},
+    "Well ID": {"type": "string", "regex": r"[A-Z][0-9]{2}"},
+    "Detection": {"type": "string", "allowed": ["DETECTED", "NOT detected", "failed"]},
+    "Monoclonal quantitation (Colourimetric)": {"type": "double", "nullable": True, "min": 0},
+    "Monoclonal bounded quantitation (Colourimetric)": {"type": "string"},
+    "Monoclonal undiluted quantitation (Colourimetric)": {"type": "string"},
+    "Date ELISA Result record created": {"type": "string", "nullable": True},
+    "Date Samples Arrayed Oxford": {"type": "string", "nullable": True},
+    "Date Samples Received Oxford": {"type": "string", "nullable": True},
+    "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
 sample_direct_eng_wc_schema = {
@@ -70,100 +70,100 @@ sample_northern_ireland_schema = {
     "cis_area_indicator": {"type": "integer", "min": 999, "max": 999},
 }
 
-iqvia_v2_validation_schema = {
+survey_responses_v2_validation_schema = {
     "ons_household_id": {"type": "string"},
-    "visit_id": {"type": "string", "regex": r"DHV(F)?-\d{10}"},
-    "visit_status": {
+    "Visit_ID": {"type": "string", "regex": r"DHV(F)?-\d{10}"},
+    "Visit Status": {
         "type": "string",
         "allowed": ["Completed", "Dispatched", "Household did not attend", "Partially Completed", "Withdrawn"],
     },
-    "participant_visit_status": {
+    "Participant_Visit_status": {
         "type": "string",
         "allowed": ["Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"],
     },
-    "participant_status": {"type": "string", "allowed": ["Active", "Completed", "Withdrawn"]},
+    "Participant_status": {"type": "string", "allowed": ["Active", "Completed", "Withdrawn"]},
     # Allowed options for below now different to what is in excel (more options now)
-    "withdrawal_reason": {"type": "string", "nullable": True},
+    "Withdrawal_reason": {"type": "string", "nullable": True},
     # Will this have to be extended if can be in study >18 months?
-    "type_of_visit": {"type": "string", "allowed": ["First Visit", "Follow-up Visit"]},
+    "Type_of_Visit": {"type": "string", "allowed": ["First Visit", "Follow-up Visit"]},
     # Allowed options for below now different to what is in excel (now can have at least month 19)
-    "visit_order": {"type": "string"},
-    "participant_testing_group": {"type": "string", "allowed": ["Blood and Swab", "Fingerprick and Swab", "Swab Only"]},
-    "visit_datetime": {"type": "string", "nullable": True},
-    # street, city, postcode are mandatory, but in the actual data there are a couple
+    "Visit_Order": {"type": "string"},
+    "Work_Type_Picklist": {"type": "string", "allowed": ["Blood and Swab", "Fingerprick and Swab", "Swab Only"]},
+    "Visit_Date_Time": {"type": "string", "nullable": True},
+    # Street, City, Postcode are mandatory, but in the actual data there are a couple
     # records (3/30) that are null/empty strings
-    "street": {"type": "string"},
-    "city": {"type": "string"},
-    "county": {"type": "string", "nullable": True},
-    "postcode": {"type": "string"},
-    "study_cohort": {"type": "string", "allowed": ["Blood and Swab", "Swab Only"]},
-    "fingerprick_status_household": {
+    "Street": {"type": "string"},
+    "City": {"type": "string"},
+    "County": {"type": "string", "nullable": True},
+    "Postcode": {"type": "string"},
+    "Cohort": {"type": "string", "allowed": ["Blood and Swab", "Swab Only"]},
+    "Fingerprick_Status": {
         "type": "string",
         "nullable": True,
         "allowed": ["Accepted", "At least one person consented", "Declined", "Invited", "Not invited"],
     },
     # Below variable removed in Protocol 9 - assume we can get rid of this validation (and dummy data) at some point
-    "household_members_under_2_years": {"type": "string", "nullable": True, "allowed": ["Yes", "No"]},
+    "Household_Members_Under_2_Years": {"type": "string", "nullable": True, "allowed": ["Yes", "No"]},
     # Change this variable name in order to reflect what the age is measured in, then can also incorporate max?
-    "infant_1_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_2_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_3_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_4_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_5_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_6_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_7_age": {"type": "integer", "min": 0, "nullable": True},
-    "infant_8_age": {"type": "integer", "min": 0, "nullable": True},
-    "household_members_over_2_years_and_not_present": {"type": "string", "nullable": True, "allowed": ["Yes", "No"]},
+    "Infant_1": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_2": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_3": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_4": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_5": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_6": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_7": {"type": "integer", "min": 0, "nullable": True},
+    "Infant_8": {"type": "integer", "min": 0, "nullable": True},
+    "Household_Members_Over_2_and_Not_Present": {"type": "string", "nullable": True, "allowed": ["Yes", "No"]},
     # Why is the minimum here 0 rather than 2?
-    "person_1_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_2_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_3_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_4_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_5_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_6_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_7_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_8_age": {"type": "integer", "min": 0, "nullable": True},
+    "Person_1": {"type": "integer", "min": 0, "nullable": True},
+    "Person_2": {"type": "integer", "min": 0, "nullable": True},
+    "Person_3": {"type": "integer", "min": 0, "nullable": True},
+    "Person_4": {"type": "integer", "min": 0, "nullable": True},
+    "Person_5": {"type": "integer", "min": 0, "nullable": True},
+    "Person_6": {"type": "integer", "min": 0, "nullable": True},
+    "Person_7": {"type": "integer", "min": 0, "nullable": True},
+    "Person_8": {"type": "integer", "min": 0, "nullable": True},
     # should I use max/min for limit the size of the sentence below?
-    "person_1_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    # person_1_not_consenting_age is defined as integer63, should it be an integer?
-    "person_1_reason_for_not_consenting": {"type": "string", "nullable": True},
+    "Person_1_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    # Person_1_Not_Consenting_Age is defined as integer63, should it be an integer?
+    "Person1_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
     # person_1 does not specify whether mandatory or not
-    "person_2_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_2_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_3_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_3_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_4_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_4_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_5_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_5_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_6_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_6_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_7_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_7_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_8_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_8_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "person_9_not_consenting_age": {"type": "integer", "min": 0, "nullable": True},
-    "person_9_reason_for_not_consenting": {"type": "string", "nullable": True},
-    "participant_id": {"type": "string", "regex": r"DHR-\d{12}"},
-    "title": {"type": "string", "allowed": ["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof."], "nullable": True},
+    "Person_2_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person2_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_3_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person3_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_4_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person4_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_5_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person5_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_6_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person6_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_7_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person7_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_8_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person8_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Person_9_Not_Consenting_Age": {"type": "integer", "min": 0, "nullable": True},
+    "Person9_Reason_for_Not_Consenting": {"type": "string", "nullable": True},
+    "Participant_id": {"type": "string", "regex": r"DHR-\d{12}"},
+    "Title": {"type": "string", "nullable": True},
     # No mandatory field: Title, Middle_Name, DoB, Email, Have_landline_number, Have_mobile_number,
-    # Have_email_address, Prefer_receive_vouchers, Able_to_take_blood
+    # Have_Email_address, Prefer_receive_vouchers, Able_to_take_blood
     # double check the characters allowed for first/middle/last name. Make sure that the upper
     # limit applies in cerberus
-    "first_name": {"type": "string"},  # why the example says [REDACTED] name?
-    "middle_name": {"type": "string", "nullable": True},
-    "last_name": {"type": "string"},
-    "date_of_birth": {"type": "string", "nullable": True},
-    # not sure about regex for emails, depends on how specific it is wanted
-    "email": {"type": "string", "nullable": True},  # "regex": r"([a-zA-Z 0-9]|[@-_.]){8,49}"
-    "have_landline_number": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "have_mobile_number": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "have_email_address": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "prefer_receive_vouchers": {"type": "string", "allowed": ["Email", "Paper(Post)"], "nullable": True},
-    "confirm_receive_vouchers": {"type": "string", "allowed": ["false", "true"]},
-    "no_email_address": {"type": "integer", "min": 0, "max": 1},  # amend dummy data to reflect 0/1 options
-    "able_to_take_blood": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "no_blood_reason_fingerprick": {
+    "First_Name": {"type": "string"},  # why the example says [REDACTED] name?
+    "Middle_Name": {"type": "string", "nullable": True},
+    "Last_Name": {"type": "string"},
+    "DoB": {"type": "string", "nullable": True},
+    # not sure about regex for Emails, depends on how specific it is wanted
+    "Email": {"type": "string", "nullable": True},  # "regex": r"([a-zA-Z 0-9]|[@-_.]){8,49}"
+    "Have_landline_number": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Have_mobile_number": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Have_email_address": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Prefer_receive_vouchers": {"type": "string", "allowed": ["Email", "Paper(Post)"], "nullable": True},
+    "Confirm_receive_vouchers": {"type": "string", "allowed": ["false", "true"]},
+    "No_Email_address": {"type": "integer", "min": 0, "max": 1},  # amend dummy data to reflect 0/1 options
+    "Able_to_take_blood": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "No_Blood_reason_fingerprick": {
         "type": "string",
         "allowed": [
             "Bruising or pain after first attempt",
@@ -177,13 +177,13 @@ iqvia_v2_validation_schema = {
         ],
         "nullable": True,
     },
-    "no_blood_reason_venous": {"type": "string", "nullable": True},
-    "blood_sample_barcode": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
-    "swab_sample_barcode": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
-    "samples_taken_datetime": {"type": "string", "nullable": True},
-    "sex": {"type": "string", "allowed": ["Male", "Female"], "nullable": True},
-    "gender": {"type": "string", "allowed": ["Male", "Female", "Prefer not to say"], "nullable": True},
-    "ethnic_group": {
+    "No_Blood_reason_venous": {"type": "string", "nullable": True},
+    "bloods_barcode_1": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
+    "Swab_Barcode_1": {"type": "string", "regex": r"ON[SWCN]\d{8}"},
+    "Date_Time_Samples_Taken": {"type": "string", "nullable": True},
+    "Sex": {"type": "string", "allowed": ["Male", "Female"], "nullable": True},
+    "Gender": {"type": "string", "allowed": ["Male", "Female", "Prefer not to say"], "nullable": True},
+    "Ethnic_group": {
         "type": "string",
         "allowed": [
             "Asian or Asian British",
@@ -193,7 +193,7 @@ iqvia_v2_validation_schema = {
             "White",
         ],
     },
-    "ethnicity": {
+    "Ethnicity": {
         "type": "string",
         "allowed": [
             "Any other Asian background",
@@ -216,27 +216,27 @@ iqvia_v2_validation_schema = {
             "White-Irish",
         ],
     },
-    "ethnicity_other": {"type": "string", "nullable": True},
-    "consent_1_visit": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_5_visits": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_april_22": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_16_visits": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_blood_test": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_finger_prick_a1_a3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "consent_extend_study_under_16_b1_b3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "consent_contact_extra_research": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_contact_extra_researchyn": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "consent_use_of_surplus_blood_samples": {"type": "string", "allowed": ["No", "Yes"]},
-    "consent_use_of_surplus_blood_samplesyn": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "approached_for_blood_samples?": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "consent_blood_samples_if_positive": {"type": "string", "allowed": ["False", "True"]},
-    "consent_blood_samples_if_positiveyn": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "consent_fingerprick_blood_samples": {"type": "string", "allowed": ["False", "True"]},
-    "accepted_invite_fingerprick": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "reconsented_blood": {"type": "string", "allowed": ["False", "True"]},
-    "work_main_job_title": {"type": "string"},
-    "work_main_job_role": {"type": "string"},
-    "work_sectors": {
+    "Ethnicity_Other": {"type": "string", "nullable": True},
+    "Consent_to_First_Visit": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_Five_Visits": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_April_22": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_Sixteen_Visits": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_Blood_Test": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_Finger_prick_A1_A3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Consent_to_extend_study_under_16_B1_B3": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Consent_to_be_Contacted_Extra_Research": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_be_Contacted_Extra_ResearchYN": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Consent_to_use_of_Surplus_Blood_Samples": {"type": "string", "allowed": ["No", "Yes"]},
+    "Consent_to_use_of_Surplus_Blood_SamplesYN": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Approached_for_blood_samples?": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Consent_to_blood_samples_if_positive": {"type": "string", "allowed": ["False", "True"]},
+    "Consent_to_blood_samples_if_positiveYN": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Consent_to_fingerprick_blood_samples": {"type": "string", "allowed": ["False", "True"]},
+    "Accepted_invite_to_fingerprick": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Re_consented_for_blood": {"type": "string", "allowed": ["False", "True"]},
+    "What_is_the_title_of_your_main_job": {"type": "string"},
+    "What_do_you_do_in_your_main_job_business": {"type": "string"},
+    "Occupations_sectors_do_you_work_in": {
         "type": "string",
         "allowed": [
             "Armed forces",
@@ -265,13 +265,13 @@ iqvia_v2_validation_schema = {
             "Transport (incl. storage or logistic)",
         ],
     },
-    "work_sectors_other": {"type": "string", "nullable": True},
-    "work_nursing_or_residential_care_home": {
+    "occupation_sector_other": {"type": "string", "nullable": True},
+    "Work_in_a_nursing_residential_care_home": {
         "type": "string",
         "nullable": True,
         "allowed": ["No", "Participant Would Not/Could Not Answer", "Yes"],
     },
-    "work_healthcare": {
+    "Do_you_currently_work_in_healthcare": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -285,29 +285,29 @@ iqvia_v2_validation_schema = {
             "Secondary care (e.g. hospital.)",
         ],
     },
-    "work_direct_contact_persons": {
+    "Direct_contact_patients_clients_resid": {
         "type": "string",
         "nullable": True,
         "allowed": ["No", "Participant Would Not/Could Not Answer", "Yes"],
     },
-    "illness_lasting_over_12_months": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "illness_reduces_activity_or_ability": {
+    "Have_physical_mental_health_or_illnesses": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "physical_mental_health_or_illness_reduces_activity_ability": {
         "type": "string",
         "nullable": True,
         "allowed": ["Not at all", "Participant Would Not/Could Not Answer", "Yes a little", "Yes a lot"],
     },
-    "have_ever_smoked_regularly": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smokes_or_vapes_description": {"type": "string", "nullable": True},
-    "smokes_or_vapes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smoke_cigarettes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smokes_cigar": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smokes_pipe": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smokes_vape_e_cigarettes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "smokes_hookah_shisha_pipes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "work_status": {"type": "string", "nullable": True},
-    "work_in_additional_paid_employment": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "work_main_job_changed": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "work_location": {
+    "Have_you_ever_smoked_regularly": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Do_you_currently_smoke_or_vape": {"type": "string", "nullable": True},
+    "Do_you_currently_smoke_or_vape_at_all": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Smoke_Yes_cigarettes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Smoke_Yes_cigar": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Smoke_Yes_pipe": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Smoke_Yes_vape_e_cigarettes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Smoke_Hookah/shisha pipes": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "What_is_your_current_working_status": {"type": "string", "nullable": True},
+    "Paid_employment": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Main_Job_Changed": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Where_are_you_mainly_working_now": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -321,12 +321,12 @@ iqvia_v2_validation_schema = {
             "Working from home (in the same grounds or building as your home)",
         ],
     },
-    "work_not_from_home_days_per_week": {
+    "How_often_do_you_work_elsewhere": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1", "2", "3", "4", "5", "6", "7", "Participant Would Not/Could Not Answer", "up to 1"],
     },
-    "transport_to_work_or_school": {
+    "How_do_you_get_to_and_from_work_school": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -349,18 +349,18 @@ iqvia_v2_validation_schema = {
             "Underground or Metro or Light Rail or Tram",
         ],
     },
-    "ability_to_socially_distance_at_work_or_school": {"type": "string", "nullable": True},
-    "had_symptoms_last_7_days": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "which_symptoms_last_7_days": {"type": "string", "nullable": True},
-    "symptoms_last_7_days_onset_date": {"type": "string", "nullable": True},
-    "symptoms_last_7_days_fever": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_muscle_ache_myalgia": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_fatigue_weakness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_sore_throat": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_cough": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_shortness_of_breath": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_headache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "symptoms_last_7_days_nausea_vomiting": {
+    "Can_you_socially_distance_at_work": {"type": "string", "nullable": True},
+    "Had_symptoms_in_the_last_7_days": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Which_symptoms_in_the_last_7_days": {"type": "string", "nullable": True},
+    "Date_of_first_symptom_onset": {"type": "string", "nullable": True},
+    "Symptoms_7_Fever": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Muscle_ache_myalgia": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Fatigue_weakness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Sore_throat": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Cough": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Shortness_of_breath": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Headache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Symptoms_7_Nausea_vomiting": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -368,7 +368,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "symptoms_last_7_days_abdominal_pain": {
+    "Symptoms_7_Abdominal_pain": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -376,7 +376,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "symptoms_last_7_days_diarrhoea": {
+    "Symptoms_7_Diarrhoea": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -384,7 +384,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "symptoms_last_7_days_loss_of_taste": {
+    "Symptoms_7_Loss_of_taste": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -392,7 +392,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "symptoms_last_7_days_loss_of_smell": {
+    "Symptoms_7_Loss_of_smell": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -400,8 +400,8 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "is_self_isolating": {"type": "string", "nullable": True},
-    "think_have_covid_symptoms": {
+    "Are_you_self_Isolating_S2": {"type": "string", "nullable": True},
+    "Do_you_think_you_have_Covid_Symptoms": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -409,7 +409,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "contact_known_positive_covid_last_28_days": {
+    "Contact_Known_Positive_COVID19_28_days": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -417,8 +417,8 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "last_covid_contact_date": {"type": "string", "nullable": True},
-    "last_covid_contact_location": {
+    "If_Known_last_contact_date": {"type": "string", "nullable": True},
+    "If_Known_type_of_contact_S2": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -426,7 +426,7 @@ iqvia_v2_validation_schema = {
             "Outside your home",
         ],
     },
-    "contact_suspect_positive_covid_last_28_days": {
+    "Contact_Suspect_Positive_COVID19_28_d": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -434,8 +434,8 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "last_suspected_covid_contact_date": {"type": "string", "nullable": True},
-    "last_suspected_covid_contact_location": {
+    "If_suspect_last_contact_date": {"type": "string", "nullable": True},
+    "If_suspect_type_of_contact_S2": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -443,7 +443,7 @@ iqvia_v2_validation_schema = {
             "Outside your home",
         ],
     },
-    "hospital_last_28_days": {
+    "You_been_Hospital_last_28_days": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -451,7 +451,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "hospital_last_28_days_other_household_member": {
+    "OtherHouse_been_Hospital_last_28_days": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -459,7 +459,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "care_home_last_28_days": {
+    "Your_been_in_Care_Home_last_28_days": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -467,7 +467,7 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "care_home_last_28_days_other_household_member": {
+    "OtherHouse_been_in_Care_Home_last_28_days": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -475,63 +475,63 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "hours_a_day_with_someone_else_at_home": {"type": "string", "nullable": True, "min": 0, "max": 24},
-    "physical_contact_under_18_years": {
+    "Hours_a_day_with_someone_else": {"type": "string", "nullable": True, "min": 0, "max": 24},
+    "Physical_Contact_18yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "physical_contact_18_to_69_years": {
+    "Physical_Contact_18_to_69_yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "physical_contact_over_70_years": {
+    "Physical_Contact_70_yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "social_distance_contact_under_18_years": {
+    "Social_Distance_Contact_18yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "social_distance_contact_18_to_69_years": {
+    "Social_Distance_Contact_18_to_69_yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "social_distance_contact_over_70_years": {
+    "Social_Distance_Contact_70_yrs": {
         "type": "string",
         "nullable": True,
         "allowed": ["0", "1-5", "11-20", "21 or more", "6-10", "Participant Would Not/Could Not Answer"],
     },
-    "times_hour_or_longer_another_home_last_7_days": {
+    "1Hour_or_Longer_another_person_home": {
         "type": "string",
         "nullable": True,
         "allowed": ["1", "2", "3", "4", "5", "6", "7 times or more", "None", "Participant Would Not/Could Not Answer"],
     },
-    "times_hour_or_longer_another_person_your_home_last_7_days": {
+    "1Hour_or_Longer_another_person_yourhome": {
         "type": "string",
         "nullable": True,
         "allowed": ["1", "2", "3", "4", "5", "6", "7 times or more", "None", "Participant Would Not/Could Not Answer"],
     },
-    "times_outside_shopping_or_socialising_last_7_days": {
+    "Times_Outside_Home_For_Shopping": {
         "type": "string",
         "nullable": True,
         "allowed": ["1", "2", "3", "4", "5", "6", "7 times or more", "None", "Participant Would Not/Could Not Answer"],
     },
-    "times_shopping_last_7_days": {
+    "Shopping_last_7_days": {
         "type": "string",
         "nullable": True,
         "allowed": ["1", "2", "3", "4", "5", "6", "7 times or more", "None", "Participant Would Not/Could Not Answer"],
     },
-    "times_socialise_last_7_days": {
+    "Socialise_last_7_days": {
         "type": "string",
         "nullable": True,
         "allowed": ["1", "2", "3", "4", "5", "6", "7 times or more", "None", "Participant Would Not/Could Not Answer"],
     },
-    "is_regularly_lateral_flow_testing": {
+    "Regular_testing_COVID": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -539,34 +539,34 @@ iqvia_v2_validation_schema = {
             "No",
         ],
     },
-    "face_covering_outside_of_home": {"type": "string", "nullable": True},
-    "face_covering_work": {"type": "string", "nullable": True},
-    "face_covering_other_enclosed_places": {"type": "string", "nullable": True},
-    "think_had_covid": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "think_had_covid_any_symptoms": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "think_had_covid_which_symptoms": {"type": "string", "nullable": True},
-    "symptoms_since_last_visit_fever": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_muscle_ache_myalgia": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_fatigue_weakness": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_sore_throat": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_cough": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_shortness_of_breath": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_headache": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_nausea_vomiting": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_abdominal_pain": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_diarrhoea": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_loss_of_taste": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "symptoms_since_last_visit_loss_of_smell": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "think_had_covid_date": {"type": "string", "nullable": True},
-    "think_had_covid_contacted_nhs": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "think_had_covid_admitted_to_hospital": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "pcr_test_since_last_visit": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "pcr_test_since_last_visit_results": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "pcr_test_first_positive_date": {"type": "string", "nullable": True},
-    "pcr_test_last_negative_date": {"type": "string", "nullable": True},
-    "antibody_test_since_last_visit": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "antibody_test_since_last_visit_results": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
-    "antibody_test_since_last_visit_location": {
+    "Face_Covering_or_Mask_outside_of_home": {"type": "string", "nullable": True},
+    "Face_Mask_Work_Place": {"type": "string", "nullable": True},
+    "Face_Mask_Other_Enclosed_Places": {"type": "string", "nullable": True},
+    "Do_you_think_you_have_had_Covid_19": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "think_had_covid_19_any_symptoms": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "think_had_covid_19_which_symptoms": {"type": "string", "nullable": True},
+    "Previous_Symptoms_Fever": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Muscle_ache_myalgia": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Fatigue_weakness": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Sore_throat": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Cough": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Shortness_of_breath": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Headache": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Nausea_vomiting": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Abdominal_pain": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Diarrhoea": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Loss_of_taste": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Previous_Symptoms_Loss_of_smell": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "If_yes_Date_of_first_symptoms": {"type": "string", "nullable": True},
+    "Did_you_contact_NHS": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Were_you_admitted_to_hospital": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Have_you_had_a_swab_test": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "If_Yes_What_was_result": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "If_positive_Date_of_1st_ve_test": {"type": "string", "nullable": True},
+    "If_all_negative_Date_last_test": {"type": "string", "nullable": True},
+    "Have_you_had_a_blood_test_for_Covid": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "What_was_the_result_of_the_blood_test": {"type": "string", "allowed": ["No", "Yes"], "nullable": True},
+    "Where_was_the_test_done": {
         "type": "string",
         "allowed": [
             "Home Test",
@@ -576,40 +576,40 @@ iqvia_v2_validation_schema = {
         ],
         "nullable": True,
     },
-    "antibody_test_first_positive_date": {"type": "string", "nullable": True},
-    "antibody_test_last_negative_date": {"type": "string", "nullable": True},
-    "have_long_covid_symptoms": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_reduce_activities": {
+    "If_ve_Blood_Date_of_1st_ve_test": {"type": "string", "nullable": True},
+    "If_all_ve_blood_Date_last_ve_test": {"type": "string", "nullable": True},
+    "Have_Long_Covid_Symptoms": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Reduce_Activities": {
         "type": "string",
         "nullable": True,
         "allowed": ["Not at all", "Yes a little", "Yes a lot"],
     },
-    "long_covid_symptoms": {"type": "string", "nullable": True},
-    "long_covid_fever": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_weakness_tiredness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_diarrhoea": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_loss_of_smell": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_shortness_of_breath": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_vertigo_dizziness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_trouble_sleeping": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_headache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_nausea_vomiting": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_loss_of_appetite": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_sore_throat": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_chest_pain": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_worry_anxiety": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_memory_loss_or_confusion": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_muscle_ache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_abdominal_pain": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_loss_of_taste": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_cough": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_palpitations": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_low_mood": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "long_covid_difficulty_concentrating": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "vaccine_offered_since_last_visit": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "vaccine_received_since_last_visit": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Symptoms": {"type": "string", "nullable": True},
+    "Long_Covid_Fever": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Weakness_tiredness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Diarrhoea": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Loss_of_smell": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Shortness_of_breath": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Vertigo_dizziness": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Trouble_sleeping": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Headache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Nausea_vomiting": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Loss_of_appetite": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Sore_throat": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Chest_pain": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Worry_anxiety": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Memory_loss_or_confusion": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Muscle_ache": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Abdominal_pain": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Loss_of_taste": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Cough": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Palpitations": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Low_mood_not_enjoying_anything": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Long_Covid_Difficulty_concentrating": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Have_you_been_offered_a_vaccination": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Vaccinated_Against_Covid": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
     # This may change as other vaccines are considered "acceptable"
-    "vaccine_type_since_last_visit": {
+    "Type_Of_Vaccination": {
         "type": "string",
         "nullable": True,
         "allowed": [
@@ -628,11 +628,11 @@ iqvia_v2_validation_schema = {
             "Valneva",
         ],
     },
-    "vaccine_type_other_since_last_visit": {"type": "string", "nullable": True},
-    "vaccine_number_of_doses": {"type": "string", "nullable": True, "allowed": ["1", "2", "3 or more"]},
-    "vaccine_last_vaccination_date": {"type": "string", "nullable": True},
-    "outside_uk_since_april_2020": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
-    "outside_uk_last_country": {"type": "string", "nullable": True},
-    "outside_uk_last_date": {"type": "string", "nullable": True},
-    "outside_uk_since_last_visit": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "Vaccination_Other": {"type": "string", "nullable": True},
+    "Number_Of_Doses": {"type": "string", "nullable": True, "allowed": ["1", "2", "3 or more"]},
+    "Date_Of_Vaccination": {"type": "string", "nullable": True},
+    "Have_you_been_outside_UK_since_April": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
+    "been_outside_uk_last_country": {"type": "string", "nullable": True},
+    "been_outside_uk_last_date": {"type": "string", "nullable": True},
+    "Have_you_been_outside_UK_Lastspoke": {"type": "string", "nullable": True, "allowed": ["No", "Yes"]},
 }
