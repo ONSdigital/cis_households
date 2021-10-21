@@ -5,6 +5,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 import cishouseholds.merge as M
+from cishouseholds.compare import prepare_for_union
 from cishouseholds.validate import validate_merge_logic
 
 
@@ -298,7 +299,10 @@ def merge_process_filtering(
     df_lab_residuals = df_not_best_match.select(*lab_columns_list).distinct()
 
     df_not_best_match = df_not_best_match.drop(*lab_columns_list)
-    df_all_iqvia = df_best_match.unionByName(df_not_best_match, allowMissingColumns=True)
+
+    df_best_match, df_not_best_match = prepare_for_union(df_best_match, df_not_best_match)
+
+    df_all_iqvia = df_best_match.unionByName(df_not_best_match)
 
     # window function count number of unique id
     window = Window.partitionBy("unique_id_voyager")

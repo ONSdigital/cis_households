@@ -36,7 +36,6 @@ def merge_antibody_ETL(storage_config, spark_session):
     )
 
     antibody_columns_list = [
-        "blood_sample_barcode",
         "blood_sample_type",
         "antibody_test_plate_id",
         "antibody_test_well_id",
@@ -53,16 +52,16 @@ def merge_antibody_ETL(storage_config, spark_session):
         "siemens",
     ]
     merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_antibody = []  # need to know what to put in this list
+    drop_list_columns_antibody = ["drop_flag_mtom_antibody"]  # need to know what to put in this list
 
     survey_antibody_df, survey_antibody_residuals = merge_process_filtering(
         survey_antibody_df, "antibody", antibody_columns_list, merge_combination_list, drop_list_columns_antibody
     )
 
-    output_df_list = ["survey_antibody_df", "survey_antibody_residuals"]
+    output_df_list = [survey_antibody_df, survey_antibody_residuals]
     output_table_list = ["processed_survey_antibody_merge", "processed_survey_antibody_merge_residuals"]
-    for name, table_name in zip(output_df_list, output_table_list):
-        survey_df = update_table(name, table_name)
+    for df, table_name in zip(output_df_list, output_table_list):
+        survey_df = update_table(df, table_name)
 
 
 def merge_swab_ETL(storage_config, spark_session):
@@ -82,18 +81,40 @@ def merge_swab_ETL(storage_config, spark_session):
         "void",
     )
 
-    swab_columns_list = []  # need to know what to put in this list
+    swab_columns_list = [
+        "pcr_result_classification",
+        "pcr_datetime",
+        "pcr_lab_id",
+        "pcr_method",
+        "orf1ab_gene_pcr_target",
+        "orf1ab_gene_pcr_result_classification",
+        "orf1ab_gene_pcr_cq_value",
+        "n_gene_pcr_target",
+        "n_gene_pcr_result_classification",
+        "n_gene_pcr_cq_value",
+        "s_gene_pcr_target",
+        "s_gene_pcr_result_classification",
+        "s_gene_pcr_cq_value",
+        "ms2_pcr_target",
+        "ms2_pcr_result_classification",
+        "ms2_pcr_cq_value",
+        "pcr_date",
+        "cq_pattern",
+        "mean_pcr_cq_value",
+        "one_positive_pcr_target_only",
+    ]
     merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_swab = []  # need to know what to put in this list
+    drop_list_columns_swab = ["drop_flag_mtom_swab"]  # need to know what to put in this list
 
     survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
         survey_antibody_swab_df, "swab", swab_columns_list, merge_combination_list, drop_list_columns_swab
     )
 
-    output_df_list = ["survey_antibody_swab_df", "survey_antibody_swab_residuals", "survey_antibody_swab_failed"]
+    output_df_list = [survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed]
     output_table_list = [
         "processed_survey_antibody_swab_merge",
-        "processed_survey_antibody_swab_merge_residuals" "processed_survey_antibody_swab_merge_failed",
+        "processed_survey_antibody_swab_merge_residuals",
+        "processed_survey_antibody_swab_merge_failed",
     ]
-    for name, table_name in zip(output_df_list, output_table_list):
-        survey_df = update_table(name, table_name)
+    for df, table_name in zip(output_df_list, output_table_list):
+        survey_df = update_table(df, table_name)
