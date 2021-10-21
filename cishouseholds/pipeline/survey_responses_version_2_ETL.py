@@ -1,5 +1,4 @@
 from itertools import chain
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
@@ -23,7 +22,7 @@ from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
-from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
@@ -38,7 +37,7 @@ def survey_responses_version_2_ETL(resource_path: str):
     End to end processing of a IQVIA survey responses CSV file.
     """
     df = extract_validate_transform_survey_responses_version_2_delta(resource_path)
-    update_table(df, "processed_survey_responses_v2")
+    update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
     return df
 
 
@@ -75,16 +74,8 @@ def extract_survey_responses_version_2_delta(spark_session: SparkSession, resour
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 2 survey deltas.
-
-    Parameters
-    ----------
-    df: pyspark.sql.DataFrame
-
-    Return
-    ------
-    df: pyspark.sql.DataFrame
     """
-    df = assign_filename_column(df, "csv_filename")
+    df = assign_filename_column(df, "survey_responses_v2_source_file")
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")

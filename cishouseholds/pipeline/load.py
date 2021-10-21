@@ -1,12 +1,13 @@
 import functools
 import json
 import os
+import pyspark.sql.functions as F
 from datetime import datetime
+from pyspark.sql.dataframe import DataFrame
+from pyspark.sql.session import SparkSession
 
 import pkg_resources
-import pyspark.sql.functions as F
 import yaml
-from pyspark.sql.session import SparkSession
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -38,15 +39,22 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     pipeline_name = spark_session.sparkContext.appName
     pipeline_version = pkg_resources.get_distribution(pipeline_name).version
 
-    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{pipeline_name}_run_log'
+    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
     run_id = 0
     if spark_session.catalog._jcatalog.tableExists(run_log_table):
-        last_run_id = spark_session.read.table(run_log_table).select(F.max("run_id")).first()[0]
+        last_run_id = get_latest_run_id(storage_config, pipeline_name)
         run_id = last_run_id + 1
 
     run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
     run_log_entry.write.mode("append").saveAsTable(run_log_table)  # Always append
     return run_id
+
+
+def get_latest_run_id(storage_config, pipeline_name):
+    """Read the maximum run ID from the run log table."""
+    spark_session = get_or_create_spark_session()
+    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
+    return spark_session.read.table(run_log_table).select(F.max("run_id")).first()[0]
 
 
 def _create_run_log_entry(
@@ -81,8 +89,37 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
 
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
-    pipeline = spark_session.sparkContext.appName
-    run_status_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{pipeline}_run_status'
+    run_status_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_status'
 
     df = spark_session.createDataFrame(run_status_entry, schema)
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
+
+
+def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str):
+    """
+    Update a table with the specified dataframe and log the source files that have been processed.
+    Used to record which files have been processed for each input file type.
+    """
+    update_table(df, table_name)
+    update_processed_file_log(df, filename_column, table_name)
+
+
+def update_processed_file_log(df: DataFrame, filename_column: str, file_type: str):
+    """Collects a list of unique filenames that have been processed and writes them to the specified table."""
+    spark_session = get_or_create_spark_session()
+    newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+    schema = """
+        run_id integer,
+        file_type string,
+        processed_filename string,
+        processed_datetime timestamp
+    """
+    storage_config = get_config()["storage"]
+
+    pipeline_name = spark_session.sparkContext.appName
+    run_id = get_latest_run_id(storage_config, pipeline_name)
+
+    entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
+    df = spark_session.createDataFrame(entry, schema)
+    table_name = f'{storage_config["database"]}.{storage_config["table_prefix"]}processed_filenames'
+    df.write.mode("append").saveAsTable(table_name)  # Always append
