@@ -125,7 +125,10 @@ def assign_work_person_facing_now(
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(work_patient_facing_now_column) == "Yes", "Yes")
-        .when(~F.col(work_patient_facing_now_column).isin("Yes", "No"), F.col(work_patient_facing_now_column))
+        .when(
+            ~(F.col(work_patient_facing_now_column).isin("Yes", "No") | F.col(work_patient_facing_now_column).isNull()),
+            F.col(work_patient_facing_now_column),
+        )
         .otherwise(F.col(column_name_to_assign)),
     )
     return df
