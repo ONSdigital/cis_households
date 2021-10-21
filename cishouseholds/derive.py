@@ -1,10 +1,170 @@
 import re
+from itertools import chain
 
+from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_column_from_coalesce(df, column_name_to_assign, *args):
+def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str):
+    """
+    Assign a column for the approximate school year of an individual given their age at the time
+    of visit
+    Parameters
+    ----------
+    df
+    age_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+        )
+        .when(
+            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+        )
+        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
+            F.col(column_name_to_assign)
+        ),
+    )
+    return df
+
+
+def assign_named_buckets(
+    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, use_current_values=False
+):
+    """
+    Assign a new column with named ranges for given integer ranges contianed within a reference column
+    Parameters
+    ----------
+    df
+    reference_column
+    column_name_to_assign
+    map
+        dictionary containing the map of minimum value in given range (inclusive) to range label string
+    use_current_values
+        boolean operation preset to False to specify if current values in column_name_to_assign should be carried
+        forward if not in range of lookup buckets specified in map
+    """
+    bucketizer = Bucketizer(
+        splits=[float("-Inf"), *list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
+    )
+    dfb = bucketizer.setHandleInvalid("keep").transform(df)
+
+    bucket_dic = {0.0: F.col(column_name_to_assign) if use_current_values else None}
+    for i, value in enumerate(map.values()):
+        bucket_dic[float(i + 1)] = value
+
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*bucket_dic.items())])  # type: ignore
+
+    dfb = dfb.withColumn(column_name_to_assign, mapping_expr[dfb["buckets"]])
+    return dfb.drop("buckets")
+
+
+def assign_age_group_school_year(
+    df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
+):
+    """
+    Assign column_age_group_school_year using multiple references column values in a specific pattern
+    to determin a string coded representation of school year
+    Parameters
+    ----------
+    df:
+    country_column
+    age_column
+    school_year_column
+    column_name_to_assign
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY")
+        .when(
+            ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
+            | (
+                (F.col(country_column).isin("England", "Wales"))
+                & ((F.col(age_column) >= 12) & (F.col(age_column) <= 15))
+                & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
+            )
+            | (
+                (F.col(country_column).isin("Scotland", "NI"))
+                & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
+                & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
+            ),
+            "07SY-11SY",
+        )
+        .when(
+            (
+                (F.col(country_column).isin("England", "Wales"))
+                & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
+                & (F.col(school_year_column) >= 12)
+            )
+            | (
+                (F.col(country_column).isin("Scotland", "NI"))
+                & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
+                & (F.col(school_year_column) >= 12)
+            ),
+            "12SY-24",
+        )
+        .otherwise(None),
+    )
+    df = assign_named_buckets(
+        df, age_column, column_name_to_assign, {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"}, True
+    )
+    return df
+
+
+def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str):
+    """
+    Assign string variable for ethnicity white / non-white depending on bool value 0 / 1
+    Parameters
+    ----------
+    df
+    white_bool_column
+    """
+    df = df.withColumn(column_name_to_assign, F.when(F.col(white_bool_column) == 1, "white").otherwise("non-white"))
+    return df
+
+
+def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Uses references column value to assign a taken column "yes" or "no" depending on whether
+    reference is Null
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    """
+    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "no").otherwise("yes"))
+
+    return df
+
+
+def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_colum: str):
+    """
+    Assign column outer postcode with cleaned data from reference postcode column.
+    take only left part of postcode and capitalise
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    """
+    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_colum, " ").getItem(0)))
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
+    )
+
+    return df
+
+
+def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args):
     """
     Assign new column with values from coalesced columns.
     From households_aggregate_processes.xlsx, derivation number 6.
@@ -122,7 +282,7 @@ def assign_school_year(
     return df
 
 
-def derive_ctpattern(df: DataFrame, column_names, spark_session):
+def derive_cq_pattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -154,7 +314,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
             (0, 1, 1, "N+S"),
             (1, 1, 1, "OR+N+S"),
         ],
-        schema=indicator_list + ["ctpattern"],
+        schema=indicator_list + ["cq_pattern"],
     )
 
     for column_name in column_names:
@@ -308,9 +468,10 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
-    Assign a column with a TimeStamp to a DateType
+    Assign a column with a TimeStampType to a formatted date string.
+    Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
     ----------
@@ -323,13 +484,9 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     Returns
     -------
     pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Expects reference column to be a timestamp and therefore castable.
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
 
 
 def assign_single_column_from_split(

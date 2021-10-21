@@ -1,7 +1,0 @@
-stages:
-  - function:
-    run:
-    resource_path:
-    output_path:
-
-csv_output_path:

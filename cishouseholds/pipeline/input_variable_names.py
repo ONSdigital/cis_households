@@ -19,15 +19,15 @@ swab_variable_name_map = {
 }
 
 
-bloods_variable_name_map = {
+blood_variable_name_map = {
     "Serum Source ID": "blood_sample_barcode",
     "Blood Sample Type": "blood_sample_type",
     "Plate Barcode": "antibody_test_plate_id",
     "Well ID": "antibody_test_well_id",
     "Detection": "antibody_test_result_classification",
-    "Monoclonal Quantitation (Colourmetric)": "antibody_test_result_value",
-    "Monoclonal Bounded Quantitation(Colourmetric)": "antibody_test_bounded_result_value",
-    "Monoclonal undiluted Quantitation(Colourmetric)": "antibody_test_undiluted_result_value",
+    "Monoclonal quantitation (Colourimetric)": "antibody_test_result_value",
+    "Monoclonal bounded quantitation (Colourimetric)": "antibody_test_bounded_result_value",
+    "Monoclonal undiluted quantitation (Colourimetric)": "antibody_test_undiluted_result_value",
     "Date ELISA Result record created": "antibody_test_result_recorded_date",
     "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
     "Date Samples Received Oxford": "blood_sample_received_date",
@@ -259,7 +259,7 @@ iqvia_v2_variable_name_map = {
     "If_Yes_What_was_result": "pcr_test_since_last_visit_results",
     "If_positive_Date_of_1st_ve_test": "pcr_test_first_positive_date",
     "If_all_negative_Date_last_test": "pcr_test_last_negative_date",
-    "Have_you_had_a_antibody_test_for_Covid": "antibody_test_since_last_visit",
+    "Have_you_had_a_blood_test_for_Covid": "antibody_test_since_last_visit",
     "What_was_the_result_of_the_blood_test": "antibody_test_since_last_visit_results",
     "Where_was_the_test_done": "antibody_test_since_last_visit_location",
     "If_ve_Blood_Date_of_1st_ve_test": "antibody_test_first_positive_date",
