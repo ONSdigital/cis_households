@@ -1,10 +1,12 @@
-import re
+from datetime import datetime
 import subprocess
-from typing import Optional
+from typing import Optional, Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
+import pyspark.sql.functions as F
 from pyspark.sql.types import StructType
+import pandas as pd
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
@@ -60,45 +62,58 @@ def read_csv_to_pyspark_df(
         sep=sep,
         **kwargs,
     )
-
+def get_date_from_filename(filename:str, sep:Optional[str]="_", format:Optional[str]="%Y%m%d"):
+    try:
+        file_date = filename.split(sep)[-1].split(".")[0]
+        file_date = datetime.strptime(file_date, format)
+        return file_date.strftime('%Y-%m-%d')
+    except ValueError:
+        return None
+    
 
 def list_contents(
     path: str,
-    level: Optional[str] = "path",
     recursive: Optional[bool] = False,
-):
+    date_from_filename: Optional[bool] = False 
+)->DataFrame:
     """
-    Read contents of a directory and return the path for each file, alternatively
-    returning only full path or all metadata.
+    Read contents of a directory and return the path for each file and
+    returns a dataframe of 
     Parameters
     ----------
     path : String
-    level : String
-    The default is 'path' of the object, 'metadata' will all metadata and 'filename' only the
-    name of all objects in the dir.    recursive : Boolean (opt)
-    Note
-    ----
-    Accepts wildcard/ glob pattern filtering syntax, e.g. the below will only return
-    files names that are .gz files from the 2010's (201[0,1,2,..,9])
-
-    e.g.    >>> list_contents('/dapsen/landing_zone/retailer/historic/201*/v1/*.gz', 'filename')
+    recursive
     """
-    if level not in [None, "path", "filename", "metadata"]:
-        raise ValueError("paths_or_name_only only accepts 'path' or 'filename'" "as an argument")
+    spark_session = get_or_create_spark_session()
     command = ["hadoop", "fs", "-ls"]
     if recursive:
         command.append("-R")
-        ls = subprocess.Popen([*command, path], stdout=subprocess.PIPE)
-        files = []
-        for line in ls.stdout:  # type: ignore
-            f = line.decode("utf-8")
-            if "Found" not in f:
-                metadata, file_path = re.split(r"[ ](?=/)", f)
-                files.append(metadata.split() + [file_path[:-1]])
-                if level == "metadata":
-                    return files
-                elif level == "path":
-                    return [file[-1] for file in files]
-                elif level == "filename":
-                    return [file.split("/")[-1] for file in [file[-1] for file in files]]
-    return None
+    ls = subprocess.Popen([*command, path], stdout=subprocess.PIPE)
+    names = ["permission","id","owner","group","value","upload_date","upload_time","file_path"]
+    files = []
+    for line in ls.stdout:  # type: ignore
+        dic = {}
+        f = line.decode("utf-8")
+        if "Found" not in f:
+            for i, component in enumerate(f.split()):
+                dic[names[i]] = component
+            dic["filename"] = dic["file_path"].split("/")[-1]
+            if date_from_filename:
+                file_date = get_date_from_filename(dic["filename"])
+                if file_date is not None:
+                    dic["upload_date"] = file_date
+            files.append(dic)
+    return spark_session.createDataFrame(pd.DataFrame(files))
+
+def get_files_by_date(path: str, date: Union[str, datetime], selector: str):
+    files = list_contents(path, date_from_filename=True)
+    if type(date) == datetime:
+        date = date.strftime('%Y-%m-%d')
+    files = files.withColumn("upload_date",F.to_date("upload_date", "yyyy-MM-dd"))
+    if selector == "latest":
+        files = files.orderBy("upload_date", "upload_time")
+    elif selector == "after":
+        files = files.filter(F.col("upload_date") >= (F.lit(date)))
+    elif selector == "before":
+        files = files.filter(F.col("upload_date") <= (F.lit(date)))
+    return files.select('file_path').rdd.flatMap(lambda x: x).collect()
