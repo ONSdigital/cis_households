@@ -152,13 +152,19 @@ def transform_survey_responses_version_2_delta(spark_session: SparkSession, df: 
         },
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
-    df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_healthcare")
+    df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = update_work_facing_now_column(
-        df, "work_patient_facing_now", "work_status", ["Furloughed", "not working", "student"]
+        df,
+        "work_patient_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     df = update_work_facing_now_column(
-        df, "work_person_facing_now", "work_status", ["Furloughed", "not working", "student"]
+        df,
+        "work_person_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df

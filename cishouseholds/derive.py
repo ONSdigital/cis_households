@@ -74,12 +74,13 @@ def assign_work_patient_facing_now(
         column_name_to_assign,
         work_healthcare_column,
         {
-            "No": [
+            "Yes": [
                 "Yes, primary care, patient-facing",
                 "Yes, secondary care, patient-facing",
                 "Yes, other healthcare, patient-facing",
             ],
-            "Yes": [
+            "No": [
+                "No",
                 "Yes, primary care, non-patient-facing",
                 "Yes, secondary care, non-patient-facing",
                 "Yes, other healthcare, non-patient-facing",
