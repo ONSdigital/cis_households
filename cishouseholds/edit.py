@@ -81,9 +81,17 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     new_type
         type dictionary to update the schame entry to
     """
+    schema = schema.copy()
     for column_name in column_names:
         schema[column_name] = new_type
     return schema
+
+
+def update_schema_names(schema: dict, column_name_map: dict):
+    """
+    Update schema dictionary column names using a column name map, of old to new names.
+    """
+    return {column_name_map[key]: value for key, value in schema.items()}
 
 
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:

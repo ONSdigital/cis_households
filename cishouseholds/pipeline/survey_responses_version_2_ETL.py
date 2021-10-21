@@ -18,13 +18,15 @@ from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
-from cishouseholds.pipeline.input_variable_names import iqvia_v2_variable_name_map
+from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.timestamp_map import iqvia_v2_time_map
-from cishouseholds.pipeline.validation_schema import iqvia_v2_validation_schema
+from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
+from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
@@ -43,53 +45,36 @@ def survey_responses_version_2_ETL(resource_path: str):
 def extract_validate_transform_survey_responses_version_2_delta(resource_path: str):
     spark_session = get_or_create_spark_session()
     df = extract_survey_responses_version_2_delta(spark_session, resource_path)
+    df = rename_column_names(df, survey_responses_v2_variable_name_map)
+    df = convert_columns_to_timestamps(df, survey_responses_v2_datetime_map)
+
+    _survey_responses_v2_validation_schema = update_schema_names(
+        survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map
+    )
+    survey_responses_v2_datetime_map_list = list(chain(*list(survey_responses_v2_datetime_map.values())))
+    _survey_responses_v2_validation_schema = update_schema_types(
+        _survey_responses_v2_validation_schema, survey_responses_v2_datetime_map_list, {"type": "timestamp"}
+    )
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
 
-    iqvia_v2_time_map_list = list(chain(*list(iqvia_v2_time_map.values())))
-    _iqvia_v2_validation_schema = update_schema_types(
-        iqvia_v2_validation_schema, iqvia_v2_time_map_list, {"type": "timestamp"}
-    )
-    df = validate_and_filter(df, _iqvia_v2_validation_schema, error_accumulator)
+    df = validate_and_filter(df, _survey_responses_v2_validation_schema, error_accumulator)
     df = transform_survey_responses_version_2_delta(df)
     return df
 
 
 def extract_survey_responses_version_2_delta(spark_session: SparkSession, resource_path: str):
-    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(iqvia_v2_validation_schema)
-    raw_iqvia_v2_data_header = "|".join(iqvia_v2_variable_name_map.keys())
-    df = read_csv_to_pyspark_df(
-        spark_session,
-        resource_path,
-        raw_iqvia_v2_data_header,
-        iqvia_v2_spark_schema,
-        sep="|",
-    )
-    df = convert_columns_to_timestamps(df, iqvia_v2_time_map)
+    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(survey_responses_v2_validation_schema)
+    raw_iqvia_v2_data_header = "|".join(survey_responses_v2_validation_schema.keys())
+    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
     return df
 
 
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 2 survey deltas.
-    D11: assign_column_uniform_value
-    D12: assign_column_regex_match
-    D13: assign_column_convert_to_date
-    D14: assign_single_column_from_split
-    D19: assign_consent_code
-    D15: school_year
-    D17: country_barcode
-    D18: hh_id_fake
-    D19: consent
-    D20: work_healthcare
-    D21: work_socialcare
-    D10: self_isolating
-    D10: contact_hospital
-    D10: contact_carehome
-    D22: age_at_visit
-    D23: work_status
 
     Parameters
     ----------
@@ -134,19 +119,19 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
     df = assign_age_at_date(df, "age_at_visit", "visit_datetime", "date_of_birth")
     df = assign_named_buckets(
-        df, "age_at_visit", "ageg_small", {2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
+        df, "age_at_visit", "age_group_5_intervals", {2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
     )
-    df = assign_named_buckets(df, "age_at_visit", "age_group_large_range", {16: "16-49", 50: "50-70", 70: "70+"})
+    df = assign_named_buckets(df, "age_at_visit", "age_group_over_16", {16: "16-49", 50: "50-70", 70: "70+"})
     df = assign_named_buckets(
         df,
         "age_at_visit",
-        "ageg_7",
+        "age_group_7_intervals",
         {2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
         "age_at_visit",
-        "age_group_large_range",
+        "age_group_5_year_intervals",
         {
             2: "2-4",
             5: "5-9",
