@@ -13,10 +13,12 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
-from cishouseholds.edit import convert_barcode_null_if_zero, rename_column_names, update_schema_names
+from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
@@ -45,7 +47,9 @@ def extract_validate_transform_survey_responses_version_2_delta(resource_path: s
     df = rename_column_names(df, survey_responses_v2_variable_name_map)
     df = convert_columns_to_timestamps(df, survey_responses_v2_datetime_map)
 
-    _survey_responses_v2_validation_schema = update_schema_names(survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map)
+    _survey_responses_v2_validation_schema = update_schema_names(
+        survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map
+    )
     survey_responses_v2_datetime_map_list = list(chain(*list(survey_responses_v2_datetime_map.values())))
     _survey_responses_v2_validation_schema = update_schema_types(
         _survey_responses_v2_validation_schema, survey_responses_v2_datetime_map_list, {"type": "timestamp"}
@@ -54,7 +58,7 @@ def extract_validate_transform_survey_responses_version_2_delta(resource_path: s
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
     )
-    
+
     df = validate_and_filter(df, _survey_responses_v2_validation_schema, error_accumulator)
     df = transform_survey_responses_version_2_delta(df)
     return df

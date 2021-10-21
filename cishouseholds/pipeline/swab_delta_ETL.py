@@ -8,7 +8,9 @@ from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import mean_across_columns
-from cishouseholds.edit import convert_columns_to_timestamps, rename_column_names, update_schema_names
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
@@ -19,7 +21,6 @@ from cishouseholds.pipeline.validation_schema import swab_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
-from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
 
 
 @register_pipeline_stage("swab_delta_ETL")
@@ -40,11 +41,13 @@ def extract_validate_transform_swab_delta(resource_path: str):
 
     _swab_validation_schema = update_schema_names(swab_validation_schema, swab_variable_name_map)
     swab_datetime_map_list = list(chain(*list(swab_datetime_map.values())))
-    _swab_validation_schema = update_schema_types(_swab_validation_schema, swab_datetime_map_list, {"type": "timestamp"})
+    _swab_validation_schema = update_schema_types(
+        _swab_validation_schema, swab_datetime_map_list, {"type": "timestamp"}
+    )
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])
-    )    
+    )
     df = validate_and_filter(df, _swab_validation_schema, error_accumulator)
     df = transform_swab_delta(spark_session, df)
     return df

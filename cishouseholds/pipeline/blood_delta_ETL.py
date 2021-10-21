@@ -6,7 +6,9 @@ from pyspark.sql.session import SparkSession
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import substring_column
-from cishouseholds.edit import convert_columns_to_timestamps, rename_column_names, update_schema_names
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import blood_variable_name_map
@@ -30,7 +32,6 @@ def blood_delta_ETL(resource_path: str):
 
 def extract_validate_transform_blood_delta(resource_path: str):
     spark_session = get_or_create_spark_session()
-
 
     df = extract_blood_delta(spark_session, resource_path)
     df = rename_column_names(df, blood_variable_name_map)
