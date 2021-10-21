@@ -70,9 +70,9 @@ fields:
 - metadata: {}
   name: pcr_date
   nullable: true
-  type: date
+  type: string
 - metadata: {}
-  name: ctpattern
+  name: cq_pattern
   nullable: true
   type: string
 - metadata: {}
@@ -80,7 +80,7 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: ctonetarget
+  name: one_positive_pcr_target_only
   nullable: true
   type: integer
 type: struct

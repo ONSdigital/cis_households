@@ -6,6 +6,17 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+    """
+    Use inbuilt pyspark function to get name of the file used in the current spark task
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    return df.withColumn(column_name_to_assign, F.input_file_name())
+
+
 def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str, reference_column: str, map: dict):
     """
     Assing a speciifc column value using a dictionary of values to assign as keys and
@@ -23,6 +34,26 @@ def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str,
             column_name_to_asign,
             F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_asign)),
         )
+    return df
+
+
+def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str):
+    """
+    Assign a column for the appropriate test target type corresponding
+    to that contained within the filename column (S, N)
+    of visit
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    filename_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(filename_column).contains("S"), "S")
+        .when(F.col(filename_column).contains("N"), "N")
+        .otherwise(None),
+    )
     return df
 
 
@@ -380,7 +411,7 @@ def assign_school_year(
     return df
 
 
-def derive_ctpattern(df: DataFrame, column_names, spark_session):
+def derive_cq_pattern(df: DataFrame, column_names, spark_session):
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -412,7 +443,7 @@ def derive_ctpattern(df: DataFrame, column_names, spark_session):
             (0, 1, 1, "N+S"),
             (1, 1, 1, "OR+N+S"),
         ],
-        schema=indicator_list + ["ctpattern"],
+        schema=indicator_list + ["cq_pattern"],
     )
 
     for column_name in column_names:
@@ -566,9 +597,10 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
-    Assign a column with a TimeStamp to a DateType
+    Assign a column with a TimeStampType to a formatted date string.
+    Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
     ----------
@@ -581,13 +613,9 @@ def assign_column_convert_to_date(df: DataFrame, column_name_to_assign: str, ref
     Returns
     -------
     pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Expects reference column to be a timestamp and therefore castable.
     """
 
-    return df.withColumn(column_name_to_assign, F.to_date(F.col(reference_column)))
+    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
 
 
 def assign_single_column_from_split(

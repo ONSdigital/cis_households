@@ -1,0 +1,17 @@
+barcode,unique_id_voyager,count_barcode_voyager,date_visit,date_received,antibody_result_recorded_datetime,antibody_test_result_classification,siemens,tdi,unique_id_antibody,count_barcode_antibody,diff_vs_visit_hr,out_of_date_range_antibody,abs_offset_diff_vs_visit_hr,identify_one_to_many_antibody_flag,drop_flag_1tom_antibody,identify_many_to_one_antibody_flag,drop_flag_mto1_antibody,identify_many_to_many_flag,failed_flag_mtom_antibody,drop_flag_mtom_antibody,1tom_antibody,mto1_antibody,mtom_antibody,failed_1tom_antibody,failed_mto1_antibody,failed_mtom_antibody
+ONS0003,3,3,2020-01-03,2020-01-04,2020-01-04 12:00:00,positive,negative,positive,5,1,24.0,,0.0,,,1.0,1.0,,,,1.0,,,1.0,,
+ONS0003,4,3,2020-01-03,2020-01-04,2020-01-04 12:00:00,positive,negative,positive,5,1,24.0,,0.0,,,1.0,1.0,,,1.0,1.0,,,1.0,,
+ONS0003,5,3,2020-01-03,2020-01-04,2020-01-04 12:00:00,positive,negative,positive,5,1,24.0,,0.0,,,1.0,1.0,,,1.0,1.0,,,1.0,,
+ONS0004,8,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,8,3,24.0,,0.0,,,,,1.0,1.0,,,,1.0,,,1.0
+ONS0004,7,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,positive,negative,positive,7,3,24.0,,0.0,,,,,1.0,1.0,,,,1.0,,,1.0
+ONS0004,6,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,6,3,24.0,,0.0,,,,,1.0,1.0,,,,1.0,,,1.0
+ONS0004,7,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,8,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0004,8,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,positive,negative,positive,7,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0004,6,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,positive,negative,positive,7,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0004,6,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,8,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0004,7,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,6,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0004,8,3,2020-01-04,2020-01-05,2020-01-04 12:00:00,negative,positive,negative,6,3,24.0,,0.0,,,,,1.0,1.0,1.0,,,1.0,,,1.0
+ONS0002,2,1,2020-01-02,2020-01-03,2020-01-04 12:00:00,negative,positive,negative,2,3,24.0,,0.0,1.0,1.0,,,,,,,1.0,,,1.0,
+ONS0002,2,1,2020-01-02,2020-01-03,2020-01-04 12:00:00,positive,negative,positive,3,3,24.0,,0.0,1.0,1.0,,,,,1.0,,1.0,,,1.0,
+ONS0002,2,1,2020-01-02,2020-01-03,2020-01-04 12:00:00,negative,positive,negative,4,3,24.0,,0.0,1.0,1.0,,,,,1.0,,1.0,,,1.0,
+ONS0001,1,1,2020-01-01,2020-01-02,2020-01-04 12:00:00,positive,negative,positive,1,1,24.0,,0.0,,,,,,,,,,,,,

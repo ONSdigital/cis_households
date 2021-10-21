@@ -1,6 +1,7 @@
 from itertools import chain
 from typing import List
 from typing import Mapping
+from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
@@ -30,6 +31,20 @@ def update_work_facing_now_column(
         ).otherwise(F.col(column_name_to_update)),
     )
     return df
+
+
+def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
+    """
+    Remove rows based on duplicate values present in reference columns
+    Parameters
+    ---------
+    df
+    reference_columns
+    """
+    if reference_columns == "all":
+        return df.distinct()
+    else:
+        return df.dropDuplicates(reference_columns)
 
 
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
@@ -92,9 +107,17 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     new_type
         type dictionary to update the schame entry to
     """
+    schema = schema.copy()
     for column_name in column_names:
         schema[column_name] = new_type
     return schema
+
+
+def update_schema_names(schema: dict, column_name_map: dict):
+    """
+    Update schema dictionary column names using a column name map, of old to new names.
+    """
+    return {column_name_map[key]: value for key, value in schema.items()}
 
 
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
@@ -226,3 +249,19 @@ def edit_swab_results_single(
             # if boolean condition not met, keep the same value.
         ).otherwise(F.col(gene_result_classification)),
     )
+
+
+def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") -> DataFrame:
+    """
+    Searches for null type schema in all columns of given dataframe df
+    and returns desired format by cast().
+    Parameters
+    ----------
+    df
+    desired_column_type
+        valid inputs in string: integer, string, double
+    """
+    for column_name, column_type in df.dtypes:
+        if column_type == "null":
+            df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
+    return df

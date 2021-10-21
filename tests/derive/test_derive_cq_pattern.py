@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import derive_ctpattern
+from cishouseholds.derive import derive_cq_pattern
 
 
 def test_derive_ctpattern(spark_session):
@@ -14,11 +14,11 @@ def test_derive_ctpattern(spark_session):
             (None, None, None, None),
             (None, None, 4, "S only"),
         ],
-        schema=column_names + ["ctpattern"],
+        schema=column_names + ["cq_pattern"],
     )
 
-    input_df = expected_df.drop("ctpattern")
+    input_df = expected_df.drop("cq_pattern")
 
-    actual_df = derive_ctpattern(input_df, column_names, spark_session)
+    actual_df = derive_cq_pattern(input_df, column_names, spark_session)
 
     assert_df_equality(actual_df, expected_df)
