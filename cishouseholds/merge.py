@@ -5,10 +5,11 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-def merge_assayed_bloods(df: DataFrame, blood_group_column:str):
+
+def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
-    Given a dataframe containing records for both blood groups create a new dataframe with columns for 
-    each specific blood group seperated with the appriopiate extension appended to the end of the 
+    Given a dataframe containing records for both blood groups create a new dataframe with columns for
+    each specific blood group seperated with the appriopiate extension appended to the end of the
     column name
     Parameters
     ----------
@@ -17,14 +18,15 @@ def merge_assayed_bloods(df: DataFrame, blood_group_column:str):
     """
     join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
     split_dataframes = []
-    for blood_group in ["S","N"]:
-        split_df = df.filter(F.col(blood_group_column)==blood_group)
+    for blood_group in ["S", "N"]:
+        split_df = df.filter(F.col(blood_group_column) == blood_group)
         for col in split_df.columns:
             if col not in join_on_colums:
                 split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower())
         split_dataframes.append(split_df)
-    joined_df = join_dataframes(df1=split_dataframes[0],df2=split_dataframes[1],on=join_on_colums)
+    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
     return joined_df
+
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
     """
@@ -249,7 +251,7 @@ def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, on: str, join_type: str = "outer"):
+def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
     """
     Join two datasets.
     Parameters
