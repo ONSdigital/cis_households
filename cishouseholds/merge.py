@@ -766,6 +766,3 @@ def merge_one_to_many_swab_time_difference_logic(
         .drop("Ranking")
         .orderBy(*ordering_columns)
     )
-
-
-# comment
