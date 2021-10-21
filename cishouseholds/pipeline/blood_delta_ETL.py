@@ -5,6 +5,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql.session import SparkSession
 
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import assign_test_target
 from cishouseholds.derive import substring_column
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
@@ -55,14 +57,14 @@ def extract_validate_transform_blood_delta(resource_path: str):
 
 
 def extract_blood_delta(spark_session: SparkSession, resource_path: str):
-    bloods_spark_schema = convert_cerberus_schema_to_pyspark(blood_validation_schema)
+    blood_spark_schema = convert_cerberus_schema_to_pyspark(blood_validation_schema)
 
     raw_bloods_delta_header = ",".join(blood_validation_schema.keys())
     df = read_csv_to_pyspark_df(
         spark_session,
         resource_path,
         raw_bloods_delta_header,
-        bloods_spark_schema,
+        blood_spark_schema,
     )
     return df
 
@@ -81,6 +83,8 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     ------
     df: pyspark.sql.DataFrame
     """
+    df = assign_filename_column(df, "csv_filename")
+    df = assign_test_target(df, "antibody_test_target", "csv_filename")
     df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
