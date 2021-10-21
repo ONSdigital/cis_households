@@ -6,6 +6,37 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+    """
+    Use inbuilt pyspark function to get name of the file used in the current spark task
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    return df.withColumn(column_name_to_assign, F.input_file_name())
+
+
+def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str):
+    """
+    Assign a column for the appropriate test target type corresponding
+    to that contained within the filename column (S, N)
+    of visit
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    filename_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(filename_column).contains("S"), "S")
+        .when(F.col(filename_column).contains("N"), "N")
+        .otherwise(None),
+    )
+    return df
+
+
 def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str):
     """
     Assign a column for the approximate school year of an individual given their age at the time
