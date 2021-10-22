@@ -82,8 +82,9 @@ survey_common_schema = {
     "Gender": {"type": "string"},
     "Ethnicity": {"type": "string"},
 }
-survey_responses_v0_validation_schema = survey_common_schema.update(
-    {
+survey_responses_v0_validation_schema = {
+    **survey_common_schema,
+    **{
         "ONS Household ID": {"type": "integer"},
         "Visit ID": {"type": "string"},
         "Type of Visit": {"type": "string"},
@@ -195,10 +196,11 @@ survey_responses_v0_validation_schema = survey_common_schema.update(
         "If Yes; Were you tested": {"type": "string"},
         "If Yes;Test Result": {"type": "string"},
         "Were you admitted to hospital?": {"type": "string"},
-    }
-)
-survey_responses_v1_validation_schema = survey_common_schema.update(
-    {
+    },
+}
+survey_responses_v1_validation_schema = {
+    **survey_common_schema,
+    **{
         "ons_household_id": {"type": "integer"},
         "Visit_ID": {"type": "integer"},
         "Type_of_Visit": {"type": "string"},
@@ -351,10 +353,11 @@ survey_responses_v1_validation_schema = survey_common_schema.update(
         "been_outside_uk_last_date": {"type": "string"},
         "Vaccinated_Against_Covid": {"type": "string"},
         "Date_Of_Vaccination": {"type": "string"},
-    }
-)
-survey_responses_v2_validation_schema = survey_common_schema.update(
-    {
+    },
+}
+survey_responses_v2_validation_schema = {
+    **survey_common_schema,
+    **{
         "ons_household_id": {"type": "integer"},
         "Visit_ID": {"type": "string"},
         "Visit Status": {"type": "string"},
@@ -576,5 +579,5 @@ survey_responses_v2_validation_schema = survey_common_schema.update(
         "Symptoms_7_Runny_nose_sneezing": {"type": "string"},
         "Symptoms_7_Noisy_breathing_wheezing": {"type": "string"},
         "Previous_Symptoms_More_trouble_sleeping_than_usual": {"type": "string"},
-    }
-)
+    },
+}
