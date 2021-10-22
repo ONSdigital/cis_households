@@ -14,6 +14,8 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
+from cishouseholds.derive import assign_work_patient_facing_now
+from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
@@ -21,6 +23,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
+from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table
@@ -155,5 +158,19 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         },
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
+    df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    df = update_work_facing_now_column(
+        df,
+        "work_patient_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
+    df = update_work_facing_now_column(
+        df,
+        "work_person_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
