@@ -40,6 +40,20 @@ def merge_antibody_swab_ETL():
     return survey_antibody_swab_df
 
 
+def extract_from_data_warehouse(storage_config, spark_session, merge_type: str):
+    if merge_type == "antibody":
+        survey_table = f"{storage_config['table_prefix']}processed_survey_responses_v2"
+        labs_table = f"{storage_config['table_prefix']}processed_blood_test_results"
+    else:
+        survey_table = f"{storage_config['table_prefix']}processed_survey_antibody_merge"
+        labs_table = f"{storage_config['table_prefix']}processed_swab_test_results"
+
+    survey_df = extract_from_table(survey_table, spark_session)
+    labs_df = extract_from_table(labs_table, spark_session)
+
+    return survey_df, labs_df
+
+
 def transform_antibody_swab_ETL(survey_df, labs_df, merge_type: str):
     if merge_type == "antibody":
         antibody_df = labs_df
@@ -53,6 +67,13 @@ def transform_antibody_swab_ETL(survey_df, labs_df, merge_type: str):
         )
 
         return survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed
+
+
+def load_to_data_warehouse(output_df_list, output_table_list):
+    for df, table_name in zip(output_df_list, output_table_list):
+        table_df = update_table(df, table_name)
+
+    return table_df
 
 
 def merge_antibody_ETL(survey_df, antibody_df):
@@ -136,24 +157,3 @@ def merge_swab_ETL(survey_df, swab_df):
     )
 
     return survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed
-
-
-def extract_from_data_warehouse(storage_config, spark_session, merge_type: str):
-    if merge_type == "antibody":
-        survey_table = f"{storage_config['table_prefix']}processed_survey_responses_v2"
-        labs_table = f"{storage_config['table_prefix']}processed_blood_test_results"
-    else:
-        survey_table = f"{storage_config['table_prefix']}processed_survey_antibody_merge"
-        labs_table = f"{storage_config['table_prefix']}processed_swab_test_results"
-
-    survey_df = extract_from_table(survey_table, spark_session)
-    labs_df = extract_from_table(labs_table, spark_session)
-
-    return survey_df, labs_df
-
-
-def load_to_data_warehouse(output_df_list, output_table_list):
-    for df, table_name in zip(output_df_list, output_table_list):
-        table_df = update_table(df, table_name)
-
-    return table_df
