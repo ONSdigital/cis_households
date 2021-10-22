@@ -3,15 +3,15 @@ import csv
 from datetime import datetime
 from io import StringIO
 from operator import add
+from typing import List
+
+from cerberus import TypeDefinition
+from cerberus import Validator
 from pyspark import RDD
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Row
-from typing import List
-
-from cerberus import TypeDefinition
-from cerberus import Validator
 
 
 class PySparkValidator(Validator):

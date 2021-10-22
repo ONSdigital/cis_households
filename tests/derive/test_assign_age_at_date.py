@@ -1,5 +1,4 @@
 import pyspark.sql.functions as F
-
 import pytest
 from chispa import assert_df_equality
 

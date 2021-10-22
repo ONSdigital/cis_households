@@ -1,7 +1,8 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType
 from typing import Any
 from typing import Mapping
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
 
 
 def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:

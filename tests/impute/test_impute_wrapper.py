@@ -1,7 +1,6 @@
 import pyspark.sql.functions as F
-from pyspark.sql import DataFrame
-
 from chispa import assert_df_equality
+from pyspark.sql import DataFrame
 
 from cishouseholds.impute import impute_and_flag
 
