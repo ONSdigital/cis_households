@@ -1,9 +1,8 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:

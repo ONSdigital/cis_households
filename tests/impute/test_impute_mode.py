@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import calculate_imputation_from_mode
+from cishouseholds.impute import impute_by_mode
 
 
 def test_impute_mode(spark_session):
@@ -24,5 +24,5 @@ def test_impute_mode(spark_session):
         schema="uac_household string, ethnic string, impute_value string",
     )
     df_input = expected_df.drop("impute_value")
-    actual_df = calculate_imputation_from_mode(df_input, "impute_value", "ethnic", "uac_household")
+    actual_df = impute_by_mode(df_input, "impute_value", "ethnic", "uac_household")
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

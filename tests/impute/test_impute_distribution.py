@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import calculate_imputation_from_distribution
+from cishouseholds.impute import impute_by_distribution
 
 
 # debating whether to fix seed or mock F.rand
@@ -20,7 +20,7 @@ def test_impute_distribution(spark_session):
     )
     df_input = expected_df.drop("impute_value")
 
-    actual_df = calculate_imputation_from_distribution(
+    actual_df = impute_by_distribution(
         df_input,
         column_name_to_assign="impute_value",
         reference_column="dvsex",

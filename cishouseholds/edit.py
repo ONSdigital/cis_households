@@ -1,10 +1,9 @@
+import pyspark.sql.functions as F
 from itertools import chain
+from pyspark.sql import DataFrame
 from typing import List
 from typing import Mapping
 from typing import Union
-
-import pyspark.sql.functions as F
-from pyspark.sql import DataFrame
 
 
 def update_work_facing_now_column(

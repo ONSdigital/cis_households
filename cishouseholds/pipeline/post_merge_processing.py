@@ -31,8 +31,8 @@ def impute_key_demographics(df):
         imputation_function=impute_by_distribution,
         reference_column="sex",
         group_by_columns=["white", "gor9d"],
-        first_imputation_value=1,
-        second_imputation_value=2,
+        first_imputation_value="Female",
+        second_imputation_value="Male",
     )
     # Todo: Add call to impute date_of_birth using donor imputation
 
