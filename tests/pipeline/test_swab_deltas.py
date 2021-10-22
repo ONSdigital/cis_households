@@ -22,15 +22,10 @@ def swab_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_swab_delta_ETL_df(swab_delta_ETL_output, regression_test_df):
     regression_test_df(
-        swab_delta_ETL_output.drop("csv_filename"), "swab_sample_barcode", "processed_swab"
-    )  # removes filename column to account for variation in filename caused by regression
+        swab_delta_ETL_output.drop("swab_test_source_file"), "swab_sample_barcode", "processed_swab"
+    )  # remove source file column, as it varies for our temp dummy data
 
 
 @pytest.mark.integration
 def test_swab_delta_ETL_schema(swab_delta_ETL_output, regression_test_df_schema):
-    regression_test_df_schema(
-        swab_delta_ETL_output.drop("csv_filename"), "processed_swab"
-    )  # removes filename column to account for variation in filename caused by regression
-
-
-# comment
+    regression_test_df_schema(swab_delta_ETL_output, "processed_swab")

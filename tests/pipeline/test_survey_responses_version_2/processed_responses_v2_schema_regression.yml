@@ -884,6 +884,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: survey_responses_v2_source_file
+  nullable: false
+  type: string
+- metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer

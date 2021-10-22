@@ -28,7 +28,7 @@ from cishouseholds.validate import validate_and_filter
 @register_pipeline_stage("blood_delta_ETL")
 def blood_delta_ETL(resource_path: str):
     df = extract_validate_transform_blood_delta(resource_path)
-    update_table_and_log_source_files(df, "transformed_blood_test_results", "blood_test_source_file")
+    update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
     return df
 
 
