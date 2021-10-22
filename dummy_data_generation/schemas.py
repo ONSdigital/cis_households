@@ -57,6 +57,7 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
                 _("random.custom_code", mask="DHVF-##########", digit="#"),
             ],
         ),
+        "Type of Visit": _("choice", items=["First Visit", "Follow-up Visit"]),
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
@@ -73,11 +74,6 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
                 "Too many visits",
             ],
         ),
-        "Street": _("choice", items=[None, _("address.street_name")]),
-        "City": _("choice", items=[None, _("address.city")]),
-        "County": _("choice", items=[None, _("address.province")]),
-        "Postcode": _("choice", items=[None, _("address.postal_code")]),
-        "Type of Visit": _("choice", items=["First Visit", "Follow-up Visit"]),
         "Visit Date/Time": _(
             "custom_random.random_date",
             start=start_date_list,
@@ -85,6 +81,10 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
+        "Street": _("choice", items=[None, _("address.street_name")]),
+        "City": _("choice", items=[None, _("address.city")]),
+        "County": _("choice", items=[None, _("address.province")]),
+        "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Phase": _("text.quote"),
         "No. Paticicpants not Consented": _("custom_random.random_integer", lower=1, upper=8, null_percent=0.9),
         "Reason Participants not Consented": _("text.quote"),
@@ -282,6 +282,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
                 _("random.custom_code", mask="DHVF-##########", digit="#"),
             ],
         ),
+        "Type_of_Visit": _("choice", items=["First Visit", "Follow-up Visit"]),
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
@@ -298,11 +299,6 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
                 "Too many visits",
             ],
         ),
-        "Street": _("choice", items=[None, _("address.street_name")]),
-        "City": _("choice", items=[None, _("address.city")]),
-        "County": _("choice", items=[None, _("address.province")]),
-        "Postcode": _("choice", items=[None, _("address.postal_code")]),
-        "Type_of_Visit": _("choice", items=["First Visit", "Follow-up Visit"]),
         "Visit_Date_Time": _(
             "custom_random.random_date",
             start=start_date_list,
@@ -310,6 +306,10 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
+        "Street": _("choice", items=[None, _("address.street_name")]),
+        "City": _("choice", items=[None, _("address.city")]),
+        "County": _("choice", items=[None, _("address.province")]),
+        "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Cohort": _("choice", items=["Blood and Swab", "Swab Only"]),
         "No_Paticicpants_not_Consented": _("custom_random.random_integer", lower=1, upper=8, null_percent=0.9),
         "Reason_Participants_not_Consented": _("text.quote"),
