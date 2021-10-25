@@ -7,6 +7,32 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_work_facing_now_column(
+    df: DataFrame,
+    column_name_to_update: str,
+    work_status_column: str,
+    work_status_list: List[str],
+) -> DataFrame:
+    """
+    Update value of variable depending on state of reference column work_status_column
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    work_status_column
+    work_status_list
+        list of possible work statuses which result in "no" as column to update
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(work_status_column).isin(*work_status_list),
+            "No",
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
     """
     Remove rows based on duplicate values present in reference columns
@@ -81,9 +107,17 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     new_type
         type dictionary to update the schame entry to
     """
+    schema = schema.copy()
     for column_name in column_names:
         schema[column_name] = new_type
     return schema
+
+
+def update_schema_names(schema: dict, column_name_map: dict):
+    """
+    Update schema dictionary column names using a column name map, of old to new names.
+    """
+    return {column_name_map[key]: value for key, value in schema.items()}
 
 
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:

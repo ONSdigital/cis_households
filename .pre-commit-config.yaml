@@ -42,7 +42,7 @@ repos:
     rev: 'v0.910'
     hooks:
     -   id: mypy
-        additional_dependencies: [types-PyYAML]
+        additional_dependencies: [types-PyYAML, types-setuptools]
 
 -   repo: https://github.com/Yelp/detect-secrets
     rev: v1.1.0
