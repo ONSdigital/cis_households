@@ -70,7 +70,7 @@ sample_northern_ireland_schema = {
     "cis_area_indicator": {"type": "integer", "min": 999, "max": 999},
 }
 survey_responses_v0_validation_schema = {
-    "ONS Household ID": {"type": "integer"},
+    "ONS Household ID": {"type": "string"},
     "Visit ID": {"type": "string"},
     "Type of Visit": {"type": "string"},
     "Participant_Visit_status": {"type": "string"},
@@ -194,7 +194,7 @@ survey_responses_v0_validation_schema = {
     "Were you admitted to hospital?": {"type": "string"},
 }
 survey_responses_v1_validation_schema = {
-    "ons_household_id": {"type": "integer"},
+    "ons_household_id": {"type": "string"},
     "Visit_ID": {"type": "integer"},
     "Type_of_Visit": {"type": "string"},
     "Participant_Visit_status": {"type": "string"},
@@ -359,7 +359,7 @@ survey_responses_v1_validation_schema = {
     "Date_Of_Vaccination": {"type": "string"},
 }
 survey_responses_v2_validation_schema = {
-    "ons_household_id": {"type": "integer"},
+    "ons_household_id": {"type": "string"},
     "Visit_ID": {"type": "string"},
     "Visit Status": {"type": "string"},
     "Participant_Visit_status": {"type": "string"},
@@ -374,9 +374,7 @@ survey_responses_v2_validation_schema = {
     "County": {"type": "string"},
     "Postcode": {"type": "string"},
     "Cohort": {"type": "string"},
-    "Current_Cohort": {"type": "string"},
     "Fingerprick_Status": {"type": "string"},
-    "Fingerprick_Status_Participant": {"type": "string"},
     "Household_Members_Under_2_Years": {"type": "string"},
     "Infant_1": {"type": "integer"},
     "Infant_2": {"type": "integer"},
@@ -582,13 +580,4 @@ survey_responses_v2_validation_schema = {
     "been_outside_uk_last_country": {"type": "string"},
     "been_outside_uk_last_date": {"type": "string"},
     "Have_you_been_outside_UK_Lastspoke": {"type": "string"},
-    "Previous_Symptoms_Loss_of_appetite_or_eating_less_than_usual": {"type": "string"},
-    "Vaccinated_against_flu": {"type": "string"},
-    "Previous_Symptoms_Runny_nose_sneezing": {"type": "string"},
-    "Previous_Symptoms_Noisy_breathing_wheezing": {"type": "string"},
-    "Symptoms_7_More_trouble_sleeping_than_usual": {"type": "string"},
-    "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": {"type": "string"},
-    "Symptoms_7_Runny_nose_sneezing": {"type": "string"},
-    "Symptoms_7_Noisy_breathing_wheezing": {"type": "string"},
-    "Previous_Symptoms_More_trouble_sleeping_than_usual": {"type": "string"},
 }
