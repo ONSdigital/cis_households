@@ -106,6 +106,7 @@ def assign_work_patient_facing_now(
         work_healthcare_column,
         {
             "Yes": [
+                "Yes",
                 "Yes, primary care, patient-facing",
                 "Yes, secondary care, patient-facing",
                 "Yes, other healthcare, patient-facing",

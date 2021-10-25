@@ -11,7 +11,7 @@ def test_assign_work_person_facing_now(spark_session):
             ("No", 49, "Yes, other social care, resident-facing", "Yes"),
             ("No", 33, "No", "No"),
             (">=75y", 80, "No", ">=75y"),
-            (None, 80, "No", ">=75y"),
+            (None, 80, "No", "No"),
             (">=75y", 99, "Yes, care/residential home, non-resident-facing", ">=75y"),
         ],
         schema="work_patient string, age integer, work_social string, facing string",
