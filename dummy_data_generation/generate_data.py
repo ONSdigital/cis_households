@@ -29,7 +29,7 @@ def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_
     """
     schema = Schema(schema=get_voyager_0_data_description(_, swab_barcodes, blood_barcodes))
     survey_responses = pd.DataFrame(schema.create(iterations=records))
-
+    survey_responses.to_csv("test.csv")
     survey_responses.to_csv(directory / f"ONS_Datafile_{file_date}.csv", index=False, sep="|")
     return survey_responses
 
