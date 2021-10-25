@@ -569,7 +569,7 @@ def one_to_many_antibody_flag(
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
-    inconsistent_rows = "inconsistent_data_flag"
+    inconsistent_rows = "failed_flag_1tom_antibody"
 
     window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
@@ -581,12 +581,10 @@ def one_to_many_antibody_flag(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            ((F.col(rows_diff_to_ref) == 1) | (F.col(inconsistent_rows) == 1)) & (F.col(selection_column) == 1), 1
-        ).otherwise(None),
+        F.when((F.col(rows_diff_to_ref) == 1) & (F.col(selection_column) == 1), 1).otherwise(None),
     )
     df = df.orderBy(selection_column, diff_interval_hours, visit_date)
-    return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
+    return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 
 
 def one_to_many_swabs(
