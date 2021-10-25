@@ -1,3 +1,5 @@
+from pyspark.sql.dataframe import DataFrame
+
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_mode
@@ -8,10 +10,11 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 @register_pipeline_stage("process_post_merge")
 def process_post_merge():
     # Todo: Merge on previously imputed values
+    # Todo: Write out imputed value lookup
     pass
 
 
-def impute_key_demographics(df):
+def impute_key_demographics(df: DataFrame):
     """Impute missing values for key variables that are required for weight calibration."""
 
     for demographic_column in ["white", "sex", "date_of_birth"]:
