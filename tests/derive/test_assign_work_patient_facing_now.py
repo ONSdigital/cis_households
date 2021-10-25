@@ -8,9 +8,8 @@ def test_assign_work_patient_facing_now(spark_session):
         data=[
             (1, "No", "<=15y"),
             (15, "Yes", "<=15y"),
-            (55, "Yes, primary care, patient-facing", "Yes, primary care, patient-facing"),
-            (69, "Yes, other healthcare, patient-facing", "Yes, other healthcare, patient-facing"),
-            (49, "No", "No"),
+            (55, "Yes, primary care, patient-facing", "Yes"),
+            (69, "Yes, other healthcare, patient-facing", "Yes")(49, "No", "No"),
             (75, "No", ">=75y"),
         ],
         schema="age integer, work_health string, facing string",
