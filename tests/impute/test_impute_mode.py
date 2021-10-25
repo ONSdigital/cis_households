@@ -1,3 +1,5 @@
+from pyspark.sql import functions as F
+
 from chispa import assert_df_equality
 
 from cishouseholds.impute import impute_by_mode
@@ -6,23 +8,29 @@ from cishouseholds.impute import impute_by_mode
 def test_impute_mode(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            ("000000000001", "white", None),  # Case where one white, imputation with white in the other record
-            ("000000000001", None, "white"),
-            ("000000000007", "white", None),  # Case where there are white/other ethnicities
-            ("000000000007", "white", None),  # but white is the most common
-            ("000000000007", "white", None),
-            ("000000000007", "other", None),
-            ("000000000007", None, "white"),
-            ("222222222222", "other", None),  # Case where the majority of ethnicity is other,
-            ("222222222222", "other", None),  # imputate to other
-            ("222222222222", None, "other"),
-            ("999999999999", "white", None),  # Case where theres a tie on ethnicities,
-            ("999999999999", "other", None),  # no imputation should happen at all
-            ("999999999999", None, None),
-            ("XXXXXXXXXXXX", "other", None),  # example where nothing should happen
+            # No missing values
+            ("0", "A", None),
+            ("0", "B", None),
+            # One option
+            ("1", "A", None),
+            ("1", None, "A"),
+            # A and B but A is the most common
+            ("3", "A", None),
+            ("3", "A", None),
+            ("3", "B", None),
+            ("3", None, "A"),
+            # Tie results in no imputation
+            ("4", "A", None),
+            ("4", "B", None),
+            ("4", None, None),
+            # Don't impute as Null, when Null is most common
+            ("5", "A", None),
+            ("5", None, "A"),
+            ("5", None, "A"),
         ],
-        schema="uac_household string, ethnic string, impute_value string",
-    )
-    df_input = expected_df.drop("impute_value")
-    actual_df = impute_by_mode(df_input, "impute_value", "ethnic", "uac_household")
+        schema="group_id string, value string, imputed_value string",
+    ).withColumn("unique_id", F.monotonically_increasing_id())
+    df_input = expected_df.drop("imputed_value")
+
+    actual_df = impute_by_mode(df_input, "imputed_value", "value", "group_id")
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
