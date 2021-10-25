@@ -25,7 +25,7 @@ _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
 
 def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_barcodes):
     """
-    Generate survey v2 data.
+    Generate survey v0 data.
     """
     schema = Schema(schema=get_voyager_0_data_description(_, swab_barcodes, blood_barcodes))
     survey_responses = pd.DataFrame(schema.create(iterations=records))
@@ -36,7 +36,7 @@ def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_
 
 def generate_survey_v1_data(directory, file_date, records, swab_barcodes, blood_barcodes):
     """
-    Generate survey v2 data.
+    Generate survey v1 data.
     """
     schema = Schema(schema=get_voyager_1_data_description(_, swab_barcodes, blood_barcodes))
     survey_responses = pd.DataFrame(schema.create(iterations=records))
