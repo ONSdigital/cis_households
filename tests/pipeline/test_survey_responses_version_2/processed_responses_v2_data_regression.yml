@@ -228,7 +228,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: null
-  work_healthcare: Other healthcare (e.g. mental health)
+  work_health_care: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -237,6 +237,7 @@
   work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: I don't even care.
   work_status: null
@@ -476,7 +477,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: Bad experience with tester / survey
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Primary care (e.g. GP, dentist)
+  work_health_care: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
   work_location: null
   work_main_job_changed: 'No'
@@ -485,6 +486,7 @@
   work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: null
+  work_patient_facing_now: null
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -725,7 +727,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: null
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: 'No'
   work_location: null
   work_main_job_changed: 'Yes'
@@ -735,6 +737,7 @@
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_not_from_home_days_per_week: '3'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: <=15y
   work_sectors: Teaching and education
   work_sectors_other: I don't even care.
   work_status: 5y and older in full-time education
@@ -970,7 +973,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'No'
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
   work_main_job_changed: null
@@ -980,6 +983,7 @@
     SINCE BEEN RESTORED
   work_not_from_home_days_per_week: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Arts or entertainment or recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -1217,7 +1221,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
@@ -1226,6 +1230,7 @@
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
   work_not_from_home_days_per_week: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_patient_facing_now: <=15y
   work_sectors: Retail Sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
@@ -1466,7 +1471,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Moving location
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: null
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -1475,6 +1480,7 @@
   work_main_job_title: WHERE ARE MY PANTS?
   work_not_from_home_days_per_week: '7'
   work_nursing_or_residential_care_home: 'No'
+  work_patient_facing_now: null
   work_sectors: Social care
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
@@ -1711,7 +1717,7 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
   work_main_job_changed: 'No'
@@ -1720,6 +1726,7 @@
     THE FIRST CHARACTER BEING LOWERCASE
   work_not_from_home_days_per_week: '6'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Teaching and education
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
@@ -1957,7 +1964,7 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
@@ -1966,6 +1973,7 @@
     EVALUATION
   work_not_from_home_days_per_week: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: <=15y
   work_sectors: Social Care
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_status: null
@@ -2200,7 +2208,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Other healthcare (e.g. mental health)
+  work_health_care: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'No'
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -2209,6 +2217,7 @@
   work_main_job_title: MAKE ME A SANDWICH
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: null
+  work_patient_facing_now: null
   work_sectors: Civil Service or Local Government
   work_sectors_other: Ports are created with the built-in function open_port.
   work_status: Employed and currently working (including if on leave or sick leave
@@ -2447,7 +2456,7 @@
   which_symptoms_last_7_days: null
   withdrawal_reason: null
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: null
   work_location: Somewhere else (not your home)
   work_main_job_changed: null
@@ -2458,6 +2467,7 @@
     TYPES
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Armed forces
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status: 5y and older in full-time education

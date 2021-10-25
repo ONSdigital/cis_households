@@ -392,7 +392,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_healthcare
+  name: work_health_care
   nullable: true
   type: string
 - metadata: {}
@@ -947,4 +947,8 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
+- metadata: {}
+  name: work_patient_facing_now
+  nullable: true
+  type: string
 type: struct
