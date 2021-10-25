@@ -13,7 +13,7 @@ def test_impute_mode(spark_session):
             ("0", "B", None),
             # One option
             ("1", "A", None),
-            ("1", None, "A")
+            ("1", None, "A"),
             # A and B but A is the most common
             ("3", "A", None),
             ("3", "A", None),
