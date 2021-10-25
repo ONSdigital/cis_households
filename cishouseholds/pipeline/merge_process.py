@@ -323,9 +323,9 @@ def merge_process_filtering(
     elif merge_type == "antibody":
         df = df.withColumn(
             "failed_match",
-            F.when(
-                (F.col("failed_flag_mtom_antibody") == 1) | (F.col("failed_due_to_indistinct_match") == 1), 1
-            ).otherwise(F.col("failed_match")),
+            F.when((F.col("failed_flag_mtom_antibody") == 1) | (F.col("failed_flag_1tom_antibody") == 1), 1).otherwise(
+                F.col("failed_match")
+            ),
         )  # failed_record
 
     df = df.withColumn(
