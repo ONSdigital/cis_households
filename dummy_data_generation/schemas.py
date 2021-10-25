@@ -558,7 +558,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
 
 def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
-    "ons_household_id": _("random.custom_code", mask="############", digit="#"),
+        "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "Visit_ID": _(
             "choice",
             items=[

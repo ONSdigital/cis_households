@@ -18,5 +18,5 @@ storage:
     database: covserolink_dev
     table_prefix: USERNAME_
     write_mode: append
-  
+
 csv_output_path: "/home/cdsw/output"
