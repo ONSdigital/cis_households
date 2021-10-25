@@ -1,5 +1,6 @@
-from chispa.dataframe_comparer import assert_df_equality
 from pyspark.sql import functions as F
+
+from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.pipeline.post_merge_processing import impute_key_demographics
 
@@ -7,7 +8,7 @@ from cishouseholds.pipeline.post_merge_processing import impute_key_demographics
 def test_impute_key_demographics(spark_session):
     """Test that high level imputation fills all missing values."""
     schema = """participant_id string, ons_household_id string, gor9d string,
-                white boolean, sex string, date_of_birth string, visit_datetime string"""
+                white_group boolean, sex string, date_of_birth string, visit_datetime string"""
     input_data = [
         ("A", "A-A", "gor9d-1", True, "Female", "1990-01-01", "1990-01-01"),
         ("A", "A-A", "gor9d-1", True, "Female", None, "1990-01-02"),  # Fill forward
@@ -23,7 +24,7 @@ def test_impute_key_demographics(spark_session):
 
     output_df = impute_key_demographics(input_df)
 
-    comparison_columns = ["participant_id", "ons_household_id", "white", "sex", "date_of_birth", "visit_datetime"]
+    comparison_columns = ["participant_id", "ons_household_id", "white_group", "sex", "date_of_birth", "visit_datetime"]
     assert_df_equality(
         output_df.select(*comparison_columns),
         expected_df.select(*comparison_columns),
@@ -31,5 +32,5 @@ def test_impute_key_demographics(spark_session):
         ignore_row_order=True,
     )
 
-    for demographic_variable in ["white", "sex", "date_of_birth"]:
+    for demographic_variable in ["white_group", "sex", "date_of_birth"]:
         assert output_df.where(F.col(demographic_variable).isNull()).count() == 0

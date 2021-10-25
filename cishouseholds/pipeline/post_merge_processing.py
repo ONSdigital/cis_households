@@ -17,7 +17,7 @@ def process_post_merge():
 def impute_key_demographics(df: DataFrame):
     """Impute missing values for key variables that are required for weight calibration."""
 
-    for demographic_column in ["white", "sex", "date_of_birth"]:
+    for demographic_column in ["white_group", "sex", "date_of_birth"]:
         df = impute_and_flag(
             df,
             imputation_function=impute_by_ordered_fill_forward,
@@ -29,16 +29,16 @@ def impute_key_demographics(df: DataFrame):
     df = impute_and_flag(
         df,
         imputation_function=impute_by_mode,
-        reference_column="white",
+        reference_column="white_group",
         group_by_column="ons_household_id",
     )
-    # Todo: Add call to impute white by donor-based imputation
+    # Todo: Add call to impute white_group by donor-based imputation
 
     df = impute_and_flag(
         df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
-        group_by_columns=["white", "gor9d"],
+        group_by_columns=["white_group", "gor9d"],
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
