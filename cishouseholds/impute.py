@@ -1,11 +1,10 @@
 import sys
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def calculate_imputation_from_distribution(
@@ -132,7 +131,6 @@ def calculate_imputation_from_mode(
     """
     grouped = df.groupBy(group_column, reference_column).count()
 
-    # refactoring: if Blank/Null is most common in count(), it should not be considered as one of the imputation options
     grouped = grouped.filter(F.col(reference_column).isNotNull())
 
     window = Window.partitionBy(group_column).orderBy(F.desc("count"))
