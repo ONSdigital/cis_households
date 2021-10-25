@@ -7,6 +7,22 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_column_values_from_map(df: DataFrame, column: str, map: dict) -> DataFrame:
+    """
+    Convert column values matching map key to value
+    Parameters
+    ----------
+    df
+    column
+    map
+    """
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+    df = df.withColumn(
+        column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(F.col(column))
+    )
+    return df
+
+
 def update_work_facing_now_column(
     df: DataFrame,
     column_name_to_update: str,
