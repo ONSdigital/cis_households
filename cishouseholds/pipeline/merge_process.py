@@ -69,6 +69,7 @@ def merge_process_preparation(
     outer_df = M.assign_absolute_offset(
         df=outer_df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
     )
+
     return outer_df
 
 
@@ -317,14 +318,14 @@ def merge_process_filtering(
 
     if merge_type == "swab":
         df = df.withColumn(
-            "failed_match", F.when(F.col("failed_flag_mtom_swab") == 1, 1).otherwise(F.col("failed_flag_mtom_swab"))
+            "failed_match", F.when(F.col("failed_flag_mtom_swab") == 1, 1).otherwise(F.col("failed_match"))
         )  # failed_record
     elif merge_type == "antibody":
         df = df.withColumn(
             "failed_match",
             F.when(
                 (F.col("failed_flag_mtom_antibody") == 1) | (F.col("failed_due_to_indistinct_match") == 1), 1
-            ).otherwise(F.col("failed_flag_mtom_antibody")),
+            ).otherwise(F.col("failed_match")),
         )  # failed_record
 
     df = df.withColumn(
