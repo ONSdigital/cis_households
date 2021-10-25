@@ -25,6 +25,7 @@ jobs:
           python-version: 3.6.8
 
       - name: Check package build
+        # Wheel is specific here because of conflicts on this Python version
         run: |
           python -m pip install --upgrade pip
           pip install wheel==0.29.0
@@ -56,7 +57,6 @@ jobs:
           )
 
       - name: Install Python dependencies
-        # Wheel is specific here because of conflicts on this Python version
         run: |
           python -m pip install --upgrade pip
           pip install pypandoc==1.5
@@ -91,14 +91,13 @@ jobs:
           )
 
       - name: Install Python dependencies
-        # Wheel is specific here because of conflicts on this Python version
         run: |
           python -m pip install --upgrade pip
           pip install pypandoc==1.5
           pip install -e .[ci]
       - name: Run pytest with coverage
         run: |
-          pytest --cov=cishouseholds --cov-report=xml --cov-report=term-missing
+          pytest --cov=cishouseholds --cov-report=xml --cov-report=term-missing --cov-fail-under=0
           coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
