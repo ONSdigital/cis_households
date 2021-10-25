@@ -132,6 +132,9 @@ def calculate_imputation_from_mode(
     """
     grouped = df.groupBy(group_column, reference_column).count()
 
+    # refactoring: if Blank/Null is most common in count(), it should not be considered as one of the imputation options
+    grouped = grouped.filter(F.col("white").isNotNull())
+
     window = Window.partitionBy(group_column).orderBy(F.desc("count"))
 
     grouped = (

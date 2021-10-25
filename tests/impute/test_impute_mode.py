@@ -20,6 +20,16 @@ def test_impute_mode(spark_session):
             ("999999999999", "other", None),  # no imputation should happen at all
             ("999999999999", None, None),
             ("XXXXXXXXXXXX", "other", None),  # example where nothing should happen
+            (
+                "000000000007",
+                "other",
+                None,
+            ),  # REFACTORING 970: In case Null/blank most common, should not impute null/blank
+            ("000000000007", None, "other"),
+            ("000000000007", None, "other"),
+            ("000000000008", "white", None),  # REFACTORING 970: Part 2 - for white
+            ("000000000008", None, "white"),
+            ("000000000008", None, "white"),
         ],
         schema="uac_household string, ethnic string, impute_value string",
     )
