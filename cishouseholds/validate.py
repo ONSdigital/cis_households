@@ -98,10 +98,6 @@ def validate_csv_header(text_file: RDD, expected_header: str):
         Exact header expected in csv file
     """
     header = text_file.first()
-    for i, field in enumerate(expected_header.split("|")):
-        _field = header.split("|")[i].strip()
-        if _field != field:
-            print("mismatch: ", field, "!=", _field)
     return expected_header == header
 
 
