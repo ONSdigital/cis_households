@@ -348,7 +348,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: approached_for_blood_samples?
+  name: approached_for_blood_samples
   nullable: true
   type: string
 - metadata: {}
@@ -392,7 +392,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_healthcare
+  name: work_health_care
   nullable: true
   type: string
 - metadata: {}
@@ -712,39 +712,39 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: pcr_test_since_last_visit
+  name: other_pcr_test_since_last_visit
   nullable: true
   type: string
 - metadata: {}
-  name: pcr_test_since_last_visit_results
+  name: other_pcr_test_results
   nullable: true
   type: string
 - metadata: {}
-  name: pcr_test_first_positive_date
+  name: other_pcr_test_first_positive_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: pcr_test_last_negative_date
+  name: other_pcr_test_last_negative_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: antibody_test_since_last_visit
+  name: other_antibody_test_since_last_visit
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_since_last_visit_results
+  name: other_antibody_test_results
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_since_last_visit_location
+  name: other_antibody_test_location
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_first_positive_date
+  name: other_antibody_test_first_positive_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: antibody_test_last_negative_date
+  name: other_antibody_test_last_negative_date
   nullable: true
   type: timestamp
 - metadata: {}
@@ -844,27 +844,27 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_offered_since_last_visit
+  name: cis_covid_vaccine_offered
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_received_since_last_visit
+  name: cis_covid_vaccine_received
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_type_since_last_visit
+  name: cis_covid_vaccine_type
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_type_other_since_last_visit
+  name: cis_covid_vaccine_type_other
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_number_of_doses
+  name: cis_covid_vaccine_number_of_doses
   nullable: true
   type: string
 - metadata: {}
-  name: vaccine_last_vaccination_date
+  name: cis_covid_vaccine_date
   nullable: true
   type: timestamp
 - metadata: {}
@@ -928,19 +928,27 @@ fields:
   nullable: true
   type: long
 - metadata: {}
-  name: ageg_small
+  name: age_group_5_intervals
   nullable: true
   type: string
 - metadata: {}
-  name: age_group_large_range
+  name: age_group_over_16
   nullable: true
   type: string
 - metadata: {}
-  name: ageg_7
+  name: age_group_7_intervals
+  nullable: true
+  type: string
+- metadata: {}
+  name: age_group_5_year_intervals
   nullable: true
   type: string
 - metadata: {}
   name: school_year_september
   nullable: true
   type: integer
+- metadata: {}
+  name: work_patient_facing_now
+  nullable: true
+  type: string
 type: struct
