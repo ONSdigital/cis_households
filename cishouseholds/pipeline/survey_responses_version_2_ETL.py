@@ -33,7 +33,7 @@ from cishouseholds.validate import validate_and_filter
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
-def survey_responses_version_2_ETL(resource_path: str):
+def survey_responses_version_2_ETL(resource_path: str, output_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
@@ -45,9 +45,9 @@ def survey_responses_version_2_ETL(resource_path: str):
 def extract_validate_transform_survey_responses_version_2_delta(resource_path: str):
     spark_session = get_or_create_spark_session()
     df = extract_survey_responses_version_2_delta(spark_session, resource_path)
+    df.show()
     df = rename_column_names(df, survey_responses_v2_variable_name_map)
     df = convert_columns_to_timestamps(df, survey_responses_v2_datetime_map)
-
     _survey_responses_v2_validation_schema = update_schema_names(
         survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map
     )
