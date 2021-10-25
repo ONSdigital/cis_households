@@ -51,6 +51,11 @@ def merge_process_preparation(
         survey_df, labs_df, barcode_column_name, "outer"
     )  # refactoring might be needed IF barcode column names in survey_df/labs_df is different
 
+    if merge_type == "swab":
+        interval_upper_bound = 480
+    elif merge_type == "antibody":
+        interval_upper_bound = 240
+
     outer_df = M.assign_time_difference_and_flag_if_outside_interval(
         df=outer_df,
         column_name_outside_interval_flag="out_of_date_range_" + merge_type,
@@ -58,7 +63,7 @@ def merge_process_preparation(
         start_datetime_reference_column=visit_date_column_name,
         end_datetime_reference_column=received_date_column_name,
         interval_lower_bound=-24,
-        interval_upper_bound=480,
+        interval_upper_bound=interval_upper_bound,
         interval_bound_format="hours",
     )
     outer_df = M.assign_absolute_offset(
@@ -292,7 +297,6 @@ def merge_process_filtering(
             1,
         ).otherwise(F.col("best_match")),
     )
-
     for xtox in merge_combination:
         best_match_logic = (
             (F.col(xtox + "_" + merge_type) == 1)
@@ -327,12 +331,12 @@ def merge_process_filtering(
         "best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("best_match"))
     ).withColumn("not_best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("not_best_match")))
 
-    # STEP 2 - GENERATE FUNCTIONS FROM FLAGS ------------------------
+    # STEP 2 -
     df_best_match = df.filter(F.col("best_match") == "1")
     df_not_best_match = df.filter(F.col("not_best_match") == "1")
     df_failed_records = df.filter(F.col("failed_match") == "1")
 
-    # STEP 3 - TRANSFORMATION ------------------------
+    # STEP 3 -
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("int"))
 
     # out_of_date_range_swab
