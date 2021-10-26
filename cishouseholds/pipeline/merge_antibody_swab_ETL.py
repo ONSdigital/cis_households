@@ -36,7 +36,7 @@ def merge_antibody_swab_ETL():
     )
     output_df_swab_list = [survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed]
     output_table_swab_list = [
-        "transformed_survey_antibody_swab_merge",
+        "transformed_survey_antibody_swab_merge_data",
         "transformed_survey_antibody_swab_merge_residuals",
         "transformed_survey_antibody_swab_merge_failed",
     ]
