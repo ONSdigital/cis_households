@@ -23,9 +23,9 @@ def merge_antibody_swab_ETL():
 
     output_df_anitbody_list = [survey_antibody_df, survey_antibody_residuals, survey_antibody_failed]
     output_table_antibody_list = [
-        "processed_survey_antibody_merge",
-        "processed_survey_antibody_merge_residuals",
-        "processed_survey_antibody_merge_failed",
+        "transformed_survey_antibody_merge_data",
+        "transformed_survey_antibody_merge_residuals",
+        "transformed_survey_antibody_merge_failed",
     ]
     survey_antibody_df = load_to_data_warehouse(output_df_anitbody_list, output_table_antibody_list)
 
@@ -36,9 +36,9 @@ def merge_antibody_swab_ETL():
     )
     output_df_swab_list = [survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed]
     output_table_swab_list = [
-        "processed_survey_antibody_swab_merge",
-        "processed_survey_antibody_swab_merge_residuals",
-        "processed_survey_antibody_swab_merge_failed",
+        "transformed_survey_antibody_swab_merge",
+        "transformed_survey_antibody_swab_merge_residuals",
+        "transformed_survey_antibody_swab_merge_failed",
     ]
     survey_antibody_swab_df = load_to_data_warehouse(output_df_swab_list, output_table_swab_list)
 
@@ -47,11 +47,11 @@ def merge_antibody_swab_ETL():
 
 def extract_from_data_warehouse(storage_config, spark_session, merge_type: str):
     if merge_type == "antibody":
-        survey_table = f"{storage_config['table_prefix']}processed_survey_responses_v2"
-        labs_table = f"{storage_config['table_prefix']}processed_blood_test_results"
+        survey_table = f"{storage_config['table_prefix']}transformed_survey_responses_v2_data"
+        labs_table = f"{storage_config['table_prefix']}transformed_blood_test_data"
     else:
-        survey_table = f"{storage_config['table_prefix']}processed_survey_antibody_merge"
-        labs_table = f"{storage_config['table_prefix']}processed_swab_test_results"
+        survey_table = f"{storage_config['table_prefix']}transformed_survey_antibody_merge_data"
+        labs_table = f"{storage_config['table_prefix']}transformed_swab_test_data"
 
     survey_df = extract_from_table(survey_table, spark_session)
     labs_df = extract_from_table(labs_table, spark_session)
@@ -107,6 +107,8 @@ def merge_antibody_ETL(survey_df, antibody_df):
         "blood_sample_arrayed_date",
         "blood_sample_received_date",
         "blood_sample_collected_datetime",
+        #      "csv_filename",
+        "antibody_test_target",
         "plate",
         "assay_category",
         "siemens",
@@ -156,6 +158,7 @@ def merge_swab_ETL(survey_df, swab_df):
         "ms2_pcr_target",
         "ms2_pcr_result_classification",
         "ms2_pcr_cq_value",
+        "csv_filename",
         "pcr_date",
         "cq_pattern",
         "mean_pcr_cq_value",
