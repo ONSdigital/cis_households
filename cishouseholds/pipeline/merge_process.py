@@ -366,7 +366,7 @@ def merge_process_filtering(
 
     # DO: drop all internally created columns
     return (
-        df_all_iqvia,  # .drop(*list_solve_flag_column),
-        df_lab_residuals,  # .drop(*list_solve_flag_column),
-        df_failed_records,  # .drop(*list_solve_flag_column)
+        df_all_iqvia.drop(*drop_list_columns),
+        df_lab_residuals.drop(*drop_list_columns),
+        df_failed_records.drop(*drop_list_columns),
     )
