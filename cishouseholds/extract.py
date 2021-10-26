@@ -40,7 +40,10 @@ def read_csv_to_pyspark_df(
     csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
     if not csv_header:
-        raise InvalidFileError(f"Header of {csv_file_path} does not match expected header: {expected_raw_header_row}")
+        raise InvalidFileError(
+            f"Header of ({csv_file_path}): {text_file.first()} \
+            does not match expected header: {expected_raw_header_row}"
+        )
 
     if not csv_fields:
         raise InvalidFileError(

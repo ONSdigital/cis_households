@@ -52,7 +52,7 @@ def extract_validate_transform_blood_delta(resource_path: str):
     )
     df = validate_and_filter(df, _blood_validation_schema, error_accumulator)
     df = transform_blood_delta(df)
-    # df = prepare_for_union(df, None)
+    # df = prepare_for_union(df, historic_blood_ETL)
     return df
 
 

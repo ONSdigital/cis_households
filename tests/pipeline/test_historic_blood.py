@@ -1,0 +1,33 @@
+import pandas as pd
+import pytest
+from mimesis.schema import Schema
+
+from cishouseholds.pipeline.historic_blood_ETL import extract_validate_transform_historic_blood
+from dummy_data_generation.schemas import get_historic_blood_data_description
+
+
+@pytest.fixture
+def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+    """
+    Generate lab bloods file.
+    """
+    schema = Schema(schema=get_historic_blood_data_description(mimesis_field))
+    pandas_df = pd.DataFrame(schema.create(iterations=5))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df)
+    processed_df = extract_validate_transform_historic_blood(csv_file_path.as_posix())
+
+    return processed_df
+
+
+@pytest.mark.integration
+def test_historic_blood_delta_ETL_df(regression_test_df, historic_blood_delta_ETL_output):
+    regression_test_df(
+        historic_blood_delta_ETL_output.drop("csv_filename"), "ons_id", "processed_historic_blood"
+    )  # removes filename column to account for variation in filename caused by regression
+
+
+@pytest.mark.integration
+def test_historic_blood_delta_ETL_schema(regression_test_df_schema, historic_blood_delta_ETL_output):
+    regression_test_df_schema(
+        historic_blood_delta_ETL_output.drop("csv_filename"), "processed_historic_blood"
+    )  # removes filename column to account for variation in filename caused by regression

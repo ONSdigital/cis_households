@@ -47,6 +47,27 @@ def get_blood_data_description(_, target):
     }
 
 
+def get_historic_blood_data_description(_):
+    return lambda: {  # noqa: E731
+        "ons_id": _("random.custom_code", mask="ONS########", digit="#"),
+        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask="ONS_######", digit="#"),
+        "Well ID": _("random.custom_code", mask="&##", digit="#", char="&"),
+        "Detection": _("choice", items=["Positive", "Negative", "Could not process", "Insufficient sample", None]),
+        "Monoclonal quantitation (Colourimetric)": _("random.uniform", a=0, b=150000, precision=6),
+        "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "Date Samples Arrayed Oxford": _(
+            "datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022
+        ),
+        "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "siemens_interpretation": _("choice", items=["Positive", "Negative", "Insufficient sample", None]),
+        "tdi_assay_net_signal": _("random.randint", a=100000, b=14000000),
+        "siemens_reading": _("choice", items=[str(_("random.uniform", a=0, b=10, precision=2)), "< 0.05", "> 10.00"]),
+        "lims_id": _("random.custom_code", mask="ONS########", digit="#"),
+    }
+
+
 def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
 
     return lambda: {  # noqa: E731

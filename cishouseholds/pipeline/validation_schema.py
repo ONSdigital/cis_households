@@ -36,6 +36,23 @@ blood_validation_schema = {
     "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
+historic_blood_validation_schema = {
+    "ons_id": {"type": "string"},
+    "Blood Sample Type": {"type": "string"},
+    "Plate Barcode": {"type": "string"},
+    "Well ID": {"type": "string"},
+    "Detection": {"type": "string"},
+    "Monoclonal quantitation (Colourimetric)": {"type": "float"},
+    "Date ELISA Result record created": {"type": "string"},
+    "Date Samples Arrayed Oxford": {"type": "string"},
+    "Date Samples Received Oxford": {"type": "string"},
+    "Voyager Date Created": {"type": "string"},
+    "siemens_interpretation": {"type": "string"},
+    "tdi_assay_net_signal": {"type": "integer"},
+    "siemens_reading": {"type": "string"},
+    "lims_id": {"type": "string"},
+}
+
 sample_direct_eng_wc_schema = {
     "unique_access_code": {"type": "string", "regex": r"^\d{12}"},
     "local_authority_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},

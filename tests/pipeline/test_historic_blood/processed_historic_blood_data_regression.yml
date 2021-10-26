@@ -1,0 +1,85 @@
+- antibody_test_plate_id: ONS_268310
+  antibody_test_result_classification: Negative
+  antibody_test_result_recorded_date: '2021-04-15 00:00:00.000000'
+  antibody_test_result_value: 128297.65625
+  antibody_test_target: null
+  antibody_test_well_id: R79
+  assay_category: 1
+  assay_siemens: '> 10.00'
+  assay_tdi: 1794522
+  blood_sample_arrayed_date: '2018-03-23 00:00:00.000000'
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-06-04 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS48136760
+  ons_id: ONS33204190
+  plate: '26831'
+  result_siemens: Positive
+- antibody_test_plate_id: ONS_402501
+  antibody_test_result_classification: Positive
+  antibody_test_result_recorded_date: '2018-01-24 00:00:00.000000'
+  antibody_test_result_value: 88389.8515625
+  antibody_test_target: null
+  antibody_test_well_id: Q52
+  assay_category: 1
+  assay_siemens: '8.69'
+  assay_tdi: 13679989
+  blood_sample_arrayed_date: '2018-11-24 00:00:00.000000'
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2018-01-03 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS71422713
+  ons_id: ONS60227680
+  plate: '40250'
+  result_siemens: Insufficient sample
+- antibody_test_plate_id: ONS_370884
+  antibody_test_result_classification: null
+  antibody_test_result_recorded_date: '2018-07-03 00:00:00.000000'
+  antibody_test_result_value: 107687.140625
+  antibody_test_target: null
+  antibody_test_well_id: B95
+  assay_category: 1
+  assay_siemens: '6.55'
+  assay_tdi: 3667281
+  blood_sample_arrayed_date: '2022-06-19 00:00:00.000000'
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-05-03 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS39422525
+  ons_id: ONS65242962
+  plate: '37088'
+  result_siemens: null
+- antibody_test_plate_id: ONS_131999
+  antibody_test_result_classification: null
+  antibody_test_result_recorded_date: '2018-04-27 00:00:00.000000'
+  antibody_test_result_value: 54447.11328125
+  antibody_test_target: null
+  antibody_test_well_id: P41
+  assay_category: 1
+  assay_siemens: '> 10.00'
+  assay_tdi: 13635435
+  blood_sample_arrayed_date: '2020-02-07 00:00:00.000000'
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-11-16 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS08904077
+  ons_id: ONS79751685
+  plate: '13199'
+  result_siemens: Negative
+- antibody_test_plate_id: ONS_674039
+  antibody_test_result_classification: Positive
+  antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
+  antibody_test_result_value: 1722.1533203125
+  antibody_test_target: null
+  antibody_test_well_id: N98
+  assay_category: 1
+  assay_siemens: '1.15'
+  assay_tdi: 12191705
+  blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-08-13 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS87732107
+  ons_id: ONS83295001
+  plate: '67403'
+  result_siemens: Negative
