@@ -37,7 +37,7 @@ from cishouseholds.validate import validate_and_filter
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
-def survey_responses_version_2_ETL(resource_path: str, output_path: str):
+def survey_responses_version_2_ETL(resource_path: str):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
