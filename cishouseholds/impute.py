@@ -130,22 +130,29 @@ def calculate_imputation_from_mode(
     Function provides a column value for each record that needs to be imputed.
     Where the value does not need to be imputed the column value created will be null.
     """
-    grouped = df.groupBy(group_column, reference_column).count()
-
-    window = Window.partitionBy(group_column).orderBy(F.desc("count"))
-
-    grouped = (
-        grouped.withColumn("order", F.row_number().over(window))
-        .where(F.col("order") == 1)
-        .drop("order", "count")
-        .withColumnRenamed(reference_column, "flag")
+    value_count_by_group = (
+        df.groupBy(group_column, reference_column)
+        .agg(F.count(reference_column).alias("_value_count"))
+        .filter(F.col(reference_column).isNotNull())
     )
 
-    return (
-        df.join(grouped, [group_column], "inner")
-        .withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), F.col("flag")))
-        .drop("flag")
+    group_window = Window.partitionBy(group_column)
+    deduplicated_modes = (
+        value_count_by_group.withColumn("_is_mode", F.col("_value_count") == F.max("_value_count").over(group_window))
+        .filter(F.col("_is_mode"))
+        .withColumn("_is_tied_mode", F.count(reference_column).over(group_window) > 1)
+        .filter(~F.col("_is_tied_mode"))
+        .withColumnRenamed(reference_column, "_imputed_value")
+        .drop("_value_count", "_is_mode", "_is_tied_mode")
     )
+
+    imputed_df = (
+        df.join(deduplicated_modes, on=group_column, how="left")
+        .withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), F.col("_imputed_value")))
+        .drop("_imputed_value")
+    )
+
+    return imputed_df
 
 
 def impute_last_obs_carried_forward(

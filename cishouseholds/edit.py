@@ -7,6 +7,32 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_work_facing_now_column(
+    df: DataFrame,
+    column_name_to_update: str,
+    work_status_column: str,
+    work_status_list: List[str],
+) -> DataFrame:
+    """
+    Update value of variable depending on state of reference column work_status_column
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    work_status_column
+    work_status_list
+        list of possible work statuses which result in "no" as column to update
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(work_status_column).isin(*work_status_list),
+            "No",
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
     """
     Remove rows based on duplicate values present in reference columns
