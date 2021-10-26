@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import impute_last_obs_carried_forward
+from cishouseholds.impute import impute_by_ordered_fill_forward
 
 
 def test_last_obs_forward(spark_session):
@@ -32,7 +32,7 @@ def test_last_obs_forward(spark_session):
     )
 
     df_input = expected_df_fwd.drop("age_imputation")
-    actual_df = impute_last_obs_carried_forward(
+    actual_df = impute_by_ordered_fill_forward(
         df_input, "age_imputation", "participant_id", "age", "date", order_type="asc"
     )
     assert_df_equality(actual_df, expected_df_fwd, ignore_row_order=True, ignore_column_order=True)
@@ -49,7 +49,7 @@ def test_last_obs_forward(spark_session):
     )
 
     df_input = expected_df_bkw.drop("age_imputation")
-    actual_df = impute_last_obs_carried_forward(
+    actual_df = impute_by_ordered_fill_forward(
         df_input, "age_imputation", "participant_id", "age", "date", order_type="desc"
     )
     assert_df_equality(actual_df, expected_df_bkw, ignore_row_order=True, ignore_column_order=True)

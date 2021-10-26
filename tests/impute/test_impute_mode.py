@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
-from cishouseholds.impute import calculate_imputation_from_mode
+from cishouseholds.impute import impute_by_mode
 
 
 def test_impute_mode(spark_session):
@@ -31,5 +31,5 @@ def test_impute_mode(spark_session):
     ).withColumn("unique_id", F.monotonically_increasing_id())
     df_input = expected_df.drop("imputed_value")
 
-    actual_df = calculate_imputation_from_mode(df_input, "imputed_value", "value", "group_id")
+    actual_df = impute_by_mode(df_input, "imputed_value", "value", "group_id")
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
