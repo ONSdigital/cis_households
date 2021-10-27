@@ -67,10 +67,10 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   infant_1_age: 0.0
-  infant_2_age: 4.0
-  infant_3_age: 1.0
-  infant_4_age: 7
-  infant_5_age: 4.0
+  infant_2_age: 5.0
+  infant_3_age: 2.0
+  infant_4_age: 8
+  infant_5_age: 5.0
   infant_6_age: 3.0
   infant_7_age: 4.0
   infant_8_age: 1.0
@@ -107,7 +107,7 @@
   middle_name: Clarence
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '392744995712'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -134,22 +134,22 @@
   person_2_not_consenting_age: null
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 28.0
+  person_3_age: 29.0
   person_3_not_consenting_age: 71.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
   person_4_age: 6.0
-  person_4_not_consenting_age: 99.0
+  person_4_not_consenting_age: 100.0
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 90
+  person_5_age: 91
   person_5_not_consenting_age: 0.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 6.0
   person_6_not_consenting_age: 30.0
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
   person_7_age: 24.0
-  person_7_not_consenting_age: 94.0
+  person_7_not_consenting_age: 95.0
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 88.0
+  person_8_age: 89.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
@@ -228,7 +228,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: null
-  work_healthcare: Other healthcare (e.g. mental health)
+  work_health_care: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -237,6 +237,7 @@
   work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: I don't even care.
   work_status: null
@@ -310,11 +311,11 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   infant_1_age: 5.0
-  infant_2_age: 6.0
-  infant_3_age: 5.0
+  infant_2_age: 7.0
+  infant_3_age: 6.0
   infant_4_age: 1
   infant_5_age: null
-  infant_6_age: 3.0
+  infant_6_age: 4.0
   infant_7_age: 0.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'No'
@@ -351,7 +352,7 @@
   middle_name: Quinn
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -371,32 +372,32 @@
   participant_status: Active
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  person_1_age: 63
-  person_1_not_consenting_age: 80.0
+  person_1_age: 64
+  person_1_not_consenting_age: 81.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 22.0
-  person_2_not_consenting_age: 99.0
+  person_2_not_consenting_age: 100.0
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_3_age: 0.0
-  person_3_not_consenting_age: 95.0
+  person_3_not_consenting_age: 96.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
   person_4_age: 70.0
-  person_4_not_consenting_age: 61.0
+  person_4_not_consenting_age: 62.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 38
-  person_5_not_consenting_age: 50.0
+  person_5_age: 39
+  person_5_not_consenting_age: 51.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 87.0
+  person_6_age: 88.0
   person_6_not_consenting_age: 55.0
   person_6_reason_for_not_consenting: Elementary, my dear Watson.
   person_7_age: 4.0
   person_7_not_consenting_age: 75.0
   person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_8_age: 85.0
+  person_8_age: 86.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_9_not_consenting_age: null
@@ -476,7 +477,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: Bad experience with tester / survey
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Primary care (e.g. GP, dentist)
+  work_health_care: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
   work_location: null
   work_main_job_changed: 'No'
@@ -485,6 +486,7 @@
   work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: null
+  work_patient_facing_now: null
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -558,12 +560,12 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
-  infant_1_age: 5.0
+  infant_1_age: 6.0
   infant_2_age: null
   infant_3_age: 4.0
   infant_4_age: 1
-  infant_5_age: 7.0
-  infant_6_age: 5.0
+  infant_5_age: 8.0
+  infant_6_age: 6.0
   infant_7_age: 6.0
   infant_8_age: 0.0
   is_regularly_lateral_flow_testing: 'No'
@@ -601,7 +603,7 @@
   middle_name: Buck
   no_blood_reason_fingerprick: Couldn't get enough blood
   no_blood_reason_venous: Participant time constraints
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -621,20 +623,20 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 68
-  person_1_not_consenting_age: 12.0
+  person_1_age: 69
+  person_1_not_consenting_age: 13.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_age: 86.0
+  person_2_age: 87.0
   person_2_not_consenting_age: 2.0
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
   person_3_age: 68.0
   person_3_not_consenting_age: 57.0
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_4_age: 54.0
+  person_4_age: 55.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 19
+  person_5_age: 20
   person_5_not_consenting_age: 13.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -642,7 +644,7 @@
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 61.0
+  person_7_age: 62.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Let them eat cake.
   person_8_age: 16.0
@@ -725,7 +727,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: null
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: 'No'
   work_location: null
   work_main_job_changed: 'Yes'
@@ -735,6 +737,7 @@
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_not_from_home_days_per_week: '3'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: <=15y
   work_sectors: Teaching and education
   work_sectors_other: I don't even care.
   work_status: 5y and older in full-time education
@@ -808,12 +811,12 @@
   illness_reduces_activity_or_ability: Yes, a lot
   infant_1_age: 0.0
   infant_2_age: 5.0
-  infant_3_age: 5.0
+  infant_3_age: 6.0
   infant_4_age: 3
   infant_5_age: null
   infant_6_age: null
-  infant_7_age: 7.0
-  infant_8_age: 6.0
+  infant_7_age: 8.0
+  infant_8_age: 7.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: null
   last_covid_contact_date: null
@@ -847,7 +850,7 @@
   middle_name: My
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -868,33 +871,33 @@
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
   person_1_age: 13
-  person_1_not_consenting_age: 87.0
+  person_1_not_consenting_age: 88.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_age: 28.0
-  person_2_not_consenting_age: 81.0
+  person_2_not_consenting_age: 82.0
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_age: 72.0
+  person_3_age: 73.0
   person_3_not_consenting_age: 2.0
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_4_age: 81.0
+  person_4_age: 82.0
   person_4_not_consenting_age: 33.0
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
   person_5_age: 22
   person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Let them eat cake.
-  person_6_age: 70.0
-  person_6_not_consenting_age: 81.0
+  person_6_age: 71.0
+  person_6_not_consenting_age: 82.0
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 36.0
+  person_7_age: 37.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
   person_8_age: 15.0
-  person_8_not_consenting_age: 10.0
+  person_8_not_consenting_age: 11.0
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_9_not_consenting_age: 86.0
+  person_9_not_consenting_age: 87.0
   person_9_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   physical_contact_18_to_69_years: '0'
@@ -970,7 +973,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'No'
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
   work_main_job_changed: null
@@ -980,6 +983,7 @@
     SINCE BEEN RESTORED
   work_not_from_home_days_per_week: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Arts or entertainment or recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -1054,8 +1058,8 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   infant_1_age: null
-  infant_2_age: 1.0
-  infant_3_age: 5.0
+  infant_2_age: 2.0
+  infant_3_age: 6.0
   infant_4_age: 0
   infant_5_age: 0.0
   infant_6_age: 4.0
@@ -1115,21 +1119,21 @@
   participant_testing_group: null
   participant_visit_status: Scheduled
   person_1_age: 20
-  person_1_not_consenting_age: 60.0
+  person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: 73.0
-  person_2_not_consenting_age: 73.0
+  person_2_age: 74.0
+  person_2_not_consenting_age: 74.0
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_3_age: null
-  person_3_not_consenting_age: 98.0
+  person_3_not_consenting_age: 99.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: 63.0
+  person_4_age: 64.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_5_age: 14
-  person_5_not_consenting_age: 83.0
+  person_5_not_consenting_age: 84.0
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_6_age: 30.0
@@ -1217,7 +1221,7 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
@@ -1226,6 +1230,7 @@
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
   work_not_from_home_days_per_week: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_patient_facing_now: <=15y
   work_sectors: Retail Sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
@@ -1300,13 +1305,13 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
-  infant_1_age: 7.0
-  infant_2_age: 7.0
-  infant_3_age: 7.0
-  infant_4_age: 7
+  infant_1_age: 8.0
+  infant_2_age: 8.0
+  infant_3_age: 8.0
+  infant_4_age: 8
   infant_5_age: 0.0
-  infant_6_age: 5.0
-  infant_7_age: 4.0
+  infant_6_age: 6.0
+  infant_7_age: 5.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: Yes because you live with someone who has/has had symptoms but
@@ -1369,25 +1374,25 @@
   person_2_not_consenting_age: 41.0
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 48.0
-  person_3_not_consenting_age: 29.0
+  person_3_age: 49.0
+  person_3_not_consenting_age: 30.0
   person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_4_age: 67.0
+  person_4_age: 68.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
   person_5_age: 33
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
-  person_6_not_consenting_age: 68.0
+  person_6_not_consenting_age: 69.0
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_7_age: 30.0
   person_7_not_consenting_age: 62.0
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_8_age: 85.0
+  person_8_age: 86.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -1466,7 +1471,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Moving location
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: null
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -1475,6 +1480,7 @@
   work_main_job_title: WHERE ARE MY PANTS?
   work_not_from_home_days_per_week: '7'
   work_nursing_or_residential_care_home: 'No'
+  work_patient_facing_now: null
   work_sectors: Social care
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
@@ -1547,13 +1553,13 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a little
-  infant_1_age: 7.0
-  infant_2_age: 3.0
-  infant_3_age: 6.0
+  infant_1_age: 8.0
+  infant_2_age: 4.0
+  infant_3_age: 7.0
   infant_4_age: 0
   infant_5_age: 3.0
-  infant_6_age: 5.0
-  infant_7_age: 7.0
+  infant_6_age: 6.0
+  infant_7_age: 8.0
   infant_8_age: null
   is_regularly_lateral_flow_testing: 'No'
   is_self_isolating: Yes for other reasons (e.g. going into hospital or quarantining)
@@ -1588,7 +1594,7 @@
   middle_name: Jae
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Two attempts made
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -1608,14 +1614,14 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  person_1_age: 30
-  person_1_not_consenting_age: 93.0
+  person_1_age: 31
+  person_1_not_consenting_age: 94.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 22.0
   person_2_not_consenting_age: 16.0
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 40.0
+  person_3_age: 41.0
   person_3_not_consenting_age: 21.0
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_4_age: 25.0
@@ -1625,17 +1631,17 @@
   person_5_age: 84
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: 78.0
-  person_6_not_consenting_age: 26.0
+  person_6_age: 79.0
+  person_6_not_consenting_age: 27.0
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_7_age: 4.0
-  person_7_not_consenting_age: 45.0
+  person_7_not_consenting_age: 46.0
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_8_age: 84.0
+  person_8_age: 85.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_9_not_consenting_age: 100.0
+  person_9_not_consenting_age: 101.0
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   physical_contact_18_to_69_years: null
@@ -1711,7 +1717,7 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
   work_main_job_changed: 'No'
@@ -1720,6 +1726,7 @@
     THE FIRST CHARACTER BEING LOWERCASE
   work_not_from_home_days_per_week: '6'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Teaching and education
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
@@ -1793,11 +1800,11 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a little
-  infant_1_age: 7.0
+  infant_1_age: 8.0
   infant_2_age: 2.0
-  infant_3_age: 4.0
+  infant_3_age: 5.0
   infant_4_age: 6
-  infant_5_age: 6.0
+  infant_5_age: 7.0
   infant_6_age: 0.0
   infant_7_age: 0.0
   infant_8_age: 7.0
@@ -1834,7 +1841,7 @@
   middle_name: Gale
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -1854,31 +1861,31 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: null
-  person_1_age: 27
-  person_1_not_consenting_age: 42.0
+  person_1_age: 28
+  person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_2_age: null
-  person_2_not_consenting_age: 54.0
+  person_2_not_consenting_age: 55.0
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 86.0
+  person_3_age: 87.0
   person_3_not_consenting_age: 20.0
   person_3_reason_for_not_consenting: Here's looking at you, kid.
   person_4_age: null
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_5_age: 6
-  person_5_not_consenting_age: 65.0
+  person_5_not_consenting_age: 66.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 69.0
+  person_6_age: 70.0
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Here's looking at you, kid.
   person_7_age: 43.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 26.0
+  person_8_age: 27.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
@@ -1957,7 +1964,7 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Secondary care (e.g. hospital)
+  work_health_care: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
   work_location: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
@@ -1966,6 +1973,7 @@
     EVALUATION
   work_not_from_home_days_per_week: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: <=15y
   work_sectors: Social Care
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_status: null
@@ -2040,10 +2048,10 @@
   infant_2_age: 1.0
   infant_3_age: null
   infant_4_age: 1
-  infant_5_age: 4.0
-  infant_6_age: 5.0
+  infant_5_age: 5.0
+  infant_6_age: 6.0
   infant_7_age: 1.0
-  infant_8_age: 5.0
+  infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
   is_self_isolating: Yes because you have/have had symptoms of COVID-19
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
@@ -2077,7 +2085,7 @@
   middle_name: Isaac
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Other
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2097,8 +2105,8 @@
   participant_status: Active
   participant_testing_group: Blood and Swab
   participant_visit_status: null
-  person_1_age: 74
-  person_1_not_consenting_age: 60.0
+  person_1_age: 75
+  person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 9.0
   person_2_not_consenting_age: null
@@ -2107,7 +2115,7 @@
   person_3_not_consenting_age: 79.0
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_4_age: 61.0
+  person_4_age: 62.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
   person_5_age: 36
@@ -2200,7 +2208,7 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_healthcare: Other healthcare (e.g. mental health)
+  work_health_care: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'No'
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -2209,6 +2217,7 @@
   work_main_job_title: MAKE ME A SANDWICH
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: null
+  work_patient_facing_now: null
   work_sectors: Civil Service or Local Government
   work_sectors_other: Ports are created with the built-in function open_port.
   work_status: Employed and currently working (including if on leave or sick leave
@@ -2280,14 +2289,14 @@
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
-  infant_1_age: 5.0
+  infant_1_age: 6.0
   infant_2_age: 3.0
   infant_3_age: 5.0
-  infant_4_age: 5
+  infant_4_age: 6
   infant_5_age: 6.0
   infant_6_age: 0.0
   infant_7_age: 2.0
-  infant_8_age: 7.0
+  infant_8_age: 8.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: Yes because you have/have had symptoms of COVID-19 or a positive
     test
@@ -2322,7 +2331,7 @@
   middle_name: Argentina
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -2350,7 +2359,7 @@
   person_2_not_consenting_age: null
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 41.0
+  person_3_age: 42.0
   person_3_not_consenting_age: null
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -2358,21 +2367,21 @@
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 23
+  person_5_age: 24
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_age: 81.0
+  person_6_age: 82.0
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Let them eat cake.
-  person_7_age: 19.0
+  person_7_age: 20.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
   person_8_age: 51.0
   person_8_not_consenting_age: 53.0
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_9_not_consenting_age: 86.0
+  person_9_not_consenting_age: 87.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
   physical_contact_18_to_69_years: 1-5
   physical_contact_over_70_years: 1-5
@@ -2447,7 +2456,7 @@
   which_symptoms_last_7_days: null
   withdrawal_reason: null
   work_direct_contact_persons: 'Yes'
-  work_healthcare: null
+  work_health_care: null
   work_in_additional_paid_employment: null
   work_location: Somewhere else (not your home)
   work_main_job_changed: null
@@ -2458,6 +2467,7 @@
     TYPES
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: 'Yes'
+  work_patient_facing_now: null
   work_sectors: Armed forces
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status: 5y and older in full-time education

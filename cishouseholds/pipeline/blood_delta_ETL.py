@@ -14,7 +14,7 @@ from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import blood_variable_name_map
-from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.validation_schema import blood_validation_schema
@@ -28,7 +28,7 @@ from cishouseholds.validate import validate_and_filter
 @register_pipeline_stage("blood_delta_ETL")
 def blood_delta_ETL(resource_path: str):
     df = extract_validate_transform_blood_delta(resource_path)
-    update_table(df, "processed_blood_test_results")
+    update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
     return df
 
 
@@ -72,19 +72,9 @@ def extract_blood_delta(spark_session: SparkSession, resource_path: str):
 def transform_blood_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for blood deltas.
-    D1: substring_column
-    D11: assign_column_uniform_value
-
-    Parameters
-    ----------
-    df: pyspark.sql.DataFrame
-
-    Return
-    ------
-    df: pyspark.sql.DataFrame
     """
-    df = assign_filename_column(df, "csv_filename")
-    df = assign_test_target(df, "antibody_test_target", "csv_filename")
+    df = assign_filename_column(df, "blood_test_source_file")
+    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
     df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
