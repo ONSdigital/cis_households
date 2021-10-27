@@ -87,3 +87,13 @@ def test_configure_outputs(spark_session):
     # test function raises readable error for column not existing on dataframe
     with pytest.raises(AttributeError):
         configure_outputs(input_df, selection_columns="nothing")
+
+    # test incomplete maps raise index error
+    with pytest.raises(LookupError):
+        configure_outputs(
+            input_df,
+            selection_columns=["country", "age", "school_year", "output"],
+            name_map={"school_year": "renamed"},
+            value_map={"output": {"70+": "gibberish", "02-6SY": "trumpet"}},
+            complete_map=True,
+        )

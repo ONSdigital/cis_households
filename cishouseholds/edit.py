@@ -18,12 +18,12 @@ def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_i
     """
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
     if error_if_value_not_found:
-        temp_df = df.withColumn("exists", F.when(F.col(column).isin(*list(map.keys())), 1).otherwise(0))
-        temp_df = temp_df.groupBy("exists").count().filter(F.col("exists") == 1)
-        if temp_df.collect()[0][1] != df.count():
-            raise LookupError(
-                "Insufficient mapping values: not enough data provided to map all values in column to targets"
-            )
+        temp_df = df.distinct()
+        values_set = set(temp_df.select(column).toPandas()[column].tolist())
+        map_set = set(map.keys())
+        if map_set != values_set:
+            missing = set(temp_df.select(column).toPandas()[column].tolist()) - set(map.keys())
+            raise LookupError(f"Insufficient mapping values: contents of:{missing} remains unmapped")
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
