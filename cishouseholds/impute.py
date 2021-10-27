@@ -208,3 +208,35 @@ def impute_by_ordered_fill_forward(
         .orderBy(ordering_expression, "id")
         .drop("id")
     )
+
+
+def merge_previous_imputed_values(
+    df: DataFrame,
+    imputed_value_lookup_df: DataFrame,
+    id_column_name: str,
+) -> DataFrame:
+    """
+    Retrieve and coalesce imputed values from a lookup table
+
+    Parameters
+    ----------
+    df
+    imputed_value_lookup_df
+    id_column_name
+    """
+    imputed_value_lookup_df = imputed_value_lookup_df.toDF(
+        *[f"_{name}" if name != id_column_name else name for name in imputed_value_lookup_df.columns]
+    )
+
+    df = df.join(imputed_value_lookup_df, id_column_name)
+
+    for name in imputed_value_lookup_df.columns:
+        if name != id_column_name:
+            df = df.withColumn(name[1:], F.coalesce(F.col(name[1:]), F.col(name)))
+
+    is_imputed_column_names = [name for name in imputed_value_lookup_df.columns if name.endswith("_is_imputed")]
+
+    for name in is_imputed_column_names:
+        df = df.withColumn(name[1:], F.greatest(F.col(name[1:]), F.col(name)))
+
+    return df.drop(*[name for name in imputed_value_lookup_df.schema.names if name != id_column_name])
