@@ -246,7 +246,6 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
-
     return outer_df
 
 
@@ -365,6 +364,7 @@ def merge_process_filtering(
     # .drop('unique_id_count', 'not_best_match')
 
     # DO: drop all internally created columns
+
     return (
         df_all_iqvia.drop(*drop_list_columns),
         df_lab_residuals.drop(*drop_list_columns),
