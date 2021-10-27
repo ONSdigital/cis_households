@@ -29,7 +29,7 @@ def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
                 split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
         split_dataframes.append(split_df)
     joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
-    joined_df = joined_df.drop("blood_group_n", "blood_group_s")
+    joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
     return joined_df, failed_df
 
 
