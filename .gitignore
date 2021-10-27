@@ -134,4 +134,4 @@ dmypy.json
 .pyre/
 
 #config
-cishouseholds\pipeline\config.yaml
+**/*config.yaml
