@@ -22,7 +22,7 @@ def unprocessed_blood_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_unprocessed_blood_ETL_df(regression_test_df, unprocessed_blood_ETL_output):
     regression_test_df(
-        unprocessed_blood_ETL_output.drop("unprocessed_blood_source_file"), "date_received", "unprocessed_blood"
+        unprocessed_blood_ETL_output.drop("unprocessed_blood_source_file"), "sample_id", "unprocessed_blood"
     )  # remove source file column, as it varies for our temp dummy data
 
 

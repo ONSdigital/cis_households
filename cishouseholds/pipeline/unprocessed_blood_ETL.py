@@ -4,9 +4,7 @@ from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql.session import SparkSession
 
-from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import assign_test_target
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_schema_names
@@ -53,7 +51,6 @@ def extract_validate_transform_unprocessed_blood(resource_path: str):
     )
     df = validate_and_filter(df, _unprocessed_blood_validation_schema, error_accumulator)
     df = transform_unprocessed_blood_delta(df)
-    # df = prepare_for_union(df, None)
     return df
 
 
@@ -75,7 +72,5 @@ def transform_unprocessed_blood_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for blood deltas.
     """
     df = assign_filename_column(df, "unprocessed_blood_source_file")
-    df = assign_test_target(df, "antibody_test_target", "unprocessed_blood_source_file")
-    df = assign_column_uniform_value(df, "assay_category", 1)
-
+    df = df.drop("rejection_code")
     return df

@@ -56,14 +56,14 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
     return survey_unioxf_medtest
 
 
-def generate_unprocessed_bloods_data(directory, file_date, records, target):
+def generate_unprocessed_bloods_data(directory, file_date, records):
     """
     generate unprocessed bloods data
     """
     schema = Schema(schema=get_unprocessed_blood_description(_))
     unprocessed_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
-    unprocessed_bloods_data.to_csv(directory / f"unprocessed_bloods{target}_{file_date}.csv", index=False)
+    unprocessed_bloods_data.to_csv(directory / f"Unioxf_medtest_unassayed_{file_date}.csv", index=False)
     return unprocessed_bloods_data
 
 
