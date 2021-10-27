@@ -107,7 +107,7 @@
   middle_name: Clarence
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '392744995712'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -352,7 +352,7 @@
   middle_name: Quinn
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -603,7 +603,7 @@
   middle_name: Buck
   no_blood_reason_fingerprick: Couldn't get enough blood
   no_blood_reason_venous: Participant time constraints
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -850,7 +850,7 @@
   middle_name: My
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -1098,7 +1098,7 @@
   middle_name: Hank
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: '0'
+  no_email_address: 0
   ons_household_id: '602276804025'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
@@ -1347,7 +1347,7 @@
   middle_name: Jessika
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: '0'
+  no_email_address: 0
   ons_household_id: '217846198988'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -1594,7 +1594,7 @@
   middle_name: Jae
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Two attempts made
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -1841,7 +1841,7 @@
   middle_name: Gale
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -2085,7 +2085,7 @@
   middle_name: Isaac
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Other
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2331,7 +2331,7 @@
   middle_name: Argentina
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: '1'
+  no_email_address: 1
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'

@@ -258,7 +258,7 @@ fields:
 - metadata: {}
   name: no_email_address
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: able_to_take_blood
   nullable: true
