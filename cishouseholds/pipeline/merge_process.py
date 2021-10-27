@@ -247,6 +247,8 @@ def execute_merge_specific_antibody(
         barcode_column_name=barcode_column_name,
     )
 
+    return outer_df
+
 
 def merge_process_filtering(
     df: DataFrame,

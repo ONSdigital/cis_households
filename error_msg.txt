@@ -1,0 +1,53 @@
+Run ID: 11
+Stage 1/1: merge_antibody_swab_ETL
+Error: Traceback (most recent call last):
+  File "/home/cdsw/cis_households/cishouseholds/pipeline/run.py", line 56, in run_pipeline_stages
+    output_df = pipeline_stages[stage_name](**stage_config)
+  File "/home/cdsw/cis_households/cishouseholds/pipeline/merge_antibody_swab_ETL.py", line 52, in merge_antibody_swab_ETL
+    load_to_data_warehouse(output_df_list, output_table_list)
+  File "/home/cdsw/cis_households/cishouseholds/pipeline/merge_antibody_swab_ETL.py", line 88, in load_to_data_warehouse
+    table_df = update_table(df, table_name)
+  File "/home/cdsw/cis_households/cishouseholds/pipeline/load.py", line 29, in update_table
+    f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+  File "/opt/cloudera/parcels/CDH/lib/spark/python/pyspark/sql/readwriter.py", line 775, in saveAsTable
+    self._jwrite.saveAsTable(name)
+  File "/usr/local/lib/python3.6/dist-packages/py4j/java_gateway.py", line 1257, in __call__
+    answer, self.gateway_client, self.target_id, self.name)
+  File "/opt/cloudera/parcels/CDH/lib/spark/python/pyspark/sql/utils.py", line 63, in deco
+    return f(*a, **kw)
+  File "/usr/local/lib/python3.6/dist-packages/py4j/protocol.py", line 328, in get_return_value
+    format(target_id, ".", name), value)
+py4j.protocol.Py4JJavaError: An error occurred while calling o5821.saveAsTable.
+: java.lang.OutOfMemoryError: Java heap space
+	at java.util.Arrays.copyOf(Arrays.java:3332)
+	at java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:124)
+	at java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:448)
+	at java.lang.StringBuilder.append(StringBuilder.java:136)
+	at scala.collection.mutable.StringBuilder.append(StringBuilder.scala:210)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$generateTreeString$1.apply(TreeNode.scala:542)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$generateTreeString$1.apply(TreeNode.scala:541)
+	at scala.collection.immutable.List.foreach(List.scala:392)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:541)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode.generateTreeString(TreeNode.scala:568)
+	at org.apache.spark.sql.catalyst.trees.TreeNode$$anonfun$generateTreeString$3.apply(TreeNode.scala:566)
