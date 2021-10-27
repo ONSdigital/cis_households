@@ -27,8 +27,8 @@ def test_merge_assayed_bloods(spark_session):
             ("ONS00000003", 2, 112, 1, 2, 2, 1, 2, 1, 1, 1),
         ],
         schema="""blood_sample_barcode string ,antibody_test_plate_number integer,antibody_test_well_id integer,
-        col1_s integer,col2_s integer,col3_s integer,col4_s integer,
-        col1_n integer,col2_n integer,col3_n integer,col4_n integer""",
+        col1_s_protein integer,col2_s_protein integer,col3_s_protein integer,col4_s_protein integer,
+        col1_n_protein integer,col2_n_protein integer,col3_n_protein integer,col4_n_protein integer""",
     )
     expected_error_df = input_df.filter(F.col("blood_sample_barcode") == "ONS00000005")
     output_df, error_df = merge_assayed_bloods(input_df, "blood_group")
