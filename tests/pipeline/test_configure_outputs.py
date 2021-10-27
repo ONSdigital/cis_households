@@ -53,7 +53,7 @@ def test_configure_outputs(spark_session):
             (2, 3),
             (4, 2),
         ],
-        schema="country string, test long",
+        schema="country integer, test long",
     )
     # test mapping functionality with complete map off
     output_df1 = configure_outputs(
@@ -66,7 +66,9 @@ def test_configure_outputs(spark_session):
         input_df,
         selection_columns=["country", "age", "school_year"],
         group_by_columns="country",
-        value_map={"county": {"NI": 1, "England": 2, "Wales": 3, "Scotland": 4}},
+        aggregate_function="count",
+        aggregate_column_name="test",
+        value_map={"country": {"NI": 1, "England": 2, "Wales": 3, "Scotland": 4}},
         complete_map=True,
     )
     # test correct grouping functionality

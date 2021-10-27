@@ -63,7 +63,9 @@ def configure_outputs(
     check_columns([*col_args, selection_columns], df.columns, 0)
 
     if group_by_columns is not None:
-        if aggregate_column_name:
+        if aggregate_function is None:
+            raise Exception("Aggregate function required: rows can only be grouped using an aggregation function")
+        if aggregate_column_name is not None:
             prev_cols = set(df.columns)
             df = df.groupBy(*group_by_columns).agg({"*": aggregate_function})
             new_col = list(set(df.columns) - prev_cols)[0]
