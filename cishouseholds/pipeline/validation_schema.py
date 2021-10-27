@@ -36,6 +36,14 @@ blood_validation_schema = {
     "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
+unprocessed_blood_validation_schema = {
+    "Date Received": {"type": "string"},
+    "Sample ID": {"type": "string"},
+    "Rejection Code": {"type": "integer"},
+    "Reason for rejection": {"type": "string"},
+    "Sample Type V/C": {"type": "string"},
+}
+
 sample_direct_eng_wc_schema = {
     "unique_access_code": {"type": "string", "regex": r"^\d{12}"},
     "local_authority_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},

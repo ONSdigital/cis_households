@@ -16,6 +16,7 @@ from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_swab_data_description
+from dummy_data_generation.schemas import get_unprocessed_blood_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
 
 _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
@@ -53,6 +54,17 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
 
     survey_unioxf_medtest.to_csv(directory / f"Unioxf_medtest{target}_{file_date}.csv", index=False)
     return survey_unioxf_medtest
+
+
+def generate_unprocessed_bloods_data(directory, file_date, records, target):
+    """
+    generate unprocessed bloods data
+    """
+    schema = Schema(schema=get_unprocessed_blood_description(_))
+    unprocessed_bloods_data = pd.DataFrame(schema.create(iterations=records))
+
+    unprocessed_bloods_data.to_csv(directory / f"unprocessed_bloods{target}_{file_date}.csv", index=False)
+    return unprocessed_bloods_data
 
 
 def generate_northern_ireland_data(directory, file_date, records):
@@ -183,25 +195,6 @@ def generate_historic_bloods_data(directory, file_date, records):
     return historic_bloods_data
 
 
-def generate_unprocessed_bloods_data(directory, file_date, records):
-    """
-    generate unprocessed bloods data
-    """
-    unprocessed_bloods_description = lambda: {  # noqa: E731
-        "Date Received": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-        "Sample ID": code_mask(mask="[ONS,ons]########", min_code="ONS00000001", max_code="ONS99999999"),
-        "Rejection Code": _("random.randint", a=1, b=9999),
-        "Reason for rejection": _("text.sentence"),
-        "Sample Type V/C": _("choice", items=["V", "C"]),
-    }
-
-    schema = Schema(schema=unprocessed_bloods_description)
-    unprocessed_bloods_data = pd.DataFrame(schema.create(iterations=records))
-
-    unprocessed_bloods_data.to_csv(directory / f"unprocessed_bloods_{file_date}.csv", index=False)
-    return unprocessed_bloods_data
-
-
 if __name__ == "__main__":
     raw_dir = Path(__file__).parent.parent / "generated_data"
     swab_dir = raw_dir / "swab"
@@ -258,6 +251,10 @@ if __name__ == "__main__":
     lab_bloods = pd.concat(
         [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
     )
+
+    unprocessed_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10, "N")
+    unprocessed_bloods_s_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10, "S")
+    lab_bloods = pd.concat([unprocessed_bloods_n_1, unprocessed_bloods_s_1])
 
     # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
     # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)

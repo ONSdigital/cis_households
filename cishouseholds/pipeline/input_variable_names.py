@@ -69,9 +69,9 @@ sample_ni_variable_name_map = {
 }
 
 unprocessed_bloods_variable_name_map = {
-    "Date Recieved": "date_received",
+    "Date Received": "date_received",
     "Sample ID": "sample_id",
-    "Rejection code": "rejection_code",
+    "Rejection Code": "rejection_code",
     "Reason for rejection": "rejection_reason",
     "Sample Type V/C": "sample_type",
 }

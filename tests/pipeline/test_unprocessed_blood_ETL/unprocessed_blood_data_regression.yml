@@ -1,0 +1,36 @@
+- antibody_test_target: null
+  assay_category: 1
+  date_received: 2018-01-03 06:14:32 UTC
+  rejection_code: 5515
+  rejection_reason: Haskell is a standardized, general-purpose purely functional programming
+    language, with non-strict semantics and strong static typing.
+  sample_id: ONS58086319
+  sample_type: C
+- antibody_test_target: null
+  assay_category: 1
+  date_received: 2018-01-24 08:15:14 UTC
+  rejection_code: 6913
+  rejection_reason: Where are my pants?
+  sample_id: ONS60227680
+  sample_type: V
+- antibody_test_target: null
+  assay_category: 1
+  date_received: 2018-09-07 22:41:44 UTC
+  rejection_code: 6202
+  rejection_reason: Make me a sandwich.
+  sample_id: ONS13332041
+  sample_type: V
+- antibody_test_target: null
+  assay_category: 1
+  date_received: 2018-11-24 17:05:37 UTC
+  rejection_code: 7360
+  rejection_reason: Its main implementation is the Glasgow Haskell Compiler.
+  sample_id: ONS00265774
+  sample_type: V
+- antibody_test_target: null
+  assay_category: 1
+  date_received: 2021-04-15 18:17:51 UTC
+  rejection_code: 4742
+  rejection_reason: Atoms are used within a program to denote distinguished values.
+  sample_id: ONS02683106
+  sample_type: V

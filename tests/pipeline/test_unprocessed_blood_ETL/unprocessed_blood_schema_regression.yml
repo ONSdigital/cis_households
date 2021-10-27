@@ -1,0 +1,34 @@
+fields:
+- metadata: {}
+  name: date_received
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_id
+  nullable: true
+  type: string
+- metadata: {}
+  name: rejection_code
+  nullable: true
+  type: integer
+- metadata: {}
+  name: rejection_reason
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: unprocessed_blood_source_file
+  nullable: false
+  type: string
+- metadata: {}
+  name: antibody_test_target
+  nullable: true
+  type: string
+- metadata: {}
+  name: assay_category
+  nullable: false
+  type: integer
+type: struct
