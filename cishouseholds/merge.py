@@ -6,7 +6,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
-def merge_assayed_bloods(df: DataFrame, blood_group_column: str, return_errord_df=False):
+def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appriopiate extension appended to the end of the
@@ -26,13 +26,11 @@ def merge_assayed_bloods(df: DataFrame, blood_group_column: str, return_errord_d
         split_df = df.filter(F.col(blood_group_column) == blood_group)
         for col in split_df.columns:
             if col not in join_on_colums:
-                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower())
+                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
         split_dataframes.append(split_df)
     joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
     joined_df = joined_df.drop("blood_group_n", "blood_group_s")
-    if return_errord_df:
-        return joined_df, failed_df
-    return joined_df
+    return joined_df, failed_df
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
