@@ -68,6 +68,10 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: swab_test_source_file
+  nullable: false
+  type: string
+- metadata: {}
   name: pcr_date
   nullable: true
   type: string

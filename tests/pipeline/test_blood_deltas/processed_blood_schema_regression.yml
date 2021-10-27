@@ -48,6 +48,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: blood_test_source_file
+  nullable: false
+  type: string
+- metadata: {}
   name: antibody_test_target
   nullable: true
   type: string

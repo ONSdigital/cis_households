@@ -15,7 +15,6 @@ from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_work_patient_facing_now
-from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
@@ -26,13 +25,15 @@ from cishouseholds.edit import update_schema_types
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
-from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
+
+# from cishouseholds.derive import assign_work_person_facing_now
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
@@ -41,7 +42,7 @@ def survey_responses_version_2_ETL(resource_path: str):
     End to end processing of a IQVIA survey responses CSV file.
     """
     df = extract_validate_transform_survey_responses_version_2_delta(resource_path)
-    update_table(df, "processed_survey_responses_v2")
+    update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
     return df
 
 
@@ -78,16 +79,8 @@ def extract_survey_responses_version_2_delta(spark_session: SparkSession, resour
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 2 survey deltas.
-
-    Parameters
-    ----------
-    df: pyspark.sql.DataFrame
-
-    Return
-    ------
-    df: pyspark.sql.DataFrame
     """
-    df = assign_filename_column(df, "csv_filename")
+    df = assign_filename_column(df, "survey_responses_v2_source_file")
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
@@ -159,18 +152,18 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
     df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
         "work_status",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
-    df = update_work_facing_now_column(
-        df,
-        "work_person_facing_now",
-        "work_status",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_person_facing_now",
+    #     "work_status",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
