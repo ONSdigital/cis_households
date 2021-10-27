@@ -51,7 +51,6 @@ def extract_validate_transform_survey_responses_version_2_delta(resource_path: s
     df = extract_survey_responses_version_2_delta(spark_session, resource_path)
     df = rename_column_names(df, survey_responses_v2_variable_name_map)
     df = convert_columns_to_timestamps(df, survey_responses_v2_datetime_map)
-
     _survey_responses_v2_validation_schema = update_schema_names(
         survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map
     )
