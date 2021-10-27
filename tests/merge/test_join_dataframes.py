@@ -42,7 +42,7 @@ def test_join_dataframes(spark_session):
         schema="id string, unique_id_1 integer, unique_id_2 integer",
     )
 
-    output_df = join_dataframes(input_df1, input_df2, join_type="outer", reference_column="id")
+    output_df = join_dataframes(input_df1, input_df2, join_type="outer", on="id")
     ordering_columns = ["id", "unique_id_1", "unique_id_2"]
     assert_df_equality(
         output_df.orderBy(*ordering_columns), expected_df.orderBy(*ordering_columns), ignore_nullable=True
