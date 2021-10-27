@@ -6,7 +6,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
-def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
+def merge_assayed_bloods(df: DataFrame, blood_group_column: str, return_errord_df=False):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appriopiate extension appended to the end of the
@@ -18,6 +18,10 @@ def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
     join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
     split_dataframes = []
+    window = Window.partitionBy(*join_on_colums).orderBy("blood_sample_barcode")
+    df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
+    failed_df = df.filter(F.col("sum") > 2).drop("sum")
+    df = df.filter(F.col("sum") < 3).drop("sum")
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(blood_group_column) == blood_group)
         for col in split_df.columns:
@@ -25,6 +29,9 @@ def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
                 split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower())
         split_dataframes.append(split_df)
     joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
+    joined_df = joined_df.drop("blood_group_n", "blood_group_s")
+    if return_errord_df:
+        return joined_df, failed_df
     return joined_df
 
 
