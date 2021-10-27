@@ -46,12 +46,28 @@ def test_configure_outputs(spark_session):
         ],
         schema="country string, test long",
     )
-    # test mapping functionality
+    expected_df3 = spark_session.createDataFrame(
+        data=[
+            (3, 2),
+            (1, 4),
+            (2, 3),
+            (4, 2),
+        ],
+        schema="country string, test long",
+    )
+    # test mapping functionality with complete map off
     output_df1 = configure_outputs(
         input_df,
         selection_columns=["country", "age", "school_year", "output"],
         name_map={"school_year": "renamed"},
         value_map={"output": {"70+": "gibberish", "02-6SY": "trumpet"}},
+    )
+    output_df5 = configure_outputs(
+        input_df,
+        selection_columns=["country", "age", "school_year"],
+        group_by_columns="country",
+        value_map={"county": {"NI": 1, "England": 2, "Wales": 3, "Scotland": 4}},
+        complete_map=True,
     )
     # test correct grouping functionality
     output_df2 = configure_outputs(
@@ -60,6 +76,7 @@ def test_configure_outputs(spark_session):
 
     assert_df_equality(output_df1, expected_df1, ignore_nullable=True)
     assert_df_equality(output_df2, expected_df2, ignore_nullable=True)
+    assert_df_equality(output_df5, expected_df3, ignore_nullable=True)
 
     # test function dissalows using functions on non-selected columns
     with pytest.raises(IndexError):

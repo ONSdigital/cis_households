@@ -30,6 +30,7 @@ def configure_outputs(
     aggregate_column_name: Optional[str] = None,
     name_map: Optional[dict] = None,
     value_map: Optional[dict] = None,
+    complete_map: Optional[bool] = False,
 ):
     """
     Customise the output of the pipeline using user inputs
@@ -39,6 +40,11 @@ def configure_outputs(
     selection_columns
     group_by_columns
     name_map
+        dictionary containy key value pairs of old and new column names to modify
+    value_map
+        dicitonary with key value pair: {column: mapping expression dictionary} to map values in given columns
+    complete_map
+        boolean expression to return error if all values in column must be mapped to constitue a correct output
     """
     col_args = []
     if type(group_by_columns) != list and group_by_columns is not None:
@@ -69,5 +75,5 @@ def configure_outputs(
             df = df.withColumnRenamed(current_name, to_be_name)
     if value_map is not None:
         for column_name_to_assign, map in value_map.items():
-            df = update_column_values_from_map(df, column_name_to_assign, map)
+            df = update_column_values_from_map(df, column_name_to_assign, map, complete_map)
     return df
