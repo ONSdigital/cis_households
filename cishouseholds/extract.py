@@ -1,7 +1,11 @@
-from datetime import datetime
 import subprocess
-from typing import Optional, Union
+from datetime import datetime
+from typing import List
+from typing import Optional
+from typing import Union
 
+import pandas as pd
+import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
@@ -62,23 +66,32 @@ def read_csv_to_pyspark_df(
         sep=sep,
         **kwargs,
     )
-def get_date_from_filename(filename:str, sep:Optional[str]="_", format:Optional[str]="%Y%m%d"):
+
+
+def get_date_from_filename(filename: str, sep: Optional[str] = "_", format: Optional[str] = "%Y%m%d") -> str:
+    """
+    Get a date string from a filename of containing a string formatted date
+    Parameters
+    ----------
+    filename
+    sep
+    format
+    """
     try:
         file_date = filename.split(sep)[-1].split(".")[0]
-        file_date = datetime.strptime(file_date, format)
-        return file_date.strftime('%Y-%m-%d')
+        file_date = datetime.strptime(file_date, format)  # type: ignore
+        file_date = file_date.strftime("%Y-%m-%d")  # type: ignore
+        return file_date
     except ValueError:
-        return None
-    
+        return str(None)
+
 
 def list_contents(
-    path: str,
-    recursive: Optional[bool] = False,
-    date_from_filename: Optional[bool] = False 
-)->DataFrame:
+    path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = False
+) -> DataFrame:
     """
     Read contents of a directory and return the path for each file and
-    returns a dataframe of 
+    returns a dataframe of
     Parameters
     ----------
     path : String
@@ -89,7 +102,7 @@ def list_contents(
     if recursive:
         command.append("-R")
     ls = subprocess.Popen([*command, path], stdout=subprocess.PIPE)
-    names = ["permission","id","owner","group","value","upload_date","upload_time","file_path"]
+    names = ["permission", "id", "owner", "group", "value", "upload_date", "upload_time", "file_path"]
     files = []
     for line in ls.stdout:  # type: ignore
         dic = {}
@@ -105,15 +118,28 @@ def list_contents(
             files.append(dic)
     return spark_session.createDataFrame(pd.DataFrame(files))
 
-def get_files_by_date(path: str, date: Union[str, datetime], selector: str):
+
+def get_files_by_date(path: str, date: Union[str, datetime], selector: str) -> List:
+    """
+    Get a list of hdfs file paths for a given set of date critera and parent path on
+    hdfs
+    Parameters
+    ----------
+    path
+        hdfs file path to folder
+    date
+        reference date for file selection
+    selector
+        options for selection type: latest, after(date), before(date)
+    """
     files = list_contents(path, date_from_filename=True)
     if type(date) == datetime:
-        date = date.strftime('%Y-%m-%d')
-    files = files.withColumn("upload_date",F.to_date("upload_date", "yyyy-MM-dd"))
+        date = date.strftime("%Y-%m-%d")
+    files = files.withColumn("upload_date", F.to_date("upload_date", "yyyy-MM-dd"))
     if selector == "latest":
         files = files.orderBy("upload_date", "upload_time")
     elif selector == "after":
         files = files.filter(F.col("upload_date") >= (F.lit(date)))
     elif selector == "before":
         files = files.filter(F.col("upload_date") <= (F.lit(date)))
-    return files.select('file_path').rdd.flatMap(lambda x: x).collect()
+    return files.select("file_path").rdd.flatMap(lambda x: x).collect()

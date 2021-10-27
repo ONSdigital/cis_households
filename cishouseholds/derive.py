@@ -6,6 +6,57 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+    """
+    Use inbuilt pyspark function to get name of the file used in the current spark task
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    return df.withColumn(column_name_to_assign, F.input_file_name())
+
+
+def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str, reference_column: str, map: dict):
+    """
+    Assing a speciifc column value using a dictionary of values to assign as keys and
+    the list criteria corresponing to when that value should be assign as a value
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_column
+    map
+    """
+    df = df.withColumn(column_name_to_asign, F.lit(None))
+    for val, key_list in map.items():
+        df = df.withColumn(
+            column_name_to_asign,
+            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_asign)),
+        )
+    return df
+
+
+def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str):
+    """
+    Assign a column for the appropriate test target type corresponding
+    to that contained within the filename column (S, N)
+    of visit
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    filename_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(filename_column).contains("S"), "S")
+        .when(F.col(filename_column).contains("N"), "N")
+        .otherwise(None),
+    )
+    return df
+
+
 def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str):
     """
     Assign a column for the approximate school year of an individual given their age at the time
@@ -32,6 +83,84 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
         F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
             F.col(column_name_to_assign)
         ),
+    )
+    return df
+
+
+def assign_work_patient_facing_now(
+    df: DataFrame, column_name_to_assign: str, age_column: str, work_healthcare_column: str
+):
+    """
+    Assign column for work person facing depending on values of given input reference
+    columns mapped to a list of outputs
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    age_column
+    work_healthcare_column
+    """
+    df = assign_column_from_mapped_list_key(
+        df,
+        column_name_to_assign,
+        work_healthcare_column,
+        {
+            "Yes": [
+                "Yes, primary care, patient-facing",
+                "Yes, secondary care, patient-facing",
+                "Yes, other healthcare, patient-facing",
+            ],
+            "No": [
+                "No",
+                "Yes, primary care, non-patient-facing",
+                "Yes, secondary care, non-patient-facing",
+                "Yes, other healthcare, non-patient-facing",
+            ],
+        },
+    )
+    df = assign_named_buckets(
+        df, age_column, column_name_to_assign, {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"}
+    )
+    return df
+
+
+def assign_work_person_facing_now(
+    df: DataFrame,
+    column_name_to_assign: str,
+    work_patient_facing_now_column: str,
+    work_social_care_column: str,
+):
+    """
+    Assign column for work patient facing depending on values of given input reference
+    columns mapped to a list of outputs
+    Parameters
+    ----------
+    df
+    work_patient_facing_now_column
+    work_social_care_column
+    column_name_to_assign
+    """
+    df = assign_column_from_mapped_list_key(
+        df,
+        column_name_to_assign,
+        work_social_care_column,
+        {
+            "Yes": ["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+            "No": [
+                "No",
+                "Yes, care/residential home, non-resident-facing",
+                "Yes, other social care, non-resident-facing",
+            ],
+        },
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(work_patient_facing_now_column) == "Yes", "Yes")
+        .when(
+            ~(F.col(work_patient_facing_now_column).isin("Yes", "No") | F.col(work_patient_facing_now_column).isNull()),
+            F.col(work_patient_facing_now_column),
+        )
+        .otherwise(F.col(column_name_to_assign)),
     )
     return df
 
