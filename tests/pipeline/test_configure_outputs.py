@@ -1,3 +1,4 @@
+import pytest
 from chispa import assert_df_equality
 
 from cishouseholds.pipeline.generate_outputs import configure_outputs
@@ -45,14 +46,25 @@ def test_configure_outputs(spark_session):
         ],
         schema="country string, test long",
     )
+    # test mapping functionality
     output_df1 = configure_outputs(
         input_df,
-        selection_columns=["country", "age", "school_year"],
+        selection_columns=["country", "age", "school_year", "output"],
         name_map={"school_year": "renamed"},
         value_map={"output": {"70+": "gibberish", "02-6SY": "trumpet"}},
     )
+    # test correct grouping functionality
     output_df2 = configure_outputs(
         input_df, group_by_columns="country", aggregate_function="count", aggregate_column_name="test"
     )
+
     assert_df_equality(output_df1, expected_df1, ignore_nullable=True)
     assert_df_equality(output_df2, expected_df2, ignore_nullable=True)
+
+    # test function dissalows using functions on non-selected columns
+    with pytest.raises(IndexError):
+        configure_outputs(input_df, group_by_columns="country", selection_columns="age")
+
+    # test function raises readable error for column not existing on dataframe
+    with pytest.raises(AttributeError):
+        configure_outputs(input_df, selection_columns="nothing")

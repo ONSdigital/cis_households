@@ -8,6 +8,20 @@ from pyspark.sql import DataFrame
 from cishouseholds.edit import update_column_values_from_map
 
 
+def check_columns(col_args, selection_columns, error):
+    arguments = ["group by columns ", "name map", "value map"]
+    for argument, check in zip(arguments, col_args):  # type: ignore
+        if check is not None:
+            for column in check:  # type: ignore
+                if column not in selection_columns:  # type: ignore
+                    if error == 1:
+                        raise IndexError(
+                            f"column:{column} is required for {argument}, therefore they must be selected in arguments"
+                        )
+                    else:
+                        raise AttributeError(f"column: {column} does not exist in dataframe")
+
+
 def configure_outputs(
     df: DataFrame,
     selection_columns: Optional[Union[List[str], str]] = None,
@@ -26,23 +40,23 @@ def configure_outputs(
     group_by_columns
     name_map
     """
-    try:
-        for check in group_by_columns, name_map.keys(), value_map.keys():  # type: ignore
-            try:
-                for column in check:  # type: ignore
-                    if column not in selection_columns:  # type: ignore
-                        selection_columns.append(column)  # type: ignore
-            except TypeError:
-                pass
-    except Exception:
-        pass
+    col_args = []
     if type(group_by_columns) != list and group_by_columns is not None:
         group_by_columns = [str(group_by_columns)]
     if type(selection_columns) != list and selection_columns is not None:
         selection_columns = [str(selection_columns)]
-    if selection_columns:
-        df = df.select(*selection_columns)
-    if group_by_columns:
+    if group_by_columns is not None:
+        col_args.append(group_by_columns)
+    if value_map is not None:
+        col_args.append(value_map.keys())  # type: ignore
+    if name_map is not None:
+        col_args.append(name_map.keys())  # type: ignore
+    if selection_columns is not None:
+        check_columns(col_args, selection_columns, 1)
+
+    check_columns([*col_args, selection_columns], df.columns, 0)
+
+    if group_by_columns is not None:
         if aggregate_column_name:
             prev_cols = set(df.columns)
             df = df.groupBy(*group_by_columns).agg({"*": aggregate_function})
@@ -50,10 +64,10 @@ def configure_outputs(
             df = df.withColumnRenamed(new_col, aggregate_column_name)
         else:
             df = df.groupBy(*group_by_columns).agg({"*": aggregate_function})
-    if name_map:
+    if name_map is not None:
         for current_name, to_be_name in name_map.items():
             df = df.withColumnRenamed(current_name, to_be_name)
-    if value_map:
+    if value_map is not None:
         for column_name_to_assign, map in value_map.items():
             df = update_column_values_from_map(df, column_name_to_assign, map)
     return df
