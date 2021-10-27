@@ -1,6 +1,0 @@
-Run ID: 4
-Stage 1/1: merge_antibody_swab_ETL
-Error: Traceback (most recent call last):
-  File "/home/cdsw/cis_households/cishouseholds/pipeline/run.py", line 57, in run_pipeline_stages
-    output_df.toPandas().to_csv(
-AttributeError: 'NoneType' object has no attribute 'toPandas'
