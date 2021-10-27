@@ -9,8 +9,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 @register_pipeline_stage("process_post_merge")
 def process_post_merge():
-    # Todo: Merge on previously imputed values
-    # Todo: Write out imputed value lookup
+
     pass
 
 
@@ -25,6 +24,16 @@ def impute_key_demographics(df: DataFrame):
             column_identity="participant_id",
             order_by_column="visit_datetime",
         )
+        df = impute_and_flag(
+            df,
+            imputation_function=impute_by_ordered_fill_forward,
+            reference_column=demographic_column,
+            column_identity="participant_id",
+            order_by_column="visit_datetime",
+            order_type="desc",
+        )
+
+    # Todo: Merge on previously imputed values
 
     df = impute_and_flag(
         df,
@@ -44,4 +53,5 @@ def impute_key_demographics(df: DataFrame):
     )
     # Todo: Add call to impute date_of_birth using donor-based imputation
 
+    # Todo: Write out imputed value lookup
     return df
