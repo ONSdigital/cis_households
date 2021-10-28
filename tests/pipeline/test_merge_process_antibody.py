@@ -543,7 +543,7 @@ def test_merge_process_antibody(spark_session):
     )
 
     # temporarily column being drop as it isnt used for any parent function
-    output_df.drop("failed_flag_1tom_antibody")
+    output_df = output_df.drop("failed_flag_1tom_antibody")
 
     # in case a column's schema gets converted to a NullType
     output_df = re_cast_column_if_null(output_df, desired_column_type="integer")

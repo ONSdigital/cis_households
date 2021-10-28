@@ -120,5 +120,5 @@ def test_one_to_many_antibody_flag(spark_session):
         count_barcode_labs_column_name="count_barcode_antibody",
     )
     # temporarily column being drop as it isnt used for any parent function
-    output_df.drop("failed_flag_1tom_antibody")
+    output_df = output_df.drop("failed_flag_1tom_antibody")
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
