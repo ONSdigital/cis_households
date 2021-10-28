@@ -8,9 +8,7 @@ import pandas as pd
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
-import pyspark.sql.functions as F
 from pyspark.sql.types import StructType
-import pandas as pd
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
@@ -151,6 +149,7 @@ def get_files_by_date(
             date2 = date2.strftime("%Y-%m-%d")
         files = files.filter((F.col("upload_date") >= (F.lit(date))) & (F.col("upload_date") <= (F.lit(date2))))
     return files.select("file_path").rdd.flatMap(lambda x: x).collect()
+
 
 format = "%Y-%m-%d"
 print(get_files_by_date("hdfs:///ons/covserolink/landing_zone/responses_v2/", "2021-10-19", "between", "2021-10-24"))

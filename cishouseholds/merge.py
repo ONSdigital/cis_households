@@ -4,16 +4,18 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+
 from cishouseholds.compare import prepare_for_union
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
-def merge_survey_tables(tables:List[str]):
-    """
-    """
-    df1,df2 = prepare_for_union(tables[0], tables[1])
+
+def merge_survey_tables(tables: List[str]):
+    """ """
+    df1, df2 = prepare_for_union(tables[0], tables[1])
     merged_df = df1.union(df2)
     merged_df, df3 = prepare_for_union(merged_df, tables[2])
     return merged_df.union(df3)
+
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
