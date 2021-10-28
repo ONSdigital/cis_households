@@ -477,13 +477,13 @@ def many_to_many_flag(
     """
 
     df = assign_merge_process_group_flag(
-        df,
-        "identify_mtom_flag",
-        "out_of_date_range_" + process_type,
-        "count_barcode_" + process_type,
-        ">1",
-        "count_barcode_voyager",
-        ">1",
+        df=df,
+        column_name_to_assign="identify_mtom_flag",
+        out_of_date_range_flag="out_of_date_range_" + process_type,
+        count_barcode_labs_column_name="count_barcode_" + process_type,
+        count_barcode_labs_condition=">1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     window = Window.partitionBy(group_by_column, "identify_mtom_flag")
@@ -542,7 +542,6 @@ def many_to_many_flag(
                 F.col("record_processed")
             ),
         )
-
     return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 

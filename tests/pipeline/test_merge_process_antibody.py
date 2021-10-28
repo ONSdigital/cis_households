@@ -56,7 +56,7 @@ def test_merge_process_antibody(spark_session):
                 drop_flag_1tom_antibody integer,
                 identify_many_to_one_antibody_flag integer,
                 drop_flag_mto1_antibody integer,
-                identify_many_to_many_flag integer,
+                identify_mtom_flag integer,
                 failed_flag_mtom_antibody integer,
                 drop_flag_mtom_antibody integer,
                 1tom_antibody integer,

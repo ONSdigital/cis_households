@@ -53,7 +53,7 @@ def test_merge_process_swab(spark_session):
                 drop_flag_1tom_swab integer,
                 identify_mto1_swab_flag integer,
                 drop_flag_mto1_swab integer,
-                identify_many_to_many_flag integer,
+                identify_mtom_flag integer,
                 failed_flag_mtom_swab integer,
                 drop_flag_mtom_swab integer,
                 1tom_swab integer,
