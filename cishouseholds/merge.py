@@ -428,20 +428,20 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     column_name_to_assign
     """
     df = assign_merge_process_group_flag(
-        df,
-        "identify_many_to_one_antibody_flag",
-        "out_of_date_range_antibody",
-        "count_barcode_antibody",
-        "==1",  # wrong
-        "count_barcode_voyager",
-        ">1",  # wrong
+        df=df,
+        column_name_to_assign="identify_mto1_antibody_flag",
+        out_of_date_range_flag="out_of_date_range_antibody",
+        count_barcode_labs_column_name="count_barcode_antibody",
+        count_barcode_labs_condition="==1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     window = Window.partitionBy(group_by_column)
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum(F.when(F.col("identify_many_to_one_antibody_flag") == 1, 1).otherwise(None)).over(window),
+        F.sum(F.when(F.col("identify_mto1_antibody_flag") == 1, 1).otherwise(None)).over(window),
     )
 
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))

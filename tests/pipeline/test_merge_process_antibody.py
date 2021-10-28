@@ -52,7 +52,7 @@ def test_merge_process_antibody(spark_session):
                 diff_vs_visit_hr double,
                 out_of_date_range_antibody integer,
                 abs_offset_diff_vs_visit_hr double,
-                identify_one_to_many_antibody_flag integer,
+                identify_1tom_antibody_flag integer,
                 drop_flag_1tom_antibody integer,
                 identify_many_to_one_antibody_flag integer,
                 drop_flag_mto1_antibody integer,
