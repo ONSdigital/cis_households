@@ -25,30 +25,33 @@ def process_post_merge():
         imputed_value_lookup_df = None
 
     demographic_columns = ["white_group", "sex", "date_of_birth"]
+    df_with_imputed_values = impute_key_demographics(df, imputed_value_lookup_df, demographic_columns)
 
-    impute_key_demographics(df, imputed_value_lookup_df, demographic_columns)
-
-    imputed_df = df.filter(F.sum(F.col(f"{column}_is_imputed") for column in demographic_columns) > 0)
-
-    df_to_write = imputed_df.select(
+    imputed_values_df = df.filter(F.sum(F.col(f"{column}_is_imputed") for column in demographic_columns) > 0)
+    imputed_values = imputed_values_df.select(
         "participant_id",
         *chain([(column, f"{column}_imputation_method") for column in demographic_columns]),
     )
+    update_table(imputed_values, "imputed_value_lookup")
 
-    update_table(df_to_write, "imputed_value_lookup")
+    df_without_imputed_columns = df.drop(*demographic_columns)
+    update_table(df_without_imputed_columns, "response_level_records")
+    update_table(df_with_imputed_values, "participant_level_key_demographic_records")
+    return df_with_imputed_values
 
-    pass
 
-
-def impute_key_demographics(df: DataFrame, imputed_value_lookup_df: DataFrame, demographic_columns: list):
-    """Impute missing values for key variables that are required for weight calibration."""
-
-    for column in demographic_columns:
+def impute_key_demographics(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list):
+    """
+    Impute missing values for key variables that are required for weight calibration.
+    Returns a single record per participant.
+    """
+    unique_id_column = "participant_id"
+    for column in columns_to_fill:
         df = impute_and_flag(
             df,
             imputation_function=impute_by_ordered_fill_forward,
             reference_column=column,
-            column_identity="participant_id",
+            column_identity=unique_id_column,
             order_by_column="visit_datetime",
             order_type="asc",
         )
@@ -56,30 +59,34 @@ def impute_key_demographics(df: DataFrame, imputed_value_lookup_df: DataFrame, d
             df,
             imputation_function=impute_by_ordered_fill_forward,
             reference_column=column,
-            column_identity="participant_id",
+            column_identity=unique_id_column,
             order_by_column="visit_datetime",
             order_type="desc",
         )
+    deduplicated_df = df.dropDuplicates([unique_id_column] + columns_to_fill)
 
     if imputed_value_lookup_df is not None:
-        merge_previous_imputed_values(df, imputed_value_lookup_df, "participant_id")
+        merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
-    df = impute_and_flag(
-        df,
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
         imputation_function=impute_by_mode,
         reference_column="white_group",
         group_by_column="ons_household_id",
     )
     # Todo: Add call to impute white_group by donor-based imputation
 
-    df = impute_and_flag(
-        df,
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
         group_by_columns=["white_group", "gor9d"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )
+    )  # Relies on sample data being joined on
+
     # Todo: Add call to impute date_of_birth using donor-based imputation
 
-    return df
+    return deduplicated_df.select(
+        unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]
+    )
