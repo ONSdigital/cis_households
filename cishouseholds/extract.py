@@ -119,7 +119,9 @@ def list_contents(
     return spark_session.createDataFrame(pd.DataFrame(files))
 
 
-def get_files_by_date(path: str, date: Union[str, datetime], selector: str) -> List:
+def get_files_by_date(
+    path: str, date: Union[str, datetime], selector: str, date2: Optional[Union[str, datetime]] = None
+) -> List:
     """
     Get a list of hdfs file paths for a given set of date critera and parent path on
     hdfs
@@ -133,8 +135,8 @@ def get_files_by_date(path: str, date: Union[str, datetime], selector: str) -> L
         options for selection type: latest, after(date), before(date)
     """
     files = list_contents(path, date_from_filename=True)
-    if type(date) == datetime:
-        date = date.strftime("%Y-%m-%d")
+    if isinstance(str, datetime):
+        date = date.strptime(date, "%Y-%m-%d")
     files = files.withColumn("upload_date", F.to_date("upload_date", "yyyy-MM-dd"))
     if selector == "latest":
         files = files.orderBy("upload_date", "upload_time")
@@ -142,4 +144,11 @@ def get_files_by_date(path: str, date: Union[str, datetime], selector: str) -> L
         files = files.filter(F.col("upload_date") >= (F.lit(date)))
     elif selector == "before":
         files = files.filter(F.col("upload_date") <= (F.lit(date)))
+    elif selector == "between":
+        if isinstance(date2, datetime):
+            date2 = date2.strftime("%Y-%m-%d")
+        files = files.filter((F.col("upload_date") >= (F.lit(date))) & (F.col("upload_date") <= (F.lit(date2))))
     return files.select("file_path").rdd.flatMap(lambda x: x).collect()
+
+format = "%Y-%m-%d"
+print(get_files_by_date("hdfs:///ons/covserolink/landing_zone/responses_v2/", "2021-10-19", "between", "2021-10-24"))
