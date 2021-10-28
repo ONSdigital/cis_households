@@ -686,9 +686,7 @@ def one_to_many_swabs(
         flag_column_name,
         F.when(
             (F.col("identify_1tom_swabs_flag") == 1)
-            | (F.col("time_order_flag") == 1)
-            | (F.col("pcr_flag") == 1)
-            | (F.col("time_difference_flag") == 1),
+            & ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
             1,
         ),
     )
