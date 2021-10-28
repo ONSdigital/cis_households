@@ -101,15 +101,15 @@ def test_one_to_many_antibody_flag(spark_session):
         schema="count_barcode_voyager integer, visit_date string, barcode_iq string, tdi string, barcode_ox string, \
                 received_ox_date string, count_barcode_antibody integer, siemens string,\
                 diff_interval_hours double, out_of_date_range_antibody integer, \
-                identify_one_to_many_antibody_flag integer, one_to_many_antibody_drop_flag integer",
+                identify_1tom_antibody_flag integer, 1tom_antibody_drop_flag integer",
     )
 
     input_df = expected_df.drop(
-        "identify_one_to_many_antibody_flag", "one_to_many_antibody_drop_flag", "failed_due_to_indistinct_match"
+        "identify_1tom_antibody_flag", "1tom_antibody_drop_flag", "failed_due_to_indistinct_match"
     )
     output_df = one_to_many_antibody_flag(
         df=input_df,
-        column_name_to_assign="one_to_many_antibody_drop_flag",
+        column_name_to_assign="1tom_antibody_drop_flag",
         group_by_column="barcode_iq",
         diff_interval_hours="diff_interval_hours",
         siemens_column="siemens",
