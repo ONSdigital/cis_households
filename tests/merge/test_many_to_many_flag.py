@@ -40,21 +40,21 @@ def test_many_to_many_flag(spark_session):
         schema="antibody_barcode_cleaned string, out_of_date_range_antibody integer, diff_vs_visit integer, \
                 abs_offset_diff_vs_visit integer, count_barcode_antibody integer, \
                 count_barcode_voyager integer, unique_id_antibody integer, unique_id_voyager integer, \
-                antibody_test_result_classification string, identify_many_to_many_flag integer, \
-                drop_many_to_many_antibody_flag integer, failed_many_to_many_antibody_flag integer",
+                antibody_test_result_classification string, identify_mtom_flag integer, \
+                drop_mtom_antibody_flag integer, failed_mtom_antibody_flag integer",
     )
 
     input_df = expected_df.drop(
-        "identify_many_to_many_flag", "drop_many_to_many_antibody_flag", "failed_many_to_many_antibody_flag"
+        "identify_mtom_flag", "drop_mtom_antibody_flag", "failed_mtom_antibody_flag"
     )
 
     output_df = many_to_many_flag(
         input_df,
-        "drop_many_to_many_antibody_flag",
+        "drop_mtom_antibody_flag",
         "antibody_barcode_cleaned",
         ["abs_offset_diff_vs_visit", "diff_vs_visit", "unique_id_voyager", "unique_id_antibody"],
         "antibody",
-        "failed_many_to_many_antibody_flag",
+        "failed_mtom_antibody_flag",
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)
