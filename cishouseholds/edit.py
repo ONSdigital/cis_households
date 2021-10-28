@@ -6,6 +6,15 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str):
+    """ """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(csv_filepath, header=True)
+    csv = csv
+
 
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
     """
