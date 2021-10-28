@@ -216,27 +216,37 @@ def merge_previous_imputed_values(
     id_column_name: str,
 ) -> DataFrame:
     """
-    Retrieve and coalesce imputed values from a lookup table
+    Retrieve and coalesce imputed values and associated flags from a lookup table.
+    Includes the imputed value, imputation status and imputation method.
 
     Parameters
     ----------
     df
+        dataframe to impute values onto
     imputed_value_lookup_df
+        previously imputed values to carry forward
     id_column_name
+        column that should be used to join previously imputed values on
     """
     imputed_value_lookup_df = imputed_value_lookup_df.toDF(
         *[f"_{name}" if name != id_column_name else name for name in imputed_value_lookup_df.columns]
-    )
+    )  # _ prevents ambiguity in join, but is sliced out when referencing the original columns
 
-    df = df.join(imputed_value_lookup_df, id_column_name)
+    df = df.join(imputed_value_lookup_df, on=id_column_name, how="left")
+    columns_for_editing = [
+        (name.replace("_imputation_method", ""), name.replace("_imputation_method", "_is_imputed"), name)
+        for name in imputed_value_lookup_df.columns
+        if name.endswith("_imputation_method")
+    ]
 
-    for name in imputed_value_lookup_df.columns:
-        if name != id_column_name:
-            df = df.withColumn(name[1:], F.coalesce(F.col(name[1:]), F.col(name)))
+    for value_column, status_column, method_column in columns_for_editing:
+        fill_condition = F.col(value_column[1:]).isNull() & F.col(value_column).isNotNull()
+        df = df.withColumn(status_column[1:], F.when(fill_condition, F.lit(1)).otherwise(F.lit(0)))
+        df = df.withColumn(
+            method_column[1:], F.when(fill_condition, F.col(method_column)).otherwise(F.lit(None)).cast("string")
+        )
+        df = df.withColumn(
+            value_column[1:], F.when(fill_condition, F.col(value_column)).otherwise(F.col(value_column[1:]))
+        )
 
-    is_imputed_column_names = [name for name in imputed_value_lookup_df.columns if name.endswith("_is_imputed")]
-
-    for name in is_imputed_column_names:
-        df = df.withColumn(name[1:], F.greatest(F.col(name[1:]), F.col(name)))
-
-    return df.drop(*[name for name in imputed_value_lookup_df.schema.names if name != id_column_name])
+    return df.drop(*[name for name in imputed_value_lookup_df.columns if name != id_column_name])

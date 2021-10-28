@@ -32,7 +32,7 @@ def process_post_merge():
 
     df_to_write = imputed_df.select(
         "participant_id",
-        *chain([(column, f"{column}_is_imputed", f"{column}_imputation_method") for column in demographic_columns]),
+        *chain([(column, f"{column}_imputation_method") for column in demographic_columns]),
     )
 
     update_table(df_to_write, "imputed_value_lookup")
