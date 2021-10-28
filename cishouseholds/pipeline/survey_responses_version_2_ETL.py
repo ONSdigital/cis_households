@@ -19,7 +19,7 @@ from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
+from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 
 # from cishouseholds.derive import assign_work_person_facing_now
@@ -33,7 +33,7 @@ def survey_responses_version_2_ETL(resource_path: str):
     df = extract_validate_transform_input_data(
         resource_path,
         survey_responses_v2_variable_name_map,
-        survey_responses_v2_datetime_map,
+        survey_responses_datetime_map,
         survey_responses_v2_validation_schema,
         transform_survey_responses_version_2_delta,
     )
