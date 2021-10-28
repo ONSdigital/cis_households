@@ -44,9 +44,7 @@ def test_many_to_many_flag(spark_session):
                 drop_mtom_antibody_flag integer, failed_mtom_antibody_flag integer",
     )
 
-    input_df = expected_df.drop(
-        "identify_mtom_flag", "drop_mtom_antibody_flag", "failed_mtom_antibody_flag"
-    )
+    input_df = expected_df.drop("identify_mtom_flag", "drop_mtom_antibody_flag", "failed_mtom_antibody_flag")
 
     output_df = many_to_many_flag(
         input_df,
