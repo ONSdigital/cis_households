@@ -157,7 +157,7 @@ def test_one_to_many_swab(spark_session):
     ]
 
     expected_df = spark_session.createDataFrame(data, schema=schema)
-    df_input = expected_df.drop("flag_one_to_many_swabs")
+    df_input = expected_df.drop("flag_1tom_swabs")
 
     ordering_columns = ["date_abs_diff_24", "date_diff", "date_received"]
 
