@@ -1,9 +1,22 @@
 import re
 from itertools import chain
+from typing import List
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+
+
+def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+    """
+    Assign a unique column from concatinating multiple input columns
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    concat_columns
+    """
+    return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
 
 
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:

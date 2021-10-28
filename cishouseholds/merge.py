@@ -596,7 +596,7 @@ def one_to_many_antibody_flag(
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
-    inconsistent_rows = "inconsistent_data_flag"
+    inconsistent_rows = "failed_flag_1tom_antibody"
 
     window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
