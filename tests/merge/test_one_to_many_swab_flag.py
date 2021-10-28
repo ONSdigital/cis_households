@@ -98,7 +98,7 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
 
 def test_one_to_many_swab(spark_session):
     schema = """barcode_iq string,
-                count_blood integer,
+                count_voyager integer,
                 count_swab integer,
                 date_received string,
                 date_diff integer,
@@ -110,8 +110,8 @@ def test_one_to_many_swab(spark_session):
 
     data = [
         # record A - boolean_pass, chose the earliest day
-        ("A", 1, 2, "2029-01-02", 48, 24, None, "positive", 1, None),  # wont pass as its later than the other A
-        ("A", 1, 2, "2029-01-01", 48, 24, None, "negative", None, None),
+        ("A", 1, 2, "2029-01-02", 48, 24, None, "positive", 1, 1),  # wont pass as its later than the other A
+        ("A", 1, 2, "2029-01-01", 48, 24, None, "negative", None, 1),
         # record B
         (
             "B",
@@ -123,9 +123,9 @@ def test_one_to_many_swab(spark_session):
             None,
             "positive",
             1,
-            None,
+            1,
         ),  # drop - filtered out as abs(date - 24h) is larger
-        ("B", 1, 3, "2029-01-02", 24, 0, None, "negative", None, None),
+        ("B", 1, 3, "2029-01-02", 24, 0, None, "negative", None, 1),
         # keep - abs date diff smallest within record even though later day
         ("B", 1, 3, "2029-01-01", 96, 72, 1, "negative", 1, 1),  # drop - not passed because out_of_range
         # record C - flag out as outside of time range
@@ -139,21 +139,21 @@ def test_one_to_many_swab(spark_session):
             1,
             "negative",
             1,
-            1,
+            None,
         ),  # not passed because out_of_range and diff_date negative
-        ("C", 1, 2, "2029-01-01", 288, 264, 1, "positive", 1, 1),  # not passed because out_of_range
-        # record D - ignore as count_blood > 1
-        ("D", 2, 2, "2029-01-01", 12, 12, 1, "negative", 1, 1),  # drop - not passed because count_blood > 1
+        ("C", 1, 2, "2029-01-01", 288, 264, 1, "positive", 1, None),  # not passed because out_of_range
+        # record D - ignore as count_voyager > 1
+        ("D", 2, 2, "2029-01-01", 12, 12, 1, "negative", 1, None),  # drop - not passed because count_voyager > 1
         # record E - one of the result_pcr being Null/void and the other not:
         # not passed because result_pcr different than void available for barcode_iq
-        ("E", 1, 2, "2029-01-01", 12, 12, None, "void", 1, None),  # drop
-        ("E", 1, 2, "2029-01-01", 12, 12, None, "positive", None, None),  # kept
+        ("E", 1, 2, "2029-01-01", 12, 12, None, "void", 1, 1),  # drop
+        ("E", 1, 2, "2029-01-01", 12, 12, None, "positive", None, 1),  # kept
         # record F - both result_pcr being null do not flag
-        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, None),  # keep
-        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, None),  # keep
+        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, 1),  # keep
+        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, 1),  # keep
         # record G - to be dropped because date_diff have different signs:
-        ("G", 1, 2, "2029-01-01", -12, 36, None, "positive", 1, None),  # drop
-        ("G", 1, 2, "2029-01-01", 12, 12, None, "positive", None, None),  # keep
+        ("G", 1, 2, "2029-01-01", -12, 36, None, "positive", 1, 1),  # drop
+        ("G", 1, 2, "2029-01-01", 12, 12, None, "positive", None, 1),  # keep
     ]
 
     expected_df = spark_session.createDataFrame(data, schema=schema)
@@ -165,7 +165,7 @@ def test_one_to_many_swab(spark_session):
         df=df_input,
         out_of_date_range_flag="out_of_range",
         count_barcode_labs_column_name="count_swab",
-        count_barcode_voyager_column_name="count_blood",
+        count_barcode_voyager_column_name="count_voyager",
         group_by_column="barcode_iq",
         ordering_columns=ordering_columns,
         pcr_result_column_name="result_pcr",
