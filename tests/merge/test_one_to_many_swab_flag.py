@@ -105,8 +105,8 @@ def test_one_to_many_swab(spark_session):
                 date_abs_diff_24 integer,
                 out_of_range integer,
                 result_pcr string,
-                one_to_many_swabs_flag integer,
-                identify_one_to_many_swabs_flag integer"""
+                1tom_swabs_flag integer,
+                identify_1tom_swabs_flag integer"""
 
     data = [
         # record A - boolean_pass, chose the earliest day
@@ -170,7 +170,7 @@ def test_one_to_many_swab(spark_session):
         ordering_columns=ordering_columns,
         pcr_result_column_name="result_pcr",
         void_value="void",
-        flag_column_name="one_to_many_swabs_flag",
+        flag_column_name="1tom_swabs_flag",
     )
     df_output = df_output.drop("time_order_flag", "pcr_flag", "time_difference_flag")
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
