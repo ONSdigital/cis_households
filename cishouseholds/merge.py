@@ -4,6 +4,42 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from cishouseholds.compare import prepare_for_union
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+def merge_survey_tables(tables:List[str]):
+    """
+    """
+    df1,df2 = prepare_for_union(tables[0], tables[1])
+    merged_df = df1.union(df2)
+    merged_df, df3 = prepare_for_union(merged_df, tables[2])
+    return merged_df.union(df3)
+
+def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
+    """
+    Given a dataframe containing records for both blood groups create a new dataframe with columns for
+    each specific blood group seperated with the appriopiate extension appended to the end of the
+    column name
+    Parameters
+    ----------
+    df
+    blood_group_column
+    """
+    join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    split_dataframes = []
+    window = Window.partitionBy(*join_on_colums).orderBy("blood_sample_barcode")
+    df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
+    failed_df = df.filter(F.col("sum") > 2).drop("sum")
+    df = df.filter(F.col("sum") < 3).drop("sum")
+    for blood_group in ["S", "N"]:
+        split_df = df.filter(F.col(blood_group_column) == blood_group)
+        for col in split_df.columns:
+            if col not in join_on_colums:
+                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
+        split_dataframes.append(split_df)
+    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
+    joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
+    return joined_df, failed_df
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
@@ -217,7 +253,7 @@ def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
+def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
     """
     Join two datasets.
     Parameters
@@ -229,8 +265,7 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
     join_type
         Specify join type to apply to .join() method
     """
-    # refactoring needed: the barcode column name for df1 and df2 might be different
-    return df1.join(df2, on=reference_column, how=join_type)
+    return df1.join(df2, on=on, how=join_type)
 
 
 def assign_merge_process_group_flag(

@@ -2,6 +2,8 @@ import traceback
 from datetime import datetime
 
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
+import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
+import cishouseholds.pipeline.survey_responses_version_1_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.load import add_run_log_entry
@@ -32,6 +34,7 @@ def run_from_config():
         run_datetime = datetime.now()
         run_id = add_run_log_entry(config, run_datetime)
         print(f"Run ID: {run_id}")  # functional
+        print(f"availablie pipeline stage: {pipeline_stages}")
         add_run_status(run_id, "started")
 
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
