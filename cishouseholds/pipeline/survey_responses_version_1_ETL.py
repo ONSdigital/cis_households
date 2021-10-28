@@ -20,6 +20,7 @@ def survey_responses_version_1_ETL(resource_path: str):
         survey_responses_datetime_map,
         survey_responses_v1_validation_schema,
         transform_survey_responses_version_1_delta,
+        "|",
     )
     update_table_and_log_source_files(df, "transformed_survey_responses_v1_data", "survey_responses_v1_source_file")
     return df

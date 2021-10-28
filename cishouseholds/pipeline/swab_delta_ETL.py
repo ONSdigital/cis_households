@@ -1,5 +1,4 @@
 from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
 
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_filename_column
@@ -12,6 +11,7 @@ from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import swab_datetime_map
 from cishouseholds.pipeline.validation_schema import swab_validation_schema
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 @register_pipeline_stage("swab_delta_ETL")
@@ -26,10 +26,11 @@ def swab_delta_ETL(resource_path: str):
     return df
 
 
-def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFrame:
+def transform_swab_delta(df: DataFrame) -> DataFrame:
     """
     Transform swab delta - derive new fields that do not depend on merging with survey responses.
     """
+    spark_session = get_or_create_spark_session()
     df = assign_filename_column(df, "swab_test_source_file")
     df = assign_column_to_date_string(df, "pcr_date", "pcr_datetime")
     df = derive_cq_pattern(

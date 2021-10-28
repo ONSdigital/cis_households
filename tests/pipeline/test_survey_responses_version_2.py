@@ -24,6 +24,7 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         survey_responses_datetime_map,
         survey_responses_v2_validation_schema,
         transform_survey_responses_version_2_delta,
+        "|",
     )
     return processed_df
 
