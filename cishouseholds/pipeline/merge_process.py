@@ -23,9 +23,9 @@ def merge_process_preparation(
 
     Parameters
     ----------
-    survey_df,
+    survey_df
         iqvia dataframe
-    labs_df,
+    labs_df
         swab or antibody unmerged dataframe
     merge_type
         either swab or antibody, no other value accepted.
@@ -47,9 +47,7 @@ def merge_process_preparation(
     )
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
-    outer_df = M.join_dataframes(
-        survey_df, labs_df, barcode_column_name, "outer"
-    )  # refactoring might be needed IF barcode column names in survey_df/labs_df is different
+    outer_df = M.join_dataframes(survey_df, labs_df, barcode_column_name, "outer")
 
     if merge_type == "swab":
         interval_upper_bound = 480
@@ -148,7 +146,7 @@ def execute_merge_specific_swabs(
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
         visit_date_column_name,
-        # 4th here is uncleaned barcode from labs
+        # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
     outer_df = M.one_to_many_swabs(
         df=outer_df,
@@ -167,11 +165,11 @@ def execute_merge_specific_swabs(
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
-    outer_df = M.many_to_many_flag(
+    outer_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
         df=outer_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
-        ordering_columns=window_columns,
+        ordering_columns=["abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr", "unique_id_voyager", "unique_id_swab"],
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
@@ -209,13 +207,7 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
     )
-    window_columns = [
-        "abs_offset_diff_vs_visit_hr",
-        "diff_vs_visit_hr",
-        visit_date_column_name,
-        # 4th here is uncleaned barcode from labs - CHECK
-    ]
-    outer_df = M.one_to_many_antibody_flag(  # CHECK: dropping records
+    outer_df = M.one_to_many_antibody_flag(
         df=outer_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
@@ -232,6 +224,12 @@ def execute_merge_specific_antibody(
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
     )
+    window_columns = [
+        "abs_offset_diff_vs_visit_hr",
+        "diff_vs_visit_hr",
+        "unique_id_voyager",
+        "unique_id_antibody",
+    ]
     outer_df = M.many_to_many_flag(
         df=outer_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
