@@ -327,20 +327,20 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     """
 
     df = assign_merge_process_group_flag(
-        df,
-        "identify_many_to_one_swab_flag",
-        "out_of_date_range_swab",
-        "count_barcode_swab",
-        "==1",  # wrong
-        "count_barcode_voyager",
-        ">1",  # wrong
+        df=df,
+        column_name_to_assign="identify_mto1_swab_flag",
+        out_of_date_range_flag="out_of_date_range_swab",
+        count_barcode_labs_column_name="count_barcode_swab",
+        count_barcode_labs_condition="==1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     # Row number won't apply with frame set to unbounded (rowsBetween)
-    bounded_window = Window.partitionBy(group_by_column, "identify_many_to_one_swab_flag").orderBy(*ordering_columns)
+    bounded_window = Window.partitionBy(group_by_column, "identify_mto1_swab_flag").orderBy(*ordering_columns)
     df = df.withColumn("row_number", F.row_number().over(bounded_window))
     unbounded_window = (
-        Window.partitionBy(group_by_column, "identify_many_to_one_swab_flag")
+        Window.partitionBy(group_by_column, "identify_mto1_swab_flag")
         .orderBy(*ordering_columns)
         .rowsBetween(Window.unboundedPreceding, Window.unboundedFollowing)
     )
@@ -373,7 +373,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         column_name_to_assign,
         F.when(
             (F.count(group_by_column).over(unbounded_window) == F.col("count_diff_same_as_first"))
-            & (F.col("identify_many_to_one_swab_flag") == 1),
+            & (F.col("identify_mto1_swab_flag") == 1),
             1,
         ).otherwise(None),
     )
@@ -381,8 +381,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.abs(F.col("diff_between_first_and_second_records")) < 8)
-            & (F.col("identify_many_to_one_swab_flag") == 1),
+            (F.abs(F.col("diff_between_first_and_second_records")) < 8) & (F.col("identify_mto1_swab_flag") == 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
     )
@@ -392,7 +391,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
             & (F.first("diff_vs_visit_hr").over(unbounded_window) >= 0)
-            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -404,7 +403,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
             & (F.first("diff_vs_visit_hr").over(unbounded_window) < 0)
             & (F.col("diff_between_first_and_second_records") > 48)
-            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -415,7 +414,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.when(
             (F.first("diff_vs_visit_hr").over(unbounded_window).between(7, 20))
             & (F.col("diff_between_first_and_second_records") > 16)
-            & (F.col("identify_many_to_one_swab_flag") == 1)
+            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -440,20 +439,20 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     column_name_to_assign
     """
     df = assign_merge_process_group_flag(
-        df,
-        "identify_many_to_one_antibody_flag",
-        "out_of_date_range_antibody",
-        "count_barcode_antibody",
-        "==1",  # wrong
-        "count_barcode_voyager",
-        ">1",  # wrong
+        df=df,
+        column_name_to_assign="identify_mto1_antibody_flag",
+        out_of_date_range_flag="out_of_date_range_antibody",
+        count_barcode_labs_column_name="count_barcode_antibody",
+        count_barcode_labs_condition="==1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     window = Window.partitionBy(group_by_column)
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum(F.when(F.col("identify_many_to_one_antibody_flag") == 1, 1).otherwise(None)).over(window),
+        F.sum(F.when(F.col("identify_mto1_antibody_flag") == 1, 1).otherwise(None)).over(window),
     )
 
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
@@ -489,16 +488,16 @@ def many_to_many_flag(
     """
 
     df = assign_merge_process_group_flag(
-        df,
-        "identify_many_to_many_flag",
-        "out_of_date_range_" + process_type,
-        "count_barcode_" + process_type,
-        ">1",
-        "count_barcode_voyager",
-        ">1",
+        df=df,
+        column_name_to_assign="identify_mtom_flag",
+        out_of_date_range_flag="out_of_date_range_" + process_type,
+        count_barcode_labs_column_name="count_barcode_" + process_type,
+        count_barcode_labs_condition=">1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
-    window = Window.partitionBy(group_by_column, "identify_many_to_many_flag")
+    window = Window.partitionBy(group_by_column, "identify_mtom_flag")
 
     if process_type == "antibody":
         column_to_validate = "antibody_test_result_classification"
@@ -515,15 +514,14 @@ def many_to_many_flag(
     df = df.withColumn(
         failed_flag_column_name_to_assign,
         F.when(
-            F.last("classification_different_to_first").over(window).isNotNull()
-            & (F.col("identify_many_to_many_flag") == 1),
+            F.last("classification_different_to_first").over(window).isNotNull() & (F.col("identify_mtom_flag") == 1),
             1,
         ).otherwise(None),
     )
 
     # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
     # otherwise None
-    df = df.withColumn("record_processed", F.when(F.col("identify_many_to_many_flag").isNull(), 0).otherwise(None))
+    df = df.withColumn("record_processed", F.when(F.col("identify_mtom_flag").isNull(), 0).otherwise(None))
     unique_id_lab_str = "unique_id_" + process_type
 
     df = df.withColumn(
@@ -531,7 +529,7 @@ def many_to_many_flag(
     )  # BUG Needed in case the while loop does not execute
 
     while df.filter(df.record_processed.isNull()).count() > 0:
-        window = Window.partitionBy(group_by_column, "identify_many_to_many_flag", "record_processed").orderBy(
+        window = Window.partitionBy(group_by_column, "identify_mtom_flag", "record_processed").orderBy(
             *ordering_columns
         )
         df = df.withColumn("row_number", F.row_number().over(window))
@@ -555,7 +553,6 @@ def many_to_many_flag(
                 F.col("record_processed")
             ),
         )
-
     return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 
@@ -593,21 +590,21 @@ def one_to_many_antibody_flag(
     count_barcode_labs_column_name
     """
     df = assign_merge_process_group_flag(
-        df,
-        "identify_one_to_many_antibody_flag",
-        out_of_date_range_column,
-        count_barcode_voyager_column_name,
-        "==1",
-        count_barcode_labs_column_name,
-        ">1",
+        df=df,
+        column_name_to_assign="identify_1tom_antibody_flag",
+        out_of_date_range_flag=out_of_date_range_column,
+        count_barcode_labs_column_name=count_barcode_labs_column_name,
+        count_barcode_labs_condition=">1",
+        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
+        count_barcode_voyager_condition="==1",
     )
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
-    selection_column = "identify_one_to_many_antibody_flag"
+    selection_column = "identify_1tom_antibody_flag"
     row_num_column = "row_num"
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
-    inconsistent_rows = "inconsistent_data_flag"
+    inconsistent_rows = "failed_flag_1tom_antibody"  # column generated that isnt included in the TEST data.
 
     window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
@@ -619,12 +616,10 @@ def one_to_many_antibody_flag(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            ((F.col(rows_diff_to_ref) == 1) | (F.col(inconsistent_rows) == 1)) & (F.col(selection_column) == 1), 1
-        ).otherwise(None),
+        F.when((F.col(rows_diff_to_ref) == 1) & (F.col(selection_column) == 1), 1).otherwise(None),
     )
     df = df.orderBy(selection_column, diff_interval_hours, visit_date)
-    return df.drop(row_num_column, group_num_column, inconsistent_rows, diff_interval_hours, rows_diff_to_ref, "count")
+    return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 
 
 def one_to_many_swabs(
@@ -671,19 +666,20 @@ def one_to_many_swabs(
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
     """
     df = assign_merge_process_group_flag(
-        df,
-        column_name_to_assign="identify_one_to_many_swabs_flag",
+        df=df,
+        column_name_to_assign="identify_1tom_swabs_flag",
         out_of_date_range_flag=out_of_date_range_flag,
         count_barcode_labs_column_name=count_barcode_labs_column_name,
         count_barcode_labs_condition=">1",
         count_barcode_voyager_column_name=count_barcode_voyager_column_name,
         count_barcode_voyager_condition="==1",
     )
-    df = df.withColumn(
-        "identify_one_to_many_swabs_flag",
-        F.when(F.col("identify_one_to_many_swabs_flag") == 1, None).otherwise(1),
+    df = merge_one_to_many_swab_ordering_logic(
+        df=df,
+        group_by_column=group_by_column,
+        ordering_columns=ordering_columns,
+        time_order_logic_flag_column_name="time_order_flag",
     )
-    df = merge_one_to_many_swab_ordering_logic(df, group_by_column, ordering_columns, "time_order_flag")
     df = merge_one_to_many_swab_result_pcr_logic(
         df=df,
         void_value=void_value,
@@ -697,16 +693,15 @@ def one_to_many_swabs(
         ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="time_difference_flag",
     )
-    return df.withColumn(
+    df = df.withColumn(
         flag_column_name,
         F.when(
-            (F.col("identify_one_to_many_swabs_flag") == 1)
-            | (F.col("time_order_flag") == 1)
-            | (F.col("pcr_flag") == 1)
-            | (F.col("time_difference_flag") == 1),
+            (F.col("identify_1tom_swabs_flag") == 1)
+            & ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
             1,
         ),
     )
+    return df
 
 
 def merge_one_to_many_swab_ordering_logic(

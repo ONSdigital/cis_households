@@ -30,15 +30,15 @@ def test_many_to_one_swab_flag(spark_session):
         ],
         schema="swab_barcode_cleaned string, out_of_date_range_swab integer, diff_vs_visit_hr integer, \
                 abs_offset_diff_vs_visit_hr integer, count_barcode_swab integer, \
-                count_barcode_voyager integer, identify_many_to_one_swab_flag integer, \
-                drop_many_to_one_swab_flag integer",
+                count_barcode_voyager integer, identify_mto1_swab_flag integer, \
+                drop_mto1_swab_flag integer",
     )
 
-    input_df = expected_df.drop("identify_many_to_one_swab_flag, drop_many_to_one_swab_flag")
+    input_df = expected_df.drop("identify_mto1_swab_flag, drop_mto1_swab_flag")
 
     output_df = many_to_one_swab_flag(
         input_df,
-        "drop_many_to_one_swab_flag",
+        "drop_mto1_swab_flag",
         "swab_barcode_cleaned",
         ["abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr"],
     )
