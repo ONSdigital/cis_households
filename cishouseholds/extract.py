@@ -135,8 +135,8 @@ def get_files_by_date(
         options for selection type: latest, after(date), before(date)
     """
     files = list_contents(path, date_from_filename=True)
-    if isinstance(str, datetime):
-        date = date.strptime(date, "%Y-%m-%d")
+    if isinstance(date, str):
+        date = datetime.strptime(date, "%Y-%m-%d")
     files = files.withColumn("upload_date", F.to_date("upload_date", "yyyy-MM-dd"))
     if selector == "latest":
         files = files.orderBy("upload_date", "upload_time")
@@ -145,11 +145,7 @@ def get_files_by_date(
     elif selector == "before":
         files = files.filter(F.col("upload_date") <= (F.lit(date)))
     elif selector == "between":
-        if isinstance(date2, datetime):
-            date2 = date2.strftime("%Y-%m-%d")
+        if isinstance(date2, str):
+            date2 = datetime.strptime(date2, "%Y-%m-%d")
         files = files.filter((F.col("upload_date") >= (F.lit(date))) & (F.col("upload_date") <= (F.lit(date2))))
     return files.select("file_path").rdd.flatMap(lambda x: x).collect()
-
-
-format = "%Y-%m-%d"
-print(get_files_by_date("hdfs:///ons/covserolink/landing_zone/responses_v2/", "2021-10-19", "between", "2021-10-24"))
