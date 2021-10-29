@@ -17,50 +17,39 @@ def merge_antibody_swab_ETL():
     storage_config = get_config()["storage"]
 
     # EXTRACT DF FROM DATA WAREHOUSE
-    survey_antibody_df, antibody_df, swab_df = extract_from_data_warehouse(storage_config, spark_session)
+    survey_df, antibody_df, swab_df = extract_from_data_warehouse(storage_config, spark_session)
 
     # TRANSFORM ANTIBODY & SWAB
     (
         survey_antibody_df,
-        survey_antibody_residuals,
+        antibody_residuals,
         survey_antibody_failed,
         survey_antibody_swab_df,
-        survey_antibody_swab_residuals,
+        antibody_swab_residuals,
         survey_antibody_swab_failed,
-    ) = transform_antibody_swab_ETL(survey_antibody_df, antibody_df, swab_df)
-
-    # TRANSFORM ANTIBODY
-    # survey_antibody_df, survey_antibody_residuals, survey_antibody_failed = transform_antibody_swab_ETL(
-    #    survey_antibody_df, antibody_df, "antibody"
-    # )
-
-    # TRANSFORM SWAB
-    # survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed
-    # = transform_antibody_swab_ETL(
-    #    survey_antibody_df, swab_df, "swab"
-    # )
+    ) = transform_antibody_swab_ETL(survey_df, antibody_df, swab_df)
 
     # LOAD INTO DATA WAREHOUSE
 
-    output_antibody_df_list = [survey_antibody_df, survey_antibody_residuals, survey_antibody_failed]
+    # output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
 
-    output_swab_df_list = [survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed]
+    # output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
 
-    output_antibody_table_list = [
-        "transformed_survey_antibody_merge_data",
-        "transformed_survey_antibody_merge_residuals",
-        "transformed_survey_antibody_merge_failed",
-    ]
+    # output_antibody_table_list = [
+    #     "transformed_survey_antibody_merge_data",
+    #     "transformed_antibody_merge_residuals",
+    #     "transformed_survey_antibody_merge_failed",
+    # ]
 
-    output_swab_table_list = [
-        "transformed_survey_antibody_swab_merge_data",
-        "transformed_survey_antibody_swab_merge_residuals",
-        "transformed_survey_antibody_swab_merge_failed",
-    ]
+    # output_swab_table_list = [
+    #     "transformed_survey_antibody_swab_merge_data",
+    #     "transformed_antibody_swab_merge_residuals",
+    #     "transformed_survey_antibody_swab_merge_failed",
+    # ]
 
-    load_to_data_warehouse(
-        output_antibody_df_list, output_swab_df_list, output_antibody_table_list, output_swab_table_list
-    )
+    #   load_to_data_warehouse(
+    #       output_antibody_df_list, output_swab_df_list, output_antibody_table_list, output_swab_table_list
+    #   )
 
     return survey_antibody_swab_df
 
@@ -77,21 +66,19 @@ def extract_from_data_warehouse(storage_config, spark_session):
     return survey_df, antibody_df, swab_df
 
 
-def transform_antibody_swab_ETL(survey_antibody_df, antibody_df, swab_df):
-    survey_antibody_df, survey_antibody_residuals, survey_antibody_failed = merge_antibody_ETL(
-        survey_antibody_df, antibody_df
-    )
+def transform_antibody_swab_ETL(survey_df, antibody_df, swab_df):
+    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_antibody_ETL(survey_df, antibody_df)
 
-    survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed = merge_swab_ETL(
+    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab_ETL(
         survey_antibody_df, swab_df
     )
 
     return (
         survey_antibody_df,
-        survey_antibody_residuals,
+        antibody_residuals,
         survey_antibody_failed,
         survey_antibody_swab_df,
-        survey_antibody_swab_residuals,
+        antibody_swab_residuals,
         survey_antibody_swab_failed,
     )
 
@@ -157,7 +144,7 @@ def merge_antibody_ETL(survey_df, antibody_df):
     merge_combination_list = ["1tom", "mto1", "mtom"]
     drop_list_columns_antibody = ["drop_flag_mtom_antibody"]  # need to know what to put in this list
 
-    survey_antibody_df, survey_antibody_residuals, survey_antibody_failed = merge_process_filtering(
+    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_process_filtering(
         survey_antibody_df,
         "antibody",
         "blood_sample_barcode",
@@ -166,7 +153,7 @@ def merge_antibody_ETL(survey_df, antibody_df):
         drop_list_columns_antibody,
     )
 
-    return survey_antibody_df, survey_antibody_residuals, survey_antibody_failed
+    return survey_antibody_df, antibody_residuals, survey_antibody_failed
 
 
 def merge_swab_ETL(survey_df, swab_df):
@@ -208,7 +195,7 @@ def merge_swab_ETL(survey_df, swab_df):
     merge_combination_list = ["1tom", "mto1", "mtom"]
     drop_list_columns_swab = ["drop_flag_mtom_swab"]  # need to know what to put in this list
 
-    survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
+    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
         survey_antibody_swab_df,
         "swab",
         "swab_sample_barcode",
@@ -217,4 +204,4 @@ def merge_swab_ETL(survey_df, swab_df):
         drop_list_columns_swab,
     )
 
-    return survey_antibody_swab_df, survey_antibody_swab_residuals, survey_antibody_swab_failed
+    return survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed
