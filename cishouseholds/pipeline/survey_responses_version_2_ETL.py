@@ -81,7 +81,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for iqvia version 2 survey deltas.
     """
     df = assign_filename_column(df, "survey_responses_v2_source_file")
-    df = assign_unique_id_column(df, "unique_participant_response_id", ["pariticipant_id", "visit_datetime"])
+    df = assign_unique_id_column(df, "unique_participant_response_id", ["participant_id", "visit_datetime"])
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
