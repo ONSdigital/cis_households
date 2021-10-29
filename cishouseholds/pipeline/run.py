@@ -34,7 +34,6 @@ def run_from_config():
         run_datetime = datetime.now()
         run_id = add_run_log_entry(config, run_datetime)
         print(f"Run ID: {run_id}")  # functional
-        print(f"availablie pipeline stage: {pipeline_stages}")
         add_run_status(run_id, "started")
 
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
