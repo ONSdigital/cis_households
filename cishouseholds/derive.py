@@ -6,6 +6,26 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_has_been_to_column(
+    df: DataFrame, column_name_to_assign: str, contact_participant_column: str, contact_other_column: str
+):
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(contact_participant_column) == "No") & (F.col(contact_other_column) == "No"),
+            "No, no one in my household has",
+        )
+        .when(F.col(contact_participant_column) == "Yes", "Yes, I have")
+        .when(
+            (F.col(contact_participant_column) == "No") & (F.col(contact_other_column) == "Yes"),
+            "No I haven't, but someone else in my household has",
+        )
+        .otherwise(None),
+    )
+
+    return df
+
+
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Use inbuilt pyspark function to get name of the file used in the current spark task
