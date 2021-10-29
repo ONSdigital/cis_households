@@ -9,11 +9,26 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str):
-    """ """
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+    """
+    Update specific cell values from a map contained in a csv file
+    Parameters
+    ----------
+    df
+    csv_filepath
+    id_column
+        column in dataframe containing unique identifier
+    """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv
+    csv = csv.groupBy("id", "old", "new").pivot("column").count()
+    cols = csv.columns[3:]
+    for col in cols:
+        copy = csv.filter(F.col(col) == 1)
+        copy = copy.drop(col).withColumnRenamed("old", col)
+        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
+        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
+    return df
 
 
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
