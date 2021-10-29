@@ -1,4 +1,3 @@
-import copy
 from typing import Union
 
 from pyspark.sql import DataFrame

@@ -6,7 +6,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 from cishouseholds.compare import prepare_for_union
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def merge_survey_tables(tables: List[str]):
