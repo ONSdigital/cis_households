@@ -13,7 +13,7 @@ def get_config() -> dict:
         print(
             "PIPELINE_CONFIG_LOCATION environment variable should be set to "
             "the config file path. An empty dictionary will be used by default for this run."
-        )
+        )  # functional
     else:
         with open(config_location) as fh:
             config = yaml.load(fh, Loader=yaml.FullLoader)
