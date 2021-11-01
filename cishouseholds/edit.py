@@ -9,6 +9,18 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def clean_postcode(df: DataFrame, postcode_column: str):
+    """ """
+    df = df.withColumn(
+        postcode_column,
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, "[^a-zA-Z\d:]", "")))),  # noqa W605
+    )
+    df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
+    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, "[^*]{3}$", ""))
+    df = df.withColumn(postcode_column, F.format_string("%s %s", F.col(postcode_column), F.col("TEMP")))
+    return df.drop("TEMP")
+
+
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     Update specific cell values from a map contained in a csv file
