@@ -1,26 +1,13 @@
-import functools
 import json
-import os
-from datetime import datetime
-
-import pkg_resources
 import pyspark.sql.functions as F
-import yaml
+from datetime import datetime
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
 
+import pkg_resources
+
+from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-@functools.lru_cache(maxsize=1)
-def get_config() -> dict:
-    """Read YAML config file from path specified in PIPELINE_CONFIG_LOCATION environment variable"""
-    _config_location = os.environ.get("PIPELINE_CONFIG_LOCATION")
-    if _config_location is None:
-        raise ValueError("PIPELINE_CONFIG_LOCATION environment variable must be set to the config file path")
-    with open(_config_location) as fh:
-        config = yaml.load(fh, Loader=yaml.FullLoader)
-    return config
 
 
 def update_table(df, table_name):
@@ -49,7 +36,7 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
     run_id = 0
     if spark_session.catalog._jcatalog.tableExists(run_log_table):
-        last_run_id = get_latest_run_id(storage_config, pipeline_name)
+        last_run_id = get_latest_run_id(storage_config)
         run_id = last_run_id + 1
 
     run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
@@ -57,7 +44,7 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     return run_id
 
 
-def get_latest_run_id(storage_config, pipeline_name):
+def get_latest_run_id(storage_config):
     """Read the maximum run ID from the run log table."""
     spark_session = get_or_create_spark_session()
     run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
@@ -123,8 +110,7 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     """
     storage_config = get_config()["storage"]
 
-    pipeline_name = spark_session.sparkContext.appName
-    run_id = get_latest_run_id(storage_config, pipeline_name)
+    run_id = get_latest_run_id(storage_config)
 
     entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
     df = spark_session.createDataFrame(entry, schema)

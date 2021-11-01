@@ -1,8 +1,7 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
@@ -221,7 +220,7 @@ def execute_merge_specific_antibody(
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
         diff_interval_hours="diff_vs_visit_hr",
-        siemens_column="siemens",
+        siemens_column="assay_siemens",
         tdi_column="antibody_test_result_classification",
         visit_date=visit_date_column_name,
         out_of_date_range_column="out_of_date_range_" + merge_type,
@@ -340,7 +339,9 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("int"))
 
     # out_of_date_range_swab
-    df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
+    df_lab_residuals = df_not_best_match.select(
+        barcode_column_name, *[col for col in df_not_best_match.columns if col in lab_columns_list]
+    ).distinct()
 
     # COMMENT: not necessary to drop lab_columns_list if going to be prepared to union with df_best_match
     df_not_best_match = df_not_best_match.drop(*lab_columns_list)
