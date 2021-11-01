@@ -22,7 +22,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
         schema="""id integer, A string, B string""",
     )
     expected_df = spark_session.createDataFrame(
-        data=[(1, 1, "vala"), (2, "valz", "valb"), (3, 1, "valc"), (4, "val4", "vald"), (5, 3, "vale")],
+        data=[(1, 1, "vala"), (2, "valz", "valb"), (3, 1, "valc"), (4, "val4", "vald"), (5, 3, "val5")],
         schema="""id integer, A string, B string""",
     )
     df = input_df
