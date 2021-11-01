@@ -1,9 +1,35 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
+
+
+def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
+    """
+    Given a dataframe containing records for both blood groups create a new dataframe with columns for
+    each specific blood group seperated with the appriopiate extension appended to the end of the
+    column name
+    Parameters
+    ----------
+    df
+    blood_group_column
+    """
+    join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    split_dataframes = []
+    window = Window.partitionBy(*join_on_colums).orderBy("blood_sample_barcode")
+    df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
+    failed_df = df.filter(F.col("sum") > 2).drop("sum")
+    df = df.filter(F.col("sum") < 3).drop("sum")
+    for blood_group in ["S", "N"]:
+        split_df = df.filter(F.col(blood_group_column) == blood_group)
+        for col in split_df.columns:
+            if col not in join_on_colums:
+                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
+        split_dataframes.append(split_df)
+    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
+    joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
+    return joined_df, failed_df
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
@@ -217,7 +243,7 @@ def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, o
     return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_type: str = "outer"):
+def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
     """
     Join two datasets.
     Parameters
@@ -229,7 +255,7 @@ def join_dataframes(df1: DataFrame, df2: DataFrame, reference_column: str, join_
     join_type
         Specify join type to apply to .join() method
     """
-    return df1.join(df2, on=reference_column, how=join_type)
+    return df1.join(df2, on=on, how=join_type)
 
 
 def assign_merge_process_group_flag(
@@ -401,20 +427,20 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     column_name_to_assign
     """
     df = assign_merge_process_group_flag(
-        df,
-        "identify_many_to_one_antibody_flag",
-        "out_of_date_range_antibody",
-        "count_barcode_antibody",
-        "==1",  # wrong
-        "count_barcode_voyager",
-        ">1",  # wrong
+        df=df,
+        column_name_to_assign="identify_mto1_antibody_flag",
+        out_of_date_range_flag="out_of_date_range_antibody",
+        count_barcode_labs_column_name="count_barcode_antibody",
+        count_barcode_labs_condition="==1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     window = Window.partitionBy(group_by_column)
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum(F.when(F.col("identify_many_to_one_antibody_flag") == 1, 1).otherwise(None)).over(window),
+        F.sum(F.when(F.col("identify_mto1_antibody_flag") == 1, 1).otherwise(None)).over(window),
     )
 
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
@@ -450,13 +476,13 @@ def many_to_many_flag(
     """
 
     df = assign_merge_process_group_flag(
-        df,
-        "identify_mtom_flag",
-        "out_of_date_range_" + process_type,
-        "count_barcode_" + process_type,
-        ">1",
-        "count_barcode_voyager",
-        ">1",
+        df=df,
+        column_name_to_assign="identify_mtom_flag",
+        out_of_date_range_flag="out_of_date_range_" + process_type,
+        count_barcode_labs_column_name="count_barcode_" + process_type,
+        count_barcode_labs_condition=">1",
+        count_barcode_voyager_column_name="count_barcode_voyager",
+        count_barcode_voyager_condition=">1",
     )
 
     window = Window.partitionBy(group_by_column, "identify_mtom_flag")
@@ -515,7 +541,6 @@ def many_to_many_flag(
                 F.col("record_processed")
             ),
         )
-
     return df.drop("classification_different_to_first", "record_processed", "row_number")
 
 
@@ -567,7 +592,7 @@ def one_to_many_antibody_flag(
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
-    inconsistent_rows = "failed_flag_1tom_antibody"
+    inconsistent_rows = "failed_flag_1tom_antibody"  # column generated that isnt included in the TEST data.
 
     window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)

@@ -7,6 +7,31 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
+    """
+    Convert column values matching map key to value
+    Parameters
+    ----------
+    df
+    column
+    map
+    """
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+    if error_if_value_not_found:
+        temp_df = df.distinct()
+        values_set = set(temp_df.select(column).toPandas()[column].tolist())
+        map_set = set(map.keys())
+        if map_set != values_set:
+            missing = set(temp_df.select(column).toPandas()[column].tolist()) - set(map.keys())
+            raise LookupError(f"Insufficient mapping values: contents of:{missing} remains unmapped")
+        df = df.withColumn(column, mapping_expr[df[column]])
+    else:
+        df = df.withColumn(
+            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(F.col(column))
+        )
+    return df
+
+
 def update_work_facing_now_column(
     df: DataFrame,
     column_name_to_update: str,
