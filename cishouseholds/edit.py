@@ -17,7 +17,12 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     )
     df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
     df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, "[^*]{3}$", ""))
-    df = df.withColumn(postcode_column, F.format_string("%s %s", F.col(postcode_column), F.col("TEMP")))
+    df = df.withColumn(
+        postcode_column,
+        F.when(
+            (F.length(postcode_column) <= 4), F.format_string("%s %s", F.col(postcode_column), F.col("TEMP"))
+        ).otherwise(None),
+    )
     return df.drop("TEMP")
 
 

@@ -8,6 +8,7 @@ def test_clean_postcode(spark_session):
         data=[
             ("     I G $ 4 0   D.B          .   ", 1),
             ("     ., ; wb $ 1 % 6 ofj          )   ", 2),
+            (" aaa    ., ; wb $ 1 % 6 ofj          )   ", 3),
         ],
         schema="""ref string, id integer""",
     )
@@ -16,6 +17,7 @@ def test_clean_postcode(spark_session):
         data=[
             ("IG4 0DB", 1),
             ("WB16 OFJ", 2),
+            (None, 3),
         ],
         schema="""ref string, id integer""",
     )
