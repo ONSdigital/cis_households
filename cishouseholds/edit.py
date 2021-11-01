@@ -7,6 +7,28 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
+    """
+    Create seperate columns for school year depending on the individuals counrty of residience
+    Parameters
+    ----------
+    df
+    school_year_column
+    country_column
+    id_column
+    """
+    countries = [["England", "Wales"], ["Scotland"], ["NI"]]
+    for country_set in countries:
+        school_year_county_column = school_year_column + " " + ", ".join(country_set)
+        temp_df = (
+            df.select(country_column, school_year_column, id_column)
+            .filter(F.col(country_column).isin(country_set))
+            .withColumnRenamed(school_year_column, school_year_county_column)
+        )
+        df = df.join(temp_df, on=[country_column, id_column], how="left")
+    return df
+
+
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
     """
     Convert column values matching map key to value
