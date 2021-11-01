@@ -8,8 +8,15 @@ from pyspark.sql.window import Window
 from cishouseholds.compare import prepare_for_union
 
 
-def merge_survey_tables(tables: List[str]):
-    """ """
+def merge_survey_tables(tables: List[Union[str, DataFrame]]):
+    """
+    Given a list of iqvia v0, v1, v2 tables combine them through a union process
+    and create null columns for columns inconsistent between all tables
+    Parameters
+    ----------
+    tables
+        list of objects representing the respective iqvia tables
+    """
     df1, df2 = prepare_for_union(tables[0], tables[1])
     merged_df = df1.union(df2)
     merged_df, df3 = prepare_for_union(merged_df, tables[2])
