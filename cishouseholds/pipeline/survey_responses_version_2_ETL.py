@@ -34,6 +34,8 @@ from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
+#  from cishouseholds.derive import assign_has_been_to_column
+
 # from cishouseholds.derive import assign_work_person_facing_now
 
 
@@ -166,5 +168,12 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
-    # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
+    # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])]
+    # df = assign_has_been_to_column(
+    #    df, "household_been_hospital_last_2_weeks ", "contact_participant_hospital", "contact_other_in_hh_hospital"
+    # )
+    # df = assign_has_been_to_column(
+    #    df, "household_been_care_home_last_2_weeks ", "contact_participant_hospital", "contact_other_in_hh_hospital"
+    # )
+
     return df
