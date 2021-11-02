@@ -1,10 +1,9 @@
+import pyspark.sql.functions as F
 from itertools import chain
+from pyspark.sql import DataFrame
 from typing import List
 from typing import Mapping
 from typing import Union
-
-import pyspark.sql.functions as F
-from pyspark.sql import DataFrame
 
 
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
@@ -156,7 +155,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),  # noqa W605
     )
     df = df.withColumn(
         column_name_to_assign,
