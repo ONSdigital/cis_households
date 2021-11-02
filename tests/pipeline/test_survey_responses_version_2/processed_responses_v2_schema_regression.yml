@@ -888,6 +888,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: unique_participant_response_id
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer

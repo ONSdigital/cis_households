@@ -1,5 +1,6 @@
 import re
 from itertools import chain
+from typing import List
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
@@ -46,13 +47,20 @@ def assign_work_social_column(
     return df
 
 
+def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+    """
+    Assign a unique column from concatinating multiple input columns
+        concat_columns
+    """
+    return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
+
+
 def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str):
     """
     Assign column for possibility of having covid-19
     Parameters
     ----------
     df
-    column_name_to_assign
     known_column
     suspect_column
     """

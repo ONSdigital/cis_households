@@ -52,6 +52,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: unique_antibody_test_id
+  nullable: true
+  type: string
+- metadata: {}
   name: antibody_test_target
   nullable: true
   type: string

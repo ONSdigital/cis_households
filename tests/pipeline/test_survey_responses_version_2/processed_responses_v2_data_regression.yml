@@ -220,6 +220,7 @@
   title: Dr.
   transport_to_work_or_school: Other method
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4559272362372022-01-02 10:00:19
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -471,6 +472,7 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4564424971052022-01-01 18:18:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -723,6 +725,7 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-8587422675622022-01-03 01:57:08
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DHVF-4869598675
@@ -971,6 +974,7 @@
   title: Miss.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-6275400895852022-01-04 19:29:32
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DHVF-6249804207
@@ -1221,6 +1225,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-5935868570222022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1473,6 +1478,7 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3892639591912022-01-06 18:33:36
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DVH-0739888271
@@ -1721,6 +1727,7 @@
   title: Mrs.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-1442294850982022-01-02 22:16:30
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DVH-2195478104
@@ -1970,6 +1977,7 @@
   title: Dr.
   transport_to_work_or_school: Car or Van
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-0771452842572022-01-05 12:07:35
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DVH-2661757503
@@ -2216,6 +2224,7 @@
   title: Dr.
   transport_to_work_or_school: Bicycle
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-6035061403232022-01-08 00:44:46
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -2466,6 +2475,7 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3295001674032022-01-06 11:34:20
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983
