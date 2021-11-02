@@ -1,4 +1,5 @@
 import pyspark.sql.functions as F
+
 from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.merge import merge_assayed_bloods
@@ -32,5 +33,5 @@ def test_merge_assayed_bloods(spark_session):
     )
     expected_error_df = input_df.filter(F.col("blood_sample_barcode") == "ONS00000005")
     output_df, error_df = merge_assayed_bloods(input_df, "blood_group")
-    assert_df_equality(expected_df, output_df)
-    assert_df_equality(expected_error_df, error_df)
+    assert_df_equality(expected_df, output_df, ignore_row_order=True)
+    assert_df_equality(expected_error_df, error_df, ignore_row_order=True)

@@ -1,9 +1,8 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
@@ -686,9 +685,7 @@ def one_to_many_swabs(
         flag_column_name,
         F.when(
             (F.col("identify_1tom_swabs_flag") == 1)
-            | (F.col("time_order_flag") == 1)
-            | (F.col("pcr_flag") == 1)
-            | (F.col("time_difference_flag") == 1),
+            & ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
             1,
         ),
     )
