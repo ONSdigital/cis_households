@@ -7,6 +7,7 @@ from pyspark.sql.session import SparkSession
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_test_target
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import substring_column
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
@@ -74,6 +75,9 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for blood deltas.
     """
     df = assign_filename_column(df, "blood_test_source_file")
+    df = assign_unique_id_column(
+        df, "unique_antibody_test_id", ["blood_sample_barcode", "antibody_test_plate_id", "antibody_test_well_id"]
+    )
     df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
     df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
