@@ -1,10 +1,10 @@
 import json
-from datetime import datetime
-
-import pkg_resources
 import pyspark.sql.functions as F
+from datetime import datetime
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
+
+import pkg_resources
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -45,7 +45,7 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     run_id = 0
 
     if check_table_exists("run_log"):
-        last_run_id = get_latest_run_id(storage_config, pipeline_name)
+        last_run_id = get_latest_run_id(storage_config)
         run_id = last_run_id + 1
 
     run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
