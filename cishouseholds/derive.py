@@ -9,6 +9,16 @@ from pyspark.sql import functions as F
 def assign_has_been_to_column(
     df: DataFrame, column_name_to_assign: str, contact_participant_column: str, contact_other_column: str
 ):
+    """
+    Assign a column to evidence whether a relevant party has been to a given place using the 2 input
+    contact columns as reference and standardised output string column values
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    contact_participant_column
+    contact_other_column
+    """
     df = df.withColumn(
         column_name_to_assign,
         F.when(
