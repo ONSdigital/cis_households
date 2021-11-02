@@ -67,10 +67,10 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   infant_1_age: 0.0
-  infant_2_age: 4.0
-  infant_3_age: 1.0
-  infant_4_age: 7
-  infant_5_age: 4.0
+  infant_2_age: 5.0
+  infant_3_age: 2.0
+  infant_4_age: 8
+  infant_5_age: 5.0
   infant_6_age: 3.0
   infant_7_age: 4.0
   infant_8_age: 1.0
@@ -107,7 +107,7 @@
   middle_name: Clarence
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '392744995712'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -134,22 +134,22 @@
   person_2_not_consenting_age: null
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 28.0
+  person_3_age: 29.0
   person_3_not_consenting_age: 71.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
   person_4_age: 6.0
-  person_4_not_consenting_age: 99.0
+  person_4_not_consenting_age: 100.0
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 90
+  person_5_age: 91
   person_5_not_consenting_age: 0.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 6.0
   person_6_not_consenting_age: 30.0
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
   person_7_age: 24.0
-  person_7_not_consenting_age: 94.0
+  person_7_not_consenting_age: 95.0
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 88.0
+  person_8_age: 89.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
@@ -220,6 +220,7 @@
   title: Dr.
   transport_to_work_or_school: Other method
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4559272362372022-01-02 10:00:19
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -311,11 +312,11 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   infant_1_age: 5.0
-  infant_2_age: 6.0
-  infant_3_age: 5.0
+  infant_2_age: 7.0
+  infant_3_age: 6.0
   infant_4_age: 1
   infant_5_age: null
-  infant_6_age: 3.0
+  infant_6_age: 4.0
   infant_7_age: 0.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'No'
@@ -352,7 +353,7 @@
   middle_name: Quinn
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -372,32 +373,32 @@
   participant_status: Active
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  person_1_age: 63
-  person_1_not_consenting_age: 80.0
+  person_1_age: 64
+  person_1_not_consenting_age: 81.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 22.0
-  person_2_not_consenting_age: 99.0
+  person_2_not_consenting_age: 100.0
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_3_age: 0.0
-  person_3_not_consenting_age: 95.0
+  person_3_not_consenting_age: 96.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
   person_4_age: 70.0
-  person_4_not_consenting_age: 61.0
+  person_4_not_consenting_age: 62.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 38
-  person_5_not_consenting_age: 50.0
+  person_5_age: 39
+  person_5_not_consenting_age: 51.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 87.0
+  person_6_age: 88.0
   person_6_not_consenting_age: 55.0
   person_6_reason_for_not_consenting: Elementary, my dear Watson.
   person_7_age: 4.0
   person_7_not_consenting_age: 75.0
   person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_8_age: 85.0
+  person_8_age: 86.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_9_not_consenting_age: null
@@ -469,6 +470,7 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4564424971052022-01-01 18:18:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -560,12 +562,12 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
-  infant_1_age: 5.0
+  infant_1_age: 6.0
   infant_2_age: null
   infant_3_age: 4.0
   infant_4_age: 1
-  infant_5_age: 7.0
-  infant_6_age: 5.0
+  infant_5_age: 8.0
+  infant_6_age: 6.0
   infant_7_age: 6.0
   infant_8_age: 0.0
   is_regularly_lateral_flow_testing: 'No'
@@ -603,7 +605,7 @@
   middle_name: Buck
   no_blood_reason_fingerprick: Couldn't get enough blood
   no_blood_reason_venous: Participant time constraints
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -623,20 +625,20 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 68
-  person_1_not_consenting_age: 12.0
+  person_1_age: 69
+  person_1_not_consenting_age: 13.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_age: 86.0
+  person_2_age: 87.0
   person_2_not_consenting_age: 2.0
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
   person_3_age: 68.0
   person_3_not_consenting_age: 57.0
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_4_age: 54.0
+  person_4_age: 55.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 19
+  person_5_age: 20
   person_5_not_consenting_age: 13.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -644,7 +646,7 @@
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 61.0
+  person_7_age: 62.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Let them eat cake.
   person_8_age: 16.0
@@ -719,6 +721,7 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-8587422675622022-01-03 01:57:08
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DHVF-4869598675
@@ -811,12 +814,12 @@
   illness_reduces_activity_or_ability: Yes, a lot
   infant_1_age: 0.0
   infant_2_age: 5.0
-  infant_3_age: 5.0
+  infant_3_age: 6.0
   infant_4_age: 3
   infant_5_age: null
   infant_6_age: null
-  infant_7_age: 7.0
-  infant_8_age: 6.0
+  infant_7_age: 8.0
+  infant_8_age: 7.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: null
   last_covid_contact_date: null
@@ -850,7 +853,7 @@
   middle_name: My
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -871,33 +874,33 @@
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
   person_1_age: 13
-  person_1_not_consenting_age: 87.0
+  person_1_not_consenting_age: 88.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_age: 28.0
-  person_2_not_consenting_age: 81.0
+  person_2_not_consenting_age: 82.0
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_age: 72.0
+  person_3_age: 73.0
   person_3_not_consenting_age: 2.0
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_4_age: 81.0
+  person_4_age: 82.0
   person_4_not_consenting_age: 33.0
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
   person_5_age: 22
   person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Let them eat cake.
-  person_6_age: 70.0
-  person_6_not_consenting_age: 81.0
+  person_6_age: 71.0
+  person_6_not_consenting_age: 82.0
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 36.0
+  person_7_age: 37.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
   person_8_age: 15.0
-  person_8_not_consenting_age: 10.0
+  person_8_not_consenting_age: 11.0
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_9_not_consenting_age: 86.0
+  person_9_not_consenting_age: 87.0
   person_9_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   physical_contact_18_to_69_years: '0'
@@ -965,6 +968,7 @@
   title: Miss.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-6275400895852022-01-04 19:29:32
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DHVF-6249804207
@@ -1058,8 +1062,8 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   infant_1_age: null
-  infant_2_age: 1.0
-  infant_3_age: 5.0
+  infant_2_age: 2.0
+  infant_3_age: 6.0
   infant_4_age: 0
   infant_5_age: 0.0
   infant_6_age: 4.0
@@ -1119,21 +1123,21 @@
   participant_testing_group: null
   participant_visit_status: Scheduled
   person_1_age: 20
-  person_1_not_consenting_age: 60.0
+  person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: 73.0
-  person_2_not_consenting_age: 73.0
+  person_2_age: 74.0
+  person_2_not_consenting_age: 74.0
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_3_age: null
-  person_3_not_consenting_age: 98.0
+  person_3_not_consenting_age: 99.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: 63.0
+  person_4_age: 64.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_5_age: 14
-  person_5_not_consenting_age: 83.0
+  person_5_not_consenting_age: 84.0
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_6_age: 30.0
@@ -1213,6 +1217,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-5935868570222022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1305,13 +1310,13 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
-  infant_1_age: 7.0
-  infant_2_age: 7.0
-  infant_3_age: 7.0
-  infant_4_age: 7
+  infant_1_age: 8.0
+  infant_2_age: 8.0
+  infant_3_age: 8.0
+  infant_4_age: 8
   infant_5_age: 0.0
-  infant_6_age: 5.0
-  infant_7_age: 4.0
+  infant_6_age: 6.0
+  infant_7_age: 5.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: Yes because you live with someone who has/has had symptoms but
@@ -1374,25 +1379,25 @@
   person_2_not_consenting_age: 41.0
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 48.0
-  person_3_not_consenting_age: 29.0
+  person_3_age: 49.0
+  person_3_not_consenting_age: 30.0
   person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_4_age: 67.0
+  person_4_age: 68.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
   person_5_age: 33
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
-  person_6_not_consenting_age: 68.0
+  person_6_not_consenting_age: 69.0
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_7_age: 30.0
   person_7_not_consenting_age: 62.0
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_8_age: 85.0
+  person_8_age: 86.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -1463,6 +1468,7 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3892639591912022-01-06 18:33:36
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DVH-0739888271
@@ -1553,13 +1559,13 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a little
-  infant_1_age: 7.0
-  infant_2_age: 3.0
-  infant_3_age: 6.0
+  infant_1_age: 8.0
+  infant_2_age: 4.0
+  infant_3_age: 7.0
   infant_4_age: 0
   infant_5_age: 3.0
-  infant_6_age: 5.0
-  infant_7_age: 7.0
+  infant_6_age: 6.0
+  infant_7_age: 8.0
   infant_8_age: null
   is_regularly_lateral_flow_testing: 'No'
   is_self_isolating: Yes for other reasons (e.g. going into hospital or quarantining)
@@ -1594,7 +1600,7 @@
   middle_name: Jae
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Two attempts made
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -1614,14 +1620,14 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  person_1_age: 30
-  person_1_not_consenting_age: 93.0
+  person_1_age: 31
+  person_1_not_consenting_age: 94.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 22.0
   person_2_not_consenting_age: 16.0
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 40.0
+  person_3_age: 41.0
   person_3_not_consenting_age: 21.0
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_4_age: 25.0
@@ -1631,17 +1637,17 @@
   person_5_age: 84
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: 78.0
-  person_6_not_consenting_age: 26.0
+  person_6_age: 79.0
+  person_6_not_consenting_age: 27.0
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_7_age: 4.0
-  person_7_not_consenting_age: 45.0
+  person_7_not_consenting_age: 46.0
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_8_age: 84.0
+  person_8_age: 85.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_9_not_consenting_age: 100.0
+  person_9_not_consenting_age: 101.0
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   physical_contact_18_to_69_years: null
@@ -1709,6 +1715,7 @@
   title: Mrs.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-1442294850982022-01-02 22:16:30
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DVH-2195478104
@@ -1800,11 +1807,11 @@
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a little
-  infant_1_age: 7.0
+  infant_1_age: 8.0
   infant_2_age: 2.0
-  infant_3_age: 4.0
+  infant_3_age: 5.0
   infant_4_age: 6
-  infant_5_age: 6.0
+  infant_5_age: 7.0
   infant_6_age: 0.0
   infant_7_age: 0.0
   infant_8_age: 7.0
@@ -1841,7 +1848,7 @@
   middle_name: Gale
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Non-contact visit. Household self-isolating
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -1861,31 +1868,31 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: null
-  person_1_age: 27
-  person_1_not_consenting_age: 42.0
+  person_1_age: 28
+  person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_2_age: null
-  person_2_not_consenting_age: 54.0
+  person_2_not_consenting_age: 55.0
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 86.0
+  person_3_age: 87.0
   person_3_not_consenting_age: 20.0
   person_3_reason_for_not_consenting: Here's looking at you, kid.
   person_4_age: null
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_5_age: 6
-  person_5_not_consenting_age: 65.0
+  person_5_not_consenting_age: 66.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 69.0
+  person_6_age: 70.0
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Here's looking at you, kid.
   person_7_age: 43.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 26.0
+  person_8_age: 27.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
@@ -1956,6 +1963,7 @@
   title: Dr.
   transport_to_work_or_school: Car or Van
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-0771452842572022-01-05 12:07:35
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DVH-2661757503
@@ -2048,10 +2056,10 @@
   infant_2_age: 1.0
   infant_3_age: null
   infant_4_age: 1
-  infant_5_age: 4.0
-  infant_6_age: 5.0
+  infant_5_age: 5.0
+  infant_6_age: 6.0
   infant_7_age: 1.0
-  infant_8_age: 5.0
+  infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
   is_self_isolating: Yes because you have/have had symptoms of COVID-19
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
@@ -2085,7 +2093,7 @@
   middle_name: Isaac
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Other
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2105,8 +2113,8 @@
   participant_status: Active
   participant_testing_group: Blood and Swab
   participant_visit_status: null
-  person_1_age: 74
-  person_1_not_consenting_age: 60.0
+  person_1_age: 75
+  person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 9.0
   person_2_not_consenting_age: null
@@ -2115,7 +2123,7 @@
   person_3_not_consenting_age: 79.0
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_4_age: 61.0
+  person_4_age: 62.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
   person_5_age: 36
@@ -2200,6 +2208,7 @@
   title: Dr.
   transport_to_work_or_school: Bicycle
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-6035061403232022-01-08 00:44:46
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -2289,14 +2298,14 @@
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
-  infant_1_age: 5.0
+  infant_1_age: 6.0
   infant_2_age: 3.0
   infant_3_age: 5.0
-  infant_4_age: 5
+  infant_4_age: 6
   infant_5_age: 6.0
   infant_6_age: 0.0
   infant_7_age: 2.0
-  infant_8_age: 7.0
+  infant_8_age: 8.0
   is_regularly_lateral_flow_testing: null
   is_self_isolating: Yes because you have/have had symptoms of COVID-19 or a positive
     test
@@ -2331,7 +2340,7 @@
   middle_name: Argentina
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Participant dehydrated
-  no_email_address: 0
+  no_email_address: 1
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -2359,7 +2368,7 @@
   person_2_not_consenting_age: null
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 41.0
+  person_3_age: 42.0
   person_3_not_consenting_age: null
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -2367,21 +2376,21 @@
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 23
+  person_5_age: 24
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_age: 81.0
+  person_6_age: 82.0
   person_6_not_consenting_age: null
   person_6_reason_for_not_consenting: Let them eat cake.
-  person_7_age: 19.0
+  person_7_age: 20.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
   person_8_age: 51.0
   person_8_not_consenting_age: 53.0
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_9_not_consenting_age: 86.0
+  person_9_not_consenting_age: 87.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
   physical_contact_18_to_69_years: 1-5
   physical_contact_over_70_years: 1-5
@@ -2448,6 +2457,7 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3295001674032022-01-06 11:34:20
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983
