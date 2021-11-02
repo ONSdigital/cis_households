@@ -7,6 +7,7 @@ from pyspark.sql import SparkSession
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_isin_list
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import mean_across_columns
 from cishouseholds.edit import convert_columns_to_timestamps
@@ -75,6 +76,8 @@ def transform_swab_delta(spark_session: SparkSession, df: DataFrame) -> DataFram
     Transform swab delta - derive new fields that do not depend on merging with survey responses.
     """
     df = assign_filename_column(df, "swab_test_source_file")
+    df = assign_unique_id_column(df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_datetime"])
+
     df = assign_column_to_date_string(df, "pcr_date", "pcr_datetime")
     df = derive_cq_pattern(
         df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
