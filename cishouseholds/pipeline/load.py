@@ -43,7 +43,7 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     pipeline_version = pkg_resources.get_distribution(pipeline_name).version
 
     run_id = 0
-    
+
     if check_table_exists("run_log"):
         last_run_id = get_latest_run_id(storage_config, pipeline_name)
         run_id = last_run_id + 1
