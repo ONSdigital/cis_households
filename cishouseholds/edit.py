@@ -10,7 +10,14 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
-    """ """
+    """
+    update postcode variable to include only uppercase alpha numeric characters and set
+    to null if required format cannot be identified
+    Parameters
+    ----------
+    df
+    postcode_column
+    """
     df = df.withColumn(
         postcode_column,
         F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, "[^a-zA-Z\d:]", "")))),  # noqa W605
