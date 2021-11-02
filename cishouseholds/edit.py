@@ -55,6 +55,28 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     return df
 
 
+def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
+    """
+    Create seperate columns for school year depending on the individuals counrty of residience
+    Parameters
+    ----------
+    df
+    school_year_column
+    country_column
+    id_column
+    """
+    countries = [["England", "Wales"], ["Scotland"], ["NI"]]
+    column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
+    for column_name, country_set in zip(column_names, countries):
+        temp_df = (
+            df.select(country_column, school_year_column, id_column)
+            .filter(F.col(country_column).isin(country_set))
+            .withColumnRenamed(school_year_column, column_name)
+        )
+        df = df.join(temp_df, on=[country_column, id_column], how="left")
+    return df.drop(school_year_column)
+
+
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
     """
     Convert column values matching map key to value
