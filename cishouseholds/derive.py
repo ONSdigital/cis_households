@@ -19,6 +19,22 @@ def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_co
     return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
 
 
+def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str):
+    """
+    Assign column for possibility of having covid-19
+    Parameters
+    ----------
+    df
+    known_column
+    suspect_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(known_column) == "Yes") | (F.col(suspect_column) == "Yes"), "Yes").otherwise("No"),
+    )
+    return df
+
+
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Use inbuilt pyspark function to get name of the file used in the current spark task
