@@ -7,6 +7,25 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 
+def update_social_column(df: DataFrame, social_column: str, health_column: str):
+    """
+    Update the value of the social column to that of the health column
+    provided that the social column is null and health column is not
+    Parameters
+    ----------
+    df
+    social_column
+    health_column
+    """
+    df = df.withColumn(
+        social_column,
+        F.when((F.col(social_column).isNull()) & (~F.col(health_column).isNull()), F.col(health_column)).otherwise(
+            F.col(social_column)
+        ),
+    )
+    return df
+
+
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
     """
     Convert column values matching map key to value
