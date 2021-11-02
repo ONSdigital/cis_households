@@ -1,11 +1,10 @@
 import sys
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def impute_by_distribution(
@@ -95,18 +94,22 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         df, column_name_to_assign="temporary_imputation_values", reference_column=reference_column, **kwargs
     )
 
-    is_imputed_name = reference_column + "_is_imputed"
+    status_column = reference_column + "_is_imputed"
+    status_other = F.col(status_column) if status_column in df.columns else None
 
     df = df.withColumn(
-        is_imputed_name,
+        status_column,
         F.when(F.col("temporary_imputation_values").isNotNull(), 1)
         .when(F.col("temporary_imputation_values").isNull(), 0)
-        .otherwise(None),
+        .otherwise(status_other)
+        .cast("integer"),
     )
 
+    method_column = reference_column + "_imputation_method"
+    method_other = F.col(method_column) if method_column in df.columns else None
     df = df.withColumn(
         reference_column + "_imputation_method",
-        F.when(F.col(is_imputed_name) == 1, imputation_function.__name__).otherwise(None),
+        F.when(F.col(status_column) == 1, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
 
     df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
@@ -229,14 +232,14 @@ def merge_previous_imputed_values(
         column that should be used to join previously imputed values on
     """
     imputed_value_lookup_df = imputed_value_lookup_df.toDF(
-        *[f"_{name}" if name != id_column_name else name for name in imputed_value_lookup_df.columns]
+        *[f"_{column}" if column != id_column_name else column for column in imputed_value_lookup_df.columns]
     )  # _ prevents ambiguity in join, but is sliced out when referencing the original columns
 
     df = df.join(imputed_value_lookup_df, on=id_column_name, how="left")
     columns_for_editing = [
-        (name.replace("_imputation_method", ""), name.replace("_imputation_method", "_is_imputed"), name)
-        for name in imputed_value_lookup_df.columns
-        if name.endswith("_imputation_method")
+        (column.replace("_imputation_method", ""), column.replace("_imputation_method", "_is_imputed"), column)
+        for column in imputed_value_lookup_df.columns
+        if column.endswith("_imputation_method")
     ]
 
     for value_column, status_column, method_column in columns_for_editing:
