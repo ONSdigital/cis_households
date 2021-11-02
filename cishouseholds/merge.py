@@ -8,7 +8,7 @@ from pyspark.sql.window import Window
 from cishouseholds.compare import prepare_for_union
 
 
-def merge_survey_tables(tables: List[Union[str, DataFrame]]):
+def merge_survey_tables(df0: Union[str, DataFrame], df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
     """
     Given a list of iqvia v0, v1, v2 tables combine them through a union process
     and create null columns for columns inconsistent between all tables
@@ -17,16 +17,16 @@ def merge_survey_tables(tables: List[Union[str, DataFrame]]):
     tables
         list of objects representing the respective iqvia tables
     """
-    df1, df2 = prepare_for_union(tables[0], tables[1])
+    df1, df2 = prepare_for_union(df0, df1)
     merged_df = df1.union(df2)
-    merged_df, df3 = prepare_for_union(merged_df, tables[2])
+    merged_df, df3 = prepare_for_union(merged_df, df2)
     return merged_df.union(df3)
 
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
-    each specific blood group seperated with the appriopiate extension appended to the end of the
+    each specific blood group seperated with the appropriate extension appended to the end of the
     column name
     Parameters
     ----------
