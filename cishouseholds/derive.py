@@ -32,7 +32,21 @@ def assign_has_been_to_column(
         )
         .otherwise(None),
     )
+    return df
 
+
+def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str):
+    """
+    Assign column for possibility of having covid-19
+    Parameters
+    ----------
+    known_column
+    suspect_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(known_column) == "Yes") | (F.col(suspect_column) == "Yes"), "Yes").otherwise("No"),
+    )
     return df
 
 
