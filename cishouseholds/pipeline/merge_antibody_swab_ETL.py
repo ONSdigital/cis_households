@@ -1,6 +1,6 @@
 from pyspark.sql import functions as F
 
-from cishouseholds.merge import merge_assayed_bloods
+from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -25,7 +25,7 @@ def merge_blood_ETL():
     antibody_df = extract_from_table(antibody_table, spark_session)
 
     # Outer join blood results
-    antibody_df = merge_assayed_bloods(antibody_df, "antibody_test_target")
+    antibody_df, failed_antibody_join_df = join_assayed_bloods(antibody_df, test_target_column="antibody_test_target")
     antibody_df = antibody_df.withColumn(
         "combined_blood_sample_received_date",
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
@@ -33,11 +33,12 @@ def merge_blood_ETL():
 
     # Merge on antibody test results
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
-    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
+    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed, failed_antibody_join_df]
     output_antibody_table_list = [
         "transformed_survey_antibody_merge_data",
         "transformed_antibody_merge_residuals",
         "transformed_survey_antibody_merge_failed",
+        "failed_blood_test_outer_join_records",
     ]
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
