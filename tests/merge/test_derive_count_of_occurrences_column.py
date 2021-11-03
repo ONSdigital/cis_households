@@ -22,4 +22,6 @@ def test_derive_count_of_occurrences_column(spark_session):
 
     output_df = assign_count_of_occurrences_column(input_df, "id", "count_id")
 
-    assert_df_equality(output_df.orderBy("id"), expected_df, ignore_nullable=True)
+    assert_df_equality(
+        output_df.orderBy("id"), expected_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True
+    )

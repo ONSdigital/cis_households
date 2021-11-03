@@ -16,6 +16,8 @@ from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
+from cishouseholds.derive import assign_work_person_facing_now
+from cishouseholds.derive import assign_work_social_column
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
@@ -33,10 +35,6 @@ from cishouseholds.pipeline.validation_schema import survey_responses_v2_validat
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
-
-#  from cishouseholds.derive import assign_has_been_to_column
-
-# from cishouseholds.derive import assign_work_person_facing_now
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
@@ -155,25 +153,21 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
     df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
-    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    df = assign_work_social_column(
+        df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
+    )
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
         "work_status",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_person_facing_now",
-    #     "work_status",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
-    # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])]
-    # df = assign_has_been_to_column(
-    #    df, "household_been_hospital_last_2_weeks ", "contact_participant_hospital", "contact_other_in_hh_hospital"
-    # )
-    # df = assign_has_been_to_column(
-    #    df, "household_been_care_home_last_2_weeks ", "contact_participant_hospital", "contact_other_in_hh_hospital"
-    # )
-
+    df = update_work_facing_now_column(
+        df,
+        "work_person_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
+    # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df
