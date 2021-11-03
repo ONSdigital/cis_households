@@ -76,7 +76,7 @@ def _create_run_log_entry(
         config string
     """
 
-    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config)]]
+    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config, default=str)]]
 
     return spark_session.createDataFrame(run_log_entry, schema)
 
