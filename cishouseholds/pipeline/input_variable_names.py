@@ -35,7 +35,7 @@ blood_variable_name_map = {
 }
 
 historic_blood_variable_name_map = {
-    "ons_id": "ons_id",
+    "ons_id": "blood_sample_barcode",
     "Blood Sample Type": "blood_sample_type",
     "Plate Barcode": "antibody_test_plate_id",
     "Well ID": "antibody_test_well_id",
