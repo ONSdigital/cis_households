@@ -27,31 +27,41 @@ def union_survey_response_files():
     update_table(unioned_survey_responses, "unioned_survey_responses")
 
 
+@register_pipeline_stage("outer_join_blood_results")
+def outer_join_blood_results():
+    """
+    Outer join of data for two blood test targets.
+    """
+
+    blood_table = "transformed_blood_test_data"
+    blood_df = extract_from_table(blood_table)
+
+    blood_df, failed_blood_join_df = join_assayed_bloods(blood_df, test_target_column="antibody_test_target")
+    blood_df = blood_df.withColumn(
+        "combined_blood_sample_received_date",
+        F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
+    )
+
+    update_table(blood_df, "joined_blood_test_data")
+    update_table(failed_blood_join_df, "failed_blood_test_join")
+
+
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL():
     """
     High level function call for running merging process for blood sample data.
     """
     survey_table = "unioned_survey_responses"
-    antibody_table = "transformed_blood_test_data"
+    antibody_table = "joined_blood_test_data"
     survey_df = extract_from_table(survey_table)
     antibody_df = extract_from_table(antibody_table)
 
-    # Outer join blood results
-    antibody_df, failed_antibody_join_df = join_assayed_bloods(antibody_df, test_target_column="antibody_test_target")
-    antibody_df = antibody_df.withColumn(
-        "combined_blood_sample_received_date",
-        F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
-    )
-
-    # Merge on antibody test results
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
-    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed, failed_antibody_join_df]
+    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
     output_antibody_table_list = [
         "transformed_survey_antibody_merge_data",
         "transformed_antibody_merge_residuals",
         "transformed_survey_antibody_merge_failed",
-        "failed_blood_test_outer_join_records",
     ]
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
