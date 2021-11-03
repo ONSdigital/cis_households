@@ -212,7 +212,7 @@ survey_responses_v0_validation_schema = {
 }
 survey_responses_v1_validation_schema = {
     "ons_household_id": {"type": "string"},
-    "Visit_ID": {"type": "integer"},
+    "Visit_ID": {"type": "string"},
     "Type_of_Visit": {"type": "string"},
     "Participant_Visit_status": {"type": "string"},
     "Withdrawal_reason": {"type": "string"},
