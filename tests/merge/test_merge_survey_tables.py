@@ -30,9 +30,9 @@ def test_merge_survey_tables(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            ("a1", 1, None, 26),
-            ("a2", 2, None, 25),
-            ("a2", 3, None, 24),
+            ("a1", 1, None, 2),
+            ("a2", 2, None, 4),
+            ("a2", 3, None, 6),
             ("b1", 1, 9, None),
             ("b2", 1, 9, None),
             ("b3", 1, 9, None),
@@ -42,5 +42,5 @@ def test_merge_survey_tables(spark_session):
         ],
         schema="id string, col1 integer, col2 integer, col3 integer",
     )
-    output_df = merge_survey_tables([input_df0, input_df1, input_df2])
-    assert_df_equality(expected_df, output_df)
+    output_df = merge_survey_tables(input_df0, input_df1, input_df2)
+    assert_df_equality(expected_df, output_df, ignore_row_order=True)

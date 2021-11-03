@@ -17,10 +17,10 @@ def merge_survey_tables(df0: Union[str, DataFrame], df1: Union[str, DataFrame], 
     tables
         list of objects representing the respective iqvia tables
     """
-    df1, df2 = prepare_for_union(df0, df1)
-    merged_df = df1.union(df2)
-    merged_df, df3 = prepare_for_union(merged_df, df2)
-    return merged_df.union(df3)
+    df0, df1 = prepare_for_union(df0, df1)
+    merged_df = df0.union(df1)
+    merged_df, df2 = prepare_for_union(merged_df, df2)
+    return merged_df.union(df2)
 
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
