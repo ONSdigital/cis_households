@@ -30,13 +30,12 @@ def run_from_config():
       resource_path: "path_to.csv"
 
     """
+    config = get_config()
+    run_datetime = datetime.now()
+    run_id = add_run_log_entry(config, run_datetime)
+    print(f"Run ID: {run_id}")  # functional
+    add_run_status(run_id, "started")
     try:
-        config = get_config()
-        run_datetime = datetime.now()
-        run_id = add_run_log_entry(config, run_datetime)
-        print(f"Run ID: {run_id}")  # functional
-        add_run_status(run_id, "started")
-
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         run_pipeline_stages(pipeline_stage_list, config, run_id)
     except Exception as e:
