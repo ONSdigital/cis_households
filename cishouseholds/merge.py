@@ -130,15 +130,19 @@ def check_consistency_in_retained_rows(
     df: DataFrame, check_columns: List[str], selection_column: str, group_column: str, column_name_to_assign: str
 ):
     """
-    check consistency of multiply columns and create separate joined dataframe of chosen columns
+    <<<<<<< HEAD
+        check consistency of multiple columns and create separate joined dataframe of chosen columns
+    =======
+        check consistency of multiply columns and create separate joined dataframe of chosen columns
+    >>>>>>> origin/CISDP-1106/1108-no_nulltypes_and_optimisation
 
-    Parameters
-    ----------
-    df
-    check_columns
-    selection_column
-    group_column
-    column_name_to_assign
+        Parameters
+        ----------
+        df
+        check_columns
+        selection_column
+        group_column
+        column_name_to_assign
     """
     check_distinct = []
     df_retained_rows = df.filter(F.col(selection_column) == 0)
@@ -230,21 +234,21 @@ def assign_time_difference_and_flag_if_outside_interval(
     )
 
 
-def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
-    """
-    Derive column with unique identifier for each record.
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-        Name of column to be created
-    ordering_columns
-        Columns to define order of records to assign an integer value from 1 onwards
-        This order is mostly for comparison/proving purposes with stata output
-    """
-
-    window = Window.orderBy(*ordering_columns)
-    return df.withColumn(column_name_to_assign, F.row_number().over(window))
+# def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
+#    """
+#    Derive column with unique identifier for each record.
+#    Parameters
+#    ----------
+#    df
+#    column_name_to_assign
+#        Name of column to be created
+#    ordering_columns
+#        Columns to define order of records to assign an integer value from 1 onwards
+#        This order is mostly for comparison/proving purposes with stata output
+#    """
+#
+#    window = Window.orderBy(*ordering_columns)
+#    return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
 def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
@@ -440,21 +444,12 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     df
     column_name_to_assign
     """
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_mto1_antibody_flag",
-        out_of_date_range_flag="out_of_date_range_antibody",
-        count_barcode_labs_column_name="count_barcode_antibody",
-        count_barcode_labs_condition="==1",
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_voyager_condition=">1",
-    )
 
     window = Window.partitionBy(group_by_column)
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum(F.when(F.col("identify_mto1_antibody_flag") == 1, 1).otherwise(None).cast("integer")).over(window),
+        F.sum().over(window),
     )
 
     df = df.withColumn(
@@ -491,17 +486,9 @@ def many_to_many_flag(
         Name of column to indicate record has failed validation logic
     """
 
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_mtom_flag",
-        out_of_date_range_flag="out_of_date_range_" + process_type,
-        count_barcode_labs_column_name="count_barcode_" + process_type,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_voyager_condition=">1",
-    )
-
-    window = Window.partitionBy(group_by_column, "identify_mtom_flag")
+    window = Window.partitionBy(group_by_column)
+    process_type_id_map = {"antibody": "unique_antibody_test_id", "swab": "unique_pcr_test_id"}
+    unique_id_lab_str = process_type_id_map[process_type]
 
     if process_type == "antibody":
         column_to_validate = "antibody_test_result_classification"
@@ -520,7 +507,7 @@ def many_to_many_flag(
     df = df.withColumn(
         failed_flag_column_name_to_assign,
         F.when(
-            F.last("classification_different_to_first").over(window).isNotNull() & (F.col("identify_mtom_flag") == 1),
+            F.last("classification_different_to_first").over(window).isNotNull(),
             1,
         )
         .otherwise(None)
@@ -529,26 +516,24 @@ def many_to_many_flag(
 
     # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
     # otherwise None
-    df = df.withColumn(
-        "record_processed", F.when(F.col("identify_mtom_flag").isNull(), 0).otherwise(None).cast("integer")
-    )
-    unique_id_lab_str = "unique_id_" + process_type
+    df = df.withColumn("record_processed", None)
 
     df = df.withColumn(
         drop_flag_column_name_to_assign, F.lit(None).cast("integer")
     )  # BUG Needed in case the while loop does not execute
 
     while df.filter(df.record_processed.isNull()).count() > 0:
-        window = Window.partitionBy(group_by_column, "identify_mtom_flag", "record_processed").orderBy(
-            *ordering_columns
-        )
+        window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
         df = df.withColumn("row_number", F.row_number().over(window))
         df = df.withColumn(
             "record_processed",
             F.when(
                 (
                     (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
-                    | (F.col("unique_id_voyager") == (F.first("unique_id_voyager").over(window)))
+                    | (
+                        F.col("unique_participant_response_id")
+                        == (F.first("unique_participant_response_id").over(window))
+                    )
                 )
                 & (F.col("row_number") != 1),
                 1,
@@ -599,24 +584,14 @@ def one_to_many_antibody_flag(
     count_barcode_voyager_column_name
     count_barcode_labs_column_name
     """
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_1tom_antibody_flag",
-        out_of_date_range_flag=out_of_date_range_column,
-        count_barcode_labs_column_name=count_barcode_labs_column_name,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
-        count_barcode_voyager_condition="==1",
-    )
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
-    selection_column = "identify_1tom_antibody_flag"
     row_num_column = "row_num"
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
     inconsistent_rows = "failed_flag_1tom_antibody"  # column generated that isnt included in the TEST data.
 
-    window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
+    window = Window.partitionBy(group_by_column).orderBy(diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
     df = flag_rows_different_to_reference_row(
         df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_num_column, 1
@@ -626,9 +601,8 @@ def one_to_many_antibody_flag(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when((F.col(rows_diff_to_ref) == 1) & (F.col(selection_column) == 1), 1).otherwise(None).cast("integer"),
+        F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
     )
-    # df = df.orderBy(selection_column, diff_interval_hours, visit_date) #for optimisaiton
     return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 
 

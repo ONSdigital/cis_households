@@ -108,13 +108,13 @@ def test_merge_process_swab(spark_session):
 
     schema = """
                 barcode string,
-                unique_id_voyager integer,
+                unique_participant_response_id integer,
                 count_barcode_voyager integer,
                 date_visit string,
                 date_received string,
                 pcr_result_recorded_datetime string,
                 pcr_result_classification string,
-                unique_id_swab integer,
+                unique_pcr_test_id integer,
                 count_barcode_swab integer,
                 diff_vs_visit_hr float,
                 out_of_date_range_swab integer,
@@ -1666,8 +1666,8 @@ def test_merge_process_swab(spark_session):
     )
 
     # CHECK D: no records filtered out before splitting dataframes - number of distinct records
-    df_unique_voyager = df.dropDuplicates(["barcode", "unique_id_voyager"])
-    df_unique_swab = df.dropDuplicates(["barcode", "unique_id_swab"])
+    df_unique_voyager = df.dropDuplicates(["barcode", "unique_participant_response_id"])
+    df_unique_swab = df.dropDuplicates(["barcode", "unique_pcr_test_id"])
 
     assert_df_equality(
         df_unique_voyager.select("barcode"),
@@ -1685,8 +1685,8 @@ def test_merge_process_swab(spark_session):
 
     # voyager
     # df_records = (
-    #     df_all_iqvia.select("barcode", "unique_id_voyager")
-    #     .union(df_failed_records.select("barcode", "unique_id_voyager"))
+    #     df_all_iqvia.select("barcode", "unique_participant_response_id")
+    #     .union(df_failed_records.select("barcode", "unique_participant_response_id"))
     #     .distinct()
     # )
 
@@ -1696,8 +1696,8 @@ def test_merge_process_swab(spark_session):
 
     # # labs: df_lab_residuals should have its unique id
     # df_records = (
-    #     df_all_iqvia.select("barcode", "unique_id_swab")
-    #     .union(df_lab_residuals.select("barcode", "unique_id_swab"))
+    #     df_all_iqvia.select("barcode", "unique_pcr_test_id")
+    #     .union(df_lab_residuals.select("barcode", "unique_pcr_test_id"))
     #     .distinct()
     # )
 

@@ -37,13 +37,13 @@ def test_merge_process_swab(spark_session):
     # add expected dataframe
     schema = """
                 barcode string,
-                unique_id_voyager integer,
+                unique_participant_response_id integer,
                 count_barcode_voyager integer,
                 date_visit string,
                 date_received string,
                 pcr_result_recorded_datetime string,
                 pcr_result_classification string,
-                unique_id_swab integer,
+                unique_pcr_test_id integer,
                 count_barcode_swab integer,
                 diff_vs_visit_hr double,
                 out_of_date_range_swab integer,
