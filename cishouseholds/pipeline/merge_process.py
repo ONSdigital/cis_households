@@ -77,7 +77,7 @@ def merge_process_preparation(
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
-    """ 
+    """
     Assign all merge process group flag columns simultaneously and create separate
     into individual dataframes
     Parameters
@@ -232,9 +232,9 @@ def execute_merge_specific_swabs(
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
     outer_df = merge_process_validation(
-       outer_df=outer_df,
-       merge_type="swab",
-       barcode_column_name=barcode_column_name,
+        outer_df=outer_df,
+        merge_type="swab",
+        barcode_column_name=barcode_column_name,
     )
 
     print("main output --> ")
@@ -316,9 +316,9 @@ def execute_merge_specific_antibody(
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
     outer_df = merge_process_validation(
-       outer_df,
-       merge_type=merge_type,
-       barcode_column_name=barcode_column_name,
+        outer_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
     )
 
     print("main output --> ")
