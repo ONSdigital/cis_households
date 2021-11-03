@@ -47,7 +47,7 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
 
     window = Window.partitionBy(reference_column)
 
-    return df.withColumn(column_name_to_assign, F.count(reference_column).over(window))
+    return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
 
 
 def assign_absolute_offset(df: DataFrame, column_name_to_assign: str, reference_column: str, offset: float):
