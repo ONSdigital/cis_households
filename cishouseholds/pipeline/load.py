@@ -17,7 +17,16 @@ def update_table(df, table_name):
     )
 
 
-def extract_from_table(table_name: str, spark_session):
+def check_table_exists(table_name: str):
+    storage_config = get_config()["storage"]
+    spark_session = get_or_create_spark_session()
+    return spark_session.catalog._jcatalog.tableExists(
+        f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+    )
+
+
+def extract_from_table(table_name: str):
+    spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
     df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{table_name}")
 
@@ -33,14 +42,16 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     pipeline_name = spark_session.sparkContext.appName
     pipeline_version = pkg_resources.get_distribution(pipeline_name).version
 
-    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
     run_id = 0
-    if spark_session.catalog._jcatalog.tableExists(run_log_table):
+
+    if check_table_exists("run_log"):
         last_run_id = get_latest_run_id(storage_config)
         run_id = last_run_id + 1
 
     run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
-    run_log_entry.write.mode("append").saveAsTable(run_log_table)  # Always append
+    run_log_entry.write.mode("append").saveAsTable(
+        f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
+    )  # Always append
     return run_id
 
 
