@@ -959,4 +959,12 @@ fields:
   name: work_patient_facing_now
   nullable: true
   type: string
+- metadata: {}
+  name: work_social_care
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_person_facing_now
+  nullable: true
+  type: string
 type: struct

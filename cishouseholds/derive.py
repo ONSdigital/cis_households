@@ -7,14 +7,50 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
-def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+def assign_work_social_column(
+    df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
+):
     """
-    Assign a unique column from concatinating multiple input columns
+    Assign column for work social with standard string values depending on 3 given reference inputs
     Parameters
     ----------
     df
     column_name_to_assign
-    concat_columns
+    work_sector_column
+    care_home_column
+    direct_contact_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(work_sector_colum).isNull(), None)
+        .when(F.col(work_sector_colum) != "Furloughed (temporarily not working)", "No")
+        .when(
+            (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
+            "Yes, care/residential home, resident-facing",
+        )
+        .when(
+            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
+            & (F.col(direct_contact_column) == "Yes"),
+            "Yes, other social care, resident-facing",
+        )
+        .when(
+            ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull()))
+            & (F.col(care_home_column) == "Yes"),
+            "Yes, care/residential home, non-resident-facing",
+        )
+        .when(
+            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
+            & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
+            "Yes, other social care, non-resident-facing",
+        ),
+    )
+    return df
+
+
+def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+    """
+    Assign a unique column from concatinating multiple input columns
+        concat_columns
     """
     return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
 
