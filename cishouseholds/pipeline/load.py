@@ -1,10 +1,10 @@
 import json
-from datetime import datetime
-
-import pkg_resources
 import pyspark.sql.functions as F
+from datetime import datetime
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
+
+import pkg_resources
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -76,7 +76,7 @@ def _create_run_log_entry(
         config string
     """
 
-    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config)]]
+    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config, default=str)]]
 
     return spark_session.createDataFrame(run_log_entry, schema)
 
