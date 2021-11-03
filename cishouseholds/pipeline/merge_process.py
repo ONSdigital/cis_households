@@ -73,11 +73,18 @@ def merge_process_preparation(
         df=outer_df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
     )
 
-    return assign_merge_process_group_flags(df=outer_df, merge_type=merge_type)
+    return assign_merge_process_group_flags_and_filter(df=outer_df, merge_type=merge_type)
 
 
-def assign_merge_process_group_flags(df: DataFrame, merge_type: str):
-    """ """
+def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
+    """ 
+    Assign all merge process group flag columns simultaneously and create separate
+    into individual dataframes
+    Parameters
+    ----------
+    df
+    merge_types
+    """
     match_types = {"mtom": [">1", ">1"], "1tom": ["==1", ">1"], "mto1": [">1", "==1"]}
     for name, condition in match_types.items():
         df = M.assign_merge_process_group_flag(
@@ -93,6 +100,9 @@ def assign_merge_process_group_flags(df: DataFrame, merge_type: str):
     one_to_many_df = df.filter(F.col("1tom") == 1)
     many_to_one_df = df.filter(F.col("mto1") == 1)
     one_to_one_df = df.filter((F.col("mtom").isNull()) & (F.col("1tom").isNull()) & (F.col("mto1").isNull()))
+
+    # validate that only one match type exists at this point
+
     return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df
 
 
@@ -133,7 +143,7 @@ def merge_process_validation(outer_df: DataFrame, merge_type: str, barcode_colum
         df=outer_df,
         flag_column_names=flag_column_names_syntax,
         failed_column_names=failed_column_names_syntax,
-        match_type_colums=match_type_colums_syntax,
+        match_type_columns=match_type_colums_syntax,
         group_by_column=barcode_column_name,
     )
     return outer_df
@@ -160,7 +170,7 @@ def execute_merge_specific_swabs(
         by default is "void" but it is possible to specify what is considered as void in the PCR result test.
     """
     merge_type = "swab"
-    many_to_many_df, one_to_many_df, many_to_one_df = merge_process_preparation(
+    many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -189,12 +199,20 @@ def execute_merge_specific_swabs(
     )
     print("1 to m output -->")
     one_to_many_df.show()
+
+    print("m to 1 input -->")
+    many_to_one_df.show()
     many_to_one_df = M.many_to_one_swab_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
+    print("m to 1 output -->")
+    many_to_one_df.show()
+
+    print("m to m input -->")
+    many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -208,12 +226,20 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    # outer_df = merge_process_validation(
-    #    outer_df=outer_df,
-    #    merge_type="swab",
-    #    barcode_column_name=barcode_column_name,
-    # )
-    # return outer_df
+    print("m to m output -->")
+    many_to_many_df.show()
+
+    outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
+
+    outer_df = merge_process_validation(
+       outer_df=outer_df,
+       merge_type="swab",
+       barcode_column_name=barcode_column_name,
+    )
+
+    print("main output --> ")
+    outer_df.show()
+    return outer_df
 
 
 def execute_merge_specific_antibody(
@@ -287,11 +313,17 @@ def execute_merge_specific_antibody(
     )
     print("m to m output -->")
     many_to_many_df.show()
-    # outer_df = merge_process_validation(
-    #    outer_df,
-    #    merge_type=merge_type,
-    #    barcode_column_name=barcode_column_name,
-    # )
+
+    outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
+    outer_df = merge_process_validation(
+       outer_df,
+       merge_type=merge_type,
+       barcode_column_name=barcode_column_name,
+    )
+
+    print("main output --> ")
+    outer_df.show()
+
     return outer_df
 
 

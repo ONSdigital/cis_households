@@ -8,19 +8,21 @@ from pyspark.sql.window import Window
 from cishouseholds.compare import prepare_for_union
 
 
-def merge_survey_tables(df0: Union[str, DataFrame], df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
+def union_multiple_tables(tables: List[DataFrame]):
     """
-    Given a list of iqvia v0, v1, v2 tables combine them through a union process
+    Given a list of tables combine them through a union process
     and create null columns for columns inconsistent between all tables
     Parameters
     ----------
     tables
-        list of objects representing the respective iqvia tables
+        list of objects representing the respective input tables
     """
-    df0, df1 = prepare_for_union(df0, df1)
-    merged_df = df0.union(df1)
-    merged_df, df2 = prepare_for_union(merged_df, df2)
-    return merged_df.union(df2)
+    merged_df = tables[0]
+    for n, in range(1,len(tables) - 1):
+        merged_df, dfn = prepare_for_union(merged_df, tables[n])
+        merged_df = merged_df.union(dfn)
+    return merged_df
+
 
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
