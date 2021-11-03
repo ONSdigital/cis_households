@@ -80,7 +80,6 @@ def get_date_from_filename(filename: str, sep: Optional[str] = "_", format: Opti
     try:
         file_date = filename.split(sep)[-1].split(".")[0]
         file_date = datetime.strptime(file_date, format)  # type: ignore
-        file_date = file_date.strftime("%Y-%m-%d")  # type: ignore
         return file_date
     except ValueError:
         return str(None)

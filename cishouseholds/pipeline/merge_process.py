@@ -54,6 +54,11 @@ def merge_process_preparation(
     elif merge_type == "antibody":
         interval_upper_bound = 240
 
+    if merge_type == "swab":
+        interval_upper_bound = 480
+    elif merge_type == "antibody":
+        interval_upper_bound = 240
+
     outer_df = M.assign_time_difference_and_flag_if_outside_interval(
         df=outer_df,
         column_name_outside_interval_flag="out_of_date_range_" + merge_type,
@@ -67,6 +72,7 @@ def merge_process_preparation(
     outer_df = M.assign_absolute_offset(
         df=outer_df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
     )
+
     return outer_df
 
 
@@ -212,7 +218,7 @@ def execute_merge_specific_antibody(
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
         diff_interval_hours="diff_vs_visit_hr",
-        siemens_column="siemens",
+        siemens_column="assay_siemens",
         tdi_column="antibody_test_result_classification",
         visit_date=visit_date_column_name,
         out_of_date_range_column="out_of_date_range_" + merge_type,
@@ -361,9 +367,9 @@ def merge_process_filtering(
     # .drop('unique_id_count', 'not_best_match')
 
     # DO: drop all internally created columns
+
     return (
-        df_all_iqvia,  # .drop(*list_solve_flag_column),
-        df_lab_residuals,  # .drop(*list_solve_flag_column),
-        df_failed_records,  # .drop(*list_solve_flag_column)
-        df,
+        df_all_iqvia.drop(*drop_list_columns),
+        df_lab_residuals.drop(*drop_list_columns),
+        df_failed_records.drop(*drop_list_columns),
     )
