@@ -98,8 +98,8 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
     # df = placeholder_for_derivation_number_7-2(df, "week")
-    # derviation number 7 has been used twice - currently associated to ctpatterns
-    # df = placeholder_for_derivation_number_7git-2(df, "month")
+    # derivation number 7 has been used twice - currently associated to ctpatterns
+    # df = placeholder_for_derivation_number_7-2(df, "month")
     df = assign_outward_postcode(
         df, "outward_postcode", "postcode"
     )  # splits on space between postcode segments and gets left half

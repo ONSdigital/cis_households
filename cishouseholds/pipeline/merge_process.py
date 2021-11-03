@@ -37,14 +37,14 @@ def merge_process_preparation(
     ----
     It is assumed that the barcode column name for survey and labs is the same.
     """
-    survey_df = M.assign_unique_identifier_column(
-        survey_df, "unique_id_voyager", ordering_columns=[barcode_column_name]
-    )
+    # survey_df = M.assign_unique_identifier_column(
+    #    survey_df, "unique_participant_response_id", ordering_columns=[barcode_column_name]
+    # )
     survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
 
-    labs_df = M.assign_unique_identifier_column(
-        labs_df, "unique_id_" + merge_type, ordering_columns=[barcode_column_name]
-    )
+    # labs_df = M.assign_unique_identifier_column(
+    #    labs_df, "unique_id_" + merge_type, ordering_columns=[barcode_column_name]
+    # )
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
     outer_df = M.join_dataframes(survey_df, labs_df, barcode_column_name, "outer")
@@ -175,7 +175,12 @@ def execute_merge_specific_swabs(
         df=outer_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
-        ordering_columns=["abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr", "unique_id_voyager", "unique_id_swab"],
+        ordering_columns=[
+            "abs_offset_diff_vs_visit_hr",
+            "diff_vs_visit_hr",
+            "unique_participant_response_id",
+            "unique_pcr_test_id",
+        ],
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
@@ -233,8 +238,8 @@ def execute_merge_specific_antibody(
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
-        "unique_id_voyager",
-        "unique_id_antibody",
+        "unique_participant_response_id",
+        "unique_antibody_test_id",
     ]
     outer_df = M.many_to_many_flag(
         df=outer_df,
@@ -261,7 +266,7 @@ def merge_process_filtering(
     drop_list_columns: List[str] = [],
 ) -> DataFrame:
     """
-    Final filtering process of merging generating sucessful merges ...
+    Final filtering process of merging generating successful merges ...
     Parameters
     ----------
     df
@@ -358,8 +363,8 @@ def merge_process_filtering(
     df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
 
     # window function count number of unique id
-    window = Window.partitionBy("unique_id_voyager")
-    df_all_iqvia = df_all_iqvia.withColumn("unique_id_count", F.count("unique_id_voyager").over(window))
+    window = Window.partitionBy("unique_participant_response_id")
+    df_all_iqvia = df_all_iqvia.withColumn("unique_id_count", F.count("unique_participant_response_id").over(window))
 
     df_all_iqvia = df_all_iqvia.filter(
         (F.col("not_best_match_for_union").isNull()) | (F.col("unique_id_count") == 1)

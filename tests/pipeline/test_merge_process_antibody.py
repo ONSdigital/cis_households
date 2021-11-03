@@ -42,14 +42,14 @@ def test_merge_process_antibody(spark_session):
     # add expected dataframe
     schema = """
                 barcode string,
-                unique_id_voyager integer,
+                unique_participant_response_id integer,
                 count_barcode_voyager integer,
                 date_visit string, date_received string,
                 antibody_result_recorded_datetime string,
                 antibody_test_result_classification string,
                 siemens string,
                 tdi string,
-                unique_id_antibody integer,
+                unique_antibody_test_id integer,
                 count_barcode_antibody integer,
                 diff_vs_visit_hr double,
                 out_of_date_range_antibody integer,

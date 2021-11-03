@@ -1,4 +1,4 @@
-import pytest
+# import pytest
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 from pyspark.sql import Window
@@ -10,43 +10,44 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 # from cishouseholds.pipeline.merge_process import merge_process_validation
 
 
-@pytest.mark.xfail(reason="units do not function correctly")
+# @pytest.mark.xfail(reason="units do not function correctly")
 def test_merge_process_swab(spark_session):
-    schema = "barcode string, comments_surv string"
+    schema = "barcode string, comments_surv string, unique_participant_response_id string"
     data = [
-        ("A", "1to1"),
-        ("B", "mto1"),
-        ("C", "1tom"),
-        ("C", "1tom"),
-        ("C", "1tom"),
-        ("D", "mtom"),
-        ("D", "mtom"),
-        ("D", "mtom"),
-        ("E", "1to1"),
-        ("F", "mto1"),
-        ("G", "1tom"),
-        ("G", "1tom"),
-        ("H", "mtom"),
-        ("H", "mtom"),
-        ("J", "1to1"),
-        ("K", "mto1"),
-        ("L", "1tom"),
-        ("L", "1tom"),
-        ("M", "mtom"),
-        ("M", "mtom"),
-        ("N", "mto1"),
-        ("P", "1tom"),
-        ("P", "1tom"),
-        ("Q", "mtom"),
-        ("Q", "mtom"),
-        ("R", "1to1"),
-        ("S", "1to1"),
-        ("T", "1to1"),
+        ("A", "1to1", "1S"),
+        ("B", "mto1", "2S"),
+        ("C", "1tom", "3S"),
+        ("C", "1tom", "4S"),
+        ("C", "1tom", "5S"),
+        ("D", "mtom", "6S"),
+        ("D", "mtom", "7S"),
+        ("D", "mtom", "8S"),
+        ("E", "1to1", "9S"),
+        ("F", "mto1", "10S"),
+        ("G", "1tom", "11S"),
+        ("G", "1tom", "12S"),
+        ("H", "mtom", "13S"),
+        ("H", "mtom", "14S"),
+        ("J", "1to1", "15S"),
+        ("K", "mto1", "16S"),
+        ("L", "1tom", "17S"),
+        ("L", "1tom", "18S"),
+        ("M", "mtom", "19S"),
+        ("M", "mtom", "20S"),
+        ("N", "mto1", "21S"),
+        ("P", "1tom", "21S"),
+        ("P", "1tom", "22S"),
+        ("Q", "mtom", "23S"),
+        ("Q", "mtom", "24S"),
+        ("R", "1to1", "25S"),
+        ("S", "1to1", "26S"),
+        ("T", "1to1", "27S"),
     ]
     df_input_survey = spark_session.createDataFrame(data, schema=schema)
 
     schema = """
                 barcode string,
+                unique_pcr_test_id string,
                 date_visit string,
                 date_received string,
                 pcr_result_recorded_datetime string,
@@ -54,29 +55,38 @@ def test_merge_process_swab(spark_session):
                 comments_lab string
             """
     data = [
-        ("A", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type 1to1"),
-        ("B", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
-        ("B", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
-        ("B", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
-        ("C", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type 1tom"),
-        ("D", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
-        ("D", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
-        ("D", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
-        ("E", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1to1 out of range"),
-        ("F", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1tom out of range"),
-        ("F", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1tom out of range"),
-        ("G", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mto1 out of range"),
-        ("H", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mtom out of range"),
-        ("H", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mtom out of range"),
-        ("J", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1to1 NOT out of range"),
-        ("K", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1tom NOT out of range"),
-        ("K", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1tom NOT out of range"),
-        ("L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mto1 NOT out of range"),
-        ("M", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mtom NOT out of range"),
-        ("M", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mtom NOT out of range"),
-        ("N", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1tom time_order_flag - closest to visit"),
+        ("A", "1L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type 1to1"),
+        ("B", "2L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
+        ("B", "3L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
+        ("B", "4L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mto1"),
+        ("C", "5L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type 1tom"),
+        ("D", "6L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
+        ("D", "7L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
+        ("D", "8L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "merge_type mtom"),
+        ("E", "9L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1to1 out of range"),
+        ("F", "10L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1tom out of range"),
+        ("F", "11L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1tom out of range"),
+        ("G", "12L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mto1 out of range"),
+        ("H", "13L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mtom out of range"),
+        ("H", "12L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "mtom out of range"),
+        ("J", "13L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1to1 NOT out of range"),
+        ("K", "14L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1tom NOT out of range"),
+        ("K", "15L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "1tom NOT out of range"),
+        ("L", "16L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mto1 NOT out of range"),
+        ("M", "17L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mtom NOT out of range"),
+        ("M", "18L", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mtom NOT out of range"),
         (
             "N",
+            "19L",
+            "2020-01-01",
+            "2020-01-02",
+            "2020-01-04 12:00:00",
+            "positive",
+            "1tom time_order_flag - closest to visit",
+        ),
+        (
+            "N",
+            "20L",
             "2020-01-01",
             "2020-01-03",
             "2020-01-04 12:00:00",
@@ -85,36 +95,46 @@ def test_merge_process_swab(spark_session):
         ),
         (
             "P",
+            "21L",
             "2020-01-01",
             "2020-01-04",
             "2020-01-04 12:00:00",
             "positive",
             "mto1 time_order_flag - NOT closest to visit",
         ),
-        ("Q", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive", "mtom time_order_flag - closest to visit"),
         (
             "Q",
+            "22L",
+            "2020-01-01",
+            "2020-01-02",
+            "2020-01-04 12:00:00",
+            "positive",
+            "mtom time_order_flag - closest to visit",
+        ),
+        (
+            "Q",
+            "23L",
             "2020-01-01",
             "2020-01-03",
             "2020-01-04 12:00:00",
             "positive",
             "mtom time_order_flag - NOT closest to visit",
         ),
-        ("R", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1to1 pcr_flag"),
-        ("S", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "negative", "1to1 pcr_flag"),
-        ("T", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "void", "1to1 pcr_flag"),
+        ("R", "24L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "positive", "1to1 pcr_flag"),
+        ("S", "25L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "negative", "1to1 pcr_flag"),
+        ("T", "26L", "2020-01-01", "2020-06-02", "2020-01-04 12:00:00", "void", "1to1 pcr_flag"),
     ]
     df_input_labs = spark_session.createDataFrame(data, schema=schema)
 
     schema = """
                 barcode string,
-                unique_id_voyager integer,
+                unique_participant_response_id integer,
                 count_barcode_voyager integer,
                 date_visit string,
                 date_received string,
                 pcr_result_recorded_datetime string,
                 pcr_result_classification string,
-                unique_id_swab integer,
+                unique_pcr_test_id integer,
                 count_barcode_swab integer,
                 diff_vs_visit_hr float,
                 out_of_date_range_swab integer,
@@ -1666,8 +1686,8 @@ def test_merge_process_swab(spark_session):
     )
 
     # CHECK D: no records filtered out before splitting dataframes - number of distinct records
-    df_unique_voyager = df.dropDuplicates(["barcode", "unique_id_voyager"])
-    df_unique_swab = df.dropDuplicates(["barcode", "unique_id_swab"])
+    df_unique_voyager = df.dropDuplicates(["barcode", "unique_participant_response_id"])
+    df_unique_swab = df.dropDuplicates(["barcode", "unique_pcr_test_id"])
 
     assert_df_equality(
         df_unique_voyager.select("barcode"),
@@ -1685,8 +1705,8 @@ def test_merge_process_swab(spark_session):
 
     # voyager
     # df_records = (
-    #     df_all_iqvia.select("barcode", "unique_id_voyager")
-    #     .union(df_failed_records.select("barcode", "unique_id_voyager"))
+    #     df_all_iqvia.select("barcode", "unique_participant_response_id")
+    #     .union(df_failed_records.select("barcode", "unique_participant_response_id"))
     #     .distinct()
     # )
 
@@ -1696,8 +1716,8 @@ def test_merge_process_swab(spark_session):
 
     # # labs: df_lab_residuals should have its unique id
     # df_records = (
-    #     df_all_iqvia.select("barcode", "unique_id_swab")
-    #     .union(df_lab_residuals.select("barcode", "unique_id_swab"))
+    #     df_all_iqvia.select("barcode", "unique_pcr_test_id")
+    #     .union(df_lab_residuals.select("barcode", "unique_pcr_test_id"))
     #     .distinct()
     # )
 

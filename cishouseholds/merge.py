@@ -9,26 +9,26 @@ from pyspark.sql.window import Window
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
-    each specific blood group seperated with the appriopiate extension appended to the end of the
+    each specific blood group seperated with the appropriate extension appended to the end of the
     column name
     Parameters
     ----------
     df
     blood_group_column
     """
-    join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    join_on_column = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
     split_dataframes = []
-    window = Window.partitionBy(*join_on_colums).orderBy("blood_sample_barcode")
+    window = Window.partitionBy(*join_on_column).orderBy("blood_sample_barcode")
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(blood_group_column) == blood_group)
         for col in split_df.columns:
-            if col not in join_on_colums:
+            if col not in join_on_column:
                 split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
         split_dataframes.append(split_df)
-    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
+    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_column)
     joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
     return joined_df, failed_df
 
@@ -129,7 +129,7 @@ def check_consistency_in_retained_rows(
     df: DataFrame, check_columns: List[str], selection_column: str, group_column: str, column_name_to_assign: str
 ):
     """
-    check consistency of multipl columns and create seperate joined dataframe of chosen columns
+    check consistency of multiple columns and create separate joined dataframe of chosen columns
 
     Parameters
     ----------
@@ -227,21 +227,21 @@ def assign_time_difference_and_flag_if_outside_interval(
     )
 
 
-def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
-    """
-    Derive column with unique identifier for each record.
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-        Name of column to be created
-    ordering_columns
-        Columns to define order of records to assign an integer value from 1 onwards
-        This order is mostly for comparison/proving purposes with stata output
-    """
-
-    window = Window.orderBy(*ordering_columns)
-    return df.withColumn(column_name_to_assign, F.row_number().over(window))
+# def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
+#    """
+#    Derive column with unique identifier for each record.
+#    Parameters
+#    ----------
+#    df
+#    column_name_to_assign
+#        Name of column to be created
+#    ordering_columns
+#        Columns to define order of records to assign an integer value from 1 onwards
+#        This order is mostly for comparison/proving purposes with stata output
+#    """
+#
+#    window = Window.orderBy(*ordering_columns)
+#    return df.withColumn(column_name_to_assign, F.row_number().over(window))
 
 
 def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
@@ -487,6 +487,8 @@ def many_to_many_flag(
     )
 
     window = Window.partitionBy(group_by_column, "identify_mtom_flag")
+    process_type_id_map = {"antibody": "unique_antibody_test_id", "swab": "unique_pcr_test_id"}
+    unique_id_lab_str = process_type_id_map[process_type]
 
     if process_type == "antibody":
         column_to_validate = "antibody_test_result_classification"
@@ -511,7 +513,6 @@ def many_to_many_flag(
     # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
     # otherwise None
     df = df.withColumn("record_processed", F.when(F.col("identify_mtom_flag").isNull(), 0).otherwise(None))
-    unique_id_lab_str = "unique_id_" + process_type
 
     df = df.withColumn(
         drop_flag_column_name_to_assign, F.lit(None)
@@ -527,7 +528,10 @@ def many_to_many_flag(
             F.when(
                 (
                     (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
-                    | (F.col("unique_id_voyager") == (F.first("unique_id_voyager").over(window)))
+                    | (
+                        F.col("unique_participant_response_id")
+                        == (F.first("unique_participant_response_id").over(window))
+                    )
                 )
                 & (F.col("row_number") != 1),
                 1,
