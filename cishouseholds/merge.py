@@ -582,24 +582,15 @@ def one_to_many_antibody_flag(
     count_barcode_voyager_column_name
     count_barcode_labs_column_name
     """
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_1tom_antibody_flag",
-        out_of_date_range_flag=out_of_date_range_column,
-        count_barcode_labs_column_name=count_barcode_labs_column_name,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
-        count_barcode_voyager_condition="==1",
-    )
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
-    selection_column = "identify_1tom_antibody_flag"
+    # election_column = "identify_1tom_antibody_flag"
     row_num_column = "row_num"
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
     inconsistent_rows = "failed_flag_1tom_antibody"  # column generated that isnt included in the TEST data.
 
-    window = Window.partitionBy(group_by_column).orderBy(selection_column, diff_interval_hours, visit_date)
+    window = Window.partitionBy(group_by_column).orderBy(diff_interval_hours, visit_date)
     df = assign_group_and_row_number_columns(df, window, row_num_column, group_num_column, group_by_column)
     df = flag_rows_different_to_reference_row(
         df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_num_column, 1
@@ -609,9 +600,9 @@ def one_to_many_antibody_flag(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when((F.col(rows_diff_to_ref) == 1) & (F.col(selection_column) == 1), 1).otherwise(None),
+        F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
     )
-    df = df.orderBy(selection_column, diff_interval_hours, visit_date)
+    df = df.orderBy(diff_interval_hours, visit_date)
     return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 
 

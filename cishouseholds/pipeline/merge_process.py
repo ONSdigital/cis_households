@@ -73,7 +73,28 @@ def merge_process_preparation(
         df=outer_df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
     )
 
-    return outer_df
+    return assign_merge_process_group_flags(
+        df=outer_df, flag_column_name=(merge_type + "_match_type"), merge_type=merge_type
+    )
+
+
+def assign_merge_process_group_flags(df: DataFrame, flag_column_name: str, merge_type: str):
+    """ """
+    match_types = {"mtom": [">1", ">1"], "1tom": ["==1", ">1"], "mto1": [">1", "==1"]}
+    for name, condition in match_types.items():
+        df = M.assign_merge_process_group_flag(
+            df=df,
+            column_name_to_assign=name,
+            out_of_date_range_flag="out_of_date_range_" + merge_type,
+            count_barcode_labs_column_name="count_barcode_" + merge_type,
+            count_barcode_labs_condition=condition[0],
+            count_barcode_voyager_column_name="count_barcode_voyager",
+            count_barcode_voyager_condition=condition[1],
+        )
+    many_to_many_df = df.filter(F.col("many_to_many") == 1)
+    one_to_many_df = df.filter(F.col("one_to_many") == 1)
+    many_to_one_df = df.filter(F.col("many_to_one") == 1)
+    return many_to_many_df, one_to_many_df, many_to_one_df
 
 
 def merge_process_validation(outer_df: DataFrame, merge_type: str, barcode_column_name: str) -> DataFrame:
@@ -140,7 +161,7 @@ def execute_merge_specific_swabs(
         by default is "void" but it is possible to specify what is considered as void in the PCR result test.
     """
     merge_type = "swab"
-    outer_df = merge_process_preparation(
+    many_to_many_df, one_to_many_df, many_to_one_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -154,8 +175,8 @@ def execute_merge_specific_swabs(
         visit_date_column_name,
         # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
-    outer_df = M.one_to_many_swabs(
-        df=outer_df,
+    one_to_many_df = M.one_to_many_swabs(
+        df=one_to_many_df,
         out_of_date_range_flag="out_of_date_range_" + merge_type,
         count_barcode_labs_column_name="count_barcode_" + merge_type,
         count_barcode_voyager_column_name="count_barcode_voyager",
@@ -165,14 +186,14 @@ def execute_merge_specific_swabs(
         void_value=void_value,
         flag_column_name="drop_flag_1tom_" + merge_type,
     )
-    outer_df = M.many_to_one_swab_flag(
-        df=outer_df,
+    many_to_one_df = M.many_to_one_swab_flag(
+        df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
-    outer_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
-        df=outer_df,
+    many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
+        df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=[
@@ -184,12 +205,12 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    outer_df = merge_process_validation(
-        outer_df=outer_df,
-        merge_type="swab",
-        barcode_column_name=barcode_column_name,
-    )
-    return outer_df
+    # outer_df = merge_process_validation(
+    #    outer_df=outer_df,
+    #    merge_type="swab",
+    #    barcode_column_name=barcode_column_name,
+    # )
+    # return outer_df
 
 
 def execute_merge_specific_antibody(
@@ -210,7 +231,7 @@ def execute_merge_specific_antibody(
     received_date_column_name
     """
     merge_type = "antibody"
-    outer_df = merge_process_preparation(
+    many_to_many_df, one_to_many_df, many_to_one_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -218,8 +239,8 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
     )
-    outer_df = M.one_to_many_antibody_flag(
-        df=outer_df,
+    one_to_many_df = M.one_to_many_antibody_flag(
+        df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
         diff_interval_hours="diff_vs_visit_hr",
@@ -230,8 +251,8 @@ def execute_merge_specific_antibody(
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_" + merge_type,
     )
-    outer_df = M.many_to_one_antibody_flag(
-        df=outer_df,
+    many_to_one_df = M.many_to_one_antibody_flag(
+        df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
     )
@@ -241,20 +262,20 @@ def execute_merge_specific_antibody(
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]
-    outer_df = M.many_to_many_flag(
-        df=outer_df,
+    many_to_many_df = M.many_to_many_flag(
+        df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
         process_type=merge_type,
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    outer_df = merge_process_validation(
-        outer_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-    )
-    return outer_df
+    # outer_df = merge_process_validation(
+    #    outer_df,
+    #    merge_type=merge_type,
+    #    barcode_column_name=barcode_column_name,
+    # )
+    # return outer_df
 
 
 def merge_process_filtering(
