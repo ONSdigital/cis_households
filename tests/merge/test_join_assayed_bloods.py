@@ -1,5 +1,4 @@
 import pyspark.sql.functions as F
-
 from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.merge import join_assayed_bloods
