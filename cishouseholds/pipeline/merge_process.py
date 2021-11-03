@@ -234,7 +234,7 @@ def execute_merge_specific_antibody(
     received_date_column_name
     """
     merge_type = "antibody"
-    many_to_many_df, one_to_many_df, many_to_one_df = merge_process_preparation(
+    many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
         merge_type=merge_type,
@@ -258,6 +258,7 @@ def execute_merge_specific_antibody(
     )
     print("1 to m output -->")
     one_to_many_df.show()
+
     print("m to 1 input -->")
     many_to_one_df.show()
     many_to_one_df = M.many_to_one_antibody_flag(
@@ -267,13 +268,14 @@ def execute_merge_specific_antibody(
     )
     print("m to 1 output -->")
     many_to_one_df.show()
+
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]
-    print("m to m output -->")
+    print("m to m input -->")
     many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
@@ -283,6 +285,8 @@ def execute_merge_specific_antibody(
         process_type=merge_type,
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
+    print("m to m output -->")
+    many_to_many_df.show()
     # outer_df = merge_process_validation(
     #    outer_df,
     #    merge_type=merge_type,
