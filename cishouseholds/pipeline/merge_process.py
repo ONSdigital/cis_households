@@ -73,12 +73,10 @@ def merge_process_preparation(
         df=outer_df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
     )
 
-    return assign_merge_process_group_flags(
-        df=outer_df, flag_column_name=(merge_type + "_match_type"), merge_type=merge_type
-    )
+    return assign_merge_process_group_flags(df=outer_df, merge_type=merge_type)
 
 
-def assign_merge_process_group_flags(df: DataFrame, flag_column_name: str, merge_type: str):
+def assign_merge_process_group_flags(df: DataFrame, merge_type: str):
     """ """
     match_types = {"mtom": [">1", ">1"], "1tom": ["==1", ">1"], "mto1": [">1", "==1"]}
     for name, condition in match_types.items():
@@ -91,10 +89,11 @@ def assign_merge_process_group_flags(df: DataFrame, flag_column_name: str, merge
             count_barcode_voyager_column_name="count_barcode_voyager",
             count_barcode_voyager_condition=condition[1],
         )
-    many_to_many_df = df.filter(F.col("many_to_many") == 1)
-    one_to_many_df = df.filter(F.col("one_to_many") == 1)
-    many_to_one_df = df.filter(F.col("many_to_one") == 1)
-    return many_to_many_df, one_to_many_df, many_to_one_df
+    many_to_many_df = df.filter(F.col("mtom") == 1)
+    one_to_many_df = df.filter(F.col("1tom") == 1)
+    many_to_one_df = df.filter(F.col("mto1") == 1)
+    one_to_one_df = df.filter((F.col("mtom").isNull()) & (F.col("1tom").isNull()) & (F.col("mto1").isNull()))
+    return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df
 
 
 def merge_process_validation(outer_df: DataFrame, merge_type: str, barcode_column_name: str) -> DataFrame:
@@ -175,6 +174,8 @@ def execute_merge_specific_swabs(
         visit_date_column_name,
         # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
+    print("1 to m input -->")
+    one_to_many_df.show()
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
         out_of_date_range_flag="out_of_date_range_" + merge_type,
@@ -186,6 +187,8 @@ def execute_merge_specific_swabs(
         void_value=void_value,
         flag_column_name="drop_flag_1tom_" + merge_type,
     )
+    print("1 to m output -->")
+    one_to_many_df.show()
     many_to_one_df = M.many_to_one_swab_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
@@ -239,6 +242,8 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
     )
+    print("1 to m input -->")
+    one_to_many_df.show()
     one_to_many_df = M.one_to_many_antibody_flag(
         df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
@@ -251,17 +256,25 @@ def execute_merge_specific_antibody(
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_" + merge_type,
     )
+    print("1 to m output -->")
+    one_to_many_df.show()
+    print("m to 1 input -->")
+    many_to_one_df.show()
     many_to_one_df = M.many_to_one_antibody_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
     )
+    print("m to 1 output -->")
+    many_to_one_df.show()
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]
+    print("m to m output -->")
+    many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -275,7 +288,7 @@ def execute_merge_specific_antibody(
     #    merge_type=merge_type,
     #    barcode_column_name=barcode_column_name,
     # )
-    # return outer_df
+    return outer_df
 
 
 def merge_process_filtering(

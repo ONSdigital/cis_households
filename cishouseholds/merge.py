@@ -427,21 +427,12 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     df
     column_name_to_assign
     """
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_mto1_antibody_flag",
-        out_of_date_range_flag="out_of_date_range_antibody",
-        count_barcode_labs_column_name="count_barcode_antibody",
-        count_barcode_labs_condition="==1",
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_voyager_condition=">1",
-    )
 
     window = Window.partitionBy(group_by_column)
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum(F.when(F.col("identify_mto1_antibody_flag") == 1, 1).otherwise(None)).over(window),
+        F.sum().over(window),
     )
 
     df = df.withColumn(column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None))
@@ -476,17 +467,7 @@ def many_to_many_flag(
         Name of column to indicate record has failed validation logic
     """
 
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_mtom_flag",
-        out_of_date_range_flag="out_of_date_range_" + process_type,
-        count_barcode_labs_column_name="count_barcode_" + process_type,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_voyager_condition=">1",
-    )
-
-    window = Window.partitionBy(group_by_column, "identify_mtom_flag")
+    window = Window.partitionBy(group_by_column)
     process_type_id_map = {"antibody": "unique_antibody_test_id", "swab": "unique_pcr_test_id"}
     unique_id_lab_str = process_type_id_map[process_type]
 
@@ -505,21 +486,21 @@ def many_to_many_flag(
     df = df.withColumn(
         failed_flag_column_name_to_assign,
         F.when(
-            F.last("classification_different_to_first").over(window).isNotNull() & (F.col("identify_mtom_flag") == 1),
+            F.last("classification_different_to_first").over(window).isNotNull(),
             1,
         ).otherwise(None),
     )
 
     # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
     # otherwise None
-    df = df.withColumn("record_processed", F.when(F.col("identify_mtom_flag").isNull(), 0).otherwise(None))
+    df = df.withColumn("record_processed", None)
 
     df = df.withColumn(
         drop_flag_column_name_to_assign, F.lit(None)
     )  # BUG Needed in case the while loop does not execute
 
     while df.filter(df.record_processed.isNull()).count() > 0:
-        window = Window.partitionBy(group_by_column, "identify_mtom_flag", "record_processed").orderBy(
+        window = Window.partitionBy(group_by_column, "record_processed").orderBy(
             *ordering_columns
         )
         df = df.withColumn("row_number", F.row_number().over(window))
@@ -566,7 +547,7 @@ def one_to_many_antibody_flag(
     Step 1: create columns for row number and group number in new grouped df
     Step 2: add first diff interval ref and flag records with different diff interval to first
     Step 3: check for consistent siemens, tdi data within groups of matched barcodes
-    Step 4: add drop flag 2 column to indicate inconsitent siemens or tdi data within group
+    Step 4: add drop flag 2 column to indicate inconsistent siemens or tdi data within group
     Step 5: create overall drop flag to drop any records which have inconsistent data or
     interval different to that of first row reference
     Parameters
@@ -583,7 +564,6 @@ def one_to_many_antibody_flag(
     count_barcode_labs_column_name
     """
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
-    # election_column = "identify_1tom_antibody_flag"
     row_num_column = "row_num"
     group_num_column = "group_num"
     diff_interval_hours = "abs_diff_interval"
@@ -602,7 +582,6 @@ def one_to_many_antibody_flag(
         column_name_to_assign,
         F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
     )
-    df = df.orderBy(diff_interval_hours, visit_date)
     return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 
 
