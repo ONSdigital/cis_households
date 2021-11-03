@@ -810,3 +810,8 @@ def merge_one_to_many_swab_time_difference_logic(
         .drop("Ranking")
         # .orderBy(*ordering_columns) # commented out for optimisation
     )
+
+
+def merge_optimiser_nonrepeated_records_filterout(df: DataFrame):
+
+    return df
