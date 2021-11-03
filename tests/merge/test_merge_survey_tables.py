@@ -43,4 +43,4 @@ def test_merge_survey_tables(spark_session):
         schema="id string, col1 integer, col2 integer, col3 integer",
     )
     output_df = merge_survey_tables(input_df0, input_df1, input_df2)
-    assert_df_equality(expected_df, output_df)
+    assert_df_equality(expected_df, output_df, ignore_row_order=True, ignore_column_order=True)
