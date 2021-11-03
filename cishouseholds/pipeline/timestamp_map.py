@@ -1,4 +1,4 @@
-survey_responses_v2_datetime_map = {
+survey_responses_datetime_map = {
     "dd/MM/yyyy": [
         "symptoms_last_7_days_onset_date",
         "last_covid_contact_date",
