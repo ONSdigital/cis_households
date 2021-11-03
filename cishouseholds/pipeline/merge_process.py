@@ -340,7 +340,7 @@ def merge_process_filtering(
     df_failed_records = df.filter(F.col("failed_match") == "1")
 
     # STEP 3 -
-    df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("int"))
+    df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("integer"))
 
     # out_of_date_range_swab
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
