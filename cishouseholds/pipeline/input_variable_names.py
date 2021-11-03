@@ -192,7 +192,7 @@ survey_responses_v2_variable_name_map = {
     "Occupations_sectors_do_you_work_in": "work_sectors",
     "occupation_sector_other": "work_sectors_other",
     "Work_in_a_nursing_residential_care_home": "work_nursing_or_residential_care_home",
-    "Do_you_currently_work_in_healthcare": "work_healthcare",
+    "Do_you_currently_work_in_healthcare": "work_health_care",
     "Direct_contact_patients_clients_resid": "work_direct_contact_persons",
     "Have_physical_mental_health_or_illnesses": "illness_lasting_over_12_months",
     "physical_mental_health_or_illness_reduces_activity_ability": "illness_reduces_activity_or_ability",

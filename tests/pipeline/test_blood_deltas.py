@@ -21,12 +21,10 @@ def blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_blood_delta_ETL_df(regression_test_df, blood_delta_ETL_output):
     regression_test_df(
-        blood_delta_ETL_output.drop("csv_filename"), "blood_sample_barcode", "processed_blood"
-    )  # removes filename column to account for variation in filename caused by regression
+        blood_delta_ETL_output.drop("blood_test_source_file"), "blood_sample_barcode", "processed_blood"
+    )  # remove source file column, as it varies for our temp dummy data
 
 
 @pytest.mark.integration
 def test_blood_delta_ETL_schema(regression_test_df_schema, blood_delta_ETL_output):
-    regression_test_df_schema(
-        blood_delta_ETL_output.drop("csv_filename"), "processed_blood"
-    )  # removes filename column to account for variation in filename caused by regression
+    regression_test_df_schema(blood_delta_ETL_output, "processed_blood")

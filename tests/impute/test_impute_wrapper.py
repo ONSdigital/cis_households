@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 from chispa import assert_df_equality
 from pyspark.sql import DataFrame
 
-from cishouseholds.impute import impute_wrapper
+from cishouseholds.impute import impute_and_flag
 
 
 def test_impute_wrapper(spark_session):
@@ -27,6 +27,6 @@ def test_impute_wrapper(spark_session):
 
     expected_df = df.withColumn("value", F.col("imputed_value")).drop("imputed_value")
 
-    actual_df = impute_wrapper(df_input, imputation_function=example_imputer, reference_column="value", literal=1)
+    actual_df = impute_and_flag(df_input, imputation_function=example_imputer, reference_column="value", literal=1)
 
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

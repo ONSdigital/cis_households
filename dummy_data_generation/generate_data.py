@@ -15,9 +15,32 @@ from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_swab_data_description
+from dummy_data_generation.schemas import get_voyager_0_data_description
+from dummy_data_generation.schemas import get_voyager_1_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
 
 _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
+
+
+def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_barcodes):
+    """
+    Generate survey v0 data.
+    """
+    schema = Schema(schema=get_voyager_0_data_description(_, swab_barcodes, blood_barcodes))
+    survey_responses = pd.DataFrame(schema.create(iterations=records))
+    survey_responses.to_csv(directory / f"ONS_Datafile_{file_date}.csv", index=False, sep="|")
+    return survey_responses
+
+
+def generate_survey_v1_data(directory, file_date, records, swab_barcodes, blood_barcodes):
+    """
+    Generate survey v1 data.
+    """
+    schema = Schema(schema=get_voyager_1_data_description(_, swab_barcodes, blood_barcodes))
+    survey_responses = pd.DataFrame(schema.create(iterations=records))
+
+    survey_responses.to_csv(directory / f"ONSECRF4_Datafile_{file_date}.csv", index=False, sep="|")
+    return survey_responses
 
 
 def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_barcodes):
@@ -246,6 +269,12 @@ if __name__ == "__main__":
     swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
 
+    v0 = generate_survey_v0_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
+    v1 = generate_survey_v1_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
     v2 = generate_survey_v2_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
