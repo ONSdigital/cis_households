@@ -1,7 +1,8 @@
 from itertools import chain
+from typing import Callable
+
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import SparkSession
-from typing import Callable
 
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
