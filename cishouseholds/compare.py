@@ -5,15 +5,14 @@ from pyspark.sql import functions as F
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
-spark = get_or_create_spark_session()
-
 
 def prepare_for_union(df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
-    spark = get_or_create_spark_session()
+    spark_session = get_or_create_spark_session()
+
     if isinstance(df1, str):
-        df1 = spark.read.parquet(df1)
+        df1 = spark_session.read.parquet(df1)
     if isinstance(df2, str):
-        df2 = spark.read.parquet(df2)
+        df2 = spark_session.read.parquet(df2)
     copy_df1 = df1
     copy_df2 = df2
     missmatches_df, missmatches_ref = get_inconsistent_columns(df1, df2)
