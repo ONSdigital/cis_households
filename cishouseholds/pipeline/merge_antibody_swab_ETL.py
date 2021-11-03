@@ -1,3 +1,6 @@
+from pyspark.sql import functions as F
+
+from cishouseholds.merge import merge_assayed_bloods
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -20,6 +23,13 @@ def merge_blood_ETL():
     antibody_table = f"{storage_config['table_prefix']}transformed_blood_test_data"
     survey_df = extract_from_table(survey_table, spark_session)
     antibody_df = extract_from_table(antibody_table, spark_session)
+
+    # Outer join blood results
+    antibody_df = merge_assayed_bloods(antibody_df, "antibody_test_target")
+    antibody_df = antibody_df.withColumn(
+        "combined_blood_sample_received_date",
+        F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
+    )
 
     # Merge on antibody test results
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
@@ -74,7 +84,7 @@ def merge_blood(survey_df, antibody_df):
         labs_df=antibody_df,
         barcode_column_name="blood_sample_barcode",
         visit_date_column_name="visit_date_string",
-        received_date_column_name="blood_sample_received_date",
+        received_date_column_name="combined_blood_sample_received_date",
     )
 
     merge_combination_list = ["1tom", "mto1", "mtom"]
