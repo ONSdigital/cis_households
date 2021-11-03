@@ -2,11 +2,12 @@ import traceback
 from datetime import datetime
 
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
+import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
+from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.load import get_config
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pipeline.post_merge_processing import process_post_merge  # noqa: F401
 

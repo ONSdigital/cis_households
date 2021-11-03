@@ -28,4 +28,4 @@ def test_split_school_year_by_country(spark_session):
         school_year_scotland integer,school_year_northern_ireland integer",
     )
     output_df = split_school_year_by_country(input_df, "school_year", "country", "id")
-    assert_df_equality(expected_df, output_df, ignore_column_order=True)
+    assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)

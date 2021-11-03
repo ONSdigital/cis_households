@@ -245,7 +245,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),  # noqa W605
     )
     df = df.withColumn(
         column_name_to_assign,
