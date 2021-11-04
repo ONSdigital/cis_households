@@ -32,7 +32,9 @@ def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_historic_blood_delta_ETL_df(regression_test_df, historic_blood_delta_ETL_output):
     regression_test_df(
-        historic_blood_delta_ETL_output.drop("historic_blood_test_source_file"), "blood_sample_barcode", "processed_historic_blood"
+        historic_blood_delta_ETL_output.drop("historic_blood_test_source_file"),
+        "blood_sample_barcode",
+        "processed_historic_blood",
     )  # removes filename column to account for variation in filename caused by regression
 
 
