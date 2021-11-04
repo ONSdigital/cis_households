@@ -5,7 +5,6 @@ from typing import Optional
 from typing import Union
 
 import pandas as pd
-import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
@@ -21,7 +20,7 @@ class InvalidFileError(Exception):
 
 def read_csv_to_pyspark_df(
     spark_session: SparkSession,
-    csv_file_path: str,
+    csv_file_path: Union[str, list],
     expected_raw_header_row: str,
     schema: StructType,
     sep: str = ",",
@@ -43,19 +42,24 @@ def read_csv_to_pyspark_df(
     for example ``timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'"``.
     """
     spark_session = get_or_create_spark_session()
-    text_file = spark_session.sparkContext.textFile(csv_file_path)
-    csv_header = validate_csv_header(text_file, expected_raw_header_row)
-    csv_fields = validate_csv_fields(text_file, delimiter=sep)
+    if not isinstance(csv_file_path, list):
+        csv_file_path = [csv_file_path]
 
-    if not csv_header:
-        raise InvalidFileError(
-            f"Header of {csv_file_path} ({text_file.first()}) does not match expected header: {expected_raw_header_row}"
-        )
+    for csv_file in csv_file_path:
+        text_file = spark_session.sparkContext.textFile(csv_file)
+        csv_header = validate_csv_header(text_file, expected_raw_header_row)
+        csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
-    if not csv_fields:
-        raise InvalidFileError(
-            f"Number of fields in {csv_file_path} does not match expected number of columns from header"
-        )
+        if not csv_header:
+            raise InvalidFileError(
+                f"Header of {csv_file_path} ({text_file.first()}) "
+                f"does not match expected header: {expected_raw_header_row}"
+            )
+
+        if not csv_fields:
+            raise InvalidFileError(
+                f"Number of fields in {csv_file_path} does not match expected number of columns from header"
+            )
 
     return spark_session.read.csv(
         csv_file_path,
@@ -96,7 +100,6 @@ def list_contents(
     path : String
     recursive
     """
-    spark_session = get_or_create_spark_session()
     command = ["hadoop", "fs", "-ls"]
     if recursive:
         command.append("-R")
@@ -115,36 +118,43 @@ def list_contents(
                 if file_date is not None:
                     dic["upload_date"] = file_date
             files.append(dic)
-    return spark_session.createDataFrame(pd.DataFrame(files))
+    return pd.DataFrame(files)
 
 
 def get_files_by_date(
-    path: str, date: Union[str, datetime], selector: str, date2: Optional[Union[str, datetime]] = None
+    path: str,
+    latest_only: bool = False,
+    start_date: Optional[Union[str, datetime]] = None,
+    end_date: Optional[Union[str, datetime]] = None,
 ) -> List:
     """
-    Get a list of hdfs file paths for a given set of date critera and parent path on
-    hdfs
+    Get a list of hdfs file paths for a given set of date critera and parent path on hdfs.
+    Optionally select the latest only.
+
     Parameters
     ----------
     path
-        hdfs file path to folder
-    date
-        reference date for file selection
+        hdfs file path to search
     selector
         options for selection type: latest, after(date), before(date)
+    start_date
+        date to select files after
+    end_date
+        date to select files before
     """
-    files = list_contents(path, date_from_filename=True)
-    if isinstance(date, str):
-        date = datetime.strptime(date, "%Y-%m-%d")
-    files = files.withColumn("upload_date", F.to_date("upload_date", "yyyy-MM-dd"))
-    if selector == "latest":
-        files = files.orderBy("upload_date", "upload_time")
-    elif selector == "after":
-        files = files.filter(F.col("upload_date") >= (F.lit(date)))
-    elif selector == "before":
-        files = files.filter(F.col("upload_date") <= (F.lit(date)))
-    elif selector == "between":
-        if isinstance(date2, str):
-            date2 = datetime.strptime(date2, "%Y-%m-%d")
-        files = files.filter((F.col("upload_date") >= (F.lit(date))) & (F.col("upload_date") <= (F.lit(date2))))
-    return files.select("file_path").rdd.flatMap(lambda x: x).collect()
+    file_df = list_contents(path, date_from_filename=True)
+    file_df = file_df.sort_values(["upload_date", "upload_time"])
+
+    if start_date is not None:
+        if isinstance(start_date, str):
+            start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        file_df = file_df[file_df["upload_date"].dt.date >= start_date]
+    if end_date is not None:
+        if isinstance(end_date, str):
+            end_date = datetime.strptime(end_date, "%Y-%m-%d")
+        file_df = file_df[file_df["upload_date"].dt.date <= end_date]
+
+    file_list = file_df["file_path"].tolist()
+    if latest_only:
+        file_list = [file_list[-1]]
+    return file_list

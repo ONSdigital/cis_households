@@ -204,9 +204,6 @@ def execute_merge_specific_swabs(
     ]
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
-        out_of_date_range_flag="out_of_date_range_" + merge_type,
-        count_barcode_labs_column_name="count_barcode_" + merge_type,
-        count_barcode_voyager_column_name="count_barcode_voyager",
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
         pcr_result_column_name="pcr_result_classification",
@@ -295,9 +292,6 @@ def execute_merge_specific_antibody(
         siemens_column="assay_siemens",
         tdi_column="antibody_test_result_classification",
         visit_date=visit_date_column_name,
-        out_of_date_range_column="out_of_date_range_" + merge_type,
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_labs_column_name="count_barcode_" + merge_type,
     )
     many_to_one_df = M.many_to_one_antibody_flag(
         df=many_to_one_df,
@@ -360,7 +354,7 @@ def merge_process_filtering(
     Notes: this function will return 2 dataframes, one with best match records
     another one with not best matched records
     """
-    # STEP 1 - RESOLVE FLAGS ------------------------
+    # STEP 1 - RESOLVE FLAGS ---------------------------
     # include: failed_flag_mtom_swab
 
     df = (
