@@ -14,6 +14,7 @@ from mimesis.schema import Schema
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
+from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_swab_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
@@ -77,14 +78,14 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
     return survey_unioxf_medtest
 
 
-def generate_historic_bloods_data(directory, file_date, records):
+def generate_historic_bloods_data(directory, file_date, records, target):
     """
     Generate historic bloods file
     """
-    schema = Schema(schema=generate_historic_bloods_data(_))
+    schema = Schema(schema=get_historical_blood_data_description(_))
     historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
-    historic_bloods_data.to_csv(directory / f"historic_bloods_{file_date}.csv", index=False)
+    historic_bloods_data.to_csv(directory / f"historic_bloods_{target}_{file_date}.csv", index=False)
     return historic_bloods_data
 
 
@@ -258,6 +259,9 @@ if __name__ == "__main__":
         [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
     )
 
+    historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
+    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "")
+
     # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
     # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
     # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
@@ -265,6 +269,8 @@ if __name__ == "__main__":
     # swab/blood barcode lists
     swab_barcode = lab_swabs["Sample"].unique().tolist()
     blood_barcode = lab_bloods["Serum Source ID"].unique().tolist()
+    blood_barcode += historic_blood_n["blood_barcode_OX"].unique().tolist()
+    blood_barcode += historic_blood_s["blood_barcode_OX"].unique().tolist()
 
     swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
