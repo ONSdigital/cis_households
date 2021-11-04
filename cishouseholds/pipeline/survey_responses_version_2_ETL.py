@@ -19,6 +19,7 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.extract import get_files_by_date
+from cishouseholds.extract import get_files_not_processed
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -37,6 +38,9 @@ def survey_responses_version_2_ETL(
     End to end processing of a IQVIA survey responses CSV file.
     """
     file_path = get_files_by_date(resource_path, latest_only=latest_only, start_date=start_date, end_date=end_date)
+
+    file_path = get_files_not_processed(file_path, "processed_filenames")
+
     df = extract_validate_transform_input_data(
         file_path,
         survey_responses_v2_variable_name_map,

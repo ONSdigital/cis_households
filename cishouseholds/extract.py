@@ -10,6 +10,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
 from cishouseholds.validate import validate_csv_header
@@ -172,16 +173,16 @@ def get_files_not_processed(file_list: list, table_name: str):
     """
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
-    df_processed = spark_session.sql(
-        f"SELECT DISTINCT processed_filename FROM \
-        {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-    )
-    processed_list = [row[0] for row in df_processed.collect()]
-    processed_file_list = []
-    for file in processed_list:
-        file = file.split("/")[-1]
-        processed_file_list.append(file)
+    if check_table_exists(table_name):
+        df_processed = spark_session.sql(
+            f"SELECT DISTINCT processed_filename FROM \
+            {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+        )
+        processed_file_list = [row[0] for row in df_processed.collect()]
 
-    unprocessed_file_list = [i for i in file_list if i not in processed_file_list]
+        unprocessed_file_list = [i for i in file_list if i not in processed_file_list]
 
-    return unprocessed_file_list
+        return unprocessed_file_list
+
+    else:
+        return file_list
