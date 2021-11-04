@@ -428,7 +428,7 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("integer"))
 
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
-    df_lab_residuals = df_lab_residuals.join(df_best_match, on="unique_id_swab", how="left_anti")
+    df_lab_residuals = df_lab_residuals.join(df_best_match, on="unique_pcr_test_id", how="left_anti")
 
     drop_list_columns = [
         f"out_of_date_range_{merge_type}",
