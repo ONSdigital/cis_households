@@ -85,7 +85,7 @@ def generate_historic_bloods_data(directory, file_date, records, target):
     schema = Schema(schema=get_historical_blood_data_description(_))
     historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
-    historic_bloods_data.to_csv(directory / f"historic_bloods_{target}_{file_date}.csv", index=False)
+    historic_bloods_data.to_csv(directory / f"historical_bloods_{target}_{file_date}.csv", index=False)
     return historic_bloods_data
 
 
@@ -260,7 +260,7 @@ if __name__ == "__main__":
     )
 
     historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
-    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "")
+    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "S")
 
     # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
     # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)

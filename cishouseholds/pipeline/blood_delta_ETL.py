@@ -50,7 +50,8 @@ def add_historical_fields(df: DataFrame):
         "siemens_antibody_test_result_classification": "string",
         "siemens_antibody_test_result_value": "float",
         "lims_id": "string",
+        "plate_storage_method": "string",
     }
     for column, type in historical_columns.items():
-        df.withColumn(column, F.lit(None).cast(type))
+        df = df.withColumn(column, F.lit(None).cast(type))
     return df
