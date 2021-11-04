@@ -38,17 +38,17 @@ blood_validation_schema = {
 
 historic_blood_validation_schema = {
     "ons_id": {"type": "string"},
-    "Blood Sample Type": {"type": "string"},
-    "Plate Barcode": {"type": "string"},
-    "Well ID": {"type": "string"},
-    "Detection": {"type": "string"},
+    "blood_sample_type": {"type": "string"},
+    "plate_tdi": {"type": "string"},
+    "well_tdi": {"type": "string"},
+    "interpretation_tdi": {"type": "string"},
     "Monoclonal quantitation (Colourimetric)": {"type": "float"},
     "Date ELISA Result record created": {"type": "string"},
     "Date Samples Arrayed Oxford": {"type": "string"},
     "Date Samples Received Oxford": {"type": "string"},
     "Voyager Date Created": {"type": "string"},
     "siemens_interpretation": {"type": "string"},
-    "tdi_assay_net_signal": {"type": "integer"},
+    "assay_tdi": {"type": "integer"},
     "siemens_reading": {"type": "string"},
     "lims_id": {"type": "string"},
 }

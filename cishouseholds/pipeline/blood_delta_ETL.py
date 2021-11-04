@@ -1,4 +1,5 @@
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_filename_column
@@ -20,6 +21,7 @@ def blood_delta_ETL(resource_path: str, latest_only: bool = False, start_date: s
     df = extract_validate_transform_input_data(
         file_path, blood_variable_name_map, blood_datetime_map, blood_validation_schema, transform_blood_delta
     )
+    df = add_historical_fields(df)
     update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
     return df
 
@@ -36,4 +38,16 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
+    return df
+
+
+def add_historical_fields(df: DataFrame):
+    """Add empty values for union with historical data."""
+    historical_columns = {
+        "siemens_antibody_test_result_classification": "string",
+        "siemens_antibody_test_result_value": "float",
+        "lims_id": "string",
+    }
+    for column, type in historical_columns.items():
+        df.withColumn(column, F.lit(None).cast(type))
     return df
