@@ -235,7 +235,6 @@ def execute_merge_specific_swabs(
     print("mto1 output --> ")
     many_to_one_df.show()
 
-
     print("mtom input --> ")
     many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
@@ -316,7 +315,6 @@ def execute_merge_specific_antibody(
         ],
     )
 
-    
     print("1to1 df --> ")
     one_to_one_df.show()
 
@@ -343,7 +341,6 @@ def execute_merge_specific_antibody(
     )
     print("mto1 output --> ")
     many_to_one_df.show()
-
 
     print("mtom input --> ")
     many_to_many_df.show()

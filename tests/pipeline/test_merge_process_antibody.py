@@ -5,7 +5,7 @@ from cishouseholds.edit import re_cast_column_if_null
 from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 
 
-#@pytest.mark.xfail(reason="units do not function correctly")
+# @pytest.mark.xfail(reason="units do not function correctly")
 def test_merge_process_antibody(spark_session):
     schema = "barcode string, unique_participant_response_id string, any string"
     data = [
@@ -551,8 +551,8 @@ def test_merge_process_antibody(spark_session):
     # in case a column's schema gets converted to a NullType
     output_df = re_cast_column_if_null(output_df, desired_column_type="integer")
 
-    #assert_df_equality(expected_df, output_df)
-    if (len(output_df.columns > 0)):
+    # assert_df_equality(expected_df, output_df)
+    if len(output_df.columns > 0):
         result = True
     else:
         result = False
