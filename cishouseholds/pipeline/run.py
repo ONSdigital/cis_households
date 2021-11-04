@@ -3,13 +3,15 @@ from datetime import datetime
 
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
 import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
+import cishouseholds.pipeline.post_merge_processing  # noqa: F401
+import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
+import cishouseholds.pipeline.survey_responses_version_1_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
 import cishouseholds.pipeline.swab_delta_ETL  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
-from cishouseholds.pipeline.post_merge_processing import process_post_merge  # noqa: F401
 
 
 def run_from_config():
@@ -28,13 +30,12 @@ def run_from_config():
       resource_path: "path_to.csv"
 
     """
+    config = get_config()
+    run_datetime = datetime.now()
+    run_id = add_run_log_entry(config, run_datetime)
+    print(f"Run ID: {run_id}")  # functional
+    add_run_status(run_id, "started")
     try:
-        config = get_config()
-        run_datetime = datetime.now()
-        run_id = add_run_log_entry(config, run_datetime)
-        print(f"Run ID: {run_id}")  # functional
-        add_run_status(run_id, "started")
-
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         run_pipeline_stages(pipeline_stage_list, config, run_id)
     except Exception as e:

@@ -5,31 +5,50 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.compare import prepare_for_union
+from cishouseholds.edit import rename_column_names
 
-def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
+
+def union_multiple_tables(tables: List[DataFrame]):
+    """
+    Given a list of tables combine them through a union process
+    and create null columns for columns inconsistent between all tables
+    Parameters
+    ----------
+    tables
+        list of objects representing the respective input tables
+    """
+    merged_df = tables[0]
+    for table_n in tables[1:]:
+        merged_df, dfn = prepare_for_union(merged_df, table_n)
+        merged_df = merged_df.union(dfn)
+    return merged_df
+
+
+def join_assayed_bloods(df: DataFrame, test_target_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
-    column name
-    Parameters
-    ----------
-    df
-    blood_group_column
+    column name.
     """
     join_on_columns = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
-    split_dataframes = []
     window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
+
+    split_dataframes = []
     for blood_group in ["S", "N"]:
-        split_df = df.filter(F.col(blood_group_column) == blood_group)
-        for col in split_df.columns:
-            if col not in join_on_columns:
-                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
+        split_df = df.filter(F.col(test_target_column) == blood_group)
+        new_column_names = {
+            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
+            for col in split_df.columns
+        }
+        split_df = rename_column_names(split_df, new_column_names)
         split_dataframes.append(split_df)
-    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_columns)
-    joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
+
+    joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
+    joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
     return joined_df, failed_df
 
 
@@ -130,19 +149,15 @@ def check_consistency_in_retained_rows(
     df: DataFrame, check_columns: List[str], selection_column: str, group_column: str, column_name_to_assign: str
 ):
     """
-    <<<<<<< HEAD
-        check consistency of multiple columns and create separate joined dataframe of chosen columns
-    =======
-        check consistency of multiply columns and create separate joined dataframe of chosen columns
-    >>>>>>> origin/CISDP-1106/1108-no_nulltypes_and_optimisation
+    check consistency of multiply columns and create separate joined dataframe of chosen columns
 
-        Parameters
-        ----------
-        df
-        check_columns
-        selection_column
-        group_column
-        column_name_to_assign
+    Parameters
+    ----------
+    df
+    check_columns
+    selection_column
+    group_column
+    column_name_to_assign
     """
     check_distinct = []
     df_retained_rows = df.filter(F.col(selection_column) == 0)
@@ -324,21 +339,11 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         Names of columns to order each group
     """
 
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_mto1_swab_flag",
-        out_of_date_range_flag="out_of_date_range_swab",
-        count_barcode_labs_column_name="count_barcode_swab",
-        count_barcode_labs_condition="==1",
-        count_barcode_voyager_column_name="count_barcode_voyager",
-        count_barcode_voyager_condition=">1",
-    )
-
     # Row number won't apply with frame set to unbounded (rowsBetween)
-    bounded_window = Window.partitionBy(group_by_column, "identify_mto1_swab_flag").orderBy(*ordering_columns)
+    bounded_window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
     df = df.withColumn("row_number", F.row_number().over(bounded_window))
     unbounded_window = (
-        Window.partitionBy(group_by_column, "identify_mto1_swab_flag")
+        Window.partitionBy(group_by_column)
         .orderBy(*ordering_columns)
         .rowsBetween(Window.unboundedPreceding, Window.unboundedFollowing)
     )
@@ -376,8 +381,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.count(group_by_column).over(unbounded_window) == F.col("count_diff_same_as_first"))
-            & (F.col("identify_mto1_swab_flag") == 1),
+            (F.count(group_by_column).over(unbounded_window) == F.col("count_diff_same_as_first")),
             1,
         )
         .otherwise(None)
@@ -387,7 +391,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.abs(F.col("diff_between_first_and_second_records")) < 8) & (F.col("identify_mto1_swab_flag") == 1),
+            (F.abs(F.col("diff_between_first_and_second_records")) < 8),
             1,
         ).otherwise(F.col(column_name_to_assign)),
     )
@@ -397,7 +401,6 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
             & (F.first("diff_vs_visit_hr").over(unbounded_window) >= 0)
-            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -409,7 +412,6 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
             & (F.first("diff_vs_visit_hr").over(unbounded_window) < 0)
             & (F.col("diff_between_first_and_second_records") > 48)
-            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -420,7 +422,6 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.when(
             (F.first("diff_vs_visit_hr").over(unbounded_window).between(7, 20))
             & (F.col("diff_between_first_and_second_records") > 16)
-            & (F.col("identify_mto1_swab_flag") == 1)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -449,13 +450,12 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.sum().over(window),
+        F.count(F.col(group_by_column)).over(window),
     )
 
     df = df.withColumn(
         column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None).cast("integer")
     )
-
     return df.drop("antibody_barcode_cleaned_count")
 
 
@@ -514,13 +514,9 @@ def many_to_many_flag(
         .cast("integer"),
     )
 
-    # record_processed set to 1 if evaluated and drop flag to be set, 0 if evaluated and drop flag to be None,
-    # otherwise None
-    df = df.withColumn("record_processed", None)
+    df = df.withColumn("record_processed", F.lit(None).cast("integer"))
 
-    df = df.withColumn(
-        drop_flag_column_name_to_assign, F.lit(None).cast("integer")
-    )  # BUG Needed in case the while loop does not execute
+    df = df.withColumn(drop_flag_column_name_to_assign, F.lit(None).cast("integer"))
 
     while df.filter(df.record_processed.isNull()).count() > 0:
         window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
@@ -559,9 +555,6 @@ def one_to_many_antibody_flag(
     siemens_column: str,
     tdi_column: str,
     visit_date: str,
-    out_of_date_range_column: str,
-    count_barcode_voyager_column_name: str,
-    count_barcode_labs_column_name: str,
 ) -> DataFrame:
     """
     steps to complete:
@@ -580,9 +573,6 @@ def one_to_many_antibody_flag(
     siemens_column
     tdi_column
     visit_date
-    out_of_date_range_column
-    count_barcode_voyager_column_name
-    count_barcode_labs_column_name
     """
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
     row_num_column = "row_num"
@@ -608,9 +598,6 @@ def one_to_many_antibody_flag(
 
 def one_to_many_swabs(
     df: DataFrame,
-    out_of_date_range_flag: str,
-    count_barcode_labs_column_name: str,
-    count_barcode_voyager_column_name: str,
     group_by_column: str,
     ordering_columns: List[str],
     pcr_result_column_name: str,
@@ -649,15 +636,6 @@ def one_to_many_swabs(
     -----
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
     """
-    df = assign_merge_process_group_flag(
-        df=df,
-        column_name_to_assign="identify_1tom_swabs_flag",
-        out_of_date_range_flag=out_of_date_range_flag,
-        count_barcode_labs_column_name=count_barcode_labs_column_name,
-        count_barcode_labs_condition=">1",
-        count_barcode_voyager_column_name=count_barcode_voyager_column_name,
-        count_barcode_voyager_condition="==1",
-    )
     df = merge_one_to_many_swab_ordering_logic(
         df=df,
         group_by_column=group_by_column,
@@ -680,8 +658,7 @@ def one_to_many_swabs(
     df = df.withColumn(
         flag_column_name,
         F.when(
-            (F.col("identify_1tom_swabs_flag") == 1)
-            & ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
+            ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
             1,
         ).cast("integer"),
     )
@@ -782,10 +759,4 @@ def merge_one_to_many_swab_time_difference_logic(
             time_difference_logic_flag_column_name, F.when(F.col("Ranking") != 1, 1).otherwise(None).cast("integer")
         )
         .drop("Ranking")
-        # .orderBy(*ordering_columns) # commented out for optimisation
     )
-
-
-def merge_optimiser_nonrepeated_records_filterout(df: DataFrame):
-
-    return df

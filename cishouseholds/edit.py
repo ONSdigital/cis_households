@@ -20,10 +20,10 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     """
     df = df.withColumn(
         postcode_column,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, "[^a-zA-Z\d:]", "")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
     )
     df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
-    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, "[^*]{3}$", ""))
+    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
     df = df.withColumn(
         postcode_column,
         F.when(
@@ -206,7 +206,9 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     """
     for format, columns_list in column_format_map.items():
         for column_name in columns_list:
-            df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
+            if column_name in df.columns:
+                df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
+
     return df
 
 
@@ -245,7 +247,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),
     )
     df = df.withColumn(
         column_name_to_assign,
