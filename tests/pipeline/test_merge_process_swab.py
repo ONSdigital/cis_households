@@ -7,31 +7,31 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 
 @pytest.mark.xfail(reason="units do not function correctly")
 def test_merge_process_swab(spark_session):
-    schema = "barcode string, any string"
+    schema = "barcode string, unique_pcr_test_id string, any string"
     data = [
-        ("ONS0001", None),
-        ("ONS0002", None),
-        ("ONS0003", None),
-        ("ONS0003", None),
-        ("ONS0003", None),
-        ("ONS0004", None),
-        ("ONS0004", None),
-        ("ONS0004", None),
+        ("ONS0001", "1", None),
+        ("ONS0002", "2", None),
+        ("ONS0003", "3", None),
+        ("ONS0003", "4", None),
+        ("ONS0003", "5", None),
+        ("ONS0004", "6", None),
+        ("ONS0004", "7", None),
+        ("ONS0004", "8", None),
     ]
     df_input_survey = spark_session.createDataFrame(data, schema=schema).drop("any")
     # any line added to bypass an exception when only one column is added
 
-    schema = "barcode string, date_visit string, date_received string, pcr_result_recorded_datetime string,\
-             pcr_result_classification string"
+    schema = "barcode string, unique_pcr_test_id string, date_visit string, date_received string,\
+              pcr_result_recorded_datetime string, pcr_result_classification string"
     data = [
-        ("ONS0001", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive"),
-        ("ONS0002", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "negative"),
-        ("ONS0002", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "negative"),
-        ("ONS0002", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "positive"),
-        ("ONS0003", "2020-01-03", "2020-01-04", "2020-01-04 12:00:00", "positive"),
-        ("ONS0004", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
-        ("ONS0004", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
-        ("ONS0004", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
+        ("ONS0001", "1,", "2020-01-01", "2020-01-02", "2020-01-04 12:00:00", "positive"),
+        ("ONS0002", "2,", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "negative"),
+        ("ONS0002", "3,", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "negative"),
+        ("ONS0002", "4,", "2020-01-02", "2020-01-03", "2020-01-04 12:00:00", "positive"),
+        ("ONS0003", "5,", "2020-01-03", "2020-01-04", "2020-01-04 12:00:00", "positive"),
+        ("ONS0004", "6,", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
+        ("ONS0004", "7,", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
+        ("ONS0004", "8,", "2020-01-04", "2020-01-05", "2020-01-04 12:00:00", "positive"),
     ]
     df_input_labs = spark_session.createDataFrame(data, schema=schema)
 
