@@ -31,12 +31,15 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for blood deltas.
     """
     df = assign_filename_column(df, "blood_test_source_file")
-    df = assign_unique_id_column(
-        df, "unique_antibody_test_id", ["blood_sample_barcode", "antibody_test_plate_id", "antibody_test_well_id"]
-    )
     df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
-    df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
-    df = assign_column_uniform_value(df, "assay_category", 1)
+    df = substring_column(df, "antibody_test_plate_common_id", "antibody_test_plate_id", 5, 5)
+    df = assign_unique_id_column(
+        df=df,
+        column_name_to_assign="unique_antibody_test_id",
+        concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
+    )
+    if "antibody_assay_flag" not in df.columns:
+        df = assign_column_uniform_value(df, "antibody_assay_flag", 1)
 
     return df
 

@@ -49,25 +49,22 @@ def get_blood_data_description(_, target):
 
 def get_historical_blood_data_description(_):
     return lambda: {  # noqa: E731
-        "ons_id": _("random.custom_code", mask="ONS########", digit="#"),
-        "blood_sample_type": _("choice", items=["Venous", "Capillary"]),
+        "blood_barcode_OX": _("random.custom_code", mask="ONS########", digit="#"),
+        "received_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "result_tdi": _("choice", items=["Positive", "Negative", "Could not process", "Insufficient sample", None]),
+        "result_siemens": _("choice", items=["Positive", "Negative", "Insufficient sample", None]),
+        "result_tdi_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "assay_tdi": _("random.uniform", a=0, b=150000, precision=6),
+        "assay_category": _("choice", items=["Pre 2021-03-01", "Post 2021-03-01"]),
+        "assay_siemens": _("random.uniform", a=0, b=20, precision=6),
         "plate_tdi": _("random.custom_code", mask="ONS_######", digit="#"),
         "well_tdi": _("random.custom_code", mask="&##", digit="#", char="&"),
-        "interpretation_tdi": _(
-            "choice", items=["Positive", "Negative", "Could not process", "Insufficient sample", None]
-        ),
-        "assay_tdi": _("random.uniform", a=0, b=150000, precision=6),
-        "run_date_tdi": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "received_dt": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "siemens_interpretation": _("choice", items=["Positive", "Negative", "Insufficient sample", None]),
-        "siemens_reading": _("choice", items=[str(_("random.uniform", a=0, b=10, precision=2)), "< 0.05", "> 10.00"]),
-        "lims_id": _("random.custom_code", mask="ONS########", digit="#"),
-        "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
-        "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
-        "Date Samples Arrayed Oxford": _(
-            "datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022
-        ),
-        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "lims_id": _("random.custom_code", mask="ONS########1", digit="#"),
+        "blood_sample_type": _("choice", items=["Venous", "Capillary"]),
+        "voyager_blood_dt_time": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
+        "arrayed_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "assay_mabs": _("random.uniform", a=0, b=800, precision=6),
+        "platestorage": _("choice", items=["Fresh", "Frozen"]),
     }
 
 

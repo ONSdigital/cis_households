@@ -1,0 +1,100 @@
+- antibody_assay_flag: 1
+  antibody_assay_test_flag: Pre 2021-03-01
+  antibody_test_plate_common_id: '20322'
+  antibody_test_plate_id: ONS_203229
+  antibody_test_result_classification: Positive
+  antibody_test_result_recorded_date: '2022-06-19 00:00:00.000000'
+  antibody_test_result_value: 718.25830078125
+  antibody_test_target: N
+  antibody_test_well_id: W36
+  blood_sample_arrayed_date: '2020-08-21 00:00:00.000000'
+  blood_sample_barcode: ONS17139656
+  blood_sample_collected_datetime: '2019-05-03 07:55:06.000000'
+  blood_sample_received_date: '2018-07-03 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS394225251
+  plate_storage_method: Fresh
+  siemens_antibody_test_result_classification: Positive
+  siemens_antibody_test_result_value: 15.519997596740723
+  tdi_antibody_test_result_value: 126427.7890625
+  unique_antibody_test_id: ONS1713965620322W36
+- antibody_assay_flag: 1
+  antibody_assay_test_flag: Post 2021-03-01
+  antibody_test_plate_common_id: 03959
+  antibody_test_plate_id: ONS_039598
+  antibody_test_result_classification: null
+  antibody_test_result_recorded_date: '2018-10-21 00:00:00.000000'
+  antibody_test_result_value: 210.71124267578125
+  antibody_test_target: N
+  antibody_test_well_id: A76
+  blood_sample_arrayed_date: '2022-04-22 00:00:00.000000'
+  blood_sample_barcode: ONS32950016
+  blood_sample_collected_datetime: '2019-08-13 08:59:40.000000'
+  blood_sample_received_date: '2019-11-09 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS526144981
+  plate_storage_method: Frozen
+  siemens_antibody_test_result_classification: Negative
+  siemens_antibody_test_result_value: 8.443199157714844
+  tdi_antibody_test_result_value: 118811.90625
+  unique_antibody_test_id: ONS3295001603959A76
+- antibody_assay_flag: 1
+  antibody_assay_test_flag: Pre 2021-03-01
+  antibody_test_plate_common_id: '75030'
+  antibody_test_plate_id: ONS_750309
+  antibody_test_result_classification: null
+  antibody_test_result_recorded_date: '2020-02-07 00:00:00.000000'
+  antibody_test_result_value: 102.71317291259766
+  antibody_test_target: N
+  antibody_test_well_id: W83
+  blood_sample_arrayed_date: '2021-03-09 00:00:00.000000'
+  blood_sample_barcode: ONS51982661
+  blood_sample_collected_datetime: '2019-11-16 12:56:58.000000'
+  blood_sample_received_date: '2018-04-27 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS089040771
+  plate_storage_method: Frozen
+  siemens_antibody_test_result_classification: Insufficient sample
+  siemens_antibody_test_result_value: 10.787581443786621
+  tdi_antibody_test_result_value: 114376.6171875
+  unique_antibody_test_id: ONS5198266175030W83
+- antibody_assay_flag: 1
+  antibody_assay_test_flag: Post 2021-03-01
+  antibody_test_plate_common_id: '25016'
+  antibody_test_plate_id: ONS_250165
+  antibody_test_result_classification: Positive
+  antibody_test_result_recorded_date: '2018-11-24 00:00:00.000000'
+  antibody_test_result_value: 77.37310028076172
+  antibody_test_target: N
+  antibody_test_well_id: F58
+  blood_sample_arrayed_date: '2018-09-07 00:00:00.000000'
+  blood_sample_barcode: ONS60227680
+  blood_sample_collected_datetime: '2018-01-03 06:14:32.000000'
+  blood_sample_received_date: '2018-01-24 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: ONS086319301
+  plate_storage_method: Fresh
+  siemens_antibody_test_result_classification: Positive
+  siemens_antibody_test_result_value: 0.5959439873695374
+  tdi_antibody_test_result_value: 63288.2734375
+  unique_antibody_test_id: ONS6022768025016F58
+- antibody_assay_flag: 1
+  antibody_assay_test_flag: Pre 2021-03-01
+  antibody_test_plate_common_id: '85702'
+  antibody_test_plate_id: ONS_857022
+  antibody_test_result_classification: Negative
+  antibody_test_result_recorded_date: '2018-03-23 00:00:00.000000'
+  antibody_test_result_value: 487.3048095703125
+  antibody_test_target: N
+  antibody_test_well_id: C21
+  blood_sample_arrayed_date: '2020-10-09 00:00:00.000000'
+  blood_sample_barcode: ONS86875935
+  blood_sample_collected_datetime: '2019-06-04 02:24:06.000000'
+  blood_sample_received_date: '2021-04-15 00:00:00.000000'
+  blood_sample_type: Capillary
+  lims_id: ONS263322961
+  plate_storage_method: Fresh
+  siemens_antibody_test_result_classification: Positive
+  siemens_antibody_test_result_value: 12.370394706726074
+  tdi_antibody_test_result_value: 124410.703125
+  unique_antibody_test_id: ONS8687593585702C21

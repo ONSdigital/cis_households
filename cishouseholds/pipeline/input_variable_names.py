@@ -35,21 +35,22 @@ blood_variable_name_map = {
 }
 
 historical_blood_variable_name_map = {
-    "ons_id": "blood_sample_barcode",
-    "lims_id": "lims_id",
-    "blood_sample_type": "blood_sample_type",
+    "blood_barcode_OX": "blood_sample_barcode",
+    "received_ox_date": "blood_sample_received_date",
+    "result_tdi": "antibody_test_result_classification",
+    "result_siemens": "siemens_antibody_test_result_classification",
+    "result_tdi_date": "antibody_test_result_recorded_date",
+    "assay_tdi": "tdi_antibody_test_result_value",
+    "assay_category": "antibody_assay_test_flag",
+    "assay_siemens": "siemens_antibody_test_result_value",
     "plate_tdi": "antibody_test_plate_id",
     "well_tdi": "antibody_test_well_id",
-    "interpretation_tdi": "antibody_test_result_classification",
-    "run_date_tdi": "antibody_test_result_recorded_date",
-    "received_dt": "blood_sample_received_date",
-    "siemens_interpretation": "siemens_antibody_test_result_classification",
-    "assay_tdi": "antibody_test_result_value",
-    "assay_siemens": "siemens_antibody_test_result_value",
-    "Monoclonal bounded quantitation (Colourimetric)": "antibody_test_bounded_result_value",
-    "Monoclonal undiluted quantitation (Colourimetric)": "antibody_test_undiluted_result_value",
-    "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
-    "Voyager Date Created": "blood_sample_collected_datetime",
+    "lims_id": "lims_id",
+    "blood_sample_type": "blood_sample_type",
+    "voyager_blood_dt_time": "blood_sample_collected_datetime",
+    "arrayed_ox_date": "blood_sample_arrayed_date",
+    "assay_mabs": "antibody_test_result_value",
+    "platestorage": "plate_storage_method",
 }
 
 sample_eng_wl_sc_variable_name_map = {
