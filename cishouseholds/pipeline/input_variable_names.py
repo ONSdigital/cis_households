@@ -34,7 +34,7 @@ blood_variable_name_map = {
     "Voyager Date Created": "blood_sample_collected_datetime",
 }
 
-historic_blood_variable_name_map = {
+historical_blood_variable_name_map = {
     "ons_id": "blood_sample_barcode",
     "lims_id": "lims_id",
     "blood_sample_type": "blood_sample_type",

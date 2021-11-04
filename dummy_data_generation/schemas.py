@@ -47,7 +47,7 @@ def get_blood_data_description(_, target):
     }
 
 
-def get_historic_blood_data_description(_):
+def get_historical_blood_data_description(_):
     return lambda: {  # noqa: E731
         "ons_id": _("random.custom_code", mask="ONS########", digit="#"),
         "blood_sample_type": _("choice", items=["Venous", "Capillary"]),

@@ -36,7 +36,7 @@ blood_validation_schema = {
     "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
-historic_blood_validation_schema = {
+historical_blood_validation_schema = {
     "ons_id": {"type": "string"},
     "blood_sample_type": {"type": "string"},
     "plate_tdi": {"type": "string"},
