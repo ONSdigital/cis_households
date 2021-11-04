@@ -18,11 +18,10 @@ def union_multiple_tables(tables: List[DataFrame]):
         list of objects representing the respective input tables
     """
     merged_df = tables[0]
-    for n, in range(1,len(tables) - 1):
-        merged_df, dfn = prepare_for_union(merged_df, tables[n])
+    for table_n in tables[1:]:
+        merged_df, dfn = prepare_for_union(merged_df, table_n)
         merged_df = merged_df.union(dfn)
     return merged_df
-
 
 
 def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
@@ -456,8 +455,7 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     df = df.withColumn(
         column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None).cast("integer")
     )
-    print("mt 1 check -->")
-    df.show()
+
     return df.drop("antibody_barcode_cleaned_count")
 
 
@@ -525,9 +523,7 @@ def many_to_many_flag(
     )  # BUG Needed in case the while loop does not execute
 
     while df.filter(df.record_processed.isNull()).count() > 0:
-        window = Window.partitionBy(group_by_column, "record_processed").orderBy(
-            *ordering_columns
-        )
+        window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
         df = df.withColumn("row_number", F.row_number().over(window))
         df = df.withColumn(
             "record_processed",
