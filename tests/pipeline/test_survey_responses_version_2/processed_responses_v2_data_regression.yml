@@ -220,6 +220,7 @@
   title: Dr.
   transport_to_work_or_school: Other method
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4559272362372022-01-02 10:00:19
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -238,8 +239,10 @@
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: I don't even care.
+  work_social_care: 'No'
   work_status: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
@@ -469,6 +472,7 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-4564424971052022-01-01 18:18:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -487,9 +491,11 @@
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: null
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
+  work_social_care: 'No'
   work_status: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
@@ -719,6 +725,7 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-8587422675622022-01-03 01:57:08
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DHVF-4869598675
@@ -738,8 +745,10 @@
   work_not_from_home_days_per_week: '3'
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: <=15y
+  work_person_facing_now: 'No'
   work_sectors: Teaching and education
   work_sectors_other: I don't even care.
+  work_social_care: 'No'
   work_status: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
@@ -965,6 +974,7 @@
   title: Miss.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-6275400895852022-01-04 19:29:32
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DHVF-6249804207
@@ -984,9 +994,11 @@
   work_not_from_home_days_per_week: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Arts or entertainment or recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
+  work_social_care: 'No'
   work_status: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
@@ -1213,6 +1225,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-5935868570222022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1231,9 +1244,11 @@
   work_not_from_home_days_per_week: '4'
   work_nursing_or_residential_care_home: 'No'
   work_patient_facing_now: <=15y
+  work_person_facing_now: 'No'
   work_sectors: Retail Sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
+  work_social_care: 'No'
   work_status: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
@@ -1463,6 +1478,7 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3892639591912022-01-06 18:33:36
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DVH-0739888271
@@ -1481,9 +1497,11 @@
   work_not_from_home_days_per_week: '7'
   work_nursing_or_residential_care_home: 'No'
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Social care
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
+  work_social_care: 'No'
   work_status: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
@@ -1709,6 +1727,7 @@
   title: Mrs.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-1442294850982022-01-02 22:16:30
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DVH-2195478104
@@ -1727,9 +1746,11 @@
   work_not_from_home_days_per_week: '6'
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Teaching and education
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_social_care: 'No'
   work_status: null
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
@@ -1956,6 +1977,7 @@
   title: Dr.
   transport_to_work_or_school: Car or Van
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-0771452842572022-01-05 12:07:35
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DVH-2661757503
@@ -1974,8 +1996,10 @@
   work_not_from_home_days_per_week: up to 1
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: <=15y
+  work_person_facing_now: 'No'
   work_sectors: Social Care
   work_sectors_other: Any element of a tuple can be accessed in constant time.
+  work_social_care: 'No'
   work_status: null
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: 'Yes'
@@ -2200,6 +2224,7 @@
   title: Dr.
   transport_to_work_or_school: Bicycle
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-6035061403232022-01-08 00:44:46
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -2218,8 +2243,10 @@
   work_not_from_home_days_per_week: Participant Would Not/Could Not Answer
   work_nursing_or_residential_care_home: null
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Civil Service or Local Government
   work_sectors_other: Ports are created with the built-in function open_port.
+  work_social_care: 'No'
   work_status: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
@@ -2448,6 +2475,7 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-3295001674032022-01-06 11:34:20
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983
@@ -2468,6 +2496,8 @@
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: 'Yes'
   work_patient_facing_now: null
+  work_person_facing_now: 'No'
   work_sectors: Armed forces
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_social_care: 'No'
   work_status: 5y and older in full-time education

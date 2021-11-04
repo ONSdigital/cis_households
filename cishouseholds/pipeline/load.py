@@ -1,26 +1,13 @@
-import functools
 import json
-import os
 from datetime import datetime
 
 import pkg_resources
 import pyspark.sql.functions as F
-import yaml
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
 
+from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-@functools.lru_cache(maxsize=1)
-def get_config() -> dict:
-    """Read YAML config file from path specified in PIPELINE_CONFIG_LOCATION environment variable"""
-    _config_location = os.environ.get("PIPELINE_CONFIG_LOCATION")
-    if _config_location is None:
-        raise ValueError("PIPELINE_CONFIG_LOCATION environment variable must be set to the config file path")
-    with open(_config_location) as fh:
-        config = yaml.load(fh, Loader=yaml.FullLoader)
-    return config
 
 
 def update_table(df, table_name):
@@ -28,6 +15,22 @@ def update_table(df, table_name):
     df.write.mode(storage_config["write_mode"]).saveAsTable(
         f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
     )
+
+
+def check_table_exists(table_name: str):
+    storage_config = get_config()["storage"]
+    spark_session = get_or_create_spark_session()
+    return spark_session.catalog._jcatalog.tableExists(
+        f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+    )
+
+
+def extract_from_table(table_name: str):
+    spark_session = get_or_create_spark_session()
+    storage_config = get_config()["storage"]
+    df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{storage_config['table_prefix']}{table_name}")
+
+    return df
 
 
 def add_run_log_entry(config: dict, run_datetime: datetime):
@@ -39,18 +42,20 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     pipeline_name = spark_session.sparkContext.appName
     pipeline_version = pkg_resources.get_distribution(pipeline_name).version
 
-    run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
     run_id = 0
-    if spark_session.catalog._jcatalog.tableExists(run_log_table):
-        last_run_id = get_latest_run_id(storage_config, pipeline_name)
+
+    if check_table_exists("run_log"):
+        last_run_id = get_latest_run_id(storage_config)
         run_id = last_run_id + 1
 
     run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
-    run_log_entry.write.mode("append").saveAsTable(run_log_table)  # Always append
+    run_log_entry.write.mode("append").saveAsTable(
+        f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
+    )  # Always append
     return run_id
 
 
-def get_latest_run_id(storage_config, pipeline_name):
+def get_latest_run_id(storage_config):
     """Read the maximum run ID from the run log table."""
     spark_session = get_or_create_spark_session()
     run_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
@@ -71,7 +76,7 @@ def _create_run_log_entry(
         config string
     """
 
-    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config)]]
+    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config, default=str)]]
 
     return spark_session.createDataFrame(run_log_entry, schema)
 
@@ -116,8 +121,7 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     """
     storage_config = get_config()["storage"]
 
-    pipeline_name = spark_session.sparkContext.appName
-    run_id = get_latest_run_id(storage_config, pipeline_name)
+    run_id = get_latest_run_id(storage_config)
 
     entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
     df = spark_session.createDataFrame(entry, schema)

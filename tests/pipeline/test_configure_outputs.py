@@ -76,9 +76,9 @@ def test_configure_outputs(spark_session):
         input_df, group_by_columns="country", aggregate_function="count", aggregate_column_name="test"
     )
 
-    assert_df_equality(output_df1, expected_df1, ignore_nullable=True)
-    assert_df_equality(output_df2, expected_df2, ignore_nullable=True)
-    assert_df_equality(output_df5, expected_df3, ignore_nullable=True)
+    assert_df_equality(output_df1, expected_df1, ignore_nullable=True, ignore_row_order=True)
+    assert_df_equality(output_df2, expected_df2, ignore_nullable=True, ignore_row_order=True)
+    assert_df_equality(output_df5, expected_df3, ignore_nullable=True, ignore_row_order=True)
 
     # test function dissalows using functions on non-selected columns
     with pytest.raises(IndexError):

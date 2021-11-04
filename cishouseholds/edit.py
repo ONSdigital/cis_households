@@ -20,10 +20,10 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     """
     df = df.withColumn(
         postcode_column,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, "[^a-zA-Z\d:]", "")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
     )
     df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
-    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, "[^*]{3}$", ""))
+    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
     df = df.withColumn(
         postcode_column,
         F.when(
@@ -75,6 +75,25 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
         )
         df = df.join(temp_df, on=[country_column, id_column], how="left")
     return df.drop(school_year_column)
+
+
+def update_social_column(df: DataFrame, social_column: str, health_column: str):
+    """
+    Update the value of the social column to that of the health column
+    provided that the social column is null and health column is not
+    Parameters
+    ----------
+    df
+    social_column
+    health_column
+    """
+    df = df.withColumn(
+        social_column,
+        F.when((F.col(social_column).isNull()) & (~F.col(health_column).isNull()), F.col(health_column)).otherwise(
+            F.col(social_column)
+        ),
+    )
+    return df
 
 
 def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
@@ -187,7 +206,9 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     """
     for format, columns_list in column_format_map.items():
         for column_name in columns_list:
-            df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
+            if column_name in df.columns:
+                df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
+
     return df
 
 
@@ -226,7 +247,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),
     )
     df = df.withColumn(
         column_name_to_assign,

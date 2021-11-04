@@ -6,26 +6,27 @@ from pyspark.sql import functions as F
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame]):
-    if type(reference) == str:
-        spark_session = get_or_create_spark_session()
-        df_ref = spark_session.read.parquet(reference)
-    else:
-        df_ref = reference
-    copy_df = df
-    copy_ref = df_ref
-    missmatches_df, missmatches_ref = get_inconsistent_columns(df, df_ref)
+def prepare_for_union(df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
+    spark_session = get_or_create_spark_session()
+
+    if isinstance(df1, str):
+        df1 = spark_session.read.parquet(df1)
+    if isinstance(df2, str):
+        df2 = spark_session.read.parquet(df2)
+    copy_df1 = df1
+    copy_df2 = df2
+    missmatches_df, missmatches_ref = get_inconsistent_columns(df1, df2)
     for col in missmatches_ref:
-        df = add_matching_col(df, df_ref, col)
+        df1 = add_matching_col(df1, df2, col)
     for col in missmatches_df:
-        df_ref = add_matching_col(df_ref, df, col)
-    df = df.select([x.name for x in df_ref.schema.fields])
+        df2 = add_matching_col(df2, df1, col)
+    df1 = df1.select([x.name for x in df2.schema.fields])
     col_order = get_new_order(
-        [x.name for x in copy_ref.schema.fields], [x.name for x in copy_df.schema.fields], missmatches_df
+        [x.name for x in copy_df2.schema.fields], [x.name for x in copy_df1.schema.fields], missmatches_df
     )
-    df_ref = df_ref.select([col for col in col_order])
-    df = df.select([col for col in col_order])
-    return df, df_ref
+    df2 = df2.select([col for col in col_order])
+    df1 = df1.select([col for col in col_order])
+    return df1, df2
 
 
 def add_after(list: list, element: str, add: str):

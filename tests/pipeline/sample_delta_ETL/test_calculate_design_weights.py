@@ -24,4 +24,4 @@ def test_calculate_design_weights(spark_session):
 
     output_df = calculate_design_weights(input_df, populations_df)
 
-    assert_df_equality(output_df, expected_df, ignore_column_order=True)
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True)

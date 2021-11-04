@@ -13,6 +13,7 @@
   blood_sample_received_date: '2018-01-03 00:00:00.000000'
   blood_sample_type: Venous
   plate: '40250'
+  unique_antibody_test_id: ONS60227680ONS_402501CN-6O25
 - antibody_test_bounded_result_value: '32.1'
   antibody_test_plate_id: ONS_568720CN-3
   antibody_test_result_classification: failed
@@ -28,6 +29,7 @@
   blood_sample_received_date: '2019-08-13 00:00:00.000000'
   blood_sample_type: Venous
   plate: '56872'
+  unique_antibody_test_id: ONS66171396ONS_568720CN-3G29
 - antibody_test_bounded_result_value: '73.0'
   antibody_test_plate_id: ONS_008687CN-5
   antibody_test_result_classification: DETECTED
@@ -43,6 +45,7 @@
   blood_sample_received_date: '2019-06-04 00:00:00.000000'
   blood_sample_type: Capillary
   plate: 00868
+  unique_antibody_test_id: ONS80863193ONS_008687CN-5Z35
 - antibody_test_bounded_result_value: '212.0'
   antibody_test_plate_id: ONS_525832CN-9
   antibody_test_result_classification: failed
@@ -58,6 +61,7 @@
   blood_sample_received_date: '2019-11-16 00:00:00.000000'
   blood_sample_type: Venous
   plate: '52583'
+  unique_antibody_test_id: ONS83639422ONS_525832CN-9N00
 - antibody_test_bounded_result_value: '359.0'
   antibody_test_plate_id: ONS_021263CN-3
   antibody_test_result_classification: DETECTED
@@ -73,3 +77,4 @@
   blood_sample_received_date: '2019-05-03 00:00:00.000000'
   blood_sample_type: Venous
   plate: '02126'
+  unique_antibody_test_id: ONS86857022ONS_021263CN-3F29

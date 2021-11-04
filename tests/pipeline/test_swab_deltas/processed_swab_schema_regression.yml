@@ -72,6 +72,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: unique_pcr_test_id
+  nullable: true
+  type: string
+- metadata: {}
   name: pcr_date
   nullable: true
   type: string

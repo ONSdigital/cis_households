@@ -5,31 +5,49 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.compare import prepare_for_union
+from cishouseholds.edit import rename_column_names
 
-def merge_assayed_bloods(df: DataFrame, blood_group_column: str):
+
+def merge_survey_tables(df0: Union[str, DataFrame], df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
     """
-    Given a dataframe containing records for both blood groups create a new dataframe with columns for
-    each specific blood group seperated with the appriopiate extension appended to the end of the
-    column name
+    Given a list of iqvia v0, v1, v2 tables combine them through a union process
+    and create null columns for columns inconsistent between all tables
     Parameters
     ----------
-    df
-    blood_group_column
+    tables
+        list of objects representing the respective iqvia tables
     """
-    join_on_colums = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
-    split_dataframes = []
-    window = Window.partitionBy(*join_on_colums).orderBy("blood_sample_barcode")
+    df0, df1 = prepare_for_union(df0, df1)
+    merged_df = df0.union(df1)
+    merged_df, df2 = prepare_for_union(merged_df, df2)
+    return merged_df.union(df2)
+
+
+def join_assayed_bloods(df: DataFrame, test_target_column: str):
+    """
+    Given a dataframe containing records for both blood groups create a new dataframe with columns for
+    each specific blood group seperated with the appropriate extension appended to the end of the
+    column name.
+    """
+    join_on_columns = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
+
+    split_dataframes = []
     for blood_group in ["S", "N"]:
-        split_df = df.filter(F.col(blood_group_column) == blood_group)
-        for col in split_df.columns:
-            if col not in join_on_colums:
-                split_df = split_df.withColumnRenamed(col, col + "_" + blood_group.lower() + "_protein")
+        split_df = df.filter(F.col(test_target_column) == blood_group)
+        new_column_names = {
+            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
+            for col in split_df.columns
+        }
+        split_df = rename_column_names(split_df, new_column_names)
         split_dataframes.append(split_df)
-    joined_df = join_dataframes(df1=split_dataframes[0], df2=split_dataframes[1], on=join_on_colums)
-    joined_df = joined_df.drop(blood_group_column + "_n_protein", blood_group_column + "_s_protein")
+
+    joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
+    joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
     return joined_df, failed_df
 
 
