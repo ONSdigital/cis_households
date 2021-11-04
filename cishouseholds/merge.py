@@ -450,7 +450,7 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.count(F.col("mto1")).over(window),
+        F.count(F.col(group_by_column)).over(window),
     )
 
     df = df.withColumn(
