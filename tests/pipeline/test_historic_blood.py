@@ -2,8 +2,8 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
+from cishouseholds.pipeline.historic_blood_ETL import transform_historic_blood_delta
 from cishouseholds.pipeline.input_variable_names import historic_blood_variable_name_map
 from cishouseholds.pipeline.timestamp_map import historic_blood_datetime_map
 from cishouseholds.pipeline.validation_schema import historic_blood_validation_schema
@@ -13,7 +13,7 @@ from dummy_data_generation.schemas import get_historic_blood_data_description
 @pytest.fixture
 def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     """
-    Generate lab bloods file.
+    Generate historic bloods file.
     """
     schema = Schema(schema=get_historic_blood_data_description(mimesis_field))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
@@ -23,7 +23,7 @@ def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         historic_blood_variable_name_map,
         historic_blood_datetime_map,
         historic_blood_validation_schema,
-        transform_blood_delta,
+        transform_historic_blood_delta,
     )
 
     return processed_df

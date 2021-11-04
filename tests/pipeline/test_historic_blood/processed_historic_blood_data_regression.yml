@@ -12,7 +12,6 @@
   blood_sample_collected_datetime: '2020-10-09 00:00:00.000000'
   blood_sample_received_date: '2019-06-04 00:00:00.000000'
   blood_sample_type: Venous
-  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS48136760
   plate: '26831'
   result_siemens: Positive
@@ -31,7 +30,6 @@
   blood_sample_collected_datetime: '2018-09-07 00:00:00.000000'
   blood_sample_received_date: '2018-01-03 00:00:00.000000'
   blood_sample_type: Venous
-  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS71422713
   plate: '40250'
   result_siemens: Insufficient sample
@@ -50,7 +48,6 @@
   blood_sample_collected_datetime: '2020-08-21 00:00:00.000000'
   blood_sample_received_date: '2019-05-03 00:00:00.000000'
   blood_sample_type: Venous
-  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS39422525
   plate: '37088'
   result_siemens: null
@@ -69,7 +66,6 @@
   blood_sample_collected_datetime: '2021-03-09 00:00:00.000000'
   blood_sample_received_date: '2019-11-16 00:00:00.000000'
   blood_sample_type: Venous
-  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS08904077
   plate: '13199'
   result_siemens: Negative
@@ -88,7 +84,6 @@
   blood_sample_collected_datetime: '2022-04-22 00:00:00.000000'
   blood_sample_received_date: '2019-08-13 00:00:00.000000'
   blood_sample_type: Venous
-  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS87732107
   plate: '67403'
   result_siemens: Negative

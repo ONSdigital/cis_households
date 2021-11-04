@@ -22,13 +22,13 @@ def historic_blood_ETL(resource_path: str, latest_only: bool = False, start_date
         historic_blood_variable_name_map,
         historic_blood_datetime_map,
         historic_blood_validation_schema,
-        transform_blood_delta,
+        transform_historic_blood_delta,
     )
     update_table_and_log_source_files(df, "transformed_historic_blood_test_data", "historic_blood_test_source_file")
     return df
 
 
-def transform_blood_delta(df: DataFrame) -> DataFrame:
+def transform_historic_blood_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for blood deltas.
     """
@@ -36,7 +36,7 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     df = assign_unique_id_column(
         df, "unique_antibody_test_id", ["blood_sample_barcode", "antibody_test_plate_id", "antibody_test_well_id"]
     )
-    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
+    df = assign_test_target(df, "antibody_test_target", "historic_blood_test_source_file")
     df = substring_column(df, "plate", "antibody_test_plate_id", 5, 5)
     df = assign_column_uniform_value(df, "assay_category", 1)
 
