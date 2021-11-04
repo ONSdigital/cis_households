@@ -1,6 +1,6 @@
 fields:
 - metadata: {}
-  name: ons_id
+  name: blood_sample_barcode
   nullable: true
   type: string
 - metadata: {}
@@ -53,6 +53,14 @@ fields:
   type: string
 - metadata: {}
   name: lims_id
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_test_source_file
+  nullable: false
+  type: string
+- metadata: {}
+  name: unique_antibody_test_id
   nullable: true
   type: string
 - metadata: {}

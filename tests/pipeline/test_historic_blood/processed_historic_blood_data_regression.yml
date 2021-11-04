@@ -7,14 +7,16 @@
   assay_category: 1
   assay_siemens: '> 10.00'
   assay_tdi: 1794522
-  blood_sample_arrayed_date: '2018-03-23 00:00:00.000000'
-  blood_sample_collected_datetime: null
+  blood_sample_arrayed_date: '2018-03-23 13:21:17.000000'
+  blood_sample_barcode: ONS33204190
+  blood_sample_collected_datetime: '2020-10-09 00:00:00.000000'
   blood_sample_received_date: '2019-06-04 00:00:00.000000'
   blood_sample_type: Venous
+  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS48136760
-  ons_id: ONS33204190
   plate: '26831'
   result_siemens: Positive
+  unique_antibody_test_id: ONS33204190ONS_268310R79
 - antibody_test_plate_id: ONS_402501
   antibody_test_result_classification: Positive
   antibody_test_result_recorded_date: '2018-01-24 00:00:00.000000'
@@ -24,14 +26,16 @@
   assay_category: 1
   assay_siemens: '8.69'
   assay_tdi: 13679989
-  blood_sample_arrayed_date: '2018-11-24 00:00:00.000000'
-  blood_sample_collected_datetime: null
+  blood_sample_arrayed_date: '2018-11-24 17:05:37.000000'
+  blood_sample_barcode: ONS60227680
+  blood_sample_collected_datetime: '2018-09-07 00:00:00.000000'
   blood_sample_received_date: '2018-01-03 00:00:00.000000'
   blood_sample_type: Venous
+  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS71422713
-  ons_id: ONS60227680
   plate: '40250'
   result_siemens: Insufficient sample
+  unique_antibody_test_id: ONS60227680ONS_402501Q52
 - antibody_test_plate_id: ONS_370884
   antibody_test_result_classification: null
   antibody_test_result_recorded_date: '2018-07-03 00:00:00.000000'
@@ -41,14 +45,16 @@
   assay_category: 1
   assay_siemens: '6.55'
   assay_tdi: 3667281
-  blood_sample_arrayed_date: '2022-06-19 00:00:00.000000'
-  blood_sample_collected_datetime: null
+  blood_sample_arrayed_date: '2022-06-19 06:45:04.000000'
+  blood_sample_barcode: ONS65242962
+  blood_sample_collected_datetime: '2020-08-21 00:00:00.000000'
   blood_sample_received_date: '2019-05-03 00:00:00.000000'
   blood_sample_type: Venous
+  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS39422525
-  ons_id: ONS65242962
   plate: '37088'
   result_siemens: null
+  unique_antibody_test_id: ONS65242962ONS_370884B95
 - antibody_test_plate_id: ONS_131999
   antibody_test_result_classification: null
   antibody_test_result_recorded_date: '2018-04-27 00:00:00.000000'
@@ -58,14 +64,16 @@
   assay_category: 1
   assay_siemens: '> 10.00'
   assay_tdi: 13635435
-  blood_sample_arrayed_date: '2020-02-07 00:00:00.000000'
-  blood_sample_collected_datetime: null
+  blood_sample_arrayed_date: '2020-02-07 18:56:45.000000'
+  blood_sample_barcode: ONS79751685
+  blood_sample_collected_datetime: '2021-03-09 00:00:00.000000'
   blood_sample_received_date: '2019-11-16 00:00:00.000000'
   blood_sample_type: Venous
+  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS08904077
-  ons_id: ONS79751685
   plate: '13199'
   result_siemens: Negative
+  unique_antibody_test_id: ONS79751685ONS_131999P41
 - antibody_test_plate_id: ONS_674039
   antibody_test_result_classification: Positive
   antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
@@ -75,11 +83,13 @@
   assay_category: 1
   assay_siemens: '1.15'
   assay_tdi: 12191705
-  blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
-  blood_sample_collected_datetime: null
+  blood_sample_arrayed_date: '2018-10-21 05:34:46.000000'
+  blood_sample_barcode: ONS83295001
+  blood_sample_collected_datetime: '2022-04-22 00:00:00.000000'
   blood_sample_received_date: '2019-08-13 00:00:00.000000'
   blood_sample_type: Venous
+  blood_test_source_file: file:///C:/Users/lamots/AppData/Local/Temp/pytest-of-lamots/pytest-328/test_historic_blood_delta_ETL_1/temp.csv
   lims_id: ONS87732107
-  ons_id: ONS83295001
   plate: '67403'
   result_siemens: Negative
+  unique_antibody_test_id: ONS83295001ONS_674039N98

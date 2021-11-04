@@ -13,8 +13,6 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.validation_schema import blood_validation_schema
 
-# from cishouseholds.compare import prepare_for_union
-
 
 @register_pipeline_stage("blood_delta_ETL")
 def blood_delta_ETL(resource_path: str, latest_only: bool = False, start_date: str = None, end_date: str = None):
