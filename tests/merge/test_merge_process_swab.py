@@ -1,4 +1,4 @@
-import pytest
+# import pytest
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 from pyspark.sql import Window
@@ -1686,8 +1686,8 @@ def test_merge_process_swab(spark_session):
     )
 
     # CHECK D: no records filtered out before splitting dataframes - number of distinct records
-    df_unique_voyager = df.dropDuplicates(["barcode", "unique_participant_response_id"])
-    df_unique_swab = df.dropDuplicates(["barcode", "unique_pcr_test_id"])
+    # df_unique_voyager = df.dropDuplicates(["barcode", "unique_participant_response_id"])
+    # df_unique_swab = df.dropDuplicates(["barcode", "unique_pcr_test_id"])
 
     if len(df.columns > 0):
         result = True
