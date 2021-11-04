@@ -2,7 +2,6 @@
 Generate fake data for households survey raw input data.
 """
 # mypy: ignore-errors
-import random
 from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
@@ -76,6 +75,17 @@ def generate_unioxf_medtest_data(directory, file_date, records, target):
 
     survey_unioxf_medtest.to_csv(directory / f"Unioxf_medtest{target}_{file_date}.csv", index=False)
     return survey_unioxf_medtest
+
+
+def generate_historic_bloods_data(directory, file_date, records):
+    """
+    Generate historic bloods file
+    """
+    schema = Schema(schema=generate_historic_bloods_data(_))
+    historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
+
+    historic_bloods_data.to_csv(directory / f"historic_bloods_{file_date}.csv", index=False)
+    return historic_bloods_data
 
 
 def generate_northern_ireland_data(directory, file_date, records):
@@ -170,40 +180,6 @@ def generate_sample_direct_data(directory, file_date, records):
 
     sample_direct_data.to_csv(directory / f"sample_direct_eng_wc{file_date}.csv", index=False)
     return sample_direct_data
-
-
-def generate_historic_bloods_data(directory, file_date, records):
-    """
-    Generate historic bloods file
-    """
-    historic_bloods_description = lambda: {  # noqa: E731
-        "blood_barcode_OX": code_mask(mask="ONS########", min_code="ONS00000001", max_code="ONS99999999"),
-        "received_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "result_tdi": random.choices(
-            ["Positive", "Negative", "Could not process", "Insufficient sample", None], weights=(2, 2, 2, 2, 1), k=1
-        )[0],
-        "result_siemens": random.choices(
-            ["Positive", "Negative", "Insufficient sample", None], weights=(2, 2, 2, 1), k=1
-        )[0],
-        "result_tdi_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "assay_tdi": _("random.randint", a=100000, b=14000000),
-        "assay_siemens": random.choices(
-            [str(_("random.uniform", a=0, b=10, precision=2)), "< 0.05", "> 10.00"], weights=(3, 1, 1), k=1
-        )[0],
-        "plate_tdi": code_mask(mask="ONS_######", min_code="ONS_000001", max_code="ONS_999999"),
-        "well_tdi": code_mask(mask="&##", min_code="A11", max_code="Z99"),
-        "lims_id": code_mask(mask="ONS########", min_code="ONS00000001", max_code="ONS99999999"),
-        "blood_sample_type": _("choice", items=["Venous", "Capillary"]),
-        "voyager_blood_dt_time": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "arrayed_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-        "assay_mabs": _("random.uniform", a=0, b=150000, precision=6),
-    }
-
-    schema = Schema(schema=historic_bloods_description)
-    historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
-
-    historic_bloods_data.to_csv(directory / f"historic_bloods_{file_date}.csv", index=False)
-    return historic_bloods_data
 
 
 def generate_unprocessed_bloods_data(directory, file_date, records):

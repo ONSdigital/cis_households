@@ -218,7 +218,7 @@ def execute_merge_specific_antibody(
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
         diff_interval_hours="diff_vs_visit_hr",
-        siemens_column="assay_siemens",
+        siemens_column="siemens_antibody_test_result_value",
         tdi_column="antibody_test_result_classification",
         visit_date=visit_date_column_name,
         out_of_date_range_column="out_of_date_range_" + merge_type,

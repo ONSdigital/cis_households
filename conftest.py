@@ -31,8 +31,8 @@ def spark_session():
 def pandas_df_to_temporary_csv(tmp_path):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
-    def _pandas_df_to_temporary_csv(pandas_df, sep=","):
-        temporary_csv_path = tmp_path / "temp.csv"
+    def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
+        temporary_csv_path = tmp_path / filename
         pandas_df.to_csv(temporary_csv_path, sep=sep, header=True, index=False, na_rep="")
         return temporary_csv_path
 

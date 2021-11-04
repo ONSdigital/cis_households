@@ -34,6 +34,25 @@ blood_variable_name_map = {
     "Voyager Date Created": "blood_sample_collected_datetime",
 }
 
+historical_blood_variable_name_map = {
+    "blood_barcode_OX": "blood_sample_barcode",
+    "received_ox_date": "blood_sample_received_date",
+    "result_tdi": "antibody_test_result_classification",
+    "result_siemens": "siemens_antibody_test_result_classification",
+    "result_tdi_date": "antibody_test_result_recorded_date",
+    "assay_tdi": "tdi_antibody_test_result_value",
+    "assay_category": "antibody_assay_test_flag",
+    "assay_siemens": "siemens_antibody_test_result_value",
+    "plate_tdi": "antibody_test_plate_id",
+    "well_tdi": "antibody_test_well_id",
+    "lims_id": "lims_id",
+    "blood_sample_type": "blood_sample_type",
+    "voyager_blood_dt_time": "blood_sample_collected_datetime",
+    "arrayed_ox_date": "blood_sample_arrayed_date",
+    "assay_mabs": "antibody_test_result_value",
+    "platestorage": "plate_storage_method",
+}
+
 sample_eng_wl_sc_variable_name_map = {
     "UAC": "unique_access_code",
     "LA_CODE": "local_authority_code",

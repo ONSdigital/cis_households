@@ -17,7 +17,7 @@ def blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     """
     schema = Schema(schema=get_blood_data_description(mimesis_field, "N"))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df)
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, filename="N.csv")
     processed_df = extract_validate_transform_input_data(
         csv_file_path.as_posix(),
         blood_variable_name_map,

@@ -47,6 +47,27 @@ def get_blood_data_description(_, target):
     }
 
 
+def get_historical_blood_data_description(_):
+    return lambda: {  # noqa: E731
+        "blood_barcode_OX": _("random.custom_code", mask="ONS########", digit="#"),
+        "received_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "result_tdi": _("choice", items=["Positive", "Negative", "Could not process", "Insufficient sample", None]),
+        "result_siemens": _("choice", items=["Positive", "Negative", "Insufficient sample", None]),
+        "result_tdi_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "assay_tdi": _("random.uniform", a=0, b=150000, precision=6),
+        "assay_category": _("choice", items=["Pre 2021-03-01", "Post 2021-03-01"]),
+        "assay_siemens": _("random.uniform", a=0, b=20, precision=6),
+        "plate_tdi": _("random.custom_code", mask="ONS_######", digit="#"),
+        "well_tdi": _("random.custom_code", mask="&##", digit="#", char="&"),
+        "lims_id": _("random.custom_code", mask="ONS########1", digit="#"),
+        "blood_sample_type": _("choice", items=["Venous", "Capillary"]),
+        "voyager_blood_dt_time": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
+        "arrayed_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
+        "assay_mabs": _("random.uniform", a=0, b=800, precision=6),
+        "platestorage": _("choice", items=["Fresh", "Frozen"]),
+    }
+
+
 def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ONS Household ID": _("random.custom_code", mask="############", digit="#"),

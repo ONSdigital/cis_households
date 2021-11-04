@@ -52,13 +52,13 @@ def read_csv_to_pyspark_df(
 
         if not csv_header:
             raise InvalidFileError(
-                f"Header of {csv_file_path} ({text_file.first()}) "
+                f"Header of {csv_file} ({text_file.first()}) "
                 f"does not match expected header: {expected_raw_header_row}"
             )
 
         if not csv_fields:
             raise InvalidFileError(
-                f"Number of fields in {csv_file_path} does not match expected number of columns from header"
+                f"Number of fields in {csv_file} does not match expected number of columns from header"
             )
 
     return spark_session.read.csv(

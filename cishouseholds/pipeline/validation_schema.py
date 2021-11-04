@@ -36,6 +36,25 @@ blood_validation_schema = {
     "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
+historical_blood_validation_schema = {
+    "blood_barcode_OX": {"type": "string"},
+    "received_ox_date": {"type": "string"},
+    "result_tdi": {"type": "string"},
+    "result_siemens": {"type": "string"},
+    "result_tdi_date": {"type": "string"},
+    "assay_tdi": {"type": "float"},
+    "assay_category": {"type": "string"},
+    "assay_siemens": {"type": "float"},
+    "plate_tdi": {"type": "string"},
+    "well_tdi": {"type": "string"},
+    "lims_id": {"type": "string"},
+    "blood_sample_type": {"type": "string"},
+    "voyager_blood_dt_time": {"type": "string"},
+    "arrayed_ox_date": {"type": "string"},
+    "assay_mabs": {"type": "float"},
+    "platestorage": {"type": "string"},
+}
+
 sample_direct_eng_wc_schema = {
     "unique_access_code": {"type": "string", "regex": r"^\d{12}"},
     "local_authority_code": {"type": "string", "regex": r"^[E,W,S]\d{8}"},

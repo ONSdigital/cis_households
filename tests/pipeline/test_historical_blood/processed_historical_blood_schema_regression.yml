@@ -4,9 +4,33 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: blood_sample_type
+  name: blood_sample_received_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: antibody_test_result_classification
   nullable: true
   type: string
+- metadata: {}
+  name: siemens_antibody_test_result_classification
+  nullable: true
+  type: string
+- metadata: {}
+  name: antibody_test_result_recorded_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: tdi_antibody_test_result_value
+  nullable: true
+  type: float
+- metadata: {}
+  name: antibody_assay_test_flag
+  nullable: true
+  type: string
+- metadata: {}
+  name: siemens_antibody_test_result_value
+  nullable: true
+  type: float
 - metadata: {}
   name: antibody_test_plate_id
   nullable: true
@@ -16,23 +40,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_result_classification
+  name: lims_id
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_result_value
-  nullable: true
-  type: double
-- metadata: {}
-  name: antibody_test_bounded_result_value
+  name: blood_sample_type
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_undiluted_result_value
-  nullable: true
-  type: string
-- metadata: {}
-  name: antibody_test_result_recorded_date
+  name: blood_sample_collected_datetime
   nullable: true
   type: timestamp
 - metadata: {}
@@ -40,13 +56,13 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: blood_sample_received_date
+  name: antibody_test_result_value
   nullable: true
-  type: timestamp
+  type: float
 - metadata: {}
-  name: blood_sample_collected_datetime
+  name: plate_storage_method
   nullable: true
-  type: timestamp
+  type: string
 - metadata: {}
   name: blood_test_source_file
   nullable: false
