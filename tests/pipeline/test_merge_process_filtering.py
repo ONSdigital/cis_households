@@ -120,7 +120,7 @@ def test_merge_process_filtering(spark_session):
         df=df_input,
         merge_type="swab",
         barcode_column_name="barcode",
-        lab_columns_list=["lab_col", "unique_id_swab"],
+        lab_columns_list=["lab_col", "unique_pcr_test_id"],
         merge_combination=["1tom", "mto1", "mtom"],
     )
 
