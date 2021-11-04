@@ -20,8 +20,3 @@ blood_datetime_map = {
     "yyyy-MM-dd HH:mm:ss": ["blood_sample_collected_datetime"],
     "yyyy-MM-dd": ["blood_sample_arrayed_date", "antibody_test_result_recorded_date", "blood_sample_received_date"],
 }
-
-historic_blood_datetime_map = {
-    "yyyy-MM-dd HH:mm:ss": ["arrayed_ox_date"],
-    "yyyy-MM-dd": ["received_ox_date", "voyager_blood_dt_time"],
-}
