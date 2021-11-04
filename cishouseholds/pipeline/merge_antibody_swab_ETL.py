@@ -1,3 +1,4 @@
+# comment
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
