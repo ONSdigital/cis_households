@@ -450,13 +450,12 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
-        F.count(F.col("mto1")).over(window),
+        F.count(F.col(group_by_column)).over(window),
     )
 
     df = df.withColumn(
         column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None).cast("integer")
     )
-
     return df.drop("antibody_barcode_cleaned_count")
 
 
@@ -560,9 +559,6 @@ def one_to_many_antibody_flag(
     siemens_column: str,
     tdi_column: str,
     visit_date: str,
-    out_of_date_range_column: str,
-    count_barcode_voyager_column_name: str,
-    count_barcode_labs_column_name: str,
 ) -> DataFrame:
     """
     steps to complete:
@@ -581,9 +577,6 @@ def one_to_many_antibody_flag(
     siemens_column
     tdi_column
     visit_date
-    out_of_date_range_column
-    count_barcode_voyager_column_name
-    count_barcode_labs_column_name
     """
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
     row_num_column = "row_num"
@@ -609,9 +602,6 @@ def one_to_many_antibody_flag(
 
 def one_to_many_swabs(
     df: DataFrame,
-    out_of_date_range_flag: str,
-    count_barcode_labs_column_name: str,
-    count_barcode_voyager_column_name: str,
     group_by_column: str,
     ordering_columns: List[str],
     pcr_result_column_name: str,
