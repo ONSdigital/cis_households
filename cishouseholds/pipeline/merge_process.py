@@ -59,8 +59,6 @@ def merge_process_preparation(
         interval_upper_bound = 240
         id_type = "unique_antibody_test_id"
 
-    print("necessary: ", merge_type_neccessary_columns)
-
     df = outer_df.select(*set(merge_type_neccessary_columns))
 
     merge_type_neccessary_columns.remove("unique_participant_response_id")
@@ -201,14 +199,12 @@ def execute_merge_specific_swabs(
         ],
     )
 
-  
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
         visit_date_column_name,
         # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
-
 
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
@@ -240,9 +236,7 @@ def execute_merge_specific_swabs(
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
 
-
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
-
 
     outer_df = merge_process_validation(
         outer_df=outer_df,
@@ -329,10 +323,7 @@ def execute_merge_specific_antibody(
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
 
-
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
-
-
 
     outer_df = merge_process_validation(
         outer_df,
