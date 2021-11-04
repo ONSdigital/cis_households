@@ -1,3 +1,4 @@
+from cishouseholds.extract import get_files_by_date
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import historic_blood_variable_name_map
@@ -10,9 +11,10 @@ from cishouseholds.pipeline.validation_schema import historic_blood_validation_s
 
 
 @register_pipeline_stage("historic_blood_ETL")
-def historic_blood_ETL(resource_path: str):
+def historic_blood_ETL(resource_path: str, latest_only: bool = False, start_date: str = None, end_date: str = None):
+    file_path = get_files_by_date(resource_path, latest_only=latest_only, start_date=start_date, end_date=end_date)
     df = extract_validate_transform_input_data(
-        resource_path,
+        file_path,
         historic_blood_variable_name_map,
         historic_blood_datetime_map,
         historic_blood_validation_schema,
