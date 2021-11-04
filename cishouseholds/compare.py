@@ -5,12 +5,11 @@ from pyspark.sql import functions as F
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
-spark = get_or_create_spark_session()
-
 
 def prepare_for_union(df: DataFrame, reference: Union[str, DataFrame]):
     if type(reference) == str:
-        df_ref = spark.read.parquet(reference)
+        spark_session = get_or_create_spark_session()
+        df_ref = spark_session.read.parquet(reference)
     else:
         df_ref = reference
     copy_df = df

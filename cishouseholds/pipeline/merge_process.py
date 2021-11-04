@@ -252,28 +252,29 @@ def merge_process_filtering(
     barcode_column_name: str,
     lab_columns_list: List[str],
     merge_combination: List[str] = ["1tom", "mto1", "mtom"],
-    drop_list_columns: List[str] = [],
-) -> DataFrame:
+):
     """
-    Final filtering process of merging generating sucessful merges ...
+    Resolves all drop/failed flags created in the merging process to filter out
+    successfully-matched records from unmatched lab records and failed records.
+
     Parameters
     ----------
     df
-        input dataframe with drop, merge_type and failed to merge columns
+        Input dataframe with drop, merge_type and failed to merge columns
     merge_type
-        either swab or antibody, anything else will fail.
+        Must be swab or antibody
     lab_columns_list
-        lab columns to be dropped to be fed back to iqvia records
+        Names of all columns associated only with the lab input
     merge_combination
-        only elements in the list accepted 1tom, mto1, mtom
-    drop_list_columns
-        present in a list the exact name of columns to be dropped for the final
-        3 dataframes df_best_match, df_not_best_match, df_failed_records
-    Notes: this function will return 2 dataframes, one with best match records
-    another one with not best matched records
+        Types of merges to resolve, accepted strings in list: 1tom, mto1, mtom
+
+    Notes
+    -----
+    This function will return 3 dataframes:
+    - Successfully matched df inclusive of all iqvia records
+    - Residuals df (i.e. all lab records not matched)
+    - Failed records df (records that have failed process)
     """
-    # STEP 1 - RESOLVE FLAGS ------------------------
-    # include: failed_flag_mtom_swab
 
     df = (
         df.withColumn("best_match", F.lit(None).cast("integer"))
@@ -294,11 +295,13 @@ def merge_process_filtering(
             1,
         ).otherwise(F.col("best_match")),
     )
+
     for xtox in merge_combination:
         best_match_logic = (
             (F.col(xtox + "_" + merge_type) == 1)
             & (F.col("drop_flag_" + xtox + "_" + merge_type).isNull())
             & (F.col("failed_" + xtox + "_" + merge_type).isNull())
+            & (F.col(f"out_of_date_range_{merge_type}").isNull())
         )
         not_best_match_logic = (
             (F.col(xtox + "_" + merge_type) == 1)
@@ -309,61 +312,70 @@ def merge_process_filtering(
 
         df = df.withColumn("best_match", F.when(best_match_logic, 1).otherwise(F.col("best_match")))
         df = df.withColumn("not_best_match", F.when(not_best_match_logic, 1).otherwise(F.col("not_best_match")))
-        df = df.withColumn("failed_match", F.when(failed_match_logic, 1).otherwise(F.col("failed_match")))  # \
-        # .drop(*drop_list_columns)
+        df = df.withColumn("failed_match", F.when(failed_match_logic, 1).otherwise(F.col("failed_match")))
 
     if merge_type == "swab":
         df = df.withColumn(
             "failed_match", F.when(F.col("failed_flag_mtom_swab") == 1, 1).otherwise(F.col("failed_match"))
-        )  # failed_record
+        )
     elif merge_type == "antibody":
         df = df.withColumn(
             "failed_match",
             F.when((F.col("failed_flag_mtom_antibody") == 1) | (F.col("failed_flag_1tom_antibody") == 1), 1).otherwise(
                 F.col("failed_match")
             ),
-        )  # failed_record
+        )
 
     df = df.withColumn(
         "best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("best_match"))
     ).withColumn("not_best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("not_best_match")))
 
-    # STEP 2 -
     df_best_match = df.filter(F.col("best_match") == "1")
     df_not_best_match = df.filter(F.col("not_best_match") == "1")
     df_failed_records = df.filter(F.col("failed_match") == "1")
 
-    # STEP 3 -
+    # Created for filtering purposes later on, to ensure a 'best_match' is chosen over a 'not_best_match' record
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("int"))
 
-    # out_of_date_range_swab
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
+    df_lab_residuals = df_lab_residuals.join(df_best_match, on="unique_id_swab", how="left_anti")
 
-    # COMMENT: not necessary to drop lab_columns_list if going to be prepared to union with df_best_match
-    df_not_best_match = df_not_best_match.drop(*lab_columns_list)
-    df_failed_records_iqvia = df_failed_records.drop(*lab_columns_list).distinct()
+    drop_list_columns = [
+        f"out_of_date_range_{merge_type}",
+        f"1tom_{merge_type}",
+        f"mto1_{merge_type}",
+        f"mtom_{merge_type}",
+        f"drop_flag_1tom_{merge_type}",
+        f"drop_flag_mto1_{merge_type}",
+        f"drop_flag_mtom_{merge_type}",
+        f"failed_1tom_{merge_type}",
+        f"failed_mto1_{merge_type}",
+        f"failed_mtom_{merge_type}",
+        f"failed_flag_mtom_{merge_type}",
+        "best_match",
+        "not_best_match",
+        "failed_match",
+    ]
+    if merge_type == "antibody":
+        drop_list_columns.append("failed_flag_1tom_antibody")
 
-    # union process: best and not_best match
+    df_not_best_match = df_not_best_match.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
+    df_failed_records_iqvia = df_failed_records.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
+
     df_best_match, df_not_best_match = prepare_for_union(df_best_match, df_not_best_match)
     df_all_iqvia = df_best_match.unionByName(df_not_best_match)
 
-    # union process
     df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
     df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
 
-    # window function count number of unique id
     window = Window.partitionBy("unique_id_voyager")
     df_all_iqvia = df_all_iqvia.withColumn("unique_id_count", F.count("unique_id_voyager").over(window))
 
-    df_all_iqvia = df_all_iqvia.filter(
-        (F.col("not_best_match_for_union").isNull()) | (F.col("unique_id_count") == 1)
-    )  # \
-    # .drop('unique_id_count', 'not_best_match')
+    df_all_iqvia = df_all_iqvia.filter((F.col("not_best_match_for_union").isNull()) | (F.col("unique_id_count") == 1))
 
-    # DO: drop all internally created columns
+    drop_list_columns.extend(["not_best_match_for_union", "unique_id_count"])
     return (
-        df_all_iqvia,  # .drop(*list_solve_flag_column),
-        df_lab_residuals,  # .drop(*list_solve_flag_column),
-        df_failed_records,  # .drop(*list_solve_flag_column)
-        df,
+        df_all_iqvia.drop(*drop_list_columns),
+        df_lab_residuals.drop(*drop_list_columns),
+        df_failed_records.drop(*drop_list_columns),
     )
