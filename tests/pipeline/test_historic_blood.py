@@ -39,5 +39,5 @@ def test_historic_blood_delta_ETL_df(regression_test_df, historic_blood_delta_ET
 @pytest.mark.integration
 def test_historic_blood_delta_ETL_schema(regression_test_df_schema, historic_blood_delta_ETL_output):
     regression_test_df_schema(
-        historic_blood_delta_ETL_output.drop("csv_filename"), "processed_historic_blood"
+        historic_blood_delta_ETL_output, "processed_historic_blood"
     )  # removes filename column to account for variation in filename caused by regression
