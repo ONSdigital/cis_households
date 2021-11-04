@@ -178,6 +178,10 @@ def execute_merge_specific_swabs(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
     )
+
+    print("1to1 df --> ")
+    one_to_one_df.show()
+
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
@@ -185,6 +189,8 @@ def execute_merge_specific_swabs(
         # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
 
+    print("1tom input --> ")
+    one_to_many_df.show()
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
         out_of_date_range_flag="out_of_date_range_" + merge_type,
@@ -196,14 +202,23 @@ def execute_merge_specific_swabs(
         void_value=void_value,
         flag_column_name="drop_flag_1tom_" + merge_type,
     )
+    print("1tom output --> ")
+    one_to_many_df.show()
 
+    print("mto1 input --> ")
+    many_to_one_df.show()
     many_to_one_df = M.many_to_one_swab_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
+    print("mto1 output --> ")
+    many_to_one_df.show()
 
+
+    print("mtom input --> ")
+    many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -217,6 +232,8 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
+    print("mtom output --> ")
+    many_to_many_df.show()
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
@@ -228,6 +245,9 @@ def execute_merge_specific_swabs(
         merge_type="swab",
         barcode_column_name=barcode_column_name,
     )
+
+    print("main output --> ")
+    outer_df.show(truncate=False)
 
     return outer_df
 
@@ -259,6 +279,12 @@ def execute_merge_specific_antibody(
         received_date_column_name=received_date_column_name,
     )
 
+    
+    print("1to1 df --> ")
+    one_to_one_df.show()
+
+    print("1tom input --> ")
+    one_to_many_df.show()
     one_to_many_df = M.one_to_many_antibody_flag(
         df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
@@ -271,13 +297,22 @@ def execute_merge_specific_antibody(
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_" + merge_type,
     )
+    print("1tom output --> ")
+    one_to_many_df.show()
 
+    print("mto1 input --> ")
+    many_to_one_df.show()
     many_to_one_df = M.many_to_one_antibody_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
     )
+    print("mto1 output --> ")
+    many_to_one_df.show()
 
+
+    print("mtom input --> ")
+    many_to_many_df.show()
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
         "diff_vs_visit_hr",
@@ -293,6 +328,8 @@ def execute_merge_specific_antibody(
         process_type=merge_type,
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
+    print("mtom output --> ")
+    many_to_many_df.show()
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
@@ -304,6 +341,9 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
+
+    print("main output --> ")
+    outer_df.show(truncate=False)
 
     return outer_df
 
