@@ -77,7 +77,7 @@ def merge_process_preparation(
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
-    """ 
+    """
     Assign all merge process group flag columns simultaneously and create separate
     into individual dataframes
     Parameters
@@ -184,8 +184,7 @@ def execute_merge_specific_swabs(
         visit_date_column_name,
         # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
     ]
-    print("1 to m input -->")
-    one_to_many_df.show()
+
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
         out_of_date_range_flag="out_of_date_range_" + merge_type,
@@ -197,22 +196,14 @@ def execute_merge_specific_swabs(
         void_value=void_value,
         flag_column_name="drop_flag_1tom_" + merge_type,
     )
-    print("1 to m output -->")
-    one_to_many_df.show()
 
-    print("m to 1 input -->")
-    many_to_one_df.show()
     many_to_one_df = M.many_to_one_swab_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
-    print("m to 1 output -->")
-    many_to_one_df.show()
 
-    print("m to m input -->")
-    many_to_many_df.show()
     many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -226,8 +217,6 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    print("m to m output -->")
-    many_to_many_df.show()
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
@@ -235,13 +224,11 @@ def execute_merge_specific_swabs(
     outer_df.show()
 
     outer_df = merge_process_validation(
-       outer_df=outer_df,
-       merge_type="swab",
-       barcode_column_name=barcode_column_name,
+        outer_df=outer_df,
+        merge_type="swab",
+        barcode_column_name=barcode_column_name,
     )
 
-    print("main output --> ")
-    outer_df.show()
     return outer_df
 
 
@@ -271,8 +258,7 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
     )
-    print("1 to m input -->")
-    one_to_many_df.show()
+
     one_to_many_df = M.one_to_many_antibody_flag(
         df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
@@ -285,18 +271,12 @@ def execute_merge_specific_antibody(
         count_barcode_voyager_column_name="count_barcode_voyager",
         count_barcode_labs_column_name="count_barcode_" + merge_type,
     )
-    print("1 to m output -->")
-    one_to_many_df.show()
 
-    print("m to 1 input -->")
-    many_to_one_df.show()
     many_to_one_df = M.many_to_one_antibody_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
     )
-    print("m to 1 output -->")
-    many_to_one_df.show()
 
     window_columns = [
         "abs_offset_diff_vs_visit_hr",
@@ -304,8 +284,7 @@ def execute_merge_specific_antibody(
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]
-    print("m to m input -->")
-    many_to_many_df.show()
+
     many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -314,8 +293,6 @@ def execute_merge_specific_antibody(
         process_type=merge_type,
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    print("m to m output -->")
-    many_to_many_df.show()
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
@@ -323,13 +300,10 @@ def execute_merge_specific_antibody(
     outer_df.show()
 
     outer_df = merge_process_validation(
-       outer_df,
-       merge_type=merge_type,
-       barcode_column_name=barcode_column_name,
+        outer_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
     )
-
-    print("main output --> ")
-    outer_df.show()
 
     return outer_df
 
@@ -360,7 +334,7 @@ def merge_process_filtering(
     Notes: this function will return 2 dataframes, one with best match records
     another one with not best matched records
     """
-    # STEP 1 - RESOLVE FLAGS ------------------------
+    # STEP 1 - RESOLVE FLAGS ---------------------------
     # include: failed_flag_mtom_swab
 
     df = (

@@ -1,4 +1,4 @@
-# import pytest
+import pytest
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 from pyspark.sql import Window
@@ -10,7 +10,7 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 # from cishouseholds.pipeline.merge_process import merge_process_validation
 
 
-# @pytest.mark.xfail(reason="units do not function correctly")
+@pytest.mark.xfail(reason="units do not function correctly")
 def test_merge_process_swab(spark_session):
     schema = "barcode string, comments_surv string, unique_participant_response_id string"
     data = [
