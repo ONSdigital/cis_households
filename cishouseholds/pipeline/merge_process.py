@@ -16,7 +16,7 @@ def merge_process_preparation(
     barcode_column_name: str,
     visit_date_column_name: str,
     received_date_column_name: str,
-    merge_type_neccessary_columns: List[str],
+    merge_type_necessary_columns: List[str],
 ) -> DataFrame:
     """
     Common function to either Swab/Antibody merge that executes the functions for assigning an unique identifier
@@ -59,12 +59,12 @@ def merge_process_preparation(
         interval_upper_bound = 240
         id_type = "unique_antibody_test_id"
 
-    df = outer_df.select(*set(merge_type_neccessary_columns))
+    df = outer_df.select(*set(merge_type_necessary_columns))
 
-    merge_type_neccessary_columns.remove("unique_participant_response_id")
-    merge_type_neccessary_columns.remove(id_type)
+    merge_type_necessary_columns.remove("unique_participant_response_id")
+    merge_type_necessary_columns.remove(id_type)
 
-    df_non_specific_merge = outer_df.drop(*merge_type_neccessary_columns)
+    df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns)
 
     df = M.assign_time_difference_and_flag_if_outside_interval(
         df=df,
@@ -186,7 +186,7 @@ def execute_merge_specific_swabs(
         barcode_column_name=barcode_column_name,
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
-        merge_type_neccessary_columns=[
+        merge_type_necessary_columns=[
             "barcode",
             "unique_participant_response_id",
             "unique_pcr_test_id",
@@ -276,7 +276,7 @@ def execute_merge_specific_antibody(
         barcode_column_name=barcode_column_name,
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
-        merge_type_neccessary_columns=[
+        merge_type_necessary_columns=[
             "barcode",
             "unique_participant_response_id",
             "unique_antibody_test_id",
