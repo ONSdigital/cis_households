@@ -13,7 +13,7 @@ from dummy_data_generation.schemas import get_historic_blood_data_description
 @pytest.fixture
 def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     """
-    Generate lab bloods file.
+    Generate historic bloods file.
     """
     schema = Schema(schema=get_historic_blood_data_description(mimesis_field))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
@@ -32,7 +32,7 @@ def historic_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_historic_blood_delta_ETL_df(regression_test_df, historic_blood_delta_ETL_output):
     regression_test_df(
-        historic_blood_delta_ETL_output.drop("historic_blood_test_source_file"),
+        historic_blood_delta_ETL_output.drop("blood_test_source_file"),
         "blood_sample_barcode",
         "processed_historic_blood",
     )  # removes filename column to account for variation in filename caused by regression
@@ -40,6 +40,4 @@ def test_historic_blood_delta_ETL_df(regression_test_df, historic_blood_delta_ET
 
 @pytest.mark.integration
 def test_historic_blood_delta_ETL_schema(regression_test_df_schema, historic_blood_delta_ETL_output):
-    regression_test_df_schema(
-        historic_blood_delta_ETL_output, "processed_historic_blood"
-    )  # removes filename column to account for variation in filename caused by regression
+    regression_test_df_schema(historic_blood_delta_ETL_output, "processed_historic_blood")

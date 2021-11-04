@@ -56,7 +56,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: blood_test_source_file
+  name: historic_blood_test_source_file
   nullable: false
   type: string
 - metadata: {}
