@@ -327,7 +327,7 @@ def merge_process_filtering(
     Notes: this function will return 2 dataframes, one with best match records
     another one with not best matched records
     """
-    # STEP 1 - RESOLVE FLAGS ------------------------
+    # STEP 1 - RESOLVE FLAGS ---------------------------
     # include: failed_flag_mtom_swab
 
     df = (
