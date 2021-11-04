@@ -231,6 +231,9 @@ def execute_merge_specific_swabs(
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
+    print("main output pre validation --> ")
+    outer_df.show()
+
     outer_df = merge_process_validation(
        outer_df=outer_df,
        merge_type="swab",
@@ -315,6 +318,10 @@ def execute_merge_specific_antibody(
     many_to_many_df.show()
 
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
+
+    print("main output pre validation --> ")
+    outer_df.show()
+
     outer_df = merge_process_validation(
        outer_df,
        merge_type=merge_type,

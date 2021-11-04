@@ -18,8 +18,8 @@ def union_multiple_tables(tables: List[DataFrame]):
         list of objects representing the respective input tables
     """
     merged_df = tables[0]
-    for n, in range(1,len(tables) - 1):
-        merged_df, dfn = prepare_for_union(merged_df, tables[n])
+    for table_n in tables[1:]:
+        merged_df, dfn = prepare_for_union(merged_df, table_n)
         merged_df = merged_df.union(dfn)
     return merged_df
 
