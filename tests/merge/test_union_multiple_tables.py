@@ -3,7 +3,7 @@ from chispa import assert_df_equality
 from cishouseholds.merge import union_multiple_tables
 
 
-def test_merge_survey_tables(spark_session):
+def test_union_multiple_tables(spark_session):
     input_df0 = spark_session.createDataFrame(
         data=[
             ("a1", 1, 2),
