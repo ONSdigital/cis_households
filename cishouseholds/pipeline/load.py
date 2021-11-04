@@ -28,7 +28,7 @@ def check_table_exists(table_name: str):
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
-    df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{table_name}")
+    df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{storage_config['table_prefix']}{table_name}")
 
     return df
 
@@ -76,7 +76,7 @@ def _create_run_log_entry(
         config string
     """
 
-    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config)]]
+    run_log_entry = [[run_id, run_datetime, pipeline, version, json.dumps(config, default=str)]]
 
     return spark_session.createDataFrame(run_log_entry, schema)
 
