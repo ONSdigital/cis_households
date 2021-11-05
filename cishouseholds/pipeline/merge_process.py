@@ -274,12 +274,12 @@ def execute_merge_specific_antibody(
             "unique_participant_response_id",
             "unique_antibody_test_id",
             "visit_date_string",
-            "blood_sample_received_date",
-            "antibody_test_result_recorded_date",
-            "antibody_test_result_classification",
+            "blood_sample_received_date_s_protein",
+            "antibody_test_result_recorded_date_s_protein",
+            "antibody_test_result_classification_s_protein",
             "count_barcode_antibody",
             "count_barcode_voyager",
-            "siemens_antibody_test_result_value",
+            "siemens_antibody_test_result_value_s_protein",
         ],
     )
 
