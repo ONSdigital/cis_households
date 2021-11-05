@@ -21,16 +21,19 @@ def historical_blood_ETL(resource_path: str, latest_only: bool = False, start_da
         historical_blood_validation_schema,
         transform_blood_delta,
     )
+    df = add_fields(df)
     update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
     return df
 
 
 def add_fields(df: DataFrame):
+    """Temporarily add fields that are missing in example data."""
     new_columns = {
         "antibody_test_undiluted_result_value": "float",
         "antibody_test_bounded_result_value": "float",
     }
     for column, type in new_columns.items():
-        df = df.withColumn(column, F.lit(None).cast(type))
+        if column not in df.columns:
+            df = df.withColumn(column, F.lit(None).cast(type))
 
     return df
