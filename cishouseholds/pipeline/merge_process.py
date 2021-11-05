@@ -1,7 +1,8 @@
+from typing import List
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
