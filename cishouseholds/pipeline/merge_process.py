@@ -1,8 +1,7 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
@@ -183,9 +182,8 @@ def execute_merge_specific_swabs(
             "swab_sample_barcode",
             "unique_participant_response_id",
             "unique_pcr_test_id",
-            "visit_date_string",
+            "visit_datetime",
             "pcr_datetime",
-            "pcr_result_recorded_datetime",
             "pcr_result_classification",
             "count_barcode_" + merge_type,
             "count_barcode_voyager",

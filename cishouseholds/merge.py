@@ -1,9 +1,8 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
@@ -514,7 +513,7 @@ def many_to_many_flag(
 
     df = df.withColumn(drop_flag_column_name_to_assign, F.lit(None).cast("integer"))
 
-    while df.filter(df.record_processed.isNull()).count() > 0:
+    for _ in range(2):
         window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
         df = df.withColumn("row_number", F.row_number().over(window))
         df = df.withColumn(
