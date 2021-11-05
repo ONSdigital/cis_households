@@ -28,7 +28,7 @@ def historical_blood_ETL(resource_path: str, latest_only: bool = False, start_da
 
 
 def add_fields(df: DataFrame):
-    """Temporarily add fields that are missing in example data."""
+    """Add fields that might be missing in example data."""
     new_columns = {
         "antibody_test_undiluted_result_value": "float",
         "antibody_test_bounded_result_value": "float",

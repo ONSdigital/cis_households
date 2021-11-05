@@ -39,14 +39,14 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
         column_name_to_assign="unique_antibody_test_id",
         concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
     )
-    if "antibody_assay_flag" not in df.columns:
-        df = assign_column_uniform_value(df, "antibody_assay_flag", 1)
-
     return df
 
 
 def add_historical_fields(df: DataFrame):
-    """Add empty values for union with historical data."""
+    """
+    Add empty values for union with historical data. Also adds constant
+    values for continuation with historical data.
+    """
     historical_columns = {
         "siemens_antibody_test_result_classification": "string",
         "siemens_antibody_test_result_value": "float",
@@ -55,5 +55,8 @@ def add_historical_fields(df: DataFrame):
         "plate_storage_method": "string",
     }
     for column, type in historical_columns.items():
-        df = df.withColumn(column, F.lit(None).cast(type))
+        if column not in df.columns:
+            df = df.withColumn(column, F.lit(None).cast(type))
+    if "antibody_assay_category" not in df.columns:
+        df = assign_column_uniform_value(df, "antibody_assay_category", 1)
     return df
