@@ -22,6 +22,7 @@ def blood_delta_ETL(resource_path: str, latest_only: bool = False, start_date: s
         file_path, blood_variable_name_map, blood_datetime_map, blood_validation_schema, transform_blood_delta
     )
     df = add_historical_fields(df)
+    df = df.select(sorted(df.columns))
     update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
     return df
 
