@@ -109,7 +109,6 @@ def merge_blood(survey_df, antibody_df):
     )
 
     merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_antibody = ["drop_flag_mtom_antibody"]  # need to know what to put in this list
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_process_filtering(
         df=survey_antibody_df,
@@ -117,7 +116,6 @@ def merge_blood(survey_df, antibody_df):
         barcode_column_name="blood_sample_barcode",
         lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
         merge_combination=merge_combination_list,
-        drop_list_columns=drop_list_columns_antibody,
     )
 
     return survey_antibody_df, antibody_residuals, survey_antibody_failed
@@ -138,7 +136,6 @@ def merge_swab(survey_df, swab_df):
     )
 
     merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_swab = ["drop_flag_mtom_swab"]  # need to know what to put in this list
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
         df=survey_antibody_swab_df,
@@ -146,7 +143,6 @@ def merge_swab(survey_df, swab_df):
         barcode_column_name="swab_sample_barcode",
         lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
         merge_combination=merge_combination_list,
-        drop_list_columns=drop_list_columns_swab,
     )
 
     return survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed
