@@ -107,15 +107,11 @@ def merge_blood(survey_df, antibody_df):
         visit_date_column_name="visit_date_string",
         received_date_column_name="blood_sample_received_date_s_protein",
     )
-
-    merge_combination_list = ["1tom", "mto1", "mtom"]
-
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_process_filtering(
         df=survey_antibody_df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
         lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
-        merge_combination=merge_combination_list,
     )
 
     return survey_antibody_df, antibody_residuals, survey_antibody_failed
@@ -135,14 +131,11 @@ def merge_swab(survey_df, swab_df):
         void_value="void",
     )
 
-    merge_combination_list = ["1tom", "mto1", "mtom"]
-
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
         df=survey_antibody_swab_df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
         lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
-        merge_combination=merge_combination_list,
     )
 
     return survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed

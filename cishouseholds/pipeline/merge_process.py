@@ -1,8 +1,7 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
@@ -42,7 +41,7 @@ def merge_process_preparation(
 
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
-    outer_df = M.join_dataframes(survey_df, labs_df, barcode_column_name, "outer")
+    outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
 
     if merge_type == "swab":
         interval_upper_bound = 480
@@ -62,7 +61,7 @@ def merge_process_preparation(
     df = M.assign_time_difference_and_flag_if_outside_interval(
         df=df,
         column_name_outside_interval_flag="out_of_date_range_" + merge_type,
-        column_name_time_difference="diff_vs_visit_hr",
+        column_name_time_difference="diff_vs_visit_hr_" + merge_type,
         start_datetime_reference_column=visit_date_column_name,
         end_datetime_reference_column=received_date_column_name,
         interval_lower_bound=-24,
@@ -70,7 +69,10 @@ def merge_process_preparation(
         interval_bound_format="hours",
     )
     df = M.assign_absolute_offset(
-        df=df, column_name_to_assign="abs_offset_diff_vs_visit_hr", reference_column="diff_vs_visit_hr", offset=24
+        df=df,
+        column_name_to_assign="abs_offset_diff_vs_visit_hr_" + merge_type,
+        reference_column="diff_vs_visit_hr_" + merge_type,
+        offset=24,
     )
     many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df = assign_merge_process_group_flags_and_filter(
         df=df, merge_type=merge_type
@@ -91,17 +93,21 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     for name, condition in match_types.items():
         df = M.assign_merge_process_group_flag(
             df=df,
-            column_name_to_assign=name,
+            column_name_to_assign=name + "_" + merge_type,
             out_of_date_range_flag="out_of_date_range_" + merge_type,
             count_barcode_labs_column_name="count_barcode_" + merge_type,
             count_barcode_labs_condition=condition[0],
             count_barcode_voyager_column_name="count_barcode_voyager",
             count_barcode_voyager_condition=condition[1],
         )
-    many_to_many_df = df.filter(F.col("mtom") == 1)
-    one_to_many_df = df.filter(F.col("1tom") == 1)
-    many_to_one_df = df.filter(F.col("mto1") == 1)
-    one_to_one_df = df.filter((F.col("mtom").isNull()) & (F.col("1tom").isNull()) & (F.col("mto1").isNull()))
+    many_to_many_df = df.filter(F.col("mtom" + "_" + merge_type) == 1)
+    one_to_many_df = df.filter(F.col("1tom" + "_" + merge_type) == 1)
+    many_to_one_df = df.filter(F.col("mto1" + "_" + merge_type) == 1)
+    one_to_one_df = df.filter(
+        (F.col("mtom" + "_" + merge_type).isNull())
+        & (F.col("1tom" + "_" + merge_type).isNull())
+        & (F.col("mto1" + "_" + merge_type).isNull())
+    )
 
     # validate that only one match type exists at this point
 
@@ -192,10 +198,10 @@ def execute_merge_specific_swabs(
     )
 
     window_columns = [
-        "abs_offset_diff_vs_visit_hr",
-        "diff_vs_visit_hr",
+        "abs_offset_diff_vs_visit_hr_swab",
+        "diff_vs_visit_hr_swab",
         visit_date_column_name,
-        # 4th here is uncleaned barcode from labs (used in the Stata pipeline)
+        # Stata also uses uncleaned barcode from labs
     ]
 
     one_to_many_df = M.one_to_many_swabs(
@@ -212,29 +218,26 @@ def execute_merge_specific_swabs(
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
-    many_to_many_df = M.many_to_many_flag(  # UPDATE: window column correct ordering
+    many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=[
-            "abs_offset_diff_vs_visit_hr",
-            "diff_vs_visit_hr",
+            "abs_offset_diff_vs_visit_hr_swab",
+            "diff_vs_visit_hr_swab",
             "unique_participant_response_id",
             "unique_pcr_test_id",
         ],
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-
     outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
-
     outer_df = merge_process_validation(
         df=outer_df,
         merge_type="swab",
         barcode_column_name=barcode_column_name,
     )
 
-    # DO: join with two columns the non needed dataframe part
     outer_df = outer_df.join(
         df_non_specific_merge,
         on=["unique_participant_response_id", "unique_pcr_test_id"],
@@ -286,7 +289,7 @@ def execute_merge_specific_antibody(
         df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
         group_by_column=barcode_column_name,
-        diff_interval_hours="diff_vs_visit_hr",
+        diff_interval_hours="diff_vs_visit_hr_antibody",
         siemens_column="siemens_antibody_test_result_value_s_protein",
         tdi_column="antibody_test_result_classification_s_protein",
         visit_date=visit_date_column_name,
@@ -298,8 +301,8 @@ def execute_merge_specific_antibody(
         group_by_column=barcode_column_name,
     )
     window_columns = [
-        "abs_offset_diff_vs_visit_hr",
-        "diff_vs_visit_hr",
+        "abs_offset_diff_vs_visit_hr_antibody",
+        "diff_vs_visit_hr_antibody",
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]

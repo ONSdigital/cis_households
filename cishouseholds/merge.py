@@ -1,9 +1,8 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
@@ -254,21 +253,6 @@ def assign_time_difference_and_flag_if_outside_interval(
     )
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
-    """
-    Join two datasets.
-    Parameters
-    ----------
-    df1
-    df2
-    reference_column
-        Column for join to occur on
-    join_type
-        Specify join type to apply to .join() method
-    """
-    return df1.join(df2, on=on, how=join_type)
-
-
 def assign_merge_process_group_flag(
     df: DataFrame,
     column_name_to_assign: str,
@@ -339,7 +323,9 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         "count_diff_same_as_first",
         F.sum(
-            F.when(F.col("diff_vs_visit_hr") == F.first("diff_vs_visit_hr").over(unbounded_window), 1).otherwise(None)
+            F.when(
+                F.col("diff_vs_visit_hr_swab") == F.first("diff_vs_visit_hr_swab").over(unbounded_window), 1
+            ).otherwise(None)
         )
         .over(unbounded_window)
         .cast("integer"),
@@ -348,7 +334,8 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         "diff_between_first_and_second_records",
         F.sum(
             F.when(
-                F.col("row_number") == 2, F.col("diff_vs_visit_hr") - F.first("diff_vs_visit_hr").over(unbounded_window)
+                F.col("row_number") == 2,
+                F.col("diff_vs_visit_hr_swab") - F.first("diff_vs_visit_hr_swab").over(unbounded_window),
             )
             .otherwise(None)
             .cast("integer")
@@ -359,7 +346,8 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.sum(
             F.when(
                 F.col("row_number") == 2,
-                F.col("abs_offset_diff_vs_visit_hr") - F.first("abs_offset_diff_vs_visit_hr").over(unbounded_window),
+                F.col("abs_offset_diff_vs_visit_hr_swab")
+                - F.first("abs_offset_diff_vs_visit_hr_swab").over(unbounded_window),
             )
             .otherwise(None)
             .cast("integer")
@@ -388,7 +376,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         column_name_to_assign,
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
-            & (F.first("diff_vs_visit_hr").over(unbounded_window) >= 0)
+            & (F.first("diff_vs_visit_hr_swab").over(unbounded_window) >= 0)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -398,7 +386,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         column_name_to_assign,
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
-            & (F.first("diff_vs_visit_hr").over(unbounded_window) < 0)
+            & (F.first("diff_vs_visit_hr_swab").over(unbounded_window) < 0)
             & (F.col("diff_between_first_and_second_records") > 48)
             & (F.col("row_number") > 1),
             1,
@@ -408,7 +396,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.first("diff_vs_visit_hr").over(unbounded_window).between(7, 20))
+            (F.first("diff_vs_visit_hr_swab").over(unbounded_window).between(7, 20))
             & (F.col("diff_between_first_and_second_records") > 16)
             & (F.col("row_number") > 1),
             1,
