@@ -55,6 +55,7 @@ def merge_process_preparation(
     df = outer_df.select(*set(merge_type_necessary_columns))
 
     merge_type_necessary_columns.remove("unique_participant_response_id")
+    merge_type_necessary_columns.remove("unique_pcr_test_id")
     merge_type_necessary_columns.remove(id_type)
 
     df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns)
