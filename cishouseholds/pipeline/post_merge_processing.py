@@ -1,6 +1,6 @@
-from itertools import chain
-
 import pyspark.sql.functions as F
+from functools import reduce
+from itertools import chain
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
@@ -26,23 +26,36 @@ def process_post_merge():
 
     # TODO: Need to join geographies from household level table before imputing
     if "gor9d" not in df.columns:
-        df.withColumn("gor9d", F.lit("A"))
+        df = df.withColumn("gor9d", F.lit("A"))
+    # TODO: Remove once white group derived on survey responses
+    if "white_group" not in df.columns:
+        df = df.withColumn("white_group", F.lit("white"))
 
-    demographic_columns = ["white_group", "sex", "date_of_birth"]
-    df_with_imputed_values = impute_key_columns(df, imputed_value_lookup_df, demographic_columns)
+    key_columns = ["white_group", "sex", "date_of_birth"]
+    df_with_imputed_values = impute_key_columns(df, imputed_value_lookup_df, key_columns)
 
-    imputed_values_df = df.filter(F.sum(F.col(f"{column}_is_imputed") for column in demographic_columns) > 0)
+    imputed_values_df = df_with_imputed_values.filter(
+        reduce(
+            lambda col_1, col_2: col_1 | col_2,
+            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+        )
+    )
+
+    imputation_columns = chain(
+        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
+    )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
     imputed_values = imputed_values_df.select(
         "participant_id",
-        *chain([(column, f"{column}_imputation_method") for column in demographic_columns]),
+        *lookup_columns,
     )
     update_table(imputed_values, "imputed_value_lookup")
 
-    # Merge dependent derivations
+    # Merge or imputation dependent derivations
 
-    df_without_imputed_columns = df.drop(*demographic_columns)
-    update_table(df_without_imputed_columns, "response_level_records")
-    update_table(df_with_imputed_values, "participant_level_key_demographic_records")
+    df_without_imputed_columns = df_with_imputed_values.drop(*imputation_columns)
+    update_table(df_without_imputed_columns, "response_level_records", mode_overide="overwrite")
+    update_table(df_with_imputed_values, "participant_level_key_records", mode_overide="overwrite")
     return df_with_imputed_values
 
 
