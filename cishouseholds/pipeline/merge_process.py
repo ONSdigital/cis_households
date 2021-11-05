@@ -279,7 +279,7 @@ def execute_merge_specific_antibody(
             "antibody_test_result_classification",
             "count_barcode_antibody",
             "count_barcode_voyager",
-            "assay_siemens",
+            "siemens_antibody_test_result_value",
         ],
     )
 
