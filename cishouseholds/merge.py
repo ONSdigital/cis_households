@@ -410,6 +410,14 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         ).otherwise(F.col(column_name_to_assign)),
     )
 
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("abs_offset_diff_between_first_and_second_records") <= 8) & (F.col("row_number") > 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
     return df.drop(
         "row_number",
         "count_occurrences",
