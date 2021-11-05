@@ -275,7 +275,7 @@ def execute_merge_specific_antibody(
             "unique_antibody_test_id",
             "visit_date_string",
             "blood_sample_received_date",
-            "antibody_result_recorded_datetime",
+            "antibody_test_result_recorded_date",
             "antibody_test_result_classification",
             "count_barcode_antibody",
             "count_barcode_voyager",
