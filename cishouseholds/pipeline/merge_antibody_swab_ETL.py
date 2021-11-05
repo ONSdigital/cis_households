@@ -105,7 +105,7 @@ def merge_blood(survey_df, antibody_df):
         labs_df=antibody_df,
         barcode_column_name="blood_sample_barcode",
         visit_date_column_name="visit_date_string",
-        received_date_column_name="combined_blood_sample_received_date",
+        received_date_column_name="blood_sample_received_date_s_protein",
     )
 
     merge_combination_list = ["1tom", "mto1", "mtom"]
