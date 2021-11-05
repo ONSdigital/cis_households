@@ -424,7 +424,7 @@ def merge_process_filtering(
     df_not_best_match = df.filter(F.col("not_best_match") == "1")
     df_failed_records = df.filter(F.col("failed_match") == "1")
 
-    # STEP 3 -
+    # Created for filtering purposes later on, to ensure a 'best_match' is chosen over a 'not_best_match' record
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("integer"))
 
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
