@@ -1,18 +1,18 @@
 import json
-from datetime import datetime
-
-import pkg_resources
 import pyspark.sql.functions as F
+from datetime import datetime
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
+
+import pkg_resources
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def update_table(df, table_name):
+def update_table(df, table_name, mode_overide=None):
     storage_config = get_config()["storage"]
-    df.write.mode(storage_config["write_mode"]).saveAsTable(
+    df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(
         f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
     )
 

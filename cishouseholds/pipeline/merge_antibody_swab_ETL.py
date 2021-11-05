@@ -24,7 +24,7 @@ def union_survey_response_files():
 
     unioned_survey_responses = union_multiple_tables(survey_df_list)
 
-    update_table(unioned_survey_responses, "unioned_survey_responses")
+    update_table(unioned_survey_responses, "unioned_survey_responses", mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_blood_results")
@@ -42,8 +42,8 @@ def outer_join_blood_results():
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, "joined_blood_test_data")
-    update_table(failed_blood_join_df, "failed_blood_test_join")
+    update_table(blood_df, "joined_blood_test_data", mode_overide="overwrite")
+    update_table(failed_blood_join_df, "failed_blood_test_join", mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
@@ -92,7 +92,7 @@ def merge_swab_ETL():
 
 def load_to_data_warehouse_tables(output_df_list, output_table_list):
     for df, table_name in zip(output_df_list, output_table_list):
-        update_table(df, table_name)
+        update_table(df, table_name, mode_overide="overwrite")
 
 
 def merge_blood(survey_df, antibody_df):
