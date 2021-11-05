@@ -1,11 +1,32 @@
+import os
+import subprocess
+from datetime import datetime
+from pathlib import Path
+from pyspark.sql import DataFrame
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
 
-from pyspark.sql import DataFrame
-
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.extract import list_contents
+from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("generate_outputs")
+def generate_outputs():
+    output_directory = Path(get_config()["output_directory"])
+    # TODO: Check that output dir exists
+
+    response_df = extract_from_table("response_level_records")
+    participant_df = extract_from_table("participant_level_key_records")
+
+    linked_df = response_df.join(participant_df, on="participant_id", how="left")
+    write_csv_rename(
+        linked_df, output_directory / f"cishouseholds_complete_output_{datetime.today().strftime('%Y%m%d%H%M%S')}"
+    )
 
 
 def check_columns(col_args, selection_columns, error):
@@ -79,3 +100,32 @@ def configure_outputs(
         for column_name_to_assign, map in value_map.items():
             df = update_column_values_from_map(df, column_name_to_assign, map, complete_map)
     return df
+
+
+def write_csv_rename(df: DataFrame, file_path: Path):
+    """
+    Writes a df to file_path as a single partition and moves to a single CSV with the same name.
+
+    Process first writes into outfile/_tmp and then copies the file
+    to rename it.
+
+    Parameters
+    ----------
+    df
+    file_path
+        path to outgoing file, without filename extension
+    """
+    temp_path = file_path / "_tmp"
+    (df.coalesce(1).write.mode("overwrite").csv(temp_path.as_posix(), header=True))
+
+    partitions = list_contents(temp_path.as_posix())["filename"].to_list()
+
+    if "_SUCCESS" in partitions:
+        partitions.remove("_SUCCESS")
+
+    # move temp file to target location and rename
+    subprocess.check_call(["hadoop", "fs", "-mv", (temp_path / partitions[0]), file_path.as_posix() + ".csv"])
+
+    # remove original subfolder inc tmp
+    with open(os.devnull, "w") as null_device:
+        subprocess.call(["hadoop", "fs", "-rm", "-r", file_path], stdout=null_device)

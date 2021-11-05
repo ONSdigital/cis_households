@@ -1,6 +1,5 @@
-from itertools import chain
-
 import pyspark.sql.functions as F
+from itertools import chain
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
@@ -42,7 +41,7 @@ def process_post_merge():
 
     df_without_imputed_columns = df.drop(*demographic_columns)
     update_table(df_without_imputed_columns, "response_level_records")
-    update_table(df_with_imputed_values, "participant_level_key_demographic_records")
+    update_table(df_with_imputed_values, "participant_level_key_records")
     return df_with_imputed_values
 
 
