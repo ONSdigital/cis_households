@@ -487,7 +487,7 @@ def many_to_many_flag(
     unique_id_lab_str = process_type_id_map[process_type]
 
     if process_type == "antibody":
-        column_to_validate = "antibody_test_result_classification"
+        column_to_validate = "antibody_test_result_classification_s_protein"
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
 
