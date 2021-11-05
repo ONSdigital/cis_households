@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.merge import merge_survey_tables
+from cishouseholds.merge import union_multiple_tables
 
 
-def test_merge_survey_tables(spark_session):
+def test_union_multiple_tables(spark_session):
     input_df0 = spark_session.createDataFrame(
         data=[
             ("a1", 1, 2),
@@ -42,5 +42,5 @@ def test_merge_survey_tables(spark_session):
         ],
         schema="id string, col1 integer, col2 integer, col3 integer",
     )
-    output_df = merge_survey_tables(input_df0, input_df1, input_df2)
+    output_df = union_multiple_tables([input_df0, input_df1, input_df2])
     assert_df_equality(expected_df, output_df, ignore_row_order=True, ignore_column_order=True)
