@@ -1,3 +1,6 @@
+from pyspark.sql import functions as F
+from pyspark.sql.dataframe import DataFrame
+
 from cishouseholds.extract import get_files_by_date
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
@@ -19,4 +22,15 @@ def historical_blood_ETL(resource_path: str, latest_only: bool = False, start_da
         transform_blood_delta,
     )
     update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
+    return df
+
+
+def add_fields(df: DataFrame):
+    new_columns = {
+        "antibody_test_undiluted_result_value": "float",
+        "antibody_test_bounded_result_value": "float",
+    }
+    for column, type in new_columns.items():
+        df = df.withColumn(column, F.lit(None).cast(type))
+
     return df
