@@ -8,8 +8,8 @@ def test_merge_process_filtering(spark_session):
                 iqvia_col string,
                 lab_col string,
                 barcode string,
-                unique_id_voyager integer,
-                unique_id_swab integer,
+                unique_participant_response_id integer,
+                unique_pcr_test_id integer,
                 out_of_date_range_swab integer,
                 1tom_swab integer,
                 mto1_swab integer,
@@ -68,8 +68,8 @@ def test_merge_process_filtering(spark_session):
         iqvia_col string,
         lab_col string,
         barcode string,
-        unique_id_voyager integer,
-        unique_id_swab integer
+        unique_participant_response_id integer,
+        unique_pcr_test_id integer
     """
     data_all_iqvia = [
         ("I", "L", "A1", 1, 1),
@@ -97,7 +97,7 @@ def test_merge_process_filtering(spark_session):
     schema_labs = """
         lab_col string,
         barcode string,
-        unique_id_swab integer
+        unique_pcr_test_id integer
     """
     data_labs = [("L", "A2", 2), ("L", "B1", 3), ("L", "B2", 6), ("L", "D3", 16)]
     df_residuals_expected = spark_session.createDataFrame(data_labs, schema=schema_labs)
@@ -120,7 +120,7 @@ def test_merge_process_filtering(spark_session):
         df=df_input,
         merge_type="swab",
         barcode_column_name="barcode",
-        lab_columns_list=["lab_col", "unique_id_swab"],
+        lab_columns_list=["lab_col", "unique_pcr_test_id"],
         merge_combination=["1tom", "mto1", "mtom"],
     )
 
