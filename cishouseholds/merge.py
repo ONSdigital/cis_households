@@ -30,7 +30,7 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     each specific blood group seperated with the appropriate extension appended to the end of the
     column name.
     """
-    join_on_columns = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    join_on_columns = ["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"]
     window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
