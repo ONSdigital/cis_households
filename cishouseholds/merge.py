@@ -249,23 +249,6 @@ def assign_time_difference_and_flag_if_outside_interval(
     )
 
 
-# def assign_unique_identifier_column(df: DataFrame, column_name_to_assign: str, ordering_columns: list):
-#    """
-#    Derive column with unique identifier for each record.
-#    Parameters
-#    ----------
-#    df
-#    column_name_to_assign
-#        Name of column to be created
-#    ordering_columns
-#        Columns to define order of records to assign an integer value from 1 onwards
-#        This order is mostly for comparison/proving purposes with stata output
-#    """
-#
-#    window = Window.orderBy(*ordering_columns)
-#    return df.withColumn(column_name_to_assign, F.row_number().over(window))
-
-
 def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
     """
     Join two datasets.

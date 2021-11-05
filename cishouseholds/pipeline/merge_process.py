@@ -38,14 +38,7 @@ def merge_process_preparation(
     ----
     It is assumed that the barcode column name for survey and labs is the same.
     """
-    # survey_df = M.assign_unique_identifier_column(
-    #    survey_df, "unique_participant_response_id", ordering_columns=[barcode_column_name]
-    # )
     survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
-
-    # labs_df = M.assign_unique_identifier_column(
-    #    labs_df, "unique_id_" + merge_type, ordering_columns=[barcode_column_name]
-    # )
 
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
