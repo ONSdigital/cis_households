@@ -139,13 +139,13 @@ def merge_process_validation(df: DataFrame, merge_type: str, barcode_column_name
     failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
     failed_column_names_syntax = [element + merge_type for element in failed_column_names]
 
-    match_type_colums_syntax = [element + "_" + merge_type for element in merge_type_list]
+    match_type_columns_syntax = [element + "_" + merge_type for element in merge_type_list]
 
     df = validate_merge_logic(
         df=df,
         flag_column_names=flag_column_names_syntax,
         failed_column_names=failed_column_names_syntax,
-        match_type_columns=match_type_colums_syntax,
+        match_type_columns=match_type_columns_syntax,
         group_by_column=barcode_column_name,
     )
     return df
@@ -180,11 +180,11 @@ def execute_merge_specific_swabs(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
-            "barcode",
+            "swab_sample_barcode",
             "unique_participant_response_id",
             "unique_pcr_test_id",
-            "date_visit",
-            "date_received",
+            "visit_date_string",
+            "pcr_datetime",
             "pcr_result_recorded_datetime",
             "pcr_result_classification",
             "count_barcode_" + merge_type,
@@ -270,11 +270,11 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
-            "barcode",
+            "blood_sample_barcode",
             "unique_participant_response_id",
             "unique_antibody_test_id",
-            "date_visit",
-            "date_received",
+            "visit_date_string",
+            "blood_sample_received_date",
             "antibody_result_recorded_datetime",
             "antibody_test_result_classification",
             "count_barcode_antibody",
