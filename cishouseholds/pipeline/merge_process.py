@@ -55,7 +55,6 @@ def merge_process_preparation(
     df = outer_df.select(*set(merge_type_necessary_columns))
 
     merge_type_necessary_columns.remove("unique_participant_response_id")
-    merge_type_necessary_columns.remove("unique_pcr_test_id")
     merge_type_necessary_columns.remove(id_type)
 
     df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns)
@@ -402,6 +401,7 @@ def merge_process_filtering(
         df = df.withColumn(
             "failed_match", F.when(F.col("failed_flag_mtom_swab") == 1, 1).otherwise(F.col("failed_match"))
         )
+        lab_record_id = "unique_pcr_test_id"
     elif merge_type == "antibody":
         df = df.withColumn(
             "failed_match",
@@ -409,6 +409,7 @@ def merge_process_filtering(
                 F.col("failed_match")
             ),
         )
+        lab_record_id = "unique_antibody_test_id"
 
     df = df.withColumn(
         "best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("best_match"))
@@ -422,7 +423,7 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("integer"))
 
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
-    df_lab_residuals = df_lab_residuals.join(df_best_match, on="unique_pcr_test_id", how="left_anti")
+    df_lab_residuals = df_lab_residuals.join(df_best_match, on=lab_record_id, how="left_anti")
 
     drop_list_columns = [
         f"out_of_date_range_{merge_type}",
