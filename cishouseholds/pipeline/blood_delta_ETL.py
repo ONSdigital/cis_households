@@ -49,6 +49,7 @@ def add_historical_fields(df: DataFrame):
     historical_columns = {
         "siemens_antibody_test_result_classification": "string",
         "siemens_antibody_test_result_value": "float",
+        "tdi_antibody_test_result_value": "float",
         "lims_id": "string",
         "plate_storage_method": "string",
     }
