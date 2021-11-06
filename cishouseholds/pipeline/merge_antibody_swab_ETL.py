@@ -59,9 +59,9 @@ def merge_blood_ETL():
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
     output_antibody_table_list = [
-        "transformed_survey_antibody_merge_data",
-        "transformed_antibody_merge_residuals",
-        "transformed_survey_antibody_merge_failed",
+        "merged_responses_antibody_data",
+        "antibody_merge_residuals",
+        "antibody_merge_failed_records",
     ]
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
@@ -73,7 +73,7 @@ def merge_swab_ETL():
     """
     High level function call for running merging process for swab sample data.
     """
-    survey_table = "transformed_survey_antibody_merge_data"
+    survey_table = "merged_responses_antibody_data"
     swab_table = "transformed_swab_test_data"
     survey_df = extract_from_table(survey_table)
     swab_df = extract_from_table(swab_table)
@@ -81,9 +81,9 @@ def merge_swab_ETL():
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
     output_swab_table_list = [
-        "transformed_survey_antibody_swab_merge_data",
-        "transformed_antibody_swab_merge_residuals",
-        "transformed_survey_antibody_swab_merge_failed",
+        "merged_responses_antibody_swab_data",
+        "swab_merge_residuals",
+        "swab_merge_failed_records",
     ]
     load_to_data_warehouse_tables(output_swab_df_list, output_swab_table_list)
 
@@ -107,14 +107,13 @@ def merge_blood(survey_df, antibody_df):
         visit_date_column_name="visit_date_string",
         received_date_column_name="blood_sample_received_date_s_protein",
     )
-    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_process_filtering(
+
+    return merge_process_filtering(
         df=survey_antibody_df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
         lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
     )
-
-    return survey_antibody_df, antibody_residuals, survey_antibody_failed
 
 
 def merge_swab(survey_df, swab_df):
@@ -131,11 +130,9 @@ def merge_swab(survey_df, swab_df):
         void_value="void",
     )
 
-    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
+    return merge_process_filtering(
         df=survey_antibody_swab_df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
         lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
     )
-
-    return survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed

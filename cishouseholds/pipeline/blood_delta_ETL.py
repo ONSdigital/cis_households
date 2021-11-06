@@ -58,5 +58,5 @@ def add_historical_fields(df: DataFrame):
         if column not in df.columns:
             df = df.withColumn(column, F.lit(None).cast(type))
     if "antibody_assay_category" not in df.columns:
-        df = assign_column_uniform_value(df, "antibody_assay_category", 1)
+        df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
     return df

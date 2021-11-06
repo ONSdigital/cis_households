@@ -1,8 +1,7 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
@@ -127,26 +126,25 @@ def merge_process_validation(df: DataFrame, merge_type: str, barcode_column_name
     barcode_column_name
     """
     merge_type_list = ["1tom", "mto1", "mtom"]
-    count_barcode_labs_condition = ["==1", ">1", ">1"]
-    count_barcode_voyager_condition = [">1", "==1", ">1"]
+    merge_combinations = zip(merge_type_list, ["==1", ">1", ">1"], [">1", "==1", ">1"])
 
-    for element in zip(merge_type_list, count_barcode_labs_condition, count_barcode_voyager_condition):
+    for _merge_type, lab_count, responses_count in merge_combinations:
         df = M.assign_merge_process_group_flag(
             df=df,
-            column_name_to_assign=element[0] + "_" + merge_type,
+            column_name_to_assign=_merge_type + "_" + merge_type,
             out_of_date_range_flag="out_of_date_range_" + merge_type,
             count_barcode_labs_column_name="count_barcode_" + merge_type,
-            count_barcode_labs_condition=element[1],
+            count_barcode_labs_condition=lab_count,
             count_barcode_voyager_column_name="count_barcode_voyager",
-            count_barcode_voyager_condition=element[2],
+            count_barcode_voyager_condition=responses_count,
         )
     flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
-    flag_column_names_syntax = [element + merge_type for element in flag_column_names]
+    flag_column_names_syntax = [column + merge_type for column in flag_column_names]
 
     failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
-    failed_column_names_syntax = [element + merge_type for element in failed_column_names]
+    failed_column_names_syntax = [column + merge_type for column in failed_column_names]
 
-    match_type_columns_syntax = [element + "_" + merge_type for element in merge_type_list]
+    match_type_columns_syntax = [column + "_" + merge_type for column in merge_type_list]
 
     df = validate_merge_logic(
         df=df,
@@ -316,20 +314,19 @@ def execute_merge_specific_antibody(
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
 
-    outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
+    unioned_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
 
-    outer_df = merge_process_validation(
-        outer_df,
+    unioned_df = merge_process_validation(
+        unioned_df,
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
 
-    outer_df = outer_df.join(
+    return unioned_df.join(
         df_non_specific_merge,
         on=["unique_participant_response_id", "unique_antibody_test_id"],
-        how="inner",
+        how="left",
     )
-    return outer_df
 
 
 def merge_process_filtering(
@@ -362,24 +359,20 @@ def merge_process_filtering(
     - Failed records df (records that have failed process)
     """
 
-    df = (
-        df.withColumn("best_match", F.lit(None).cast("integer"))
-        .withColumn("not_best_match", F.lit(None).cast("integer"))
-        .withColumn("failed_match", F.lit(None).cast("integer"))
-    )
+    df = df.withColumn("failed_match", F.lit(None).cast("integer"))
 
-    df = df.withColumn(
-        "not_best_match", F.when(F.col(f"out_of_date_range_{merge_type}") == 1, 1).otherwise(F.col("not_best_match"))
-    )
+    df = df.withColumn("not_best_match", F.when(F.col(f"out_of_date_range_{merge_type}") == 1, 1))
     df = df.withColumn(
         "best_match",
         F.when(
-            (F.col(f"out_of_date_range_{merge_type}").isNull())
-            & (F.col(f"1tom_{merge_type}").isNull())
-            & (F.col(f"mto1_{merge_type}").isNull())
-            & (F.col(f"mtom_{merge_type}").isNull()),
+            (
+                F.col(f"out_of_date_range_{merge_type}").isNull()
+                & F.col(f"1tom_{merge_type}").isNull()
+                & F.col(f"mto1_{merge_type}").isNull()
+                & F.col(f"mtom_{merge_type}").isNull()
+            ),
             1,
-        ).otherwise(F.col("best_match")),
+        ),
     )
 
     for xtox in merge_combination:

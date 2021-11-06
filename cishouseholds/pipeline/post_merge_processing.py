@@ -1,7 +1,6 @@
+import pyspark.sql.functions as F
 from functools import reduce
 from itertools import chain
-
-import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
@@ -18,7 +17,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 @register_pipeline_stage("process_post_merge")
 def process_post_merge():
 
-    df = extract_from_table("transformed_survey_antibody_swab_merge_data")
+    df = extract_from_table("merged_responses_antibody_swab_data")
 
     if check_table_exists("imputed_value_lookup"):
         imputed_value_lookup_df = extract_from_table("imputed_value_lookup")
