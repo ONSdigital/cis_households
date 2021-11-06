@@ -1,4 +1,5 @@
 import pyspark.sql.functions as F
+
 from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.merge import join_assayed_bloods
@@ -17,7 +18,7 @@ def test_join_assayed_bloods(spark_session):
             ("S", "ONS00000005", 5, 115, 2, 1, 2, 1),
             ("N", "ONS00000005", 5, 115, 2, 2, 1, 1),
         ],
-        schema="""blood_group string, blood_sample_barcode string, antibody_test_plate_number integer,
+        schema="""blood_group string, blood_sample_barcode string, antibody_test_plate_common_id integer,
                 antibody_test_well_id integer, col1 integer, col2 integer, col3 integer, col4 integer""",
     )
     expected_df = spark_session.createDataFrame(
@@ -40,7 +41,7 @@ def test_join_assayed_bloods(spark_session):
             ("ONS00000004", 4, 113, 2, 1, 1, 1, None, None, None, None),
             ("ONS00000003", 2, 112, 1, 2, 2, 1, 2, 1, 1, 1),
         ],
-        schema="""blood_sample_barcode string ,antibody_test_plate_number integer,antibody_test_well_id integer,
+        schema="""blood_sample_barcode string ,antibody_test_plate_common_id integer,antibody_test_well_id integer,
         col1_s_protein integer,col2_s_protein integer,col3_s_protein integer,col4_s_protein integer,
         col1_n_protein integer,col2_n_protein integer,col3_n_protein integer,col4_n_protein integer""",
     )

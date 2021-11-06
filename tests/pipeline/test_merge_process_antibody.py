@@ -24,7 +24,7 @@ def test_merge_process_antibody(spark_session):
                 date_visit string,
                 date_received string,
                 antibody_result_recorded_datetime string,
-                antibody_test_result_classification string,
+                antibody_test_result_classification_s_protein string,
                 assay_siemens string,
                 tdi string"""
     data = [
@@ -46,7 +46,7 @@ def test_merge_process_antibody(spark_session):
                 count_barcode_voyager integer,
                 date_visit string, date_received string,
                 antibody_result_recorded_datetime string,
-                antibody_test_result_classification string,
+                antibody_test_result_classification_s_protein string,
                 siemens string,
                 tdi string,
                 unique_antibody_test_id integer,
