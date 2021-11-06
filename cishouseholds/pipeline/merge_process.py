@@ -1,8 +1,7 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
@@ -231,19 +230,18 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    outer_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
-    outer_df = merge_process_validation(
-        df=outer_df,
+    unioned_df = M.union_multiple_tables(tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df])
+    unioned_df = merge_process_validation(
+        df=unioned_df,
         merge_type="swab",
         barcode_column_name=barcode_column_name,
     )
 
-    outer_df = outer_df.join(
+    return unioned_df.join(
         df_non_specific_merge,
         on=["unique_participant_response_id", "unique_pcr_test_id"],
-        how="inner",
+        how="left",
     )
-    return outer_df
 
 
 def execute_merge_specific_antibody(
