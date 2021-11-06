@@ -2,11 +2,12 @@ import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from pyspark.sql import DataFrame
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
+
+from pyspark.sql import DataFrame
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
