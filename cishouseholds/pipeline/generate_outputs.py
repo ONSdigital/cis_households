@@ -17,16 +17,15 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 @register_pipeline_stage("generate_outputs")
 def generate_outputs():
-    output_directory = Path(get_config()["output_directory"])
+    output_datetime = datetime.today().strftime("%Y%m%d%H%M%S")
+    output_directory = Path(get_config()["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
     response_df = extract_from_table("response_level_records")
     participant_df = extract_from_table("participant_level_key_records")
 
     linked_df = response_df.join(participant_df, on="participant_id", how="left")
-    write_csv_rename(
-        linked_df, output_directory / f"cishouseholds_complete_output_{datetime.today().strftime('%Y%m%d%H%M%S')}"
-    )
+    write_csv_rename(linked_df, output_directory / f"cishouseholds_complete_output_{output_datetime}")
 
 
 def check_columns(col_args, selection_columns, error):
