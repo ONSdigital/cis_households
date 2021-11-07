@@ -1,4 +1,5 @@
 import pyspark.sql.functions as F
+
 from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.merge import join_assayed_bloods
@@ -11,7 +12,7 @@ def test_join_assayed_bloods(spark_session):
             ("N", "2", 1),  # singular
             ("N", "3", 1),  # match N and S
             ("S", "3", 1),
-            ("N", "4", 1),  # duplicates across ident columns
+            ("N", "4", 1),  # duplicated N, so id should fail
             ("S", "4", 1),
             ("N", "4", 1),
         ],

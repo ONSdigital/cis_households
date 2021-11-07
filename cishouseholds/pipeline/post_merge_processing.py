@@ -1,7 +1,6 @@
+import pyspark.sql.functions as F
 from functools import reduce
 from itertools import chain
-
-import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
@@ -33,18 +32,16 @@ def process_post_merge():
         df = df.withColumn("white_group", F.lit("white"))
 
     key_columns = ["white_group", "sex", "date_of_birth"]
-    df_with_imputed_values = impute_key_columns(df, imputed_value_lookup_df, key_columns)
+    key_columns_imputed_df = impute_key_columns(df, imputed_value_lookup_df, key_columns)
 
-    imputed_values_df = df_with_imputed_values.filter(
+    imputed_values_df = key_columns_imputed_df.filter(
         reduce(
             lambda col_1, col_2: col_1 | col_2,
             (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
         )
     )
+    update_table(key_columns_imputed_df, "participant_level_key_records", mode_overide="overwrite")
 
-    imputation_columns = chain(
-        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
-    )
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
     imputed_values = imputed_values_df.select(
         "participant_id",
@@ -52,12 +49,14 @@ def process_post_merge():
     )
     update_table(imputed_values, "imputed_value_lookup")
 
-    # Merge or imputation dependent derivations
+    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
-    df_without_imputed_columns = df_with_imputed_values.drop(*imputation_columns)
-    update_table(df_without_imputed_columns, "response_level_records", mode_overide="overwrite")
-    update_table(df_with_imputed_values, "participant_level_key_records", mode_overide="overwrite")
-    return df_with_imputed_values
+    imputation_columns = chain(
+        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
+    )
+    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
+    update_table(response_level_records_df, "response_level_records", mode_overide="overwrite")
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list):
@@ -110,3 +109,10 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]
     )
+
+
+def merge_dependent_transform(df: DataFrame):
+    """
+    Transformations depending on the merged dataset or imputed columns.
+    """
+    return df
