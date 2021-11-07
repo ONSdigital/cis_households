@@ -49,7 +49,7 @@ def assign_work_social_column(
 
 def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
     """
-    Assign a unique column from concatinating multiple input columns
+    Assign a unique column from concatenating multiple input columns
         concat_columns
     """
     return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
@@ -110,10 +110,10 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     return df.withColumn(column_name_to_assign, F.input_file_name())
 
 
-def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str, reference_column: str, map: dict):
+def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict):
     """
-    Assing a speciifc column value using a dictionary of values to assign as keys and
-    the list criteria corresponing to when that value should be assign as a value
+    Assing a specific column value using a dictionary of values to assign as keys and
+    the list criteria corresponding to when that value should be assign as a value
     Parameters
     ----------
     df
@@ -121,11 +121,11 @@ def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str,
     reference_column
     map
     """
-    df = df.withColumn(column_name_to_asign, F.lit(None))
+    df = df.withColumn(column_name_to_assign, F.lit(None))
     for val, key_list in map.items():
         df = df.withColumn(
-            column_name_to_asign,
-            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_asign)),
+            column_name_to_assign,
+            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_assign)),
         )
     return df
 

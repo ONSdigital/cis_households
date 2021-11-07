@@ -114,7 +114,7 @@ def check_singular_match(
     flag_column_name
         Column with final flag from merge function
     failure_column_name
-        Column in which to store bool flag that shows if singular match occured for given merge
+        Column in which to store bool flag that shows if singular match occurred for given merge
     match_type_column
         Column to identify type of merge
     group_by_column
@@ -141,7 +141,7 @@ def validate_merge_logic(
     df: DataFrame,
     flag_column_names: List[str],
     failed_column_names: List[str],
-    match_type_colums: List[str],
+    match_type_columns: List[str],
     group_by_column: str,
 ):
     """
@@ -152,12 +152,12 @@ def validate_merge_logic(
     flag_column_names
         List of columns with final flag from merge function
     failure_column_name
-        List of columns in which to store bool flag that shows if singular match occured for given merge
+        List of columns in which to store bool flag that shows if singular match occurred for given merge
     match_type_column
         List of columns to identify type of merge
     group_by_column
         List of columns to check is singular given criteria
     """
     for i, flag_column in enumerate(flag_column_names):
-        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_colums[i], group_by_column)
+        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_columns[i], group_by_column)
     return df

@@ -13,8 +13,6 @@ from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
 
-# from cishouseholds.derive import assign_work_person_facing_now
-
 
 def extract_validate_transform_input_data(
     resource_path: list,
