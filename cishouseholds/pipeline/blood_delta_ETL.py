@@ -18,13 +18,12 @@ from cishouseholds.pipeline.validation_schema import blood_validation_schema
 @register_pipeline_stage("blood_delta_ETL")
 def blood_delta_ETL(**kwargs):
     file_path_list = get_files_to_be_processed(**kwargs)
-
-    df = extract_validate_transform_input_data(
-        file_path_list, blood_variable_name_map, blood_datetime_map, blood_validation_schema, transform_blood_delta
-    )
-    df = add_historical_fields(df)
-    update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
-    return df
+    if file_path_list:
+        df = extract_validate_transform_input_data(
+            file_path_list, blood_variable_name_map, blood_datetime_map, blood_validation_schema, transform_blood_delta
+        )
+        df = add_historical_fields(df)
+        update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:

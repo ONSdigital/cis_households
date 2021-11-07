@@ -35,17 +35,16 @@ def survey_responses_version_2_ETL(**kwargs):
     End to end processing of a IQVIA survey responses CSV file.
     """
     file_path_list = get_files_to_be_processed(**kwargs)
-
-    df = extract_validate_transform_input_data(
-        file_path_list,
-        survey_responses_v2_variable_name_map,
-        survey_responses_datetime_map,
-        survey_responses_v2_validation_schema,
-        transform_survey_responses_version_2_delta,
-        "|",
-    )
-    update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
-    return df
+    if file_path_list:
+        df = extract_validate_transform_input_data(
+            file_path_list,
+            survey_responses_v2_variable_name_map,
+            survey_responses_datetime_map,
+            survey_responses_v2_validation_schema,
+            transform_survey_responses_version_2_delta,
+            "|",
+        )
+        update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
 
 
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
