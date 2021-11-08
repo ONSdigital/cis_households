@@ -2,7 +2,7 @@
 # from chispa import assert_df_equality
 from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 
-# flake8: noqa
+
 def test_merge_process_antibody(spark_session):
     schema = "blood_sample_barcode string, unique_participant_response_id string, any string"
     data = [
