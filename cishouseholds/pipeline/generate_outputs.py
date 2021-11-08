@@ -2,18 +2,21 @@ import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
 
-from pyspark.sql import DataFrame
-from pyspark.sql import functions as F
-
+from cishouseholds.edit import assign_from_map
+from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
+from cishouseholds.pipeline.category_map import category_map
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
@@ -23,14 +26,23 @@ def generate_outputs():
     output_directory = Path(get_config()["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
-    response_df = extract_from_table("response_level_records")
+    all_visits_df = extract_from_table("response_level_records")
     participant_df = extract_from_table("participant_level_key_records")
 
-    linked_df = response_df.join(participant_df, on="participant_id", how="left")
+    linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
+    all_visits_output_df = map_output_columns_and_values(linked_df, output_name_map, category_map)
 
-    complete_visits_df = linked_df.where(F.col("participant_visit_status") == "Completed")
-    write_csv_rename(linked_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
-    write_csv_rename(complete_visits_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")
+    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == "Completed")
+
+    write_csv_rename(all_visits_output_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
+    write_csv_rename(complete_visits_output_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")
+
+
+def map_output_columns_and_values(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
+    df = rename_column_names(df, column_name_map)
+    for column, value_map in value_map_by_column.items():
+        df = assign_from_map(df, column, column, value_map)
+    return df
 
 
 def check_columns(col_args, selection_columns, error):
