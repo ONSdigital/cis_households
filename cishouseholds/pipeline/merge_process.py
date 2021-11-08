@@ -399,12 +399,7 @@ def merge_process_filtering(
     df = df.withColumn(
         "best_match",
         F.when(
-            (
-                F.col(f"out_of_date_range_{merge_type}").isNull()
-                & F.col(f"1tom_{merge_type}").isNull()
-                & F.col(f"mto1_{merge_type}").isNull()
-                & F.col(f"mtom_{merge_type}").isNull()
-            ),
+            (F.col(f"out_of_date_range_{merge_type}").isNull() & (F.col(f"1to1_{merge_type}") == 1)),
             1,
         ),
     )
