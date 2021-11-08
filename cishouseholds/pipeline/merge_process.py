@@ -6,7 +6,7 @@ from pyspark.sql.window import Window
 
 import cishouseholds.merge as M
 from cishouseholds.compare import prepare_for_union
-from cishouseholds.validate import check_singular_match
+from cishouseholds.validate import validate_merge_logic
 
 
 def merge_process_preparation(
@@ -129,13 +129,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df
 
 
-def merge_process_validation(
-    one_to_many_df: DataFrame,
-    many_to_one_df: DataFrame,
-    many_to_many_df: DataFrame,
-    merge_type: str,
-    barcode_column_name: str,
-) -> DataFrame:
+def merge_process_validation(df: DataFrame, merge_type: str, barcode_column_name: str) -> DataFrame:
     """
     Once the merging, preparation and one_to_many, many_to_one and many_to_many functions are executed,
     this function will apply the validation function after identifying what type of merge it is.
@@ -146,22 +140,35 @@ def merge_process_validation(
         either swab or antibody, no other value accepted.
     barcode_column_name
     """
-    input_dfs = [one_to_many_df, many_to_one_df, many_to_many_df]
+    merge_type_list = ["1tom", "mto1", "mtom"]
+    merge_combinations = zip(merge_type_list, ["==1", ">1", ">1"], [">1", "==1", ">1"])
 
+    for _merge_type, lab_count, responses_count in merge_combinations:
+        df = M.assign_merge_process_group_flag(
+            df=df,
+            column_name_to_assign=_merge_type + "_" + merge_type,
+            out_of_date_range_flag="out_of_date_range_" + merge_type,
+            count_barcode_labs_column_name="count_barcode_" + merge_type,
+            count_barcode_labs_condition=lab_count,
+            count_barcode_voyager_column_name="count_barcode_voyager",
+            count_barcode_voyager_condition=responses_count,
+        )
     flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
     flag_column_names_syntax = [column + merge_type for column in flag_column_names]
 
     failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
     failed_column_names_syntax = [column + merge_type for column in failed_column_names]
 
-    for df, flag_column, failed_column in zip(input_dfs, flag_column_names_syntax, failed_column_names_syntax):
-        df = check_singular_match(
-            df=df,
-            flag_column_name=flag_column,
-            failure_column_name=failed_column,
-            group_by_column=barcode_column_name,
-        )
-    return tuple(input_dfs)
+    match_type_columns_syntax = [column + "_" + merge_type for column in merge_type_list]
+
+    df = validate_merge_logic(
+        df=df,
+        flag_column_names=flag_column_names_syntax,
+        failed_column_names=failed_column_names_syntax,
+        match_type_columns=match_type_columns_syntax,
+        group_by_column=barcode_column_name,
+    )
+    return df
 
 
 def execute_merge_specific_swabs(
@@ -245,16 +252,13 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
-    one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
-        one_to_many_df=one_to_many_df,
-        many_to_one_df=many_to_one_df,
-        many_to_many_df=many_to_many_df,
-        merge_type="swab",
-        barcode_column_name=barcode_column_name,
-    )
-
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
+    )
+    unioned_df = merge_process_validation(
+        df=unioned_df,
+        merge_type="swab",
+        barcode_column_name=barcode_column_name,
     )
 
     unioned_df = unioned_df.join(
@@ -341,16 +345,14 @@ def execute_merge_specific_antibody(
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
 
-    one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
-        one_to_many_df=one_to_many_df,
-        many_to_one_df=many_to_one_df,
-        many_to_many_df=many_to_many_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-    )
-
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
+    )
+
+    unioned_df = merge_process_validation(
+        unioned_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
     )
 
     unioned_df = unioned_df.join(
