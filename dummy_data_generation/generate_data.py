@@ -27,7 +27,9 @@ def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_
     """
     Generate survey v0 data.
     """
-    schema = Schema(schema=get_voyager_0_data_description(_, swab_barcodes, blood_barcodes))
+    schema = Schema(
+        schema=get_voyager_0_data_description(_, blood_barcodes=blood_barcodes, swab_barcodes=swab_barcodes)
+    )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
     survey_responses.to_csv(directory / f"ONS_Datafile_{file_date}.csv", index=False, sep="|")
     return survey_responses
@@ -37,7 +39,9 @@ def generate_survey_v1_data(directory, file_date, records, swab_barcodes, blood_
     """
     Generate survey v1 data.
     """
-    schema = Schema(schema=get_voyager_1_data_description(_, swab_barcodes, blood_barcodes))
+    schema = Schema(
+        schema=get_voyager_1_data_description(_, blood_barcodes=blood_barcodes, swab_barcodes=swab_barcodes)
+    )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
 
     survey_responses.to_csv(directory / f"ONSECRF4_Datafile_{file_date}.csv", index=False, sep="|")
@@ -48,7 +52,9 @@ def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_
     """
     Generate survey v2 data.
     """
-    schema = Schema(schema=get_voyager_2_data_description(_, swab_barcodes, blood_barcodes))
+    schema = Schema(
+        schema=get_voyager_2_data_description(_, blood_barcodes=blood_barcodes, swab_barcodes=swab_barcodes)
+    )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
 
     survey_responses.to_csv(directory / f"ONSECRF5_Datafile_{file_date}.csv", index=False, sep="|")
