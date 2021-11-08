@@ -1,10 +1,10 @@
 import json
-from datetime import datetime
-
-import pkg_resources
 import pyspark.sql.functions as F
+from datetime import datetime
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.session import SparkSession
+
+import pkg_resources
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -100,12 +100,12 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
 
 
-def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str):
+def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str, override_mode: str = None):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name)
+    update_table(df, table_name, override_mode)
     update_processed_file_log(df, filename_column, table_name)
 
 

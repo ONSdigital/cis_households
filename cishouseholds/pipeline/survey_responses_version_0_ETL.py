@@ -25,7 +25,12 @@ def survey_responses_version_0_ETL(**kwargs):
             transform_survey_responses_version_0_delta,
             "|",
         )
-        update_table_and_log_source_files(df, "transformed_survey_responses_v0_data", "survey_responses_v0_source_file")
+        update_table_and_log_source_files(
+            df,
+            "transformed_survey_responses_v0_data",
+            "survey_responses_v0_source_file",
+            "overwrite",
+        )
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:

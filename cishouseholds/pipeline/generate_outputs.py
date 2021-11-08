@@ -2,13 +2,12 @@ import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
-
-from pyspark.sql import DataFrame
-from pyspark.sql import functions as F
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
@@ -33,7 +32,7 @@ def generate_outputs():
     linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
     all_visits_output_df = map_output_values_and_column_names(linked_df, output_name_map, category_map)
 
-    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == "Completed")
+    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == 1)
 
     write_csv_rename(all_visits_output_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
     write_csv_rename(complete_visits_output_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")
