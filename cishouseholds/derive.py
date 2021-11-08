@@ -1,9 +1,10 @@
 import re
 from itertools import chain
+from typing import List
+
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from typing import List
 
 
 def assign_work_social_column(
