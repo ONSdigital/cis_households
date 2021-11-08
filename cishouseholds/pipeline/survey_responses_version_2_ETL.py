@@ -60,7 +60,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
     df = assign_column_to_date_string(df, "sample_taken_date_string", "samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", "date_of_birth")
-    df = assign_column_uniform_value(df, "dataset", 1)  # replace 'n' with chosen value
     df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", "swab_sample_barcode")

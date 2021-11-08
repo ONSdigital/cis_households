@@ -39,6 +39,12 @@ def generate_outputs():
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
+    """
+    Map column values to numeric categories and rename columns based on maps.
+    Only applies when column exists in map and df.
+    """
+    value_map_by_column = {k: v for k, v in value_map_by_column.items() if k in df.columns}
+    column_name_map = {column: column_name_map.get(column, column) for column in df.columns}
     for column, value_map in value_map_by_column.items():
         df = assign_from_map(df, column, column, value_map)
     df = rename_column_names(df, column_name_map)
