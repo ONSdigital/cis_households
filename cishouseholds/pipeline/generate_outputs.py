@@ -8,6 +8,7 @@ from typing import Optional
 from typing import Union
 
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
@@ -26,7 +27,10 @@ def generate_outputs():
     participant_df = extract_from_table("participant_level_key_records")
 
     linked_df = response_df.join(participant_df, on="participant_id", how="left")
-    write_csv_rename(linked_df, output_directory / f"cishouseholds_complete_output_{output_datetime}")
+
+    complete_visits_df = linked_df.where(F.col("participant_visit_status") == "Completed")
+    write_csv_rename(linked_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
+    write_csv_rename(complete_visits_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")
 
 
 def check_columns(col_args, selection_columns, error):
