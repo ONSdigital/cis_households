@@ -9,6 +9,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
+from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
 from cishouseholds.validate import validate_csv_header
@@ -158,3 +160,42 @@ def get_files_by_date(
     if latest_only:
         file_list = [file_list[-1]]
     return file_list
+
+
+def get_files_not_processed(file_list: list, table_name: str):
+    """
+    Returns a list of files (to process) which haven't yet been processed
+    Parameters
+    ----------
+    file_list: List of all files for processing
+    table_name: Hive table which contains the list of files already processed
+    ----------
+    """
+    spark_session = get_or_create_spark_session()
+    storage_config = get_config()["storage"]
+    if check_table_exists(table_name):
+        df_processed = spark_session.sql(
+            f"SELECT DISTINCT processed_filename FROM \
+            {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+        )
+        processed_file_list = [row[0] for row in df_processed.collect()]
+
+        unprocessed_file_list = [i for i in file_list if i not in processed_file_list]
+
+        return unprocessed_file_list
+
+    else:
+        return file_list
+
+
+def get_files_to_be_processed(
+    resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False
+):
+    """
+    Get list of files matching the specified pattern and optionally filter
+    to only those that have not been processed.
+    """
+    file_paths = get_files_by_date(resource_path, latest_only, start_date, end_date)
+    if not include_processed:
+        file_paths = get_files_not_processed(file_paths, "processed_filenames")
+    return file_paths
