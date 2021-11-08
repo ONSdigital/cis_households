@@ -1,10 +1,9 @@
 import re
 from itertools import chain
-from typing import List
-
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from typing import List
 
 
 def assign_work_social_column(
@@ -407,7 +406,7 @@ def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args
     return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
 
 
-def substring_column(df: DataFrame, new_column_name, column_to_substr, start_position, len_of_substr):
+def assign_substring(df: DataFrame, column_name_to_assign, column_to_substring, start_position, substring_length):
     """
     Criteria - returns data with new column which is a substring
     of an existing variable
@@ -424,7 +423,7 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     df: pyspark.sql.DataFrame
 
     """
-    df = df.withColumn(new_column_name, F.substring(column_to_substr, start_position, len_of_substr))
+    df = df.withColumn(column_name_to_assign, F.substring(column_to_substring, start_position, substring_length))
 
     return df
 
