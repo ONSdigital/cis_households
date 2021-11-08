@@ -24,7 +24,7 @@ fields:
   nullable: true
   type: float
 - metadata: {}
-  name: antibody_assay_test_flag
+  name: antibody_assay_category
   nullable: true
   type: string
 - metadata: {}
@@ -79,8 +79,4 @@ fields:
   name: unique_antibody_test_id
   nullable: true
   type: string
-- metadata: {}
-  name: antibody_assay_flag
-  nullable: false
-  type: integer
 type: struct

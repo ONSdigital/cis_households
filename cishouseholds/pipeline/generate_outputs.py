@@ -33,7 +33,7 @@ def generate_outputs():
     linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
     all_visits_output_df = map_output_values_and_column_names(linked_df, output_name_map, category_map)
 
-    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == "Completed")
+    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == 1)
 
     write_csv_rename(all_visits_output_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
     write_csv_rename(complete_visits_output_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")

@@ -26,11 +26,11 @@ fields:
 - metadata: {}
   name: antibody_test_bounded_result_value
   nullable: true
-  type: string
+  type: float
 - metadata: {}
   name: antibody_test_undiluted_result_value
   nullable: true
-  type: string
+  type: float
 - metadata: {}
   name: antibody_test_result_recorded_date
   nullable: true
@@ -63,8 +63,4 @@ fields:
   name: unique_antibody_test_id
   nullable: true
   type: string
-- metadata: {}
-  name: antibody_assay_flag
-  nullable: false
-  type: integer
 type: struct

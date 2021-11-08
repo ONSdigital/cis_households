@@ -25,8 +25,8 @@ def test_many_to_one_swab_flag(spark_session):
             ("GHI789", None, 25, 1, 1, 3, None),
             ("GHI789", None, 35, 11, 1, 3, 1),
         ],
-        schema="swab_barcode_cleaned string, out_of_date_range_swab integer, diff_vs_visit_hr integer, \
-                abs_offset_diff_vs_visit_hr integer, count_barcode_swab integer, \
+        schema="swab_barcode_cleaned string, out_of_date_range_swab integer, diff_vs_visit_hr_swab integer, \
+                abs_offset_diff_vs_visit_hr_swab integer, count_barcode_swab integer, \
                 count_barcode_voyager integer, \
                 drop_mto1_swab_flag integer",
     )
@@ -37,7 +37,7 @@ def test_many_to_one_swab_flag(spark_session):
         input_df,
         "drop_mto1_swab_flag",
         "swab_barcode_cleaned",
-        ["abs_offset_diff_vs_visit_hr", "diff_vs_visit_hr"],
+        ["abs_offset_diff_vs_visit_hr_swab", "diff_vs_visit_hr_swab"],
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True)

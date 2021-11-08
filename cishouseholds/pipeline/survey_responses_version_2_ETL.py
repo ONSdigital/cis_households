@@ -18,7 +18,7 @@ from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_work_facing_now_column
-from cishouseholds.extract import get_files_by_date
+from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -30,23 +30,23 @@ from cishouseholds.pipeline.validation_schema import survey_responses_v2_validat
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
-def survey_responses_version_2_ETL(
-    resource_path: str, latest_only: bool = False, start_date: str = None, end_date: str = None
-):
+def survey_responses_version_2_ETL(**kwargs):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
-    file_path = get_files_by_date(resource_path, latest_only=latest_only, start_date=start_date, end_date=end_date)
-    df = extract_validate_transform_input_data(
-        file_path,
-        survey_responses_v2_variable_name_map,
-        survey_responses_datetime_map,
-        survey_responses_v2_validation_schema,
-        transform_survey_responses_version_2_delta,
-        "|",
-    )
-    update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
-    return df
+    file_path_list = get_files_to_be_processed(**kwargs)
+    if file_path_list:
+        df = extract_validate_transform_input_data(
+            file_path_list,
+            survey_responses_v2_variable_name_map,
+            survey_responses_datetime_map,
+            survey_responses_v2_validation_schema,
+            transform_survey_responses_version_2_delta,
+            "|",
+        )
+        update_table_and_log_source_files(
+            df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file", "overwrite"
+        )
 
 
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
