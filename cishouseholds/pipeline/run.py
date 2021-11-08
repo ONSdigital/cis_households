@@ -2,6 +2,7 @@ import traceback
 from datetime import datetime
 
 import cishouseholds.pipeline.blood_delta_ETL  # noqa: F401
+import cishouseholds.pipeline.generate_outputs  # noqa: F401
 import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
 import cishouseholds.pipeline.post_merge_processing  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
@@ -54,11 +55,7 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
-            output_df = pipeline_stages[stage_name](**stage_config)
-            output_df.toPandas().to_csv(
-                f"{config['csv_output_path']}/{stage_name}_output_{datetime.now().strftime('%y%m%d_%H%M%S')}.csv",
-                index=False,
-            )
+            pipeline_stages[stage_name](**stage_config)
         except Exception:
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             print(f"Error: {traceback.format_exc()}")  # functional

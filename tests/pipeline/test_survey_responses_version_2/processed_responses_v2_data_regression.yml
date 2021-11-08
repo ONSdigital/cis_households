@@ -39,7 +39,6 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: null
   county: null
-  dataset: 1
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   email: null
@@ -285,7 +284,6 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
-  dataset: 1
   date_of_birth: null
   date_of_birth_string: null
   email: dashed1989@gsnail.ac.uk
@@ -538,7 +536,6 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
-  dataset: 1
   date_of_birth: '2015-04-22 10:53:00.000000'
   date_of_birth_string: '2015-04-22'
   email: null
@@ -791,7 +788,6 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: null
   county: Humberside
-  dataset: 1
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: '2003-10-07'
   email: null
@@ -1042,7 +1038,6 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: null
   county: null
-  dataset: 1
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   email: belie1852@gsnail.ac.uk
@@ -1292,7 +1287,6 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: null
   county: Worcestershire
-  dataset: 1
   date_of_birth: '1997-08-21 11:10:00.000000'
   date_of_birth_string: '1997-08-21'
   email: null
@@ -1544,7 +1538,6 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
-  dataset: 1
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   email: null
@@ -1793,7 +1786,6 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Avon
-  dataset: 1
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   email: null
@@ -2041,7 +2033,6 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
-  dataset: 1
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: '1997-02-07'
   email: null
@@ -2290,7 +2281,6 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: County Armagh
-  dataset: 1
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   email: null
