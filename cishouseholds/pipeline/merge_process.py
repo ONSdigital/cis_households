@@ -118,10 +118,10 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
         & (F.col("1to1" + "_" + merge_type).isNull())
     )
     no_merge_df = no_merge_df.withColumn(
-        "noneto1", F.when((F.col("count_barcode_voyager").isNull()), 1).otherwise(None)
+        "noneto1_" + merge_type, F.when((F.col("count_barcode_voyager").isNull()), 1).otherwise(None)
     )
     no_merge_df = no_merge_df.withColumn(
-        "1tonone", F.when((F.col("count_barcode_" + merge_type).isNull()), 1).otherwise(None)
+        "1tonone_" + merge_type, F.when((F.col("count_barcode_" + merge_type).isNull()), 1).otherwise(None)
     )
 
     # validate that only one match type exists at this point
@@ -467,6 +467,9 @@ def merge_process_filtering(
         f"failed_mto1_{merge_type}",
         f"failed_mtom_{merge_type}",
         f"failed_flag_mtom_{merge_type}",
+        f"1to1_{merge_type}",
+        f"1tonone_{merge_type}",
+        f"noneto1_{merge_type}",
         "best_match",
         "not_best_match",
         "failed_match",
@@ -483,9 +486,14 @@ def merge_process_filtering(
     df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
     df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
 
-    df_lab_residuals = df.unionByName(df.where(F.col("noneto1").isNotNull()))
+    df_lab_residuals = M.union_multiple_tables(
+        tables=[
+            df_lab_residuals,
+            df.where(F.col("noneto1_" + merge_type).isNotNull()).select(barcode_column_name, *lab_columns_list),
+        ]
+    )
 
-    df_all_iqvia = df.unionByName(df.where(F.col("1tonone").isNotNull()))
+    df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
 
     # window function count number of unique id
     window = Window.partitionBy("unique_participant_response_id")
