@@ -178,7 +178,12 @@ def get_files_not_processed(file_list: list, table_name: str):
             f"SELECT DISTINCT processed_filename FROM \
             {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
         )
-        processed_file_list = [row[0] for row in df_processed.collect()]
+        processed_list = [row[0] for row in df_processed.collect()]
+
+        processed_file_list = []
+        for file in processed_list:
+            file = file.replace("dnt01", "")
+            processed_file_list.append(file)
 
         unprocessed_file_list = [i for i in file_list if i not in processed_file_list]
 
