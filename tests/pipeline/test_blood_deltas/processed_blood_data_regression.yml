@@ -1,12 +1,11 @@
-- antibody_assay_flag: 1
-  antibody_test_bounded_result_value: '29.5'
+- antibody_test_bounded_result_value: 29.5
   antibody_test_plate_common_id: '40250'
   antibody_test_plate_id: ONS_402501CN-6
   antibody_test_result_classification: DETECTED
   antibody_test_result_recorded_date: '2018-01-24 00:00:00.000000'
   antibody_test_result_value: 2237.9938
   antibody_test_target: N
-  antibody_test_undiluted_result_value: '9012'
+  antibody_test_undiluted_result_value: 9012.0
   antibody_test_well_id: O25
   blood_sample_arrayed_date: '2018-11-24 00:00:00.000000'
   blood_sample_barcode: ONS60227680
@@ -14,15 +13,14 @@
   blood_sample_received_date: '2018-01-03 00:00:00.000000'
   blood_sample_type: Venous
   unique_antibody_test_id: ONS6022768040250O25
-- antibody_assay_flag: 1
-  antibody_test_bounded_result_value: '32.1'
+- antibody_test_bounded_result_value: 32.099998474121094
   antibody_test_plate_common_id: '56872'
   antibody_test_plate_id: ONS_568720CN-3
   antibody_test_result_classification: failed
   antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
   antibody_test_result_value: 2066.7238
   antibody_test_target: N
-  antibody_test_undiluted_result_value: '3070'
+  antibody_test_undiluted_result_value: 3070.0
   antibody_test_well_id: G29
   blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
   blood_sample_barcode: ONS66171396
@@ -30,15 +28,14 @@
   blood_sample_received_date: '2019-08-13 00:00:00.000000'
   blood_sample_type: Venous
   unique_antibody_test_id: ONS6617139656872G29
-- antibody_assay_flag: 1
-  antibody_test_bounded_result_value: '73.0'
+- antibody_test_bounded_result_value: 73.0
   antibody_test_plate_common_id: 00868
   antibody_test_plate_id: ONS_008687CN-5
   antibody_test_result_classification: DETECTED
   antibody_test_result_recorded_date: '2021-04-15 00:00:00.000000'
   antibody_test_result_value: 857.1215
   antibody_test_target: N
-  antibody_test_undiluted_result_value: '3358'
+  antibody_test_undiluted_result_value: 3358.0
   antibody_test_well_id: Z35
   blood_sample_arrayed_date: '2018-03-23 00:00:00.000000'
   blood_sample_barcode: ONS80863193
@@ -46,15 +43,14 @@
   blood_sample_received_date: '2019-06-04 00:00:00.000000'
   blood_sample_type: Capillary
   unique_antibody_test_id: ONS8086319300868Z35
-- antibody_assay_flag: 1
-  antibody_test_bounded_result_value: '212.0'
+- antibody_test_bounded_result_value: 212.0
   antibody_test_plate_common_id: '52583'
   antibody_test_plate_id: ONS_525832CN-9
   antibody_test_result_classification: failed
   antibody_test_result_recorded_date: '2018-04-27 00:00:00.000000'
   antibody_test_result_value: 765.2329
   antibody_test_target: N
-  antibody_test_undiluted_result_value: '869'
+  antibody_test_undiluted_result_value: 869.0
   antibody_test_well_id: N00
   blood_sample_arrayed_date: '2020-02-07 00:00:00.000000'
   blood_sample_barcode: ONS83639422
@@ -62,15 +58,14 @@
   blood_sample_received_date: '2019-11-16 00:00:00.000000'
   blood_sample_type: Venous
   unique_antibody_test_id: ONS8363942252583N00
-- antibody_assay_flag: 1
-  antibody_test_bounded_result_value: '359.0'
+- antibody_test_bounded_result_value: 359.0
   antibody_test_plate_common_id: '02126'
   antibody_test_plate_id: ONS_021263CN-3
   antibody_test_result_classification: DETECTED
   antibody_test_result_recorded_date: '2018-07-03 00:00:00.000000'
   antibody_test_result_value: 2368.4482
   antibody_test_target: N
-  antibody_test_undiluted_result_value: '2848'
+  antibody_test_undiluted_result_value: 2848.0
   antibody_test_well_id: F29
   blood_sample_arrayed_date: '2022-06-19 00:00:00.000000'
   blood_sample_barcode: ONS86857022

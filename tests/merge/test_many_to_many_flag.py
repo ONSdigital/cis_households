@@ -34,11 +34,11 @@ def test_many_to_many_flag(spark_session):
             ("DEF789", None, 10, 9, 2, 2, 1, 3, "Negative", 1, None),
             ("DEF789", None, 10, 9, 2, 2, 2, 3, "Negative", 1, None),
         ],
-        schema="antibody_barcode_cleaned string, out_of_date_range_antibody integer, diff_vs_visit integer, \
-                abs_offset_diff_vs_visit integer, count_barcode_antibody integer, \
+        schema="antibody_barcode_cleaned string, out_of_date_range_antibody integer, diff_vs_visit_antibody integer, \
+                abs_offset_diff_vs_visit_antibody integer, count_barcode_antibody integer, \
                 count_barcode_voyager integer, unique_antibody_test_id integer, \
                 unique_participant_response_id integer, \
-                antibody_test_result_classification string, \
+                antibody_test_result_classification_s_protein string, \
                 drop_mtom_antibody_flag integer, failed_mtom_antibody_flag integer",
     )
 
@@ -48,7 +48,12 @@ def test_many_to_many_flag(spark_session):
         input_df,
         "drop_mtom_antibody_flag",
         "antibody_barcode_cleaned",
-        ["abs_offset_diff_vs_visit", "diff_vs_visit", "unique_participant_response_id", "unique_antibody_test_id"],
+        [
+            "abs_offset_diff_vs_visit_antibody",
+            "diff_vs_visit_antibody",
+            "unique_participant_response_id",
+            "unique_antibody_test_id",
+        ],
         "antibody",
         "failed_mtom_antibody_flag",
     )

@@ -1,3 +1,6 @@
+from pyspark.sql import functions as F
+from pyspark.sql.dataframe import DataFrame
+
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
@@ -19,4 +22,19 @@ def historical_blood_ETL(**kwargs):
             historical_blood_validation_schema,
             transform_blood_delta,
         )
-        update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
+    df = add_fields(df)
+    df = df.select(sorted(df.columns))
+    update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
+
+
+def add_fields(df: DataFrame):
+    """Add fields that might be missing in example data."""
+    new_columns = {
+        "antibody_test_undiluted_result_value": "float",
+        "antibody_test_bounded_result_value": "float",
+    }
+    for column, type in new_columns.items():
+        if column not in df.columns:
+            df = df.withColumn(column, F.lit(None).cast(type))
+
+    return df

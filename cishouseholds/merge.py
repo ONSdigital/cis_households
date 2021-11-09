@@ -31,7 +31,12 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     each specific blood group seperated with the appropriate extension appended to the end of the
     column name.
     """
-    join_on_columns = ["blood_sample_barcode", "antibody_test_plate_number", "antibody_test_well_id"]
+    join_on_columns = [
+        "blood_sample_barcode",
+        "antibody_test_plate_common_id",
+        "antibody_test_well_id",
+        "unique_antibody_test_id",
+    ]
     window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
@@ -249,21 +254,6 @@ def assign_time_difference_and_flag_if_outside_interval(
     )
 
 
-def join_dataframes(df1: DataFrame, df2: DataFrame, on: Union[str, List[str]], join_type: str = "outer"):
-    """
-    Join two datasets.
-    Parameters
-    ----------
-    df1
-    df2
-    reference_column
-        Column for join to occur on
-    join_type
-        Specify join type to apply to .join() method
-    """
-    return df1.join(df2, on=on, how=join_type)
-
-
 def assign_merge_process_group_flag(
     df: DataFrame,
     column_name_to_assign: str,
@@ -334,7 +324,9 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         "count_diff_same_as_first",
         F.sum(
-            F.when(F.col("diff_vs_visit_hr") == F.first("diff_vs_visit_hr").over(unbounded_window), 1).otherwise(None)
+            F.when(
+                F.col("diff_vs_visit_hr_swab") == F.first("diff_vs_visit_hr_swab").over(unbounded_window), 1
+            ).otherwise(None)
         )
         .over(unbounded_window)
         .cast("integer"),
@@ -343,7 +335,8 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         "diff_between_first_and_second_records",
         F.sum(
             F.when(
-                F.col("row_number") == 2, F.col("diff_vs_visit_hr") - F.first("diff_vs_visit_hr").over(unbounded_window)
+                F.col("row_number") == 2,
+                F.col("diff_vs_visit_hr_swab") - F.first("diff_vs_visit_hr_swab").over(unbounded_window),
             )
             .otherwise(None)
             .cast("integer")
@@ -354,7 +347,8 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         F.sum(
             F.when(
                 F.col("row_number") == 2,
-                F.col("abs_offset_diff_vs_visit_hr") - F.first("abs_offset_diff_vs_visit_hr").over(unbounded_window),
+                F.col("abs_offset_diff_vs_visit_hr_swab")
+                - F.first("abs_offset_diff_vs_visit_hr_swab").over(unbounded_window),
             )
             .otherwise(None)
             .cast("integer")
@@ -383,7 +377,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         column_name_to_assign,
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
-            & (F.first("diff_vs_visit_hr").over(unbounded_window) >= 0)
+            & (F.first("diff_vs_visit_hr_swab").over(unbounded_window) >= 0)
             & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
@@ -393,7 +387,7 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
         column_name_to_assign,
         F.when(
             (F.col("abs_offset_diff_between_first_and_second_records") >= 8)
-            & (F.first("diff_vs_visit_hr").over(unbounded_window) < 0)
+            & (F.first("diff_vs_visit_hr_swab").over(unbounded_window) < 0)
             & (F.col("diff_between_first_and_second_records") > 48)
             & (F.col("row_number") > 1),
             1,
@@ -403,9 +397,17 @@ def many_to_one_swab_flag(df: DataFrame, column_name_to_assign: str, group_by_co
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.first("diff_vs_visit_hr").over(unbounded_window).between(7, 20))
+            (F.first("diff_vs_visit_hr_swab").over(unbounded_window).between(7, 20))
             & (F.col("diff_between_first_and_second_records") > 16)
             & (F.col("row_number") > 1),
+            1,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("abs_offset_diff_between_first_and_second_records") <= 8) & (F.col("row_number") > 1),
             1,
         ).otherwise(F.col(column_name_to_assign)),
     )
@@ -474,7 +476,7 @@ def many_to_many_flag(
     unique_id_lab_str = process_type_id_map[process_type]
 
     if process_type == "antibody":
-        column_to_validate = "antibody_test_result_classification"
+        column_to_validate = "antibody_test_result_classification_s_protein"
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
 
@@ -501,7 +503,7 @@ def many_to_many_flag(
 
     df = df.withColumn(drop_flag_column_name_to_assign, F.lit(None).cast("integer"))
 
-    while df.filter(df.record_processed.isNull()).count() > 0:
+    for _ in range(2):
         window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
         df = df.withColumn("row_number", F.row_number().over(window))
         df = df.withColumn(

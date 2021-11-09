@@ -24,7 +24,7 @@ def union_survey_response_files():
 
     unioned_survey_responses = union_multiple_tables(survey_df_list)
 
-    update_table(unioned_survey_responses, "unioned_survey_responses")
+    update_table(unioned_survey_responses, "unioned_survey_responses", mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_blood_results")
@@ -42,8 +42,8 @@ def outer_join_blood_results():
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, "joined_blood_test_data")
-    update_table(failed_blood_join_df, "failed_blood_test_join")
+    update_table(blood_df, "joined_blood_test_data", mode_overide="overwrite")
+    update_table(failed_blood_join_df, "failed_blood_test_join", mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
@@ -59,9 +59,9 @@ def merge_blood_ETL():
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
     output_antibody_table_list = [
-        "transformed_survey_antibody_merge_data",
-        "transformed_antibody_merge_residuals",
-        "transformed_survey_antibody_merge_failed",
+        "merged_responses_antibody_data",
+        "antibody_merge_residuals",
+        "antibody_merge_failed_records",
     ]
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
@@ -73,7 +73,7 @@ def merge_swab_ETL():
     """
     High level function call for running merging process for swab sample data.
     """
-    survey_table = "transformed_survey_antibody_merge_data"
+    survey_table = "merged_responses_antibody_data"
     swab_table = "transformed_swab_test_data"
     survey_df = extract_from_table(survey_table)
     swab_df = extract_from_table(swab_table)
@@ -81,9 +81,9 @@ def merge_swab_ETL():
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
     output_swab_table_list = [
-        "transformed_survey_antibody_swab_merge_data",
-        "transformed_antibody_swab_merge_residuals",
-        "transformed_survey_antibody_swab_merge_failed",
+        "merged_responses_antibody_swab_data",
+        "swab_merge_residuals",
+        "swab_merge_failed_records",
     ]
     load_to_data_warehouse_tables(output_swab_df_list, output_swab_table_list)
 
@@ -92,7 +92,7 @@ def merge_swab_ETL():
 
 def load_to_data_warehouse_tables(output_df_list, output_table_list):
     for df, table_name in zip(output_df_list, output_table_list):
-        update_table(df, table_name)
+        update_table(df, table_name, mode_overide="overwrite")
 
 
 def merge_blood(survey_df, antibody_df):
@@ -105,22 +105,15 @@ def merge_blood(survey_df, antibody_df):
         labs_df=antibody_df,
         barcode_column_name="blood_sample_barcode",
         visit_date_column_name="visit_date_string",
-        received_date_column_name="combined_blood_sample_received_date",
+        received_date_column_name="blood_sample_received_date_s_protein",
     )
 
-    merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_antibody = ["drop_flag_mtom_antibody"]  # need to know what to put in this list
-
-    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_process_filtering(
+    return merge_process_filtering(
         df=survey_antibody_df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
         lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
-        merge_combination=merge_combination_list,
-        drop_list_columns=drop_list_columns_antibody,
     )
-
-    return survey_antibody_df, antibody_residuals, survey_antibody_failed
 
 
 def merge_swab(survey_df, swab_df):
@@ -137,16 +130,9 @@ def merge_swab(survey_df, swab_df):
         void_value="void",
     )
 
-    merge_combination_list = ["1tom", "mto1", "mtom"]
-    drop_list_columns_swab = ["drop_flag_mtom_swab"]  # need to know what to put in this list
-
-    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_process_filtering(
+    return merge_process_filtering(
         df=survey_antibody_swab_df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
         lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
-        merge_combination=merge_combination_list,
-        drop_list_columns=drop_list_columns_swab,
     )
-
-    return survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed
