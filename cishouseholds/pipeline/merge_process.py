@@ -141,12 +141,15 @@ def merge_process_validation(
     this function will apply the validation function after identifying what type of merge it is.
     Parameters
     ----------
-    df
+    one_to_many_df
+    many_to_one_df
+    many_to_many_df
     merge_type
         either swab or antibody, no other value accepted.
     barcode_column_name
     """
     input_dfs = [one_to_many_df, many_to_one_df, many_to_many_df]
+    output_dfs = []
 
     flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
     flag_column_names_syntax = [column + merge_type for column in flag_column_names]
@@ -161,7 +164,8 @@ def merge_process_validation(
             failure_column_name=failed_column,
             group_by_column=barcode_column_name,
         )
-    return tuple(input_dfs)
+        output_dfs.append(df)
+    return tuple(output_dfs)
 
 
 def execute_merge_specific_swabs(
