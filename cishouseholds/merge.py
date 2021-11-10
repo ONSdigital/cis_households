@@ -19,9 +19,12 @@ def union_multiple_tables(tables: List[DataFrame]):
         list of objects representing the respective input tables
     """
     merged_df = tables[0]
-    for table_n in tables[1:]:
-        merged_df, dfn = prepare_for_union(merged_df, table_n)
-        merged_df = merged_df.union(dfn)
+    tables[0].toPandas().to_csv("first_df.csv",index=False)     
+    for i, table_n in enumerate(tables[1:]): 
+        table_n.toPandas().to_csv("current_df"+str(i)+".csv",index=False)     
+        merged_df, dfn = prepare_for_union(merged_df, table_n)  
+        merged_df = merged_df.unionByName(dfn)
+        merged_df.toPandas().to_csv("test"+str(i)+".csv",index=False)
     return merged_df
 
 
@@ -30,14 +33,15 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
     column name.
+    Parameters
+    ----------
+    df
+    test_target_column
     """
     join_on_columns = [
-        "blood_sample_barcode",
-        "antibody_test_plate_common_id",
-        "antibody_test_well_id",
         "unique_antibody_test_id",
     ]
-    window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
+    window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
@@ -54,7 +58,9 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
 
     joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
-    return joined_df, failed_df
+    joined_df.show()
+    failed_df.show()
+    return failed_df, joined_df # switched to fix setup
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):

@@ -42,6 +42,10 @@ def merge_process_preparation(
 
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
+    survey_df.toPandas().to_csv("survey.csv",index=False)     
+    labs_df.toPandas().to_csv("labs.csv",index=False)     
+   
+
     outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
 
     if merge_type == "swab":
@@ -314,6 +318,11 @@ def execute_merge_specific_antibody(
             "siemens_antibody_test_result_value_s_protein",
         ],
     )
+    one_to_many_df.toPandas().to_csv("1tomdf.csv",index=False)     
+    many_to_many_df.toPandas().to_csv("mtomdf.csv",index=False)     
+    many_to_one_df.toPandas().to_csv("mto1df.csv",index=False)    
+    no_merge_df.toPandas().to_csv("no_merge.csv",index=False) 
+    one_to_one_df.toPandas().to_csv("onetoone.csv",index=False)
 
     one_to_many_df = M.one_to_many_antibody_flag(
         df=one_to_many_df,
@@ -345,6 +354,12 @@ def execute_merge_specific_antibody(
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
     )
 
+    one_to_many_df.toPandas().to_csv("1tomdf.csv",index=False)     
+    many_to_many_df.toPandas().to_csv("mtomdf.csv",index=False)     
+    many_to_one_df.toPandas().to_csv("mto1df.csv",index=False)    
+    no_merge_df.toPandas().to_csv("no_merge.csv",index=False) 
+    one_to_one_df.toPandas().to_csv("onetoone.csv",index=False)
+
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
         one_to_many_df=one_to_many_df,
         many_to_one_df=many_to_one_df,
@@ -356,12 +371,13 @@ def execute_merge_specific_antibody(
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
-
+    unioned_df.toPandas().to_csv("pre_rebuild.csv", index=False)
     unioned_df = unioned_df.join(
         df_non_specific_merge,
         on=["unique_participant_response_id", "unique_antibody_test_id"],
         how="left",
     )
+    unioned_df.toPandas().to_csv("rebuilt.csv", index=False)
     return unioned_df
 
 
@@ -441,6 +457,9 @@ def merge_process_filtering(
     df = df.withColumn(
         "best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("best_match"))
     ).withColumn("not_best_match", F.when(F.col("failed_match") == 1, None).otherwise(F.col("not_best_match")))
+
+    df.toPandas().to_csv("merge_output.csv", index=False)
+    df.show()
 
     df_best_match = df.filter(F.col("best_match") == "1")
     df_not_best_match = df.filter(F.col("not_best_match") == "1")
