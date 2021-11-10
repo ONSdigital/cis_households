@@ -1,9 +1,7 @@
-# import csv
 import csv
 from datetime import datetime
 from io import StringIO
 from operator import add
-from typing import List
 
 from cerberus import TypeDefinition
 from cerberus import Validator
@@ -101,9 +99,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     return expected_header == header
 
 
-def check_singular_match(
-    df: DataFrame, flag_column_name: str, failure_column_name: str, match_type_column: str, group_by_column: str
-):
+def check_singular_match(df: DataFrame, flag_column_name: str, failure_column_name: str, group_by_column: str):
     """
     Given a set of columns related to the final drop flag of a given merge function on the complete
     (merged) dataframe produce an indication column (failure column) which stipulates whether the
@@ -121,7 +117,7 @@ def check_singular_match(
         Column to check is singular given criteria
     """
     dft = (
-        df.filter((F.col(flag_column_name).isNull()) & (F.col(match_type_column) == 1))
+        df.filter((F.col(flag_column_name).isNull()))
         .groupBy(group_by_column)
         .count()
         .withColumnRenamed(group_by_column, "b")
@@ -134,30 +130,4 @@ def check_singular_match(
         .withColumnRenamed("f", failure_column_name)
         .drop("b", "count")
     )
-    return df
-
-
-def validate_merge_logic(
-    df: DataFrame,
-    flag_column_names: List[str],
-    failed_column_names: List[str],
-    match_type_columns: List[str],
-    group_by_column: str,
-):
-    """
-    Wrapper function to call check_singular_match for each set of parameters in list
-    Parameters. For creating a new failure column specify a name of a column which does not currently exist
-    ----------
-    df
-    flag_column_names
-        List of columns with final flag from merge function
-    failure_column_name
-        List of columns in which to store bool flag that shows if singular match occurred for given merge
-    match_type_column
-        List of columns to identify type of merge
-    group_by_column
-        List of columns to check is singular given criteria
-    """
-    for i, flag_column in enumerate(flag_column_names):
-        df = check_singular_match(df, flag_column, failed_column_names[i], match_type_columns[i], group_by_column)
     return df
