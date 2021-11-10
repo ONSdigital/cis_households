@@ -182,7 +182,6 @@ def get_files_not_processed(file_list: list, table_name: str):
 
         processed_file_list = []
         for file in processed_list:
-            file = file.replace("dnt01", "")
             processed_file_list.append(file)
 
         unprocessed_file_list = [i for i in file_list if i not in processed_file_list]
