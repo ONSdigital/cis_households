@@ -47,19 +47,19 @@ def get_blood_data_description(_, target, serum_source, plate_barcode, well_id):
     }
 
 def get_blood_s_n_data_description(_):
-    def generate_common_data(target):
+    def generate_common_data(_, target):
         serum_source = _("random.custom_code", mask="ONS########", digit="#")
         plate_barcode = _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#")
         well_id = _("random.custom_code", mask="@##", char="@", digit="#")
         return serum_source, plate_barcode, well_id
 
-    serum_source, plate_barcode, well_id = generate_common_data("S")
+    serum_source, plate_barcode, well_id = generate_common_data(_, "S")
     s_gene_description = get_blood_data_description(_, "S", serum_source, plate_barcode, well_id)
 
     if _("integer_number", start=0, end=100) > 15:
         n_gene_description = get_blood_data_description(_, "N", serum_source, plate_barcode.replace("S","N"), well_id)
     else:
-        n_gene_description = get_blood_data_description(_, "N", *generate_common_data("N"))
+        n_gene_description = get_blood_data_description(_, "N", *generate_common_data(_, "N"))
     return s_gene_description, n_gene_description
 
 

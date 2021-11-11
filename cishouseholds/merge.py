@@ -60,7 +60,7 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
     joined_df.show()
     failed_df.show()
-    return failed_df, joined_df # switched to fix setup
+    return joined_df, failed_df
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
