@@ -32,10 +32,10 @@ def get_swab_data_description(_):
 
 def get_blood_data_description(_, target):
     return lambda:{  # noqa: E731
-        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),   
         "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
-        "Plate Barcode":_("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
-        "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),     
+        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
+        "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
         "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
         "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3500, precision=4),
         "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
