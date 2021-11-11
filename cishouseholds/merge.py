@@ -19,12 +19,11 @@ def union_multiple_tables(tables: List[DataFrame]):
         list of objects representing the respective input tables
     """
     merged_df = tables[0]
-    tables[0].toPandas().to_csv("first_df.csv",index=False)     
+
     for i, table_n in enumerate(tables[1:]): 
-        table_n.toPandas().to_csv("current_df"+str(i)+".csv",index=False)     
         merged_df, dfn = prepare_for_union(merged_df, table_n)  
         merged_df = merged_df.unionByName(dfn)
-        merged_df.toPandas().to_csv("test"+str(i)+".csv",index=False)
+        print(f"           -- {i+1}/{len(tables)-1} combination completed") # functional        
     return merged_df
 
 
@@ -38,13 +37,24 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     df
     test_target_column
     """
+    print("target: ", test_target_column)
+   
     join_on_columns = [
+        "blood_sample_barcode",
+        "antibody_test_plate_common_id",
+        "antibody_test_well_id",
         "unique_antibody_test_id",
     ]
+    df.select(*join_on_columns, test_target_column).toPandas().to_csv("assaycols.csv", index=False)
     window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
+
+    df.toPandas().to_csv("summedassay.csv", index=False)
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
+
+    df.toPandas().to_csv("passed_assay.csv", index=False)
+    failed_df.toPandas().to_csv("failed_assay.csv", index=False)
 
     split_dataframes = []
     for blood_group in ["S", "N"]:
@@ -58,8 +68,6 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
 
     joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
-    joined_df.show()
-    failed_df.show()
     return joined_df, failed_df
 
 
@@ -74,7 +82,6 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     column_name_to_assign
         Name of column to be created
     """
-
     window = Window.partitionBy(reference_column)
 
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))

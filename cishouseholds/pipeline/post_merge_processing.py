@@ -19,7 +19,6 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 def process_post_merge():
 
     df = extract_from_table("merged_responses_antibody_swab_data")
-    df.show()
     df.toPandas().to_csv("post_merge_stage.csv", index=False)
 
     if check_table_exists("imputed_value_lookup"):
