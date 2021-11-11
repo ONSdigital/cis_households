@@ -102,19 +102,15 @@ def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Use inbuilt pyspark function to get name of the file used in the current spark task
+    Regular expression removes unnecessary characters to allow checks for processed files
     Parameters
     ----------
     df
     column_name_to_assign
     """
-    df = df.withColumn("temp_path", F.input_file_name())
-
-    if df.filter(df.temp_path.contains(":///")):
-        df = df.withColumn(column_name_to_assign, F.col("temp_path"))
-    else:
-        df = df.withColumn(column_name_to_assign, F.regexp_replace("temp_path", r"(?<=\/{2})(\w+|\d+)(?=\/{1})", ""))
-
-    return df.drop("temp_path")
+    return df.withColumn(
+        column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+    )
 
 
 def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict):
