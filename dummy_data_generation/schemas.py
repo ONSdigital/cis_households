@@ -30,12 +30,12 @@ def get_swab_data_description(_):
     }
 
 
-def get_blood_data_description(_, target, serum_source, plate_barcode, well_id):
-    return lambda: {  # noqa: E731
-        "Serum Source ID": serum_source,
-        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
-        "Plate Barcode":plate_barcode,
-        "Well ID": well_id,
+def get_blood_data_description(_, target):
+    return lambda:{  # noqa: E731
+        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),   
+        "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
+        "Plate Barcode":_("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
+        "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),     
         "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
         "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3500, precision=4),
         "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
@@ -45,22 +45,6 @@ def get_blood_data_description(_, target, serum_source, plate_barcode, well_id):
         "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
         "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
     }
-
-def get_blood_s_n_data_description(_):
-    def generate_common_data(target):
-        serum_source = _("random.custom_code", mask="ONS########", digit="#")
-        plate_barcode = _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#")
-        well_id = _("random.custom_code", mask="@##", char="@", digit="#")
-        return serum_source, plate_barcode, well_id
-
-    serum_source, plate_barcode, well_id = generate_common_data("S")
-    s_gene_description = get_blood_data_description(_, "S", serum_source, plate_barcode, well_id)
-
-    if _("integer_number", start=0, end=100) > 15:
-        n_gene_description = get_blood_data_description(_, "N", serum_source, plate_barcode.replace("S","N"), well_id)
-    else:
-        n_gene_description = get_blood_data_description(_, "N", *generate_common_data("N"))
-    return s_gene_description, n_gene_description
 
 
 def get_historical_blood_data_description(_):

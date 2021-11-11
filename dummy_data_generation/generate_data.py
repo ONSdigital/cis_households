@@ -13,7 +13,7 @@ from mimesis.schema import Schema
 
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
-from dummy_data_generation.schemas import get_blood_s_n_data_description
+from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_swab_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
@@ -78,11 +78,18 @@ def generate_unioxf_medtest_data(directory, file_date, records):
     Generate Oxford blood test data.
     """
     print("generating...")
-    s_gene_description, n_gene_description = get_blood_s_n_data_description(_)
+    s_gene_description = get_blood_data_description(_,"S")
     s_schema = Schema(schema=s_gene_description)
     survey_unioxf_medtest_s = pd.DataFrame(s_schema.create(iterations=records))
+
+    n_gene_description = get_blood_data_description(_,"N")
     n_schema = Schema(schema=n_gene_description)
     survey_unioxf_medtest_n = pd.DataFrame(n_schema.create(iterations=records))
+
+    for row in range(0, records):
+        for col in ["Serum Source ID", "Plate Barcode", "Well ID"]:
+            if _("integer_number", start=0, end=100) > 15:
+                survey_unioxf_medtest_n.at[row, col] = survey_unioxf_medtest_s.at[row, col]
 
     survey_unioxf_medtest_s.to_csv(directory / f"Unioxf_medtestS_{file_date}.csv", index=False)
     survey_unioxf_medtest_n.to_csv(directory / f"Unioxf_medtestN_{file_date}.csv", index=False)
@@ -261,8 +268,8 @@ if __name__ == "__main__":
     lab_swabs = pd.concat([lab_swabs_1, lab_swabs_2, lab_swabs_3])
 
     lab_bloods_s_1, lab_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
-    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
-    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
+    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, lab_date_1, 10)
+    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, lab_date_2, 10)
 
     lab_bloods = pd.concat(
         [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
