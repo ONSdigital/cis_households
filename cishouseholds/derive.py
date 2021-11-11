@@ -109,7 +109,10 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     """
     df = df.withColumn("temp_path", F.input_file_name())
 
-    df = df.withColumn(column_name_to_assign, F.regexp_replace("temp_path", r"(?<=\/{2})(\w+|\d+)(?=\/{1})", ""))
+    if df.filter(df.temp_path.contains(":///")):
+        df = df.withColumn(column_name_to_assign, F.col("temp_path"))
+    else:
+        df = df.withColumn(column_name_to_assign, F.regexp_replace("temp_path", r"(?<=\/{2})(\w+|\d+)(?=\/{1})", ""))
 
     return df.drop("temp_path")
 
