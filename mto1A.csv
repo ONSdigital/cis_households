@@ -1,0 +1,7 @@
+,siemens_antibody_test_result_value_s_protein,unique_participant_response_id,count_barcode_voyager,count_barcode_antibody,visit_date_string,blood_sample_barcode,unique_antibody_test_id,antibody_test_result_recorded_date_s_protein,antibody_test_result_classification_s_protein,blood_sample_received_date_s_protein,diff_vs_visit_hr_antibody,out_of_date_range_antibody,abs_offset_diff_vs_visit_hr_antibody,1to1_antibody,mtom_antibody,1tom_antibody,mto1_antibody,drop_flag_mto1_antibody
+0,,,1,2,,ONS21784619,ONS2178461989880Y88,2021-03-09,NOT detected,2022-01-03,,,,,,,1,1
+1,,,1,2,,ONS21784619,ONS2178461989880Y88,2021-03-09,NOT detected,2022-01-03,,,,,,,1,1
+2,,DHR-9811768150112022-01-07 07:50:26,1,4,2022-01-07,ONS49710563,ONS4971056381273M80,,,,,,,,,,1,1
+3,,DHR-9811768150112022-01-07 07:50:26,1,4,2022-01-07,ONS49710563,ONS4971056381273M80,,,,,,,,,,1,1
+4,,DHR-7928672383972022-01-05 01:20:33,1,4,2022-01-05,ONS78796352,ONS7879635262183U86,,,,,,,,,,1,1
+5,,DHR-7928672383972022-01-05 01:20:33,1,4,2022-01-05,ONS78796352,ONS7879635262183U86,,,,,,,,,,1,1

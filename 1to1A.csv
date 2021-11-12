@@ -1,0 +1,4 @@
+,siemens_antibody_test_result_value_s_protein,unique_participant_response_id,count_barcode_voyager,count_barcode_antibody,visit_date_string,blood_sample_barcode,unique_antibody_test_id,antibody_test_result_recorded_date_s_protein,antibody_test_result_classification_s_protein,blood_sample_received_date_s_protein,diff_vs_visit_hr_antibody,out_of_date_range_antibody,abs_offset_diff_vs_visit_hr_antibody,1to1_antibody,mtom_antibody,1tom_antibody,mto1_antibody
+0,,,1,1,,ONS46387619,ONS4638761901113I98,,,,,,,1,,,
+1,,,1,1,,ONS42359881,ONS4235988185188T29,,,,,,,1,,,
+2,,,1,1,,ONS76773058,ONS7677305846680L20,,,,,,,1,,,

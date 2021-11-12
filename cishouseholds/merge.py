@@ -45,16 +45,11 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
         "antibody_test_well_id",
         "unique_antibody_test_id",
     ]
-    df.select(*join_on_columns, test_target_column).toPandas().to_csv("assaycols.csv", index=False)
     window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
-    df.toPandas().to_csv("summedassay.csv", index=False)
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
-
-    df.toPandas().to_csv("passed_assay.csv", index=False)
-    failed_df.toPandas().to_csv("failed_assay.csv", index=False)
 
     split_dataframes = []
     for blood_group in ["S", "N"]:

@@ -46,11 +46,9 @@ def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, val
     """
     value_map_by_column = {k: v for k, v in value_map_by_column.items() if k in df.columns}
     column_name_map = {column: column_name_map.get(column, column) for column in df.columns}
-    df.toPandas().to_csv("pre_map.csv", index=False)
     for column, value_map in value_map_by_column.items():
         df = assign_from_map(df, column, column, value_map)
     df = rename_column_names(df, column_name_map)
-    df.toPandas().to_csv("post_map.csv", index=False)
     return df
 
 
