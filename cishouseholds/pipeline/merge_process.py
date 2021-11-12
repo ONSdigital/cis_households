@@ -52,18 +52,17 @@ def merge_process_preparation(
 
     if merge_type == "swab":
         interval_upper_bound = 480
-        id_type = "unique_pcr_test_id"
 
     elif merge_type == "antibody":
         interval_upper_bound = 240
-        id_type = "unique_antibody_test_id"
+
+    outer_df = assign_master_unique_id(outer_df, "master_unique_id")
 
     df = outer_df.select(*merge_type_necessary_columns)
 
     df.toPandas().to_csv("selected_df.csv", index=False)
 
-    merge_type_necessary_columns.remove("unique_participant_response_id")
-    merge_type_necessary_columns.remove(id_type)
+    merge_type_necessary_columns.remove("master_unique_id")
 
     df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns)
 
@@ -87,6 +86,7 @@ def merge_process_preparation(
         reference_column="diff_vs_visit_hr_" + merge_type,
         offset=24,
     )
+
     df.toPandas().to_csv("abs_offset.csv", index=False)
     (
         many_to_many_df,
@@ -97,6 +97,11 @@ def merge_process_preparation(
     ) = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
     return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df, df_non_specific_merge
 
+def assign_master_unique_id(df:DataFrame, column_name_to_assign):
+    """
+    Assign a unique ID which is independent of any other column value
+    """
+    return df.withColumn(column_name_to_assign, F.monotonically_increasing_id())
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     """
@@ -216,6 +221,7 @@ def execute_merge_specific_swabs(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
+            "master_unique_id",
             "swab_sample_barcode",
             "unique_participant_response_id",
             "unique_pcr_test_id",
@@ -278,9 +284,10 @@ def execute_merge_specific_swabs(
 
     unioned_df = unioned_df.join(
         df_non_specific_merge,
-        on=["unique_participant_response_id", "unique_pcr_test_id"],
+        on="master_unique_id",
         how="left",
     )
+    unioned_df.drop("master_unique_id")
     return unioned_df
 
 
@@ -317,6 +324,7 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
+            "master_unique_id",
             "blood_sample_barcode",
             "unique_participant_response_id",
             "unique_antibody_test_id",
@@ -384,9 +392,10 @@ def execute_merge_specific_antibody(
     unioned_df.toPandas().to_csv("unioned_antibody_merge_cols.csv", index=False)
     unioned_df = unioned_df.join(
         df_non_specific_merge,
-        on=["unique_participant_response_id", "unique_antibody_test_id"],
+        on="master_unique_id",
         how="left",
     )
+    unioned_df.drop("master_unique_id")
     unioned_df.toPandas().to_csv("unioned_antibody.csv", index=False)
     return unioned_df
 
