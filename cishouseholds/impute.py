@@ -347,7 +347,11 @@ def impute_by_k_nearest_neighbours(
     donor_group_variable_conditions: dict = None,
 ):
     """
-    df: Pyspark dataframe
+    Minimal PySpark implementation of RBEIS, for K-nearest neighbours imputation.
+
+    Parameters
+    ----------
+    df
     column_name_to_assign:
         column to store imputed values
     reference_column:
