@@ -87,9 +87,10 @@ def generate_unioxf_medtest_data(directory, file_date, records):
     survey_unioxf_medtest_n = pd.DataFrame(n_schema.create(iterations=records))
 
     for row in range(0, records):
-        for col in ["Serum Source ID", "Plate Barcode", "Well ID"]:
-            if _("integer_number", start=0, end=100) > 15:
+        if _("integer_number", start=0, end=100) > 15:
+            for col in ["Serum Source ID", "Well ID"]:
                 survey_unioxf_medtest_n.at[row, col] = survey_unioxf_medtest_s.at[row, col]
+            survey_unioxf_medtest_n.at[row, "Plate Barcode"] = survey_unioxf_medtest_s.at[row, "Plate Barcode"].replace("S","N")
 
     survey_unioxf_medtest_s.to_csv(directory / f"Unioxf_medtestS_{file_date}.csv", index=False)
     survey_unioxf_medtest_n.to_csv(directory / f"Unioxf_medtestN_{file_date}.csv", index=False)
