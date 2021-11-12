@@ -20,17 +20,12 @@ def run_from_config():
     """
     Run ordered pipeline stages, from pipeline configuration. Config file location must be specified in the environment
     variable ``PIPELINE_CONFIG_LOCATION``.
-
     ``function`` and ``run`` are essential keys for each stage. All other key value pairs are passed to the function.
-
-
     An example stage is configured:
-
     stages:
     - function: process_csv
       run: True
       resource_path: "path_to.csv"
-
     """
     config = get_config()
     run_datetime = datetime.now()
