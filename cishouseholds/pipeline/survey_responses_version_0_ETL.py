@@ -1,6 +1,7 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v0_variable_name_map
@@ -38,4 +39,5 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for iqvia version 0 survey deltas.
     """
     df = assign_filename_column(df, "survey_responses_v0_source_file")
+    df = assign_unique_id_column(df, "unique_participant_response_id", ["participant_id", "visit_datetime"])
     return df

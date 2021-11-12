@@ -19,9 +19,11 @@ def union_multiple_tables(tables: List[DataFrame]):
         list of objects representing the respective input tables
     """
     merged_df = tables[0]
-    for table_n in tables[1:]:
+
+    for i, table_n in enumerate(tables[1:]):
         merged_df, dfn = prepare_for_union(merged_df, table_n)
-        merged_df = merged_df.union(dfn)
+        merged_df = merged_df.unionByName(dfn)
+        print(f"           -- {i+1}/{len(tables)-1} combination completed")  # functional
     return merged_df
 
 
@@ -30,6 +32,10 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
     column name.
+    Parameters
+    ----------
+    df
+    test_target_column
     """
     join_on_columns = [
         "blood_sample_barcode",
@@ -37,8 +43,9 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
         "antibody_test_well_id",
         "unique_antibody_test_id",
     ]
-    window = Window.partitionBy(*join_on_columns).orderBy("blood_sample_barcode")
+    window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
+
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
 
@@ -54,6 +61,7 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
 
     joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
+
     return joined_df, failed_df
 
 
@@ -68,7 +76,6 @@ def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, col
     column_name_to_assign
         Name of column to be created
     """
-
     window = Window.partitionBy(reference_column)
 
     return df.withColumn(column_name_to_assign, F.count(reference_column).over(window).cast("integer"))
@@ -240,8 +247,8 @@ def assign_time_difference_and_flag_if_outside_interval(
     df = df.withColumn(
         column_name_time_difference,
         (
-            F.to_timestamp(F.col(end_datetime_reference_column)).cast("long")
-            - F.to_timestamp(F.col(start_datetime_reference_column)).cast("long")
+            (F.col(end_datetime_reference_column).cast("long"))
+            - F.to_timestamp(F.col(start_datetime_reference_column), "yyyy-MM-dd").cast("long")
         )
         / conversion_factor,
     )
