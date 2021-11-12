@@ -56,7 +56,7 @@ def merge_process_preparation(
     merge_type_necessary_columns.remove("unique_participant_response_id")
     merge_type_necessary_columns.remove(id_type)
 
-    df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns)
+    df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns).distinct()
 
     df = M.assign_time_difference_and_flag_if_outside_interval(
         df=df,
