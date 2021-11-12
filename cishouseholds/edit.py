@@ -314,22 +314,20 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
 
 def assign_null_if_insufficient(
     df: DataFrame, column_name_to_assign: str, first_reference_column: str, second_reference_column: str
-):
+) -> DataFrame:
     """
-    Assign a null values based on bloods insufficient logic, where two columns both have specified values.
-    From households_aggregate_processes.xlsx, edit number 2.
+    Assign a reference value to null, where two reference columns have specified values.
+    Used to null test result values when sample is insufficient.
+
     Parameters
     ----------
     df
     column_name_to_assign
-        Name of column to be assigned
+        Name of column to assign outcome to
     first_reference_column
-        First column to check value of for null condition
+        Name of column to check for zero value
     second_reference_column
-        Second column to check value of for null condition
-    Return
-    ------
-    pyspark.sql.DataFrame
+        Name of column to check for insufficient indicator
     """
     return df.withColumn(
         column_name_to_assign,
