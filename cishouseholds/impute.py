@@ -487,8 +487,8 @@ def impute_by_k_nearest_neighbours(
     imputed_count = imp_df_final.count()
 
     logging.info(f"{imputed_count} records imputed.")
-    logging.info(f"Summary statistics for imputed values: {reference_column}")
-    logging.info(imp_df_final.select(reference_column).summary().toPandas())
+    logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
+    logging.info(imp_df_final.select(column_name_to_assign).summary().toPandas())
 
     output_df = imp_df_final.unionByName(don_df_final)
 
@@ -500,7 +500,10 @@ def impute_by_k_nearest_neighbours(
     if output_df_length != df_length:
         raise ValueError("Records have been lost during imputation")
 
-    missing_count = output_df.filter((F.col(reference_column).isNull()) | (F.isnan(reference_column))).count()
+    missing_count = output_df.filter(
+        ((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
+        & ((F.col(column_name_to_assign).isNull()) | (F.isnan(column_name_to_assign)))
+    ).count()
     if missing_count != 0:
         raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation")
 
