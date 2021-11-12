@@ -266,7 +266,7 @@ def merge_previous_imputed_values(
 """
 import pyspark
 import pyspark.sql.functions as f
-from pyspark.sql.functions import col, isnan, concat, countDistinct, floor,row_number
+from pyspark.sql.functions import col, isnan, concat, countDistinct, floor, row_number
 from pyspark.sql.window import Window
 from pyspark.sql.types import DoubleType, IntegerType, StringType
 import pandas as pd
@@ -284,41 +284,43 @@ import logging
 
 
 def create_log(start_time, log_path=log_path):
-  log = log_path+start_time+".log"
-  logging.basicConfig(filename=log,level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S')
-  logging.getLogger("requests").setLevel(logging.WARNING)
-  logging.info("Started")
-  pass
+    log = log_path + start_time + ".log"
+    logging.basicConfig(
+        filename=log, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S"
+    )
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    logging.info("Started")
+    pass
 
 
 def init_log_vars(imp_var, impute_vars, impute_weights):
-  logging.info("Variable to impute: %s" % imp_var)
-  logging.info("Using imputation variables: %s" % str(impute_vars))
-  logging.info("With respective weightings: %s" % str(impute_weights))
-  pass
+    logging.info("Variable to impute: %s" % imp_var)
+    logging.info("Using imputation variables: %s" % str(impute_vars))
+    logging.info("With respective weightings: %s" % str(impute_weights))
+    pass
+
 
 def report_to_log(message, print_=False, warn=False):
-  if print_:
-    print(message)
-  if not warn: 
-    logging.info(message)
-  else:
-    logging.warning(message)
-  pass
+    if print_:
+        print(message)
+    if not warn:
+        logging.info(message)
+    else:
+        logging.warning(message)
+    pass
+
 
 ############################
 # begin sparksession helper
 ############################
 
-def SPARK():
-  ss = SparkSession.builder.appName("CIS_RBEIS")\
-  .config('spark.ui.showConsoleProgress', 'false')\
-  .getOrCreate()
-  
-  ss.sparkContext.setLogLevel('WARN')
-  
-  return ss
 
+def SPARK():
+    ss = SparkSession.builder.appName("CIS_RBEIS").config("spark.ui.showConsoleProgress", "false").getOrCreate()
+
+    ss.sparkContext.setLogLevel("WARN")
+
+    return ss
 
 
 ################
@@ -327,114 +329,119 @@ def SPARK():
 
 
 def test_program(df, imp_var, impute_vars, kwargs):
-   # test df, imp_var, impute_vars
-  test_df(df, imp_var, impute_vars)
-  
-  if "impute_weights" not in kwargs:
-      report_to_log("No imputation weights specified, using default: %s" % str([1]*len(impute_vars)), warn=True)
-  impute_weights = kwargs.pop("impute_weights", [1]*len(impute_vars))
+    # test df, imp_var, impute_vars
+    test_df(df, imp_var, impute_vars)
 
-  init_log_vars(imp_var, impute_vars, impute_weights)
-  df, kwargs = test_imp_vars(df, imp_var, impute_vars, impute_weights, kwargs)
-  
-  id_column, min_donors = test_kwargs(df, kwargs)
-  
-  return df, imp_var, impute_vars, impute_weights, id_column, min_donors
+    if "impute_weights" not in kwargs:
+        report_to_log("No imputation weights specified, using default: %s" % str([1] * len(impute_vars)), warn=True)
+    impute_weights = kwargs.pop("impute_weights", [1] * len(impute_vars))
 
+    init_log_vars(imp_var, impute_vars, impute_weights)
+    df, kwargs = test_imp_vars(df, imp_var, impute_vars, impute_weights, kwargs)
+
+    id_column, min_donors = test_kwargs(df, kwargs)
+
+    return df, imp_var, impute_vars, impute_weights, id_column, min_donors
 
 
 def test_df(df, imp_var, impute_vars):
-  # check df
-  if not type(df) == pyspark.sql.dataframe.DataFrame:
-    report_to_log("Dataframe given is not required pyspark.sql.dataframe.DataFrame but %s" % type(df), warn=True)
-    raise ValueError("Dataframe given is not required pyspark.sql.dataframe.DataFrame but %s" % type(df))
-  
-  if not imp_var in df.columns:
-    report_to_log("Variable to impute should be in dataset columns.", warn=True)
-    raise ValueError("Variable to impute, \"%s\", should be in dataset columns." % imp_var)
+    # check df
+    if not type(df) == pyspark.sql.dataframe.DataFrame:
+        report_to_log("Dataframe given is not required pyspark.sql.dataframe.DataFrame but %s" % type(df), warn=True)
+        raise ValueError("Dataframe given is not required pyspark.sql.dataframe.DataFrame but %s" % type(df))
 
-  if not all(impute_var in df.columns for impute_var in impute_vars):
-    report_to_log("Imputation variables, \"%s\", should be in dataset columns." % (impute_vars),warn=True)
-    raise ValueError("Imputation variables, \"%s\", should be in dataset columns." % (impute_vars))
+    if not imp_var in df.columns:
+        report_to_log("Variable to impute should be in dataset columns.", warn=True)
+        raise ValueError('Variable to impute, "%s", should be in dataset columns.' % imp_var)
 
-  pass
+    if not all(impute_var in df.columns for impute_var in impute_vars):
+        report_to_log('Imputation variables, "%s", should be in dataset columns.' % (impute_vars), warn=True)
+        raise ValueError('Imputation variables, "%s", should be in dataset columns.' % (impute_vars))
+
+    pass
 
 
 def test_imp_vars(df, imp_var, impute_vars, impute_weights, kwargs):
-   # variable to impute not in required impute variables
-  if imp_var in impute_vars: 
-    report_to_log("Imputed variable should not be in given impute variables.",warn=True)
-    raise ValueError("Imputed variable should not be in given impute variables.")
-      
-    # impute variables and weights are the same length
-  if len(impute_vars)!=len(impute_weights):
-    report_to_log("Impute weights needs to be the same length as given impute variables.",warn=True)
-    raise ValueError("Impute weights needs to be the same length as given impute variables.")
-  
-  if "impute_vars_conditions" not in kwargs:
-    report_to_log("No bounds for impute variables specified, using default: [None,None,None]", warn=True)
-  impute_vars_conditions = kwargs.pop("impute_vars_conditions", {var: [None,None,None] for var in impute_vars})
+    # variable to impute not in required impute variables
+    if imp_var in impute_vars:
+        report_to_log("Imputed variable should not be in given impute variables.", warn=True)
+        raise ValueError("Imputed variable should not be in given impute variables.")
 
-  df_dtypes = dict(df.dtypes)
-  for var in impute_vars_conditions.keys():
+        # impute variables and weights are the same length
+    if len(impute_vars) != len(impute_weights):
+        report_to_log("Impute weights needs to be the same length as given impute variables.", warn=True)
+        raise ValueError("Impute weights needs to be the same length as given impute variables.")
 
-    if len(impute_vars_conditions[var])!=3:
-      report_to_log("Missing boundary conditions for %s. Needs to be in format [Min, Max, Dtype]" % var, warn=True)
-      raise ValueError("Missing boundary conditions for %s. Needs to be in format [Min, Max, Dtype]" % var)
+    if "impute_vars_conditions" not in kwargs:
+        report_to_log("No bounds for impute variables specified, using default: [None,None,None]", warn=True)
+    impute_vars_conditions = kwargs.pop("impute_vars_conditions", {var: [None, None, None] for var in impute_vars})
 
-    var_min, var_max, var_dtype = impute_vars_conditions[var]
-    if var_dtype is not None:
-      if var_dtype != df_dtypes[var]:
-        report_to_log("%s dtype is %s and not the required %s so trying to change dtype" % (var, df_dtypes[var], var_dtype) ,warn=True)
-        try:
-          df = df.withColumn(var,col(var).cast(var_dtype))
-        except:
-          report_to_log("Failed to convert %s dtype %s to %s" % (var, df_dtypes[var], var_dtype), warn=True)
-    else:
-      report_to_log("%s dtype is None so no dtype is enforced" % var, warn=True)
+    df_dtypes = dict(df.dtypes)
+    for var in impute_vars_conditions.keys():
 
+        if len(impute_vars_conditions[var]) != 3:
+            report_to_log(
+                "Missing boundary conditions for %s. Needs to be in format [Min, Max, Dtype]" % var, warn=True
+            )
+            raise ValueError("Missing boundary conditions for %s. Needs to be in format [Min, Max, Dtype]" % var)
 
-    if var_min is not None:
-      var_min_count = df.filter(col(var) > var_min).count()
-      if var_min_count > 0:
-        report_to_log("%d rows have %s below %d" % (var_min_count, var, var_min), warn=True)
-    else:
-      report_to_log("%s minimum is None so no lower boundary is enforced" % var, warn=True)
+        var_min, var_max, var_dtype = impute_vars_conditions[var]
+        if var_dtype is not None:
+            if var_dtype != df_dtypes[var]:
+                report_to_log(
+                    "%s dtype is %s and not the required %s so trying to change dtype"
+                    % (var, df_dtypes[var], var_dtype),
+                    warn=True,
+                )
+                try:
+                    df = df.withColumn(var, col(var).cast(var_dtype))
+                except:
+                    report_to_log("Failed to convert %s dtype %s to %s" % (var, df_dtypes[var], var_dtype), warn=True)
+        else:
+            report_to_log("%s dtype is None so no dtype is enforced" % var, warn=True)
 
-    if var_max is not None:
-      var_max_count = df.filter(col(var) < var_max).count()
-      if var_max_count > 0:
-        report_to_log("%d rows have %s above %d" % (var_max_count, var, var_max), warn=True)
-    else:
-      report_to_log("%s maximum is None so no upper boundary is enforced" % var, warn=True)
+        if var_min is not None:
+            var_min_count = df.filter(col(var) > var_min).count()
+            if var_min_count > 0:
+                report_to_log("%d rows have %s below %d" % (var_min_count, var, var_min), warn=True)
+        else:
+            report_to_log("%s minimum is None so no lower boundary is enforced" % var, warn=True)
 
-  report_to_log("Summary statistics for imputation variables "+str(impute_vars))
-  report_to_log(df.select(impute_vars).summary().toPandas())
+        if var_max is not None:
+            var_max_count = df.filter(col(var) < var_max).count()
+            if var_max_count > 0:
+                report_to_log("%d rows have %s above %d" % (var_max_count, var, var_max), warn=True)
+        else:
+            report_to_log("%s maximum is None so no upper boundary is enforced" % var, warn=True)
 
-  return df, kwargs
+    report_to_log("Summary statistics for imputation variables " + str(impute_vars))
+    report_to_log(df.select(impute_vars).summary().toPandas())
+
+    return df, kwargs
 
 
 def test_kwargs(df, kwargs):
-  if "id_column" not in kwargs:
-    report_to_log("No id column specified, using default: \"participant_id\"", warn=True)
-  id_column = kwargs.pop("id_column", "participant_id")  
+    if "id_column" not in kwargs:
+        report_to_log('No id column specified, using default: "participant_id"', warn=True)
+    id_column = kwargs.pop("id_column", "participant_id")
 
-  if id_column not in df.columns:
-    report_to_log("id_column, \"%s\", not in df columns" % id_column, warn=True)
-    raise ValueError("id_column, \"%s\", not in df columns" % id_column)
-  
-  if "min_donors" not in kwargs:
-    report_to_log("No min donors specified, using default: 1", warn=True)
-  min_donors = kwargs.pop("min_donors", 1)
-  
-  if min_donors < 0:
-    report_to_log("Min donors can't be negative!", warn=True)
-    raise ValueError("Min donors can't be negative!")
-    
-  if kwargs:
-    raise TypeError('Unexpected **kwargs: %r' % kwargs)
-    
-  return id_column, min_donors
+    if id_column not in df.columns:
+        report_to_log('id_column, "%s", not in df columns' % id_column, warn=True)
+        raise ValueError('id_column, "%s", not in df columns' % id_column)
+
+    if "min_donors" not in kwargs:
+        report_to_log("No min donors specified, using default: 1", warn=True)
+    min_donors = kwargs.pop("min_donors", 1)
+
+    if min_donors < 0:
+        report_to_log("Min donors can't be negative!", warn=True)
+        raise ValueError("Min donors can't be negative!")
+
+    if kwargs:
+        raise TypeError("Unexpected **kwargs: %r" % kwargs)
+
+    return id_column, min_donors
+
 
 #############
 # begin main
@@ -442,197 +449,198 @@ def test_kwargs(df, kwargs):
 
 
 def distance_function(df, impute_vars, impute_weights):
-  df = df.withColumn("distance", sum([(col(var)!=col("don_"+var)).cast(DoubleType())*impute_weights[i] for i,var in enumerate(impute_vars)]))
+    df = df.withColumn(
+        "distance",
+        sum(
+            [
+                (col(var) != col("don_" + var)).cast(DoubleType()) * impute_weights[i]
+                for i, var in enumerate(impute_vars)
+            ]
+        ),
+    )
 
-  min_distances = df.orderBy("distance").groupBy("imp_uniques")\
-  .agg(f.min("distance").alias("min_distance"))
+    min_distances = df.orderBy("distance").groupBy("imp_uniques").agg(f.min("distance").alias("min_distance"))
 
-  df = df.join(min_distances, on='imp_uniques')
-  
-  # filter min distances
-  df = df.filter(col("distance")<=col("min_distance"))
-  df.cache().count()
-  return df
+    df = df.join(min_distances, on="imp_uniques")
+
+    # filter min distances
+    df = df.filter(col("distance") <= col("min_distance"))
+    df.cache().count()
+    return df
+
 
 def impute_method(df, imp_var, impute_vars, **kwargs):
-  """
-  df: Pyspark dataframe
-  imp_var: imputation variable
-  impute_vars: variables used to form unique donor groups to impute from
-  **kwargs: dictionary of key word arguments in the form {"variable":value}
-  
-  List of possible kwargs:
-  "impute_weights" : list of weights of each impute_vars
-  "impute_vars_conditions": list of boundary and data type conditions - in the form [minimum, maximum, "dtype"]
+    """
+    df: Pyspark dataframe
+    imp_var: imputation variable
+    impute_vars: variables used to form unique donor groups to impute from
+    **kwargs: dictionary of key word arguments in the form {"variable":value}
 
-  "log_path" : location the logging file is outputted to
-  "id_column": column name of each records unique identifier
-  "min_donors": minimum donors required in each imputation pool
-  """
-  
-  # start time
-  start_time = datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-  
-  # check sparksession is running
-  sparkSession = SPARK()
-    
-  log_path = kwargs.pop("log_path", "")
-  create_log(start_time,log_path=log_path)
-  
-  df, imp_var, impute_vars, impute_weights,\
-  id_column, min_donors = test_program(df, imp_var, impute_vars, kwargs)
- 
-  
-  # create imputation and donor sets
-  # where imputation are those missing imp_var
-  # and donor are those with valid imp_var
+    List of possible kwargs:
+    "impute_weights" : list of weights of each impute_vars
+    "impute_vars_conditions": list of boundary and data type conditions - in the form [minimum, maximum, "dtype"]
 
-  imp_df = df.filter((col(imp_var).isNull())|(isnan(imp_var)))
-  don_df = df.filter((col(imp_var).isNotNull())&~(isnan(imp_var)))
-  import_count = df.count()
-  impute_count = imp_df.count()
-  donor_count = don_df.count()
-  
-  report_to_log("Dataframe length: %s" % import_count)
-  report_to_log("Impute dataframe length: %s" % impute_count)
-  report_to_log("Donor dataframe length: %s" % donor_count)
-  
-  if impute_count == 0:
-    # send nothing to impute to log
-    report_to_log("No Null values found in %s." % imp_var, warn=True)
-    return df
-    
-  # CHECK: imp_df + don_df should sum to df
-  assert impute_count+donor_count==import_count, "Imp df and Don df do not sum to df"
+    "log_path" : location the logging file is outputted to
+    "id_column": column name of each records unique identifier
+    "min_donors": minimum donors required in each imputation pool
+    """
 
-  imp_df = imp_df.withColumn("imp_uniques", concat(*impute_vars))
-  don_df = don_df.withColumn("don_uniques", concat(*impute_vars))
+    # start time
+    start_time = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-  # unique groupings of impute vars
-  imp_df_unique = imp_df.dropDuplicates(impute_vars).select(impute_vars+["imp_uniques"])
-  don_df_unique = don_df.dropDuplicates(impute_vars).select(impute_vars+["don_uniques"])
+    # check sparksession is running
+    sparkSession = SPARK()
 
-  # and for each unique combination
-  # create df of candidates
+    log_path = kwargs.pop("log_path", "")
+    create_log(start_time, log_path=log_path)
 
-  for var in impute_vars+[imp_var]:
-    don_df_unique = don_df_unique.withColumnRenamed(var, "don_"+var)
-    don_df = don_df.withColumnRenamed(var, "don_"+var)
+    df, imp_var, impute_vars, impute_weights, id_column, min_donors = test_program(df, imp_var, impute_vars, kwargs)
 
-  joined_uniques = imp_df_unique.crossJoin(don_df_unique)
-  
-  joined_uniques = joined_uniques.repartition("imp_uniques")
-  
-  # distance function
-  joined_uniques = distance_function(joined_uniques, impute_vars, impute_weights)
-  
-  candidates = joined_uniques.select("imp_uniques","don_uniques")
+    # create imputation and donor sets
+    # where imputation are those missing imp_var
+    # and donor are those with valid imp_var
 
-  # only counting one row for matching imp_vars
-  freqs = don_df.groupby("don_uniques","don_"+imp_var)\
-  .count().withColumnRenamed("count","frequency")
+    imp_df = df.filter((col(imp_var).isNull()) | (isnan(imp_var)))
+    don_df = df.filter((col(imp_var).isNotNull()) & ~(isnan(imp_var)))
+    import_count = df.count()
+    impute_count = imp_df.count()
+    donor_count = don_df.count()
 
-  freqs = freqs.join(candidates, on="don_uniques")
+    report_to_log("Dataframe length: %s" % import_count)
+    report_to_log("Impute dataframe length: %s" % impute_count)
+    report_to_log("Donor dataframe length: %s" % donor_count)
 
-  freqs = freqs.join(freqs.groupby("imp_uniques").agg(f.sum("frequency").alias("donor_count")),on="imp_uniques")
+    if impute_count == 0:
+        # send nothing to impute to log
+        report_to_log("No Null values found in %s." % imp_var, warn=True)
+        return df
 
-  # check minimum number of donors
-  single_donors = freqs.filter(col("donor_count")<=min_donors).count()
-  if single_donors>0:
-    report_to_log("%d donor pools found with less than the required %s minimum donor(s)" % (single_donors, min_donors), warn=True)
-    
-    report_to_log(freqs.filter(col("donor_count")<=min_donors).toPandas())    
-    raise ValueError("%d donor pools found with less than the required %s minimum donor(s)" % (single_donors, min_donors))
+    # CHECK: imp_df + don_df should sum to df
+    assert impute_count + donor_count == import_count, "Imp df and Don df do not sum to df"
 
-  
-  freqs = freqs.withColumn("probs", col("frequency")/col("donor_count"))
+    imp_df = imp_df.withColumn("imp_uniques", concat(*impute_vars))
+    don_df = don_df.withColumn("don_uniques", concat(*impute_vars))
 
+    # unique groupings of impute vars
+    imp_df_unique = imp_df.dropDuplicates(impute_vars).select(impute_vars + ["imp_uniques"])
+    don_df_unique = don_df.dropDuplicates(impute_vars).select(impute_vars + ["don_uniques"])
 
-  # best don uniques to get donors from
-  full_df = freqs.join(imp_df.groupby("imp_uniques").agg(f.count("imp_uniques").alias("imp_group_size")), on="imp_uniques")
+    # and for each unique combination
+    # create df of candidates
 
-  full_df = full_df.withColumn("exp_freq", col("probs")*col("imp_group_size"))
+    for var in impute_vars + [imp_var]:
+        don_df_unique = don_df_unique.withColumnRenamed(var, "don_" + var)
+        don_df = don_df.withColumnRenamed(var, "don_" + var)
 
-  full_df = full_df.withColumn("int_part", floor(col("exp_freq")))
+    joined_uniques = imp_df_unique.crossJoin(don_df_unique)
 
-  full_df = full_df.withColumn("dec_part", col("exp_freq")-col("int_part"))
+    joined_uniques = joined_uniques.repartition("imp_uniques")
 
+    # distance function
+    joined_uniques = distance_function(joined_uniques, impute_vars, impute_weights)
 
-  ###########  
-  # int part
-  ###########
+    candidates = joined_uniques.select("imp_uniques", "don_uniques")
 
-  # take don imp_var where int part !=0
-  full_df = full_df.withColumn("new_imp_group_size", col("imp_group_size")-col("int_part"))
-  int_dons = full_df.select("int_part","imp_uniques","don_"+imp_var).filter(col("int_part")>=1)
+    # only counting one row for matching imp_vars
+    freqs = don_df.groupby("don_uniques", "don_" + imp_var).count().withColumnRenamed("count", "frequency")
 
-  # required decimal donors 
-  dec_dons = full_df.select("probs","imp_uniques","don_"+imp_var,"new_imp_group_size").filter(col("dec_part")>0)
+    freqs = freqs.join(candidates, on="don_uniques")
 
+    freqs = freqs.join(freqs.groupby("imp_uniques").agg(f.sum("frequency").alias("donor_count")), on="imp_uniques")
 
-  ###########
-  # dec part
-  ###########
+    # check minimum number of donors
+    single_donors = freqs.filter(col("donor_count") <= min_donors).count()
+    if single_donors > 0:
+        report_to_log(
+            "%d donor pools found with less than the required %s minimum donor(s)" % (single_donors, min_donors),
+            warn=True,
+        )
 
-  # generate random number 
-  # times by prob
-  # sort by prob
-  # select number required
-  dec_dons = dec_dons.withColumn("random_number", f.rand()*col("probs") )  
-  tt = Window.partitionBy("imp_uniques").orderBy(col("random_number").desc())
-  dec_dons = dec_dons.withColumn("row",row_number().over(tt)) \
-    .filter(col("row") <=col("new_imp_group_size")) 
+        report_to_log(freqs.filter(col("donor_count") <= min_donors).toPandas())
+        raise ValueError(
+            "%d donor pools found with less than the required %s minimum donor(s)" % (single_donors, min_donors)
+        )
 
+    freqs = freqs.withColumn("probs", col("frequency") / col("donor_count"))
 
-  # join int_dons and dec_dons
-  to_impute = int_dons.select("imp_uniques","don_"+imp_var).unionByName(dec_dons.select("imp_uniques","don_"+imp_var))
-  ww = Window.partitionBy("imp_uniques").orderBy(col("rand"))
-  to_impute = to_impute.withColumn("rand", f.rand())
-  to_impute = to_impute.withColumn("row", row_number().over(ww))
-  to_impute = to_impute.withColumnRenamed("don_"+imp_var,imp_var)
+    # best don uniques to get donors from
+    full_df = freqs.join(
+        imp_df.groupby("imp_uniques").agg(f.count("imp_uniques").alias("imp_group_size")), on="imp_uniques"
+    )
 
+    full_df = full_df.withColumn("exp_freq", col("probs") * col("imp_group_size"))
 
-  don_df_final = df.filter((col(imp_var).isNotNull())&~(isnan(imp_var)))
-  xx = Window.partitionBy("imp_uniques").orderBy(col(id_column))
-  imp_df = imp_df.withColumn("row", row_number().over(xx)).drop(imp_var)
+    full_df = full_df.withColumn("int_part", floor(col("exp_freq")))
 
-  imp_df_final = imp_df.join(to_impute, on=(imp_df.imp_uniques==to_impute.imp_uniques)\
-                             &(imp_df.row==to_impute.row)).drop("imp_uniques","row","rand")
+    full_df = full_df.withColumn("dec_part", col("exp_freq") - col("int_part"))
 
-  # prepare export df
-  export_df = sparkSession.createDataFrame([],df.schema)
-  export_df = export_df.unionByName(imp_df_final)
-  imputed_count = export_df.count()
-  
-  report_to_log("%s records imputed." % imputed_count)
-  report_to_log("Summary statistics for imputed values: %s" % imp_var)
-  report_to_log(imp_df_final.select(imp_var).summary().toPandas())
-  
-  export_df = export_df.unionByName(don_df_final)
-  
-  report_to_log("Summary statistics for donor values: %s" % imp_var)
-  report_to_log(don_df_final.select(imp_var).summary().toPandas())
+    ###########
+    # int part
+    ###########
 
-  # output
-  # check output size
-  export_df.cache().count()
-  export_count=export_df.count()
-  assert(export_count==import_count, "Records have been lost!")
-  report_to_log("%s records exported." % export_count)
-  
-  # check nans are removed
-  missing_count = export_df.filter((col(imp_var).isNull())|(isnan(imp_var))).count()
-  assert(missing_count==0, "%s records still have missing %s" % (missing_count, imp_var))
-  
-  
-  #export 
-  report_to_log("Finished")
-  return export_df
+    # take don imp_var where int part !=0
+    full_df = full_df.withColumn("new_imp_group_size", col("imp_group_size") - col("int_part"))
+    int_dons = full_df.select("int_part", "imp_uniques", "don_" + imp_var).filter(col("int_part") >= 1)
 
+    # required decimal donors
+    dec_dons = full_df.select("probs", "imp_uniques", "don_" + imp_var, "new_imp_group_size").filter(
+        col("dec_part") > 0
+    )
 
+    ###########
+    # dec part
+    ###########
 
+    # generate random number
+    # times by prob
+    # sort by prob
+    # select number required
+    dec_dons = dec_dons.withColumn("random_number", f.rand() * col("probs"))
+    tt = Window.partitionBy("imp_uniques").orderBy(col("random_number").desc())
+    dec_dons = dec_dons.withColumn("row", row_number().over(tt)).filter(col("row") <= col("new_imp_group_size"))
 
+    # join int_dons and dec_dons
+    to_impute = int_dons.select("imp_uniques", "don_" + imp_var).unionByName(
+        dec_dons.select("imp_uniques", "don_" + imp_var)
+    )
+    ww = Window.partitionBy("imp_uniques").orderBy(col("rand"))
+    to_impute = to_impute.withColumn("rand", f.rand())
+    to_impute = to_impute.withColumn("row", row_number().over(ww))
+    to_impute = to_impute.withColumnRenamed("don_" + imp_var, imp_var)
 
+    don_df_final = df.filter((col(imp_var).isNotNull()) & ~(isnan(imp_var)))
+    xx = Window.partitionBy("imp_uniques").orderBy(col(id_column))
+    imp_df = imp_df.withColumn("row", row_number().over(xx)).drop(imp_var)
 
+    imp_df_final = imp_df.join(
+        to_impute, on=(imp_df.imp_uniques == to_impute.imp_uniques) & (imp_df.row == to_impute.row)
+    ).drop("imp_uniques", "row", "rand")
 
+    # prepare export df
+    export_df = sparkSession.createDataFrame([], df.schema)
+    export_df = export_df.unionByName(imp_df_final)
+    imputed_count = export_df.count()
 
+    report_to_log("%s records imputed." % imputed_count)
+    report_to_log("Summary statistics for imputed values: %s" % imp_var)
+    report_to_log(imp_df_final.select(imp_var).summary().toPandas())
+
+    export_df = export_df.unionByName(don_df_final)
+
+    report_to_log("Summary statistics for donor values: %s" % imp_var)
+    report_to_log(don_df_final.select(imp_var).summary().toPandas())
+
+    # output
+    # check output size
+    export_df.cache().count()
+    export_count = export_df.count()
+    assert (export_count == import_count, "Records have been lost!")
+    report_to_log("%s records exported." % export_count)
+
+    # check nans are removed
+    missing_count = export_df.filter((col(imp_var).isNull()) | (isnan(imp_var))).count()
+    assert (missing_count == 0, "%s records still have missing %s" % (missing_count, imp_var))
+
+    # export
+    report_to_log("Finished")
+    return export_df
