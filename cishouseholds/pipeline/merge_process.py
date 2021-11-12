@@ -263,7 +263,11 @@ def execute_merge_specific_swabs(
 
     unioned_df = unioned_df.join(
         df_non_specific_merge,
-        on=["unique_participant_response_id", "unique_pcr_test_id"],
+        on=(
+            unioned_df["unique_participant_response_id"]
+            == df_non_specific_merge["unique_participant_response_id"]
+            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_participant_response_id"])
+        ),
         how="left",
     )
     return unioned_df
@@ -359,7 +363,11 @@ def execute_merge_specific_antibody(
 
     unioned_df = unioned_df.join(
         df_non_specific_merge,
-        on=["unique_participant_response_id", "unique_antibody_test_id"],
+        on=(
+            unioned_df["unique_participant_response_id"]
+            == df_non_specific_merge["unique_participant_response_id"]
+            & unioned_df["unique_antibody_test_id"].eqNullSafe(df_non_specific_merge["unique_antibody_test_id"])
+        ),
         how="left",
     )
     return unioned_df
