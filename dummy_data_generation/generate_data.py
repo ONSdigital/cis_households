@@ -77,12 +77,11 @@ def generate_unioxf_medtest_data(directory, file_date, records):
     """
     Generate Oxford blood test data.
     """
-    print("generating...")
-    s_gene_description = get_blood_data_description(_,"S")
+    s_gene_description = get_blood_data_description(_, "S")
     s_schema = Schema(schema=s_gene_description)
     survey_unioxf_medtest_s = pd.DataFrame(s_schema.create(iterations=records))
 
-    n_gene_description = get_blood_data_description(_,"N")
+    n_gene_description = get_blood_data_description(_, "N")
     n_schema = Schema(schema=n_gene_description)
     survey_unioxf_medtest_n = pd.DataFrame(n_schema.create(iterations=records))
 
@@ -90,7 +89,16 @@ def generate_unioxf_medtest_data(directory, file_date, records):
         if _("integer_number", start=0, end=100) > 15:
             for col in ["Serum Source ID", "Well ID"]:
                 survey_unioxf_medtest_n.at[row, col] = survey_unioxf_medtest_s.at[row, col]
-            survey_unioxf_medtest_n.at[row, "Plate Barcode"] = survey_unioxf_medtest_s.at[row, "Plate Barcode"].replace("S","N")
+            print(
+                survey_unioxf_medtest_s.at[row, "Plate Barcode"][:-3]
+                + "N"
+                + survey_unioxf_medtest_s.at[row, "Plate Barcode"][-2:]
+            )
+            survey_unioxf_medtest_n.at[row, "Plate Barcode"] = (
+                survey_unioxf_medtest_s.at[row, "Plate Barcode"][:-3]
+                + "N"
+                + survey_unioxf_medtest_s.at[row, "Plate Barcode"][-2:]
+            )
 
     survey_unioxf_medtest_s.to_csv(directory / f"Unioxf_medtestS_{file_date}.csv", index=False)
     survey_unioxf_medtest_n.to_csv(directory / f"Unioxf_medtestN_{file_date}.csv", index=False)
