@@ -205,7 +205,6 @@ def execute_merge_specific_swabs(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
-            "master_unique_id",
             "swab_sample_barcode",
             "unique_participant_response_id",
             "unique_pcr_test_id",
@@ -313,7 +312,6 @@ def execute_merge_specific_antibody(
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
         merge_type_necessary_columns=[
-            "master_unique_id",
             "blood_sample_barcode",
             "unique_participant_response_id",
             "unique_antibody_test_id",
@@ -367,6 +365,11 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
+    one_to_many_df.toPandas().to_csv("1tomdf.csv",index=False)
+    many_to_one_df.toPandas().to_csv("mto1df.csv",index=False)
+    one_to_one_df.toPandas().to_csv("1to1df.csv",index=False)
+    many_to_many_df.toPandas().to_csv("mtomdf.csv",index=False)
+    no_merge_df.toPandas().to_csv("none.csv",index=False)
 
     print("        -combining antibody tables")  # functional
     unioned_df = M.union_multiple_tables(
