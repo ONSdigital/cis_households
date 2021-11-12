@@ -43,7 +43,12 @@ def merge_process_preparation(
     survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)   
 
+    survey_df.toPandas().to_csv("survey_input.csv", index=False)
+    labs_df.toPandas().to_csv("labs_input.csv", index=False)
+
     outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
+
+    outer_df.toPandas().to_csv("outer_df.csv", index=False)
 
     if merge_type == "swab":
         interval_upper_bound = 480
@@ -53,7 +58,9 @@ def merge_process_preparation(
         interval_upper_bound = 240
         id_type = "unique_antibody_test_id"
 
-    df = outer_df.select(*set(merge_type_necessary_columns))
+    df = outer_df.select(*merge_type_necessary_columns)
+
+    df.toPandas().to_csv("selected_df.csv", index=False)
 
     merge_type_necessary_columns.remove("unique_participant_response_id")
     merge_type_necessary_columns.remove(id_type)
@@ -70,12 +77,17 @@ def merge_process_preparation(
         interval_upper_bound=interval_upper_bound,
         interval_bound_format="hours",
     )
+
+    df.toPandas().to_csv("time_diff.csv", index=False)
+
+
     df = M.assign_absolute_offset(
         df=df,
         column_name_to_assign="abs_offset_diff_vs_visit_hr_" + merge_type,
         reference_column="diff_vs_visit_hr_" + merge_type,
         offset=24,
     )
+    df.toPandas().to_csv("abs_offset.csv", index=False)
     (
         many_to_many_df,
         one_to_many_df,
@@ -97,7 +109,6 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     """
     match_types = {"1to1": ["==1", "==1"], "mtom": [">1", ">1"], "1tom": ["==1", ">1"], "mto1": [">1", "==1"]}
     for name, condition in match_types.items():
-
         df = M.assign_merge_process_group_flag(
             df=df,
             column_name_to_assign=name + "_" + merge_type,
@@ -107,7 +118,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
             count_barcode_voyager_column_name="count_barcode_voyager",
             count_barcode_voyager_condition=condition[1],
         )
-
+    df.toPandas().to_csv("match_type_assigned.csv", index=False)
     one_to_one_df = df.filter(F.col("1to1" + "_" + merge_type) == 1)
     many_to_many_df = df.filter(F.col("mtom" + "_" + merge_type) == 1)
     one_to_many_df = df.filter(F.col("1tom" + "_" + merge_type) == 1)
@@ -349,13 +360,7 @@ def execute_merge_specific_antibody(
         ordering_columns=window_columns,
         process_type=merge_type,
         failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
-    )
-    one_to_many_df.toPandas().to_csv("1tomA.csv")
-    one_to_one_df.toPandas().to_csv("1to1A.csv")
-    many_to_one_df.toPandas().to_csv("mto1A.csv")
-    many_to_many_df.toPandas().to_csv("mtomA.csv")
-    no_merge_df.toPandas().to_csv("nomergge.csv")
-    
+    )    
 
     print("        -validating antibody merge process") # functional
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
@@ -365,6 +370,13 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
+
+    one_to_many_df.toPandas().to_csv("1tomA.csv", index=False)
+    one_to_one_df.toPandas().to_csv("1to1A.csv", index=False)
+    many_to_one_df.toPandas().to_csv("mto1A.csv", index=False)
+    many_to_many_df.toPandas().to_csv("mtomA.csv", index=False)
+    no_merge_df.toPandas().to_csv("nomergge.csv", index=False)
+
     print("        -combining antibody tables") # functional
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
