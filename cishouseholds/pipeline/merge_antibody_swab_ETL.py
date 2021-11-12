@@ -108,6 +108,12 @@ def merge_blood(survey_df, antibody_df):
         received_date_column_name="blood_sample_received_date_s_protein",
     )
 
+    survey_antibody_df = survey_antibody_df.drop(
+        "abs_offset_diff_vs_visit_hr_antibody",
+        "count_barcode_antibody",
+        "count_barcode_voyager",
+        "diff_vs_visit_hr_antibody",
+    )
     return merge_process_filtering(
         df=survey_antibody_df,
         merge_type="antibody",
