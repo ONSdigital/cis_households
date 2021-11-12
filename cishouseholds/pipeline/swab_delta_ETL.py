@@ -25,7 +25,7 @@ def swab_delta_ETL(**kwargs):
     if file_path_list:
         df = extract_validate_transform_input_data(
             file_path_list, swab_variable_name_map, swab_datetime_map, swab_validation_schema, transform_swab_delta
-        )    
+        )
         update_table_and_log_source_files(df, "transformed_swab_test_data", "swab_test_source_file")
 
 

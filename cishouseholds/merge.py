@@ -20,10 +20,10 @@ def union_multiple_tables(tables: List[DataFrame]):
     """
     merged_df = tables[0]
 
-    for i, table_n in enumerate(tables[1:]): 
-        merged_df, dfn = prepare_for_union(merged_df, table_n)  
+    for i, table_n in enumerate(tables[1:]):
+        merged_df, dfn = prepare_for_union(merged_df, table_n)
         merged_df = merged_df.unionByName(dfn)
-        print(f"           -- {i+1}/{len(tables)-1} combination completed") # functional        
+        print(f"           -- {i+1}/{len(tables)-1} combination completed")  # functional
     return merged_df
 
 
@@ -38,7 +38,7 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     test_target_column
     """
     print("target: ", test_target_column)
-   
+
     join_on_columns = [
         "blood_sample_barcode",
         "antibody_test_plate_common_id",
@@ -249,7 +249,7 @@ def assign_time_difference_and_flag_if_outside_interval(
         column_name_time_difference,
         (
             (F.col(end_datetime_reference_column).cast("long"))
-            - F.to_timestamp(F.col(start_datetime_reference_column),'yyyy-MM-dd').cast("long")
+            - F.to_timestamp(F.col(start_datetime_reference_column), "yyyy-MM-dd").cast("long")
         )
         / conversion_factor,
     )

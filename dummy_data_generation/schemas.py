@@ -31,7 +31,7 @@ def get_swab_data_description(_):
 
 
 def get_blood_data_description(_, target):
-    return lambda:{  # noqa: E731
+    return lambda: {  # noqa: E731
         "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
         "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
         "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
