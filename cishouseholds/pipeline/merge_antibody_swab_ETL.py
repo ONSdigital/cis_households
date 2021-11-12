@@ -57,10 +57,6 @@ def merge_blood_ETL():
     antibody_df = extract_from_table(antibody_table)
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
-    
-    survey_antibody_df.toPandas().to_csv("output.csv",index=False)
-    antibody_residuals.toPandas().to_csv("output.csv",index=False)
-    survey_antibody_failed.toPandas().to_csv("output.csv",index=False)
 
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
     output_antibody_table_list = [
