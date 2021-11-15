@@ -365,11 +365,6 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
-    one_to_many_df.toPandas().to_csv("1tomdf.csv", index=False)
-    many_to_one_df.toPandas().to_csv("mto1df.csv", index=False)
-    one_to_one_df.toPandas().to_csv("1to1df.csv", index=False)
-    many_to_many_df.toPandas().to_csv("mtomdf.csv", index=False)
-    no_merge_df.toPandas().to_csv("none.csv", index=False)
 
     print("        -combining antibody tables")  # functional
     unioned_df = M.union_multiple_tables(

@@ -247,7 +247,7 @@ def assign_time_difference_and_flag_if_outside_interval(
     df = df.withColumn(
         column_name_time_difference,
         (
-            (F.col(end_datetime_reference_column).cast("long"))
+            F.to_timestamp(F.col(end_datetime_reference_column)).cast("long")
             - F.to_timestamp(F.col(start_datetime_reference_column), "yyyy-MM-dd").cast("long")
         )
         / conversion_factor,
