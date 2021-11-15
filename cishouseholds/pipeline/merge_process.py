@@ -271,8 +271,11 @@ def execute_merge_specific_swabs(
     unioned_df = unioned_df.join(
         df_non_specific_merge,
         on=(
-            (unioned_df["unique_participant_response_id"] == df_non_specific_merge["unique_participant_response_id"])
-            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id"])
+            (
+                unioned_df["unique_participant_response_id"]
+                == df_non_specific_merge["unique_participant_response_id_right"]
+            )
+            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id_right"])
         ),
         how="left",
     ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
@@ -365,11 +368,6 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
-    one_to_many_df.toPandas().to_csv("1tomdf.csv", index=False)
-    many_to_one_df.toPandas().to_csv("mto1df.csv", index=False)
-    one_to_one_df.toPandas().to_csv("1to1df.csv", index=False)
-    many_to_many_df.toPandas().to_csv("mtomdf.csv", index=False)
-    no_merge_df.toPandas().to_csv("none.csv", index=False)
 
     print("        -combining antibody tables")  # functional
     unioned_df = M.union_multiple_tables(
