@@ -271,8 +271,11 @@ def execute_merge_specific_swabs(
     unioned_df = unioned_df.join(
         df_non_specific_merge,
         on=(
-            (unioned_df["unique_participant_response_id"] == df_non_specific_merge["unique_participant_response_id"])
-            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id"])
+            (
+                unioned_df["unique_participant_response_id"]
+                == df_non_specific_merge["unique_participant_response_id_right"]
+            )
+            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id_right"])
         ),
         how="left",
     ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
