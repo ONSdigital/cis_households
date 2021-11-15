@@ -353,6 +353,11 @@ def execute_merge_specific_antibody(
         barcode_column_name=barcode_column_name,
     )
 
+    one_to_many_df.toPandas().to_csv("1tom.csv", index=False)
+    many_to_many_df.toPandas().to_csv("mtom.csv", index=False)
+    many_to_one_df.toPandas().to_csv("mto1.csv", index=False)
+    one_to_one_df.toPandas().to_csv("1to1.csv", index=False)
+
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )

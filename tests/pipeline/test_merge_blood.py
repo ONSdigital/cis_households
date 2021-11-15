@@ -48,7 +48,7 @@ def test_merge_blood(spark_session):
         ("BLOODS-2","ONS002","2020-08-12",None,"Negative",None,10, "1:1 out-of-range"),
         ("BLOODS-3","ONS003","2020-08-03",None,"Positive",None,10, "1:m success"),
         ("BLOODS-4","ONS003","2020-08-04",None,"Positive",None,10, "1:m dropped"),
-        ("BLOODS-5","ONS004","2020-08-11",None,"Negative",None,10, "1:m success"),
+        ("BLOODS-5","ONS004","2020-08-11",None,"Negative",None,10, "1:m success"), #exact duplicate to test random priority of first result
         ("BLOODS-6","ONS004","2020-08-11",None,"Negative",None,12, "1:m dropped"),
         ("BLOODS-7","ONS005","2020-08-02",None,"Positive",None,10, "m:1 success"),
         ("BLOODS-8","ONS006","2020-08-03",None,"Void",None,10, "m:1 dropped"),
@@ -158,6 +158,10 @@ def test_merge_blood(spark_session):
     )
 
     df_voyager_bloods, df_bloods_residuals, df_failed_records = merge_blood(voyager_df, bloods_df)
+    print("OUTPUTS: ")
+    df_voyager_bloods.orderBy("unique_participant_response_id").toPandas().to_csv("survey_antibody_df.csv", index=False)
+    df_bloods_residuals.toPandas().to_csv("antibody_residual.csv", index=False)
+    df_failed_records.toPandas().to_csv("antibody_merge_failed_records.csv", index=False)
 
     assert_df_equality(expected_df_voyager_bloods, df_voyager_bloods, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(

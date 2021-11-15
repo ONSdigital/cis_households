@@ -99,7 +99,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     return expected_header == header
 
 
-def check_singular_match(df: DataFrame, flag_column_name: str, failure_column_name: str, group_by_column: str):
+def check_singular_match(df: DataFrame, drop_flag_column_name: str, failure_column_name: str, group_by_column: str):
     """
     Given a set of columns related to the final drop flag of a given merge function on the complete
     (merged) dataframe produce an indication column (failure column) which stipulates whether the
@@ -116,18 +116,19 @@ def check_singular_match(df: DataFrame, flag_column_name: str, failure_column_na
     group_by_column
         Column to check is singular given criteria
     """
+
+    df.show()
     dft = (
-        df.filter((F.col(flag_column_name).isNull()))
-        .groupBy(group_by_column)
+        df.groupBy(group_by_column, drop_flag_column_name)
         .count()
-        .withColumnRenamed(group_by_column, "b")
-        .withColumnRenamed(failure_column_name, "f")
+        .withColumn(
+            failure_column_name,
+            F.when((F.col("count") > 1) & (F.col(drop_flag_column_name).isNull()), 1).otherwise(None),
+        )
     )
-    dft = dft.withColumn(failure_column_name, F.when(F.col("count") > 1, 1).otherwise(None))
-    df = (
-        df.drop(failure_column_name)
-        .join(dft, dft.b == F.col(group_by_column), "outer")
-        .withColumnRenamed("f", failure_column_name)
-        .drop("b", "count")
-    )
+    df = df.drop(failure_column_name)
+    df = df.join(dft, how="left", on=[group_by_column, drop_flag_column_name])
+    dft.show()
+
+    df.show()
     return df

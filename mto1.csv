@@ -1,0 +1,7 @@
+blood_sample_received_date_s_protein,count_barcode_antibody,count_barcode_voyager,unique_participant_response_id,visit_date_string,antibody_test_result_classification_s_protein,unique_antibody_test_id,blood_sample_barcode,antibody_test_result_recorded_date_s_protein,siemens_antibody_test_result_value_s_protein,diff_vs_visit_hr_antibody,out_of_date_range_antibody,abs_offset_diff_vs_visit_hr_antibody,1to1_antibody,mtom_antibody,1tom_antibody,mto1_antibody,drop_flag_mto1_antibody,failed_mto1_antibody
+2020-08-11,2,1,IQVIA-4,2020-08-01,Negative,BLOODS-5,ONS004,,,240.0,,216.0,,,,1,1,
+2020-08-11,2,1,IQVIA-4,2020-08-01,Negative,BLOODS-6,ONS004,,,240.0,,216.0,,,,1,1,
+2020-08-02,2,1,IQVIA-13,2020-08-01,Negative,BLOODS-13,ONS009,,,24.0,,0.0,,,,1,1,
+2020-08-03,2,1,IQVIA-13,2020-08-01,Positive,BLOODS-14,ONS009,,,48.0,,24.0,,,,1,1,
+2020-08-03,2,1,IQVIA-3,2020-08-01,Positive,BLOODS-3,ONS003,,,48.0,,24.0,,,,1,1,
+2020-08-04,2,1,IQVIA-3,2020-08-01,Positive,BLOODS-4,ONS003,,,72.0,,48.0,,,,1,1,

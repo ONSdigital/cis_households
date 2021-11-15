@@ -63,6 +63,7 @@ def merge_blood_ETL():
         "antibody_merge_residuals",
         "antibody_merge_failed_records",
     ]
+
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
     return survey_antibody_df

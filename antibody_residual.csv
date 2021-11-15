@@ -1,0 +1,10 @@
+blood_sample_barcode,unique_antibody_test_id,blood_sample_received_date_s_protein,antibody_test_result_recorded_date_s_protein,antibody_test_result_classification_s_protein,siemens_antibody_test_result_value_s_protein,antibody_test_result_value_s_protein,merge_type_info
+ONS003,BLOODS-4,2020-08-04,,Positive,,10.0,1:m dropped
+ONS004,BLOODS-5,2020-08-11,,Negative,,10.0,1:m success
+ONS008,BLOODS-12,2020-08-04,,Positive,,10.0,m:m dropped
+ONS002,BLOODS-2,2020-08-12,,Negative,,10.0,1:1 out-of-range
+ONS003,BLOODS-3,2020-08-03,,Positive,,10.0,1:m success
+ONS009,BLOODS-14,2020-08-03,,Positive,,10.0,1:m failed
+ONS004,BLOODS-6,2020-08-11,,Negative,,12.0,1:m dropped
+ONS009,BLOODS-13,2020-08-02,,Negative,,10.0,1:m failed
+ONS012,BLOODS-17,2020-08-04,,Positive,,,
