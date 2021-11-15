@@ -157,6 +157,7 @@
   transport_to_work_or_school: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-802621954781-2022-01-06 06:04:23
   visit_datetime: '2022-01-06 06:04:23.000000'
   visit_id: DHVF-1235220629
   which_symptoms_last_7_days: Tuples are containers for a fixed number of Erlang data
@@ -334,6 +335,7 @@
   title: D.Ed.
   transport_to_work_or_school: Elementary, my dear Watson.
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-049902298831-2022-01-05 15:20:15
   visit_datetime: '2022-01-05 15:20:15.000000'
   visit_id: DHVF-5927236237
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
@@ -506,6 +508,7 @@
   title: Mrs.
   transport_to_work_or_school: Elementary, my dear Watson.
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-400895851138-2022-01-02 23:23:42
   visit_datetime: '2022-01-02 23:23:42.000000'
   visit_id: DHVF-8042076275
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
@@ -682,6 +685,7 @@
   title: Miss
   transport_to_work_or_school: Let them eat cake.
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-593586857022-2022-01-06 18:06:58
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   which_symptoms_last_7_days: Do you have any idea why this is not working?
@@ -855,6 +859,7 @@
   title: Sir
   transport_to_work_or_school: You're gonna need a bigger boat.
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-757503098830-2022-01-01 15:20:04
   visit_datetime: '2022-01-01 15:20:04.000000'
   visit_id: DVH-0765261449
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
@@ -1025,6 +1030,7 @@
   title: B.E.
   transport_to_work_or_school: Here's looking at you, kid.
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-392744995712-2022-01-01 05:21:13
   visit_datetime: '2022-01-01 05:21:13.000000'
   visit_id: DVH-1442294850
   which_symptoms_last_7_days: They are written as strings of consecutive alphanumeric
@@ -1200,6 +1206,7 @@
   transport_to_work_or_school: One morning I shot an elephant in my pajamas. How he
     got in my pajamas, I don't know.
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-942252583295-2022-01-03 09:12:50
   visit_datetime: '2022-01-03 09:12:50.000000'
   visit_id: DVH-1713965687
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
@@ -1373,6 +1380,7 @@
   transport_to_work_or_school: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-421496963502-2022-01-01 16:00:06
   visit_datetime: '2022-01-01 16:00:06.000000'
   visit_id: DVH-3527095776
   which_symptoms_last_7_days: '"Messages can be sent to and received from ports, but
@@ -1550,6 +1558,7 @@
   transport_to_work_or_school: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-771419502848-2022-01-01 19:42:30
   visit_datetime: '2022-01-01 19:42:30.000000'
   visit_id: DVH-6387621024
   which_symptoms_last_7_days: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
@@ -1726,6 +1735,7 @@
   title: Master
   transport_to_work_or_school: They call me *Mister* Tibbs!
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-720138926395-2022-01-07 14:29:59
   visit_datetime: '2022-01-07 14:29:59.000000'
   visit_id: DVH-8988073988
   which_symptoms_last_7_days: Make me a sandwich.
