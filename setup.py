@@ -37,7 +37,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=setuptools.find_packages(include="cishouseholds"),
+    packages=setuptools.find_packages(exclude="tests"),
     python_requires="==3.6.8",
     install_requires=requires,
     extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1", "pytest-cov", "coverage"]},
