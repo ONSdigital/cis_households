@@ -1,1 +1,2 @@
 cerberus==1.3.4
+PyYAML==5.4.1
