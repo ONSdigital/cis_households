@@ -1,3 +1,4 @@
+import re
 import subprocess
 from datetime import datetime
 from typing import List
@@ -84,9 +85,10 @@ def get_date_from_filename(filename: str, sep: Optional[str] = "_", format: Opti
     format
     """
     try:
-        file_date = filename.split(sep)[-1].split(".")[0]
+        file_date = re.search(r"\d{1,}(?=_)|\d{8,}(?=.csv)", filename)
         file_date = datetime.strptime(file_date, format)  # type: ignore
-        return file_date
+        file_date = pd.to_datetime(file_date, errors="coerce")
+        return str(file_date)
     except ValueError:
         return str(None)
 
