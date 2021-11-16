@@ -5,6 +5,7 @@ from mimesis.schema import Schema
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v0_variable_name_map
 from cishouseholds.pipeline.survey_responses_version_0_ETL import transform_survey_responses_version_0_delta
+from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v0_validation_schema
 from dummy_data_generation.schemas import get_voyager_0_data_description
@@ -23,7 +24,7 @@ def responses_v0_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         survey_responses_v0_variable_name_map,
         survey_responses_datetime_map,
         survey_responses_v0_validation_schema,
-        transform_survey_responses_version_0_delta,
+        [transform_survey_responses_generic, transform_survey_responses_version_0_delta],
         "|",
     )
     return processed_df
