@@ -73,7 +73,7 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(test_target_column) == blood_group)
         new_column_names = {
-            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename,unique_id_column] else col
+            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename, unique_id_column] else col
             for col in split_df.columns
         }
         split_df = rename_column_names(split_df, new_column_names)
@@ -191,10 +191,9 @@ def check_consistency_in_retained_rows(
     column_name_to_assign
     """
     check_distinct = []
-    df_retained_rows = df  # .filter(F.col(selection_column) == 0)
     for col in check_columns:
         df_grouped = (
-            df_retained_rows.groupBy(group_column, col)
+            df.groupBy(group_column, col)
             .count()
             .withColumnRenamed("count", "num_objs")
             .groupBy(group_column)
