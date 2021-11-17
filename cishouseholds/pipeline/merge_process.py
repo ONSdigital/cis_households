@@ -97,7 +97,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     df
     merge_types
     """
-    match_types = {"1to1": ["==1", "==1"], "mtom": [">1", ">1"], "1tom": ["==1", ">1"], "mto1": [">1", "==1"]}
+    match_types = {"1to1": ["==1", "==1"], "mtom": [">1", ">1"], "1tom": [">1", "==1"], "mto1": ["==1", ">1"]}
     for name, condition in match_types.items():
         df = M.assign_merge_process_group_flag(
             df=df,
@@ -109,9 +109,13 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
             count_barcode_voyager_condition=condition[1],
         )
     one_to_one_df = df.filter(F.col("1to1" + "_" + merge_type) == 1)
+
     many_to_many_df = df.filter(F.col("mtom" + "_" + merge_type) == 1)
+
     one_to_many_df = df.filter(F.col("1tom" + "_" + merge_type) == 1)
+
     many_to_one_df = df.filter(F.col("mto1" + "_" + merge_type) == 1)
+
     no_merge_df = df.filter(
         (F.col("mtom" + "_" + merge_type).isNull())
         & (F.col("1tom" + "_" + merge_type).isNull())
@@ -158,12 +162,25 @@ def merge_process_validation(
     failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
     failed_column_names_syntax = [column + merge_type for column in failed_column_names]
 
+    existing_failure_column_dict = {
+        "failed_1tom_antibody": "failed_flag_1tom_antibody",
+        "failed_mtom_antibody": "failed_flag_mtom_antibody",
+        "failed_mtom_swab": "failed_flag_mtom_swab",
+    }
+
     for df, flag_column, failed_column in zip(input_dfs, flag_column_names_syntax, failed_column_names_syntax):
+        existing_failure_column = None
+        group_by = [barcode_column_name]
+        if failed_column in existing_failure_column_dict:
+            existing_failure_column = existing_failure_column_dict[failed_column]
+        if "mtom" in failed_column:
+            group_by = [barcode_column_name, "unique_participant_response_id"]
         df = check_singular_match(
             df=df,
-            flag_column_name=flag_column,
+            drop_flag_column_name=flag_column,
             failure_column_name=failed_column,
-            group_by_column=barcode_column_name,
+            group_by_columns=group_by,
+            existing_failure_column=existing_failure_column,
         )
         output_dfs.append(df)
     return tuple(output_dfs)
@@ -243,6 +260,7 @@ def execute_merge_specific_swabs(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
         group_by_column=barcode_column_name,
+        out_of_date_range_column="out_of_date_range_swab",
         ordering_columns=[
             "abs_offset_diff_vs_visit_hr_swab",
             "diff_vs_visit_hr_swab",
@@ -250,7 +268,7 @@ def execute_merge_specific_swabs(
             "unique_pcr_test_id",
         ],
         process_type="swab",
-        failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
+        failure_column_name="failed_flag_mtom_" + merge_type,
     )
     print("        -validating swab merge process")  # functional
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
@@ -357,7 +375,8 @@ def execute_merge_specific_antibody(
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
         process_type=merge_type,
-        failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
+        out_of_date_range_column="out_of_date_range_" + merge_type,
+        failure_column_name="failed_flag_mtom_" + merge_type,
     )
 
     print("        -validating antibody merge process")  # functional
