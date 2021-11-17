@@ -1,5 +1,6 @@
 from itertools import chain
 from typing import Callable
+from typing import List
 
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import SparkSession
@@ -19,7 +20,7 @@ def extract_validate_transform_input_data(
     variable_name_map: dict,
     datetime_map: dict,
     validation_schema: dict,
-    transformation_function: Callable,
+    transformation_functions: List[Callable],
     sep: str = ",",
 ):
     spark_session = get_or_create_spark_session()
@@ -35,7 +36,8 @@ def extract_validate_transform_input_data(
     )
 
     df = validate_and_filter(df, _validation_schema, error_accumulator)
-    df = transformation_function(df)
+    for transformation_function in transformation_functions:
+        df = transformation_function(df)
     return df
 
 

@@ -26,8 +26,6 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 
-# from cishouseholds.derive import assign_work_person_facing_now
-
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
 def survey_responses_version_2_ETL(**kwargs):
@@ -41,67 +39,78 @@ def survey_responses_version_2_ETL(**kwargs):
             survey_responses_v2_variable_name_map,
             survey_responses_datetime_map,
             survey_responses_v2_validation_schema,
-            transform_survey_responses_version_2_delta,
+            [
+                transform_survey_responses_generic,
+                derive_work_status_columns,
+                transform_survey_responses_version_2_delta,
+            ],
             "|",
         )
         update_table_and_log_source_files(
-            df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file", "overwrite"
+            df, "transformed_survey_responses_v2_data", "survey_response_source_file", "overwrite"
         )
 
 
-def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
+def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
-    Call functions to process input for iqvia version 2 survey deltas.
+    Generic transformation steps to be applied to all survey response records.
     """
-    df = assign_filename_column(df, "survey_responses_v2_source_file")
-    df = assign_unique_id_column(df, "unique_participant_response_id", ["participant_id", "visit_datetime"])
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
-    df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
-    df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
-    df = assign_column_to_date_string(df, "sample_taken_date_string", "samples_taken_datetime")
-    df = assign_column_to_date_string(df, "date_of_birth_string", "date_of_birth")
+    df = assign_filename_column(df, "survey_response_source_file")
+    df = assign_unique_id_column(
+        df, "unique_participant_response_id", concat_columns=["participant_id", "visit_datetime"]
+    )
+    df = assign_column_regex_match(
+        df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
+    )
+    df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
+    # TODO: Add postcode cleaning
+    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
+    df = assign_consent_code(
+        df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    )
+    # TODO: Add week and month commencing variables
+    # TODO: Add ethnicity grouping and editing
+    df = assign_column_to_date_string(df, "sample_taken_date_string", reference_column="samples_taken_datetime")
+    df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
+    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
-    df = assign_taken_column(df, "swab_taken", "swab_sample_barcode")
-    df = assign_taken_column(df, "blood_taken", "blood_sample_barcode")
-    df = format_string_upper_and_clean(df, "work_main_job_title")
-    df = format_string_upper_and_clean(df, "work_main_job_role")
-    df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
-    # df = placeholder_for_derivation_number_7-2(df, "week")
-    # derivation number 7 has been used twice - currently associated to ctpatterns
-    # df = placeholder_for_derivation_number_7-2(df, "month")
-    df = assign_outward_postcode(
-        df, "outward_postcode", "postcode"
-    )  # splits on space between postcode segments and gets left half
+    df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
-    # df = placeholder_for_derivation_number_18(df, "hh_id_fake",	"ons_household_id")
-    df = assign_consent_code(df, "consent", ["consent_16_visits", "consent_5_visits", "consent_1_visit"])
-    # df = placeholder_for_derivation_number_20(df, "work_healthcare",
-    # ["work_healthcare_v1", "work_direct_contact"])
-    # df = placeholder_for_derivation_number_21(df, "work_socialcare",
-    # ["work_sector", "work_care_nursing_home" , "work_direct_contact"])
-    # df = placeholder_for_derivation_number_10(df, "self_isolating", "self_isolating_v1")
-    # df = placeholder_for_derivation_number_10(df, "contact_hospital",
-    # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
-    # df = placeholder_for_derivation_number_10(df, "contact_carehome",
-    # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
-    df = assign_age_at_date(df, "age_at_visit", "visit_datetime", "date_of_birth")
-    df = assign_named_buckets(
-        df, "age_at_visit", "age_group_5_intervals", {2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"}
-    )
-    df = assign_named_buckets(df, "age_at_visit", "age_group_over_16", {16: "16-49", 50: "50-70", 70: "70+"})
+    df = derive_age_columns(df)
+    return df
+
+
+def derive_age_columns(df: DataFrame) -> DataFrame:
+    """
+    Transformations involving participant age.
+    """
+    df = assign_age_at_date(df, "age_at_visit", base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
-        "age_at_visit",
-        "age_group_7_intervals",
-        {2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+        reference_column="age_at_visit",
+        column_name_to_assign="age_group_5_intervals",
+        map={2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        "age_at_visit",
-        "age_group_5_year_intervals",
-        {
+        reference_column="age_at_visit",
+        column_name_to_assign="age_group_over_16",
+        map={16: "16-49", 50: "50-70", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column="age_at_visit",
+        column_name_to_assign="age_group_7_intervals",
+        map={2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column="age_at_visit",
+        column_name_to_assign="age_group_5_year_intervals",
+        map={
             2: "2-4",
             5: "5-9",
             10: "10-14",
@@ -123,8 +132,16 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             90: "90+",
         },
     )
-    df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
-    df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
+    df = assign_school_year_september_start(
+        df, dob_column="date_of_birth", visit_date="visit_datetime", column_name_to_assign="school_year_september"
+    )
+    df = assign_work_patient_facing_now(
+        df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care"
+    )
+    return df
+
+
+def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -142,4 +159,23 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
+    # df = placeholder_for_derivation_number_20(df, "work_healthcare",
+    # ["work_healthcare_v1", "work_direct_contact"])
+    # df = placeholder_for_derivation_number_21(df, "work_socialcare",
+    # ["work_sector", "work_care_nursing_home" , "work_direct_contact"])
+    # df = placeholder_for_derivation_number_10(df, "self_isolating", "self_isolating_v1")
+    # df = placeholder_for_derivation_number_10(df, "contact_hospital",
+    # ["contact_participant_hospital", "contact_other_in_hh_hospital"])
+    # df = placeholder_for_derivation_number_10(df, "contact_carehome",
+    # ["contact_participant_carehome", "contact_other_in_hh_carehome"])
+    return df
+
+
+def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
+    """
+    Transformations that are specific to version 2 survey responses.
+    """
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = format_string_upper_and_clean(df, "work_main_job_title")
+    df = format_string_upper_and_clean(df, "work_main_job_role")
     return df

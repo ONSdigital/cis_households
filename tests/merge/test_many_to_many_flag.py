@@ -47,6 +47,7 @@ def test_many_to_many_flag(spark_session):
     output_df = many_to_many_flag(
         input_df,
         "drop_mtom_antibody_flag",
+        "out_of_date_range_antibody",
         "antibody_barcode_cleaned",
         [
             "abs_offset_diff_vs_visit_antibody",
