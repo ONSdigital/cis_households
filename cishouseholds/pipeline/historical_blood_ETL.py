@@ -20,10 +20,8 @@ def historical_blood_ETL(**kwargs):
             historical_blood_variable_name_map,
             blood_datetime_map,
             historical_blood_validation_schema,
-            transform_blood_delta,
+            [transform_blood_delta, add_fields],
         )
-        df = add_fields(df)
-        df = df.select(sorted(df.columns))
         update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
 
 
@@ -36,5 +34,5 @@ def add_fields(df: DataFrame):
     for column, type in new_columns.items():
         if column not in df.columns:
             df = df.withColumn(column, F.lit(None).cast(type))
-
+    df = df.select(sorted(df.columns))
     return df

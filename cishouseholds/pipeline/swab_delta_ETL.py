@@ -25,7 +25,7 @@ def swab_delta_ETL(**kwargs):
 
     if file_path_list:
         df = extract_validate_transform_input_data(
-            file_path_list, swab_variable_name_map, swab_datetime_map, swab_validation_schema, transform_swab_delta
+            file_path_list, swab_variable_name_map, swab_datetime_map, swab_validation_schema, [transform_swab_delta]
         )
         update_table_and_log_source_files(df, "transformed_swab_test_data", "swab_test_source_file")
 
@@ -46,5 +46,4 @@ def transform_swab_delta(df: DataFrame) -> DataFrame:
         df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
     )
     df = assign_isin_list(df, "one_positive_pcr_target_only", "cq_pattern", ["N only", "OR only", "S only"])
-
     return df

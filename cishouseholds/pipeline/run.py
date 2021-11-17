@@ -39,7 +39,7 @@ def run_from_config():
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
     run_time = (datetime.now() - run_datetime).total_seconds()
-    print(f"Pipeline ran for: {run_time//60} minutes and {run_time%60} seconds")  # functional
+    print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
     add_run_status(run_id, "finished")
 
 
@@ -55,7 +55,7 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
             print(stage_text)  # functional
             pipeline_stages[stage_name](**stage_config)
             run_time = (datetime.now() - stage_start).total_seconds()
-            print(f"Stage ran for: {run_time} seconds")  # functional
+            print(f"    - completed in: {run_time:.1f} seconds")  # functional
         except Exception:
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             print(f"Error: {traceback.format_exc()}")  # functional
