@@ -16,7 +16,7 @@ from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_
 
 
 @register_pipeline_stage("unassayed_blood_ETL")
-def blood_delta_ETL(**kwargs):
+def unassayed_blood_ETL(**kwargs):
     file_path_list = get_files_to_be_processed(**kwargs)
     if file_path_list:
         df = extract_validate_transform_input_data(
@@ -35,10 +35,4 @@ def transform_unassayed_blood(df: DataFrame) -> DataFrame:
     Call functions to process input for unassayed blood.
     """
     df = assign_filename_column(df, "unassayed_blood_source_file")
-    # df = assign_test_target(df, "antibody_test_target", "unassayed_blood_source_file")
-    # df = assign_unique_id_column(
-    #    df=df,
-    #    column_name_to_assign="unique_antibody_test_id",
-    #    concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
-    # )
     return df
