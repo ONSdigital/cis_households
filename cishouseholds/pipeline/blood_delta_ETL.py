@@ -20,10 +20,12 @@ def blood_delta_ETL(**kwargs):
     file_path_list = get_files_to_be_processed(**kwargs)
     if file_path_list:
         df = extract_validate_transform_input_data(
-            file_path_list, blood_variable_name_map, blood_datetime_map, blood_validation_schema, transform_blood_delta
+            file_path_list,
+            blood_variable_name_map,
+            blood_datetime_map,
+            blood_validation_schema,
+            [transform_blood_delta, add_historical_fields],
         )
-        df = add_historical_fields(df)
-        df = df.select(sorted(df.columns))
         update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
 
 
@@ -65,4 +67,5 @@ def add_historical_fields(df: DataFrame):
             df = df.withColumn(column, F.lit(None).cast(type))
     if "antibody_assay_category" not in df.columns:
         df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
+    df = df.select(sorted(df.columns))
     return df

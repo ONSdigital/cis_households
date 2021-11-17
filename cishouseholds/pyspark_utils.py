@@ -29,6 +29,7 @@ sessions = {
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.debug.maxToStringFields", 2000)
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()

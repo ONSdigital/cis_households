@@ -23,7 +23,7 @@ def swab_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         swab_variable_name_map,
         swab_datetime_map,
         swab_validation_schema,
-        transform_swab_delta,
+        [transform_swab_delta],
     )
 
     return processed_df

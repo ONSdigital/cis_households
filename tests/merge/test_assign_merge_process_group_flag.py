@@ -5,7 +5,7 @@ from cishouseholds.merge import assign_merge_process_group_flag
 
 def test_assign_merge_process_group_flag(spark_session):
     expected_df = spark_session.createDataFrame(
-        data=[(1, 1, 1, 2, None), (2, None, 2, 1, 1), (3, 1, 2, 1, None), (4, None, 1, 1, None), (5, None, 1, 2, None)],
+        data=[(1, 1, 1, 2, None), (2, None, 2, 1, 1), (3, 1, 2, 1, 1), (4, None, 1, 1, None), (5, None, 1, 2, None)],
         schema="""id integer, out_of_date_range_flag integer, count_barcode_labs integer,
         count_barcode_voyager integer, merge_process_group_flag integer""",
     )

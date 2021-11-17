@@ -1,10 +1,14 @@
 fields:
 - metadata: {}
-  name: blood_sample_barcode
-  nullable: true
+  name: antibody_assay_category
+  nullable: false
   type: string
 - metadata: {}
-  name: blood_sample_type
+  name: antibody_test_bounded_result_value
+  nullable: true
+  type: float
+- metadata: {}
+  name: antibody_test_plate_common_id
   nullable: true
   type: string
 - metadata: {}
@@ -12,31 +16,39 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_well_id
-  nullable: true
-  type: string
-- metadata: {}
   name: antibody_test_result_classification
   nullable: true
   type: string
-- metadata: {}
-  name: antibody_test_result_value
-  nullable: true
-  type: double
-- metadata: {}
-  name: antibody_test_bounded_result_value
-  nullable: true
-  type: float
-- metadata: {}
-  name: antibody_test_undiluted_result_value
-  nullable: true
-  type: float
 - metadata: {}
   name: antibody_test_result_recorded_date
   nullable: true
   type: timestamp
 - metadata: {}
+  name: antibody_test_result_value
+  nullable: true
+  type: double
+- metadata: {}
+  name: antibody_test_target
+  nullable: true
+  type: string
+- metadata: {}
+  name: antibody_test_undiluted_result_value
+  nullable: true
+  type: float
+- metadata: {}
+  name: antibody_test_well_id
+  nullable: true
+  type: string
+- metadata: {}
   name: blood_sample_arrayed_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: blood_sample_barcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_sample_collected_datetime
   nullable: true
   type: timestamp
 - metadata: {}
@@ -44,21 +56,33 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: blood_sample_collected_datetime
+  name: blood_sample_type
   nullable: true
-  type: timestamp
+  type: string
 - metadata: {}
   name: blood_test_source_file
   nullable: false
   type: string
 - metadata: {}
-  name: antibody_test_target
+  name: lims_id
   nullable: true
   type: string
 - metadata: {}
-  name: antibody_test_plate_common_id
+  name: plate_storage_method
   nullable: true
   type: string
+- metadata: {}
+  name: siemens_antibody_test_result_classification
+  nullable: true
+  type: string
+- metadata: {}
+  name: siemens_antibody_test_result_value
+  nullable: true
+  type: float
+- metadata: {}
+  name: tdi_antibody_test_result_value
+  nullable: true
+  type: float
 - metadata: {}
   name: unique_antibody_test_id
   nullable: false
