@@ -1,4 +1,3 @@
-import re
 import subprocess
 from datetime import datetime
 from typing import List
@@ -75,24 +74,6 @@ def read_csv_to_pyspark_df(
     )
 
 
-def get_date_from_filename(filename: str, sep: Optional[str] = "_", format: Optional[str] = "%Y%m%d") -> str:
-    """
-    Get a date string from a filename of containing a string formatted date
-    Parameters
-    ----------
-    filename
-    sep
-    format
-    """
-    try:
-        file_date = re.search(r"\d{1,}(?=_)|\d{8,}(?=.csv)", filename)
-        file_date = datetime.strptime(file_date, format)  # type: ignore
-        file_date = pd.to_datetime(file_date, errors="coerce")
-        return str(file_date)
-    except ValueError:
-        return str(None)
-
-
 def list_contents(
     path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = False
 ) -> DataFrame:
@@ -117,12 +98,13 @@ def list_contents(
             for i, component in enumerate(f.split()):
                 dic[names[i]] = component
             dic["filename"] = dic["file_path"].split("/")[-1]
-            if date_from_filename:
-                file_date = get_date_from_filename(dic["filename"])
-                if file_date is not None:
-                    dic["upload_date"] = file_date
-            files.append(dic)
-    return pd.DataFrame(files)
+        files.append(dic)
+    df = pd.DataFrame(files)
+    if date_from_filename:
+        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(_\d{4})?(.csv)"))
+        df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", yearfirst=True, dayfirst=False)
+
+    return df
 
 
 def get_files_by_date(
@@ -147,6 +129,7 @@ def get_files_by_date(
         date to select files before
     """
     file_df = list_contents(path, date_from_filename=True)
+    file_df = file_df.dropna(subset=["upload_date"])
     file_df = file_df.sort_values(["upload_date", "upload_time"])
 
     if start_date is not None:
