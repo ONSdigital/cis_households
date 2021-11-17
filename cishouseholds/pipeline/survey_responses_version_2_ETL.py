@@ -1,8 +1,4 @@
-from itertools import chain
-
-from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
 
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_regex_match
@@ -14,66 +10,43 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
+from cishouseholds.derive import assign_work_person_facing_now
+from cishouseholds.derive import assign_work_social_column
 from cishouseholds.edit import convert_barcode_null_if_zero
-from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
-from cishouseholds.edit import rename_column_names
-from cishouseholds.edit import update_schema_names
-from cishouseholds.edit import update_schema_types
 from cishouseholds.edit import update_work_facing_now_column
-from cishouseholds.extract import read_csv_to_pyspark_df
+from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
+from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
-from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
-from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.validate import validate_and_filter
 
 # from cishouseholds.derive import assign_work_person_facing_now
 
 
 @register_pipeline_stage("survey_responses_version_2_ETL")
-def survey_responses_version_2_ETL(resource_path: str):
+def survey_responses_version_2_ETL(**kwargs):
     """
     End to end processing of a IQVIA survey responses CSV file.
     """
-    df = extract_validate_transform_survey_responses_version_2_delta(resource_path)
-    update_table_and_log_source_files(df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file")
-    return df
-
-
-def extract_validate_transform_survey_responses_version_2_delta(resource_path: str):
-    spark_session = get_or_create_spark_session()
-    df = extract_survey_responses_version_2_delta(spark_session, resource_path)
-    df = rename_column_names(df, survey_responses_v2_variable_name_map)
-    df = convert_columns_to_timestamps(df, survey_responses_v2_datetime_map)
-
-    _survey_responses_v2_validation_schema = update_schema_names(
-        survey_responses_v2_validation_schema, survey_responses_v2_variable_name_map
-    )
-    survey_responses_v2_datetime_map_list = list(chain(*list(survey_responses_v2_datetime_map.values())))
-    _survey_responses_v2_validation_schema = update_schema_types(
-        _survey_responses_v2_validation_schema, survey_responses_v2_datetime_map_list, {"type": "timestamp"}
-    )
-
-    error_accumulator = spark_session.sparkContext.accumulator(
-        value=[], accum_param=AddingAccumulatorParam(zero_value=[])
-    )
-
-    df = validate_and_filter(df, _survey_responses_v2_validation_schema, error_accumulator)
-    df = transform_survey_responses_version_2_delta(df)
-    return df
-
-
-def extract_survey_responses_version_2_delta(spark_session: SparkSession, resource_path: str):
-    iqvia_v2_spark_schema = convert_cerberus_schema_to_pyspark(survey_responses_v2_validation_schema)
-    raw_iqvia_v2_data_header = "|".join(survey_responses_v2_validation_schema.keys())
-    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_iqvia_v2_data_header, iqvia_v2_spark_schema, sep="|")
-    return df
+    file_path_list = get_files_to_be_processed(**kwargs)
+    if file_path_list:
+        df = extract_validate_transform_input_data(
+            file_path_list,
+            survey_responses_v2_variable_name_map,
+            survey_responses_datetime_map,
+            survey_responses_v2_validation_schema,
+            transform_survey_responses_version_2_delta,
+            "|",
+        )
+        update_table_and_log_source_files(
+            df, "transformed_survey_responses_v2_data", "survey_responses_v2_source_file", "overwrite"
+        )
 
 
 def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
@@ -81,12 +54,12 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for iqvia version 2 survey deltas.
     """
     df = assign_filename_column(df, "survey_responses_v2_source_file")
+    df = assign_unique_id_column(df, "unique_participant_response_id", ["participant_id", "visit_datetime"])
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = assign_column_regex_match(df, "bad_email", "email", r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i")
     df = assign_column_to_date_string(df, "visit_date_string", "visit_datetime")
     df = assign_column_to_date_string(df, "sample_taken_date_string", "samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", "date_of_birth")
-    df = assign_column_uniform_value(df, "dataset", 1)  # replace 'n' with chosen value
     df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", "swab_sample_barcode")
@@ -95,7 +68,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = convert_null_if_not_in_list(df, "sex", ["Male", "Female"])
     # df = placeholder_for_derivation_number_7-2(df, "week")
-    # derviation number 7 has been used twice - currently associated to ctpatterns
+    # derivation number 7 has been used twice - currently associated to ctpatterns
     # df = placeholder_for_derivation_number_7-2(df, "month")
     df = assign_outward_postcode(
         df, "outward_postcode", "postcode"
@@ -152,18 +125,21 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     )
     df = assign_school_year_september_start(df, "date_of_birth", "visit_datetime", "school_year_september")
     df = assign_work_patient_facing_now(df, "work_patient_facing_now", "age_at_visit", "work_health_care")
-    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    df = assign_work_social_column(
+        df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
+    )
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
         "work_status",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_person_facing_now",
-    #     "work_status",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
+    df = update_work_facing_now_column(
+        df,
+        "work_person_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     return df

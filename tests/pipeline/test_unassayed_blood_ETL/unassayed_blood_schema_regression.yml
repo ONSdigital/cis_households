@@ -1,10 +1,10 @@
 fields:
 - metadata: {}
-  name: date_received
+  name: blood_sample_received_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: sample_id
+  name: blood_sample_barcode
   nullable: true
   type: string
 - metadata: {}
@@ -16,19 +16,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: sample_type
+  name: blood_sample_type
   nullable: true
   type: string
 - metadata: {}
-  name: unprocessed_blood_source_file
+  name: unassayed_blood_source_file
   nullable: false
   type: string
-- metadata: {}
-  name: antibody_test_target
-  nullable: true
-  type: string
-- metadata: {}
-  name: assay_category
-  nullable: false
-  type: integer
 type: struct

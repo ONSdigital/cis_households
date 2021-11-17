@@ -6,6 +6,120 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def clean_postcode(df: DataFrame, postcode_column: str):
+    """
+    update postcode variable to include only uppercase alpha numeric characters and set
+    to null if required format cannot be identified
+    Parameters
+    ----------
+    df
+    postcode_column
+    """
+    df = df.withColumn(
+        postcode_column,
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
+    )
+    df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
+    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
+    df = df.withColumn(
+        postcode_column,
+        F.when(
+            (F.length(postcode_column) <= 4), F.format_string("%s %s", F.col(postcode_column), F.col("TEMP"))
+        ).otherwise(None),
+    )
+    return df.drop("TEMP")
+
+
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+    """
+    Update specific cell values from a map contained in a csv file
+    Parameters
+    ----------
+    df
+    csv_filepath
+    id_column
+        column in dataframe containing unique identifier
+    """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(csv_filepath, header=True)
+    csv = csv.groupBy("id", "old", "new").pivot("column").count()
+    cols = csv.columns[3:]
+    for col in cols:
+        copy = csv.filter(F.col(col) == 1)
+        copy = copy.drop(col).withColumnRenamed("old", col)
+        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
+        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
+    return df
+
+
+def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
+    """
+    Create seperate columns for school year depending on the individuals counrty of residience
+    Parameters
+    ----------
+    df
+    school_year_column
+    country_column
+    id_column
+    """
+    countries = [["England", "Wales"], ["Scotland"], ["NI"]]
+    column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
+    for column_name, country_set in zip(column_names, countries):
+        temp_df = (
+            df.select(country_column, school_year_column, id_column)
+            .filter(F.col(country_column).isin(country_set))
+            .withColumnRenamed(school_year_column, column_name)
+        )
+        df = df.join(temp_df, on=[country_column, id_column], how="left")
+    return df.drop(school_year_column)
+
+
+def update_social_column(df: DataFrame, social_column: str, health_column: str):
+    """
+    Update the value of the social column to that of the health column
+    provided that the social column is null and health column is not
+    Parameters
+    ----------
+    df
+    social_column
+    health_column
+    """
+    df = df.withColumn(
+        social_column,
+        F.when((F.col(social_column).isNull()) & (~F.col(health_column).isNull()), F.col(health_column)).otherwise(
+            F.col(social_column)
+        ),
+    )
+    return df
+
+
+def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
+    """
+    Convert column values matching map key to value
+    Parameters
+    ----------
+    df
+    column
+    map
+    """
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+    if error_if_value_not_found:
+        temp_df = df.distinct()
+        values_set = set(temp_df.select(column).toPandas()[column].tolist())
+        map_set = set(map.keys())
+        if map_set != values_set:
+            missing = set(temp_df.select(column).toPandas()[column].tolist()) - set(map.keys())
+            raise LookupError(f"Insufficient mapping values: contents of:{missing} remains unmapped")
+        df = df.withColumn(column, mapping_expr[df[column]])
+    else:
+        df = df.withColumn(
+            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(F.col(column))
+        )
+    return df
+
 
 def update_work_facing_now_column(
     df: DataFrame,
@@ -92,10 +206,9 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     """
     for format, columns_list in column_format_map.items():
         for column_name in columns_list:
-            try:
+            if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
-            except Exception:
-                pass
+
     return df
 
 
@@ -134,7 +247,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, "\s+", " ")))),  # noqa W605
+        F.upper(F.ltrim(F.rtrim(F.regexp_replace(column_name_to_assign, r"\s+", " ")))),
     )
     df = df.withColumn(
         column_name_to_assign,

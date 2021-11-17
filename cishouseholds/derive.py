@@ -1,26 +1,124 @@
 import re
 from itertools import chain
+from typing import List
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 
+def assign_work_social_column(
+    df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
+):
+    """
+    Assign column for work social with standard string values depending on 3 given reference inputs
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    work_sector_column
+    care_home_column
+    direct_contact_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(work_sector_colum).isNull(), None)
+        .when(F.col(work_sector_colum) != "Furloughed (temporarily not working)", "No")
+        .when(
+            (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
+            "Yes, care/residential home, resident-facing",
+        )
+        .when(
+            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
+            & (F.col(direct_contact_column) == "Yes"),
+            "Yes, other social care, resident-facing",
+        )
+        .when(
+            ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull()))
+            & (F.col(care_home_column) == "Yes"),
+            "Yes, care/residential home, non-resident-facing",
+        )
+        .when(
+            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
+            & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
+            "Yes, other social care, non-resident-facing",
+        ),
+    )
+    return df
+
+
+def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+    """
+    Assign a unique column from concatenating multiple input columns
+    Parameters
+    ----------
+    concat_columns
+    """
+    return df.withColumn(column_name_to_assign, F.concat_ws("-", *concat_columns))
+
+
+def assign_has_been_to_column(
+    df: DataFrame, column_name_to_assign: str, contact_participant_column: str, contact_other_column: str
+):
+    """
+    Assign a column to evidence whether a relevant party has been to a given place using the 2 input
+    contact columns as reference and standardized output string column values
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    contact_participant_column
+    contact_other_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(contact_participant_column) == "No") & (F.col(contact_other_column) == "No"),
+            "No, no one in my household has",
+        )
+        .when(F.col(contact_participant_column) == "Yes", "Yes, I have")
+        .when(
+            (F.col(contact_participant_column) == "No") & (F.col(contact_other_column) == "Yes"),
+            "No I haven't, but someone else in my household has",
+        )
+        .otherwise(None),
+    )
+    return df
+
+
+def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str):
+    """
+    Assign column for possibility of having covid-19
+    Parameters
+    ----------
+    known_column
+    suspect_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(known_column) == "Yes") | (F.col(suspect_column) == "Yes"), "Yes").otherwise("No"),
+    )
+    return df
+
+
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Use inbuilt pyspark function to get name of the file used in the current spark task
+    Regular expression removes unnecessary characters to allow checks for processed files
     Parameters
     ----------
     df
     column_name_to_assign
     """
-    return df.withColumn(column_name_to_assign, F.input_file_name())
+    return df.withColumn(
+        column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+    )
 
 
-def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str, reference_column: str, map: dict):
+def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict):
     """
-    Assing a speciifc column value using a dictionary of values to assign as keys and
-    the list criteria corresponing to when that value should be assign as a value
+    Assing a specific column value using a dictionary of values to assign as keys and
+    the list criteria corresponding to when that value should be assign as a value
     Parameters
     ----------
     df
@@ -28,11 +126,11 @@ def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_asign: str,
     reference_column
     map
     """
-    df = df.withColumn(column_name_to_asign, F.lit(None))
+    df = df.withColumn(column_name_to_assign, F.lit(None))
     for val, key_list in map.items():
         df = df.withColumn(
-            column_name_to_asign,
-            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_asign)),
+            column_name_to_assign,
+            F.when(F.col(reference_column).isin(*key_list), val).otherwise(F.col(column_name_to_assign)),
         )
     return df
 
@@ -315,7 +413,7 @@ def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args
     return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
 
 
-def substring_column(df: DataFrame, new_column_name, column_to_substr, start_position, len_of_substr):
+def assign_substring(df: DataFrame, column_name_to_assign, column_to_substring, start_position, substring_length):
     """
     Criteria - returns data with new column which is a substring
     of an existing variable
@@ -332,7 +430,7 @@ def substring_column(df: DataFrame, new_column_name, column_to_substr, start_pos
     df: pyspark.sql.DataFrame
 
     """
-    df = df.withColumn(new_column_name, F.substring(column_to_substr, start_position, len_of_substr))
+    df = df.withColumn(column_name_to_assign, F.substring(column_to_substring, start_position, substring_length))
 
     return df
 
