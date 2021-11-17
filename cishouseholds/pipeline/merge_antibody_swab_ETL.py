@@ -36,7 +36,9 @@ def outer_join_blood_results():
     blood_table = "transformed_blood_test_data"
     blood_df = extract_from_table(blood_table)
 
-    blood_df, failed_blood_join_df = join_assayed_bloods(blood_df, test_target_column="antibody_test_target")
+    blood_df, failed_blood_join_df = join_assayed_bloods(
+        blood_df, test_target_column="antibody_test_target", unique_id_column="unique_blood_test_id"
+    )
     blood_df = blood_df.withColumn(
         "combined_blood_sample_received_date",
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
