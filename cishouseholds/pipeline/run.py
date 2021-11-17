@@ -39,7 +39,7 @@ def run_from_config():
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
     run_time = (datetime.now() - run_datetime).total_seconds()
-    print(f"Pipeline ran for: {run_time//60} minuts and {run_time%60} seconds")  # functional
+    print(f"Pipeline ran for: {run_time//60} minutes and {run_time%60} seconds")  # functional
     add_run_status(run_id, "finished")
 
 
