@@ -101,8 +101,8 @@ def list_contents(
         files.append(dic)
     df = pd.DataFrame(files)
     if date_from_filename:
-        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(_\d{4})?(.csv)"))
-        df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", yearfirst=True, dayfirst=False)
+        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(_\d{4})?(.csv)"), expand=False)
+        df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y%m%d")
 
     return df
 
@@ -142,7 +142,7 @@ def get_files_by_date(
         file_df = file_df[file_df["upload_date"].dt.date <= end_date]
 
     file_list = file_df["file_path"].tolist()
-    if latest_only:
+    if latest_only and len(file_list) > 0:
         file_list = [file_list[-1]]
     return file_list
 
