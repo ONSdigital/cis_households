@@ -10,6 +10,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
@@ -53,15 +54,19 @@ def read_csv_to_pyspark_df(
         csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not csv_header:
-            raise InvalidFileError(
-                f"Header of {csv_file} ({text_file.first()}) "
+            print(
+                f"FILE ERROR: Header of {csv_file} ({text_file.first()}) "
                 f"does not match expected header: {expected_raw_header_row}"
-            )
+            )  # functional
+            error = True
 
         if not csv_fields:
-            raise InvalidFileError(
-                f"Number of fields in {csv_file} does not match expected number of columns from header"
-            )
+            print(
+                f"FILE ERROR: Number of fields in {csv_file} does not match expected number of columns from header"
+            )  # functional
+            error = True
+        if error:
+            add_error_file_log_entry(get_config(), csv_file, datetime.now())
 
     return spark_session.read.csv(
         csv_file_path,
