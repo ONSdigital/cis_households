@@ -32,10 +32,10 @@ def extract_from_table(table_name: str):
 
     return df
 
+
 def add_log_entry(config: dict, run_datetime: datetime):
-    """
-    """
-    
+    """ """
+
 
 def add_run_log_entry(config: dict, run_datetime: datetime):
     """
