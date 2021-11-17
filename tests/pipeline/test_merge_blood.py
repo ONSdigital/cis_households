@@ -88,8 +88,8 @@ def test_merge_blood(spark_session):
         ("IQVIA-6","ONS005","2020-08-04","i_data",      None, None, None, None, None, None, None),
         ("IQVIA-7","ONS006","2020-08-01","i_data",      None, None, None, None, None, None, None),
         ("IQVIA-8","ONS006","2020-08-02","i_data",      None, None, None, None, None, None, None),
-        ("IQVIA-9","ONS007","2020-08-01","i_data",      "BLOODS-10","2020-08-06",None,"Negative",None,10, "m:m success"),
-        ("IQVIA-10","ONS007","2020-08-02","i_data",     "BLOODS-9","2020-08-08",None,"Negative",None,10, "m:m success"),
+        ("IQVIA-9","ONS007","2020-08-01","i_data",      "BLOODS-10","2020-08-08",None,"Negative",None,10, "m:m success"),
+        ("IQVIA-10","ONS007","2020-08-02","i_data",     "BLOODS-9","2020-08-06",None,"Negative",None,10, "m:m success"),
         ("IQVIA-11","ONS008","2020-08-01","i_data",     "BLOODS-11","2020-08-03",None,"Positive",None,10, "m:m success"),
         ("IQVIA-12","ONS008","2020-08-07","i_data",     None, None, None, None, None, None, None),
         ("IQVIA-13","ONS009","2020-08-01","i_data",     None, None, None, None, None, None, None),
@@ -119,11 +119,7 @@ def test_merge_blood(spark_session):
         ("BLOODS-6","ONS004","2020-08-11",None,"Negative",None,12, "1:m dropped"),
         ("BLOODS-8","ONS006","2020-08-03",None,"Void",None,10, "m:1 dropped"),
         ("BLOODS-12","ONS008","2020-08-04",None,"Positive",None,10, "m:m dropped"),
-        ("BLOODS-13","ONS009","2020-08-02",None,"Negative",None,10, "1:m failed"),
-        ("BLOODS-14","ONS009","2020-08-03",None,"Positive",None,10, "1:m failed"),
-        ("BLOODS-15","ONS010","2020-08-02",None,"Positive",None,10, "m:m failed"),
-        ("BLOODS-16","ONS010","2020-08-03",None,"Negative",None,10, "m:m failed"),
-        ("BLOODS-17","ONS012","2020-08-04",None,"Positive",None,10, "none:1"),
+        ("BLOODS-17","ONS012","2020-08-04",None,"Positive",None,None,None),
         # fmt: on
     ]
     expected_df_bloods_residuals = spark_session.createDataFrame(
@@ -160,6 +156,8 @@ def test_merge_blood(spark_session):
     df_voyager_bloods, df_bloods_residuals, df_failed_records = merge_blood(voyager_df, bloods_df)
 
     assert_df_equality(expected_df_voyager_bloods, df_voyager_bloods, ignore_row_order=True, ignore_column_order=True)
+    expected_df_bloods_residuals.toPandas().to_csv("expected_df.csv",index=False)
+    df_bloods_residuals.toPandas().to_csv("residuals.csv",index=False)
     assert_df_equality(
         expected_df_bloods_residuals, df_bloods_residuals, ignore_row_order=True, ignore_column_order=True
     )

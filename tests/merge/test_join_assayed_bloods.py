@@ -36,7 +36,7 @@ def test_join_assayed_bloods(spark_session):
     other_join_cols = ["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"]
 
     expected_error_df = input_df.filter(F.col("unique_antibody_test_id") == "4")
-    output_df, error_df = join_assayed_bloods(input_df, "blood_group")
+    output_df, error_df = join_assayed_bloods(input_df, "blood_group", "unique_antibody_test_id")
     output_df = output_df.drop(*other_join_cols)
 
     assert_df_equality(expected_df, output_df, ignore_row_order=True)

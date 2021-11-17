@@ -48,7 +48,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
@@ -58,13 +58,12 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     df
     test_target_column
     """
-    join_on_columns = [
+    not_to_rename = [
         "blood_sample_barcode",
         "antibody_test_plate_common_id",
         "antibody_test_well_id",
-        "unique_antibody_test_id",
     ]
-    window = Window.partitionBy(*join_on_columns)
+    window = Window.partitionBy(unique_id_column)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
@@ -74,15 +73,14 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(test_target_column) == blood_group)
         new_column_names = {
-            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
+            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename,unique_id_column] else col
             for col in split_df.columns
         }
         split_df = rename_column_names(split_df, new_column_names)
         split_dataframes.append(split_df)
 
-    joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
+    joined_df = split_dataframes[0].join(split_dataframes[1], on=unique_id_column, how="outer")
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
-
     return joined_df, failed_df
 
 
