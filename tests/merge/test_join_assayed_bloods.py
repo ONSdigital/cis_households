@@ -26,6 +26,10 @@ def test_join_assayed_bloods(spark_session):
             ("1", 1, None),
             ("2", None, 1),
             ("3", 1, 1),
+            ("5", None, 1),
+            ("5", 1, None),
+            ("6", None, 1),
+            ("6", 1, None),
         ],
         schema="""unique_antibody_test_id string,col1_s_protein integer,col1_n_protein integer""",
     )

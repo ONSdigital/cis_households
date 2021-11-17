@@ -943,6 +943,10 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Symptoms_7_Diarrhoea": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_taste": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_smell": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
         "Are_you_self_Isolating_S2": _(
             "choice",
             items=[
@@ -1140,6 +1144,10 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Previous_Symptoms_Diarrhoea": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_taste": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_smell": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
         "If_yes_Date_of_first_symptoms": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
@@ -1282,6 +1290,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
+        "Vaccinated_against_flu": _("choice", items=yes_no_none_choice),
         "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _(
             "choice",

@@ -116,6 +116,7 @@
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-350245644249-2022-01-01 06:11:57
   visit_datetime: '2022-01-01 06:11:57.000000'
   visit_id: DHVF-3442149696
   withdrawal_reason: Participant does not want to self swab
@@ -247,6 +248,7 @@
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-750309883089-2022-01-04 19:23:52
   visit_datetime: '2022-01-04 19:23:52.000000'
   visit_id: DHVF-5198266175
   withdrawal_reason: Too many visits
@@ -380,6 +382,7 @@
     another sentence.
   think_have_covid_symptoms: 'Yes'
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-593586857022-2022-01-06 18:06:58
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   withdrawal_reason: No longer wants to take part
@@ -509,6 +512,7 @@
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: null
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-229883187696-2022-01-03 07:01:12
   visit_datetime: '2022-01-03 07:01:12.000000'
   visit_id: DVH-2564559272
   withdrawal_reason: No longer convenient
@@ -640,6 +644,7 @@
   think_had_covid_which_symptoms: Make me a sandwich.
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-449957129557-2022-01-06 17:36:59
   visit_datetime: '2022-01-06 17:36:59.000000'
   visit_id: DVH-2948509899
   withdrawal_reason: No longer convenient
@@ -772,6 +777,7 @@
     language.
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-848695986758-2022-01-02 01:35:07
   visit_datetime: '2022-01-02 01:35:07.000000'
   visit_id: DVH-4804616426
   withdrawal_reason: Bad experience with tester / survey
@@ -902,6 +908,7 @@
     but it has since been restored.
   think_have_covid_symptoms: 'No'
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-851138788221-2022-01-08 05:06:21
   visit_datetime: '2022-01-08 05:06:21.000000'
   visit_id: DVH-6249804207
   withdrawal_reason: Bad experience with tester / survey
@@ -1031,6 +1038,7 @@
   think_had_covid_which_symptoms: Do you come here often?
   think_have_covid_symptoms: 'Yes'
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-422525832950-2022-01-02 21:34:20
   visit_datetime: '2022-01-02 21:34:20.000000'
   visit_id: DVH-7139656872
   withdrawal_reason: Participant does not want to self swab
@@ -1159,6 +1167,7 @@
     and writing poetry.
   think_have_covid_symptoms: null
   type_of_visit: First Visit
+  unique_participant_response_id: DHR-621954781044-2022-01-07 11:10:34
   visit_datetime: '2022-01-07 11:10:34.000000'
   visit_id: DVH-7239645123
   withdrawal_reason: No longer wants to take part
@@ -1292,6 +1301,7 @@
     and lazy evaluation.
   think_have_covid_symptoms: null
   type_of_visit: Follow-up Visit
+  unique_participant_response_id: DHR-263959191921-2022-01-08 11:41:44
   visit_datetime: '2022-01-08 11:41:44.000000'
   visit_id: DVH-9888271882
   withdrawal_reason: Bad experience with tester / survey
