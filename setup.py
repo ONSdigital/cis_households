@@ -25,7 +25,7 @@ dev_requires = [
 
 setuptools.setup(
     name="cishouseholds",
-    version="1.0.0-beta.0",
+    version="1.0.0-beta.1",
     author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
     description="Data engineering pipeline for the Office for National Statistics COVID-19 Infection Survey (CIS)",
@@ -37,7 +37,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=setuptools.find_packages(include="cishouseholds"),
+    packages=setuptools.find_packages(exclude="tests"),
     python_requires="==3.6.8",
     install_requires=requires,
     extras_require={"dev": dev_requires, "ci": dev_requires + ["pyspark==2.4.1", "pytest-cov", "coverage"]},
