@@ -50,9 +50,11 @@ def assign_work_social_column(
 def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
     """
     Assign a unique column from concatenating multiple input columns
-        concat_columns
+    Parameters
+    ----------
+    concat_columns
     """
-    return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
+    return df.withColumn(column_name_to_assign, F.concat_ws("-", *concat_columns))
 
 
 def assign_has_been_to_column(
@@ -102,12 +104,15 @@ def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known
 def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Use inbuilt pyspark function to get name of the file used in the current spark task
+    Regular expression removes unnecessary characters to allow checks for processed files
     Parameters
     ----------
     df
     column_name_to_assign
     """
-    return df.withColumn(column_name_to_assign, F.input_file_name())
+    return df.withColumn(
+        column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+    )
 
 
 def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict):

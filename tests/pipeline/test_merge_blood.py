@@ -88,8 +88,8 @@ def test_merge_blood(spark_session):
         ("IQVIA-6","ONS005","2020-08-04","i_data",      None, None, None, None, None, None, None),
         ("IQVIA-7","ONS006","2020-08-01","i_data",      None, None, None, None, None, None, None),
         ("IQVIA-8","ONS006","2020-08-02","i_data",      None, None, None, None, None, None, None),
-        ("IQVIA-9","ONS007","2020-08-01","i_data",      "BLOODS-9","2020-08-06",None,"Negative",None,10, "m:m success"),
-        ("IQVIA-10","ONS007","2020-08-02","i_data",     "BLOODS-10","2020-08-08",None,"Negative",None,10, "m:m success"),
+        ("IQVIA-9","ONS007","2020-08-01","i_data",      "BLOODS-10","2020-08-06",None,"Negative",None,10, "m:m success"),
+        ("IQVIA-10","ONS007","2020-08-02","i_data",     "BLOODS-9","2020-08-08",None,"Negative",None,10, "m:m success"),
         ("IQVIA-11","ONS008","2020-08-01","i_data",     "BLOODS-11","2020-08-03",None,"Positive",None,10, "m:m success"),
         ("IQVIA-12","ONS008","2020-08-07","i_data",     None, None, None, None, None, None, None),
         ("IQVIA-13","ONS009","2020-08-01","i_data",     None, None, None, None, None, None, None),
@@ -158,10 +158,6 @@ def test_merge_blood(spark_session):
     )
 
     df_voyager_bloods, df_bloods_residuals, df_failed_records = merge_blood(voyager_df, bloods_df)
-    print("OUTPUTS: ")
-    df_voyager_bloods.orderBy("unique_participant_response_id").toPandas().to_csv("survey_antibody_df.csv", index=False)
-    df_bloods_residuals.toPandas().to_csv("antibody_residual.csv", index=False)
-    df_failed_records.toPandas().to_csv("antibody_merge_failed_records.csv", index=False)
 
     assert_df_equality(expected_df_voyager_bloods, df_voyager_bloods, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(

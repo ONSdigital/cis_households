@@ -20,17 +20,12 @@ def run_from_config():
     """
     Run ordered pipeline stages, from pipeline configuration. Config file location must be specified in the environment
     variable ``PIPELINE_CONFIG_LOCATION``.
-
     ``function`` and ``run`` are essential keys for each stage. All other key value pairs are passed to the function.
-
-
     An example stage is configured:
-
     stages:
     - function: process_csv
       run: True
       resource_path: "path_to.csv"
-
     """
     config = get_config()
     run_datetime = datetime.now()
@@ -43,7 +38,8 @@ def run_from_config():
     except Exception as e:
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
-
+    run_time = (datetime.now() - run_datetime).total_seconds()
+    print(f"Pipeline ran for: {run_time//60} minuts and {run_time%60} seconds")  # functional
     add_run_status(run_id, "finished")
 
 
@@ -53,10 +49,13 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
     max_digits = len(str(number_of_stages))
     for n, stage_config in enumerate(pipeline_stage_list):
         try:
+            stage_start = datetime.now()
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
             pipeline_stages[stage_name](**stage_config)
+            run_time = (datetime.now() - stage_start).total_seconds()
+            print(f"Stage ran for: {run_time} seconds")  # functional
         except Exception:
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             print(f"Error: {traceback.format_exc()}")  # functional

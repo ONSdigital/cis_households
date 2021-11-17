@@ -22,9 +22,9 @@ def historical_blood_ETL(**kwargs):
             historical_blood_validation_schema,
             transform_blood_delta,
         )
-    df = add_fields(df)
-    df = df.select(sorted(df.columns))
-    update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
+        df = add_fields(df)
+        df = df.select(sorted(df.columns))
+        update_table_and_log_source_files(df, "transformed_blood_test_data", "blood_test_source_file")
 
 
 def add_fields(df: DataFrame):

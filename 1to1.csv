@@ -1,2 +1,0 @@
-blood_sample_received_date_s_protein,count_barcode_antibody,count_barcode_voyager,unique_participant_response_id,visit_date_string,antibody_test_result_classification_s_protein,unique_antibody_test_id,blood_sample_barcode,antibody_test_result_recorded_date_s_protein,siemens_antibody_test_result_value_s_protein,diff_vs_visit_hr_antibody,out_of_date_range_antibody,abs_offset_diff_vs_visit_hr_antibody,1to1_antibody,mtom_antibody,1tom_antibody,mto1_antibody
-2020-08-02,1,1,IQVIA-1,2020-08-01,Positive,BLOODS-1,ONS001,,,24.0,,0.0,1,,,

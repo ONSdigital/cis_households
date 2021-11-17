@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 from io import StringIO
 from operator import add
+from typing import List
 
 from cerberus import TypeDefinition
 from cerberus import Validator
@@ -10,6 +11,11 @@ from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Row
+from pyspark.sql import Window
+
+# from typing import List
+
+# from typing import List
 
 
 class PySparkValidator(Validator):
@@ -99,7 +105,13 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     return expected_header == header
 
 
-def check_singular_match(df: DataFrame, drop_flag_column_name: str, failure_column_name: str, group_by_column: str):
+def check_singular_match(
+    df: DataFrame,
+    drop_flag_column_name: str,
+    failure_column_name: str,
+    group_by_columns: List[str],
+    existing_failure_column: str = None,
+):
     """
     Given a set of columns related to the final drop flag of a given merge function on the complete
     (merged) dataframe produce an indication column (failure column) which stipulates whether the
@@ -116,19 +128,14 @@ def check_singular_match(df: DataFrame, drop_flag_column_name: str, failure_colu
     group_by_column
         Column to check is singular given criteria
     """
+    window = Window.partitionBy(*group_by_columns, drop_flag_column_name)
+    df = df.withColumn("TOTAL", F.sum(F.lit(1)).over(window))
 
-    df.show()
-    dft = (
-        df.groupBy(group_by_column, drop_flag_column_name)
-        .count()
-        .withColumn(
-            failure_column_name,
-            F.when((F.col("count") > 1) & (F.col(drop_flag_column_name).isNull()), 1).otherwise(None),
-        )
+    df = df.withColumn(
+        failure_column_name, F.when((F.col("total") > 1) & (F.col(drop_flag_column_name).isNull()), 1).otherwise(None)
     )
-    df = df.drop(failure_column_name)
-    df = df.join(dft, how="left", on=[group_by_column, drop_flag_column_name])
-    dft.show()
-
-    df.show()
-    return df
+    if existing_failure_column is not None:
+        df = df.withColumn(
+            failure_column_name, F.when(F.col(existing_failure_column) == 1, 1).otherwise(F.col(failure_column_name))
+        )
+    return df.drop("TOTAL")
