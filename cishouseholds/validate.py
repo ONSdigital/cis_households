@@ -128,6 +128,8 @@ def check_singular_match(
     group_by_column
         Column to check is singular given criteria
     """
+    if type(group_by_columns) != list:
+        group_by_columns = [group_by_columns]
     window = Window.partitionBy(*group_by_columns, drop_flag_column_name)
     df = df.withColumn("TOTAL", F.sum(F.lit(1)).over(window))
 

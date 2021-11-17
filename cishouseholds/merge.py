@@ -476,7 +476,7 @@ def many_to_many_flag(
     group_by_column: str,
     ordering_columns: list,
     process_type: str,
-    failed_flag_column_name_to_assign: str,
+    failure_column_name: str,
 ):
     """
     Many (Voyager) to Many (antibody) matching process.
@@ -493,7 +493,7 @@ def many_to_many_flag(
     process_type
         Defines which many-to-many matching process is being carried out.
         Must be 'antibody' or 'swab'
-    failed_flag_column_name_to_assign
+    failure_column_name
         Name of column to indicate record has failed validation logic
     """
 
@@ -516,7 +516,7 @@ def many_to_many_flag(
     )
 
     df = df.withColumn(
-        failed_flag_column_name_to_assign,
+        failure_column_name,
         F.when(
             F.last("classification_different_to_first").over(window).isNotNull(),
             1,

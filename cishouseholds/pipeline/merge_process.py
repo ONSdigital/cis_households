@@ -268,7 +268,7 @@ def execute_merge_specific_swabs(
             "unique_pcr_test_id",
         ],
         process_type="swab",
-        failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
+        failure_column_name="failed_flag_mtom_" + merge_type,
     )
     print("        -validating swab merge process")  # functional
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
@@ -376,7 +376,7 @@ def execute_merge_specific_antibody(
         ordering_columns=window_columns,
         process_type=merge_type,
         out_of_date_range_column="out_of_date_range_" + merge_type,
-        failed_flag_column_name_to_assign="failed_flag_mtom_" + merge_type,
+        failure_column_name="failed_flag_mtom_" + merge_type,
     )
 
     print("        -validating antibody merge process")  # functional
