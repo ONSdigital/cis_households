@@ -266,7 +266,7 @@ def _create_log(start_time: datetime, log_path: str):
         filename=log, level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S"
     )
     logging.getLogger("requests").setLevel(logging.WARNING)
-    logging.info("Started")
+    logging.info("\n KNN imputation started")
 
 
 def _validate_donor_group_variables(
@@ -379,16 +379,18 @@ def impute_by_k_nearest_neighbours(
         message = f"Imputation variables ({donor_group_columns}), should be in dataset columns."
         raise ValueError(message)
 
-    imp_df = df.filter((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
-    don_df = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
+    imputing_df = df.filter((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
+    donor_df = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
     df_length = df.count()
-    impute_count = imp_df.count()
-    donor_count = don_df.count()
+    impute_count = imputing_df.count()
+    donor_count = donor_df.count()
 
     assert impute_count + donor_count == df_length, "Imp df and Don df do not sum to df"
 
     if impute_count == 0:
         return df
+    if donor_count < 1:
+        raise ValueError("All records are null for the column to be imputed, so no donors are available.")
 
     _create_log(start_time=datetime.now(), log_path=log_file_path)
 
@@ -415,19 +417,18 @@ def impute_by_k_nearest_neighbours(
         df, reference_column, donor_group_columns, donor_group_variable_weights, donor_group_variable_conditions
     )
 
-    imp_df = imp_df.withColumn("imp_uniques", F.concat(*donor_group_columns))
-    don_df = don_df.withColumn("don_uniques", F.concat(*donor_group_columns))
+    imputing_df = imputing_df.withColumn("imp_uniques", F.concat(*donor_group_columns))
+    donor_df = donor_df.withColumn("don_uniques", F.concat(*donor_group_columns))
 
     # unique groupings of impute vars
-    imp_df_unique = imp_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
-    don_df_unique = don_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["don_uniques"])
+    imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
+    donor_df_unique = donor_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["don_uniques"])
 
     for var in donor_group_columns + [reference_column]:
-        don_df_unique = don_df_unique.withColumnRenamed(var, "don_" + var)
-        don_df = don_df.withColumnRenamed(var, "don_" + var)
+        donor_df_unique = donor_df_unique.withColumnRenamed(var, "don_" + var)
+        donor_df = donor_df.withColumnRenamed(var, "don_" + var)
 
-    joined_uniques = imp_df_unique.crossJoin(don_df_unique)
-
+    joined_uniques = imputing_df_unique.crossJoin(donor_df_unique)
     joined_uniques = joined_uniques.repartition("imp_uniques")
 
     candidates = distance_function(joined_uniques, donor_group_columns, donor_group_variable_weights).select(
@@ -435,23 +436,27 @@ def impute_by_k_nearest_neighbours(
     )
 
     # only counting one row for matching imp_vars
-    freqs = don_df.groupby("don_uniques", "don_" + reference_column).count().withColumnRenamed("count", "frequency")
-    freqs = freqs.join(candidates, on="don_uniques")
-    freqs = freqs.join(freqs.groupby("imp_uniques").agg(F.sum("frequency").alias("donor_count")), on="imp_uniques")
+    frequencies = (
+        donor_df.groupby("don_uniques", "don_" + reference_column).count().withColumnRenamed("count", "frequency")
+    )
+    frequencies = frequencies.join(candidates, on="don_uniques")
+    frequencies = frequencies.join(
+        frequencies.groupby("imp_uniques").agg(F.sum("frequency").alias("donor_count")), on="imp_uniques"
+    )
 
     # check minimum number of donors
-    single_donors = freqs.filter(F.col("donor_count") <= minimum_donors).count()
+    single_donors = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
     if single_donors > 0:
         message = f"{single_donors} donor pools found with less than the required {minimum_donors} minimum donor(s)"
         logging.warn(message)
-        logging.warn(freqs.filter(F.col("donor_count") <= minimum_donors).toPandas())
+        logging.warn(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
         raise ValueError(message)
 
-    freqs = freqs.withColumn("probs", F.col("frequency") / F.col("donor_count"))
+    frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
 
-    # best don uniques to get donors from
-    full_df = freqs.join(
-        imp_df.groupby("imp_uniques").agg(F.count("imp_uniques").alias("imp_group_size")), on="imp_uniques"
+    # best donor uniques to get donors from
+    full_df = frequencies.join(
+        imputing_df.groupby("imp_uniques").agg(F.count("imp_uniques").alias("imp_group_size")), on="imp_uniques"
     )
 
     full_df = full_df.withColumn("exp_freq", F.col("probs") * F.col("imp_group_size"))
@@ -460,47 +465,50 @@ def impute_by_k_nearest_neighbours(
 
     # Integer part
     full_df = full_df.withColumn("new_imp_group_size", F.col("imp_group_size") - F.col("int_part"))
-    int_dons = full_df.select("int_part", "imp_uniques", "don_" + reference_column).filter(F.col("int_part") >= 1)
-
-    # required decimal donors
-    dec_dons = full_df.select("probs", "imp_uniques", "don_" + reference_column, "new_imp_group_size").filter(
-        F.col("dec_part") > 0
+    integer_part_donors = full_df.select("int_part", "imp_uniques", "don_" + reference_column).filter(
+        F.col("int_part") >= 1
     )
 
     # Decimal part
-    dec_dons = dec_dons.withColumn("random_number", F.rand() * F.col("probs"))
-    tt = Window.partitionBy("imp_uniques").orderBy(F.col("random_number").desc())
-    dec_dons = dec_dons.withColumn("row", F.row_number().over(tt)).filter(F.col("row") <= F.col("new_imp_group_size"))
+    decimal_part_donors = full_df.select(
+        "probs", "imp_uniques", "don_" + reference_column, "new_imp_group_size"
+    ).filter(F.col("dec_part") > 0)
 
-    to_impute = int_dons.select("imp_uniques", "don_" + reference_column).unionByName(
-        dec_dons.select("imp_uniques", "don_" + reference_column)
+    decimal_part_donors = decimal_part_donors.withColumn("random_number", F.rand() * F.col("probs"))
+    tt = Window.partitionBy("imp_uniques").orderBy(F.col("random_number").desc())
+    decimal_part_donors = decimal_part_donors.withColumn("row", F.row_number().over(tt)).filter(
+        F.col("row") <= F.col("new_imp_group_size")
+    )
+
+    to_impute = integer_part_donors.select("imp_uniques", "don_" + reference_column).unionByName(
+        decimal_part_donors.select("imp_uniques", "don_" + reference_column)
     )
     ww = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
     to_impute = to_impute.withColumn("rand", F.rand())
     to_impute = to_impute.withColumn("row", F.row_number().over(ww))
     to_impute = to_impute.withColumnRenamed("don_" + reference_column, column_name_to_assign)
 
-    don_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
-    xx = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))
-    imp_df = imp_df.withColumn("row", F.row_number().over(xx))
+    donor_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
+    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))
+    imputing_df = imputing_df.withColumn("row", F.row_number().over(imp_uniques_window))
 
-    imp_df_final = imp_df.join(
-        to_impute, on=(imp_df.imp_uniques == to_impute.imp_uniques) & (imp_df.row == to_impute.row)
+    imputing_df_final = imputing_df.join(
+        to_impute, on=(imputing_df.imp_uniques == to_impute.imp_uniques) & (imputing_df.row == to_impute.row)
     ).drop("imp_uniques", "row", "rand")
 
-    imputed_count = imp_df_final.count()
+    imputed_count = imputing_df_final.count()
 
     logging.info(f"{imputed_count} records imputed.")
     logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
-    logging.info(imp_df_final.select(column_name_to_assign).summary().toPandas())
+    logging.info(imputing_df_final.select(column_name_to_assign).summary().toPandas())
 
-    don_df_final.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
-    output_df = imp_df_final.unionByName(don_df_final)
+    donor_df_final.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
+    output_df = imputing_df_final.unionByName(donor_df_final)
 
     logging.info(f"Summary statistics for donor values: {reference_column}")
-    logging.info(don_df_final.select(reference_column).summary().toPandas())
+    logging.info(donor_df_final.select(reference_column).summary().toPandas())
 
-    output_df.cache().count()
+    output_df.cache()
     output_df_length = output_df.count()
     if output_df_length != df_length:
         raise ValueError("Records have been lost during imputation")
@@ -512,5 +520,5 @@ def impute_by_k_nearest_neighbours(
     if missing_count != 0:
         raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation")
 
-    logging.info("Finished")
+    logging.info("KNN imputation completed\n")
     return output_df
