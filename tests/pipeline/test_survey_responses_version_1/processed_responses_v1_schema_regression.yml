@@ -655,4 +655,8 @@ fields:
   name: survey_responses_v1_source_file
   nullable: false
   type: string
+- metadata: {}
+  name: unique_participant_response_id
+  nullable: false
+  type: string
 type: struct

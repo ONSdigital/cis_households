@@ -61,6 +61,6 @@ fields:
   type: string
 - metadata: {}
   name: unique_antibody_test_id
-  nullable: true
+  nullable: false
   type: string
 type: struct

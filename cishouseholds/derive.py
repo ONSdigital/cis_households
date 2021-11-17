@@ -50,9 +50,11 @@ def assign_work_social_column(
 def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
     """
     Assign a unique column from concatenating multiple input columns
-        concat_columns
+    Parameters
+    ----------
+    concat_columns
     """
-    return df.withColumn(column_name_to_assign, F.concat(*concat_columns))
+    return df.withColumn(column_name_to_assign, F.concat_ws("-", *concat_columns))
 
 
 def assign_has_been_to_column(
