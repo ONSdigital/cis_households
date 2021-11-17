@@ -128,7 +128,6 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Swab Only
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '0'
@@ -323,7 +322,6 @@
   social_distance_contact_under_18_years: 'No'
   street: Benwee
   study_cohort: Swab Only
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '0'
@@ -512,7 +510,6 @@
   social_distance_contact_under_18_years: null
   street: null
   study_cohort: Swab Only
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '1'
@@ -705,7 +702,6 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '0'
@@ -895,7 +891,6 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '1'
@@ -1082,7 +1077,6 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '0'
@@ -1273,7 +1267,6 @@
   social_distance_contact_under_18_years: 'Yes'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '0'
@@ -1463,7 +1456,6 @@
   social_distance_contact_under_18_years: null
   street: null
   study_cohort: Swab Only
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '1'
@@ -1657,7 +1649,6 @@
   social_distance_contact_under_18_years: 'Yes'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '1'
@@ -1851,7 +1842,6 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_1_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: '1'

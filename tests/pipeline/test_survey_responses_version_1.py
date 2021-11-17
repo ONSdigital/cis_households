@@ -33,7 +33,7 @@ def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_responses_version_1_delta_df(responses_v1_survey_ETL_output, regression_test_df):
     regression_test_df(
-        responses_v1_survey_ETL_output.drop("survey_responses_v1_source_file"), "visit_id", "processed_responses_v1"
+        responses_v1_survey_ETL_output.drop("survey_response_source_file"), "visit_id", "processed_responses_v1"
     )  # remove source file column, as it varies for our temp dummy data
 
 

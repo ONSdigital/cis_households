@@ -177,7 +177,6 @@
   street: Harford
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
@@ -436,7 +435,6 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -695,7 +693,6 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -955,7 +952,6 @@
   street: Druminiskill
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
@@ -1215,7 +1211,6 @@
   street: Ballywatermoy
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1472,7 +1467,6 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
@@ -1732,7 +1726,6 @@
   street: Drumagrove
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1991,7 +1984,6 @@
   street: Benwee
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -2252,7 +2244,6 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
@@ -2512,7 +2503,6 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_2_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null

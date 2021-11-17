@@ -91,7 +91,6 @@
   sex: Female
   street: null
   suffix: U
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -239,7 +238,6 @@
   sex: null
   street: null
   suffix: C
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1
@@ -389,7 +387,6 @@
   sex: null
   street: null
   suffix: C
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -535,7 +532,6 @@
   sex: Female
   street: null
   suffix: A
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1
@@ -684,7 +680,6 @@
   sex: Male
   street: null
   suffix: B
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1
@@ -832,7 +827,6 @@
   sex: Male
   street: Drumagrove
   suffix: O
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -979,7 +973,6 @@
   sex: null
   street: null
   suffix: U
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -1126,7 +1119,6 @@
   sex: Female
   street: null
   suffix: B
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -1270,7 +1262,6 @@
   sex: null
   street: null
   suffix: M
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
@@ -1420,7 +1411,6 @@
   sex: Male
   street: null
   suffix: L
-  survey_response_source_file: file:///C:/Users/fosted1/AppData/Local/Temp/pytest-of-fosted1/pytest-161/test_responses_version_0_delta0/temp.csv
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0
