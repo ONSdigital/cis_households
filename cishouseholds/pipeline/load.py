@@ -41,6 +41,8 @@ def add_error_file_log_entry(config: dict, file_path: str, run_datetime: datetim
     file_id = get_latest_id(storage_config, "error_file_log", "file_id")
     spark_session = get_or_create_spark_session()
     file_log_entry = _create_file_log_entry(spark_session, file_id, file_path, run_datetime)
+    print("FILE LOG: ")
+    file_log_entry.show()
     file_log_entry.write.mode("append").saveAsTable(
         f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
     )  # Always append
