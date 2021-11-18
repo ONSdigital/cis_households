@@ -86,6 +86,7 @@
   reason_participants_not_present: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
   sample_taken_date_string: '2022-01-08'
+  samples_taken_date_string: '2022-01-08'
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
   school_year_september: null
   sex: Female
@@ -233,6 +234,7 @@
   reason_participants_not_present: Let them eat cake.
   received_shielding_letter: null
   sample_taken_date_string: '2022-01-09'
+  samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
   school_year_september: null
   sex: null
@@ -382,6 +384,7 @@
   reason_participants_not_present: Houston, we have a problem.
   received_shielding_letter: 'No'
   sample_taken_date_string: '2022-01-09'
+  samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   school_year_september: null
   sex: null
@@ -527,6 +530,7 @@
     down this wall!
   received_shielding_letter: null
   sample_taken_date_string: '2022-01-02'
+  samples_taken_date_string: '2022-01-02'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
   school_year_september: null
   sex: Female
@@ -675,6 +679,7 @@
   reason_participants_not_present: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
   sample_taken_date_string: '2022-01-04'
+  samples_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
   school_year_september: null
   sex: Male
@@ -822,6 +827,7 @@
     you can do for your country.
   received_shielding_letter: null
   sample_taken_date_string: '2022-01-01'
+  samples_taken_date_string: '2022-01-01'
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
   school_year_september: null
   sex: Male
@@ -968,6 +974,7 @@
     you can do for your country.
   received_shielding_letter: 'No'
   sample_taken_date_string: '2022-01-05'
+  samples_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
   school_year_september: null
   sex: null
@@ -1114,6 +1121,7 @@
   reason_participants_not_present: Let them eat cake.
   received_shielding_letter: null
   sample_taken_date_string: '2022-01-09'
+  samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
   school_year_september: null
   sex: Female
@@ -1257,6 +1265,7 @@
   reason_participants_not_present: Elementary, my dear Watson.
   received_shielding_letter: 'No'
   sample_taken_date_string: '2022-01-02'
+  samples_taken_date_string: '2022-01-02'
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
   school_year_september: null
   sex: null
@@ -1406,6 +1415,7 @@
   reason_participants_not_present: Here's looking at you, kid.
   received_shielding_letter: 'Yes'
   sample_taken_date_string: '2022-01-07'
+  samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
   school_year_september: null
   sex: Male
