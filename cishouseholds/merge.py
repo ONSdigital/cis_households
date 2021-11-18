@@ -91,7 +91,6 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns:
 def null_safe_join(left_df: DataFrame, right_df: DataFrame, null_safe_on: list, null_unsafe_on: list, how="left"):
     """
     Performs a join on equal columns, where a subset of the join columns can be null safe.
-    N.B. This unit is not yet tested.
 
     Parameters
     ----------
