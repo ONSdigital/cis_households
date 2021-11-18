@@ -11,4 +11,3 @@ def load_auxillary_data():
         auxillary_dfs[name] = read_csv_to_pyspark_df(spark_session, resource_path,)
 
 def update_data(old_sample_df: DataFrame, new_sample_df: DataFrame):
-    
