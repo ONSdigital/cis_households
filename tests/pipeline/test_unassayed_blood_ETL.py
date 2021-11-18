@@ -23,7 +23,7 @@ def unassayed_blood_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         unassayed_bloods_variable_name_map,
         blood_datetime_map,
         unassayed_blood_validation_schema,
-        transform_unassayed_blood,
+        [transform_unassayed_blood],
     )
 
     return processed_df
