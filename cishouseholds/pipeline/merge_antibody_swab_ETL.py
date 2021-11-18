@@ -39,7 +39,7 @@ def outer_join_blood_results():
     blood_df, failed_blood_join_df = join_assayed_bloods(
         blood_df,
         test_target_column="antibody_test_target",
-        unique_id_column=[
+        join_on_columns=[
             "unique_antibody_test_id",
             "blood_sample_barcode",
             "antibody_test_plate_common_id",
