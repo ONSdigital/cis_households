@@ -9,6 +9,27 @@ from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
 
 
+def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List[str], str], drop_flag_column: str):
+    """
+    Assign a flag for rows after first that contain duplicated data across selected columns
+    Parameters
+    ----------
+    df
+    exclusion_columns
+    drop_flag_column
+    """
+    if type(exclusion_columns) != list:
+        exclusion_columns = [exclusion_columns]  # type: ignore
+    columns = df.columns
+    for col in [drop_flag_column, *exclusion_columns]:
+        if col in columns:
+            columns.remove(col)
+    window = Window.partitionBy(*columns).orderBy(exclusion_columns[0])
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+    df = df.withColumn(drop_flag_column, F.when(F.col("ROW_NUMBER") != 1, 1).otherwise(F.col(drop_flag_column)))
+    return df.drop("ROW_NUMBER")
+
+
 def union_multiple_tables(tables: List[DataFrame]):
     """
     Given a list of tables combine them through a union process
@@ -27,7 +48,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
@@ -37,13 +58,12 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     df
     test_target_column
     """
-    join_on_columns = [
+    not_to_rename = [
         "blood_sample_barcode",
         "antibody_test_plate_common_id",
         "antibody_test_well_id",
-        "unique_antibody_test_id",
     ]
-    window = Window.partitionBy(*join_on_columns)
+    window = Window.partitionBy(unique_id_column)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
@@ -53,15 +73,14 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str):
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(test_target_column) == blood_group)
         new_column_names = {
-            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
+            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename, unique_id_column] else col
             for col in split_df.columns
         }
         split_df = rename_column_names(split_df, new_column_names)
         split_dataframes.append(split_df)
 
-    joined_df = split_dataframes[0].join(split_dataframes[1], on=join_on_columns, how="outer")
+    joined_df = split_dataframes[0].join(split_dataframes[1], on=unique_id_column, how="outer")
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
-
     return joined_df, failed_df
 
 
@@ -172,10 +191,9 @@ def check_consistency_in_retained_rows(
     column_name_to_assign
     """
     check_distinct = []
-    df_retained_rows = df.filter(F.col(selection_column) == 0)
     for col in check_columns:
         df_grouped = (
-            df_retained_rows.groupBy(group_column, col)
+            df.groupBy(group_column, col)
             .count()
             .withColumnRenamed("count", "num_objs")
             .groupBy(group_column)
@@ -293,10 +311,7 @@ def assign_merge_process_group_flag(
     return df.withColumn(
         column_name_to_assign,
         F.when(
-            (
-                F.col(out_of_date_range_flag).isNull()
-                & (F.col("count_barcode_labs_flag") + F.col("count_barcode_voyager_flag") == 2)
-            ),
+            (F.col("count_barcode_labs_flag") + F.col("count_barcode_voyager_flag") == 2),
             1,
         )
         .otherwise(None)
@@ -438,15 +453,17 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
     column_name_to_assign
     """
 
-    window = Window.partitionBy(group_by_column)
+    window = Window.partitionBy(group_by_column, "out_of_date_range_antibody")
 
     df = df.withColumn(
         "antibody_barcode_cleaned_count",
         F.count(F.col(group_by_column)).over(window),
     )
-
     df = df.withColumn(
-        column_name_to_assign, F.when(F.col("antibody_barcode_cleaned_count") > 1, 1).otherwise(None).cast("integer")
+        column_name_to_assign,
+        F.when((F.col("antibody_barcode_cleaned_count") > 1) | (F.col("out_of_date_range_antibody") == 1), 1)
+        .otherwise(None)
+        .cast("integer"),
     )
     return df.drop("antibody_barcode_cleaned_count")
 
@@ -454,10 +471,11 @@ def many_to_one_antibody_flag(df: DataFrame, column_name_to_assign: str, group_b
 def many_to_many_flag(
     df: DataFrame,
     drop_flag_column_name_to_assign: str,
+    out_of_date_range_column: str,
     group_by_column: str,
     ordering_columns: list,
     process_type: str,
-    failed_flag_column_name_to_assign: str,
+    failure_column_name: str,
 ):
     """
     Many (Voyager) to Many (antibody) matching process.
@@ -474,7 +492,7 @@ def many_to_many_flag(
     process_type
         Defines which many-to-many matching process is being carried out.
         Must be 'antibody' or 'swab'
-    failed_flag_column_name_to_assign
+    failure_column_name
         Name of column to indicate record has failed validation logic
     """
 
@@ -497,7 +515,7 @@ def many_to_many_flag(
     )
 
     df = df.withColumn(
-        failed_flag_column_name_to_assign,
+        failure_column_name,
         F.when(
             F.last("classification_different_to_first").over(window).isNotNull(),
             1,
@@ -528,7 +546,10 @@ def many_to_many_flag(
             ).otherwise(F.col("record_processed")),
         )
 
-        df = df.withColumn(drop_flag_column_name_to_assign, F.when(F.col("record_processed") == 1, 1).otherwise(None))
+        df = df.withColumn(
+            drop_flag_column_name_to_assign,
+            F.when((F.col("record_processed") == 1) | (F.col(out_of_date_range_column) == 1), 1).otherwise(None),
+        )
 
         df = df.withColumn(
             "record_processed",
@@ -569,6 +590,7 @@ def one_to_many_antibody_flag(
     df = df.withColumn("abs_diff_interval", F.abs(F.col(diff_interval_hours)))
     row_num_column = "row_num"
     group_num_column = "group_num"
+    unique_antibody_id_column = "unique_antibody_test_id"
     diff_interval_hours = "abs_diff_interval"
     rows_diff_to_ref = "rows_diff_to_ref_flag"
     inconsistent_rows = "failed_flag_1tom_antibody"  # column generated that isnt included in the TEST data.
@@ -584,6 +606,11 @@ def one_to_many_antibody_flag(
     df = df.withColumn(
         column_name_to_assign,
         F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
+    )
+    df = flag_identical_rows_after_first(
+        df,
+        exclusion_columns=[unique_antibody_id_column, group_num_column, row_num_column],
+        drop_flag_column=column_name_to_assign,
     )
     return df.drop(row_num_column, group_num_column, diff_interval_hours, rows_diff_to_ref, "count")
 

@@ -36,7 +36,9 @@ def outer_join_blood_results():
     blood_table = "transformed_blood_test_data"
     blood_df = extract_from_table(blood_table)
 
-    blood_df, failed_blood_join_df = join_assayed_bloods(blood_df, test_target_column="antibody_test_target")
+    blood_df, failed_blood_join_df = join_assayed_bloods(
+        blood_df, test_target_column="antibody_test_target", unique_id_column="unique_antibody_test_id"
+    )
     blood_df = blood_df.withColumn(
         "combined_blood_sample_received_date",
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
@@ -64,6 +66,7 @@ def merge_blood_ETL():
         "antibody_merge_residuals",
         "antibody_merge_failed_records",
     ]
+
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
     return survey_antibody_df
@@ -109,6 +112,12 @@ def merge_blood(survey_df, antibody_df):
         received_date_column_name="blood_sample_received_date_s_protein",
     )
 
+    survey_antibody_df = survey_antibody_df.drop(
+        "abs_offset_diff_vs_visit_hr_antibody",
+        "count_barcode_antibody",
+        "count_barcode_voyager",
+        "diff_vs_visit_hr_antibody",
+    )
     return merge_process_filtering(
         df=survey_antibody_df,
         merge_type="antibody",
