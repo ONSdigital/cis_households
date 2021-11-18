@@ -63,6 +63,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
+    df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
     # TODO: Add postcode cleaning
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
