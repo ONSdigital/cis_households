@@ -73,10 +73,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
     df = assign_column_to_date_string(df, "sample_taken_date_string", reference_column="samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
-    df = assign_date_difference(
-        df, "contact_known_or_suspected_covid_days_since", "contact_any_covid_date", "visit_datetime"
-    )
-    df = assign_date_difference(df, "days_since_think_had_covid", "covid_date", "visit_datetime")
+    # df = assign_date_difference(
+    #     df, "contact_known_or_suspected_covid_days_since", "contact_any_covid_date", "visit_datetime"
+    # )
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
