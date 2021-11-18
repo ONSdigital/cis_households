@@ -15,6 +15,7 @@ from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_csv_fields
 from cishouseholds.validate import validate_csv_header
+from cishouseholds.pipeline.load import check_table_exists
 
 
 class InvalidFileError(Exception):
@@ -49,14 +50,17 @@ def read_csv_to_pyspark_df(
         csv_file_path = [csv_file_path]
 
     for csv_file in csv_file_path:
+        error = False
         text_file = spark_session.sparkContext.textFile(csv_file)
         csv_header = validate_csv_header(text_file, expected_raw_header_row)
         csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not csv_header:
+            print("CSV: ", csv_header)
+            file_header_set_diff = set(text_file.first().split("|")) - set(expected_raw_header_row.split("|"))
             print(
-                f"FILE ERROR: Header of {csv_file} ({text_file.first()}) "
-                f"does not match expected header: {expected_raw_header_row}"
+                f"FILE ERROR: Header of {csv_file} "
+                f"does not match expected header: {expected_raw_header_row}, differences: {file_header_set_diff}"
             )  # functional
             error = True
 
@@ -66,7 +70,7 @@ def read_csv_to_pyspark_df(
             )  # functional
             error = True
         if error:
-            add_error_file_log_entry(get_config(), csv_file, datetime.now())
+            add_error_file_log_entry(csv_file)
 
     return spark_session.read.csv(
         csv_file_path,
@@ -200,7 +204,22 @@ def get_files_to_be_processed(
     Get list of files matching the specified pattern and optionally filter
     to only those that have not been processed.
     """
+    storage_config = get_config()["storage"]
+    spark_session = get_or_create_spark_session()
+
     file_paths = get_files_by_date(resource_path, latest_only, start_date, end_date)
     if not include_processed:
         file_paths = get_files_not_processed(file_paths, "processed_filenames")
+    if check_table_exists('error_file_log'):
+        print("EXISTS")
+        file_error_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}error_file_log'
+        file_error_log_df = spark_session.read.table(file_error_log_table)
+        file_error_log_df.show()
+        error_file_paths = file_error_log_df.toPandas()["file_path"].to_list()
+        print("error paths", error_file_paths)
+        for file_path in error_file_paths:
+            print("PATH: ", file_path)
+            if file_path in file_paths:
+                file_paths.remove(file_path)
+        print("FILEPATHS: ", file_paths)
     return file_paths

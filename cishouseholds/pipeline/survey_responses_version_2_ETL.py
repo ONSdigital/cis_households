@@ -35,6 +35,7 @@ def survey_responses_version_2_ETL(**kwargs):
     End to end processing of a IQVIA survey responses CSV file.
     """
     file_path_list = get_files_to_be_processed(**kwargs)
+    print("file path list: ", file_path_list)
     if file_path_list:
         df = extract_validate_transform_input_data(
             file_path_list,

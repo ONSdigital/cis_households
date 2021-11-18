@@ -33,16 +33,16 @@ def extract_from_table(table_name: str):
     return df
 
 
-def add_error_file_log_entry(config: dict, file_path: str, run_datetime: datetime):
+def add_error_file_log_entry(file_path: str):
     """
     Log the state of the current file to the lookup table
     """
-    storage_config = config["storage"]
+    storage_config = get_config()["storage"]
     file_id = get_latest_id(storage_config, "error_file_log", "file_id")
     spark_session = get_or_create_spark_session()
-    file_log_entry = _create_file_log_entry(spark_session, file_id, file_path, run_datetime)
+    file_log_entry = _create_file_log_entry(spark_session, file_id, file_path)
     file_log_entry.write.mode("append").saveAsTable(
-        f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
+        f'{storage_config["database"]}.{storage_config["table_prefix"]}error_file_log'
     )  # Always append
     return file_id
 
@@ -65,23 +65,20 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
 
 
 def get_latest_id(storage_config, table, id_column):
-    id = 0
     if check_table_exists(table):
-        last_id = get_latest_id(storage_config, table, id_column)
-        id = last_id + 1
         spark_session = get_or_create_spark_session()
         log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{table}'
-        return spark_session.read.table(log_table).select(F.max(id_column)).first()[0]
-    return id
+        return 1 + spark_session.read.table(log_table).select(F.max(id_column)).first()[0]
+    return 1
 
 
-def _create_file_log_entry(spark_session: SparkSession, file_id: int, file_path: str, run_datetime: datetime):
+def _create_file_log_entry(spark_session: SparkSession, file_id: int, file_path: str):
     """
     Creates an entry (row) to be insterted into the file log
     """
-    schema = "file_id integer, run_datetime string, file_path string"
+    schema = "file_id integer, run_datetime timestamp, file_path string"
 
-    file_log_entry = [[file_id, run_datetime, file_path]]
+    file_log_entry = [[file_id, datetime.now(), file_path]]
 
     return spark_session.createDataFrame(file_log_entry, schema)
 
