@@ -56,11 +56,8 @@ def read_csv_to_pyspark_df(
         csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not csv_header:
-            print("CSV: ", csv_header)
-            file_header_set_diff = set(text_file.first().split("|")) - set(expected_raw_header_row.split("|"))
             print(
-                f"FILE ERROR: Header of {csv_file} "
-                f"does not match expected header: {expected_raw_header_row}, differences: {file_header_set_diff}"
+                f"FILE ERROR: Header of {csv_file} ({text_file.first()}) does not match expected header: {expected_raw_header_row}"
             )  # functional
             error = True
 
@@ -196,15 +193,12 @@ def get_files_to_be_processed(
     if not include_processed:
         file_paths = get_files_not_processed(file_paths, "processed_filenames")
     if check_table_exists('error_file_log'):
-        print("EXISTS")
         file_error_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}error_file_log'
         file_error_log_df = spark_session.read.table(file_error_log_table)
-        file_error_log_df.show()
         error_file_paths = file_error_log_df.toPandas()["file_path"].to_list()
-        print("error paths", error_file_paths)
         for file_path in error_file_paths:
-            print("PATH: ", file_path)
             if file_path in file_paths:
                 file_paths.remove(file_path)
-        print("FILEPATHS: ", file_paths)
+        if len(file_paths) == 0:
+            print(f"No valid file paths in {resource_path}")
     return file_paths
