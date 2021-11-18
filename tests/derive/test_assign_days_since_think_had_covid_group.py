@@ -11,6 +11,7 @@ def test_assign_days_since_think_had_covid_group(spark_session):
             ("yes", 30, "29-60"),
             ("yes", 70, "61-90"),
             ("yes", 100, "91+"),
+            ("Yes", None, "Date not given"),
             ("no", 6, None),
             ("no", 10, None),
             ("no", 10, None),
