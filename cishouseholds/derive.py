@@ -897,27 +897,13 @@ def assign_days_since_think_had_covid_group(
     column_name_to_assign
         grouping column
     """
-    df = df.withColumn(
-        "flag_think-had-covid",
-        F.when((F.col(think_had_covid_column) == "Yes") | (F.col(think_had_covid_column) == "yes"), 1)
-        .otherwise(None)
-        .cast("integer"),
-    )
-
     df = assign_named_buckets(
         df=df,
         reference_column=reference_column,
         column_name_to_assign=column_name_to_assign,
-        map={
-            0: "0-14",
-            15: "15-28",
-            29: "29-60",
-            61: "61-90",
-            91: "91+",
-        },
+        map={0: "0-14", 15: "15-28", 29: "29-60", 61: "61-90", 91: "91+", None: "Date not given"},
     )
-    df = df.withColumn(
+    return df.withColumn(
         column_name_to_assign,
-        F.when(F.col("flag_think-had-covid") == 1, F.col(column_name_to_assign)).otherwise(None).cast("string"),
+        F.when(F.col(think_had_covid_column) == "Yes", F.col(column_name_to_assign)).otherwise(None).cast("string"),
     )
-    return df.drop("flag_think-had-covid")
