@@ -1,3 +1,4 @@
+import functools
 import json
 from datetime import datetime
 
@@ -64,6 +65,7 @@ def add_run_log_entry(config: dict, run_datetime: datetime):
     return run_id
 
 
+@functools.lru_cache(maxsize=1)
 def get_latest_id(storage_config, table, id_column):
     if check_table_exists(table):
         spark_session = get_or_create_spark_session()
