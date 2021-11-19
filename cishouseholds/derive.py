@@ -872,3 +872,42 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
         + F.round((F.col("month_more") + F.col("day_more")) / 3, 0).cast("int"),
     )
     return df.drop("month_more", "day_more")
+
+
+def assign_grouped_variable_from_days_since(
+    df: DataFrame,
+    binary_reference_column: str,
+    days_since_reference_column: str,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Function to be applied for days_since_think_had_covid_group and
+    contact_known_or_suspected_covid_days_since_group. The variable
+    days_since_think_had_covid will give a number that will be grouped
+    in a range so long binary_reference_column is positive, otherwise will
+    be None.
+    Parameters
+    ----------
+    df
+    binary_reference_column
+        yes/no values that describe whether the patient thinks have had covid
+    days_since_reference_column
+        column from which extract the number of days transcurred that needs to
+        be grouped
+    column_name_to_assign
+        grouping column
+    """
+    df = assign_named_buckets(
+        df=df,
+        reference_column=days_since_reference_column,
+        column_name_to_assign=column_name_to_assign,
+        map={0: "0-14", 15: "15-28", 29: "29-60", 61: "61-90", 91: "91+"},
+    )
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()), "Date not given"
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("string"),
+    )
