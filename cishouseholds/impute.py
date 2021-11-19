@@ -385,12 +385,10 @@ def impute_by_k_nearest_neighbours(
     impute_count = imputing_df.count()
     donor_count = donor_df.count()
 
-    assert impute_count + donor_count == df_length, "Imp df and Don df do not sum to df"
+    assert impute_count + donor_count == df_length, "Donor and imputing records don't sum to whole df"
 
     if impute_count == 0:
         return df
-    if donor_count < 1:
-        raise ValueError("All records are null for the column to be imputed, so no donors are available.")
 
     _create_log(start_time=datetime.now(), log_path=log_file_path)
 
@@ -445,9 +443,12 @@ def impute_by_k_nearest_neighbours(
     )
 
     # check minimum number of donors
-    single_donors = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
-    if single_donors > 0:
-        message = f"{single_donors} donor pools found with less than the required {minimum_donors} minimum donor(s)"
+    below_minimum_donor_count = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
+    if below_minimum_donor_count > 0:
+        message = (
+            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
+            "minimum donor(s)"
+        )
         logging.warn(message)
         logging.warn(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
         raise ValueError(message)
