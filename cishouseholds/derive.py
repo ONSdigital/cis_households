@@ -881,11 +881,10 @@ def assign_grouped_variable_from_days_since(
     column_name_to_assign: str,
 ) -> DataFrame:
     """
-    Function to be applied for days_since_think_had_covid_group and
+    Function create variables applied for days_since_think_had_covid_group and
     contact_known_or_suspected_covid_days_since_group. The variable
-    days_since_think_had_covid will give a number that will be grouped
-    in a range so long binary_reference_column is positive, otherwise will
-    be None.
+    days_since_think_had_covid and contact_known_or_suspected_covid_days_since will
+    give a number that will be grouped in a range so long binary_reference_column is 'Yes', otherwise will be None.
     Parameters
     ----------
     df
