@@ -6,6 +6,7 @@ from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
+from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
@@ -94,7 +95,16 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         reference_column="white_group",
         group_by_column="ons_household_id",
     )
-    # TODO: Add call to impute white_group by donor-based imputation
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="white",
+        id_column_name="participant_id",
+        donor_group_columns=["interim_id"],
+        donor_group_variable_weights=[5000],
+        log_file_path="./",
+    )
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -105,7 +115,14 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         second_imputation_value="Male",
     )  # Relies on sample data being joined on
 
-    # TODO: Add call to impute date_of_birth using donor-based imputation
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="age_at_vist",
+        id_column_name="participant_id",
+        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
+        log_file_path="./",
+    )
 
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]

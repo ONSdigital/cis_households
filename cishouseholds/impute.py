@@ -92,7 +92,7 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
     Notes
     -----
     imputation_function is expected to create new column with the values to
-    be imputated, and NULL where imputation is not needed.
+    be imputed, and NULL where imputation is not needed.
     """
     df = imputation_function(
         df, column_name_to_assign="temporary_imputation_values", reference_column=reference_column, **kwargs
@@ -331,7 +331,7 @@ def distance_function(df, impute_vars, impute_weights):
     df = df.join(min_distances, on="imp_uniques")
 
     df = df.filter(F.col("distance") <= F.col("min_distance"))
-    df.cache().count()
+    df.cache()
     return df
 
 
@@ -396,6 +396,11 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Impute dataframe length: {impute_count}")
     logging.info(f"Donor dataframe length: {donor_count}")
 
+    if donor_count < impute_count:
+        message = "Number of donor records is less tat the number of records to impute."
+        logging.warn(message)
+        raise ValueError(message)
+
     if donor_group_variable_weights is None:
         donor_group_variable_weights = [1] * len(donor_group_columns)
         logging.warn(f"No imputation weights specified, using default: {donor_group_variable_weights}")
@@ -425,9 +430,9 @@ def impute_by_k_nearest_neighbours(
 
     joined_uniques = joined_uniques.repartition("imp_uniques")
 
-    joined_uniques = distance_function(joined_uniques, donor_group_columns, donor_group_variable_weights)
-
-    candidates = joined_uniques.select("imp_uniques", "don_uniques")
+    candidates = distance_function(joined_uniques, donor_group_columns, donor_group_variable_weights).select(
+        "imp_uniques", "don_uniques"
+    )
 
     # only counting one row for matching imp_vars
     freqs = don_df.groupby("don_uniques", "don_" + reference_column).count().withColumnRenamed("count", "frequency")
@@ -476,9 +481,8 @@ def impute_by_k_nearest_neighbours(
     to_impute = to_impute.withColumnRenamed("don_" + reference_column, column_name_to_assign)
 
     don_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
-    don_df_final.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
     xx = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))
-    imp_df = imp_df.withColumn("row", F.row_number().over(xx)).drop(reference_column)
+    imp_df = imp_df.withColumn("row", F.row_number().over(xx))
 
     imp_df_final = imp_df.join(
         to_impute, on=(imp_df.imp_uniques == to_impute.imp_uniques) & (imp_df.row == to_impute.row)
@@ -490,6 +494,7 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
     logging.info(imp_df_final.select(column_name_to_assign).summary().toPandas())
 
+    don_df_final.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
     output_df = imp_df_final.unionByName(don_df_final)
 
     logging.info(f"Summary statistics for donor values: {reference_column}")
