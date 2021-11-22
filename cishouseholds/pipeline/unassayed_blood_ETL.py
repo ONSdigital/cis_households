@@ -27,7 +27,7 @@ def unassayed_blood_ETL(**kwargs):
             transform_unassayed_blood,
         )
         df = df.select(sorted(df.columns))
-        update_table_and_log_source_files(df, "unassayed_blood_test_data", "unassayed_blood_source_file")
+        update_table_and_log_source_files(df, "unassayed_blood_sample_data", "unassayed_blood_source_file")
 
 
 def transform_unassayed_blood(df: DataFrame) -> DataFrame:
