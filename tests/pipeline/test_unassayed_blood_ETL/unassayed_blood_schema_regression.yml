@@ -1,0 +1,26 @@
+fields:
+- metadata: {}
+  name: blood_sample_received_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: blood_sample_barcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: rejection_code
+  nullable: true
+  type: integer
+- metadata: {}
+  name: rejection_reason
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_sample_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: unassayed_blood_source_file
+  nullable: false
+  type: string
+type: struct
