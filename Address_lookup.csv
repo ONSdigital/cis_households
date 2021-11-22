@@ -1,0 +1,7 @@
+uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal
+1479917903,town name1,AB1 0AA,Scotland,S12000050,FALSE,hh,1,738948,N
+5.72E+11,town name1,AB1 0AB,Scotland,S12000050,FALSE,hh,0,1627430,L
+4.34E+11,town name2,AB1 0AD,Northern Ireland,N09000001,FALSE,hh,0,1162644,L
+8.62E+11,town name2,AB1 0AE,Northern Ireland,N09000001,FALSE,hh,1,1217384,N
+5957223425,town name2,AB1 0AF,Northern Ireland,N09000001,FALSE,hh,1,2.74E+11,L
+5.48E+11,town name3,CD1 0AG,Northern Ireland,N09000001,FALSE,hh,1,1439690,N
