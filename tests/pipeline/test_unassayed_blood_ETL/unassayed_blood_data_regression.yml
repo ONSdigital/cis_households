@@ -1,0 +1,26 @@
+- blood_sample_barcode: ONS00265774
+  blood_sample_received_date: '2018-11-24 00:00:00.000000'
+  blood_sample_type: V
+  rejection_code: 7360
+  rejection_reason: Its main implementation is the Glasgow Haskell Compiler.
+- blood_sample_barcode: ONS02683106
+  blood_sample_received_date: '2021-04-15 00:00:00.000000'
+  blood_sample_type: V
+  rejection_code: 4742
+  rejection_reason: Atoms are used within a program to denote distinguished values.
+- blood_sample_barcode: ONS13332041
+  blood_sample_received_date: '2018-09-07 00:00:00.000000'
+  blood_sample_type: V
+  rejection_code: 6202
+  rejection_reason: Make me a sandwich.
+- blood_sample_barcode: ONS58086319
+  blood_sample_received_date: '2018-01-03 00:00:00.000000'
+  blood_sample_type: C
+  rejection_code: 5515
+  rejection_reason: Haskell is a standardized, general-purpose purely functional programming
+    language, with non-strict semantics and strong static typing.
+- blood_sample_barcode: ONS60227680
+  blood_sample_received_date: '2018-01-24 00:00:00.000000'
+  blood_sample_type: V
+  rejection_code: 6913
+  rejection_reason: Where are my pants?

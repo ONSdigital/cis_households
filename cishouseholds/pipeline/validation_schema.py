@@ -36,6 +36,14 @@ blood_validation_schema = {
     "Voyager Date Created": {"type": "string", "nullable": True},
 }
 
+unassayed_blood_validation_schema = {
+    "Date Received": {"type": "string"},
+    "Sample ID": {"type": "string"},
+    "Rejection Code": {"type": "integer"},
+    "Reason for rejection": {"type": "string"},
+    "Sample Type V/C": {"type": "string"},
+}
+
 historical_blood_validation_schema = {
     "blood_barcode_OX": {"type": "string"},
     "received_ox_date": {"type": "string"},
