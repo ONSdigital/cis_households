@@ -48,7 +48,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
@@ -57,31 +57,67 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column
     ----------
     df
     test_target_column
+        column containing blood test target protein
+    join_on_columns
+        list of column names to join on, where first name is the unique ID
     """
-    not_to_rename = [
-        "blood_sample_barcode",
-        "antibody_test_plate_common_id",
-        "antibody_test_well_id",
-    ]
-    window = Window.partitionBy(unique_id_column)
+    window = Window.partitionBy(join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
 
-    split_dataframes = []
+    split_dataframes = {}
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(test_target_column) == blood_group)
         new_column_names = {
-            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename, unique_id_column] else col
+            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
             for col in split_df.columns
         }
         split_df = rename_column_names(split_df, new_column_names)
-        split_dataframes.append(split_df)
+        split_dataframes[blood_group] = split_df
 
-    joined_df = split_dataframes[0].join(split_dataframes[1], on=unique_id_column, how="outer")
+    joined_df = null_safe_join(
+        split_dataframes["N"],
+        split_dataframes["S"],
+        null_safe_on=list(join_on_columns[1:]),
+        null_unsafe_on=[join_on_columns[0]],
+        how="outer",
+    )
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
     return joined_df, failed_df
+
+
+def null_safe_join(left_df: DataFrame, right_df: DataFrame, null_safe_on: list, null_unsafe_on: list, how="left"):
+    """
+    Performs a join on equal columns, where a subset of the join columns can be null safe.
+
+    Parameters
+    ----------
+    left_df
+    right_df
+    null_safe_on
+        columns to make a null safe equals comparison on
+    null_unsafe_on
+        columns to make a null unsafe equals comparison on
+    how
+        join type
+    """
+    for column in null_safe_on + null_unsafe_on:
+        right_df = right_df.withColumnRenamed(column, column + "_right")
+
+    null_unsafe_conditions = [f"({column} == {column + '_right'})" for column in null_unsafe_on]
+    null_safe_conditions = [f"({column} <=> {column + '_right'})" for column in null_safe_on]
+
+    join_condition = " AND ".join(null_unsafe_conditions + null_safe_conditions)
+
+    joined_df = left_df.join(right_df, on=F.expr(join_condition), how=how)
+
+    for column in null_safe_on + null_unsafe_on:
+        # Recover right entries from outer/right joins
+        joined_df = joined_df.withColumn(column, F.coalesce(F.col(column), F.column(column + "_right")))
+
+    return joined_df.drop(*[column + "_right" for column in null_safe_on + null_unsafe_on])
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
