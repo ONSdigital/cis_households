@@ -1,10 +1,9 @@
-from pyspark.sql import DataFrame
-from pyspark.sql import functions as F
-
 from typing import Any
 from typing import List
 from typing import Union
 
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 from cishouseholds.extract import read_csv_to_pyspark_df
@@ -15,23 +14,10 @@ spark_session = get_or_create_spark_session()
 
 
 lookup_variable_name_maps = {
-    "address_lookup": {
-        "uprn":"unique_property_reference_code",
-        "postcode":	"postcode"
-    },
-    "nspl_lookup": {
-        "pcd":"postcode",
-        "lsoa11":"lower_super_output_area_code_11",
-        "ctry":"country_code_12"
-    },
-    "cis20cd_lookup":{
-        "LSOA11CD":"lower_super_output_area_code_11",
-        "CIS20CD":"cis_area_code_20"
-    },
-    "country_lookup":{
-        "CTRY20CD":"country_code_12",
-        "CTRY20NM":"country_name_12"
-    },
+    "address_lookup": {"uprn": "unique_property_reference_code", "postcode": "postcode"},
+    "nspl_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
+    "cis20cd_lookup": {"LSOA11CD": "lower_super_output_area_code_11", "CIS20CD": "cis_area_code_20"},
+    "country_lookup": {"CTRY20CD": "country_code_12", "CTRY20NM": "country_name_12"},
     "old_new": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
@@ -50,10 +36,9 @@ lookup_variable_name_maps = {
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
     },
-    "tranche":{
-        "UAC": "ons_household_id"
-    }
+    "tranche": {"UAC": "ons_household_id"},
 }
+
 
 def load_auxillary_data(resource_paths):
     # initialise all dataframes in dictionary
@@ -64,14 +49,22 @@ def load_auxillary_data(resource_paths):
         )
     auxillary_dfs = rename_columns(auxillary_dfs)
 
-    # initialise lookup dataframes    
-    household_info_df = household_design_weights(auxillary_dfs["address_lookup"],auxillary_dfs["nspl_lookup"],auxillary_dfs["cis20cd_lookup"],auxillary_dfs["country_lookup"])
+    # initialise lookup dataframes
+    household_info_df = household_design_weights(
+        auxillary_dfs["address_lookup"],
+        auxillary_dfs["nspl_lookup"],
+        auxillary_dfs["cis20cd_lookup"],
+        auxillary_dfs["country_lookup"],
+    )
     print("****merged lookups ****")
     household_info_df.show()
-    household_info_df.toPandas().to_csv("household_info.csv",index=False)
+    household_info_df.toPandas().to_csv("household_info.csv", index=False)
 
     df = get_if_MATCHED(
-        old_sample_df=auxillary_dfs["old"], new_sample_df=auxillary_dfs["new"], selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"], barcode_column="ons_household_id"
+        old_sample_df=auxillary_dfs["old"],
+        new_sample_df=auxillary_dfs["new"],
+        selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
+        barcode_column="ons_household_id",
     )
 
     # update and clean sample df's
@@ -85,7 +78,15 @@ def load_auxillary_data(resource_paths):
     df = assign_sample_new_previous(df, "sample_new_previous", "date _sample_created", "batch_number")
     df = df.join(auxillary_dfs["tranche"], on="ons_household_id", how="outer").drop("UAC")
     df = assign_tranche_factor(df, "tranche_factor", "ons_household_id", ["cis_area_code_20", "enrolement_date"])
-    df = calculate_dweight_swabs(df, household_info_df, "sample_new_previous", ["cis_area_code_20", "sample_new_previous"], "ons_household_id", "old_dweight")
+    df = calculate_dweight_swabs(
+        df,
+        household_info_df,
+        "sample_new_previous",
+        ["cis_area_code_20", "sample_new_previous"],
+        "ons_household_id",
+        "old_dweight",
+    )
+
 
 def rename_columns(auxillary_dfs: dict):
     """
@@ -98,11 +99,14 @@ def rename_columns(auxillary_dfs: dict):
                 for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
                     auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
                 break
-            print(name,"-->")
+            print(name, "-->")
             auxillary_dfs[name].show()
     return auxillary_dfs
 
-def household_design_weights(df_address_base: DataFrame, df_nspl: DataFrame, df_cis20cd: DataFrame, df_county: DataFrame) -> DataFrame:
+
+def household_design_weights(
+    df_address_base: DataFrame, df_nspl: DataFrame, df_cis20cd: DataFrame, df_county: DataFrame
+) -> DataFrame:
     """
     Join address base and nspl (National Statistics Postcode Lookup) to then left inner join
     lsoa (Lower Level Output Area) to get household count.
@@ -114,19 +118,29 @@ def household_design_weights(df_address_base: DataFrame, df_nspl: DataFrame, df_
         Dataframe with cis20cd and interim id.
     """
 
-    df = df_address_base.join(df_nspl, on="postcode", how="left").withColumn("postcode",F.regexp_replace(F.col("postcode"), " ", ""))
+    df = df_address_base.join(df_nspl, on="postcode", how="left").withColumn(
+        "postcode", F.regexp_replace(F.col("postcode"), " ", "")
+    )
     df = df.join(df_cis20cd, on="lower_super_output_area_code_11", how="left")
     df = df.join(df_county, on="country_code_12")
 
     area_window = Window.partitionBy("cis_area_code_20")
-    df = df.withColumn("number_of_households_population_by_cis", F.approx_count_distinct("unique_property_reference_code").over(area_window))
+    df = df.withColumn(
+        "number_of_households_population_by_cis",
+        F.approx_count_distinct("unique_property_reference_code").over(area_window),
+    )
 
     country_window = Window.partitionBy("country_code_12")
-    df = df.withColumn("number_of_households_population_by_country", F.approx_count_distinct("unique_property_reference_code").over(country_window))
+    df = df.withColumn(
+        "number_of_households_population_by_country",
+        F.approx_count_distinct("unique_property_reference_code").over(country_window),
+    )
     return df
 
 
-def get_if_MATCHED(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str):
+def get_if_MATCHED(
+    old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str
+):
     select_df = old_sample_df.select(barcode_column, *selection_columns)
     for col in select_df.columns:
         if col != barcode_column:
@@ -139,10 +153,12 @@ def get_if_MATCHED(old_sample_df: DataFrame, new_sample_df: DataFrame, selection
 
 
 def update_data(df: DataFrame, auxillary_dfs: dict):
-    df = update_column(df, auxillary_dfs["nspl_lookup"], "lower_super_output_area_code_11",["country_code_12", "postcode"])
+    df = update_column(
+        df, auxillary_dfs["nspl_lookup"], "lower_super_output_area_code_11", ["country_code_12", "postcode"]
+    )
     print("updated lsoa...")
     df.show()
-    df = update_column(df,  auxillary_dfs["cis20cd_lookup"], "cis_area_code_20", ["lower_super_output_area_code_11"])
+    df = update_column(df, auxillary_dfs["cis20cd_lookup"], "cis_area_code_20", ["lower_super_output_area_code_11"])
     drop_columns = [col for col in df.columns if "MATCHED" in col]
     return df.drop(*drop_columns)
 
@@ -155,7 +171,9 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
         column_name_to_update,
         F.when(
             F.col(f"MATCHED_{column_name_to_update}").isNull(),
-            F.when(F.col(f"{column_name_to_update}_from_lookup").isNotNull(), F.col(f"{column_name_to_update}_from_lookup")).otherwise(("N/A")),
+            F.when(
+                F.col(f"{column_name_to_update}_from_lookup").isNotNull(), F.col(f"{column_name_to_update}_from_lookup")
+            ).otherwise(("N/A")),
         ).otherwise(F.col(column_name_to_update)),
     )
     return df.drop(f"{column_name_to_update}_from_lookup")
@@ -195,9 +213,9 @@ def count_distinct_in_filtered_df(
 ):
     eligible_df = df.filter(filter_positive)
     eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
-    eligible_df.toPandas().to_csv(f"eligable_{column_name_to_assign}.csv",index=False)
+    eligible_df.toPandas().to_csv(f"eligable_{column_name_to_assign}.csv", index=False)
     ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
-    ineligible_df.toPandas().to_csv(f"ineligable_{column_name_to_assign}.csv",index=False)
+    ineligible_df.toPandas().to_csv(f"ineligable_{column_name_to_assign}.csv", index=False)
     df = eligible_df.unionByName(ineligible_df)
     return df
 
@@ -213,7 +231,9 @@ def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_col
         F.col("tranche_eligible_households") == "Yes",
         window,
     )
-    filter_max_condition = ((F.col("tranche_eligible_households") == "Yes") & (F.col("tranche") == df.agg({"tranche":"max"}).first()[0]))
+    filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
+        F.col("tranche") == df.agg({"tranche": "max"}).first()[0]
+    )
     df = count_distinct_in_filtered_df(
         df,
         "number_sampled_households_tranche_bystrata_enrolment",
@@ -221,17 +241,47 @@ def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_col
         filter_max_condition,
         window,
     )
-    df = df.withColumn(column_name_to_assign,F.when(filter_max_condition, F.col("number_eligible_households_tranche_bystrata_enrolment")/F.col("number_sampled_households_tranche_bystrata_enrolment")).otherwise("missing"))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            filter_max_condition,
+            F.col("number_eligible_households_tranche_bystrata_enrolment")
+            / F.col("number_sampled_households_tranche_bystrata_enrolment"),
+        ).otherwise("missing"),
+    )
     df.toPandas().to_csv("test_output4.csv", index=False)
-    return df.drop("number_eligible_households_tranche_bystrata_enrolment","number_sampled_households_tranche_bystrata_enrolment")
+    return df.drop(
+        "number_eligible_households_tranche_bystrata_enrolment", "number_sampled_households_tranche_bystrata_enrolment"
+    )
 
-def calculate_dweight_swabs(df: DataFrame, household_info_df: DataFrame,sample_type_column: str, group_by_columns: List[str], barcode_column: str, previous_dweight_column: str):
+
+def calculate_dweight_swabs(
+    df: DataFrame,
+    household_info_df: DataFrame,
+    sample_type_column: str,
+    group_by_columns: List[str],
+    barcode_column: str,
+    previous_dweight_column: str,
+):
     window = Window.partitionBy(*group_by_columns)
-    df = df.join(household_info_df.select("number_of_households_population_by_cis","number_of_households_population_by_country","cis_area_code_20"), on="cis_area_code_20", how="outer")
+    df = df.join(
+        household_info_df.select(
+            "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
+        ),
+        on="cis_area_code_20",
+        how="outer",
+    )
     df = df.withColumn("number_eligible_household_sample", F.approx_count_distinct(barcode_column).over(window))
-    df = df.withColumn(previous_dweight_column, F.lit(None)) # temp creation of old col for testing
-    df = df.withColumn("raw_design_weights_swab", F.when(F.col(sample_type_column)=="new",F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample")).otherwise(F.lit(2)))
-    df.toPandas().to_csv("primary_out.csv",index=False)
+    df = df.withColumn(previous_dweight_column, F.lit(None))  # temp creation of old col for testing
+    df = df.withColumn(
+        "raw_design_weights_swab",
+        F.when(
+            F.col(sample_type_column) == "new",
+            F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample"),
+        ).otherwise(F.lit(2)),
+    )
+    df.toPandas().to_csv("primary_out.csv", index=False)
+
 
 resource_paths = {
     "old": {
@@ -243,9 +293,18 @@ resource_paths = {
         "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
     },
     "nspl_lookup": {"path": r"C:\code\cis_households\lookup.csv", "header": "pcd,ctry,lsoa11"},
-    "cis20cd_lookup": {"path": r"C:\code\cis_households\cis20lookup.csv", "header": "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD"},
-    "address_lookup": {"path": r"C:\code\cis_households\Address_lookup.csv", "header": "uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal"},
-    "country_lookup": {"path": r"C:\code\cis_households\country_lookup.csv", "header":"LAD20CD,LAD20NM,CTRY20CD,CTRY20NM"},
+    "cis20cd_lookup": {
+        "path": r"C:\code\cis_households\cis20lookup.csv",
+        "header": "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD",
+    },
+    "address_lookup": {
+        "path": r"C:\code\cis_households\Address_lookup.csv",
+        "header": "uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal",
+    },
+    "country_lookup": {
+        "path": r"C:\code\cis_households\country_lookup.csv",
+        "header": "LAD20CD,LAD20NM,CTRY20CD,CTRY20NM",
+    },
     "tranche": {
         "path": r"C:\code\cis_households\tranche.csv",
         "header": "enrolement_date,UAC,lsoa_11,cis20cd,ctry12,ctry_name12,tranche",
