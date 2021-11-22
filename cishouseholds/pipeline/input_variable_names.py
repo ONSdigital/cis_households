@@ -34,6 +34,14 @@ blood_variable_name_map = {
     "Voyager Date Created": "blood_sample_collected_datetime",
 }
 
+unassayed_bloods_variable_name_map = {
+    "Date Received": "blood_sample_received_date",
+    "Sample ID": "blood_sample_barcode",
+    "Rejection Code": "rejection_code",
+    "Reason for rejection": "rejection_reason",
+    "Sample Type V/C": "blood_sample_type",
+}
+
 historical_blood_variable_name_map = {
     "blood_barcode_OX": "blood_sample_barcode",
     "received_ox_date": "blood_sample_received_date",
@@ -87,13 +95,6 @@ sample_ni_variable_name_map = {
     "interim_id": "cis_area_indicator",
 }
 
-unprocessed_bloods_variable_name_map = {
-    "Date Recieved": "date_received",
-    "Sample ID": "sample_id",
-    "Rejection code": "rejection_code",
-    "Reason for rejection": "rejection_reason",
-    "Sample Type V/C": "sample_type",
-}
 
 survey_responses_v0_variable_name_map = {
     "ONS Household ID": "ons_household_id",
