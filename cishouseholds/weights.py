@@ -272,15 +272,38 @@ def calculate_dweight_swabs(
         how="outer",
     )
     df = df.withColumn("number_eligible_household_sample", F.approx_count_distinct(barcode_column).over(window))
-    df = df.withColumn(previous_dweight_column, F.lit(None))  # temp creation of old col for testing
+    df = df.withColumn(previous_dweight_column, F.lit(69))  # temp creation of old col for testing
     df = df.withColumn(
         "raw_design_weights_swab",
         F.when(
             F.col(sample_type_column) == "new",
             F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample"),
-        ).otherwise(F.lit(2)),
+        ).otherwise(F.col(previous_dweight_column)),
     )
     df.toPandas().to_csv("primary_out.csv", index=False)
+
+
+def calculate_overall_design_weights(sample_file: DataFrame, household_populations: DataFrame) -> DataFrame:
+    """
+    Calculate design weights, as the number of addresses within a CIS area (``interim_id``) over
+    the number of households sampled within that area.
+
+    Parameters
+    ----------
+    sample_file
+        sample delta to calculate design weights per ``interim_id``
+    household_populations
+        number of addresses (``nb_addresses``) per CIS area (``interim_id``)
+    """
+    sample_file = sample_file.join(
+        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id"
+    )
+
+    interim_id_window = Window.partitionBy("interim_id")
+    sample_file = sample_file.withColumn("sample_count", F.count("interim_id").over(interim_id_window))
+
+    sample_file = sample_file.withColumn("design_weight", F.col("nb_addresses") / F.col("sample_count"))
+    return sample_file.drop("sample_count", "nb_addresses")
 
 
 resource_paths = {
