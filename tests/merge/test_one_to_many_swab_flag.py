@@ -138,9 +138,9 @@ def test_one_to_many_swab_overall(spark_session):
         ("F", 12, 12, None, "void", None),  # keep
         ("F", 12, 12, None, "void", None),
         # keep
-        # # record G - to be dropped because date_diff have different signs:
-        # ("G", -12, 36, None, "positive", 1),  # drop
-        # ("G", 12, 12, None, "positive", None),
+        # record G - to be dropped because date_diff have different signs:
+        ("G", -12, 36, None, "positive", 1),  # drop
+        ("G", 12, 12, None, "positive", None),
         # keep
         # fmt: on
     ]
