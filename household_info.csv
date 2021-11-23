@@ -1,0 +1,13 @@
+country_code_12,lower_super_output_area_code_11,postcode,unique_property_reference_code,town_name,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal,LSOA11NM,cis_area_code_20,RGN19CD,LAD20CD,LAD20NM,country_name_12,number_of_households_population_by_cis,number_of_households_population_by_country
+S92000003,S01006511,AB10AF,5957223425,town name2,Northern Ireland,N09000001,FALSE,hh,1,2.74E+11,L,place1,J061,S91,S12000047,Fife,Scotland,1,4
+S92000003,S01006511,AB10AF,5957223425,town name2,Northern Ireland,N09000001,FALSE,hh,1,2.74E+11,L,place1,J061,S91,S12000020,Moray,Scotland,1,4
+S92000003,S01006853,AB10AE,8.62E+11,town name2,Northern Ireland,N09000001,FALSE,hh,1,1217384,N,,,,S12000047,Fife,Scotland,1,4
+S92000003,S01006853,AB10AE,8.62E+11,town name2,Northern Ireland,N09000001,FALSE,hh,1,1217384,N,,,,S12000020,Moray,Scotland,1,4
+S92000003,S01006514,AB10AB,5.72E+11,town name1,Scotland,S12000050,FALSE,hh,0,1627430,L,place3,J063,S93,S12000047,Fife,Scotland,3,4
+S92000003,S01006514,AB10AB,5.72E+11,town name1,Scotland,S12000050,FALSE,hh,0,1627430,L,place3,J063,S93,S12000020,Moray,Scotland,3,4
+S92000003,S01006514,AB10AD,4.34E+11,town name2,Northern Ireland,N09000001,FALSE,hh,0,1162644,L,place3,J063,S93,S12000047,Fife,Scotland,3,4
+S92000003,S01006514,AB10AD,4.34E+11,town name2,Northern Ireland,N09000001,FALSE,hh,0,1162644,L,place3,J063,S93,S12000020,Moray,Scotland,3,4
+S92000003,S01006511,AB10AF,5957223425,town name2,Northern Ireland,N09000001,FALSE,hh,1,2.74E+11,L,place4,J064,S94,S12000047,Fife,Scotland,1,4
+S92000003,S01006511,AB10AF,5957223425,town name2,Northern Ireland,N09000001,FALSE,hh,1,2.74E+11,L,place4,J064,S94,S12000020,Moray,Scotland,1,4
+E92000001,S01006514,AB10AA,1479917903,town name1,Scotland,S12000050,FALSE,hh,1,738948,N,place3,J063,S93,E06000030,Swindon,England,3,1
+E92000001,S01006514,AB10AA,1479917903,town name1,Scotland,S12000050,FALSE,hh,1,738948,N,place3,J063,S93,E06000001,Hartlepool,England,3,1
