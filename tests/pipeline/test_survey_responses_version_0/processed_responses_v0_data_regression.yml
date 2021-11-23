@@ -875,7 +875,7 @@
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_title: Type classes first appeared in the Haskell programming language.
   work_not_from_home_days_per_week: '4'
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_social_care: null
   work_status: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
@@ -1311,7 +1311,7 @@
   work_main_job_title: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
   work_not_from_home_days_per_week: '2'
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_social_care: 'Yes'
   work_status: Any element of a tuple can be accessed in constant time.
 - age_at_visit: 35

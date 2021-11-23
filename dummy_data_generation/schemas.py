@@ -47,6 +47,16 @@ def get_blood_data_description(_, target):
     }
 
 
+def get_unassayed_blood_data_description(_):
+    return lambda: {  # noqa: E731
+        "Date Received": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
+        "Sample ID": _("random.custom_code", mask="ONS########", digit="#"),
+        "Rejection Code": _("random.randint", a=1, b=9999),
+        "Reason for rejection": _("text.sentence"),
+        "Sample Type V/C": _("choice", items=["V", "C"]),
+    }
+
+
 def get_historical_blood_data_description(_):
     return lambda: {  # noqa: E731
         "blood_barcode_OX": _("random.custom_code", mask="ONS########", digit="#"),
