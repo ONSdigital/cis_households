@@ -415,8 +415,8 @@ def impute_by_k_nearest_neighbours(
         df, reference_column, donor_group_columns, donor_group_variable_weights, donor_group_variable_conditions
     )
 
-    imputing_df = imputing_df.withColumn("imp_uniques", F.concat(*donor_group_columns))
-    donor_df = donor_df.withColumn("don_uniques", F.concat(*donor_group_columns))
+    imputing_df = imputing_df.withColumn("imp_uniques", F.concat_ws("-", *donor_group_columns))
+    donor_df = donor_df.withColumn("don_uniques", F.concat_ws("-", *donor_group_columns))
 
     # unique groupings of impute vars
     imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
