@@ -16,6 +16,7 @@ from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_swab_data_description
+from dummy_data_generation.schemas import get_unassayed_blood_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
@@ -116,6 +117,17 @@ def generate_historic_bloods_data(directory, file_date, records, target):
     return historic_bloods_data
 
 
+def generate_unassayed_bloods_data(directory, file_date, records):
+    """
+    generate unassayed bloods data
+    """
+    schema = Schema(schema=get_unassayed_blood_data_description(_))
+    unassayed_bloods_data = pd.DataFrame(schema.create(iterations=records))
+
+    unassayed_bloods_data.to_csv(directory / f"Unioxf_medtest_unassayed_{file_date}.csv", index=False)
+    return unassayed_bloods_data
+
+
 def generate_northern_ireland_data(directory, file_date, records):
     """
     generate northern ireland file.
@@ -208,25 +220,6 @@ def generate_sample_direct_data(directory, file_date, records):
 
     sample_direct_data.to_csv(directory / f"sample_direct_eng_wc{file_date}.csv", index=False)
     return sample_direct_data
-
-
-def generate_unprocessed_bloods_data(directory, file_date, records):
-    """
-    generate unprocessed bloods data
-    """
-    unprocessed_bloods_description = lambda: {  # noqa: E731
-        "Date Received": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-        "Sample ID": code_mask(mask="[ONS,ons]########", min_code="ONS00000001", max_code="ONS99999999"),
-        "Rejection Code": _("random.randint", a=1, b=9999),
-        "Reason for rejection": _("text.sentence"),
-        "Sample Type V/C": _("choice", items=["V", "C"]),
-    }
-
-    schema = Schema(schema=unprocessed_bloods_description)
-    unprocessed_bloods_data = pd.DataFrame(schema.create(iterations=records))
-
-    unprocessed_bloods_data.to_csv(directory / f"unprocessed_bloods_{file_date}.csv", index=False)
-    return unprocessed_bloods_data
 
 
 if __name__ == "__main__":
