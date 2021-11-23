@@ -21,6 +21,7 @@
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
+  days_since_think_had_covid: null
   email: ladybird1985@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
   full_name: Carlos Martin
@@ -168,6 +169,7 @@
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
+  days_since_think_had_covid: null
   email: null
   ethnicity: Mixed-White & Black African
   full_name: Argentina Brady
@@ -315,6 +317,7 @@
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
+  days_since_think_had_covid: null
   email: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
   full_name: Annika Reilly
@@ -462,6 +465,7 @@
   county: null
   date_of_birth: '1997-01-25 05:44:00.000000'
   date_of_birth_string: '1997-01-25'
+  days_since_think_had_covid: null
   email: depict1972@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
   full_name: Jae Cervantes
@@ -607,6 +611,7 @@
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
+  days_since_think_had_covid: null
   email: cortina2016@gsnail.ac.uk
   ethnicity: White-Gypsy or Irish Traveller
   full_name: Alan Robbins
@@ -754,6 +759,7 @@
   county: Derbyshire
   date_of_birth: '1985-09-10 20:39:00.000000'
   date_of_birth_string: '1985-09-10'
+  days_since_think_had_covid: null
   email: gunsmithing1948@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
   full_name: Caron Barton
@@ -875,7 +881,7 @@
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_title: Type classes first appeared in the Haskell programming language.
   work_not_from_home_days_per_week: '4'
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_social_care: null
   work_status: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
@@ -902,6 +908,7 @@
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
+  days_since_think_had_covid: null
   email: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
   full_name: Clemmie Harper
@@ -1048,6 +1055,7 @@
   county: null
   date_of_birth: '1988-12-04 21:47:00.000000'
   date_of_birth_string: '1988-12-04'
+  days_since_think_had_covid: null
   email: saola2016@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
   full_name: Crystle Osborn
@@ -1193,6 +1201,7 @@
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:35:00.000000'
   date_of_birth_string: '1994-09-20'
+  days_since_think_had_covid: null
   email: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
   full_name: Honey Porter
@@ -1311,7 +1320,7 @@
   work_main_job_title: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
   work_not_from_home_days_per_week: '2'
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_social_care: 'Yes'
   work_status: Any element of a tuple can be accessed in constant time.
 - age_at_visit: 35
@@ -1337,6 +1346,7 @@
   county: null
   date_of_birth: '1986-06-28 11:38:00.000000'
   date_of_birth_string: '1986-06-28'
+  days_since_think_had_covid: null
   email: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   full_name: Barton Ramos
