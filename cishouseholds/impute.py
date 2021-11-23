@@ -503,7 +503,9 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
     logging.info(imputing_df_final.select(column_name_to_assign).summary().toPandas())
 
-    donor_df_final.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
+    donor_df_final = donor_df_final.withColumn(
+        column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType)
+    )
     output_df = imputing_df_final.unionByName(donor_df_final)
 
     logging.info(f"Summary statistics for donor values: {reference_column}")
