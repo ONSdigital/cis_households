@@ -566,7 +566,7 @@
   work_not_from_home_days_per_week: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_sectors: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_sectors_other: '"Messages can be sent to and received from ports, but these
@@ -947,7 +947,7 @@
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
+  work_patient_facing_now: 'Yes'
   work_sectors: I don't even care.
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status: I'm gonna make him an offer he can't refuse.
