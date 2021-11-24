@@ -5,6 +5,30 @@ from typing import List
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import Window
+
+
+def assign_proportion_column(
+    df: DataFrame, column_name_to_assign: str, numerator_column: str, denominator_column: str, numerator_selector: str
+):
+    """
+    Assign a column as the result of a division operation on total of select values from numerator column
+    divided by grouped by another selector
+    Parameters
+    ----------
+    df
+    numerator_column
+    denominator_column
+    numerator_selector
+    denominator_selector
+    """
+    window = Window.partitionBy(denominator_column)
+
+    return df.withColumn(
+        column_name_to_assign,
+        (F.sum(F.when(F.col(numerator_column) == numerator_selector, 1).otherwise(0)).over(window))
+        / (F.count(denominator_column).over(window)),
+    )
 
 
 def assign_work_social_column(
@@ -204,6 +228,7 @@ def assign_work_patient_facing_now(
         work_healthcare_column,
         {
             "Yes": [
+                "Yes",
                 "Yes, primary care, patient-facing",
                 "Yes, secondary care, patient-facing",
                 "Yes, other healthcare, patient-facing",
@@ -373,7 +398,7 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     return df
 
 
-def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_colum: str):
+def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Assign column outer postcode with cleaned data from reference postcode column.
     take only left part of postcode and capitalise
@@ -383,7 +408,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_colum, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )

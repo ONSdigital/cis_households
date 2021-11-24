@@ -920,7 +920,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: survey_responses_v2_source_file
+  name: survey_response_source_file
   nullable: false
   type: string
 - metadata: {}
@@ -928,13 +928,17 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: survey_response_dataset_major_version
-  nullable: false
-  type: integer
-- metadata: {}
   name: bad_email
   nullable: true
   type: boolean
+- metadata: {}
+  name: outward_postcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent
+  nullable: true
+  type: double
 - metadata: {}
   name: visit_date_string
   nullable: true
@@ -948,6 +952,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -955,14 +963,6 @@ fields:
   name: blood_taken
   nullable: false
   type: string
-- metadata: {}
-  name: outward_postcode
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent
-  nullable: true
-  type: double
 - metadata: {}
   name: age_at_visit
   nullable: true
@@ -999,4 +999,8 @@ fields:
   name: work_person_facing_now
   nullable: true
   type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
 type: struct

@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
+from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
 from cishouseholds.pipeline.blood_delta_ETL import extract_validate_transform_input_data
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.input_variable_names import blood_variable_name_map
@@ -23,7 +24,7 @@ def blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         blood_variable_name_map,
         blood_datetime_map,
         blood_validation_schema,
-        transform_blood_delta,
+        [transform_blood_delta, add_historical_fields],
     )
 
     return processed_df

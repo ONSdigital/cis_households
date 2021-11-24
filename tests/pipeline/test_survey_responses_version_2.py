@@ -4,6 +4,8 @@ from mimesis.schema import Schema
 
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
+from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_work_status_columns
+from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
@@ -23,7 +25,7 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         survey_responses_v2_variable_name_map,
         survey_responses_datetime_map,
         survey_responses_v2_validation_schema,
-        transform_survey_responses_version_2_delta,
+        [transform_survey_responses_generic, derive_work_status_columns, transform_survey_responses_version_2_delta],
         "|",
     )
     return processed_df
@@ -32,7 +34,7 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 @pytest.mark.integration
 def test_responses_version_2_delta_df(responses_v2_survey_ETL_output, regression_test_df):
     regression_test_df(
-        responses_v2_survey_ETL_output.drop("survey_responses_v2_source_file"), "visit_id", "processed_responses_v2"
+        responses_v2_survey_ETL_output.drop("survey_response_source_file"), "visit_id", "processed_responses_v2"
     )  # remove source file column, as it varies for our temp dummy data
 
 

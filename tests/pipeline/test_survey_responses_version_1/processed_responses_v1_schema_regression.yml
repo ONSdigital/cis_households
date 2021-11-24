@@ -652,11 +652,75 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: survey_responses_v1_source_file
+  name: survey_response_source_file
   nullable: false
   type: string
 - metadata: {}
   name: unique_participant_response_id
   nullable: false
+  type: string
+- metadata: {}
+  name: bad_email
+  nullable: true
+  type: boolean
+- metadata: {}
+  name: outward_postcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent
+  nullable: true
+  type: double
+- metadata: {}
+  name: visit_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_taken_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: date_of_birth_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
+  name: swab_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: age_at_visit
+  nullable: true
+  type: long
+- metadata: {}
+  name: age_group_5_intervals
+  nullable: true
+  type: string
+- metadata: {}
+  name: age_group_over_16
+  nullable: true
+  type: string
+- metadata: {}
+  name: age_group_7_intervals
+  nullable: true
+  type: string
+- metadata: {}
+  name: age_group_5_year_intervals
+  nullable: true
+  type: string
+- metadata: {}
+  name: school_year_september
+  nullable: true
+  type: integer
+- metadata: {}
+  name: work_patient_facing_now
+  nullable: true
   type: string
 type: struct
