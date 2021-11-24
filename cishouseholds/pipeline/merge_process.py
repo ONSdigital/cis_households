@@ -192,7 +192,7 @@ def execute_merge_specific_swabs(
     barcode_column_name: str,
     visit_date_column_name: str,
     received_date_column_name: str,
-    void_value: str = "void",
+    void_value: str = "Void",
 ) -> DataFrame:
     """
     Specific high level function to execute the process for swab.
@@ -204,7 +204,7 @@ def execute_merge_specific_swabs(
     visit_date_column_name
     received_date_column_name
     void_value
-        by default is "void" but it is possible to specify what is considered as void in the PCR result test.
+        by default is "Void" but it is possible to specify what is considered as void in the PCR result test.
     """
     merge_type = "swab"
     (

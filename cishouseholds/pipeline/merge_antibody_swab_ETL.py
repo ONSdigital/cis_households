@@ -144,9 +144,18 @@ def merge_swab(survey_df, swab_df):
         barcode_column_name="swab_sample_barcode",
         visit_date_column_name="visit_datetime",
         received_date_column_name="pcr_datetime",
-        void_value="void",
+        void_value="Void",
     )
 
+    survey_antibody_swab_df = survey_antibody_swab_df.drop(
+        "abs_offset_diff_vs_visit_hr_swab",
+        "count_barcode_swab",
+        "count_barcode_voyager",
+        "diff_vs_visit_hr_swab",
+        "pcr_flag",
+        "time_order_flag",
+        "time_difference_flag",
+    )
     return merge_process_filtering(
         df=survey_antibody_swab_df,
         merge_type="swab",
