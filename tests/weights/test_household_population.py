@@ -19,14 +19,10 @@ def test_household_population(spark_session):
 
     # NSPL file
     schema_nspl = """pcd string,
-                     lsoa11cd string
+                     lsoa11cd string,
                      ctry12cd integer"""
     data_nspl = [
-        (
-            "AAA 123",
-            "S1",
-            101,
-        ),
+        ("AAA 123", "S1", 101),
         ("BBB 123", "S2", 101),
         ("CCC 123", "S1", 101),
         ("DDD 123", "S4", 102),
@@ -42,15 +38,16 @@ def test_household_population(spark_session):
     schema_lsoa = """lsoa11cd string,
                      cis20cd string"""
     data_lsoa = [
+        ("S1", "J2"),
         ("S3", "J3"),
-        ("S2", "J1")("S1", "J2"),
+        ("S2", "J1"),
         ("S4", "J4"),
     ]
     df_lsoa = spark_session.createDataFrame(data_lsoa, schema=schema_lsoa)
 
     # countrycode to countryname lookup ---------------
-    schema_country_code = """ctry12cd integer,
-                             ctry12nm string"""
+    schema_country_code = """ctry20cd integer,
+                             ctry20nm string"""
     data_country_code = [
         (101, "Dataville"),  # match
         (102, "Statpool"),  # match
@@ -58,7 +55,7 @@ def test_household_population(spark_session):
     df_country_code = spark_session.createDataFrame(data_country_code, schema=schema_country_code)
 
     # expected data ---------------
-    schema_expected = """uprn integer
+    schema_expected = """uprn integer,
                          postcode string,
                          lower_super_output_area_code_11 string,
                          cis_area_code_20 string,
@@ -67,13 +64,14 @@ def test_household_population(spark_session):
                          number_of_households_population_by_cis integer,
                          number_of_households_population_by_country integer"""
     data_expected = [
-        (1, "AAA 123", "S1", "J2", 101, "Dataville", 2, 3),
-        (2, "BBB 123", "S2", "J1", 101, "Dataville", 1, 3)(3, "CCC 123", "S1", "J1", 101, "Dataville", 2, 3),
-        (4, "DDD 123", "S4", "J4", 102, "Statpool", 2, 2),
-        (5, "EEE 123", "S4", "J4", 102, "Statpool", 2, 2),
+        (1, "AAA123", "S1", "J2", 101, "Dataville", 2, 3),
+        (2, "BBB123", "S2", "J1", 101, "Dataville", 1, 3),
+        (3, "CCC123", "S1", "J2", 101, "Dataville", 2, 3),
+        (4, "DDD123", "S4", "J4", 102, "Statpool", 2, 2),
+        (5, "EEE123", "S4", "J4", 102, "Statpool", 2, 2),
     ]
-
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected).drop("uprn")
+
     df_output = household_population_total(df_address_base, df_nspl, df_lsoa, df_country_code)
 
-    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True)
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
