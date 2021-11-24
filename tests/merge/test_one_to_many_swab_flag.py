@@ -119,7 +119,7 @@ def test_one_to_many_swab_overall(spark_session):
         ("B", -5, 29, None, "negative", None), # keep - abs date diff smallest within record even though later day
 
         # record C - flag out as outside of time range
-        ("C", -48, 72, 1, "negative", None), # keep
+        ("C", 48, 72, 1, "negative", None), # keep
         # not passed because out_of_range and diff_date negative
         ("C", 288, 264, 1, "positive", 1),  # drop: out_of_range
 
@@ -135,12 +135,17 @@ def test_one_to_many_swab_overall(spark_session):
         ("E", 50, 26, None, "positive", None),  # kept
 
         # record F - both result_pcr being null do not flag
-        ("F", 12, 12, None, "void", None),  # keep
         ("F", 12, 12, None, "void", None),
-        # keep
-        # record G - to be dropped because date_diff have different signs:
-        ("G", -12, 36, None, "positive", 1),  # drop
-        ("G", 12, 12, None, "positive", None),
+        ("F", 12, 12, None, "void", None),
+
+        # when both negative and positive time difference, keep all
+        ("H", -1, 25, None, "positive", None),
+        ("H", 50, 26, None, "positive", None),
+
+        # keep one negative time difference as the other one has a "more" negative time diff
+        ("J", -1, 25, None, "positive", None),
+        ("J", -2, 26, None, "positive", 1),
+        # drop
         # keep
         # fmt: on
     ]
