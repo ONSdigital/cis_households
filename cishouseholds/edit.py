@@ -379,3 +379,19 @@ def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") 
         if column_type == "null":
             df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
     return df
+
+
+def convert_columns_to_double(df: DataFrame, column_list: list) -> DataFrame:
+    """
+    Convert string columns to double(float).
+    Parameters
+    ----------
+    df
+    column_list
+        list of columns to be converted
+    """
+    for column_name in column_list:
+        if column_name in df.columns:
+            df = df.withColumn(column_name, F.col(column_name).cast("double"))
+
+    return df
