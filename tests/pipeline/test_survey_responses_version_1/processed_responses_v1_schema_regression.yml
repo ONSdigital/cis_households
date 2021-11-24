@@ -664,10 +664,6 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
-  name: visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
   name: outward_postcode
   nullable: true
   type: string
@@ -676,6 +672,10 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: visit_date_string
+  nullable: true
+  type: string
+- metadata: {}
   name: sample_taken_date_string
   nullable: true
   type: string
@@ -683,6 +683,10 @@ fields:
   name: date_of_birth_string
   nullable: true
   type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
 - metadata: {}
   name: swab_taken
   nullable: false
