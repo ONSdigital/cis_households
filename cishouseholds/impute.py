@@ -514,14 +514,16 @@ def impute_by_k_nearest_neighbours(
     output_df.cache()
     output_df_length = output_df.count()
     if output_df_length != df_length:
-        raise ValueError("Records have been lost during imputation")
+        raise ValueError(
+            "{output_df_length} records are found in the output, which is less than {df_length} in the input."
+        )
 
     missing_count = output_df.filter(
         ((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
         & ((F.col(column_name_to_assign).isNull()) | (F.isnan(column_name_to_assign)))
     ).count()
     if missing_count != 0:
-        raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation")
+        raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation.")
 
     logging.info("KNN imputation completed\n")
     return output_df
