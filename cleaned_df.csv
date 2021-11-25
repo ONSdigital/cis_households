@@ -1,0 +1,13 @@
+lower_super_output_area_code_11,country_code_12,postcode,ons_household_id,cis_area_code_20,country_name_12,sample_source,sample_addressbase_indicator,date _sample_created,batch_number,file_name,region_code,local_authority_unity_authority_code,oa11/ oac11,middle_super_output_area_code_11,rural_urban_classification_11,index_multiple_deprivation,LSOA11NM,RGN19CD
+S1,E,A,1,J1,england,LFS,0,13/11/2021,2,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063413,E02002622,C1,3369,City of London 001A,E12000007
+N/A,E,B,2,J5,england,AB,1,13/11/2021,3,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063735,E02002620,C1,7612,,
+S2,E,C,3,J2,england,AB,1,13/11/2021,1,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063401,E02002621,C1,2666,Isle of Anglesey 007A,W92000004
+N/A,S,D,4,N/A,scotland,LFS,0,14/11/2021,4,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00091321,S02001296,6,5069,,
+S3,N,E,5,J3,scotland,AB,1,14/11/2021,2,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00092401,S02001296,6,5069,Culter -07,S902000003
+S5,N,F,6,J5,scotland,AB,1,14/11/2021,3,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00092401,S02001296,6,5069,Another place,N92000001
+N/A,W,E,7,N/A,northern ireland,LFS,0,14/11/2021,1,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001131,N99999999,,49,,
+N/A,S,D,8,N/A,northern ireland,AB,1,15/11/2021,3,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001352,N99999999,,25,,
+N/A,E,C,9,N/A,northern ireland,AB,1,15/11/2021,5,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001352,N99999999,,25,,
+S1,N,B,10,J1,wales,AB,1,15/11/2021,1,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,City of London 001A,E12000007
+S1,E,A,11,J1,wales,AB,1,15/11/2021,2,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,City of London 001A,E12000007
+S5,N,F,12,J5,wales,AB,1,15/11/2021,4,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,Another place,N92000001

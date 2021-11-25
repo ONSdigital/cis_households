@@ -1,8 +1,10 @@
+from datetime import datetime
 from typing import Any
 from typing import List
 from typing import Union
+import re
 
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, dataframe
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
@@ -39,15 +41,21 @@ lookup_variable_name_maps = {
     "tranche": {"UAC": "ons_household_id"},
 }
 
+def null_to_value(df:DataFrame, column_name_to_update: str, value: int=0):
+    return df.withColumn(column_name_to_update, F.when((F.col(column_name_to_update).isNull())|(F.isnan(F.col(column_name_to_update))),value).otherwise(F.col(column_name_to_update)))
 
 def load_auxillary_data(resource_paths):
-    # initialise all dataframes in dictionary
     auxillary_dfs = {}
     for name, resource_path in resource_paths.items():
         auxillary_dfs[name] = read_csv_to_pyspark_df(
             spark_session, resource_path["path"], resource_path["header"], None
         )
     auxillary_dfs = rename_columns(auxillary_dfs)
+    return auxillary_dfs
+
+def run(resource_paths: dict):
+    # initialise all dataframes in dictionary
+    auxillary_dfs = load_auxillary_data(resource_paths=resource_paths)
 
     # initialise lookup dataframes
     household_info_df = household_design_weights(
@@ -70,6 +78,7 @@ def load_auxillary_data(resource_paths):
     # update and clean sample df's
     df = update_data(df, auxillary_dfs)
     df = clean_df(df)
+    df.toPandas().to_csv("cleaned_df.csv", index=False)
     old_df = clean_df(auxillary_dfs["old"])
     df = union_multiple_tables(tables=[df, old_df])
     df.toPandas().to_csv("test_output3.csv", index=False)
@@ -78,14 +87,18 @@ def load_auxillary_data(resource_paths):
     df = assign_sample_new_previous(df, "sample_new_previous", "date _sample_created", "batch_number")
     df = df.join(auxillary_dfs["tranche"], on="ons_household_id", how="outer").drop("UAC")
     df = assign_tranche_factor(df, "tranche_factor", "ons_household_id", ["cis_area_code_20", "enrolement_date"])
+    df.toPandas().to_csv("pre_weight.csv", index=False)
+
     df = calculate_dweight_swabs(
-        df,
-        household_info_df,
-        "sample_new_previous",
-        ["cis_area_code_20", "sample_new_previous"],
-        "ons_household_id",
-        "old_dweight",
+        df=df,
+        household_info_df=household_info_df,
+        column_name_to_assign="raw_design_weights_swab",
+        sample_type_column="sample_new_previous",
+        group_by_columns=["cis_area_code_20", "sample_new_previous"],
+        barcode_column="ons_household_id",
+        previous_dweight_column="household_level_designweight_swab",
     )
+    df = calculate_overall_design_weights(df, "raw_design_weights_swab", ["cis_area_code_20","sample_new_previous"])
 
 
 def rename_columns(auxillary_dfs: dict):
@@ -148,7 +161,6 @@ def get_if_MATCHED(
     joined_df = new_sample_df.join(select_df, on=barcode_column, how="left")
     for col in selection_columns:
         joined_df = joined_df.withColumn(f"MATCHED_{col}", F.when(F.col(col) == F.col(f"{col}_OLD"), 1).otherwise(None))
-    joined_df.show()
     return joined_df
 
 
@@ -179,19 +191,6 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
     return df.drop(f"{column_name_to_update}_from_lookup")
 
 
-# def update_cis20cd(df: DataFrame, lookup_df: DataFrame, column_name_to_update: str, lsoa_column: str):
-#     lookup_df = lookup_df.withColumnRenamed("LSOA11CD", lsoa_column).withColumnRenamed("CIS20CD", "cis20cd_from_lookup")
-#     df = df.join(lookup_df.select(lsoa_column, "cis20cd_from_lookup"), on=lsoa_column, how="left")
-#     df = df.withColumn(
-#         column_name_to_update,
-#         F.when(
-#             F.col(f"MATCHED_{column_name_to_update}").isNull(),
-#             F.when(F.col("cis20cd_from_lookup").isNotNull(), F.col("cis20cd_from_lookup")).otherwise(("N/A")),
-#         ).otherwise(F.col(column_name_to_update)),
-#     )
-#     return df.drop("cis20cd_from_lookup")
-
-
 def clean_df(df: DataFrame):
     df = df.withColumn("country_name_12", F.lower(F.col("country_name_12")))
     drop_columns = [col for col in df.columns if "OLD" in col]
@@ -200,8 +199,13 @@ def clean_df(df: DataFrame):
 
 def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_column: str, batch_colum: str):
     window = Window.partitionBy(date_column).orderBy(date_column, F.desc(batch_colum))
-    df = df.withColumn(colum_name_to_assign, F.when(F.row_number().over(window) == 1, "new").otherwise("previous"))
-    return df
+    df = df.withColumn("DATE_REFERENCE", F.first(date_column).over(window))
+    df = df.withColumn("BATCH_REFERENCE", F.first(batch_colum).over(window))
+    print("assigning sample-new-prev")
+    df.show()
+    df.toPandas().to_csv("test_output3.csv", index=False)
+    df = df.withColumn(colum_name_to_assign, F.when(((F.col(date_column) == F.col("DATE_REFERENCE"))&(F.col(batch_colum) == F.col("BATCH_REFERENCE"))), "new").otherwise("previous"))
+    return df.drop("DATE_REFERENCE","BATCH_REFERENCE")
 
 
 def count_distinct_in_filtered_df(
@@ -249,7 +253,6 @@ def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_col
             / F.col("number_sampled_households_tranche_bystrata_enrolment"),
         ).otherwise("missing"),
     )
-    df.toPandas().to_csv("test_output4.csv", index=False)
     return df.drop(
         "number_eligible_households_tranche_bystrata_enrolment", "number_sampled_households_tranche_bystrata_enrolment"
     )
@@ -258,6 +261,7 @@ def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_col
 def calculate_dweight_swabs(
     df: DataFrame,
     household_info_df: DataFrame,
+    column_name_to_assign: str,
     sample_type_column: str,
     group_by_columns: List[str],
     barcode_column: str,
@@ -272,38 +276,79 @@ def calculate_dweight_swabs(
         how="outer",
     )
     df = df.withColumn("number_eligible_household_sample", F.approx_count_distinct(barcode_column).over(window))
-    df = df.withColumn(previous_dweight_column, F.lit(69))  # temp creation of old col for testing
     df = df.withColumn(
-        "raw_design_weights_swab",
+        column_name_to_assign,
         F.when(
             F.col(sample_type_column) == "new",
             F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample"),
         ).otherwise(F.col(previous_dweight_column)),
     )
-    df.toPandas().to_csv("primary_out.csv", index=False)
+    return df
 
 
-def calculate_overall_design_weights(sample_file: DataFrame, household_populations: DataFrame) -> DataFrame:
-    """
-    Calculate design weights, as the number of addresses within a CIS area (``interim_id``) over
-    the number of households sampled within that area.
+def calculate_overall_design_weights(df: DataFrame, design_weight_column: str, groupby_columns: List[str]) -> DataFrame:
+    window = Window.partitionBy(*groupby_columns)
+    df = df.withColumn("sum_raw_design_weight_swab_cis",F.sum(design_weight_column).over(window))
+    df.show()
+    df = df.withColumn("standard_deviation_raw_design_weight_swab", F.stddev(design_weight_column).over(window))
+    df = df.withColumn("mean_raw_design_weight_swab", F.mean(design_weight_column).over(window))
+    
+    df = df.withColumn("coefficient_variation_design_weight_swab", (F.col("standard_deviation_raw_design_weight_swab")/F.col("mean_raw_design_weight_swab")))
+    df = df.withColumn("design_effect_weight_swab", 1+F.pow(F.col("coefficient_variation_design_weight_swab"),2))
+    df = df.withColumn("effective_sample_size_design_weight_swab", F.col("number_eligible_household_sample")/F.col("design_effect_weight_swab"))
+    df = null_to_value(df, "effective_sample_size_design_weight_swab")
 
-    Parameters
-    ----------
-    sample_file
-        sample delta to calculate design weights per ``interim_id``
-    household_populations
-        number of addresses (``nb_addresses``) per CIS area (``interim_id``)
-    """
-    sample_file = sample_file.join(
-        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id"
-    )
+    cis_window = Window.partitionBy(groupby_columns[0])
+    df = df.withColumn("sum_effective_sample_size_design_weight_swab", F.sum("effective_sample_size_design_weight_swab").over(cis_window))
+    df = df.withColumn("combining_factor_design_weight_swab", F.col("effective_sample_size_design_weight_swab")/F.col("sum_effective_sample_size_design_weight_swab"))
+    df = df.withColumn("combined_design_weight_swab", F.col("combining_factor_design_weight_swab")* F.col(design_weight_column))
 
-    interim_id_window = Window.partitionBy("interim_id")
-    sample_file = sample_file.withColumn("sample_count", F.count("interim_id").over(interim_id_window))
+    df = df.withColumn("sum_combined_design_weight_swab", F.sum("combined_design_weight_swab").over(cis_window))
+    df = df.withColumn("scaling_factor_combined_design_weight_swab", F.col("number_of_households_population_by_cis") / F.col("sum_combined_design_weight_swab"))
+    df = df.withColumn("scaled_design_weight_swab_nonadjusted", F.col("scaling_factor_combined_design_weight_swab") * F.col("combined_design_weight_swab"))
+    df = validate_design_weights(df, "validated_design_weights", cis_window)
+    df.toPandas().to_csv("test_output4.csv",index=False)
 
-    sample_file = sample_file.withColumn("design_weight", F.col("nb_addresses") / F.col("sample_count"))
-    return sample_file.drop("sample_count", "nb_addresses")
+def validate_design_weights(df: DataFrame, column_name_to_assign: str, window: Window):
+    df = df.withColumn(column_name_to_assign,
+    F.when(F.sum("scaled_design_weight_swab_nonadjusted").over(window) == F.col("number_of_households_population_by_cis"),"True").otherwise("False")) # check 1
+    columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
+    for col in columns:
+        print(df.select(col).dtypes) # get all weight columns
+    for col in columns:
+        df = null_to_value(df, col) # update nulls to 0
+        df = df.withColumn(column_name_to_assign, F.when(F.approx_count_distinct(col).over(window) != 1, "False").otherwise(F.col(column_name_to_assign)))
+    #import pdb; pdb.set_trace()
+    df = df.withColumn("LEAST", F.least(*columns))
+    df.select("LEAST").show()
+    df = df.withColumn(column_name_to_assign, F.when(F.col("LEAST")<=0, "False").otherwise(F.col(column_name_to_assign))) # flag missing   
+    return df.drop("LEAST")
+
+def carry_forward_dweights(df: DataFrame, scenario: str, window: Window, household_population_column: str):
+    scenario_carry_forward_lookup = {"A": "raw_design_weights_antibodies_ab", "B": "raw_design_weights_antibodies_ab", "C":"combined_design_weight_antibodies_c"}
+    df = df.withColumn("carryforward_design_weight_antibodies", F.col(scenario_carry_forward_lookup[scenario]))
+    df = df.withColumn("sum_carryforward_design_weight_antibodies", F.sum("carryforward_design_weight_antibodies").over(window))
+    df = df.withColumn("scalling_factor_carryforward_design_weight_antibodies", F.col(household_population_column) / F.col("sum_carryfoward_design_weight_antibodies"))
+    df = df.withColumn("scaled_design_weight_antibodies_nonadjusted", F.col("scalling_factor_carryforward_design_weight_antibodies") * F.col("carryforward_design_weight_antibodies"))
+
+def proccess_population_projection_df(resource_paths:dict, month: int):
+    df = load_auxillary_data(resource_paths=resource_paths)["population_projection"]
+
+    r = re.compile(r"\w{1}\d{1,}")
+    m_f_columns = list(filter(r.match, df.columns))
+    selected_columns = ["GOR","GOR_country","ctry_name", *m_f_columns] # laua
+    df = df.select(*selected_columns)
+    if month < 6:
+        a = 6 - month
+        b = 6 + month
+    else:
+        a = 18 - month
+        b = month - 6
+
+    for col in m_f_columns:
+        df = df.withColumn(col, ((1/12)*F.col(col))*(a+b))
+
+    df.show()
 
 
 resource_paths = {
@@ -332,5 +377,10 @@ resource_paths = {
         "path": r"C:\code\cis_households\tranche.csv",
         "header": "enrolement_date,UAC,lsoa_11,cis20cd,ctry12,ctry_name12,tranche",
     },
+    "population_projection":{
+        "path": r"C:\code\cis_households\population_projection.csv",
+        "header": "ladcode,GOR,GOR_Country,Region_Name,surge,m0,m1,f0,f1"
+    }
 }
-load_auxillary_data(resource_paths=resource_paths)
+#load_auxillary_data(resource_paths=resource_paths)
+proccess_population_projection_df(resource_paths=resource_paths, month=6)

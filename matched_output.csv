@@ -1,0 +1,13 @@
+ons_household_id,postcode,lower_super_output_area_code_11,cis_area_code_20,country_code_12,country_name_12,sample_source,sample_addressbase_indicator,date _sample_created,batch_number,file_name,region_code,local_authority_unity_authority_code,oa11/ oac11,middle_super_output_area_code_11,rural_urban_classification_11,index_multiple_deprivation,lower_super_output_area_code_11_OLD,cis_area_code_20_OLD,MATCHED_lower_super_output_area_code_11,MATCHED_cis_area_code_20
+1,A,S1,J1,E,England,LFS,0,13/11/2021,2,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063413,E02002622,C1,3369,S1,J5,1.0,
+2,B,S1,J5,E,England,AB,1,13/11/2021,3,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063735,E02002620,C1,7612,S2,J5,,1.0
+3,C,S2,J3,E,England,AB,1,13/11/2021,1,sample_direct_eng_wc15112021_4.csv,E12000002,E06000008,E00063401,E02002621,C1,2666,S2,J2,1.0,
+4,D,S2,J3,S,Scotland,LFS,0,14/11/2021,4,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00091321,S02001296,6,5069,S4,J2,,
+5,E,S3,J2,N,Scotland,AB,1,14/11/2021,2,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00092401,S02001296,6,5069,S3,J4,1.0,
+6,F,S4,J2,N,Scotland,AB,1,14/11/2021,3,sample_direct_eng_wc15112021_4.csv,S99999999,S12000034,S00092401,S02001296,6,5069,S3,J3,,
+7,E,S4,J3,W,Northern Ireland,LFS,0,14/11/2021,1,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001131,N99999999,,49,S5,J2,,
+8,D,S5,J1,S,Northern Ireland,AB,1,15/11/2021,3,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001352,N99999999,,25,S1,J3,,
+9,C,S5,J5,E,Northern Ireland,AB,1,15/11/2021,5,sample_direct_eng_wc15112021_4.csv,N99999999,N09000003,N00001352,N99999999,,25,S4,J1,,
+10,B,S6,J3,N,Wales,AB,1,15/11/2021,1,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,,,,
+11,A,S6,J3,E,Wales,AB,1,15/11/2021,2,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,,,,
+12,F,S7,J4,N,Wales,AB,1,15/11/2021,4,sample_direct_eng_wc15112021_4.csv,W99999999,W06000015,W00010141,W02000398,C1,833,,,,
