@@ -41,13 +41,13 @@ def survey_responses_version_2_ETL(**kwargs):
             survey_responses_v2_variable_name_map,
             survey_responses_datetime_map,
             survey_responses_v2_validation_schema,
-            survey_response_cast_to_double,
             [
                 transform_survey_responses_generic,
                 derive_work_status_columns,
                 transform_survey_responses_version_2_delta,
             ],
             "|",
+            survey_response_cast_to_double,
         )
         update_table_and_log_source_files(
             df, "transformed_survey_responses_v2_data", "survey_response_source_file", "overwrite"
