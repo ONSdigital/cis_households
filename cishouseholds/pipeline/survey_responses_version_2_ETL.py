@@ -152,12 +152,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         "work_status",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
-    df = update_work_facing_now_column(
-        df,
-        "work_person_facing_now",
-        "work_status",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     # df = placeholder_for_derivation_number_20(df, "work_healthcare",
     # ["work_healthcare_v1", "work_direct_contact"])
