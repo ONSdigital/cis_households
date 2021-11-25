@@ -34,9 +34,9 @@
   infant_2_age: 7.0
   infant_3_age: 2.0
   infant_4_age: null
-  infant_5_age: 0
+  infant_5_age: 0.0
   infant_6_age: 4.0
-  infant_7_age: 6
+  infant_7_age: 6.0
   infant_8_age: 4.0
   is_self_isolating: 'Yes'
   last_covid_contact_date: null
@@ -53,25 +53,25 @@
   participant_id: DHR-350245644249
   participant_visit_status: null
   person_1_age: 8.0
-  person_1_not_consenting_age: 49
+  person_1_not_consenting_age: 49.0
   person_1_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_2_age: 63.0
-  person_2_not_consenting_age: 17
+  person_2_not_consenting_age: 17.0
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_3_age: 53
-  person_3_not_consenting_age: 44
+  person_3_age: 53.0
+  person_3_not_consenting_age: 44.0
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_4_age: 48.0
   person_4_not_consenting_age: 89.0
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_5_age: 68
-  person_5_not_consenting_age: 26
+  person_5_age: 68.0
+  person_5_not_consenting_age: 26.0
   person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_6_age: 64.0
-  person_6_not_consenting_age: 17
+  person_6_not_consenting_age: 17.0
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
   person_7_age: 23.0
-  person_7_not_consenting_age: 16
+  person_7_not_consenting_age: 16.0
   person_7_reason_for_not_consenting: Houston, we have a problem.
   person_8_age: 17.0
   person_8_not_consenting_age: null
@@ -182,9 +182,9 @@
   infant_2_age: 8.0
   infant_3_age: 3.0
   infant_4_age: 1.0
-  infant_5_age: 3
+  infant_5_age: 3.0
   infant_6_age: 2.0
-  infant_7_age: 0
+  infant_7_age: 0.0
   infant_8_age: 2.0
   is_self_isolating: 'No'
   last_covid_contact_date: null
@@ -200,28 +200,28 @@
   participant_id: DHR-750309883089
   participant_visit_status: Scheduled
   person_1_age: 79.0
-  person_1_not_consenting_age: 38
+  person_1_not_consenting_age: 38.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: null
-  person_2_not_consenting_age: 67
+  person_2_not_consenting_age: 67.0
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 61
-  person_3_not_consenting_age: 90
+  person_3_age: 61.0
+  person_3_not_consenting_age: 90.0
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_4_age: 12.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 52
-  person_5_not_consenting_age: 31
+  person_5_age: 52.0
+  person_5_not_consenting_age: 31.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 72.0
-  person_6_not_consenting_age: 22
+  person_6_not_consenting_age: 22.0
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_7_age: 17.0
-  person_7_not_consenting_age: 41
+  person_7_not_consenting_age: 41.0
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_8_age: null
   person_8_not_consenting_age: 25.0
@@ -330,9 +330,9 @@
   infant_2_age: 8.0
   infant_3_age: null
   infant_4_age: 0.0
-  infant_5_age: 4
+  infant_5_age: 4.0
   infant_6_age: null
-  infant_7_age: 5
+  infant_7_age: 5.0
   infant_8_age: 1.0
   is_self_isolating: null
   last_covid_contact_date: null
@@ -349,28 +349,28 @@
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
   person_1_age: 74.0
-  person_1_not_consenting_age: 67
+  person_1_not_consenting_age: 67.0
   person_1_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_2_age: null
-  person_2_not_consenting_age: 89
+  person_2_not_consenting_age: 89.0
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_age: 64
-  person_3_not_consenting_age: 50
+  person_3_age: 64.0
+  person_3_not_consenting_age: 50.0
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_4_age: 14.0
   person_4_not_consenting_age: 56.0
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 30
-  person_5_not_consenting_age: 53
+  person_5_age: 30.0
+  person_5_not_consenting_age: 53.0
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
-  person_6_not_consenting_age: 4
+  person_6_not_consenting_age: 4.0
   person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
   person_7_age: null
-  person_7_not_consenting_age: 26
+  person_7_not_consenting_age: 26.0
   person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_8_age: 55.0
   person_8_not_consenting_age: null
@@ -478,9 +478,9 @@
   infant_2_age: 6.0
   infant_3_age: 3.0
   infant_4_age: null
-  infant_5_age: 2
+  infant_5_age: 2.0
   infant_6_age: 7.0
-  infant_7_age: 2
+  infant_7_age: 2.0
   infant_8_age: 3.0
   is_self_isolating: null
   last_covid_contact_date: null
@@ -496,27 +496,27 @@
   participant_id: DHR-229883187696
   participant_visit_status: Patient did not attend
   person_1_age: 27.0
-  person_1_not_consenting_age: 40
+  person_1_not_consenting_age: 40.0
   person_1_reason_for_not_consenting: Elementary, my dear Watson.
   person_2_age: 38.0
-  person_2_not_consenting_age: 43
+  person_2_not_consenting_age: 43.0
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_age: 62
-  person_3_not_consenting_age: 73
+  person_3_age: 62.0
+  person_3_not_consenting_age: 73.0
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_4_age: 56.0
   person_4_not_consenting_age: 7.0
   person_4_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_5_age: 50
-  person_5_not_consenting_age: 58
+  person_5_age: 50.0
+  person_5_not_consenting_age: 58.0
   person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_6_age: null
-  person_6_not_consenting_age: 75
+  person_6_not_consenting_age: 75.0
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_7_age: 39.0
-  person_7_not_consenting_age: 61
+  person_7_not_consenting_age: 61.0
   person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_8_age: 60.0
   person_8_not_consenting_age: 18.0
@@ -624,9 +624,9 @@
   infant_2_age: null
   infant_3_age: null
   infant_4_age: 8.0
-  infant_5_age: 7
+  infant_5_age: 7.0
   infant_6_age: 1.0
-  infant_7_age: 2
+  infant_7_age: 2.0
   infant_8_age: 7.0
   is_self_isolating: 'Yes'
   last_covid_contact_date: null
@@ -642,29 +642,29 @@
   participant_id: DHR-449957129557
   participant_visit_status: null
   person_1_age: 82.0
-  person_1_not_consenting_age: 30
+  person_1_not_consenting_age: 30.0
   person_1_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_2_age: 22.0
-  person_2_not_consenting_age: 73
+  person_2_not_consenting_age: 73.0
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 71
-  person_3_not_consenting_age: 74
+  person_3_age: 71.0
+  person_3_not_consenting_age: 74.0
   person_3_reason_for_not_consenting: Houston, we have a problem.
   person_4_age: 37.0
   person_4_not_consenting_age: 72.0
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 14
-  person_5_not_consenting_age: 80
+  person_5_age: 14.0
+  person_5_not_consenting_age: 80.0
   person_5_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_6_age: 79.0
-  person_6_not_consenting_age: 20
+  person_6_not_consenting_age: 20.0
   person_6_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_7_age: 74.0
-  person_7_not_consenting_age: 42
+  person_7_not_consenting_age: 42.0
   person_7_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_8_age: 2.0
@@ -772,9 +772,9 @@
   infant_2_age: 4.0
   infant_3_age: 7.0
   infant_4_age: 2.0
-  infant_5_age: 5
+  infant_5_age: 5.0
   infant_6_age: 8.0
-  infant_7_age: 1
+  infant_7_age: 1.0
   infant_8_age: 1.0
   is_self_isolating: 'No'
   last_covid_contact_date: null
@@ -790,28 +790,28 @@
   participant_id: DHR-848695986758
   participant_visit_status: null
   person_1_age: 6.0
-  person_1_not_consenting_age: 39
+  person_1_not_consenting_age: 39.0
   person_1_reason_for_not_consenting: Let them eat cake.
   person_2_age: null
-  person_2_not_consenting_age: 59
+  person_2_not_consenting_age: 59.0
   person_2_reason_for_not_consenting: Here's looking at you, kid.
-  person_3_age: 54
-  person_3_not_consenting_age: 76
+  person_3_age: 54.0
+  person_3_not_consenting_age: 76.0
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_4_age: 21.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 64
-  person_5_not_consenting_age: 28
+  person_5_age: 64.0
+  person_5_not_consenting_age: 28.0
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: 63.0
-  person_6_not_consenting_age: 52
+  person_6_not_consenting_age: 52.0
   person_6_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_7_age: 72.0
-  person_7_not_consenting_age: 11
+  person_7_not_consenting_age: 11.0
   person_7_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_8_age: 60.0
@@ -921,9 +921,9 @@
   infant_2_age: 6.0
   infant_3_age: 7.0
   infant_4_age: 8.0
-  infant_5_age: 4
+  infant_5_age: 4.0
   infant_6_age: 2.0
-  infant_7_age: 6
+  infant_7_age: 6.0
   infant_8_age: 5.0
   is_self_isolating: 'No'
   last_covid_contact_date: null
@@ -939,27 +939,27 @@
   participant_id: DHR-851138788221
   participant_visit_status: Re-scheduled
   person_1_age: 7.0
-  person_1_not_consenting_age: 83
+  person_1_not_consenting_age: 83.0
   person_1_reason_for_not_consenting: Houston, we have a problem.
   person_2_age: 24.0
-  person_2_not_consenting_age: 63
+  person_2_not_consenting_age: 63.0
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 49
-  person_3_not_consenting_age: 70
+  person_3_age: 49.0
+  person_3_not_consenting_age: 70.0
   person_3_reason_for_not_consenting: Here's looking at you, kid.
   person_4_age: 21.0
   person_4_not_consenting_age: 0.0
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 64
-  person_5_not_consenting_age: 69
+  person_5_age: 64.0
+  person_5_not_consenting_age: 69.0
   person_5_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_6_age: null
-  person_6_not_consenting_age: 87
+  person_6_not_consenting_age: 87.0
   person_6_reason_for_not_consenting: Here's looking at you, kid.
   person_7_age: 49.0
-  person_7_not_consenting_age: 68
+  person_7_not_consenting_age: 68.0
   person_7_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   person_8_age: 19.0
@@ -1068,9 +1068,9 @@
   infant_2_age: 4.0
   infant_3_age: 2.0
   infant_4_age: 2.0
-  infant_5_age: 8
+  infant_5_age: 8.0
   infant_6_age: 1.0
-  infant_7_age: 4
+  infant_7_age: 4.0
   infant_8_age: null
   is_self_isolating: null
   last_covid_contact_date: null
@@ -1085,28 +1085,28 @@
   participant_id: DHR-422525832950
   participant_visit_status: Scheduled
   person_1_age: null
-  person_1_not_consenting_age: 24
+  person_1_not_consenting_age: 24.0
   person_1_reason_for_not_consenting: Houston, we have a problem.
   person_2_age: 57.0
-  person_2_not_consenting_age: 10
+  person_2_not_consenting_age: 10.0
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 38
-  person_3_not_consenting_age: 41
+  person_3_age: 38.0
+  person_3_not_consenting_age: 41.0
   person_3_reason_for_not_consenting: You're gonna need a bigger boat.
   person_4_age: null
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 91
-  person_5_not_consenting_age: 46
+  person_5_age: 91.0
+  person_5_not_consenting_age: 46.0
   person_5_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_6_age: 89.0
-  person_6_not_consenting_age: 83
+  person_6_not_consenting_age: 83.0
   person_6_reason_for_not_consenting: Houston, we have a problem.
   person_7_age: 1.0
-  person_7_not_consenting_age: 27
+  person_7_not_consenting_age: 27.0
   person_7_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_8_age: 62.0
   person_8_not_consenting_age: 56.0
@@ -1214,9 +1214,9 @@
   infant_2_age: 6.0
   infant_3_age: null
   infant_4_age: 4.0
-  infant_5_age: 1
+  infant_5_age: 1.0
   infant_6_age: 0.0
-  infant_7_age: 5
+  infant_7_age: 5.0
   infant_8_age: 2.0
   is_self_isolating: null
   last_covid_contact_date: null
@@ -1233,26 +1233,26 @@
   participant_id: DHR-621954781044
   participant_visit_status: Scheduled
   person_1_age: 81.0
-  person_1_not_consenting_age: 6
+  person_1_not_consenting_age: 6.0
   person_1_reason_for_not_consenting: You're gonna need a bigger boat.
   person_2_age: 54.0
-  person_2_not_consenting_age: 91
+  person_2_not_consenting_age: 91.0
   person_2_reason_for_not_consenting: Elementary, my dear Watson.
-  person_3_age: 38
-  person_3_not_consenting_age: 6
+  person_3_age: 38.0
+  person_3_not_consenting_age: 6.0
   person_3_reason_for_not_consenting: Elementary, my dear Watson.
   person_4_age: 48.0
   person_4_not_consenting_age: 24.0
   person_4_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_5_age: 18
-  person_5_not_consenting_age: 81
+  person_5_age: 18.0
+  person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Houston, we have a problem.
   person_6_age: 21.0
-  person_6_not_consenting_age: 33
+  person_6_not_consenting_age: 33.0
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_7_age: 61.0
-  person_7_not_consenting_age: 76
+  person_7_not_consenting_age: 76.0
   person_7_reason_for_not_consenting: You're gonna need a bigger boat.
   person_8_age: 29.0
   person_8_not_consenting_age: 56.0
@@ -1359,9 +1359,9 @@
   infant_2_age: 8.0
   infant_3_age: 5.0
   infant_4_age: 5.0
-  infant_5_age: 8
+  infant_5_age: 8.0
   infant_6_age: 0.0
-  infant_7_age: 1
+  infant_7_age: 1.0
   infant_8_age: 5.0
   is_self_isolating: 'No'
   last_covid_contact_date: null
@@ -1378,28 +1378,28 @@
   participant_id: DHR-263959191921
   participant_visit_status: Scheduled
   person_1_age: 64.0
-  person_1_not_consenting_age: 6
+  person_1_not_consenting_age: 6.0
   person_1_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   person_2_age: 15.0
-  person_2_not_consenting_age: 57
+  person_2_not_consenting_age: 57.0
   person_2_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_3_age: 68
-  person_3_not_consenting_age: 71
+  person_3_age: 68.0
+  person_3_not_consenting_age: 71.0
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_4_age: 75.0
   person_4_not_consenting_age: 55.0
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_5_age: 9
-  person_5_not_consenting_age: 90
+  person_5_age: 9.0
+  person_5_not_consenting_age: 90.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: null
-  person_6_not_consenting_age: 31
+  person_6_not_consenting_age: 31.0
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
   person_7_age: 62.0
-  person_7_not_consenting_age: 34
+  person_7_not_consenting_age: 34.0
   person_7_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
   person_8_age: 36.0

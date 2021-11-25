@@ -66,35 +66,35 @@ fields:
 - metadata: {}
   name: infant_1_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_2_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_3_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_4_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_5_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_6_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_7_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: infant_8_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: household_members_over_2_years_and_not_present
   nullable: true
@@ -102,39 +102,39 @@ fields:
 - metadata: {}
   name: person_1_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_2_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_3_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_4_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_5_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_6_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_7_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_8_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_1_reason_for_not_consenting
   nullable: true
@@ -142,7 +142,7 @@ fields:
 - metadata: {}
   name: person_2_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_2_reason_for_not_consenting
   nullable: true
@@ -150,7 +150,7 @@ fields:
 - metadata: {}
   name: person_3_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_3_reason_for_not_consenting
   nullable: true
@@ -158,7 +158,7 @@ fields:
 - metadata: {}
   name: person_4_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_4_reason_for_not_consenting
   nullable: true
@@ -166,7 +166,7 @@ fields:
 - metadata: {}
   name: person_5_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_5_reason_for_not_consenting
   nullable: true
@@ -174,7 +174,7 @@ fields:
 - metadata: {}
   name: person_6_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_6_reason_for_not_consenting
   nullable: true
@@ -182,7 +182,7 @@ fields:
 - metadata: {}
   name: person_7_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_7_reason_for_not_consenting
   nullable: true
@@ -190,7 +190,7 @@ fields:
 - metadata: {}
   name: person_8_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_8_reason_for_not_consenting
   nullable: true
@@ -198,7 +198,7 @@ fields:
 - metadata: {}
   name: person_9_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_9_reason_for_not_consenting
   nullable: true
