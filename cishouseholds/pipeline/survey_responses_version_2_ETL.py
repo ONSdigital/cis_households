@@ -60,7 +60,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     df = assign_filename_column(df, "survey_response_source_file")
     df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["participant_id", "visit_datetime"]
+        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
