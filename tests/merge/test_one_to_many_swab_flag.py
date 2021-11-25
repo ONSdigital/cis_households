@@ -14,16 +14,17 @@ def test_merge_one_to_many_swab_ordering_logic(spark_session):
                 date_received string,
                 flag_time_date integer"""
     data = [
-        ("A", 24, 0, "2029-01-01", None),
-        ("A", 48, 0, "2029-01-01", 1),
-        ("B", 0, 12, "2029-01-01", 1),
-        ("B", 0, 0, "2029-01-01", None),
-        ("B", 0, 2, "2029-01-01", 1),
-        ("C", 1, 1, "2029-01-03", None),
-        ("D", 1, 1, "2029-01-04", 1),
-        ("D", 1, 1, "2029-01-01", None),
-        ("E", 2, 2, "2029-01-01", None),
-        ("E", 2, 2, "2029-01-01", None),
+        ("A", 24, 0, "2029-01-01", 1),  # first
+        ("A", 48, 0, "2029-01-01", 2),
+        ("B", 0, 0, "2029-01-01", 1),  # first
+        ("B", 0, 2, "2029-01-01", 2),
+        ("B", 0, 12, "2029-01-01", 3),
+        ("C", 1, 1, "2029-01-03", 1),  # first and only
+        ("D", 1, 1, "2029-01-01", 1),  # first
+        ("D", 1, 1, "2029-01-04", 2),
+        # exactly the same
+        ("E", 2, 2, "2029-01-01", 1),
+        ("E", 2, 2, "2029-01-01", 1),
     ]
 
     expected_df = spark_session.createDataFrame(data, schema=schema)
@@ -37,7 +38,7 @@ def test_merge_one_to_many_swab_ordering_logic(spark_session):
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)
 
 
-def test_merge_one_to_many_pcr_void(spark_session):
+def test_merge_one_to_many_swab_pcr_void(spark_session):
     schema = """barcode_iq string,
                 result_pcr string,
                 flag_pcr integer"""
@@ -68,96 +69,94 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
                 date_received string,
                 flag_time_diff integer"""
     data = [
-        ("A", 24, 0, "2029-01-02", None),
-        ("A", 0, 24, "2029-01-01", 1),
-        ("B", 24, 0, "2029-01-01", None),
-        ("B", 24, 0, "2029-01-02", 1),
-        ("C", -6, 30, "2029-01-01", None),
-        ("C", -12, 36, "2029-01-02", 1),
-        ("C", -48, 72, "2029-01-03", 1),
-        ("D", 12, 12, "2029-01-02", None),
-        ("D", -6, 30, "2029-01-01", 1),
-        ("D", 48, 72, "2029-01-03", 1),
-        ("E", 48, 72, "2029-01-03", None),
-        ("E", 48, 72, "2029-01-03", None),
-        ("F", -48, 72, "2029-01-03", None),
-        ("F", -48, 72, "2029-01-03", None),
+        ("A", 24, 0, "2029-01-02", 1),
+        ("A", 0, 24, "2029-01-01", 2),
+        ("B", 24, 0, "2029-01-01", 1),
+        ("B", 24, 0, "2029-01-02", 2),
+        ("C", -6, 30, "2029-01-01", 1),
+        ("C", -12, 36, "2029-01-02", 2),
+        ("C", -48, 72, "2029-01-03", 3),
+        ("D", 12, 12, "2029-01-02", 1),
+        ("D", -6, 30, "2029-01-01", 2),
+        ("D", 48, 72, "2029-01-03", 3),
+        ("E", 48, 72, "2029-01-03", 1),
+        ("E", 48, 72, "2029-01-03", 1),
+        ("F", -48, 72, "2029-01-03", 1),
+        ("F", -48, 72, "2029-01-03", 1),
     ]
 
     df_expected = spark_session.createDataFrame(data, schema=schema)
     df_input = df_expected.drop("flag")
 
+    ordering_columns = ["barcode_iq", "time_diff_abs", "time_diff", "date_received"]
+
     df_output = merge_one_to_many_swab_time_difference_logic(
         df=df_input,
         group_by_column="barcode_iq",
-        ordering_columns=["barcode_iq", "time_diff_abs", "time_diff", "date_received"],
+        ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="flag_time_diff",
     )
-
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True)
 
 
-@pytest.mark.xfail
-def test_one_to_many_swab(spark_session):
+def test_one_to_many_swab_overall(spark_session):
     schema = """barcode_iq string,
-                count_voyager integer,
-                count_swab integer,
-                date_received string,
                 date_diff integer,
                 date_abs_diff_24 integer,
                 out_of_range integer,
                 result_pcr string,
-                1tom_swabs_flag integer,
-                identify_1tom_swabs_flag integer"""
+                1tom_swabs_flag integer
+            """
 
     data = [
+        # fmt: off
         # record A - boolean_pass, chose the earliest day
-        ("A", 1, 2, "2029-01-02", 48, 24, None, "positive", 1, 1),  # wont pass as its later than the other A
-        ("A", 1, 2, "2029-01-01", 48, 24, None, "negative", None, 1),
+        ("A", 72, 48, None, "positive", 1), # drop
+        ("A", 48, 24, None, "negative", None), # keep
+
         # record B
-        (
-            "B",
-            1,
-            3,
-            "2029-01-01",
-            48,
-            24,
-            None,
-            "positive",
-            1,
-            1,
-        ),  # drop - filtered out as abs(date - 24h) is larger
-        ("B", 1, 3, "2029-01-02", 24, 0, None, "negative", None, 1),
-        # keep - abs date diff smallest within record even though later day
-        ("B", 1, 3, "2029-01-01", 96, 72, 1, "negative", 1, 1),  # drop - not passed because out_of_range
+        ("B", -10, 34, None, "positive", 1),  # drop - filtered out as abs(date - 24h) is larger
+        ("B", -5, 29, None, "negative", None), # keep - abs date diff smallest within record even though later day
+
         # record C - flag out as outside of time range
-        ("C", 1, 2, "2029-01-01", -48, 72, 1, "negative", 1, None),
+        ("C", 48, 72, 1, "negative", None), # keep
         # not passed because out_of_range and diff_date negative
-        ("C", 1, 1, "2029-01-01", 288, 264, 1, "positive", 1, None),  # not passed because out_of_range
-        # record D - ignore as count_voyager > 1
-        ("D", 1, 1, "2029-01-01", 12, 12, 1, "negative", 1, None),  # drop - not passed because count_voyager > 1
+        ("C", 288, 264, 1, "positive", 1),  # drop: out_of_range
+
+        # record D (same as record E) void is also earliest time order
+        # and smallest time difference
+        ("D", 0, 24, None, "void", 1),  # drop
+        ("D", 50, 26, None, "positive", None),  # kept
+        ("D", 60, 36, None, "positive", 1),  # drop as later
+
         # record E - one of the result_pcr being Null/void and the other not:
         # not passed because result_pcr different than void available for barcode_iq
-        ("E", 1, 2, "2029-01-01", 12, 12, None, "void", 1, 1),  # drop
-        ("E", 1, 2, "2029-01-01", 12, 12, None, "positive", None, 1),  # kept
+        ("E", 12, 12, None, "void", 1),  # drop
+        ("E", 50, 26, None, "positive", None),  # kept
+
         # record F - both result_pcr being null do not flag
-        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, 1),  # keep
-        ("F", 1, 2, "2029-01-01", 12, 12, None, "void", None, 1),  # keep
-        # record G - to be dropped because date_diff have different signs:
-        ("G", 1, 2, "2029-01-01", -12, 36, None, "positive", 1, 1),  # drop
-        ("G", 1, 2, "2029-01-01", 12, 12, None, "positive", None, 1),  # keep
+        ("F", 12, 12, None, "void", None),
+        ("F", 12, 12, None, "void", None),
+
+        # when both negative and positive time difference, keep all
+        ("H", -1, 25, None, "positive", None),
+        ("H", 50, 26, None, "positive", None),
+
+        # keep one negative time difference as the other one has a "more" negative time diff
+        ("J", -1, 25, None, "positive", None),
+        ("J", -2, 26, None, "positive", 1),
+        # drop
+        # keep
+        # fmt: on
     ]
 
     expected_df = spark_session.createDataFrame(data, schema=schema)
-    df_input = expected_df.drop("flag_1tom_swabs")
+    df_input = expected_df.drop("1tom_swabs_flag")
 
-    ordering_columns = ["date_abs_diff_24", "date_diff", "date_received"]
+    ordering_columns = ["date_abs_diff_24", "date_diff"]
 
     df_output = one_to_many_swabs(
         df=df_input,
-        out_of_date_range_flag="out_of_range",
-        count_barcode_labs_column_name="count_swab",
-        count_barcode_voyager_column_name="count_voyager",
         group_by_column="barcode_iq",
         ordering_columns=ordering_columns,
         pcr_result_column_name="result_pcr",
@@ -165,4 +164,5 @@ def test_one_to_many_swab(spark_session):
         flag_column_name="1tom_swabs_flag",
     )
     df_output = df_output.drop("time_order_flag", "pcr_flag", "time_difference_flag")
+
     assert_df_equality(df_output, expected_df, ignore_row_order=True, ignore_column_order=True)

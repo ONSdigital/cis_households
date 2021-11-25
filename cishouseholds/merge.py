@@ -48,7 +48,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: str):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
@@ -57,31 +57,67 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str, unique_id_column
     ----------
     df
     test_target_column
+        column containing blood test target protein
+    join_on_columns
+        list of column names to join on, where first name is the unique ID
     """
-    not_to_rename = [
-        "blood_sample_barcode",
-        "antibody_test_plate_common_id",
-        "antibody_test_well_id",
-    ]
-    window = Window.partitionBy(unique_id_column)
+    window = Window.partitionBy(join_on_columns)
     df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
     failed_df = df.filter(F.col("sum") > 2).drop("sum")
     df = df.filter(F.col("sum") < 3).drop("sum")
 
-    split_dataframes = []
+    split_dataframes = {}
     for blood_group in ["S", "N"]:
         split_df = df.filter(F.col(test_target_column) == blood_group)
         new_column_names = {
-            col: col + "_" + blood_group.lower() + "_protein" if col not in [*not_to_rename, unique_id_column] else col
+            col: col + "_" + blood_group.lower() + "_protein" if col not in join_on_columns else col
             for col in split_df.columns
         }
         split_df = rename_column_names(split_df, new_column_names)
-        split_dataframes.append(split_df)
+        split_dataframes[blood_group] = split_df
 
-    joined_df = split_dataframes[0].join(split_dataframes[1], on=unique_id_column, how="outer")
+    joined_df = null_safe_join(
+        split_dataframes["N"],
+        split_dataframes["S"],
+        null_safe_on=list(join_on_columns[1:]),
+        null_unsafe_on=[join_on_columns[0]],
+        how="outer",
+    )
     joined_df = joined_df.drop(test_target_column + "_n_protein", test_target_column + "_s_protein")
     return joined_df, failed_df
+
+
+def null_safe_join(left_df: DataFrame, right_df: DataFrame, null_safe_on: list, null_unsafe_on: list, how="left"):
+    """
+    Performs a join on equal columns, where a subset of the join columns can be null safe.
+
+    Parameters
+    ----------
+    left_df
+    right_df
+    null_safe_on
+        columns to make a null safe equals comparison on
+    null_unsafe_on
+        columns to make a null unsafe equals comparison on
+    how
+        join type
+    """
+    for column in null_safe_on + null_unsafe_on:
+        right_df = right_df.withColumnRenamed(column, column + "_right")
+
+    null_unsafe_conditions = [f"({column} == {column + '_right'})" for column in null_unsafe_on]
+    null_safe_conditions = [f"({column} <=> {column + '_right'})" for column in null_safe_on]
+
+    join_condition = " AND ".join(null_unsafe_conditions + null_safe_conditions)
+
+    joined_df = left_df.join(right_df, on=F.expr(join_condition), how=how)
+
+    for column in null_safe_on + null_unsafe_on:
+        # Recover right entries from outer/right joins
+        joined_df = joined_df.withColumn(column, F.coalesce(F.col(column), F.column(column + "_right")))
+
+    return joined_df.drop(*[column + "_right" for column in null_safe_on + null_unsafe_on])
 
 
 def assign_count_of_occurrences_column(df: DataFrame, reference_column: str, column_name_to_assign: str):
@@ -655,12 +691,7 @@ def one_to_many_swabs(
     -----
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
     """
-    df = merge_one_to_many_swab_ordering_logic(
-        df=df,
-        group_by_column=group_by_column,
-        ordering_columns=ordering_columns,
-        time_order_logic_flag_column_name="time_order_flag",
-    )
+    df = df.withColumn(flag_column_name, F.lit(None).cast("string"))
     df = merge_one_to_many_swab_result_pcr_logic(
         df=df,
         void_value=void_value,
@@ -668,19 +699,70 @@ def one_to_many_swabs(
         pcr_result_column_name=pcr_result_column_name,
         result_pcr_logic_flag_column_name="pcr_flag",
     )
+    df = merge_one_to_many_swab_ordering_logic(
+        df=df,
+        group_by_column=group_by_column,
+        ordering_columns=ordering_columns,
+        time_order_logic_flag_column_name="time_order_flag",
+    )
+
     df = merge_one_to_many_swab_time_difference_logic(
         df=df,
         group_by_column=group_by_column,
         ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="time_difference_flag",
     )
+
+    df = df.withColumn(
+        "time_order_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
+    )
+
+    df = df.withColumn(
+        "time_difference_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
+    )
+
+    df = df.withColumn(
+        flag_column_name, F.when(F.col("pcr_flag") == 1, 1).otherwise(F.col(flag_column_name)).cast("integer")
+    )
+
+    # column: time_difference_flag
+    common_condition = F.col("time_difference_flag").isNull()
+
+    w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
+        F.col("time_difference_flag")
+    )
+
+    df = df.withColumn(
+        "time_difference_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_difference_flag", F.when(F.col("time_difference_flag") == 1, None).otherwise(1))
+
+    # column: time_order_flag
+    common_condition = F.col("time_order_flag").isNull()
+
+    w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
+        F.col("time_order_flag")
+    )
+
+    df = df.withColumn(
+        "time_order_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_order_flag", F.when(F.col("time_order_flag") == 1, None).otherwise(1))
+
     df = df.withColumn(
         flag_column_name,
-        F.when(
-            ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
-            1,
-        ).cast("integer"),
+        F.when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag") == 1), 1)
+        .when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag").isNull()), None)
+        .when((F.col("time_order_flag").isNull()) & (F.col("time_difference_flag") == 1), 1)
+        .otherwise(F.col(flag_column_name)),
     )
+    # Solve case for both time diff negative and positive within barcode
+    df = df.withColumn("aux_neg", F.count(F.when(F.col("date_diff") < 0, 1)).over(Window.partitionBy(group_by_column)))
+    df = df.withColumn("aux_pos", F.count(F.when(F.col("date_diff") >= 0, 1)).over(Window.partitionBy(group_by_column)))
+
+    df = df.withColumn(
+        "1tom_swabs_flag",
+        F.when((F.col("aux_neg") > 0) & (F.col("aux_pos") > 0), F.lit(None)).otherwise(F.col("1tom_swabs_flag")),
+    ).drop("aux_neg", "aux_pos")
+
     return df
 
 
@@ -690,7 +772,8 @@ def merge_one_to_many_swab_ordering_logic(
     """
     Step 2: applies an ordering function with the parameter ordering_columns
     (a list of strings with the table column names) to organise ascending each record
-    within a window and flag out the rows that come after the first record.
+    within a window and ranks the order from earliest being 1, to latest being a
+    higher number.
     Parameters
     ----------
     df
@@ -702,10 +785,7 @@ def merge_one_to_many_swab_ordering_logic(
         Output column in Step 2
     """
     window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
-    return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window)).withColumn(
-        time_order_logic_flag_column_name,
-        F.when(F.col(time_order_logic_flag_column_name) == 1, None).otherwise(1).cast("integer"),
-    )
+    return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window).cast("integer"))
 
 
 def merge_one_to_many_swab_result_pcr_logic(
@@ -772,10 +852,4 @@ def merge_one_to_many_swab_time_difference_logic(
     """
     window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
 
-    return (
-        df.withColumn("Ranking", F.rank().over(window))
-        .withColumn(
-            time_difference_logic_flag_column_name, F.when(F.col("Ranking") != 1, 1).otherwise(None).cast("integer")
-        )
-        .drop("Ranking")
-    )
+    return df.withColumn(time_difference_logic_flag_column_name, F.rank().over(window))
