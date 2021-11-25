@@ -98,6 +98,7 @@ def merge_swab_ETL():
     swab_df = extract_from_table(swab_table).where(
         F.col("unique_swab_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
+    swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
