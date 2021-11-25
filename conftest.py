@@ -11,6 +11,10 @@ from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "integration: mark integration tests (likely to run slowly)")
+
+
 def timestamp_representer(dumper, timestamp):
     """Custom represented for using Timestamp type in data_regression testing"""
     return dumper.represent_data(timestamp.strftime("%Y-%m-%d %H:%M:%S.%f"))

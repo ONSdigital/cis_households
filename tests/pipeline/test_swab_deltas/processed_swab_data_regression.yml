@@ -19,7 +19,7 @@
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: S gene
   swab_sample_barcode: ONS25808631
-  unique_pcr_test_id: ONS25808631-2018-01-03 06:14:32
+  unique_pcr_test_id: ONS25808631-2018-01-03 06:14:32-OR+N+S
 - cq_pattern: OR+N+S
   mean_pcr_cq_value: 33.053502692917334
   ms2_pcr_cq_value: 16.304082489441
@@ -41,7 +41,7 @@
   s_gene_pcr_result_classification: Rejected
   s_gene_pcr_target: S gene
   swab_sample_barcode: ONS40250165
-  unique_pcr_test_id: ONS40250165-2018-11-24 17:05:37
+  unique_pcr_test_id: ONS40250165-2018-11-24 17:05:37-OR+N+S
 - cq_pattern: OR+N+S
   mean_pcr_cq_value: 26.191367625944334
   ms2_pcr_cq_value: 15.097481395171
@@ -63,7 +63,7 @@
   s_gene_pcr_result_classification: Rejected
   s_gene_pcr_target: S gene
   swab_sample_barcode: ONS59358685
-  unique_pcr_test_id: ONS59358685-2021-04-15 18:17:51
+  unique_pcr_test_id: ONS59358685-2021-04-15 18:17:51-OR+N+S
 - cq_pattern: OR+N+S
   mean_pcr_cq_value: 19.394668720497
   ms2_pcr_cq_value: 18.348161072232
@@ -85,7 +85,7 @@
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: S gene
   swab_sample_barcode: ONS60227680
-  unique_pcr_test_id: ONS60227680-2018-01-24 08:15:14
+  unique_pcr_test_id: ONS60227680-2018-01-24 08:15:14-OR+N+S
 - cq_pattern: OR+N+S
   mean_pcr_cq_value: 18.752580581500336
   ms2_pcr_cq_value: 23.174122209048
@@ -107,4 +107,4 @@
   s_gene_pcr_result_classification: Positive
   s_gene_pcr_target: S gene
   swab_sample_barcode: ONS93008687
-  unique_pcr_test_id: ONS93008687-2018-09-07 22:41:44
+  unique_pcr_test_id: ONS93008687-2018-09-07 22:41:44-OR+N+S

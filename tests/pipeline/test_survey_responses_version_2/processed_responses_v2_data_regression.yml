@@ -42,6 +42,7 @@
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
+  days_since_think_had_covid: null
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
@@ -68,7 +69,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 2.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 5.0
   infant_6_age: 3.0
   infant_7_age: 4.0
@@ -126,7 +127,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Cancelled
-  person_1_age: 21
+  person_1_age: 21.0
   person_1_not_consenting_age: 37.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 61.0
@@ -139,7 +140,7 @@
   person_4_age: 6.0
   person_4_not_consenting_age: 100.0
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 91
+  person_5_age: 91.0
   person_5_not_consenting_age: 0.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 6.0
@@ -227,7 +228,7 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-455927236237-2022-01-02 10:00:19
+  unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-02 10:00:19
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -295,6 +296,7 @@
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
+  days_since_think_had_covid: 2.0
   email: carbonite1803@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-Gypsy or Irish Traveller
@@ -324,7 +326,7 @@
   infant_1_age: 8.0
   infant_2_age: 2.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 7.0
   infant_6_age: 0.0
   infant_7_age: 0.0
@@ -383,7 +385,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -397,7 +399,7 @@
   person_4_age: null
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 6
+  person_5_age: 6.0
   person_5_not_consenting_age: 66.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -485,7 +487,7 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-077145284257-2022-01-05 12:07:35
+  unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-05 12:07:35
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DHVF-0988308904
@@ -554,6 +556,7 @@
   county: Buckinghamshire
   date_of_birth: null
   date_of_birth_string: null
+  days_since_think_had_covid: null
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Indian
@@ -581,7 +584,7 @@
   infant_1_age: 5.0
   infant_2_age: 7.0
   infant_3_age: 6.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: null
   infant_6_age: 4.0
   infant_7_age: 0.0
@@ -639,7 +642,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  person_1_age: 64
+  person_1_age: 64.0
   person_1_not_consenting_age: 81.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 22.0
@@ -653,7 +656,7 @@
   person_4_not_consenting_age: 62.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 39
+  person_5_age: 39.0
   person_5_not_consenting_age: 51.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -743,7 +746,7 @@
   title: Ms.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-456442497105-2022-01-01 18:18:57
+  unique_participant_response_id: DHVF-1496963502-DHR-456442497105-2022-01-01 18:18:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -813,6 +816,7 @@
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
+  days_since_think_had_covid: -3.0
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Other ethnic group-Arab
@@ -840,7 +844,7 @@
   infant_1_age: 8.0
   infant_2_age: 4.0
   infant_3_age: 7.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 3.0
   infant_6_age: 6.0
   infant_7_age: 8.0
@@ -899,7 +903,7 @@
   participant_status: Completed
   participant_testing_group: Swab Only
   participant_visit_status: Scheduled
-  person_1_age: 31
+  person_1_age: 31.0
   person_1_not_consenting_age: 94.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 22.0
@@ -913,7 +917,7 @@
   person_4_not_consenting_age: 5.0
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 84
+  person_5_age: 84.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 79.0
@@ -1002,7 +1006,7 @@
   title: Ms.
   transport_to_work_or_school: Other method
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-144229485098-2022-01-02 22:16:30
+  unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-02 22:16:30
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DHVF-4476904382
@@ -1071,6 +1075,7 @@
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
   date_of_birth_string: '1997-08-21'
+  days_since_think_had_covid: 2.0
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Pakistani
@@ -1098,7 +1103,7 @@
   infant_1_age: 8.0
   infant_2_age: 8.0
   infant_3_age: 8.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 0.0
   infant_6_age: 6.0
   infant_7_age: 5.0
@@ -1157,7 +1162,7 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 23
+  person_1_age: 23.0
   person_1_not_consenting_age: 30.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_2_age: 0.0
@@ -1171,7 +1176,7 @@
   person_4_age: 68.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 33
+  person_5_age: 33.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
@@ -1261,7 +1266,7 @@
   title: Ms.
   transport_to_work_or_school: null
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-389263959191-2022-01-06 18:33:36
+  unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-06 18:33:36
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DHVF-8828437201
@@ -1329,6 +1334,7 @@
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
+  days_since_think_had_covid: null
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
@@ -1356,7 +1362,7 @@
   infant_1_age: null
   infant_2_age: 2.0
   infant_3_age: 6.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 0.0
   infant_6_age: 4.0
   infant_7_age: null
@@ -1414,7 +1420,7 @@
   participant_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 20
+  person_1_age: 20.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 74.0
@@ -1428,7 +1434,7 @@
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 14
+  person_5_age: 14.0
   person_5_not_consenting_age: 84.0
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -1518,7 +1524,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-593586857022-2022-01-06 18:06:58
+  unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1588,6 +1594,7 @@
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: '1997-02-07'
+  days_since_think_had_covid: 1.0
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
@@ -1614,7 +1621,7 @@
   infant_1_age: 6.0
   infant_2_age: 1.0
   infant_3_age: null
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 5.0
   infant_6_age: 6.0
   infant_7_age: 1.0
@@ -1673,7 +1680,7 @@
   participant_status: Withdrawn
   participant_testing_group: Swab Only
   participant_visit_status: Patient did not attend
-  person_1_age: 75
+  person_1_age: 75.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 9.0
@@ -1686,7 +1693,7 @@
   person_4_age: 62.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 36
+  person_5_age: 36.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
@@ -1777,7 +1784,7 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-603506140323-2022-01-08 00:44:46
+  unique_participant_response_id: DVH-3037894756-DHR-603506140323-2022-01-08 00:44:46
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -1845,6 +1852,7 @@
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: '2003-10-07'
+  days_since_think_had_covid: 3.0
   email: null
   ethnic_group: White
   ethnicity: Any other Black background
@@ -1873,7 +1881,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 6.0
-  infant_4_age: 3
+  infant_4_age: 3.0
   infant_5_age: null
   infant_6_age: null
   infant_7_age: 8.0
@@ -1931,7 +1939,7 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  person_1_age: 13
+  person_1_age: 13.0
   person_1_not_consenting_age: 88.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_age: 28.0
@@ -1944,7 +1952,7 @@
   person_4_age: 82.0
   person_4_not_consenting_age: 33.0
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_5_age: 22
+  person_5_age: 22.0
   person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Let them eat cake.
   person_6_age: 71.0
@@ -2034,7 +2042,7 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-627540089585-2022-01-04 19:29:32
+  unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-04 19:29:32
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DVH-6911152672
@@ -2104,6 +2112,7 @@
   county: Suffolk
   date_of_birth: '2015-04-22 10:53:00.000000'
   date_of_birth_string: '2015-04-22'
+  days_since_think_had_covid: null
   email: balate1925@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: White-Gypsy or Irish Traveller
@@ -2132,7 +2141,7 @@
   infant_1_age: 6.0
   infant_2_age: null
   infant_3_age: 4.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 8.0
   infant_6_age: 6.0
   infant_7_age: 6.0
@@ -2191,7 +2200,7 @@
   participant_status: Active
   participant_testing_group: null
   participant_visit_status: Cancelled
-  person_1_age: 69
+  person_1_age: 69.0
   person_1_not_consenting_age: 13.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 87.0
@@ -2204,7 +2213,7 @@
   person_4_age: 55.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 20
+  person_5_age: 20.0
   person_5_not_consenting_age: 13.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -2294,7 +2303,7 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-858742267562-2022-01-03 01:57:08
+  unique_participant_response_id: DVH-7714195028-DHR-858742267562-2022-01-03 01:57:08
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DVH-7714195028
@@ -2362,6 +2371,7 @@
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
+  days_since_think_had_covid: null
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
@@ -2389,7 +2399,7 @@
   infant_1_age: 6.0
   infant_2_age: 3.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 6.0
   infant_6_age: 0.0
   infant_7_age: 2.0
@@ -2448,7 +2458,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: null
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
@@ -2464,7 +2474,7 @@
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 24
+  person_5_age: 24.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -2553,7 +2563,7 @@
   title: null
   transport_to_work_or_school: null
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-329500167403-2022-01-06 11:34:20
+  unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 11:34:20
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983

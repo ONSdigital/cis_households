@@ -44,7 +44,6 @@ def union_multiple_tables(tables: List[DataFrame]):
     for i, table_n in enumerate(tables[1:]):
         merged_df, dfn = prepare_for_union(merged_df, table_n)
         merged_df = merged_df.unionByName(dfn)
-        print(f"           -- {i+1}/{len(tables)-1} combination completed")  # functional
     return merged_df
 
 
@@ -691,12 +690,7 @@ def one_to_many_swabs(
     -----
     The Specific order for ordering_columns used was abs(date_diff - 24), date_difference, date.
     """
-    df = merge_one_to_many_swab_ordering_logic(
-        df=df,
-        group_by_column=group_by_column,
-        ordering_columns=ordering_columns,
-        time_order_logic_flag_column_name="time_order_flag",
-    )
+    df = df.withColumn(flag_column_name, F.lit(None).cast("string"))
     df = merge_one_to_many_swab_result_pcr_logic(
         df=df,
         void_value=void_value,
@@ -704,19 +698,70 @@ def one_to_many_swabs(
         pcr_result_column_name=pcr_result_column_name,
         result_pcr_logic_flag_column_name="pcr_flag",
     )
+    df = merge_one_to_many_swab_ordering_logic(
+        df=df,
+        group_by_column=group_by_column,
+        ordering_columns=ordering_columns,
+        time_order_logic_flag_column_name="time_order_flag",
+    )
+
     df = merge_one_to_many_swab_time_difference_logic(
         df=df,
         group_by_column=group_by_column,
         ordering_columns=ordering_columns,
         time_difference_logic_flag_column_name="time_difference_flag",
     )
+
+    df = df.withColumn(
+        "time_order_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
+    )
+
+    df = df.withColumn(
+        "time_difference_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
+    )
+
+    df = df.withColumn(
+        flag_column_name, F.when(F.col("pcr_flag") == 1, 1).otherwise(F.col(flag_column_name)).cast("integer")
+    )
+
+    # column: time_difference_flag
+    common_condition = F.col("time_difference_flag").isNull()
+
+    w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
+        F.col("time_difference_flag")
+    )
+
+    df = df.withColumn(
+        "time_difference_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_difference_flag", F.when(F.col("time_difference_flag") == 1, None).otherwise(1))
+
+    # column: time_order_flag
+    common_condition = F.col("time_order_flag").isNull()
+
+    w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
+        F.col("time_order_flag")
+    )
+
+    df = df.withColumn(
+        "time_order_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_order_flag", F.when(F.col("time_order_flag") == 1, None).otherwise(1))
+
     df = df.withColumn(
         flag_column_name,
-        F.when(
-            ((F.col("time_order_flag") == 1) | (F.col("pcr_flag") == 1) | (F.col("time_difference_flag") == 1)),
-            1,
-        ).cast("integer"),
+        F.when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag") == 1), 1)
+        .when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag").isNull()), None)
+        .when((F.col("time_order_flag").isNull()) & (F.col("time_difference_flag") == 1), 1)
+        .otherwise(F.col(flag_column_name)),
     )
+    # Solve case for both time diff negative and positive within barcode
+    df = df.withColumn("aux_neg", F.count(F.when(F.col("date_diff") < 0, 1)).over(Window.partitionBy(group_by_column)))
+    df = df.withColumn("aux_pos", F.count(F.when(F.col("date_diff") >= 0, 1)).over(Window.partitionBy(group_by_column)))
+
+    df = df.withColumn(
+        "1tom_swabs_flag",
+        F.when((F.col("aux_neg") > 0) & (F.col("aux_pos") > 0), F.lit(None)).otherwise(F.col("1tom_swabs_flag")),
+    ).drop("aux_neg", "aux_pos")
+
     return df
 
 
@@ -726,7 +771,8 @@ def merge_one_to_many_swab_ordering_logic(
     """
     Step 2: applies an ordering function with the parameter ordering_columns
     (a list of strings with the table column names) to organise ascending each record
-    within a window and flag out the rows that come after the first record.
+    within a window and ranks the order from earliest being 1, to latest being a
+    higher number.
     Parameters
     ----------
     df
@@ -738,10 +784,7 @@ def merge_one_to_many_swab_ordering_logic(
         Output column in Step 2
     """
     window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
-    return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window)).withColumn(
-        time_order_logic_flag_column_name,
-        F.when(F.col(time_order_logic_flag_column_name) == 1, None).otherwise(1).cast("integer"),
-    )
+    return df.withColumn(time_order_logic_flag_column_name, F.rank().over(window).cast("integer"))
 
 
 def merge_one_to_many_swab_result_pcr_logic(
@@ -808,10 +851,4 @@ def merge_one_to_many_swab_time_difference_logic(
     """
     window = Window.partitionBy(group_by_column).orderBy(*ordering_columns)
 
-    return (
-        df.withColumn("Ranking", F.rank().over(window))
-        .withColumn(
-            time_difference_logic_flag_column_name, F.when(F.col("Ranking") != 1, 1).otherwise(None).cast("integer")
-        )
-        .drop("Ranking")
-    )
+    return df.withColumn(time_difference_logic_flag_column_name, F.rank().over(window))
