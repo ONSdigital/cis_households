@@ -2,9 +2,9 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v1_variable_name_map
-from cishouseholds.pipeline.re_cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
