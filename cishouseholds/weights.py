@@ -44,16 +44,17 @@ lookup_variable_name_maps = {
 def null_to_value(df:DataFrame, column_name_to_update: str, value: int=0):
     return df.withColumn(column_name_to_update, F.when((F.col(column_name_to_update).isNull())|(F.isnan(F.col(column_name_to_update))),value).otherwise(F.col(column_name_to_update)))
 
-def load_auxillary_data(resource_paths):
+def load_auxillary_data(resource_paths, specify=[]):
     auxillary_dfs = {}
     for name, resource_path in resource_paths.items():
-        auxillary_dfs[name] = read_csv_to_pyspark_df(
-            spark_session, resource_path["path"], resource_path["header"], None
-        )
+        if specify == [] or name in specify:
+            auxillary_dfs[name] = read_csv_to_pyspark_df(
+                spark_session, resource_path["path"], resource_path["header"], None
+            )
     auxillary_dfs = rename_columns(auxillary_dfs)
     return auxillary_dfs
 
-def run(resource_paths: dict):
+def generate_weights(resource_paths: dict):
     # initialise all dataframes in dictionary
     auxillary_dfs = load_auxillary_data(resource_paths=resource_paths)
 
@@ -332,11 +333,14 @@ def carry_forward_dweights(df: DataFrame, scenario: str, window: Window, househo
     df = df.withColumn("scaled_design_weight_antibodies_nonadjusted", F.col("scalling_factor_carryforward_design_weight_antibodies") * F.col("carryforward_design_weight_antibodies"))
 
 def proccess_population_projection_df(resource_paths:dict, month: int):
-    df = load_auxillary_data(resource_paths=resource_paths)["population_projection"]
+    df = load_auxillary_data(resource_paths=resource_paths, specify=["population_projection"])["population_projection"]
 
     r = re.compile(r"\w{1}\d{1,}")
     m_f_columns = list(filter(r.match, df.columns))
-    selected_columns = ["GOR","GOR_country","ctry_name", *m_f_columns] # laua
+    if "laua" in df.columns:
+        selected_columns = ["laua","rgn","ctry","ctry_name", *m_f_columns]
+    else:
+        selected_columns = ["ladcode","GOR","GOR_Country","Region_Name", *m_f_columns]
     df = df.select(*selected_columns)
     if month < 6:
         a = 6 - month
@@ -379,8 +383,8 @@ resource_paths = {
     },
     "population_projection":{
         "path": r"C:\code\cis_households\population_projection.csv",
-        "header": "ladcode,GOR,GOR_Country,Region_Name,surge,m0,m1,f0,f1"
+        "header": "laua,rgn,ctry,ctry_name,surge,m0,m1,f0,f1"
     }
 }
-#load_auxillary_data(resource_paths=resource_paths)
-proccess_population_projection_df(resource_paths=resource_paths, month=6)
+#generate_weights(resource_paths=resource_paths)
+proccess_population_projection_df(resource_paths=resource_paths, month=7)
