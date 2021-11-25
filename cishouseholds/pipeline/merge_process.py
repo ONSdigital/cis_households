@@ -283,20 +283,13 @@ def execute_merge_specific_swabs(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
 
-    df_non_specific_merge = df_non_specific_merge.withColumnRenamed(
-        "unique_pcr_test_id", "unique_pcr_test_id_right"
-    ).withColumnRenamed("unique_participant_response_id", "unique_participant_response_id_right")
-    unioned_df = unioned_df.join(
+    unioned_df = M.null_safe_join(
+        unioned_df,
         df_non_specific_merge,
-        on=(
-            (
-                unioned_df["unique_participant_response_id"]
-                == df_non_specific_merge["unique_participant_response_id_right"]
-            )
-            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id_right"])
-        ),
+        null_safe_on=["unique_pcr_test_id"],
+        null_unsafe_on=["unique_participant_response_id"],
         how="left",
-    ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
+    )
     return unioned_df
 
 
@@ -393,20 +386,13 @@ def execute_merge_specific_antibody(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
 
-    df_non_specific_merge = df_non_specific_merge.withColumnRenamed(
-        "unique_antibody_test_id", "unique_antibody_test_id_right"
-    ).withColumnRenamed("unique_participant_response_id", "unique_participant_response_id_right")
-    unioned_df = unioned_df.join(
+    unioned_df = M.null_safe_join(
+        unioned_df,
         df_non_specific_merge,
-        on=(
-            (
-                unioned_df["unique_participant_response_id"]
-                == df_non_specific_merge["unique_participant_response_id_right"]
-            )
-            & unioned_df["unique_antibody_test_id"].eqNullSafe(df_non_specific_merge["unique_antibody_test_id_right"])
-        ),
+        null_safe_on=["unique_antibody_test_id"],
+        null_unsafe_on=["unique_participant_response_id"],
         how="left",
-    ).drop("unique_participant_response_id_right", "unique_antibody_test_id_right")
+    )
     return unioned_df
 
 
