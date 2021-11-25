@@ -381,7 +381,7 @@ def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") 
     return df
 
 
-def re_cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
+def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
     """
     Convert string columns to a given datatype.
     Parameters
