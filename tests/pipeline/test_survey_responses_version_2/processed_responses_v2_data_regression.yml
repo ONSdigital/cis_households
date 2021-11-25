@@ -69,7 +69,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 2.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 5.0
   infant_6_age: 3.0
   infant_7_age: 4.0
@@ -127,7 +127,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Cancelled
-  person_1_age: 21
+  person_1_age: 21.0
   person_1_not_consenting_age: 37.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 61.0
@@ -140,7 +140,7 @@
   person_4_age: 6.0
   person_4_not_consenting_age: 100.0
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 91
+  person_5_age: 91.0
   person_5_not_consenting_age: 0.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 6.0
@@ -326,7 +326,7 @@
   infant_1_age: 8.0
   infant_2_age: 2.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 7.0
   infant_6_age: 0.0
   infant_7_age: 0.0
@@ -385,7 +385,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -399,7 +399,7 @@
   person_4_age: null
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 6
+  person_5_age: 6.0
   person_5_not_consenting_age: 66.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -584,7 +584,7 @@
   infant_1_age: 5.0
   infant_2_age: 7.0
   infant_3_age: 6.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: null
   infant_6_age: 4.0
   infant_7_age: 0.0
@@ -642,7 +642,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  person_1_age: 64
+  person_1_age: 64.0
   person_1_not_consenting_age: 81.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 22.0
@@ -656,7 +656,7 @@
   person_4_not_consenting_age: 62.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 39
+  person_5_age: 39.0
   person_5_not_consenting_age: 51.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -844,7 +844,7 @@
   infant_1_age: 8.0
   infant_2_age: 4.0
   infant_3_age: 7.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 3.0
   infant_6_age: 6.0
   infant_7_age: 8.0
@@ -903,7 +903,7 @@
   participant_status: Completed
   participant_testing_group: Swab Only
   participant_visit_status: Scheduled
-  person_1_age: 31
+  person_1_age: 31.0
   person_1_not_consenting_age: 94.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 22.0
@@ -917,7 +917,7 @@
   person_4_not_consenting_age: 5.0
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 84
+  person_5_age: 84.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 79.0
@@ -1103,7 +1103,7 @@
   infant_1_age: 8.0
   infant_2_age: 8.0
   infant_3_age: 8.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 0.0
   infant_6_age: 6.0
   infant_7_age: 5.0
@@ -1162,7 +1162,7 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 23
+  person_1_age: 23.0
   person_1_not_consenting_age: 30.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_2_age: 0.0
@@ -1176,7 +1176,7 @@
   person_4_age: 68.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 33
+  person_5_age: 33.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
@@ -1362,7 +1362,7 @@
   infant_1_age: null
   infant_2_age: 2.0
   infant_3_age: 6.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 0.0
   infant_6_age: 4.0
   infant_7_age: null
@@ -1420,7 +1420,7 @@
   participant_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 20
+  person_1_age: 20.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 74.0
@@ -1434,7 +1434,7 @@
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 14
+  person_5_age: 14.0
   person_5_not_consenting_age: 84.0
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -1621,7 +1621,7 @@
   infant_1_age: 6.0
   infant_2_age: 1.0
   infant_3_age: null
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 5.0
   infant_6_age: 6.0
   infant_7_age: 1.0
@@ -1680,7 +1680,7 @@
   participant_status: Withdrawn
   participant_testing_group: Swab Only
   participant_visit_status: Patient did not attend
-  person_1_age: 75
+  person_1_age: 75.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 9.0
@@ -1693,7 +1693,7 @@
   person_4_age: 62.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 36
+  person_5_age: 36.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
@@ -1881,7 +1881,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 6.0
-  infant_4_age: 3
+  infant_4_age: 3.0
   infant_5_age: null
   infant_6_age: null
   infant_7_age: 8.0
@@ -1939,7 +1939,7 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  person_1_age: 13
+  person_1_age: 13.0
   person_1_not_consenting_age: 88.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_age: 28.0
@@ -1952,7 +1952,7 @@
   person_4_age: 82.0
   person_4_not_consenting_age: 33.0
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_5_age: 22
+  person_5_age: 22.0
   person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Let them eat cake.
   person_6_age: 71.0
@@ -2141,7 +2141,7 @@
   infant_1_age: 6.0
   infant_2_age: null
   infant_3_age: 4.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 8.0
   infant_6_age: 6.0
   infant_7_age: 6.0
@@ -2200,7 +2200,7 @@
   participant_status: Active
   participant_testing_group: null
   participant_visit_status: Cancelled
-  person_1_age: 69
+  person_1_age: 69.0
   person_1_not_consenting_age: 13.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 87.0
@@ -2213,7 +2213,7 @@
   person_4_age: 55.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 20
+  person_5_age: 20.0
   person_5_not_consenting_age: 13.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -2399,7 +2399,7 @@
   infant_1_age: 6.0
   infant_2_age: 3.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 6.0
   infant_6_age: 0.0
   infant_7_age: 2.0
@@ -2458,7 +2458,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: null
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
@@ -2474,7 +2474,7 @@
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 24
+  person_5_age: 24.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.

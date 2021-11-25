@@ -24,6 +24,7 @@ from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.re_cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 
@@ -46,6 +47,7 @@ def survey_responses_version_2_ETL(**kwargs):
                 transform_survey_responses_version_2_delta,
             ],
             "|",
+            survey_response_cast_to_double,
         )
         update_table_and_log_source_files(
             df, "transformed_survey_responses_v2_data", "survey_response_source_file", "overwrite"
