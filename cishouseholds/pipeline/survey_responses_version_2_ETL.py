@@ -5,6 +5,7 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
+from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -62,9 +63,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_regex_match(
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
-    df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
-    df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
-    df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
     # TODO: Add postcode cleaning
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
@@ -72,6 +70,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     # TODO: Add week and month commencing variables
     # TODO: Add ethnicity grouping and editing
+    df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
+    df = assign_column_to_date_string(df, "sample_taken_date_string", reference_column="samples_taken_datetime")
+    df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
+    # df = assign_date_difference(
+    #     df, "contact_known_or_suspected_covid_days_since", "contact_any_covid_date", "visit_datetime"
+    # )
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")

@@ -500,11 +500,15 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
+<<<<<<< HEAD
   name: visit_date_string
   nullable: true
   type: string
 - metadata: {}
   name: samples_taken_date_string
+=======
+  name: outward_postcode
+>>>>>>> main
   nullable: true
   type: string
 - metadata: {}
@@ -512,11 +516,23 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+<<<<<<< HEAD
   name: outward_postcode
+=======
+  name: visit_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_taken_date_string
+>>>>>>> main
   nullable: true
   type: string
 - metadata: {}
   name: consent
+  nullable: true
+  type: integer
+- metadata: {}
+  name: days_since_think_had_covid
   nullable: true
   type: integer
 - metadata: {}
