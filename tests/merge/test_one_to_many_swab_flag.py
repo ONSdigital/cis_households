@@ -101,7 +101,7 @@ def test_merge_one_to_many_swab_time_difference_logic(spark_session):
 
 def test_one_to_many_swab_overall(spark_session):
     schema = """barcode_iq string,
-                date_diff integer,
+                diff_vs_visit_hr_swab integer,
                 date_abs_diff_24 integer,
                 out_of_range integer,
                 result_pcr string,
@@ -153,7 +153,7 @@ def test_one_to_many_swab_overall(spark_session):
     expected_df = spark_session.createDataFrame(data, schema=schema)
     df_input = expected_df.drop("1tom_swabs_flag")
 
-    ordering_columns = ["date_abs_diff_24", "date_diff"]
+    ordering_columns = ["date_abs_diff_24", "diff_vs_visit_hr_swab"]
 
     df_output = one_to_many_swabs(
         df=df_input,
