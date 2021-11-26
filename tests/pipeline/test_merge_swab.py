@@ -137,12 +137,6 @@ def test_merge_swab(spark_session):
 
     df_voyager_swab, df_swab_residuals, df_failed_records = merge_swab(voyager_df, swab_df)
 
-    # df_voyager_swab.orderBy('swab_sample_barcode').toPandas().to_csv('df_voyager_swab.csv'); df_swab_residuals.orderBy('swab_sample_barcode').toPandas().to_csv('df_swab_residuals.csv'); df_failed_records.orderBy('swab_sample_barcode').toPandas().to_csv('df_failed_records.csv')
-    # expected_df_voyager_swab.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_voyager_swab.csv'); expected_df_swab_residuals.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_swab_residuals.csv');expected_df_failed_records.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_failed_records.csv')
-
-    import pdb
-
-    pdb.set_trace()
     assert_df_equality(expected_df_voyager_swab, df_voyager_swab, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(expected_df_swab_residuals, df_swab_residuals, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(expected_df_failed_records, df_failed_records, ignore_row_order=True, ignore_column_order=True)
