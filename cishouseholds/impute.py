@@ -314,24 +314,33 @@ def _validate_donor_group_variables(
     logging.info(df.select(donor_group_columns).summary().toPandas())
 
 
-def distance_function(df, impute_vars, impute_weights):
-    """Calculate weighted distance between donors and records to be imputed"""
+def weighted_distance(df, group_id, donor_group_columns, donor_group_column_weights):
+    """
+    Calculate weighted distance between donors and records to be imputed.
+    Expects corresponding donor group columns to be prefixed with 'don_'.
+
+    Parameters
+    ----------
+    df
+    group_id
+        ID for donor group
+    donor_group_columns
+        Columns used to assign donor group
+    donor_group_variable_weights
+        Weight to apply to distance of each group column
+    """
     df = df.withColumn(
         "distance",
         sum(
             [
-                (F.col(var) != F.col("don_" + var)).cast(DoubleType()) * impute_weights[i]
-                for i, var in enumerate(impute_vars)
+                (~F.col(var).eqNullSafe(F.col("don_" + var))).cast(DoubleType()) * donor_group_column_weights[i]
+                for i, var in enumerate(donor_group_columns)
             ]
         ),
     )
-
-    min_distances = df.orderBy("distance").groupBy("imp_uniques").agg(F.min("distance").alias("min_distance"))
-
-    df = df.join(min_distances, on="imp_uniques")
-
-    df = df.filter(F.col("distance") <= F.col("min_distance"))
-    df.cache()
+    distance_window = Window.partitionBy(group_id).orderBy("distance")
+    df = df.withColumn("min_distance", F.first("distance").over(distance_window))
+    df = df.filter(F.col("distance") <= F.col("min_distance")).drop("min_distance")
     return df
 
 
@@ -343,8 +352,8 @@ def impute_by_k_nearest_neighbours(
     id_column_name: str,
     log_file_path: str,
     minimum_donors: int = 1,
-    donor_group_variable_weights: list = None,
-    donor_group_variable_conditions: dict = None,
+    donor_group_column_weights: list = None,
+    donor_group_column_conditions: dict = None,
 ):
     """
     Minimal PySpark implementation of RBEIS, for K-nearest neighbours imputation.
@@ -358,9 +367,9 @@ def impute_by_k_nearest_neighbours(
         column that missing values should be imputed for
     donor_group_columns:
         variables used to form unique donor groups to impute from
-    donor_group_variable_weights:
+    donor_group_column_weights:
         list of weights per ``donor_group_variables``
-    donor_group_variable_conditions:
+    donor_group_column_conditions:
         list of boundary and data type conditions per ``donor_group_variables``
         in the form "variable": [minimum, maximum, "dtype"]
     log_path:
@@ -401,18 +410,18 @@ def impute_by_k_nearest_neighbours(
         logging.warn(message)
         raise ValueError(message)
 
-    if donor_group_variable_weights is None:
-        donor_group_variable_weights = [1] * len(donor_group_columns)
-        logging.warn(f"No imputation weights specified, using default: {donor_group_variable_weights}")
+    if donor_group_column_weights is None:
+        donor_group_column_weights = [1] * len(donor_group_columns)
+        logging.warn(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
-    if donor_group_variable_conditions is None:
-        donor_group_variable_conditions = {var: [None, None, None] for var in donor_group_columns}
-        logging.warn(f"No bounds for impute variables specified, using default: {donor_group_variable_conditions}")
+    if donor_group_column_conditions is None:
+        donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
+        logging.warn(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
     logging.info(f"Function parameters:\n{locals()}")
 
     _validate_donor_group_variables(
-        df, reference_column, donor_group_columns, donor_group_variable_weights, donor_group_variable_conditions
+        df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
     )
 
     imputing_df = imputing_df.withColumn("imp_uniques", F.concat_ws("-", *donor_group_columns))
@@ -429,9 +438,9 @@ def impute_by_k_nearest_neighbours(
     joined_uniques = imputing_df_unique.crossJoin(donor_df_unique)
     joined_uniques = joined_uniques.repartition("imp_uniques")
 
-    candidates = distance_function(joined_uniques, donor_group_columns, donor_group_variable_weights).select(
-        "imp_uniques", "don_uniques"
-    )
+    candidates = weighted_distance(
+        joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
+    ).select("imp_uniques", "don_uniques")
 
     # only counting one row for matching imp_vars
     frequencies = (
@@ -484,20 +493,20 @@ def impute_by_k_nearest_neighbours(
     to_impute = integer_part_donors.select("imp_uniques", "don_" + reference_column).unionByName(
         decimal_part_donors.select("imp_uniques", "don_" + reference_column)
     )
-    ww = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
+    random_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
     to_impute = to_impute.withColumn("rand", F.rand())
-    to_impute = to_impute.withColumn("row", F.row_number().over(ww))
+    to_impute = to_impute.withColumn("row", F.row_number().over(random_uniques_window))
     to_impute = to_impute.withColumnRenamed("don_" + reference_column, column_name_to_assign)
 
     donor_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
-    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))
+    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))  # Is this ordering necessary?
     imputing_df = imputing_df.withColumn("row", F.row_number().over(imp_uniques_window))
 
     imputing_df_final = imputing_df.join(
         to_impute, on=(imputing_df.imp_uniques == to_impute.imp_uniques) & (imputing_df.row == to_impute.row)
     ).drop("imp_uniques", "row", "rand")
 
-    imputed_count = imputing_df_final.count()
+    imputed_count = imputing_df_final.cache().count()
 
     logging.info(f"{imputed_count} records imputed.")
     logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
@@ -511,8 +520,7 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Summary statistics for donor values: {reference_column}")
     logging.info(donor_df_final.select(reference_column).summary().toPandas())
 
-    output_df.cache()
-    output_df_length = output_df.count()
+    output_df_length = output_df.cache().count()
     if output_df_length != df_length:
         raise ValueError(
             "{output_df_length} records are found in the output, which is less than {df_length} in the input."
