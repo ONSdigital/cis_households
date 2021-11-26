@@ -5,6 +5,7 @@ from typing import List
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import SparkSession
 
+from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_schema_names
@@ -22,6 +23,7 @@ def extract_validate_transform_input_data(
     validation_schema: dict,
     transformation_functions: List[Callable],
     sep: str = ",",
+    cast_to_double_columns_list: list = [],
 ):
     spark_session = get_or_create_spark_session()
     df = extract_input_data(spark_session, resource_path, validation_schema, sep)
@@ -30,6 +32,8 @@ def extract_validate_transform_input_data(
     _validation_schema = update_schema_names(validation_schema, variable_name_map)
     datetime_map_list = list(chain(*list(datetime_map.values())))
     _validation_schema = update_schema_types(_validation_schema, datetime_map_list, {"type": "timestamp"})
+    df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
+    _validation_schema = update_schema_types(_validation_schema, cast_to_double_columns_list, {"type": "double"})
 
     error_accumulator = spark_session.sparkContext.accumulator(
         value=[], accum_param=AddingAccumulatorParam(zero_value=[])

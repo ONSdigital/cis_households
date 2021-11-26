@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v1_variable_name_map
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
@@ -26,6 +27,7 @@ def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         survey_responses_v1_validation_schema,
         [transform_survey_responses_generic, transform_survey_responses_version_1_delta],
         "|",
+        survey_response_cast_to_double,
     )
     return processed_df
 

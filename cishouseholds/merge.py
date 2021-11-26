@@ -44,7 +44,6 @@ def union_multiple_tables(tables: List[DataFrame]):
     for i, table_n in enumerate(tables[1:]):
         merged_df, dfn = prepare_for_union(merged_df, table_n)
         merged_df = merged_df.unionByName(dfn)
-        print(f"           -- {i+1}/{len(tables)-1} combination completed")  # functional
     return merged_df
 
 
