@@ -106,7 +106,7 @@ def test_merge_swab(spark_session):
         ("SWABS-6","ONS004","2020-08-09 00:00:00","Void", "1:m dropped"),
         ("SWABS-8","ONS006","2020-08-03 00:00:00","Positive", "m:1 dropped"),
         ("SWABS-12","ONS008","2020-08-04 00:00:00","Positive", "m:m dropped"),
-        ("SWABS-15","ONS010","2020-08-04 00:00:00","Positive", "none:1"),
+        ("SWABS-15","ONS011","2020-08-04 00:00:00","Positive", "none:1"),
         # fmt: on
     ]
     expected_df_swab_residuals = spark_session.createDataFrame(
