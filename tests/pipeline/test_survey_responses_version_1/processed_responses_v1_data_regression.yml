@@ -112,7 +112,7 @@
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   reason_participants_not_present: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: '2022-01-08'
+  sample_taken_date_string: '2022-01-08'
   samples_taken_datetime: '2022-01-08 22:45:03.000000'
   school_year_september: null
   sex: null
@@ -306,7 +306,7 @@
   reason_participants_not_consented: Houston, we have a problem.
   reason_participants_not_present: Ask not what your country can do for you; ask what
     you can do for your country.
-  samples_taken_date_string: '2022-01-03'
+  sample_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 01:57:08.000000'
   school_year_september: null
   sex: null
@@ -496,7 +496,7 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   reason_participants_not_present: I'm gonna make him an offer he can't refuse.
-  samples_taken_date_string: '2022-01-04'
+  sample_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 13:40:38.000000'
   school_year_september: null
   sex: Male
@@ -689,7 +689,7 @@
   reason_participants_not_consented: Here's looking at you, kid.
   reason_participants_not_present: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  samples_taken_date_string: '2022-01-09'
+  sample_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   school_year_september: null
   sex: Female
@@ -879,7 +879,7 @@
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   reason_participants_not_present: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: '2022-01-06'
+  sample_taken_date_string: '2022-01-06'
   samples_taken_datetime: '2022-01-06 00:02:45.000000'
   school_year_september: null
   sex: Female
@@ -1067,7 +1067,7 @@
   postcode: null
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   reason_participants_not_present: Frankly, my dear, I don't give a damn.
-  samples_taken_date_string: '2022-01-03'
+  sample_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 18:48:19.000000'
   school_year_september: null
   sex: null
@@ -1257,7 +1257,7 @@
   reason_participants_not_consented: Get your stinking paws off me, you damned dirty
     ape.
   reason_participants_not_present: Houston, we have a problem.
-  samples_taken_date_string: '2022-01-05'
+  sample_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
   school_year_september: null
   sex: Female
@@ -1447,7 +1447,7 @@
     to repeat it.
   reason_participants_not_present: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
-  samples_taken_date_string: '2022-01-09'
+  sample_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 11:37:05.000000'
   school_year_september: null
   sex: Female
@@ -1641,7 +1641,7 @@
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
   reason_participants_not_present: Let them eat cake.
-  samples_taken_date_string: '2022-01-04'
+  sample_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 17:37:39.000000'
   school_year_september: null
   sex: null
@@ -1835,7 +1835,7 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   reason_participants_not_present: I'm gonna make him an offer he can't refuse.
-  samples_taken_date_string: '2022-01-05'
+  sample_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 17:19:17.000000'
   school_year_september: null
   sex: Female
