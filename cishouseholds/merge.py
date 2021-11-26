@@ -754,12 +754,16 @@ def one_to_many_swabs(
         .otherwise(F.col(flag_column_name)),
     )
     # Solve case for both time diff negative and positive within barcode
-    df = df.withColumn("aux_neg", F.count(F.when(F.col("date_diff") < 0, 1)).over(Window.partitionBy(group_by_column)))
-    df = df.withColumn("aux_pos", F.count(F.when(F.col("date_diff") >= 0, 1)).over(Window.partitionBy(group_by_column)))
+    df = df.withColumn(
+        "aux_neg", F.count(F.when(F.col("diff_vs_visit_hr_swab") < 0, 1)).over(Window.partitionBy(group_by_column))
+    )
+    df = df.withColumn(
+        "aux_pos", F.count(F.when(F.col("diff_vs_visit_hr_swab") >= 0, 1)).over(Window.partitionBy(group_by_column))
+    )
 
     df = df.withColumn(
-        "1tom_swabs_flag",
-        F.when((F.col("aux_neg") > 0) & (F.col("aux_pos") > 0), F.lit(None)).otherwise(F.col("1tom_swabs_flag")),
+        flag_column_name,
+        F.when((F.col("aux_neg") > 0) & (F.col("aux_pos") > 0), F.lit(None)).otherwise(F.col(flag_column_name)),
     ).drop("aux_neg", "aux_pos")
 
     return df

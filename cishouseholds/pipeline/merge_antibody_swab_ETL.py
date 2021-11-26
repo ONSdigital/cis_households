@@ -68,7 +68,9 @@ def merge_blood_ETL():
     """
     survey_table = "unioned_survey_responses"
     antibody_table = "joined_blood_test_data"
-    survey_df = extract_from_table(survey_table).where(F.col("unique_participant_id").isNotNull())
+    survey_df = extract_from_table(survey_table).where(
+        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
+    )
     antibody_df = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
@@ -94,9 +96,11 @@ def merge_swab_ETL():
     """
     survey_table = "merged_responses_antibody_data"
     swab_table = "transformed_swab_test_data"
-    survey_df = extract_from_table(survey_table).where(F.col("unique_participant_id").isNotNull())
+    survey_df = extract_from_table(survey_table).where(
+        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
+    )
     swab_df = extract_from_table(swab_table).where(
-        F.col("unique_swab_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
+        F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
