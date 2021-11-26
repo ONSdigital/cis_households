@@ -4,7 +4,6 @@ from cishouseholds.pipeline.household_population import household_population_tot
 
 
 def test_household_population(spark_session):
-    # address base file
     schema_address_base = """uprn integer,
                             postcode string"""
     data_address_base = [
@@ -12,12 +11,11 @@ def test_household_population(spark_session):
         (2, "BBB 123"),
         (3, "CCC 123"),
         (4, "DDD 123"),
-        (4, "DDD 123"),  # 2 counts of uprn **
+        (4, "DDD 123"),  # 2 counts to check dulpication is removed
         (5, "EEE 123"),
     ]
     df_address_base = spark_session.createDataFrame(data_address_base, schema=schema_address_base)
 
-    # NSPL file
     schema_nspl = """pcd string,
                      lsoa11cd string,
                      ctry12cd integer"""
@@ -34,7 +32,6 @@ def test_household_population(spark_session):
     ]
     df_nspl = spark_session.createDataFrame(data_nspl, schema=schema_nspl)
 
-    # LSOA to CIS area lookup ---------------
     schema_lsoa = """lsoa11cd string,
                      cis20cd string"""
     data_lsoa = [
@@ -45,16 +42,14 @@ def test_household_population(spark_session):
     ]
     df_lsoa = spark_session.createDataFrame(data_lsoa, schema=schema_lsoa)
 
-    # countrycode to countryname lookup ---------------
     schema_country_code = """ctry20cd integer,
                              ctry20nm string"""
     data_country_code = [
-        (101, "Dataville"),  # match
-        (102, "Statpool"),  # match
+        (101, "Dataville"),
+        (102, "Statpool"),
     ]
     df_country_code = spark_session.createDataFrame(data_country_code, schema=schema_country_code)
 
-    # expected data ---------------
     schema_expected = """uprn integer,
                          postcode string,
                          lower_super_output_area_code_11 string,
