@@ -57,7 +57,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
     """
-    Create seperate columns for school year depending on the individuals counrty of residience
+    Create separate columns for school year depending on the individuals country of residence
     Parameters
     ----------
     df
