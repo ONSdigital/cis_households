@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import re_cast_columns_from_string
+from cishouseholds.edit import cast_columns_from_string
 
 
 def test_re_cast_columns_from_string(spark_session):
@@ -27,6 +27,6 @@ def test_re_cast_columns_from_string(spark_session):
 
     columns_list = ["col_to_cast_1", "col_to_cast_2", "col_to_cast_3"]
 
-    output_df = re_cast_columns_from_string(input_df, columns_list, "double")
+    output_df = cast_columns_from_string(input_df, columns_list, "double")
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)

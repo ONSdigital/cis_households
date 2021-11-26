@@ -23,19 +23,19 @@
   city: Marlow
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -61,7 +61,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[1, 10, 23, 23, 1, 5, 6, 22]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: null
@@ -107,7 +107,7 @@
   middle_name: Clarence
   no_blood_reason_fingerprick: Other
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '392744995712'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -277,19 +277,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: null
@@ -318,7 +318,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[4, 7, 23, 15, 10, 12, 2, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -365,7 +365,7 @@
   middle_name: Gale
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Poor venous access
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -537,19 +537,19 @@
   city: Inverurie
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -576,7 +576,7 @@
   have_mobile_number: 'No'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[15, 8, 19, 18, 16, 5, 4, 0]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -622,7 +622,7 @@
   middle_name: Quinn
   no_blood_reason_fingerprick: Bruising or pain after first attempt
   no_blood_reason_venous: Two attempts made
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -797,19 +797,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -836,7 +836,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[23, 22, 20, 3, 11, 5, 9, 1]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'No'
@@ -883,7 +883,7 @@
   middle_name: Jae
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Two attempts made
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -1056,19 +1056,19 @@
   city: null
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -1095,7 +1095,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: '[23, 6, 2, 10, 17, 7, 14, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'No'
@@ -1142,7 +1142,7 @@
   middle_name: Jessika
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Participant time constraints
-  no_email_address: 0
+  no_email_address: 0.0
   ons_household_id: '217846198988'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -1315,19 +1315,19 @@
   city: Coatbridge
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -1354,7 +1354,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[1, 5, 2, 6, 15, 8, 8, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'Yes'
@@ -1400,7 +1400,7 @@
   middle_name: Hank
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 0
+  no_email_address: 0.0
   ons_household_id: '602276804025'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
@@ -1575,19 +1575,19 @@
   city: Hove
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -1613,7 +1613,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[18, 9, 18, 19, 6, 1, 0, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -1660,7 +1660,7 @@
   middle_name: Isaac
   no_blood_reason_fingerprick: Bruising or pain after first attempt
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -1833,19 +1833,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: null
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -1873,7 +1873,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: '[3, 3, 7, 21, 19, 20, 21, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
@@ -1919,7 +1919,7 @@
   middle_name: My
   no_blood_reason_fingerprick: Couldn't get enough blood
   no_blood_reason_venous: Participant refused
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2093,19 +2093,19 @@
   city: null
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: null
@@ -2133,7 +2133,7 @@
   have_mobile_number: 'No'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[1, 6, 6, 7, 12, 3, 5, 16]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: null
@@ -2180,7 +2180,7 @@
   middle_name: Buck
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant felt unwell/fainted
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -2352,19 +2352,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -2391,7 +2391,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[23, 12, 23, 20, 0, 17, 16, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'Yes'
@@ -2438,7 +2438,7 @@
   middle_name: Argentina
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Other
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'

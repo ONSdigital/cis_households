@@ -7,18 +7,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
   consent: 5.0
-  consent_16_visits: '0'
-  consent_1_visit: '1'
-  consent_5_visits: '1'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '0'
+  consent_16_visits: 0.0
+  consent_1_visit: 1.0
+  consent_5_visits: 1.0
+  consent_blood_test: 1.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
@@ -35,7 +35,7 @@
   had_symptoms_last_7_days: 'No'
   have_ever_smoked_regularly: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 6
+  hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'No'
@@ -55,7 +55,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Ask not what your country can do for you;
     ask what you can do for your country.
-  no_email_address: 1
+  no_email_address: 1.0
   no_participants_not_present: 1.0
   no_paticicpants_not_consented: null
   ons_household_id: '890407714528'
@@ -131,7 +131,7 @@
   study_cohort: Swab Only
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '0'
+  swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -200,18 +200,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
   consent: 1.0
-  consent_16_visits: '0'
-  consent_1_visit: '1'
-  consent_5_visits: '0'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '1'
+  consent_16_visits: 0.0
+  consent_1_visit: 1.0
+  consent_5_visits: 0.0
+  consent_blood_test: 0.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
@@ -228,7 +228,7 @@
   had_symptoms_last_7_days: 'No'
   have_ever_smoked_regularly: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: 11
+  hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: null
@@ -250,7 +250,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  no_email_address: 0
+  no_email_address: 0.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: '955705581901'
@@ -326,7 +326,7 @@
   study_cohort: Swab Only
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '0'
+  swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -395,18 +395,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Felixstowe
   consent: 16.0
-  consent_16_visits: '1'
-  consent_1_visit: '0'
-  consent_5_visits: '1'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '0'
+  consent_16_visits: 1.0
+  consent_1_visit: 0.0
+  consent_5_visits: 1.0
+  consent_blood_test: 1.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: null
   county: null
@@ -423,7 +423,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: 'No'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 12
+  hours_a_day_with_someone_else_at_home: 12.0
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'Yes'
@@ -442,7 +442,7 @@
   last_name: Hyde
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Here's looking at you, kid.
-  no_email_address: 0
+  no_email_address: 0.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: '876960826911'
@@ -515,7 +515,7 @@
   study_cohort: Swab Only
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '1'
+  swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -585,18 +585,18 @@
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
   consent: 5.0
-  consent_16_visits: '0'
-  consent_1_visit: '1'
-  consent_5_visits: '1'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '1'
+  consent_16_visits: 0.0
+  consent_1_visit: 1.0
+  consent_5_visits: 1.0
+  consent_blood_test: 1.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
@@ -612,7 +612,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 3
+  hours_a_day_with_someone_else_at_home: 3.0
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -632,7 +632,7 @@
   last_name: Cardenas
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: You're gonna need a bigger boat.
-  no_email_address: 1
+  no_email_address: 1.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: '602276804025'
@@ -708,7 +708,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '0'
+  swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -776,18 +776,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
   consent: 16.0
-  consent_16_visits: '1'
-  consent_1_visit: '0'
-  consent_5_visits: '1'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '0'
+  consent_16_visits: 1.0
+  consent_1_visit: 0.0
+  consent_5_visits: 1.0
+  consent_blood_test: 0.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Avon
@@ -803,7 +803,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: 'Yes'
   hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 10
+  hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -824,7 +824,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  no_email_address: 1
+  no_email_address: 1.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: 001674039598
@@ -898,7 +898,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '1'
+  swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: null
@@ -965,18 +965,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '1'
+  bloods_taken: 1.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: Marlow
   consent: 16.0
-  consent_16_visits: '1'
-  consent_1_visit: '0'
-  consent_5_visits: '0'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '0'
-  consent_use_of_surplus_blood_samples: '0'
+  consent_16_visits: 1.0
+  consent_1_visit: 0.0
+  consent_5_visits: 0.0
+  consent_blood_test: 1.0
+  consent_contact_extra_research: 0.0
+  consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
@@ -992,7 +992,7 @@
   had_symptoms_last_7_days: 'Yes'
   have_ever_smoked_regularly: 'No'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 6
+  hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'No'
@@ -1011,7 +1011,7 @@
   last_name: Lynch
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Let them eat cake.
-  no_email_address: 0
+  no_email_address: 0.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: 044476904382
@@ -1085,7 +1085,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '0'
+  swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -1155,18 +1155,18 @@
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '1'
+  bloods_taken: 1.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: Barnet
   consent: 16.0
-  consent_16_visits: '1'
-  consent_1_visit: '1'
-  consent_5_visits: '0'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '0'
-  consent_use_of_surplus_blood_samples: '1'
+  consent_16_visits: 1.0
+  consent_1_visit: 1.0
+  consent_5_visits: 0.0
+  consent_blood_test: 1.0
+  consent_contact_extra_research: 0.0
+  consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: County Armagh
@@ -1182,7 +1182,7 @@
   had_symptoms_last_7_days: 'Yes'
   have_ever_smoked_regularly: null
   hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 6
+  hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -1202,7 +1202,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  no_email_address: 0
+  no_email_address: 0.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: 021263322966
@@ -1276,7 +1276,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '0'
+  swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -1344,18 +1344,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
   consent: 0.0
-  consent_16_visits: '0'
-  consent_1_visit: '0'
-  consent_5_visits: '0'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '1'
+  consent_16_visits: 0.0
+  consent_1_visit: 0.0
+  consent_5_visits: 0.0
+  consent_blood_test: 0.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Suffolk
@@ -1371,7 +1371,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: 'No'
   hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 11
+  hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -1391,7 +1391,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Those who refuse to learn from history are
     condemned to repeat it.
-  no_email_address: 1
+  no_email_address: 1.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: '919192147365'
@@ -1466,7 +1466,7 @@
   study_cohort: Swab Only
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '1'
+  swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -1539,18 +1539,18 @@
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '1'
+  bloods_taken: 1.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
   consent: 16.0
-  consent_16_visits: '1'
-  consent_1_visit: '1'
-  consent_5_visits: '0'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '1'
+  consent_16_visits: 1.0
+  consent_1_visit: 1.0
+  consent_5_visits: 0.0
+  consent_blood_test: 0.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: null
   county: null
@@ -1566,7 +1566,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: null
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 10
+  hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -1586,7 +1586,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  no_email_address: 1
+  no_email_address: 1.0
   no_participants_not_present: null
   no_paticicpants_not_consented: null
   ons_household_id: '456442497105'
@@ -1660,7 +1660,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '1'
+  swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: null
@@ -1730,18 +1730,18 @@
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
-  bloods_taken: '0'
+  bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
   consent: 0.0
-  consent_16_visits: '0'
-  consent_1_visit: '0'
-  consent_5_visits: '0'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_use_of_surplus_blood_samples: '0'
+  consent_16_visits: 0.0
+  consent_1_visit: 0.0
+  consent_5_visits: 0.0
+  consent_blood_test: 0.0
+  consent_contact_extra_research: 1.0
+  consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
@@ -1757,7 +1757,7 @@
   had_symptoms_last_7_days: null
   have_ever_smoked_regularly: null
   hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 7
+  hours_a_day_with_someone_else_at_home: 7.0
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: null
@@ -1777,7 +1777,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  no_email_address: 0
+  no_email_address: 0.0
   no_participants_not_present: null
   no_paticicpants_not_consented: 2.0
   ons_household_id: '788221784619'
@@ -1854,7 +1854,7 @@
   study_cohort: Blood and Swab
   swab_sample_barcode: null
   swab_taken: 'no'
-  swabs_taken: '1'
+  swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
