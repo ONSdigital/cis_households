@@ -592,8 +592,6 @@ def calculate_population_totals(df: DataFrame, group_by_column: str, population_
     )
 
 
-
-
 # fmt: off
 resource_paths = {
     "old": {
