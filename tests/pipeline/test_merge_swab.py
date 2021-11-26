@@ -101,9 +101,9 @@ def test_merge_swab(spark_session):
     """
     expected_df_swab_residuals_data = [
         # fmt: off
-        ("SWABS-2","ONS002","2020-08-12 00:00:00","Negative", "1:1 out-of-range"),
+        ("SWABS-2","ONS002","2020-08-22 00:00:00","Negative", "1:1 out-of-range"),
         ("SWABS-4","ONS003","2020-08-04 00:00:00","Positive", "1:m dropped"),
-        ("SWABS-6","ONS004","2020-08-11 00:00:00","Void", "1:m dropped"),
+        ("SWABS-6","ONS004","2020-08-09 00:00:00","Void", "1:m dropped"),
         ("SWABS-8","ONS006","2020-08-03 00:00:00","Positive", "m:1 dropped"),
         ("SWABS-12","ONS008","2020-08-04 00:00:00","Positive", "m:m dropped"),
         ("SWABS-15","ONS010","2020-08-04 00:00:00","Positive", "none:1"),
@@ -137,8 +137,12 @@ def test_merge_swab(spark_session):
 
     df_voyager_swab, df_swab_residuals, df_failed_records = merge_swab(voyager_df, swab_df)
 
+    # df_voyager_swab.orderBy('swab_sample_barcode').toPandas().to_csv('df_voyager_swab.csv'); df_swab_residuals.orderBy('swab_sample_barcode').toPandas().to_csv('df_swab_residuals.csv'); df_failed_records.orderBy('swab_sample_barcode').toPandas().to_csv('df_failed_records.csv')
+    # expected_df_voyager_swab.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_voyager_swab.csv'); expected_df_swab_residuals.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_swab_residuals.csv');expected_df_failed_records.orderBy('swab_sample_barcode').toPandas().to_csv('expected_df_failed_records.csv')
+
+    import pdb
+
+    pdb.set_trace()
     assert_df_equality(expected_df_voyager_swab, df_voyager_swab, ignore_row_order=True, ignore_column_order=True)
-    expected_df_swab_residuals.toPandas().to_csv("expected_df.csv", index=False)
-    df_swab_residuals.toPandas().to_csv("residuals.csv", index=False)
     assert_df_equality(expected_df_swab_residuals, df_swab_residuals, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(expected_df_failed_records, df_failed_records, ignore_row_order=True, ignore_column_order=True)

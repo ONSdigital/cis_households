@@ -45,6 +45,11 @@ def merge_process_preparation(
 
     outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
 
+    # take none:1 and 1:none out
+    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col("unique_pcr_test_id").isNull())
+    none_record_df = outer_df.filter(none_records_logic)
+    outer_df = outer_df.filter(~none_records_logic)
+
     if merge_type == "swab":
         interval_upper_bound = 480
         unique_id = "unique_pcr_test_id"
@@ -85,7 +90,15 @@ def merge_process_preparation(
         one_to_one_df,
         no_merge_df,
     ) = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
-    return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df, df_non_specific_merge
+    return (
+        many_to_many_df,
+        one_to_many_df,
+        many_to_one_df,
+        one_to_one_df,
+        no_merge_df,
+        df_non_specific_merge,
+        none_record_df,
+    )
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
@@ -214,6 +227,7 @@ def execute_merge_specific_swabs(
         one_to_one_df,
         no_merge_df,
         df_non_specific_merge,
+        none_record_df,
     ) = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
@@ -297,6 +311,9 @@ def execute_merge_specific_swabs(
         ),
         how="left",
     ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
+
+    unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
+
     return unioned_df
 
 
@@ -325,6 +342,7 @@ def execute_merge_specific_antibody(
         one_to_one_df,
         no_merge_df,
         df_non_specific_merge,
+        none_record_df,
     ) = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
@@ -396,6 +414,7 @@ def execute_merge_specific_antibody(
     df_non_specific_merge = df_non_specific_merge.withColumnRenamed(
         "unique_antibody_test_id", "unique_antibody_test_id_right"
     ).withColumnRenamed("unique_participant_response_id", "unique_participant_response_id_right")
+
     unioned_df = unioned_df.join(
         df_non_specific_merge,
         on=(
@@ -407,6 +426,9 @@ def execute_merge_specific_antibody(
         ),
         how="left",
     ).drop("unique_participant_response_id_right", "unique_antibody_test_id_right")
+
+    unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
+
     return unioned_df
 
 
