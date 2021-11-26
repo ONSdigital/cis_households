@@ -127,8 +127,8 @@ def test_merge_swab(spark_session):
         # fmt: off
         ("IQVIA-13","ONS009","2020-08-01 01:00:00","i_data",     "SWABS-13","2020-08-02 00:00:00","Positive", "m:m failed"),
         ("IQVIA-13","ONS009","2020-08-02 01:00:00","i_data",     "SWABS-14","2020-08-03 00:00:00","Negative", "m:m failed"),
-        ("IQVIA-14","ONS010","2020-08-01 01:00:00","i_data",     "SWABS-13","2020-08-02 00:00:00","Positive", "m:m failed"),
-        ("IQVIA-14","ONS010","2020-08-02 01:00:00","i_data",     "SWABS-14","2020-08-03 00:00:00","Negative", "m:m failed"),
+        ("IQVIA-14","ONS009","2020-08-01 01:00:00","i_data",     "SWABS-13","2020-08-02 00:00:00","Positive", "m:m failed"),
+        ("IQVIA-14","ONS009","2020-08-02 01:00:00","i_data",     "SWABS-14","2020-08-03 00:00:00","Negative", "m:m failed"),
         # fmt: on
     ]
     expected_df_failed_records = spark_session.createDataFrame(
