@@ -45,11 +45,6 @@ def merge_process_preparation(
 
     outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
 
-    # take none:1 and 1:none out
-    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col("unique_pcr_test_id").isNull())
-    none_record_df = outer_df.filter(none_records_logic)
-    outer_df = outer_df.filter(~none_records_logic)
-
     if merge_type == "swab":
         interval_upper_bound = 480
         unique_id = "unique_pcr_test_id"
@@ -58,6 +53,11 @@ def merge_process_preparation(
         interval_upper_bound = 240
         unique_id = "unique_antibody_test_id"
 
+    # take none:1 and 1:none out
+    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col(unique_id).isNull())
+    # check if barcode column is null dump the records in none_record_df
+    none_record_df = outer_df.filter(none_records_logic)
+    outer_df = outer_df.filter(~none_records_logic)
     df = outer_df.select(*merge_type_necessary_columns)
 
     merge_type_necessary_columns.remove("unique_participant_response_id")
@@ -129,6 +129,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
 
     many_to_one_df = df.filter(F.col("mto1" + "_" + merge_type) == 1)
 
+    # TODO: if none_record_df method works, discard no_merge_df
     no_merge_df = df.filter(
         (F.col("mtom" + "_" + merge_type).isNull())
         & (F.col("1tom" + "_" + merge_type).isNull())
@@ -312,9 +313,9 @@ def execute_merge_specific_swabs(
         how="left",
     ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
 
-    unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
+    # unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
 
-    return unioned_df
+    return unioned_df, none_record_df
 
 
 def execute_merge_specific_antibody(
@@ -427,13 +428,12 @@ def execute_merge_specific_antibody(
         how="left",
     ).drop("unique_participant_response_id_right", "unique_antibody_test_id_right")
 
-    unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
-
-    return unioned_df
+    return unioned_df, none_record_df
 
 
 def merge_process_filtering(
     df: DataFrame,
+    none_record_df: DataFrame,
     merge_type: str,
     barcode_column_name: str,
     lab_columns_list: List[str],
@@ -550,16 +550,25 @@ def merge_process_filtering(
     df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
     df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
 
+    if merge_type == "swab":
+        unique_id = "unique_pcr_test_id"
+        drop_list = ["count_barcode_voyager", "count_barcode_swab"]
+    elif merge_type == "antibody":
+        unique_id = "unique_antibody_test_id"
+        drop_list = ["count_barcode_voyager", "count_barcode_antibody"]
+
     print("        -creating residuals table")  # functional
     df_lab_residuals = M.union_multiple_tables(
         tables=[
             df_lab_residuals,
-            df.where(F.col("noneto1_" + merge_type).isNotNull()).select(barcode_column_name, *lab_columns_list),
+            none_record_df.filter(F.col("unique_participant_response_id").isNull()).select(*df_lab_residuals.columns),
         ]
     )
 
     print("        -creating IQVIA only table")  # functional
-    df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
+    df_all_iqvia = M.union_multiple_tables(
+        tables=[df_all_iqvia, none_record_df.filter(F.col(unique_id).isNull()).drop(*drop_list)]
+    )
 
     # window function count number of unique id
     window = Window.partitionBy("unique_participant_response_id")

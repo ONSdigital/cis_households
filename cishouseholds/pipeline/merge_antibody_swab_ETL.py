@@ -111,7 +111,7 @@ def merge_blood(survey_df, antibody_df):
     Process for matching and merging survey and blood test result data
     """
 
-    survey_antibody_df = execute_merge_specific_antibody(
+    survey_antibody_df, none_record_df = execute_merge_specific_antibody(
         survey_df=survey_df,
         labs_df=antibody_df,
         barcode_column_name="blood_sample_barcode",
@@ -125,12 +125,14 @@ def merge_blood(survey_df, antibody_df):
         "count_barcode_voyager",
         "diff_vs_visit_hr_antibody",
     )
-    return merge_process_filtering(
+    df_all_iqvia, df_lab_residuals, df_failed_records = merge_process_filtering(
         df=survey_antibody_df,
+        none_record_df=none_record_df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
         lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
     )
+    return df_all_iqvia, df_lab_residuals, df_failed_records
 
 
 def merge_swab(survey_df, swab_df):
@@ -138,7 +140,7 @@ def merge_swab(survey_df, swab_df):
     Process for matching and merging survey and swab result data.
     Should be executed after merge with blood test result data.
     """
-    survey_antibody_swab_df = execute_merge_specific_swabs(
+    survey_antibody_swab_df, none_record_df = execute_merge_specific_swabs(
         survey_df=survey_df,
         labs_df=swab_df,
         barcode_column_name="swab_sample_barcode",
@@ -156,9 +158,11 @@ def merge_swab(survey_df, swab_df):
         "time_order_flag",
         "time_difference_flag",
     )
-    return merge_process_filtering(
+    df_all_iqvia, df_lab_residuals, df_failed_records = merge_process_filtering(
         df=survey_antibody_swab_df,
+        none_record_df=none_record_df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
         lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
     )
+    return df_all_iqvia, df_lab_residuals, df_failed_records
