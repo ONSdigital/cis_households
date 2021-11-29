@@ -101,7 +101,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         impute_by_k_nearest_neighbours,
-        reference_column="white",
+        reference_column="white_group",
         donor_group_columns=["interim_id"],
         donor_group_column_weights=[5000],
         log_file_path="./imputation_logs/",
