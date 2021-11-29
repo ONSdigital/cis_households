@@ -314,8 +314,6 @@ def execute_merge_specific_swabs(
         how="left",
     ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
 
-    # unioned_df = M.union_multiple_tables(tables=[unioned_df, none_record_df])
-
     return unioned_df, none_record_df
 
 

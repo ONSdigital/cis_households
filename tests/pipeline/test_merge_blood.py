@@ -155,17 +155,6 @@ def test_merge_blood(spark_session):
 
     df_voyager_bloods, df_bloods_residuals, df_failed_records = merge_blood(voyager_df, bloods_df)
 
-    # expected_df_voyager_bloods.toPandas().to_csv("expected_df_voyager_bloods.csv", index=False)
-    # df_voyager_bloods.toPandas().to_csv("df_voyager_bloods.csv", index=False)
-
-    # expected_df_bloods_residuals.toPandas().to_csv("expected_df_bloods_residuals.csv", index=False)
-    # df_bloods_residuals.toPandas().to_csv("df_bloods_residuals.csv", index=False)
-
-    # expected_df_failed_records.toPandas().to_csv("expected_df_failed_records.csv", index=False)
-    # df_failed_records.toPandas().to_csv("df_failed_records.csv", index=False)
-
-    # import pdb; pdb.set_trace()
-
     assert_df_equality(expected_df_voyager_bloods, df_voyager_bloods, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(
         expected_df_bloods_residuals, df_bloods_residuals, ignore_row_order=True, ignore_column_order=True
