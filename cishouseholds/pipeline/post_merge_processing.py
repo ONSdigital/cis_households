@@ -103,7 +103,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         impute_by_k_nearest_neighbours,
         reference_column="white",
         donor_group_columns=["interim_id"],
-        donor_group_variable_weights=[5000],
+        donor_group_column_weights=[5000],
         log_file_path="./imputation_logs/",
     )
 
