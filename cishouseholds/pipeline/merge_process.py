@@ -183,10 +183,13 @@ def merge_process_validation(
     for df, flag_column, failed_column in zip(input_dfs, flag_column_names_syntax, failed_column_names_syntax):
         existing_failure_column = None
         group_by = [barcode_column_name]
+
         if failed_column in existing_failure_column_dict:
             existing_failure_column = existing_failure_column_dict[failed_column]
+
         if "mtom" in failed_column:
             group_by = [barcode_column_name, "unique_participant_response_id"]
+
         df = check_singular_match(
             df=df,
             drop_flag_column_name=flag_column,
