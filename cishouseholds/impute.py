@@ -453,20 +453,17 @@ def impute_by_k_nearest_neighbours(
         raise ValueError(message)
 
     # only counting one row for matching imp_vars
-    frequencies = (
-        donor_df.groupby("don_uniques", "don_" + reference_column).count().withColumnRenamed("count", "frequency")
-    )
+    donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
+    frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
     frequencies = frequencies.join(candidates, on="don_uniques")
-    frequencies = frequencies.join(
-        frequencies.groupby("imp_uniques").agg(F.sum("frequency").alias("donor_count")), on="imp_uniques"
-    )
+    imp_uniques_window = Window.partitionBy("imp_uniques")
+    frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
 
     frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
 
     # best donor uniques to get donors from
-    full_df = frequencies.join(
-        imputing_df.groupby("imp_uniques").agg(F.count("imp_uniques").alias("imp_group_size")), on="imp_uniques"
-    )
+
+    full_df = frequencies.withColumn("imp_group_size", F.count("imp_uniques").over(imp_uniques_window))
 
     full_df = full_df.withColumn("exp_freq", F.col("probs") * F.col("imp_group_size"))
     full_df = full_df.withColumn("int_part", F.floor(F.col("exp_freq")))
@@ -484,21 +481,20 @@ def impute_by_k_nearest_neighbours(
     ).filter(F.col("dec_part") > 0)
 
     decimal_part_donors = decimal_part_donors.withColumn("random_number", F.rand() * F.col("probs"))
-    tt = Window.partitionBy("imp_uniques").orderBy(F.col("random_number").desc())
-    decimal_part_donors = decimal_part_donors.withColumn("row", F.row_number().over(tt)).filter(
+    random_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("random_number").desc())
+    decimal_part_donors = decimal_part_donors.withColumn("row", F.row_number().over(random_uniques_window)).filter(
         F.col("row") <= F.col("new_imp_group_size")
     )
 
     to_impute = integer_part_donors.select("imp_uniques", "don_" + reference_column).unionByName(
         decimal_part_donors.select("imp_uniques", "don_" + reference_column)
     )
-    random_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
+    rand_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
     to_impute = to_impute.withColumn("rand", F.rand())
-    to_impute = to_impute.withColumn("row", F.row_number().over(random_uniques_window))
+    to_impute = to_impute.withColumn("row", F.row_number().over(rand_uniques_window))
     to_impute = to_impute.withColumnRenamed("don_" + reference_column, column_name_to_assign)
 
     donor_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
-    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col(id_column_name))  # Is this ordering necessary?
     imputing_df = imputing_df.withColumn("row", F.row_number().over(imp_uniques_window))
 
     imputing_df_final = imputing_df.join(
