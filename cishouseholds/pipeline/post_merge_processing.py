@@ -102,7 +102,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="white",
-        id_column_name="participant_id",
         donor_group_columns=["interim_id"],
         donor_group_variable_weights=[5000],
         log_file_path="./imputation_logs/",
@@ -121,7 +120,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="age_at_vist",
-        id_column_name="participant_id",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
         log_file_path="./imputation_logs/",
     )

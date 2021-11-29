@@ -349,11 +349,11 @@ def impute_by_k_nearest_neighbours(
     column_name_to_assign: str,
     reference_column: str,
     donor_group_columns: list,
-    id_column_name: str,
     log_file_path: str,
     minimum_donors: int = 1,
     donor_group_column_weights: list = None,
     donor_group_column_conditions: dict = None,
+    maximum_distance: int = 5000,
 ):
     """
     Minimal PySpark implementation of RBEIS, for K-nearest neighbours imputation.
@@ -361,23 +361,23 @@ def impute_by_k_nearest_neighbours(
     Parameters
     ----------
     df
-    column_name_to_assign:
+    column_name_to_assign
         column to store imputed values
-    reference_column:
+    reference_column
         column that missing values should be imputed for
-    donor_group_columns:
+    donor_group_columns
         variables used to form unique donor groups to impute from
-    donor_group_column_weights:
+    donor_group_column_weights
         list of weights per ``donor_group_variables``
-    donor_group_column_conditions:
+    donor_group_column_conditions
         list of boundary and data type conditions per ``donor_group_variables``
         in the form "variable": [minimum, maximum, "dtype"]
-    log_path:
+    log_path
         location the log file is written to
-    id_column_name:
-        column name of each records unique identifier
-    minimum_donors:
+    minimum_donors
         minimum number of donors required in each imputation pool, must be >= 0
+    maximum_distance
+        maximum sum weighted distance for a valid donor. Set to None for no maximum.
     """
 
     if reference_column not in df.columns:
@@ -441,6 +441,8 @@ def impute_by_k_nearest_neighbours(
     candidates = weighted_distance(
         joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
     ).select("imp_uniques", "don_uniques")
+    if maximum_distance is not None:
+        candidates = candidates.where(F.col("distance") < maximum_distance)
 
     # only counting one row for matching imp_vars
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
