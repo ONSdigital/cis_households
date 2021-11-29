@@ -381,7 +381,7 @@ def impute_by_k_nearest_neighbours(
     """
 
     if reference_column not in df.columns:
-        message = " Variable to impute ({reference_column}) is not in in columns."
+        message = f"Variable to impute ({reference_column}) is not in in columns."
         raise ValueError(message)
 
     if not all(column in df.columns for column in donor_group_columns):
@@ -456,7 +456,7 @@ def impute_by_k_nearest_neighbours(
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
     frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
     frequencies = frequencies.join(candidates, on="don_uniques")
-    imp_uniques_window = Window.partitionBy("imp_uniques")
+    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.lit(None))
     frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
 
     below_minimum_donor_count = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
