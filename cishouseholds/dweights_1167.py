@@ -1,82 +1,137 @@
-# from pyspark.sql import DataFrame
-# from pyspark.sql import functions as F
-# from pyspark.sql.window import Window
-from typing import Any
-from typing import List
-from typing import Tuple
 from typing import Union
 
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 
+
+# 1167
 def chose_scenario_of_dweight_for_antibody_different_household(
+    df: DataFrame,
     tranche_eligible_indicator: str,
-    household_samples_dataframe: List[str],
-    n_eligible_hh_tranche_bystrata,
-    n_sampled_hh_tranche_bystrata,
+    # household_samples_dataframe: List[str],
+    n_eligible_hh_tranche_bystrata_column,
+    n_sampled_hh_tranche_bystrata_column,
 ) -> Union[str, None]:
     """
     Decide what scenario to use for calculation of the design weights
     for antibodies for different households
     Parameters
     ----------
+    df
     tranche_eligible_indicator
     household_samples_dataframe
-    n_eligible_hh_tranche_bystrata
-    n_sampled_hh_tranche_bystrata
+    n_eligible_hh_tranche_bystrata_column
+    n_sampled_hh_tranche_bystrata_column
     """
-
-    if (n_eligible_hh_tranche_bystrata is None) and (n_sampled_hh_tranche_bystrata is None):
+    if F.col(n_eligible_hh_tranche_bystrata_column).isNull() & F.col(n_sampled_hh_tranche_bystrata_column).isNull():
         eligibility_pct = 0
 
-    elif ((n_eligible_hh_tranche_bystrata is not None) and (n_sampled_hh_tranche_bystrata is not None)) and (
-        n_sampled_hh_tranche_bystrata > 0
+    elif (
+        F.col(n_eligible_hh_tranche_bystrata_column).isNotNull()
+        & F.col(n_sampled_hh_tranche_bystrata_column).isNotNull()
+        & (F.col(n_sampled_hh_tranche_bystrata_column) > 0)
     ):
         eligibility_pct = (
-            100 * (n_eligible_hh_tranche_bystrata - n_sampled_hh_tranche_bystrata) / n_sampled_hh_tranche_bystrata
+            100
+            * (n_eligible_hh_tranche_bystrata_column - n_sampled_hh_tranche_bystrata_column)
+            / n_sampled_hh_tranche_bystrata_column
         )
-
-    if tranche_eligible_indicator not in household_samples_dataframe:
+    if not tranche_eligible_indicator:  # TODO: not in household_samples_dataframe?
         return "A"
     else:
-        # TODO: if eligibility_pct < 0 ??
         if eligibility_pct == 0:
             return "B"
-        elif eligibility_pct > 0:
-            return "C"
         else:
-            return None
+            return "C"
 
 
 # 1168
 def raw_dweight_for_AB_scenario_for_antibody(
-    hh_dweight_antibodies, raw_dweight_antibodies, sample_new_previous, scaled_dweight_swab_nonadjusted
-) -> Tuple[Any, Any]:
+    df: DataFrame,
+    hh_dweight_antibodies_column,
+    raw_dweight_antibodies_column,
+    sample_new_previous_column,
+    scaled_dweight_swab_nonadjusted_column,
+) -> DataFrame:
     """
     Parameters
     ----------
-    hh_dweight_antibodies
-    raw_dweight_antibodies
-    sample_new_previous
-    scaled_dweight_swab_nonadjusted
+    df
+    hh_dweight_antibodies_column
+    raw_dweight_antibodies_column
+    sample_new_previous_column
+    scaled_dweight_swab_nonadjusted_column
     """
-    # 1 step: copy the household_dweight_antibodies into the raw_dweight_antibodies
-    # variable when they exist. Note:it should be always a value for previous cases
-    raw_dweight_antibodies = raw_dweight_antibodies + hh_dweight_antibodies
+    df = df.withColumn(
+        raw_dweight_antibodies_column,
+        F.when(F.col(hh_dweight_antibodies_column).isNotNull(), F.col(hh_dweight_antibodies_column)),
+    )
 
-    # when sample_new_previous = "previous", hh_dweight_antibodies not missing;
-    # then  raw_dweight_antibodies_b = hh_dweight_antibodies
-    if (sample_new_previous == "previous") and (hh_dweight_antibodies is not None):
-        raw_dweight_antibodies_b = hh_dweight_antibodies
+    df = df.withColumn(
+        raw_dweight_antibodies_column + "_b",
+        F.when(
+            (F.col(sample_new_previous_column) == "previous") & (F.col(hh_dweight_antibodies_column).isNotNull()),
+            F.col(hh_dweight_antibodies_column),
+        ).when(
+            (F.col(sample_new_previous_column) == "new") & (F.col(hh_dweight_antibodies_column).isNull()),
+            F.col(scaled_dweight_swab_nonadjusted_column),
+        ),
+    )
+    df = df.withColumn(
+        raw_dweight_antibodies_column,
+        F.when(hh_dweight_antibodies_column).isNull(),
+        F.col(scaled_dweight_swab_nonadjusted_column),
+    )
+    return df
 
-    # 2 step: take scale_dweight_swab_nonadjusted as raw_dweight_antibodies, when
-    # hh_dweight_antibodies are missing (cis_area level)
-    # Note: hh_dweight_antibodies values for the new cases will be always missing
-    if hh_dweight_antibodies is None:
-        raw_dweight_antibodies = scaled_dweight_swab_nonadjusted
 
-        # when sample_new_previous= "new" ; hh_dweight_antibodies missing for same
-        # cis_area_code_20,
-        # raw_dweight_antibodies_b = scaled_dweight_swab_nonadjusted
-        if sample_new_previous == "new":
-            raw_dweight_antibodies_b = scaled_dweight_swab_nonadjusted
+# 1170
+def function_name_1170(df: DataFrame, dweights_column: str, carryforward_dweights_antibodies_column: str) -> DataFrame:
+    """
+    Bring the design weights calculated up until this point  into same variable: carryforward_dweights_antibodies.
+    Scaled up to population level  carryforward design weight antibodies.
+    Parameters
+    ----------
+    df
+    dweights_column
+    carryforward_dweights_antibodies_column
+    """
+    # part 1: bring the design weights calculated up until this point  into same variable:
+    #  carryforward_dweights_antibodies
+    df = df.withColumn(carryforward_dweights_antibodies_column, F.col(dweights_column))  # TODO
 
-    return raw_dweight_antibodies_b, raw_dweight_antibodies_b
+    # part 2: scaled up to population level  carryforward design weight antibodies
+
+    return df
+
+
+# 1171
+def function_name_1171(
+    df: DataFrame,
+    dweights_antibodies_column: str,
+    total_population_column: str,
+    cis_area_code_20_column: str,
+) -> DataFrame:
+    """
+    check the dweights_antibodies_column are adding up to total_population_column.
+    check the design weights antibodies are all are positive.
+    check there are no missing design weights antibodies.
+    check if they are the same across cis_area_code_20 by sample groups (by sample_source).
+
+    Parameters
+    ----------
+    df
+    """
+    # part 1: check the dweights_antibodies_column are adding up to total_population_column
+    assert sum(list(df.select(dweights_antibodies_column).toPandas()[dweights_antibodies_column])) == sum(
+        list(df.select(total_population_column).toPandas()[total_population_column])
+    )
+
+    df = df.withColumn(
+        "check_2-dweights_positive_notnull",
+        F.when(F.col(total_population_column) > 1, 1).when(F.col(total_population_column).isNotNull(), 1),
+    )
+
+    # TODO part 4: check if they are the same across cis_area_code_20 by sample groups (by sample_source)
+
+    return df
