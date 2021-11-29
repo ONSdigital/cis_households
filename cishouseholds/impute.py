@@ -394,7 +394,7 @@ def impute_by_k_nearest_neighbours(
     impute_count = imputing_df.count()
     donor_count = donor_df.count()
 
-    assert impute_count + donor_count == df_length, "Donor and imputing records don't sum to whole df"
+    assert impute_count + donor_count == df_length, "Donor and imputing records don't sum to the whole df length"
 
     if impute_count == 0:
         return df
@@ -442,6 +442,16 @@ def impute_by_k_nearest_neighbours(
         joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
     ).select("imp_uniques", "don_uniques")
 
+    below_minimum_donor_count = candidates.filter(F.col("donor_count") <= minimum_donors).count()
+    if below_minimum_donor_count > 0:
+        message = (
+            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
+            "minimum donor(s)"
+        )
+        logging.warn(message)
+        logging.warn(candidates.filter(F.col("donor_count") <= minimum_donors).toPandas())
+        raise ValueError(message)
+
     # only counting one row for matching imp_vars
     frequencies = (
         donor_df.groupby("don_uniques", "don_" + reference_column).count().withColumnRenamed("count", "frequency")
@@ -450,17 +460,6 @@ def impute_by_k_nearest_neighbours(
     frequencies = frequencies.join(
         frequencies.groupby("imp_uniques").agg(F.sum("frequency").alias("donor_count")), on="imp_uniques"
     )
-
-    # check minimum number of donors
-    below_minimum_donor_count = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
-    if below_minimum_donor_count > 0:
-        message = (
-            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
-            "minimum donor(s)"
-        )
-        logging.warn(message)
-        logging.warn(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
-        raise ValueError(message)
 
     frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
 
