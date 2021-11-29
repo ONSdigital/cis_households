@@ -1,6 +1,7 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v1_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -24,6 +25,7 @@ def survey_responses_version_1_ETL(**kwargs):
             survey_responses_v1_validation_schema,
             [transform_survey_responses_generic, transform_survey_responses_version_1_delta],
             "|",
+            survey_response_cast_to_double,
         )
         update_table_and_log_source_files(
             df,
