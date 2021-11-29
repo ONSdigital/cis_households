@@ -353,7 +353,7 @@ def impute_by_k_nearest_neighbours(
     minimum_donors: int = 1,
     donor_group_column_weights: list = None,
     donor_group_column_conditions: dict = None,
-    maximum_distance: int = 5000,
+    maximum_distance: int = 4999,
 ):
     """
     Minimal PySpark implementation of RBEIS, for K-nearest neighbours imputation.
@@ -442,7 +442,7 @@ def impute_by_k_nearest_neighbours(
         joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
     ).select("imp_uniques", "don_uniques")
     if maximum_distance is not None:
-        candidates = candidates.where(F.col("distance") < maximum_distance)
+        candidates = candidates.where(F.col("distance") <= maximum_distance)
 
     # only counting one row for matching imp_vars
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
