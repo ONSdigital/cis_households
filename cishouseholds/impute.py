@@ -431,6 +431,16 @@ def impute_by_k_nearest_neighbours(
     imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
     donor_df_unique = donor_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["don_uniques"])
 
+    no_donors = imputing_df_unique.join(
+        donor_df_unique, on=imputing_df_unique.imp_uniques == donor_df_unique.don_uniques, how="left_anti"
+    )
+    no_donors_count = no_donors.cache().count()
+    if no_donors_count != 0:
+        message = f"{no_donors_count} donor pools found with no donors"
+        logging.warn(message)
+        logging.warn(no_donors.toPandas())
+        raise ValueError(message)
+
     for var in donor_group_columns + [reference_column]:
         donor_df_unique = donor_df_unique.withColumnRenamed(var, "don_" + var)
         donor_df = donor_df.withColumnRenamed(var, "don_" + var)
@@ -442,16 +452,6 @@ def impute_by_k_nearest_neighbours(
         joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
     ).select("imp_uniques", "don_uniques")
 
-    below_minimum_donor_count = candidates.filter(F.col("donor_count") <= minimum_donors).count()
-    if below_minimum_donor_count > 0:
-        message = (
-            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
-            "minimum donor(s)"
-        )
-        logging.warn(message)
-        logging.warn(candidates.filter(F.col("donor_count") <= minimum_donors).toPandas())
-        raise ValueError(message)
-
     # only counting one row for matching imp_vars
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
     frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
@@ -459,10 +459,19 @@ def impute_by_k_nearest_neighbours(
     imp_uniques_window = Window.partitionBy("imp_uniques")
     frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
 
+    below_minimum_donor_count = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
+    if below_minimum_donor_count > 0:
+        message = (
+            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
+            "minimum donor(s)"
+        )
+        logging.warn(message)
+        logging.warn(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
+        raise ValueError(message)
+
     frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
 
     # best donor uniques to get donors from
-
     full_df = frequencies.withColumn("imp_group_size", F.count("imp_uniques").over(imp_uniques_window))
 
     full_df = full_df.withColumn("exp_freq", F.col("probs") * F.col("imp_group_size"))
