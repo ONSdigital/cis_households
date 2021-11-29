@@ -64,6 +64,8 @@ def process_post_merge():
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list):
     """
     Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the participant records.
+
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
@@ -103,7 +105,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         id_column_name="participant_id",
         donor_group_columns=["interim_id"],
         donor_group_variable_weights=[5000],
-        log_file_path="./",
+        log_file_path="./imputation_logs/",
     )
 
     deduplicated_df = impute_and_flag(
@@ -113,7 +115,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         group_by_columns=["white_group", "gor9d"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )  # Relies on sample data being joined on
+    )
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -121,7 +123,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         reference_column="age_at_vist",
         id_column_name="participant_id",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path="./",
+        log_file_path="./imputation_logs/",
     )
 
     return deduplicated_df.select(

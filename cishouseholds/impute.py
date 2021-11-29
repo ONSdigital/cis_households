@@ -406,7 +406,7 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Donor dataframe length: {donor_count}")
 
     if donor_count < impute_count:
-        message = "Number of donor records is less tat the number of records to impute."
+        message = "Overall number of donor records is less than the number of records to impute."
         logging.warn(message)
         raise ValueError(message)
 
@@ -431,16 +431,6 @@ def impute_by_k_nearest_neighbours(
     imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
     donor_df_unique = donor_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["don_uniques"])
 
-    no_donors = imputing_df_unique.join(
-        donor_df_unique, on=imputing_df_unique.imp_uniques == donor_df_unique.don_uniques, how="left_anti"
-    )
-    no_donors_count = no_donors.cache().count()
-    if no_donors_count != 0:
-        message = f"{no_donors_count} donor pools found with no donors"
-        logging.warn(message)
-        logging.warn(no_donors.toPandas())
-        raise ValueError(message)
-
     for var in donor_group_columns + [reference_column]:
         donor_df_unique = donor_df_unique.withColumnRenamed(var, "don_" + var)
         donor_df = donor_df.withColumnRenamed(var, "don_" + var)
@@ -456,6 +446,16 @@ def impute_by_k_nearest_neighbours(
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
     frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
     frequencies = frequencies.join(candidates, on="don_uniques")
+    frequencies.cache().count()
+
+    no_donors = imputing_df_unique.join(frequencies, on="imp_uniques", how="left_anti")
+    no_donors_count = no_donors.cache().count()
+    if no_donors_count != 0:
+        message = f"{no_donors_count} donor pools with no donors"
+        logging.warn(message)
+        logging.warn(no_donors.toPandas())
+        raise ValueError(message)
+
     imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.lit(None))
     frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
 
