@@ -69,6 +69,5 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
     return pipeline_has_errored
 
 
-
 if __name__ == "__main__":
     run_from_config()
