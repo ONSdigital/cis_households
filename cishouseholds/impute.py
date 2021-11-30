@@ -1,14 +1,13 @@
 import logging
 import sys
 from datetime import datetime
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def impute_by_distribution(
@@ -459,7 +458,7 @@ def impute_by_k_nearest_neighbours(
     imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.lit(None))
     frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
 
-    below_minimum_donor_count = frequencies.filter(F.col("donor_count") <= minimum_donors).count()
+    below_minimum_donor_count = frequencies.filter(F.col("donor_count") < minimum_donors).count()
     if below_minimum_donor_count > 0:
         message = (
             f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
