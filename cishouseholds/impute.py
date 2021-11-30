@@ -400,10 +400,11 @@ def impute_by_k_nearest_neighbours(
         return df
 
     _create_log(start_time=datetime.now(), log_path=log_file_path)
+    logging.info(f"Function parameters:\n{locals()}")
 
-    logging.info(f"Dataframe length: {df_length}")
-    logging.info(f"Impute dataframe length: {impute_count}")
-    logging.info(f"Donor dataframe length: {donor_count}")
+    logging.info(f"Input dataframe length: {df_length}")
+    logging.info(f"Records to impute: {impute_count}")
+    logging.info(f"Donor records: {donor_count}")
 
     if donor_count < impute_count:
         message = "Overall number of donor records is less than the number of records to impute."
@@ -417,8 +418,6 @@ def impute_by_k_nearest_neighbours(
     if donor_group_column_conditions is None:
         donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
         logging.warn(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
-
-    logging.info(f"Function parameters:\n{locals()}")
 
     _validate_donor_group_variables(
         df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
@@ -448,10 +447,9 @@ def impute_by_k_nearest_neighbours(
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
     frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
     frequencies = frequencies.join(candidates, on="don_uniques")
-    frequencies.cache().count()
 
     no_donors = imputing_df_unique.join(frequencies, on="imp_uniques", how="left_anti")
-    no_donors_count = no_donors.cache().count()
+    no_donors_count = no_donors.count()
     if no_donors_count != 0:
         message = f"{no_donors_count} donor pools with no donors"
         logging.warn(message)
@@ -512,9 +510,7 @@ def impute_by_k_nearest_neighbours(
         to_impute, on=(imputing_df.imp_uniques == to_impute.imp_uniques) & (imputing_df.row == to_impute.row)
     ).drop("imp_uniques", "row", "rand")
 
-    imputed_count = imputing_df_final.cache().count()
-
-    logging.info(f"{imputed_count} records imputed.")
+    logging.info(f"{imputing_df_final.count()} records imputed.")
     logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
     logging.info(imputing_df_final.select(column_name_to_assign).summary().toPandas())
 
@@ -526,7 +522,7 @@ def impute_by_k_nearest_neighbours(
     logging.info(f"Summary statistics for donor values: {reference_column}")
     logging.info(donor_df_final.select(reference_column).summary().toPandas())
 
-    output_df_length = output_df.cache().count()
+    output_df_length = output_df.count()
     if output_df_length != df_length:
         raise ValueError(
             "{output_df_length} records are found in the output, which is less than {df_length} in the input."
