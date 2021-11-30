@@ -7,6 +7,7 @@ from pyspark.sql import functions as F
 # 1167
 def chose_scenario_of_dweight_for_antibody_different_household(
     df: DataFrame,
+    eligibility_pct: str,
     tranche_eligible_indicator: str,
     # household_samples_dataframe: List[str],
     n_eligible_hh_tranche_bystrata_column,
@@ -18,24 +19,32 @@ def chose_scenario_of_dweight_for_antibody_different_household(
     Parameters
     ----------
     df
+    eligibility_pct
     tranche_eligible_indicator
     household_samples_dataframe
     n_eligible_hh_tranche_bystrata_column
     n_sampled_hh_tranche_bystrata_column
     """
-    if F.col(n_eligible_hh_tranche_bystrata_column).isNull() & F.col(n_sampled_hh_tranche_bystrata_column).isNull():
-        eligibility_pct = 0
-
-    elif (
-        F.col(n_eligible_hh_tranche_bystrata_column).isNotNull()
-        & F.col(n_sampled_hh_tranche_bystrata_column).isNotNull()
-        & (F.col(n_sampled_hh_tranche_bystrata_column) > 0)
-    ):
-        eligibility_pct = (
-            100
-            * (n_eligible_hh_tranche_bystrata_column - n_sampled_hh_tranche_bystrata_column)
-            / n_sampled_hh_tranche_bystrata_column
+    df = df.withColumn(
+        eligibility_pct,
+        F.when(
+            F.col(n_eligible_hh_tranche_bystrata_column).isNull()
+            & F.col(n_sampled_hh_tranche_bystrata_column).isNull(),
+            0,
         )
+        .when(
+            F.col(n_eligible_hh_tranche_bystrata_column).isNotNull()
+            & F.col(n_sampled_hh_tranche_bystrata_column).isNotNull()
+            & (F.col(n_sampled_hh_tranche_bystrata_column) > 0),
+            (
+                100
+                * (n_eligible_hh_tranche_bystrata_column - n_sampled_hh_tranche_bystrata_column)
+                / n_sampled_hh_tranche_bystrata_column
+            ),
+        )
+        .otherwise(None),  # TODO: check this
+    )
+
     if not tranche_eligible_indicator:  # TODO: not in household_samples_dataframe?
         return "A"
     else:
@@ -81,6 +90,65 @@ def raw_dweight_for_AB_scenario_for_antibody(
         raw_dweight_antibodies_column,
         F.when(hh_dweight_antibodies_column).isNull(),
         F.col(scaled_dweight_swab_nonadjusted_column),
+    )
+    return df
+
+
+# 1169
+def function(
+    df: DataFrame,
+    sample_new_previous: str,
+    tranche_eligible_hh: str,
+    tranche_n_indicator: str,
+    raw_dweight_antibodies_c: str,
+    scaled_dweight_swab_nonadjusted: str,
+    tranche_factor: str,
+    hh_dweight_antibodies_c: str,
+    dweights_swab: str,
+) -> DataFrame:
+    """
+    1 step: for cases with sample_new_previous = "previous" AND tranche_eligible_households=yes(1)
+    AND  tranche_number_indicator = max value, calculate raw design weight antibodies by using
+    tranche_factor
+    2 step: for cases with sample_new_previous = "previous";  tranche_number_indicator != max value;
+    tranche_ eligible_households != yes(1), calculate the  raw design weight antibodies by using
+    previous dweight antibodies
+    3 step: for cases with sample_new_previous = new, calculate  raw design weights antibodies
+    by using  design weights for swab
+
+    Parameters
+    ----------
+    df
+    sample_new_previous
+    tranche_eligible_hh
+    tranche_n_indicator
+    raw_dweight_antibodies_c
+    scaled_dweight_swab_nonadjusted
+    tranche_factor
+    hh_dweight_antibodies_c
+    dweights_swab
+    """
+    max_value = df.agg({"tranche": "max"}).first()[0]
+
+    df = df.withColumn(
+        "raw_design_weight_antibodies",
+        F.when(
+            (F.col(sample_new_previous) == "previous")
+            & (F.col(tranche_eligible_hh) == "Yes")
+            & (F.col(tranche_n_indicator) == max_value),
+            F.col(scaled_dweight_swab_nonadjusted) * F.col(tranche_factor),
+        )
+        .when(
+            (F.col(sample_new_previous) == "previous")
+            & (F.col(tranche_n_indicator) != max_value)
+            & (F.col(tranche_eligible_hh) != "Yes"),
+            F.col(hh_dweight_antibodies_c),
+        )
+        .when(
+            (F.col(sample_new_previous) == "new")
+            & (F.col(raw_dweight_antibodies_c) == F.col(scaled_dweight_swab_nonadjusted)),
+            F.col(dweights_swab),
+        ),
     )
     return df
 
