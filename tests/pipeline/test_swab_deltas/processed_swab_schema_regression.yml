@@ -8,7 +8,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: pcr_datetime
+  name: pcr_result_recorded_datetime
   nullable: true
   type: timestamp
 - metadata: {}
@@ -72,7 +72,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: pcr_date
+  name: pcr_result_recorded_date_string
   nullable: true
   type: string
 - metadata: {}
