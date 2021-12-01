@@ -1,14 +1,13 @@
 import logging
 import sys
 from datetime import datetime
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def impute_by_distribution(
@@ -198,23 +197,17 @@ def impute_by_ordered_fill_forward(
     # the id column with a unique monotonically_increasing_id is auxiliary and
     # intends to add an arbitrary number to each row.
     # this will NOT affect the ordering of the rows by orderby_column parameter.
-    df = df.withColumn("id", F.monotonically_increasing_id())
-
     if order_type == "asc":
         ordering_expression = F.col(order_by_column).asc()
     else:
         ordering_expression = F.col(order_by_column).desc()
 
     window = Window.partitionBy(column_identity).orderBy(ordering_expression)
-
-    return (
-        df.withColumn(
-            column_name_to_assign,
-            F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
-        )
-        .orderBy(ordering_expression, "id")
-        .drop("id")
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
     )
+    return df
 
 
 def merge_previous_imputed_values(
