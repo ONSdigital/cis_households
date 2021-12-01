@@ -18,9 +18,9 @@ def test_impute_by_k_nearest_neighbours(spark_session):
     )
 
     expected_data = [
-        ("A", "1", "A", None, None),
-        ("B", "2", "B", None, None),
-        ("C", "1", None, 1, "impute_by_k_nearest_neighbours"),
+        ("A", "1", "A", 0, None),
+        ("B", "2", "B", 0, None),
+        ("C", "1", "A", 1, "impute_by_k_nearest_neighbours"),
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
@@ -35,8 +35,7 @@ def test_impute_by_k_nearest_neighbours(spark_session):
         log_file_path="./",
     )
     assert_df_equality(
-        output_df,
-        expected_df,
-        ignore_row_order=True,
+        output_df.sort("uid"),
+        expected_df.sort("uid"),
         ignore_column_order=True,
     )

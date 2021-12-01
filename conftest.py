@@ -1,10 +1,10 @@
 import json
+from pyspark.sql import SparkSession
 
 import numpy as np
 import pytest
 from mimesis.schema import Field
 from pandas import Timestamp
-from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
 from dummy_data_generation.helpers import CustomRandom
@@ -26,7 +26,15 @@ RegressionYamlDumper.add_custom_yaml_representer(Timestamp, timestamp_represente
 @pytest.fixture(scope="session")
 def spark_session():
     """Session-wide SparkSession to optimise testing PySpark functions."""
-    spark_session = SparkSession.builder.master("local[*]").getOrCreate()
+    spark_session = (
+        SparkSession.builder.master("local[*]")
+        .config("spark.executor.memory", "6g")
+        .config("spark.executor.cores", 3)
+        .config("spark.dynamicAllocation.enabled", "true")
+        .config("spark.dynamicAllocation.maxExecutors", 3)
+        .config("spark.sql.shuffle.partitions", 18)
+        .getOrCreate()
+    )
     yield spark_session
     spark_session.stop()
 

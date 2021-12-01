@@ -1,14 +1,13 @@
 import logging
 import sys
 from datetime import datetime
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def impute_by_distribution(
@@ -447,6 +446,7 @@ def impute_by_k_nearest_neighbours(
     donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
     frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
     frequencies = frequencies.join(candidates, on="don_uniques")
+    frequencies.cache().count()
 
     no_donors = imputing_df_unique.join(frequencies, on="imp_uniques", how="left_anti")
     no_donors_count = no_donors.count()
@@ -510,17 +510,16 @@ def impute_by_k_nearest_neighbours(
         to_impute, on=(imputing_df.imp_uniques == to_impute.imp_uniques) & (imputing_df.row == to_impute.row)
     ).drop("imp_uniques", "row", "rand")
 
-    logging.info(f"{imputing_df_final.count()} records imputed.")
-    logging.info(f"Summary statistics for imputed values: {column_name_to_assign}")
-    logging.info(imputing_df_final.select(column_name_to_assign).summary().toPandas())
-
     donor_df_final = donor_df_final.withColumn(
         column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType)
     )
     output_df = imputing_df_final.unionByName(donor_df_final)
+    output_df.cache().count()
 
-    logging.info(f"Summary statistics for donor values: {reference_column}")
-    logging.info(donor_df_final.select(reference_column).summary().toPandas())
+    logging.info(
+        f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
+    )
+    logging.info(output_df.select(column_name_to_assign, reference_column).summary().toPandas())
 
     output_df_length = output_df.count()
     if output_df_length != df_length:
@@ -529,8 +528,8 @@ def impute_by_k_nearest_neighbours(
         )
 
     missing_count = output_df.filter(
-        ((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
-        & ((F.col(column_name_to_assign).isNull()) | (F.isnan(column_name_to_assign)))
+        (F.col(reference_column).isNull() | F.isnan(reference_column))
+        & (F.col(column_name_to_assign).isNull() | F.isnan(column_name_to_assign))
     ).count()
     if missing_count != 0:
         raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation.")
