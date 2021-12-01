@@ -1,5 +1,3 @@
-from pyspark.sql import functions as F
-
 from chispa.dataframe_comparer import assert_df_equality
 
 from cishouseholds.pipeline.post_merge_processing import impute_and_flag
