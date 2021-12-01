@@ -1,4 +1,5 @@
 from chispa.dataframe_comparer import assert_df_equality
+from pyspark.sql import functions as F
 
 from cishouseholds.pipeline.post_merge_processing import impute_and_flag
 from cishouseholds.pipeline.post_merge_processing import impute_by_k_nearest_neighbours
