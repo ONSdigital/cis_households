@@ -1,14 +1,13 @@
 import logging
 import sys
 from datetime import datetime
-from typing import Callable
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
+from typing import Callable
+from typing import List
+from typing import Union
 
 
 def impute_by_distribution(
@@ -279,36 +278,36 @@ def _validate_donor_group_variables(
     # variable to impute not in required impute variables
     if reference_column in donor_group_columns:
         message = "Imputed variable should not be in given impute variables."
-        logging.warn(message)
+        logging.warning(message)
         raise ValueError(message)
 
     # impute variables and weights are the same length
     if len(donor_group_columns) != len(donor_group_variable_weights):
         message = "Impute weights needs to be the same length as given impute variables."
-        logging.warn(message)
+        logging.warning(message)
         raise ValueError(message)
 
     df_dtypes = dict(df.dtypes)
     for var in donor_group_variable_conditions.keys():
         if len(donor_group_variable_conditions[var]) != 3:
             message = f"Missing boundary conditions for {var}. Needs to be in format [Min, Max, Dtype]"
-            logging.warn(message)
+            logging.warning(message)
             raise ValueError(message)
 
         var_min, var_max, var_dtype = donor_group_variable_conditions[var]
         if var_dtype is not None:
             if var_dtype != df_dtypes[var]:
-                logging.warn(f"{var} dtype is {df_dtypes[var]} and not the required {var_dtype}")
+                logging.warning(f"{var} dtype is {df_dtypes[var]} and not the required {var_dtype}")
 
         if var_min is not None:
             var_min_count = df.filter(F.col(var) > var_min).count()
             if var_min_count > 0:
-                logging.warn(f"{var_min_count} rows have {var} below {var_min}" % (var_min_count, var, var_min))
+                logging.warning(f"{var_min_count} rows have {var} below {var_min}" % (var_min_count, var, var_min))
 
         if var_max is not None:
             var_max_count = df.filter(F.col(var) < var_max).count()
             if var_max_count > 0:
-                logging.warn(f"{var_max_count} rows have {var} above {var_max}")
+                logging.warning(f"{var_max_count} rows have {var} above {var_max}")
 
     logging.info("Summary statistics for donor group variables:")
     logging.info(df.select(donor_group_columns).summary().toPandas())
@@ -408,16 +407,16 @@ def impute_by_k_nearest_neighbours(
 
     if donor_count < impute_count:
         message = "Overall number of donor records is less than the number of records to impute."
-        logging.warn(message)
+        logging.warning(message)
         raise ValueError(message)
 
     if donor_group_column_weights is None:
         donor_group_column_weights = [1] * len(donor_group_columns)
-        logging.warn(f"No imputation weights specified, using default: {donor_group_column_weights}")
+        logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
     if donor_group_column_conditions is None:
         donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
-        logging.warn(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
+        logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
     _validate_donor_group_variables(
         df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
@@ -452,8 +451,8 @@ def impute_by_k_nearest_neighbours(
     no_donors_count = no_donors.count()
     if no_donors_count != 0:
         message = f"{no_donors_count} donor pools with no donors"
-        logging.warn(message)
-        logging.warn(no_donors.toPandas())
+        logging.warning(message)
+        logging.warning(no_donors.toPandas())
         raise ValueError(message)
 
     imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.lit(None))
@@ -465,8 +464,8 @@ def impute_by_k_nearest_neighbours(
             f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
             "minimum donor(s)"
         )
-        logging.warn(message)
-        logging.warn(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
+        logging.warning(message)
+        logging.warning(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
         raise ValueError(message)
 
     frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
