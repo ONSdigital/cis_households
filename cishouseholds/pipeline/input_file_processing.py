@@ -134,13 +134,14 @@ def generate_input_processing_function(
     write_mode="overwrite",
     sep=",",
     cast_to_double_list=[],
-    include_file_reading=True,
+    include_file_searching=True,
 ):
     """Generate an input file processing stage function."""
 
     @register_pipeline_stage(stage_name)
     def _inner_function(**kwargs):
-        if include_file_reading:
+        file_path_list = [kwargs["resource_path"]]
+        if include_file_searching:
             file_path_list = get_files_to_be_processed(**kwargs)
         if not file_path_list:
             print(f"        - No files selected in {kwargs['resource_path']}")  # functional

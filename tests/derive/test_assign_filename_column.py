@@ -2,7 +2,7 @@ import pandas as pd
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.extract import read_csv_to_pyspark_df
+from cishouseholds.pipeline.ETL_scripts import extract_input_data
 
 
 def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
@@ -21,6 +21,6 @@ def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
         ],
         schema="id string, dummy string, csv_filename string",
     )
-    input_df = read_csv_to_pyspark_df(spark_session, csv_file_path.as_posix(), "id|dummy", None, sep="|")
+    input_df = extract_input_data(spark_session, csv_file_path.as_posix(), None, sep="|")
     output_df = assign_filename_column(input_df, "csv_filename")
     assert_df_equality(expected_df, output_df, ignore_nullable=True)

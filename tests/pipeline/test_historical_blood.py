@@ -5,6 +5,8 @@ from mimesis.schema import Schema
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.historical_blood_ETL import add_fields
+from cishouseholds.pipeline.input_file_processing import generate_input_processing_function
+from cishouseholds.pipeline.input_file_processing import historical_blood_parameters
 from cishouseholds.pipeline.input_variable_names import historical_blood_variable_name_map
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.validation_schema import historical_blood_validation_schema
@@ -19,14 +21,10 @@ def historical_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv)
     schema = Schema(schema=get_historical_blood_data_description(mimesis_field))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, filename="N.csv")
-    processed_df = extract_validate_transform_input_data(
-        csv_file_path.as_posix(),
-        historical_blood_variable_name_map,
-        blood_datetime_map,
-        historical_blood_validation_schema,
-        [transform_blood_delta, add_fields],
+    processing_function = generate_input_processing_function(
+        **historical_blood_parameters, include_file_searching=False
     )
-
+    processed_df = processing_function(resource_path=csv_file_path.as_posix())
     return processed_df
 
 
