@@ -37,11 +37,13 @@ def transform_swab_delta(df: DataFrame) -> DataFrame:
     spark_session = get_or_create_spark_session()
     df = assign_filename_column(df, "swab_test_source_file")
 
-    df = assign_column_to_date_string(df, "pcr_date", "pcr_datetime")
+    df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
     df = derive_cq_pattern(
         df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
     )
-    df = assign_unique_id_column(df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_datetime", "cq_pattern"])
+    df = assign_unique_id_column(
+        df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_result_recorded_datetime", "cq_pattern"]
+    )
 
     df = mean_across_columns(
         df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
