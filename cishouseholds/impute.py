@@ -77,7 +77,8 @@ def impute_by_distribution(
 
 def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_column: str, **kwargs) -> DataFrame:
     """
-    Wrapper function for calling imputations, flagging imputed records and recording methods.
+    Wrapper function for calling imputations, flagging imputed records and recording imputation methods.
+
     Parameters
     ----------
     df
@@ -88,6 +89,7 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         The column that will be imputed
     **kwargs
         Key word arguments for imputation_function
+
     Notes
     -----
     imputation_function is expected to create new column with the values to
@@ -122,7 +124,9 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
     """
-    Get imputation value from given column by most repeated UNIQUE value
+    Get imputation value from given column by most commonly occuring value.
+    Results in None when multiple modes are found.
+
     Parameters
     ----------
     df
@@ -132,6 +136,7 @@ def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: 
         The column to be imputed
     group_by_column
         Column name for the grouping
+
     Notes
     -----
     Function provides a column value for each record that needs to be imputed.
@@ -172,6 +177,7 @@ def impute_by_ordered_fill_forward(
 ) -> DataFrame:
     """
     Impute the last observation of a given field by given identity column.
+
     Parameters
     ----------
     df
@@ -194,9 +200,6 @@ def impute_by_ordered_fill_forward(
         the type of order (order_type) is descending, the direction will be
         reversed and the function would do a last observation carried backwards.
     """
-    # the id column with a unique monotonically_increasing_id is auxiliary and
-    # intends to add an arbitrary number to each row.
-    # this will NOT affect the ordering of the rows by orderby_column parameter.
     if order_type == "asc":
         ordering_expression = F.col(order_by_column).asc()
     else:
