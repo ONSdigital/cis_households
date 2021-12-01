@@ -1,10 +1,10 @@
 import json
-from pyspark.sql import SparkSession
 
 import numpy as np
 import pytest
 from mimesis.schema import Field
 from pandas import Timestamp
+from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
 from dummy_data_generation.helpers import CustomRandom
