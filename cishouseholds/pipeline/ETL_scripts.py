@@ -1,16 +1,14 @@
 from itertools import chain
-from typing import Callable
-from typing import List
-
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import SparkSession
+from typing import Callable
+from typing import List
 
 from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_schema_names
 from cishouseholds.edit import update_schema_types
-from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_and_filter
@@ -45,8 +43,13 @@ def extract_validate_transform_input_data(
     return df
 
 
-def extract_input_data(spark_session: SparkSession, resource_path: list, validation_schema: dict, sep: str):
+def extract_input_data(spark_session: SparkSession, file_paths: list, validation_schema: dict, sep: str):
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema)
-    raw_data_header = sep.join(validation_schema.keys())
-    df = read_csv_to_pyspark_df(spark_session, resource_path, raw_data_header, spark_schema, sep=sep)
-    return df
+    return spark_session.read.csv(
+        file_paths,
+        header=True,
+        schema=spark_schema,
+        ignoreLeadingWhiteSpace=True,
+        ignoreTrailingWhiteSpace=True,
+        sep=sep,
+    )

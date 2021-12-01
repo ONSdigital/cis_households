@@ -2,16 +2,20 @@ import csv
 from datetime import datetime
 from io import StringIO
 from operator import add
-from typing import List
-
-from cerberus import TypeDefinition
-from cerberus import Validator
 from pyspark import RDD
 from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Row
 from pyspark.sql import Window
+from typing import List
+from typing import Union
+
+from cerberus import TypeDefinition
+from cerberus import Validator
+
+from cishouseholds.pipeline.load import add_error_file_log_entry
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 # from typing import List
 
@@ -103,6 +107,51 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     """
     header = text_file.first()
     return expected_header == header
+
+
+def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: str = ","):
+    """
+    Validate the header and field count of one or more CSV files on HDFS.
+
+    Parameters
+    ----------
+    file_paths
+        one or more paths to files to validate
+    validation_schema
+        dictionary with ordered keys containing expected column names
+    sep
+        file separator
+    """
+    spark_session = get_or_create_spark_session()
+    if not isinstance(file_paths, list):
+        file_paths = [file_paths]
+
+    expected_header_row = sep.join(validation_schema.keys())
+
+    valid_files = []
+    for file_path in file_paths:
+        error = ""
+        text_file = spark_session.sparkContext.textFile(file_path)
+        valid_csv_header = validate_csv_header(text_file, expected_header_row)
+        valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
+
+        if not valid_csv_header:
+            error += (
+                f"\nInvalid file: Header of {file_path}:\n{text_file.first()})\n "
+                f"does not match expected header:\n{expected_header_row}\n"
+            )
+
+        if not valid_csv_fields:
+            error += (
+                f"\nInvalid file: Number of fields in {file_path} does not match expected number of columns from header"
+            )
+
+        if error != "":
+            print(error)  # functional
+            add_error_file_log_entry(file_path, error)
+        else:
+            valid_files.append(file_path)
+    return valid_files
 
 
 def check_singular_match(
