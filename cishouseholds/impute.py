@@ -396,8 +396,7 @@ def impute_by_k_nearest_neighbours(
     assert impute_count + donor_count == df_length, "Donor and imputing records don't sum to the whole df length"
 
     if impute_count == 0:
-        return df
-
+        return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
     _create_log(start_time=datetime.now(), log_path=log_file_path)
     logging.info(f"Function parameters:\n{locals()}")
 

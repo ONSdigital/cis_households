@@ -1,24 +1,25 @@
+from pyspark.sql import functions as F
+
 import pytest
 from chispa.dataframe_comparer import assert_df_equality
-from pyspark.sql import functions as F
 
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 
 
-@pytest.mark.xfail("KNN uses too much local memory")
+@pytest.mark.integration
 def test_impute_key_columns(spark_session):
     """Test that high level imputation fills all missing values and reduces
     to one record per participant."""
     input_data = [
-        ("A", "A-A", "1", "A", "white", "Female", "1990-01-01", "1990-01-01"),
-        ("A", "A-A", "1", "B", "white", "Female", None, "1990-01-02"),  # Fill forward
-        ("A", "A-B", "1", "B", None, None, "1990-01-01", "1990-01-01"),  # Impute by mode
-        ("B", "B-A", "2", "B", "other", "Female", None, "1990-01-01"),  # Impute by lookup
-        ("C", "C-A", "2", "A", None, "Female", "1990-01-01", "1990-01-01"),  # Impute by KNN
+        ("A", "A-A", "1", "A", "g1", 1, "white", "Female", "1990-01-01", "1990-01-01"),
+        ("A", "A-A", "1", "B", "g1", 1, "white", "Female", None, "1990-01-02"),  # Fill forward
+        ("A", "A-B", "1", "B", "g1", 1, None, None, "1990-01-01", "1990-01-01"),  # Impute by mode
+        ("B", "B-A", "2", "B", "g1", 1, "other", "Female", None, "1990-01-01"),  # Impute by lookup
+        ("C", "C-A", "2", "A", "g1", 1, None, "Female", "1990-01-01", "1990-01-01"),  # Impute by KNN
     ]
     input_df = spark_session.createDataFrame(
         input_data,
-        schema="""ons_household_id string, participant_id string, cis_area string, gor9d string,
+        schema="""ons_household_id string, participant_id string, cis_area string, gor9d string, work_status_group string, dvhsize integer,
                 white_group string, sex string, date_of_birth string, visit_datetime string""",
     )
 
@@ -33,7 +34,7 @@ def test_impute_key_columns(spark_session):
         ("A-A", "white", "Female", "1990-01-01", None, None, None),
         ("A-B", "white", "Female", "1990-01-01", "impute_by_mode", "impute_by_distribution", None),
         ("B-A", "other", "Female", "1990-01-02", None, None, "method"),
-        ("C-A", "white", "Female", "1990-01-01", "impute_by_k_nearest_neighbours", None, None),  # Impute by KNN
+        ("C-A", "other", "Female", "1990-01-01", "impute_by_k_nearest_neighbours", None, None),  # Impute by KNN
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
