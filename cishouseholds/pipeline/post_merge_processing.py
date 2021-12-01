@@ -6,6 +6,7 @@ from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
+from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
@@ -63,6 +64,8 @@ def process_post_merge():
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list):
     """
     Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the participant records.
+
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
@@ -94,7 +97,15 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         reference_column="white_group",
         group_by_column="ons_household_id",
     )
-    # TODO: Add call to impute white_group by donor-based imputation
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="white_group",
+        donor_group_columns=["cis_area"],
+        donor_group_column_weights=[5000],
+        log_file_path="./imputation_logs/",
+    )
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -103,9 +114,15 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         group_by_columns=["white_group", "gor9d"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )  # Relies on sample data being joined on
+    )
 
-    # TODO: Add call to impute date_of_birth using donor-based imputation
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="date_of_birth",
+        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
+        log_file_path="./imputation_logs/",
+    )
 
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]

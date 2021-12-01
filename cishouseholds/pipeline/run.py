@@ -53,18 +53,19 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
     max_digits = len(str(number_of_stages))
     pipeline_has_errored = False
     for n, stage_config in enumerate(pipeline_stage_list):
+        stage_start = datetime.now()
         try:
-            stage_start = datetime.now()
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
             pipeline_stages[stage_name](**stage_config)
-            run_time = (datetime.now() - stage_start).total_seconds()
-            print(f"    - completed in: {run_time:.1f} seconds")  # functional
         except Exception:
             pipeline_has_errored = True
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             print(f"Error: {traceback.format_exc()}")  # functional
+        finally:
+            run_time = (datetime.now() - stage_start).total_seconds()
+            print(f"    - completed in: {run_time:.1f} seconds")  # functional
     return pipeline_has_errored
 
 
