@@ -1,9 +1,9 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType
 from typing import Any
 from typing import Mapping
 
 from pandas.core.frame import DataFrame
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
 
 from cishouseholds.pipeline.config import get_config
 

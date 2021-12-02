@@ -1,11 +1,11 @@
 import subprocess
 from datetime import datetime
-from pyspark.sql import DataFrame
 from typing import List
 from typing import Optional
 from typing import Union
 
 import pandas as pd
+from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import check_table_exists
