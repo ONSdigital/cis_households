@@ -223,7 +223,20 @@ def generate_sample_direct_data(directory, file_date, records):
 def generate_nims_table(table_name, participant_ids, records=10):
     spark_session = get_or_create_spark_session()
     schema = Schema(schema=get_nims_data_description(_, participant_ids))
-    nims_df = spark_session.createDataFrame(pd.DataFrame(schema.create(iterations=records)))
+    nims_pandas_df = pd.DataFrame(schema.create(iterations=records))
+    nims_pandas_df["vaccination_date_dose_1"] = pd.to_datetime(
+        nims_pandas_df["vaccination_date_dose_1"], format="%Y-%m-%d %H:%M:%S.%f"
+    )
+    nims_pandas_df["vaccination_date_dose_2"] = pd.to_datetime(
+        nims_pandas_df["vaccination_date_dose_2"], format="%Y-%m-%d %H:%M:%S.%f"
+    )
+    nims_pandas_df["found_pds"] = pd.to_numeric(nims_pandas_df["found_pds"])
+    nims_pandas_df["pds_conflict"] = pd.to_numeric(nims_pandas_df["pds_conflict"])
+    nims_df = spark_session.createDataFrame(
+        nims_pandas_df,
+        schema="""cis_participant_id string, product_dose_1 string, vaccination_date_dose_1 timestamp,
+        product_dose_2 string, vaccination_date_dose_2 timestamp, found_pds integer, pds_conflict integer""",
+    )
     nims_df.write.saveAsTable(table_name, mode="overwrite")
     return nims_df
 
