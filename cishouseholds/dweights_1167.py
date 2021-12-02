@@ -414,6 +414,7 @@ def precalibration_checkpoints(df, test_type, population_totals, dweight_list):
     population_totals
     dweight_list
     """
+    # TODO: create a column
     # check_1: The design weights are adding up to total population
     check_1 = df.select(F.sum(F.col("scaled_design_weight_adjusted_") + test_type)).collect()[0][0] == population_totals
 
@@ -500,7 +501,7 @@ def function_1180(df):
 
 
 # 1180
-def function_1180_B(df, dataset, dataset_type):
+def create_calibration_var(df, dataset, dataset_type):
     """
     Parameters
     ----------
@@ -562,18 +563,131 @@ def function_1180_B(df, dataset, dataset_type):
 
 
 # 1180
-def function_1180_C(df, dataset, dataset_type):
+def generate_datasets_to_be_weighted_for_calibration(
+    df: DataFrame,
+    processing_step: int
+    # dataset,
+    # dataset_type:str
+):
     """
     Parameters
     ----------
     df
+    processing_step:
+        1 for
+            england_swab_evernever, england_swab_14days, england_long_covid_28days, england_long_covid_42days
+        2 for
+            wales_swab_evernever, wales_swab_14days, wales_long_covid_28days, wales_long_covid_42days,
+            scotland_swab_evernever, scotland_swab_14days, scotland_long_covid_28days, scotland_long_covid_42days,
+            northen_ireland_swab_evernever, northen_ireland_swab_14days, northen_ireland_long_covid_28days,
+            northen_ireland_long_covid_42days
+        3 for
+            england_antibodies_evernever
+        4 for
+            england_antibodies_28daysto
+        5 for
+            wales_antibodies_evernever
+            wales_antibodies_28daysto
+        6 for
+            scotland_antibodies_evernever
+            scotland_antibodies_28daysto
+            northen_ireland_antibodies_evernever
+            northen_ireland_antibodies_28daysto
     """
-    if dataset_type in ["swab_evernever", "swab_14_days", "long_covid_28days", "long_covid_42days"]:
-        df = df.select(
-            "country_name", "participant_id", "scaled_design_weight_adjusted_swab", "p1_swab_longcovid_england"
-        )
+    dataset_dict = {
+        1: {
+            "variable": ["england"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_swab",
+                "p1_swab_longcovid_england",
+            ],
+            "create_dataset": [
+                "england_swab_evernever",
+                "england_swab_14days",
+                "england_long_covid_24days",
+                "england_long_covid_42days",
+            ],
+        },
+        2: {
+            "variable": ["wales", "scotland", "northen_ireland"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_swab",
+                "p1_swab_longcovid_wales_scot_ni",
+            ],
+            "create_dataset": [
+                "wales_swab_evernever",
+                "wales_swab_14days",
+                "wales_long_covid_24days",
+                "wales_long_covid_42days",
+                "scotland_swab_evernever",
+                "scotland_swab_14days",
+                "scotland_long_covid__24days",
+                "scotland_long_covid_42days",
+                "northen_ireland_swab_evernever",
+                "northen_ireland_swab_14days",
+                "northen_ireland_long_covid_24days",
+                "northen_ireland_long_covid_42days",
+            ],
+        },
+        3: {
+            "variable": ["england"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_antibodies",
+                "p1_for_antibodies_evernever_engl",
+                "p2_for_antibodies",
+            ],
+            "create_dataset": ["england_antibodies_evernever"],
+        },
+        4: {
+            "variable": ["england"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_antibodies",
+                "p1_for_antibodies_28daysto_engl",
+                "p2_for_antibodies",
+                "p3_for_antibodies",
+            ],
+            "create_dataset": ["england_antibodies_28daysto"],
+        },
+        5: {
+            "variable": ["wales"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_antibodies",
+                "p1_for_antibodies_wales_scot_ni",
+                "p2_for_antibodies",
+            ],
+            "create_dataset": ["wales_antibodies_evernever", "wales_antibodies_28daysto"],
+        },
+        6: {
+            "variable": ["scotland", "northen_ireland"],
+            "keep_var": [
+                "country_name",
+                "participant_id",
+                "scaled_design_weight_adjusted_antibodies",
+                "p1_for_antibodies_wales_scot_ni",
+            ],
+            "create_dataset": [
+                "scotland_antibodies_evernever",
+                "scotland_antibodies_28daysto",
+                "northen_ireland_antibodies_evernever",
+                "northen_ireland_antibodies_28daysto",
+            ],
+        },
+    }
 
-    # TODO: create the following datasets england_swab_evernever,
-    # england_swab_14days, england_long_covid_24days, england_long_covid_42days
+    df = df.where(F.col("country_name").isin(dataset_dict[processing_step]["variable"])).select(
+        *dataset_dict[processing_step]["keep_var"]
+    )
 
+    # df.where(F.col('country_name').isin(dataset_dict[processing_step]['variable']))
+    # TODO: create datasets dataset_dict[processing_step]['create_dataset']
     return df
