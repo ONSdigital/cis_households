@@ -1,11 +1,10 @@
 import re
 from itertools import chain
-from typing import List
-
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
+from typing import List
 
 
 def assign_proportion_column(
@@ -897,3 +896,10 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
         + F.round((F.col("month_more") + F.col("day_more")) / 3, 0).cast("int"),
     )
     return df.drop("month_more", "day_more")
+
+
+def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
+    """Create a copy of each column in a list, with a '_raw' suffix."""
+    for column in reference_columns:
+        df = df.withColumn(column + "_raw", F.col(column).cast(df.schema[column].dataType))
+    return df
