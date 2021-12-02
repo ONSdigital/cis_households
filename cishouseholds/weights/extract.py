@@ -1,20 +1,23 @@
+from pyspark.sql import DataFrame
+
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import read_csv_to_pyspark_df
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
-spark_session = get_or_create_spark_session()
-from cishouseholds.edit import update_column_values_from_map
-from pyspark.sql import DataFrame
 
+spark_session = get_or_create_spark_session()
 
 # fmt: off
 resource_paths = {
     "old": {
         "path": r"C:\code\cis_households\old_sample_file.csv",
-        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,sample,sample_direct,date _sample_created ,batch_number,file_name,hh_dweight_swab,hh_dweight_atb,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
+        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,sample,sample_direct,date _sample_created ,\
+            batch_number,file_name,hh_dweight_swab,hh_dweight_atb,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
     },
     "new": {
         "path": r"C:\code\cis_households\new_sample_file.csv",
-        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
+        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,\
+            batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
     },
     "nspl_lookup": {"path": r"C:\code\cis_households\lookup.csv", "header": "pcd,ctry,lsoa11"},
     "cis20cd_lookup": {
@@ -41,7 +44,7 @@ resource_paths = {
         "path": r"C:\code\cis_households\population_projectionP.csv",
         "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
     },
-    "aps_lookup":{
+    "aps_lookup": {
         "path": r"C:\code\cis_households\aps_lookup.csv",
         "header": "CASENO,COUNTRY,AGE,ETHGBEUL,ETH11NI,PWTA18"
     }
@@ -87,21 +90,21 @@ lookup_variable_name_maps = {
         "ctry_name": "country_name_#",
     },
     "aps_lookup": {
-        "caseno":"person_id_aps",
-        "country":"country_name",
-        "ethgbeul":"ethnicity_aps_engl_wales_scot",
-        "eth11ni":"ethnicity_aps_northen_ireland",
-        "pwta18":"person_level_weight_aps_18"
+        "caseno": "person_id_aps",
+        "country": "country_name",
+        "ethgbeul": "ethnicity_aps_engl_wales_scot",
+        "eth11ni": "ethnicity_aps_northen_ireland",
+        "pwta18": "person_level_weight_aps_18"
     }
 }
 
 
 aps_value_map = {
     "country_name": {
-        1: "England", 
-        2: "Wales", 
-        3: "Scotland", 
-        4: "Scotland", 
+        1: "England",
+        2: "Wales",
+        3: "Scotland",
+        4: "Scotland",
         5: "Northen Ireland",
     },
     "ethnicity_aps_engl_wales_scot": {
@@ -129,6 +132,7 @@ aps_value_map = {
     },
 }
 # fmt: on
+
 
 def load_auxillary_data(specify=[]):
     """

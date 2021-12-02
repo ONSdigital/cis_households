@@ -18,13 +18,23 @@ def update_data(df: DataFrame, auxillary_dfs: dict):
     wrapper function for calling update column
     """
     df = update_column(
-        df, auxillary_dfs["nspl_lookup"], "lower_super_output_area_code_11", ["country_code_12", "postcode"]
+        df=df,
+        lookup_df=auxillary_dfs["nspl_lookup"],
+        column_name_to_update="lower_super_output_area_code_11",
+        join_on_columns=["country_code_12", "postcode"],
     )
-    df = update_column(df, auxillary_dfs["cis20cd_lookup"], "cis_area_code_20", ["lower_super_output_area_code_11"])
+    df = update_column(
+        df=df,
+        lookup_df=auxillary_dfs["cis20cd_lookup"],
+        column_name_to_update="cis_area_code_20",
+        join_on_columns=["lower_super_output_area_code_11"],
+    )
     drop_columns = [col for col in df.columns if "MATCHED" in col]
     return df.drop(*drop_columns)
 
 
+# 1165
+# requires MATCHED_*col
 def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: str, join_on_columns: List[str]):
     """
     Assign column (column_name_to_update) new value from lookup dataframe (lookup_df) if the value does not match
@@ -44,6 +54,7 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
     return df.drop(f"{column_name_to_update}_from_lookup")
 
 
+# 1163
 def clean_df(df: DataFrame):
     """
     Edit column values by applying predefined logic
@@ -53,6 +64,7 @@ def clean_df(df: DataFrame):
     return df.drop(*drop_columns)
 
 
+# 1166
 def reformat_age_population_table(df: DataFrame, m_f_columns: List[str]):
     """
     recast columns to rows within a population column

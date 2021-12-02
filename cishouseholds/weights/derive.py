@@ -6,6 +6,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
+# 1172
 def assign_ethnicity_white(
     df: DataFrame, column_name_to_assign: str, country_column: str, ethnicity_column_ni: str, ethnicity_column
 ):
@@ -18,22 +19,42 @@ def assign_ethnicity_white(
             (
                 (F.col(country_column) == "northern ireland")
                 & ((F.col(ethnicity_column_ni) == "white") | (F.col(ethnicity_column_ni) == "irish traveller"))
-                | ((F.col(country_column) != "northern ireland")) & ((F.col(ethnicity_column) == "white british")|(F.col(ethnicity_column)=="white irish")|(F.col(ethnicity_column)=="other white"))
+                | ((F.col(country_column) != "northern ireland"))
+                & (
+                    (F.col(ethnicity_column) == "white british")
+                    | (F.col(ethnicity_column) == "white irish")
+                    | (F.col(ethnicity_column) == "other white")
+                )
             ),
             "yes",
         ).otherwise("no"),
     )
     return df
 
-def assign_white_proportion(df:DataFrame, column_name_to_assign:str, white_bool_column:str, country_column:str, weight_column:str, age_column:str):
+
+def assign_white_proportion(
+    df: DataFrame,
+    column_name_to_assign: str,
+    white_bool_column: str,
+    country_column: str,
+    weight_column: str,
+    age_column: str,
+):
     """
     Assign a column with calculated proportion of white adult population by country
     """
     window = Window.partitionBy(country_column)
-    df = df.withColumn(column_name_to_assign, F.sum(F.when(((F.col(white_bool_column)=="yes")&(F.col(age_column)>16)),F.col(weight_column)).otherwise(0)).over(window)/(F.sum(weight_column).over(window)))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(((F.col(white_bool_column) == "yes") & (F.col(age_column) > 16)), F.col(weight_column)).otherwise(0)
+        ).over(window)
+        / (F.sum(weight_column).over(window)),
+    )
     return df
 
 
+# 1065
 def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str):
     """
     assign column to denote whether the data of a given set of columns (selection_columns) matches
@@ -49,14 +70,17 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     return joined_df
 
 
+# 1066
 def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_column: str, batch_colum: str):
     """
     Assign column by checking for highest batch number in most recent date where new is value if true
     and previous otherwise
     """
-    window = Window.partitionBy(date_column).orderBy(date_column, F.desc(batch_colum))
-    df = df.withColumn("DATE_REFERENCE", F.first(date_column).over(window))
-    df = df.withColumn("BATCH_REFERENCE", F.first(batch_colum).over(window))
+    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
+    df = df.withColumn(date_column, F.to_timestamp(F.col(date_column), format="dd/MM/yyyy"))
+
+    df = df.withColumn("DATE_REFERENCE", F.lit(df.select(date_column).collect()[0][0]))
+    df = df.withColumn("BATCH_REFERENCE", F.lit(df.select(batch_colum).collect()[0][0]))
     df = df.withColumn(
         colum_name_to_assign,
         F.when(
@@ -66,6 +90,7 @@ def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_co
     return df.drop("DATE_REFERENCE", "BATCH_REFERENCE")
 
 
+# 1065
 def count_distinct_in_filtered_df(
     df: DataFrame,
     column_name_to_assign: str,
@@ -83,31 +108,35 @@ def count_distinct_in_filtered_df(
     return df
 
 
-def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_column: str, group_by_columns: List[str]):
+# 1065
+def assign_tranche_factor(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, tranche_column: str, group_by_columns: List[str]
+):
     """
     Assign a variable tranche factor as the ratio between 2 derived columns
     (number_eligible_households_tranche_bystrata_enrolment),
-    (number_sampled_households_tranche_bystrata_enrolment) when the household is eligible to be sampled and the tranche
+    (number_sampled_households_tranche_bystrata_enrolment) when the household is eligible to be sampled
+    as the barcode column is not null and the tranche
     value is maximum within the predefined window (window)
     """
     df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_column).isNull(), "No").otherwise("Yes"))
     window = Window.partitionBy(*group_by_columns)
     df = count_distinct_in_filtered_df(
-        df,
-        "number_eligible_households_tranche_bystrata_enrolment",
-        barcode_column,
-        F.col("tranche_eligible_households") == "Yes",
-        window,
+        df=df,
+        column_name_to_assign="number_eligible_households_tranche_bystrata_enrolment",
+        column_to_count=barcode_column,
+        filter_positive=F.col("tranche_eligible_households") == "Yes",
+        window=window,
     )
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
-        F.col("tranche") == df.agg({"tranche": "max"}).first()[0]
+        F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
     )
     df = count_distinct_in_filtered_df(
-        df,
-        "number_sampled_households_tranche_bystrata_enrolment",
-        barcode_column,
-        filter_max_condition,
-        window,
+        df=df,
+        column_name_to_assign="number_sampled_households_tranche_bystrata_enrolment",
+        column_to_count=barcode_column,
+        filter_positive=filter_max_condition,
+        window=window,
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -117,6 +146,4 @@ def assign_tranche_factor(df: DataFrame, column_name_to_assign: str, barcode_col
             / F.col("number_sampled_households_tranche_bystrata_enrolment"),
         ).otherwise("missing"),
     )
-    return df.drop(
-        "number_eligible_households_tranche_bystrata_enrolment", "number_sampled_households_tranche_bystrata_enrolment"
-    )
+    return df

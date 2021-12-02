@@ -4,13 +4,14 @@ from typing import List
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-from cishouseholds.weights.edit import reformat_age_population_table
 
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.weights.derive import assign_white_proportion, assign_ethnicity_white
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.weights.extract import load_auxillary_data
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.weights.derive import assign_ethnicity_white
+from cishouseholds.weights.derive import assign_white_proportion
+from cishouseholds.weights.edit import reformat_age_population_table
+from cishouseholds.weights.extract import load_auxillary_data
 
 
 def proccess_population_projection_df(month: int):
@@ -60,19 +61,41 @@ def proccess_population_projection_df(month: int):
 
     current_projection_df = reformat_age_population_table(current_projection_df, m_f_columns)
 
-    aps_lookup_df = assign_ethnicity_white(dfs["aps_lookup"], "ethnicity_white", "country_name", "ethnicity_aps_northen_ireland", "ethnicity_aps_engl_wales_scot")
-    aps_lookup_df = assign_white_proportion(aps_lookup_df, "percentage_white_ethnicity_country_over16", "ethnicity_white", "country_name", "person_level_weight_aps_18", "age")
+    aps_lookup_df = assign_ethnicity_white(
+        dfs["aps_lookup"],
+        "ethnicity_white",
+        "country_name",
+        "ethnicity_aps_northen_ireland",
+        "ethnicity_aps_engl_wales_scot",
+    )
+    aps_lookup_df = assign_white_proportion(
+        aps_lookup_df,
+        "percentage_white_ethnicity_country_over16",
+        "ethnicity_white",
+        "country_name",
+        "person_level_weight_aps_18",
+        "age",
+    )
 
-    current_projection_df = current_projection_df.join(aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16"), current_projection_df["country_name_#"] == dfs["aps_lookup"]["country_name"], how="left")
+    current_projection_df = current_projection_df.join(
+        aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16"),
+        current_projection_df["country_name_#"] == dfs["aps_lookup"]["country_name"],
+        how="left",
+    )
     current_projection_df = update_values(current_projection_df)
-    current_projection_df = calculate_population_totals(df=current_projection_df, group_by_column="country_name_#", population_column="population",white_proportion_column="percentage_white_ethnicity_country_over16")
+    current_projection_df = calculate_population_totals(
+        df=current_projection_df,
+        group_by_column="country_name_#",
+        population_column="population",
+        white_proportion_column="percentage_white_ethnicity_country_over16",
+    )
     current_projection_df.toPandas().to_csv("test_output_5.csv", index=False)
 
     england_df, wales_df, scotland_df, ni_df, england_28_df = get_calibration_dfs(
         current_projection_df, "country_name_#", "age"
     )
-    for i,df in enumerate([england_28_df, england_df, wales_df, ni_df, scotland_df]):
-        df.toPandas().to_csv(f"country_df{i}.csv",index=False)
+    for i, df in enumerate([england_28_df, england_df, wales_df, ni_df, scotland_df]):
+        df.toPandas().to_csv(f"country_df{i}.csv", index=False)
 
 
 def update_values(df: DataFrame):
@@ -117,7 +140,7 @@ def update_values(df: DataFrame):
     for col, map in maps.items():
         df = update_column_values_from_map(df, col, map)
 
-    for col, map in age_maps.items():
+    for col, map in age_maps.items():  # type: ignore
         df = assign_named_buckets(df=df, reference_column="age", column_name_to_assign=col, map=map)
 
     df = df.withColumn(
@@ -161,7 +184,9 @@ def update_values(df: DataFrame):
     return df
 
 
-def calculate_population_totals(df: DataFrame, group_by_column: str, population_column: str, white_proportion_column:str):
+def calculate_population_totals(
+    df: DataFrame, group_by_column: str, population_column: str, white_proportion_column: str
+):
     window = Window.partitionBy(group_by_column)
     df = df.withColumn(
         "population_country_swab",
@@ -189,12 +214,13 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         ).select(*groupby_columns, "population", *additional_columns)
         dfs = []
         for col in groupby_columns:
-            reformatted_df = df.groupBy(col).pivot(col).agg({"population":"sum"}).drop(col)
-            reformatted_df.show()
+            reformatted_df = df.groupBy(col).pivot(col).agg({"population": "sum"}).drop(col)
             for p_column in reformatted_df.columns:
                 new_column_name = f"P{p_column.rstrip('.0')}"
                 reformatted_df = reformatted_df.withColumnRenamed(p_column, new_column_name)
-                reformatted_df = reformatted_df.withColumn(new_column_name, F.lit(reformatted_df.agg({new_column_name:"max"}).collect()[0][0]))
+                reformatted_df = reformatted_df.withColumn(
+                    new_column_name, F.lit(reformatted_df.agg({new_column_name: "max"}).collect()[0][0])
+                )
             expr = [F.last(col).alias(col) for col in reformatted_df.columns]
             reformatted_df = reformatted_df.agg(*expr)
             dfs.append(reformatted_df)
@@ -203,10 +229,10 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
             return dfs[0]
         else:
             spark = get_or_create_spark_session()
-            spark.conf.set( "spark.sql.crossJoin.enabled" , "true" )
-            return_df = dfs[0].withColumn("TEMP",F.lit(1))
+            spark.conf.set("spark.sql.crossJoin.enabled", "true")
+            return_df = dfs[0].withColumn("TEMP", F.lit(1))
             for df in dfs[1:]:
-                df = df.withColumn("TEMP",F.lit(1))
+                df = df.withColumn("TEMP", F.lit(1))
                 return_df = return_df.join(df, return_df.TEMP == df.TEMP.alias("DF_TEMP"), how="inner").drop("TEMP")
             return return_df
 

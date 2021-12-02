@@ -1,6 +1,0 @@
-from cishouseholds.dweights_1167 import chose_scenario_of_dweight_for_antibody_different_household
-
-
-def test_chose_scenario_of_dweight_for_antibody_different_household():
-
-    pass
