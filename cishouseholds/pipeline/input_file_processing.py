@@ -139,8 +139,16 @@ def generate_input_processing_function(
     """
     Generate an input file processing stage function and register it.
 
+    Returns dataframe for use in testing.
+
     Parameters
     ----------
+    include_hadoop_read_write
+        set to False for use in testing on non-hadoop environments
+
+    Notes
+    -----
+    See underlying functions for other parameter documentation.
     """
 
     @register_pipeline_stage(stage_name)
@@ -151,7 +159,7 @@ def generate_input_processing_function(
         if not file_path_list:
             print(f"        - No files selected in {kwargs['resource_path']}")  # functional
 
-        valid_file_paths = validate_files(kwargs["resource_path"], validation_schema)
+        valid_file_paths = validate_files(kwargs["resource_path"], validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {kwargs['resource_path']}.")  # functional
         else:
@@ -166,6 +174,7 @@ def generate_input_processing_function(
             )
             if include_hadoop_read_write:
                 update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+        return df
 
     _inner_function.__name__ = stage_name
     return _inner_function
