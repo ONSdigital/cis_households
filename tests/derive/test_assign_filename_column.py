@@ -21,6 +21,6 @@ def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
         ],
         schema="id string, dummy string, csv_filename string",
     )
-    input_df = extract_input_data(spark_session, csv_file_path.as_posix(), None, sep="|")
+    input_df = extract_input_data(csv_file_path.as_posix(), None, sep="|")
     output_df = assign_filename_column(input_df, "csv_filename")
     assert_df_equality(expected_df, output_df, ignore_nullable=True)
