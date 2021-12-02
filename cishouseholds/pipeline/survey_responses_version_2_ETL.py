@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_unique_id_column
@@ -59,6 +60,24 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     Generic transformation steps to be applied to all survey response records.
     """
     df = assign_filename_column(df, "survey_response_source_file")
+    df = assign_raw_copies(
+        df,
+        [
+            "think_had_covid_any_symptoms",
+            "symptoms_last_7_days_any",
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_health_care_v0",
+            "work_health_care_v1_v2",
+            "work_status_v0",
+            "work_status_v1",
+            "work_status_v2",
+            "work_social_care",
+            "work_not_from_home_days_per_week",
+            "work_location",
+            "sex",
+        ],
+    )
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
