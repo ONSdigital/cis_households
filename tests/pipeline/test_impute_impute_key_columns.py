@@ -1,6 +1,7 @@
+from pyspark.sql import functions as F
+
 import pytest
 from chispa.dataframe_comparer import assert_df_equality
-from pyspark.sql import functions as F
 
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 
@@ -54,7 +55,7 @@ def test_impute_key_columns(spark_session):
         "sex_imputation_method",
         "date_of_birth_imputation_method",
     ]
-    output_df = impute_key_columns(input_df, lookup_df, ["white_group", "sex", "date_of_birth"])
+    output_df = impute_key_columns(input_df, lookup_df, ["white_group", "sex", "date_of_birth"], log_directory="./")
     for columns in [value_columns, method_columns]:
         assert_df_equality(
             output_df.select(*columns),

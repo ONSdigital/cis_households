@@ -1,9 +1,7 @@
 from itertools import chain
+from pyspark.accumulators import AddingAccumulatorParam
 from typing import Callable
 from typing import List
-
-from pyspark.accumulators import AddingAccumulatorParam
-from pyspark.sql import SparkSession
 
 from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
@@ -25,7 +23,7 @@ def extract_validate_transform_input_data(
     cast_to_double_columns_list: list = [],
 ):
     spark_session = get_or_create_spark_session()
-    df = extract_input_data(spark_session, resource_path, validation_schema, sep)
+    df = extract_input_data(resource_path, validation_schema, sep)
     df = rename_column_names(df, variable_name_map)
     df = convert_columns_to_timestamps(df, datetime_map)
     _validation_schema = update_schema_names(validation_schema, variable_name_map)
@@ -44,8 +42,9 @@ def extract_validate_transform_input_data(
     return df
 
 
-def extract_input_data(spark_session: SparkSession, file_paths: list, validation_schema: dict, sep: str):
-    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema)
+def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
+    spark_session = get_or_create_spark_session()
+    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
         file_paths,
         header=True,
