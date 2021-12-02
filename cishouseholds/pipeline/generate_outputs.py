@@ -1,13 +1,12 @@
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
-
-from pyspark.sql import DataFrame
-from pyspark.sql import functions as F
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
@@ -27,7 +26,7 @@ def generate_outputs():
     # TODO: Check that output dir exists
 
     all_visits_df = extract_from_table("response_level_records")
-    participant_df = extract_from_table("participant_level_key_records")
+    participant_df = extract_from_table("participant_level_with_vaccination_data")
 
     linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
     linked_df = linked_df.withColumn(

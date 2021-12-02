@@ -155,6 +155,7 @@ def join_vaccination_data():
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:
+    """Clean and transform NIMS data after reading from table."""
     df = rename_column_names(df, nims_column_name_map)
     df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
     df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
@@ -164,4 +165,5 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 
 
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
+    """Derive overall vaccination status from NIMS and CIS data."""
     return df
