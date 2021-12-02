@@ -10,42 +10,42 @@ spark_session = get_or_create_spark_session()
 # fmt: off
 resource_paths = {
     "old": {
-        "path": r"C:\code\cis_households\old_sample_file.csv",
+        "path": r"C:\code\weights_inputs\old_sample_file.csv",
         "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,sample,sample_direct,date _sample_created ,\
             batch_number,file_name,hh_dweight_swab,hh_dweight_atb,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
     },
     "new": {
-        "path": r"C:\code\cis_households\new_sample_file.csv",
+        "path": r"C:\code\weights_inputs\new_sample_file.csv",
         "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,\
             batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
     },
-    "nspl_lookup": {"path": r"C:\code\cis_households\lookup.csv", "header": "pcd,ctry,lsoa11"},
+    "nspl_lookup": {"path": r"C:\code\weights_inputs\lookup.csv", "header": "pcd,ctry,lsoa11"},
     "cis20cd_lookup": {
-        "path": r"C:\code\cis_households\cis20lookup.csv",
+        "path": r"C:\code\weights_inputs\cis20lookup.csv",
         "header": "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD",
     },
     "address_lookup": {
-        "path": r"C:\code\cis_households\Address_lookup.csv",
+        "path": r"C:\code\weights_inputs\Address_lookup.csv",
         "header": "uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal",
     },
     "country_lookup": {
-        "path": r"C:\code\cis_households\country_lookup.csv",
+        "path": r"C:\code\weights_inputs\country_lookup.csv",
         "header": "LAD20CD,LAD20NM,CTRY20CD,CTRY20NM",
     },
     "tranche": {
-        "path": r"C:\code\cis_households\tranche.csv",
+        "path": r"C:\code\weights_inputs\tranche.csv",
         "header": "enrolement_date,UAC,lsoa_11,cis20cd,ctry12,ctry_name12,tranche",
     },
     "population_projection_current": {
-        "path": r"C:\code\cis_households\population_projectionC.csv",
+        "path": r"C:\code\weights_inputs\population_projectionC.csv",
         "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
     },
     "population_projection_previous": {
-        "path": r"C:\code\cis_households\population_projectionP.csv",
+        "path": r"C:\code\weights_inputs\population_projectionP.csv",
         "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
     },
     "aps_lookup": {
-        "path": r"C:\code\cis_households\aps_lookup.csv",
+        "path": r"C:\code\weights_inputs\aps_lookup.csv",
         "header": "CASENO,COUNTRY,AGE,ETHGBEUL,ETH11NI,PWTA18"
     }
 }
