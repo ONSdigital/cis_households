@@ -134,14 +134,19 @@ def generate_input_processing_function(
     write_mode="overwrite",
     sep=",",
     cast_to_double_list=[],
-    include_file_searching=True,
+    include_hadoop_read_write=True,
 ):
-    """Generate an input file processing stage function."""
+    """
+    Generate an input file processing stage function and register it.
+
+    Parameters
+    ----------
+    """
 
     @register_pipeline_stage(stage_name)
     def _inner_function(**kwargs):
         file_path_list = [kwargs["resource_path"]]
-        if include_file_searching:
+        if include_hadoop_read_write:
             file_path_list = get_files_to_be_processed(**kwargs)
         if not file_path_list:
             print(f"        - No files selected in {kwargs['resource_path']}")  # functional
@@ -159,7 +164,8 @@ def generate_input_processing_function(
                 sep,
                 cast_to_double_list,
             )
-            update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+            if include_hadoop_read_write:
+                update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
 
     _inner_function.__name__ = stage_name
     return _inner_function
