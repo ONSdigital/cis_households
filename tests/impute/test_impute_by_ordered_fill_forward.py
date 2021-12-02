@@ -3,10 +3,9 @@ from chispa import assert_df_equality
 from cishouseholds.impute import impute_by_ordered_fill_forward
 
 
-def test_last_obs_forward(spark_session):
+def test_impute_by_ordered_fill_forward_asc(spark_session):
+    """Test fill forward with ascending sort."""
     schema = "date string, participant_id string, age integer, age_imputation integer"
-
-    # FORWARD OBSERVATION
     expected_df_fwd = spark_session.createDataFrame(
         data=[
             ("2020-01-01", "DHR_00000000001", 1, None),
@@ -36,6 +35,11 @@ def test_last_obs_forward(spark_session):
         df_input, "age_imputation", "participant_id", "age", "date", order_type="asc"
     )
     assert_df_equality(actual_df, expected_df_fwd, ignore_row_order=True, ignore_column_order=True)
+
+
+def test_impute_by_ordered_fill_forward_desc(spark_session):
+    """Test fill forward with descending sort."""
+    schema = "date string, participant_id string, age integer, age_imputation integer"
 
     # BACKWARDS OBSERVATION
     expected_df_bkw = spark_session.createDataFrame(

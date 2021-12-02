@@ -29,17 +29,21 @@ def run_from_config():
     """
     config = get_config()
     run_datetime = datetime.now()
-    run_id = add_run_log_entry(config, run_datetime)
+    run_id = add_run_log_entry(run_datetime)
     print(f"Run ID: {run_id}")  # functional
     add_run_status(run_id, "started")
+    pipeline_has_errored = False
     try:
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
-        run_pipeline_stages(pipeline_stage_list, config, run_id)
+        pipeline_has_errored = run_pipeline_stages(pipeline_stage_list, config, run_id)
     except Exception as e:
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
     run_time = (datetime.now() - run_datetime).total_seconds()
     print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
+    if pipeline_has_errored:
+        add_run_status(run_id, "finished with errors")
+        raise ValueError("Pipeline finished with errors.")
     add_run_status(run_id, "finished")
 
 
@@ -47,18 +51,22 @@ def run_pipeline_stages(pipeline_stage_list: list, config: dict, run_id: int):
     """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
+    pipeline_has_errored = False
     for n, stage_config in enumerate(pipeline_stage_list):
+        stage_start = datetime.now()
         try:
-            stage_start = datetime.now()
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
             pipeline_stages[stage_name](**stage_config)
-            run_time = (datetime.now() - stage_start).total_seconds()
-            print(f"    - completed in: {run_time:.1f} seconds")  # functional
         except Exception:
+            pipeline_has_errored = True
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             print(f"Error: {traceback.format_exc()}")  # functional
+        finally:
+            run_time = (datetime.now() - stage_start).total_seconds()
+            print(f"    - completed in: {run_time:.1f} seconds")  # functional
+    return pipeline_has_errored
 
 
 if __name__ == "__main__":

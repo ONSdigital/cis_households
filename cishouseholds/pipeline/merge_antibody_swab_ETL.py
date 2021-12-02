@@ -23,6 +23,9 @@ def union_survey_response_files():
         survey_df_list.append(extract_from_table(survey_table))
 
     unioned_survey_responses = union_multiple_tables(survey_df_list)
+    unioned_survey_responses = unioned_survey_responses.dropDuplicates(
+        subset=[column for column in unioned_survey_responses.columns if column != "survey_response_source_file"]
+    )
 
     update_table(unioned_survey_responses, "unioned_survey_responses", mode_overide="overwrite")
 
@@ -35,6 +38,9 @@ def outer_join_blood_results():
 
     blood_table = "transformed_blood_test_data"
     blood_df = extract_from_table(blood_table)
+    blood_df = blood_df.dropDuplicates(
+        subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
+    )
 
     blood_df, failed_blood_join_df = join_assayed_bloods(
         blood_df,
@@ -62,8 +68,12 @@ def merge_blood_ETL():
     """
     survey_table = "unioned_survey_responses"
     antibody_table = "joined_blood_test_data"
-    survey_df = extract_from_table(survey_table)
-    antibody_df = extract_from_table(antibody_table)
+    survey_df = extract_from_table(survey_table).where(
+        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
+    )
+    antibody_df = extract_from_table(antibody_table).where(
+        F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
+    )
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
@@ -86,8 +96,13 @@ def merge_swab_ETL():
     """
     survey_table = "merged_responses_antibody_data"
     swab_table = "transformed_swab_test_data"
-    survey_df = extract_from_table(survey_table)
-    swab_df = extract_from_table(swab_table)
+    survey_df = extract_from_table(survey_table).where(
+        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
+    )
+    swab_df = extract_from_table(swab_table).where(
+        F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
+    )
+    swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
@@ -143,7 +158,7 @@ def merge_swab(survey_df, swab_df):
         labs_df=swab_df,
         barcode_column_name="swab_sample_barcode",
         visit_date_column_name="visit_datetime",
-        received_date_column_name="pcr_datetime",
+        received_date_column_name="pcr_result_recorded_datetime",
         void_value="void",
     )
 
