@@ -75,7 +75,7 @@ def generate_weights():
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-    df.toPandas().to_csv("full_out.csv", index=False)
+    # df.toPandas().to_csv("full_out.csv", index=False)
 
 
 # 1163
