@@ -4,12 +4,16 @@ from itertools import chain
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
+from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.input_variable_names import nims_column_name_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -133,4 +137,34 @@ def merge_dependent_transform(df: DataFrame):
     """
     Transformations depending on the merged dataset or imputed columns.
     """
+    return df
+
+
+@register_pipeline_stage("join_vaccination_data")
+def join_vaccination_data():
+    """
+    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+    """
+    participant_df = extract_from_table("participant_level_key_records")
+    nims_df = extract_from_table(get_config()["nims_table"])
+    nims_df = nims_transformations(nims_df)
+
+    participant_df = participant_df.join(nims_df, on="participant_id", how="left")
+    participant_df = derive_overall_vaccination(participant_df)
+
+    update_table(participant_df, "participant_level_with_vaccination_data", mode_overide="overwrite")
+
+
+def nims_transformations(df: DataFrame) -> DataFrame:
+    """Clean and transform NIMS data after reading from table."""
+    df = rename_column_names(df, nims_column_name_map)
+    df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
+    df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
+
+    # TODO: Derive nims_linkage_status, nims_vaccine_classification, nims_vaccine_dose_1_time, nims_vaccine_dose_2_time
+    return df
+
+
+def derive_overall_vaccination(df: DataFrame) -> DataFrame:
+    """Derive overall vaccination status from NIMS and CIS data."""
     return df
