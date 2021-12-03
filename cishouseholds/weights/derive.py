@@ -1,3 +1,4 @@
+import re
 from typing import Any
 from typing import List
 
@@ -8,7 +9,7 @@ from pyspark.sql.window import Window
 
 # 1172
 def assign_ethnicity_white(
-    df: DataFrame, column_name_to_assign: str, country_column: str, ethnicity_column_ni: str, ethnicity_column
+    df: DataFrame, column_name_to_assign: str, country_column: str, ethnicity_column_ni: str, ethnicity_column: str
 ):
     """
     Assign boolean (yes / no) column to show if participant ethnicity is white
@@ -26,8 +27,8 @@ def assign_ethnicity_white(
                     | (F.col(ethnicity_column) == "other white")
                 )
             ),
-            "yes",
-        ).otherwise("no"),
+            "Yes",
+        ).otherwise("No"),
     )
     return df
 
@@ -52,6 +53,42 @@ def assign_white_proportion(
         / (F.sum(weight_column).over(window)),
     )
     return df
+
+
+# 1174
+# - required columns:
+# - if
+def assign_population_projections(
+    current_projection_df: DataFrame, previous_projection_df: DataFrame, month: int, m_f_columns: List[str]
+):
+    """
+    Use a given input month to create a scalar between previous and current values within m and f
+    subscript columns and update values accordingly
+    """
+    for col in m_f_columns:
+        current_projection_df = current_projection_df.withColumnRenamed(col, f"{col}_new")
+    current_projection_df = current_projection_df.join(
+        previous_projection_df.select("id", *m_f_columns), on="id", how="left"
+    )
+    if month < 6:
+        a = 6 - month
+        b = 6 + month
+    else:
+        a = 18 - month
+        b = month - 6
+
+    for col in m_f_columns:
+        current_projection_df = current_projection_df.withColumn(
+            col, F.lit(1 / 12) * ((a * F.col(col)) + (b * F.col(f"{col}_new")))
+        )
+        current_projection_df = current_projection_df.drop(f"{col}_new")
+    return current_projection_df
+
+
+# 1174
+def derive_m_f_column_list(df: DataFrame):
+    r = re.compile(r"\w{1}\d{1,}")
+    return [item for item in list(filter(r.match, df.columns)) if item in df.columns]
 
 
 # 1065
