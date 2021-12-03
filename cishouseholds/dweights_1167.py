@@ -322,6 +322,36 @@ def assign_total_sampled_households_cis_imd_addressbase(df: DataFrame, country_c
     return df
 
 
+def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    country_column: For northen_ireland, use country, otherwise use cis_area_code_20
+    """
+    window_list = ["sample_addressbase_indicator", country_column, "index_multiple_deprivation_group"]
+    w1 = Window.partitionBy(*window_list)
+    df = df.withColumn(
+        "total_sampled_households_cis_imd_addressbase", F.count(F.col("ons_household_id")).over(w1).cast("int")
+    )
+
+    w2 = Window.partitionBy(*window_list, "interim_participant_id")
+    df = df.withColumn(
+        "total_responded_households_cis_imd_addressbase", F.count(F.col("ons_household_id")).over(w2).cast("int")
+    )
+
+    df = df.withColumn(
+        "total_responded_households_cis_imd_addressbase",
+        F.when(F.col("interim_participant_id") == 0, 0).otherwise(
+            F.col("total_responded_households_cis_imd_addressbase")
+        ),
+    )
+
+    df = df.withColumn("auxiliary", F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1))
+    df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop("auxiliary")
+    return df
+
+
 def function1179_3(df: DataFrame, country_list: List[str], test_type: str) -> DataFrame:
     """
     Parameters
@@ -405,6 +435,7 @@ def function1179_3(df: DataFrame, country_list: List[str], test_type: str) -> Da
     return df
 
 
+# 1179
 def precalibration_checkpoints(df, test_type, population_totals, dweight_list):
     """
     Parameters
@@ -500,69 +531,148 @@ def function_1180(df):
     return df
 
 
-# 1180
-def create_calibration_var(df, dataset, dataset_type):
+# 1180 - TEST DOING
+def create_calibration_var(
+    datasets: List[DataFrame],
+    calibration_type: str,
+    dataset_type: List[str],
+) -> DataFrame:
     """
     Parameters
     ----------
     df
+    dataset
+    calibration_type:
+        allowed values:
+            p1_swab_longcovid_england
+            p1_swab_longcovid_wales_scot_ni
+            p1_for_antibodies_evernever_engl
+            p1_for_antibodies_28daysto_engl
+            p1_for_antibodies_wales_scot_ni
+            p2_for_antibodies
+            p3_for_antibodies_28daysto_engl
+    dataset_type
+        allowed values:
+            england_swab_evernever
+            england_swab_14days
+            england_long_covid_24days
+            england_long_covid_42days
+            wales_swab_evernever
+            wales_swab_14days
+            wales_long_covid_24days
+            wales_long_covid_42days
+            scotland_swab_evernever
+            scotland_swab_14days
+            scotland_long_covid__24days
+            scotland_long_covid_42days
+            northen_ireland_swab_evernever
+            northen_ireland_swab_14days
+            northen_ireland_long_covid_24days
+            northen_ireland_long_covid_42days
+            england_antibodies_evernever
+            england_antibodies_28daysto
+            wales_antibodies_evernever
+            wales_antibodies_28daysto
+            scotland_antibodies_evernever
+            scotland_antibodies_28daysto
+            northen_ireland_antibodies_evernever
+            northen_ireland_antibodies_28daysto
     """
-    df = df.withColumn(
-        "p1_swab_longcovid_england",
-        (F.when(F.col("country_name") == "england")) & (dataset_type),
-        ((F.col("interim_region_code") - 1) * 14 + (F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
-    )
-
-    df = df.withColumn(
-        "p1_swab_longcovid_wales_scot_ni",
-        (
-            (F.when(F.col("country_name") == "wales"))
-            | (F.when(F.col("country_name") == "scotland"))
-            | (F.when(F.col("country_name") == "northern_ireland"))  # TODO: double-check name
-        )
-        & (dataset_type),
-        ((F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
-    )
-
-    df = df.withColumn(
-        "p1_for_antibodies_evernever_engl",
-        (F.when(F.col("country_name") == "england")) & (dataset_type),
-        ((F.col("interim_region_code") - 1) * 10 + (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
-    )
-
-    df = df.withColumn(
-        "p1_for_antibodies_28daysto_engl",
-        (F.when(F.col("country_name") == "england")) & (dataset_type),
-        ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
-    )
-
-    df = df.withColumn(
-        "p1_for_antibodies_wales_scot_ni",
-        (
-            (F.when(F.col("country_name") == "wales"))
-            | (F.when(F.col("country_name") == "scotland"))
-            | (F.when(F.col("country_name") == "northern_ireland"))  # TODO: double-check name
-        )
-        & (dataset_type),
-        ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
-    )
+    calibration_dic = {
+        "p1_swab_longcovid_england": {
+            "dataset": [
+                "england_swab_evernever",
+                "england_swab_14days",
+                "england_long_covid_24days",
+                "england_long_covid_42days",
+            ],
+            "country_name": ["england"],
+            "condition": ((F.col("country_name") == "england")),
+            "operation": (
+                (F.col("interim_region_code") - 1) * 14 + (F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")
+            ),
+        },
+        "p1_swab_longcovid_wales_scot_ni": {
+            "dataset": [
+                "wales_long_covid_24days",
+                "wales_long_covid_42days",
+                "scotland_long_covid_24days",
+                "scotland_long_covid_42days",
+                "northen_ireland_long_covid_24days",
+                "northen_ireland_long_covid_42days",
+                "wales_swab_evernever",
+                "scotland_swab_evernever",
+                "northen_ireland_swab_evernever",
+            ],
+            "country_name": ["wales", "scotland", "northen_ireland"],
+            "condition": (
+                (F.col("country_name") == "wales")
+                | (F.col("country_name") == "scotland")
+                | (F.col("country_name") == "northern_ireland")  # TODO: double-check name
+            ),
+            "operation": ((F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
+        },
+        "p1_for_antibodies_evernever_engl": {
+            "dataset": ["england_antibodies_evernever"],
+            "country_name": ["england"],
+            "condition": (F.col("country_name") == "england"),
+            "operation": (
+                (F.col("interim_region_code") - 1) * 10 + (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")
+            ),
+        },
+        "p1_for_antibodies_28daysto_engl": {
+            "dataset": ["england_antibodies_28daysto"],
+            "country_name": ["england"],
+            "condition": (F.col("country_name") == "england"),
+            "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
+        },
+        "p1_for_antibodies_wales_scot_ni": {
+            "dataset": ["northen_ireland_antibodies_evernever", "northen_ireland_antibodies_28daysto"],
+            "country_name": ["northern_ireland"],
+            "condition": (
+                ((F.col("country_name") == "wales"))
+                | ((F.col("country_name") == "scotland"))
+                | ((F.col("country_name") == "northern_ireland"))  # TODO: double-check name
+            ),
+            "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
+        },
+        "p2_for_antibodies": {
+            "dataset": [
+                "england_antibodies_evernever",
+                "wales_antibodies_evernever",
+                "england_antibodies_28daysto",
+                "wales_antibodies_28daysto",
+            ],
+            "country_name": ["england", "wales"],
+            "condition": (((F.col("country_name") == "wales")) | ((F.col("country_name") == "england"))),
+            "operation": (F.col("ethnicity_white") + 1),
+        },
+        "p3_for_antibodies_28daysto_engl": {
+            "dataset": ["england_antibodies_28daysto"],
+            "country_name": ["england"],
+            "condition": ((F.col("country_name") == "england") & (F.col("age_at_visit") >= 16)),
+            "operation": (F.col("interim_region_code")),
+        },
+    }
+    # TODO-QUESTION: are the dataframes organised by country so that column country isnt needed?
 
     # A.6 Create second partition (p2)/calibration variable
-    df = df.withColumn(
-        "p2_for_antibodies",
-        ((F.when(F.col("country_name") == "wales")) | (F.when(F.col("country_name") == "england"))) & (dataset_type),
-        (F.col("ethnicity_white") + 1),
-    )
+    for dataset in datasets:
+        dataset = dataset.withColumn(
+            calibration_dic[calibration_type],
+            F.when(
+                calibration_dic[calibration_type]["condition"]
+                & (calibration_dic[calibration_type]["dataset"] == dataset_type),
+                calibration_dic[calibration_type]["operation"],
+            ),
+        )
+    import pdb
 
-    df = df.withColumn(
-        "p3_for_antibodies_28daysto_engl",
-        (F.when(F.col("country_name") == "england")) & (dataset_type) & (F.col("age_at_visit") >= 16),
-        F.col("interim_region_code"),
-    )
-    return df
+    pdb.set_trace()
+    return datasets
 
 
-# 1180
+# 1180 - TEST DONE
 def generate_datasets_to_be_weighted_for_calibration(
     df: DataFrame,
     processing_step: int
