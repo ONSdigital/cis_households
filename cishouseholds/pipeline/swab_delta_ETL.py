@@ -6,28 +6,7 @@ from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import mean_across_columns
-from cishouseholds.extract import get_files_to_be_processed
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
-from cishouseholds.pipeline.load import update_table_and_log_source_files
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.timestamp_map import swab_datetime_map
-from cishouseholds.pipeline.validation_schema import swab_validation_schema
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-@register_pipeline_stage("swab_delta_ETL")
-def swab_delta_ETL(**kwargs):
-    """
-    End to end processing of a swab delta CSV file.
-    """
-    file_path_list = get_files_to_be_processed(**kwargs)
-
-    if file_path_list:
-        df = extract_validate_transform_input_data(
-            file_path_list, swab_variable_name_map, swab_datetime_map, swab_validation_schema, [transform_swab_delta]
-        )
-        update_table_and_log_source_files(df, "transformed_swab_test_data", "swab_test_source_file")
 
 
 def transform_swab_delta(df: DataFrame) -> DataFrame:
