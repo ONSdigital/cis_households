@@ -379,3 +379,21 @@ def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") 
         if column_type == "null":
             df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
     return df
+
+
+def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
+    """
+    Convert string columns to a given datatype.
+    Parameters
+    ----------
+    df
+    column_list
+        list of columns to be converted
+    cast_type
+        string containing the datatype for re_casting
+    """
+    for column_name in column_list:
+        if column_name in df.columns:
+            df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
+
+    return df

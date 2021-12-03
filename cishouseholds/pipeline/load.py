@@ -5,7 +5,6 @@ from datetime import datetime
 import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql.session import SparkSession
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -13,71 +12,71 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 def update_table(df, table_name, mode_overide=None):
     storage_config = get_config()["storage"]
-    df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(
-        f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-    )
+    df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
 
 
 def check_table_exists(table_name: str):
-    storage_config = get_config()["storage"]
     spark_session = get_or_create_spark_session()
-    return spark_session.catalog._jcatalog.tableExists(
-        f"{storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-    )
+    return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
 
 
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-    df = spark_session.sql(f"SELECT * FROM {storage_config['database']}.{storage_config['table_prefix']}{table_name}")
-
-    return df
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
     """
     Log the state of the current file to the lookup table
     """
-    storage_config = get_config()["storage"]
-    file_id = get_latest_id(storage_config, "error_file_log", "file_id")
-    spark_session = get_or_create_spark_session()
-    file_log_entry = _create_error_file_log_entry(spark_session, file_id, file_path, error_text)
-    file_log_entry.write.mode("append").saveAsTable(
-        f'{storage_config["database"]}.{storage_config["table_prefix"]}error_file_log'
-    )  # Always append
-    return file_id
+    run_id = get_run_id()
+    file_log_entry = _create_error_file_log_entry(run_id, file_path, error_text)
+    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("error_file_log"))  # Always append
 
 
-def add_run_log_entry(config: dict, run_datetime: datetime):
+def add_run_log_entry(run_datetime: datetime):
     """
     Adds an entry to the pipeline's run log. Pipeline name is inferred from the Spark App name.
     """
     spark_session = get_or_create_spark_session()
     pipeline_name = spark_session.sparkContext.appName
     pipeline_version = pkg_resources.get_distribution(pipeline_name).version
-    storage_config = config["storage"]
-    run_id = get_latest_id(storage_config, "run_log", "run_id")
+    run_id = get_run_id()
 
-    run_log_entry = _create_run_log_entry(config, spark_session, run_datetime, run_id, pipeline_version, pipeline_name)
-    run_log_entry.write.mode("append").saveAsTable(
-        f'{storage_config["database"]}.{storage_config["table_prefix"]}run_log'
-    )  # Always append
+    run_log_entry = _create_run_log_entry(run_datetime, run_id, pipeline_version, pipeline_name)
+    run_log_entry.write.mode("append").saveAsTable(get_full_table_name("run_log"))  # Always append
     return run_id
 
 
 @functools.lru_cache(maxsize=1)
-def get_latest_id(storage_config, table, id_column):
-    if check_table_exists(table):
+def get_run_id():
+    """
+    Get the current run ID.
+    Adds 1 to the latest ID in the ID log and caches this result for this run.
+    Returns 1 if the run log table doesn't yet exist.
+    """
+    run_id = 1
+    if check_table_exists("run_log"):
         spark_session = get_or_create_spark_session()
-        log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}{table}'
-        return 1 + spark_session.read.table(log_table).select(F.max(id_column)).first()[0]
-    return 1
+        log_table = get_full_table_name("run_log")
+        run_id += spark_session.read.table(log_table).select(F.max("run_id")).first()[0]
+    return run_id
 
 
-def _create_error_file_log_entry(spark_session: SparkSession, file_id: int, file_path: str, error_text: str):
+def get_full_table_name(table_short_name):
     """
-    Creates an entry (row) to be insterted into the file log
+    Get the full database.table_name address for the specified table.
+    Based on database and name prefix from config.
     """
+    storage_config = get_config()["storage"]
+    return f'{storage_config["database"]}.{storage_config["table_prefix"]}{table_short_name}'
+
+
+def _create_error_file_log_entry(file_id: int, file_path: str, error_text: str):
+    """
+    Creates an entry (row) to be inserted into the file log
+    """
+    spark_session = get_or_create_spark_session()
     schema = "file_id integer, run_datetime timestamp, file_path string, error string"
 
     file_log_entry = [[file_id, datetime.now(), file_path, error_text]]
@@ -85,12 +84,12 @@ def _create_error_file_log_entry(spark_session: SparkSession, file_id: int, file
     return spark_session.createDataFrame(file_log_entry, schema)
 
 
-def _create_run_log_entry(
-    config: dict, spark_session: SparkSession, run_datetime: datetime, run_id: int, version: str, pipeline: str
-):
+def _create_run_log_entry(run_datetime: datetime, run_id: int, version: str, pipeline: str):
     """
     Creates an entry (row) to be inserted into the run log.
     """
+    spark_session = get_or_create_spark_session()
+    config = get_config()
     schema = """
         run_id integer,
         run_datetime timestamp,
@@ -116,8 +115,7 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
     run_status_entry = [[run_id, datetime.now(), run_status, error_stage, run_error]]
 
     spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-    run_status_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}run_status'
+    run_status_table = get_full_table_name("run_status")
 
     df = spark_session.createDataFrame(run_status_entry, schema)
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
@@ -142,11 +140,8 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
         processed_filename string,
         processed_datetime timestamp
     """
-    storage_config = get_config()["storage"]
-
-    run_id = get_latest_id(storage_config, "run_log", "run_id")
-
+    run_id = get_run_id()
     entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
     df = spark_session.createDataFrame(entry, schema)
-    table_name = f'{storage_config["database"]}.{storage_config["table_prefix"]}processed_filenames'
+    table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append

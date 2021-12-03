@@ -20,6 +20,7 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -46,6 +47,7 @@ def survey_responses_version_2_ETL(**kwargs):
                 transform_survey_responses_version_2_delta,
             ],
             "|",
+            survey_response_cast_to_double,
         )
         update_table_and_log_source_files(
             df, "transformed_survey_responses_v2_data", "survey_response_source_file", "overwrite"
@@ -58,7 +60,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     df = assign_filename_column(df, "survey_response_source_file")
     df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["participant_id", "visit_datetime"]
+        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"

@@ -1,7 +1,7 @@
 swab_variable_name_map = {
     "Sample": "swab_sample_barcode",
     "Result": "pcr_result_classification",
-    "Date Tested": "pcr_datetime",
+    "Date Tested": "pcr_result_recorded_datetime",
     "Lab ID": "pcr_lab_id",
     "testKit": "pcr_method",
     "CH1-Target": "orf1ab_gene_pcr_target",
@@ -93,6 +93,16 @@ sample_ni_variable_name_map = {
     "rgn": "region_code",
     "imd": "index_multiple_deprivation",
     "interim_id": "cis_area_indicator",
+}
+
+nims_column_name_map = {
+    "cis_participant_id": "participant_id",
+    "product_dose_1": "nims_vaccine_dose_1_type",
+    "vaccination_date_dose_1": "nims_vaccine_dose_1_datetime",
+    "product_dose_2": "nims_vaccine_dose_2_type",
+    "vaccination_date_dose_2": "nims_vaccine_dose_2_datetime",
+    "found_pds": "nims_linkage_via_pds",
+    "pds_conflict": "nims_conflicting_linkage_via_pds",
 }
 
 
@@ -621,4 +631,16 @@ survey_responses_v2_variable_name_map = {
     "been_outside_uk_last_country": "outside_uk_last_country",
     "been_outside_uk_last_date": "outside_uk_last_date",
     "Have_you_been_outside_UK_Lastspoke": "outside_uk_since_last_visit",
+}
+
+
+household_population_variable_name_map = {
+    "uprn": "uprn",
+    "postcode": "postcode",
+    "lsoa11cd": "lower_super_output_area_code_11",
+    "cis20cd": "cis_area_code_20",
+    "ctry12cd": "country_code_12",
+    "ctry20nm": "country_name_12",
+    "nhp_cis": "number_of_households_population_by_cis",
+    "nhp_cc12": "number_of_households_population_by_country",
 }
