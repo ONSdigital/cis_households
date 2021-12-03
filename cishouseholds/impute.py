@@ -385,8 +385,8 @@ def impute_by_k_nearest_neighbours(
         message = f"Imputation columns ({donor_group_columns}) are not all found in input dataset."
         raise ValueError(message)
 
-    imputing_df = df.filter((F.col(reference_column).isNull()) | (F.isnan(reference_column)))
-    donor_df = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
+    imputing_df = df.filter(F.col(reference_column).isNull())
+    donor_df = df.filter(F.col(reference_column).isNotNull())
     df_length = df.count()
     impute_count = imputing_df.count()
     donor_count = donor_df.count()
@@ -524,10 +524,7 @@ def impute_by_k_nearest_neighbours(
             "{output_df_length} records are found in the output, which is less than {df_length} in the input."
         )
 
-    missing_count = output_df.filter(
-        (F.col(reference_column).isNull() | F.isnan(reference_column))
-        & (F.col(column_name_to_assign).isNull() | F.isnan(column_name_to_assign))
-    ).count()
+    missing_count = output_df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
     if missing_count != 0:
         raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation.")
 
