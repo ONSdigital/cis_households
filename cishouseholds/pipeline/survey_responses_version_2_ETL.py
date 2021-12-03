@@ -1,6 +1,7 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
@@ -11,6 +12,7 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
+from cishouseholds.derive import assign_true_if_either
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
@@ -51,6 +53,21 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
+    df = assign_true_if_either(
+        df=df,
+        column_name_to_assign="any_symptoms_last_7_days_or_now",
+        reference_column1="symptoms_last_7_days_any",
+        reference_column2="think_have_covid_symptoms_now",
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="any_symptoms_around_visit",
+        symptoms_bool_column="any_symptoms_last_7_days_or_now",
+        id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
+    )
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
