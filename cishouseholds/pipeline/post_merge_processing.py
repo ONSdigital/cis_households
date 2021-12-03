@@ -31,14 +31,17 @@ def process_post_merge():
         imputed_value_lookup_df = None
 
     # TODO: Need to join geographies from household level table before imputing
-    if "gor9d" not in df.columns:
-        df = df.withColumn("gor9d", F.lit("A"))
+    for col in ["gor9d", "work_status_group", "dvhsize", "cis_area"]:
+        if col not in df.columns:
+            df = df.withColumn(col, F.lit("A"))
     # TODO: Remove once white group derived on survey responses
     if "white_group" not in df.columns:
         df = df.withColumn("white_group", F.lit("white"))
 
     key_columns = ["white_group", "sex", "date_of_birth"]
-    key_columns_imputed_df = impute_key_columns(df, imputed_value_lookup_df, key_columns)
+    key_columns_imputed_df = impute_key_columns(
+        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
+    )
 
     imputed_values_df = key_columns_imputed_df.filter(
         reduce(
@@ -65,7 +68,7 @@ def process_post_merge():
     update_table(response_level_records_df, "response_level_records", mode_overide="overwrite")
 
 
-def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list):
+def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
     Most imputations require geographic data being joined onto the participant records.
@@ -108,7 +111,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         reference_column="white_group",
         donor_group_columns=["cis_area"],
         donor_group_column_weights=[5000],
-        log_file_path="./imputation_logs/",
+        log_file_path=log_directory,
     )
 
     deduplicated_df = impute_and_flag(
@@ -125,7 +128,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         impute_by_k_nearest_neighbours,
         reference_column="date_of_birth",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path="./imputation_logs/",
+        log_file_path=log_directory,
     )
 
     return deduplicated_df.select(

@@ -33,6 +33,7 @@ def spark_session():
         .config("spark.dynamicAllocation.enabled", "true")
         .config("spark.dynamicAllocation.maxExecutors", 3)
         .config("spark.sql.shuffle.partitions", 18)
+        .config("spark.sql.crossJoin.enabled", "true")
         .getOrCreate()
     )
     yield spark_session
