@@ -31,23 +31,24 @@ def assign_any_symptoms_around_visit(
     return df
 
 
-def assign_true_if_either(
+def assign_true_if_any(
     df: DataFrame,
     column_name_to_assign: str,
-    reference_column1: str,
-    reference_column2: str,
+    reference_columns: List[str],
     true_false_values: List[Union[str, int]],
 ):
     """
     Assign column true if either of 2 reference columns are true
     """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.col(reference_column1) == true_false_values[0]) | (F.col(reference_column2) == true_false_values[0]),
-            true_false_values[0],
-        ).otherwise(true_false_values[1]),
-    )
+    df = df.withColumn(column_name_to_assign, F.lit(true_false_values[1]))
+    for col in reference_columns:
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                F.col(col) == true_false_values[0],
+                true_false_values[0],
+            ).otherwise(F.col(col)),
+        )
     return df
 
 
