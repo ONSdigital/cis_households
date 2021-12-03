@@ -1,11 +1,54 @@
 import re
 from itertools import chain
 from typing import List
+from typing import Union
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
+
+
+def assign_any_symptoms_around_visit(
+    df: DataFrame,
+    column_name_to_assign: str,
+    symptoms_bool_column: str,
+    id_column: str,
+    visit_date_column: str,
+    visit_id_column: str,
+):
+    """ """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column, visit_id_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(symptoms_bool_column) == "Yes")
+            | (F.lag(symptoms_bool_column, 1).over(window) == "Yes")
+            | (F.lag(symptoms_bool_column, -1).over(window) == "Yes"),
+            "Yes",
+        ).otherwise("No"),
+    )
+    return df
+
+
+def assign_true_if_either(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column1: str,
+    reference_column2: str,
+    true_false_values: List[Union[str, int]],
+):
+    """
+    Assign column true if either of 2 reference columns are true
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(reference_column1) == true_false_values[0]) | (F.col(reference_column2) == true_false_values[0]),
+            true_false_values[0],
+        ).otherwise(true_false_values[1]),
+    )
+    return df
 
 
 def assign_proportion_column(
