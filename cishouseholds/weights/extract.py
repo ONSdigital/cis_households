@@ -1,7 +1,7 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.extract import read_csv_to_pyspark_df
+from cishouseholds.extract import re
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 

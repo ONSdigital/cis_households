@@ -9,8 +9,8 @@ def test_reformat_calibration_df(spark_session):
             ("A", "B", 3),
             ("A", "B", 2),
             ("A", "B", 1),
-            ("A", "B", 5),
-            ("A", "B", 4),
+            ("A", None, 5),
+            ("A", None, 4),
         ],
         schema="""
             groupby1 string,
@@ -28,4 +28,5 @@ def test_reformat_calibration_df(spark_session):
             """,
     )
     output_df = reformat_calibration_df(df=input_df, pivot_column="pivot", groupby_columns=["groupby1", "groupby2"])
+    output_df.show()
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
