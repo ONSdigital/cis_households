@@ -1,6 +1,7 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
@@ -54,6 +55,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign="ever_work_person_facing_or_social_care",
+        groupby_column="participant_id",
+        reference_column="work_social_care",
+        count_if=[1, 2],
+    )  # not sure of correct  PIPELINE categories
     return df
 
 

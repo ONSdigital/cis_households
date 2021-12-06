@@ -1,11 +1,36 @@
 import re
 from itertools import chain
 from typing import List
+from typing import Union
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
+
+
+def assign_column_given_proportion(
+    df: DataFrame,
+    column_name_to_assign: str,
+    groupby_column: str,
+    reference_columns: List[str],
+    count_if: List[Union[str, int]],
+):
+    """
+    Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
+    """
+    window = Window.partitionBy(groupby_column)
+    assign_tr
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.sum(F.when(F.col(reference_column).isin(count_if), F.lit(1)).otherwise(F.lit(0))).over(window)
+            / F.sum(F.lit(1)).over(window)
+            >= 0.3,
+            1,
+        ).otherwise(0),
+    )
+    return df
 
 
 def assign_proportion_column(
