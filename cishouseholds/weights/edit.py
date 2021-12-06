@@ -20,7 +20,7 @@ def null_to_value(df: DataFrame, column_name_to_update: str, value: int = 0):
 def reformat_calibration_df(df: DataFrame, pivot_column: str, groupby_columns: List[str]):
     dfs = []
     for col in groupby_columns:
-        reformatted_df = df.groupBy(col).pivot(col).agg({pivot_column: "sum"}).drop(col)
+        reformatted_df = df.groupBy(col).pivot(col).agg({pivot_column: "sum"}).drop(col, "null")
         for p_column in reformatted_df.columns:
             new_column_name = f"P{p_column.rstrip('.0')}"
             reformatted_df = reformatted_df.withColumnRenamed(p_column, new_column_name)
@@ -42,6 +42,38 @@ def reformat_calibration_df(df: DataFrame, pivot_column: str, groupby_columns: L
             return_df = return_df.join(df, return_df.TEMP == df.TEMP.alias("DF_TEMP"), how="inner").drop("TEMP")
         # spark.conf.set("spark.sql.crossJoin.enabled", "false")
         return return_df
+
+
+def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupby_columns: List[str]):
+    """
+    Format a dataframe containing multiple population groups and a column of population values
+    into a 2xn dataframe of groups and population totals
+    Parameters
+    ---------
+    df
+    population_column
+    groupby_columns
+    """
+    for i, col in enumerate(groupby_columns):
+        temp_df = (
+            df.groupBy(col)
+            .agg({population_column: "sum"})
+            .withColumnRenamed(col, "group")
+            .withColumn(
+                "group",
+                F.when(
+                    F.col("group").isNotNull(), F.concat_ws("", F.lit(f"{col.split('_')[1]}"), F.col("group"))
+                ).otherwise("missing"),
+            )
+        )
+        if i == 0:
+            grouped_df = temp_df
+        else:
+            grouped_df = grouped_df.unionByName(temp_df)
+    grouped_df = grouped_df.filter(F.col("group") != "missing").withColumnRenamed(
+        f"sum({population_column})", "population_total"
+    )
+    return grouped_df
 
 
 def update_population_values(df: DataFrame):

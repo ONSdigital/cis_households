@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.edit import reformat_calibration_df
+from cishouseholds.weights.edit import reformat_calibration_df_simple
 
 
-def test_reformat_calibration_df(spark_session):
+def test_reformat_calibration_df_simple(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             ("A", "B", 3),
@@ -13,19 +13,19 @@ def test_reformat_calibration_df(spark_session):
             ("A", None, 4),
         ],
         schema="""
-            groupby1 string,
-            groupby2 string,
+            groupby_1 string,
+            groupby_2 string,
             pivot integer
             """,
     )
     expected_df = spark_session.createDataFrame(
-        data=[
-            (15, 6),
-        ],
+        data=[("1A", 15), ("2B", 6)],
         schema="""
-            PA integer,
-            PB integer
+            group string,
+            population_total long
             """,
     )
-    output_df = reformat_calibration_df(df=input_df, pivot_column="pivot", groupby_columns=["groupby1", "groupby2"])
+    output_df = reformat_calibration_df_simple(
+        df=input_df, population_column="pivot", groupby_columns=["groupby_1", "groupby_2"]
+    )
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

@@ -1,12 +1,14 @@
-from pyspark.sql import DataFrame, SparkSession
-from pyspark import RDD
 import csv
-from typing import Union
 from io import StringIO
-from pyspark.sql.types import StructType
 from operator import add
+from typing import Union
+
+from pyspark import RDD
+from pyspark.sql import DataFrame
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
+
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.extract import re
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -138,6 +140,13 @@ aps_value_map = {
 }
 # fmt: on
 
+# basic local csv reading----------------------
+
+
+class InvalidFileError(Exception):
+    pass
+
+
 def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     """
     Function to validate the number of fields within records of a csv file.
@@ -174,6 +183,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     """
     header = text_file.first()
     return expected_header == header
+
 
 def read_csv_to_pyspark_df(
     spark_session: SparkSession,
@@ -227,6 +237,9 @@ def read_csv_to_pyspark_df(
         sep=sep,
         **kwargs,
     )
+
+
+# --------------------------------------------
 
 
 def load_auxillary_data(specify=[]):
