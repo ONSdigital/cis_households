@@ -2,8 +2,32 @@ from chispa import assert_df_equality
 
 from cishouseholds.dweights_1167 import chose_scenario_of_dweight_for_antibody_different_household
 from cishouseholds.dweights_1167 import create_calibration_var
+from cishouseholds.dweights_1167 import function1179_1
 from cishouseholds.dweights_1167 import function1179_2
 from cishouseholds.dweights_1167 import generate_datasets_to_be_weighted_for_calibration
+
+
+# Jamie
+def test_function1179_1(spark_session):
+    schema_expected = """country_name string,
+                        index_multiple_deprivation integer,
+                        index_multiple_deprivation_group integer"""
+    data_expected_df = [
+        # fmt: off
+        ("england", 6569,   1),
+        ("england", 15607,  3),
+        ("england", 57579,  5),
+        ("wales",   383,    2),
+        ("wales",   1042,   3),
+        ("wales",   1358,   4),
+        # fmt: on
+    ]
+    df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected)
+    df_input = df_expected.drop("index_multiple_deprivation_group")
+
+    df_output = function1179_1(df_input)
+    # import pdb; pdb.set_trace()
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
 def test_function1179_2(spark_session):
@@ -32,7 +56,7 @@ def test_function1179_2(spark_session):
     df_input = df_expected.drop(
         "total_sampled_households_cis_imd_addressbase", "total_responded_households_cis_imd_addressbase"
     )
-
+    # import pdb; pdb.set_trace()
     df_output = function1179_2(df_input, "cis_area_code_20")
 
 

@@ -8,6 +8,7 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 
 
@@ -261,12 +262,37 @@ def function_name_1178(
 
 
 # 1178 needed filtering function
-def dataset_generation(df, logic):
-    return df.where(logic)
+# def dataset_generation(df, logic):
+#     return df.where(logic)
 
 
 # 1179
-def function1179_1(df):
+# def function1179_1(df):
+#     """
+#     Parameters
+#     ----------
+#     df
+#     """
+#     # A.1 group households  considering  values to index of multiple deprivation
+#     map_index_multiple_deprivation_group_country = {
+#         "england": {0: 1, 6569: 2, 13138: 3, 19707: 4, 26276: 5},
+#         "wales": {0: 1, 764: 2, 1146: 3, 1528: 4, 1529: 5},
+#         "scotland": {0: 1, 2790: 2, 4185: 3, 5580: 4, 5581: 5},
+#         "northen_ireland": {0: 1, 356: 2, 534: 3, 712: 4, 713: 5},
+#     }
+
+#     for country in map_index_multiple_deprivation_group_country.keys():
+#         df = assign_named_buckets(
+#             df=df,
+#             reference_column="index_multiple_deprivation",
+#             column_name_to_assign="index_multiple_deprivation_group",
+#             map=map_index_multiple_deprivation_group_country[country],
+#         )
+
+#     return df
+
+# Jamie
+def function1179_1(df: DataFrame):
     """
     Parameters
     ----------
@@ -274,21 +300,53 @@ def function1179_1(df):
     """
     # A.1 group households  considering  values to index of multiple deprivation
     map_index_multiple_deprivation_group_country = {
-        "england": {0: 1, 6569: 2, 13138: 3, 19707: 4, 26276: 5},
-        "wales": {0: 1, 764: 2, 1146: 3, 1528: 4, 1529: 5},
-        "scotland": {0: 1, 2790: 2, 4185: 3, 5580: 4, 5581: 5},
-        "northen_ireland": {0: 1, 356: 2, 534: 3, 712: 4, 713: 5},
+        "england": {0: 1, 6570: 2, 13139: 3, 19708: 4, 26277: 5},
+        "wales": {0: 1, 383: 2, 765: 3, 1147: 4, 1529: 5},
+        "scotland": {0: 1, 1396: 2, 2791: 3, 4186: 4, 5581: 5},
+        "northen_ireland": {0: 1, 179: 2, 357: 3, 535: 4, 713: 5},
     }
 
-    for country in map_index_multiple_deprivation_group_country.keys():
-        df = assign_named_buckets(
-            df=df,
-            reference_column="index_multiple_deprivation",
-            column_name_to_assign="index_multiple_deprivation_group",
-            map=map_index_multiple_deprivation_group_country[country],
-        )
-
+    # test
+    df = union_multiple_tables(
+        [
+            assign_named_buckets(
+                df=df.where(F.col("country_name") == country),
+                reference_column="index_multiple_deprivation",
+                column_name_to_assign="index_multiple_deprivation_group",
+                map=map_index_multiple_deprivation_group_country[country],
+            )
+            for country in map_index_multiple_deprivation_group_country.keys()
+        ]
+    )
     return df
+
+
+# def function1179_1(df: DataFrame):
+#     map_deprivation_group_country = {
+#         "england": {
+#             1: F.col("index_multiple_deprivation").between(0, 6569),
+#             2: F.col("index_multiple_deprivation").between(6570, 13138),
+#             3: F.col("index_multiple_deprivation").between(13139, 19707),
+#             4: F.col("index_multiple_deprivation").between(19708, 26276),
+#             #F.col("index_multiple_deprivation").between(26277,),
+#         },
+#     }
+#         #     index_multiple_deprivation <= 6569
+#         # 6570 <= index_multiple_deprivation <= 13138
+#         # 13139 <= index_multiple_deprivation <= 19707
+#         # 19708 <= index_multiple_deprivation <= 26276
+#         # index_multiple_deprivation >= 26277
+
+#     for country in ['england']:
+#         for step in map_deprivation_group_country[country].keys():
+#             df = df.withColumn(
+#                 'index_multiple_deprivation_group',
+#                 F.when(
+#                     map_deprivation_group_country['england'][2] & (F.col('country_name') == country), 1
+#                 )
+#             )
+
+#     return df
 
 
 # 1179
@@ -329,26 +387,45 @@ def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
     df
     country_column: For northen_ireland, use country, otherwise use cis_area_code_20
     """
-    window_list = ["sample_addressbase_indicator", country_column, "index_multiple_deprivation_group"]
-    w1 = Window.partitionBy(*window_list)
+
+    window_list_nni = ["sample_addressbase_indicator", "cis_area_code", "index_multiple_deprivation_group"]
+    window_list_ni = ["sample_addressbase_indicator", country_column, "index_multiple_deprivation_group"]
+
+    w1_nni = Window.partitionBy(*window_list_nni)
+    w1_ni = Window.partitionBy(*window_list_ni)
+
     df = df.withColumn(
-        "total_sampled_households_cis_imd_addressbase", F.count(F.col("ons_household_id")).over(w1).cast("int")
+        "total_sampled_households_cis_imd_addressbase",
+        F.when(
+            F.col("country_name") != "northern_ireland", F.count(F.col("ons_household_id")).over(w1_nni).cast("int")
+        ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
 
-    w2 = Window.partitionBy(*window_list, "interim_participant_id")
+    w2_nni = Window.partitionBy(*window_list_nni, "interim_participant_id")
+    w2_ni = Window.partitionBy(*window_list_ni, "interim_participant_id")
     df = df.withColumn(
-        "total_responded_households_cis_imd_addressbase", F.count(F.col("ons_household_id")).over(w2).cast("int")
+        "total_responded_households_cis_imd_addressbase",
+        F.when(
+            F.col("country_name") != "northern_ireland", F.count(F.col("ons_household_id")).over(w2_nni).cast("int")
+        ).otherwise(F.count(F.col("ons_household_id")).over(w2_ni).cast("int")),
     )
 
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
-        F.when(F.col("interim_participant_id") == 0, 0).otherwise(
+        F.when(F.col("interim_participant_id") != 1, 0).otherwise(
             F.col("total_responded_households_cis_imd_addressbase")
         ),
     )
 
-    df = df.withColumn("auxiliary", F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1))
+    df = df.withColumn(
+        "auxiliary",
+        F.when(
+            F.col("country_name") != "northern_ireland",
+            F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_nni),
+        ).otherwise(F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_ni)),
+    )
     df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop("auxiliary")
+
     return df
 
 
@@ -452,9 +529,10 @@ def precalibration_checkpoints(df, test_type, population_totals, dweight_list):
     # check_2 and check_3: The  design weights are all are positive AND check there are no missing design weights
     for dweight in dweight_list:
         df = df.withColumn("not_positive_or_null", F.when((F.col(dweight) < 0) | (F.col(dweight).isNull()), 1))
-    check_2_3 = [1] in df.select("not_positive_or_null").distinct().collect()[0]
+    check_2_3 = 1 not in df.select("not_positive_or_null").distinct().collect()[0]
 
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
+    # TODO check with Stefen
     check_4 = True
 
     return check_1, check_2_3, check_4
@@ -533,7 +611,8 @@ def function_1180(df):
 
 # 1180 - TEST DOING
 def create_calibration_var(
-    datasets: List[DataFrame],
+    df: DataFrame,
+    # datasets: List[DataFrame],
     calibration_type: str,
     dataset_type: List[str],
 ) -> DataFrame:
@@ -623,16 +702,16 @@ def create_calibration_var(
         "p1_for_antibodies_28daysto_engl": {
             "dataset": ["england_antibodies_28daysto"],
             "country_name": ["england"],
-            "condition": (F.col("country_name") == "england"),
-            "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
+            "condition": F.col("country_name") == "england",
+            "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
             "dataset": ["northen_ireland_antibodies_evernever", "northen_ireland_antibodies_28daysto"],
             "country_name": ["northern_ireland"],
             "condition": (
-                ((F.col("country_name") == "wales"))
-                | ((F.col("country_name") == "scotland"))
-                | ((F.col("country_name") == "northern_ireland"))  # TODO: double-check name
+                (F.col("country_name") == "wales")
+                | (F.col("country_name") == "scotland")
+                | (F.col("country_name") == "northern_ireland")  # TODO: double-check name
             ),
             "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
         },
@@ -657,8 +736,9 @@ def create_calibration_var(
     # TODO-QUESTION: are the dataframes organised by country so that column country isnt needed?
 
     # A.6 Create second partition (p2)/calibration variable
-    for dataset in datasets:
-        dataset = dataset.withColumn(
+
+    for calibration_type in calibration_dic.keys():
+        df = df.withColumn(
             calibration_dic[calibration_type],
             F.when(
                 calibration_dic[calibration_type]["condition"]
@@ -666,10 +746,7 @@ def create_calibration_var(
                 calibration_dic[calibration_type]["operation"],
             ),
         )
-    import pdb
-
-    pdb.set_trace()
-    return datasets
+    return df
 
 
 # 1180 - TEST DONE
@@ -800,4 +877,6 @@ def generate_datasets_to_be_weighted_for_calibration(
 
     # df.where(F.col('country_name').isin(dataset_dict[processing_step]['variable']))
     # TODO: create datasets dataset_dict[processing_step]['create_dataset']
+
+    # TODO: no need to create multiple df
     return df
