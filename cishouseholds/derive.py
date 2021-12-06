@@ -8,9 +8,15 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
-def count_true_row_wise(df:DataFrame, column_name_to_assign:str, cols:List[str]):
-    df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in cols]))
+
+def count_true_row_wise(df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: int):
+    df = (
+        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
+    )
     return df
+
 
 def assign_any_symptoms_around_visit(
     df: DataFrame,
@@ -20,7 +26,10 @@ def assign_any_symptoms_around_visit(
     visit_date_column: str,
     visit_id_column: str,
 ):
-    """ """
+    """
+    Assign a column with boolean (Yes, No) if sympoms present around visit, derived
+    from if symtoms bool columns reported any true values -1 +1 from time window
+    """
     window = Window.partitionBy(id_column).orderBy(visit_date_column, visit_id_column)
     df = df.withColumn(
         column_name_to_assign,

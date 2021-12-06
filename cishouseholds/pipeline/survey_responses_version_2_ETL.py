@@ -17,6 +17,7 @@ from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
+from cishouseholds.derive import count_true_row_wise
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
@@ -77,9 +78,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "symptoms_last_7_days_cough",
             "symptoms_last_7_days_fever",
             "symptoms_last_7_days_loss_of_smell",
-            "symptoms_last_7_days_loss_of_taste"
+            "symptoms_last_7_days_loss_of_taste",
         ],
-        true_false_values=["Yes","No"]
+        true_false_values=["Yes", "No"],
     )
     df = assign_any_symptoms_around_visit(
         df=df,
@@ -88,6 +89,25 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         id_column="participant_id",
         visit_date_column="visit_date",
         visit_id_column="visit_id",
+    )
+    df = count_true_row_wise(
+        df=df,
+        column_name_to_assign="symptoms_last_7_days_symptom_count",
+        selection_columns=[
+            "symptoms_last_7_days_fever",
+            "symptoms_last_7_days_muscle_ache_myalgia",
+            "symptoms_last_7_days_fatigue_weakness",
+            "symptoms_last_7_days_sore_throat",
+            "symptoms_last_7_days_cough",
+            "symptoms_last_7_days_shortness_of_breath",
+            "symptoms_last_7_days_headache",
+            "symptoms_last_7_days_nausea_vomiting",
+            "symptoms_last_7_days_abdominal_pain",
+            "symptoms_last_7_days_diarrhoea",
+            "symptoms_last_7_days_loss_of_taste",
+            "symptoms_last_7_days_loss_of_smell",
+        ],
+        count_if_value=1,
     )
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
