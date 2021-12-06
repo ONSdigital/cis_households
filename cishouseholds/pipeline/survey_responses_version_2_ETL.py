@@ -40,7 +40,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # TODO: Add week and month commencing variables
     # TODO: Add ethnicity grouping and editing
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
-    df = assign_column_to_date_string(df, "sample_taken_date_string", reference_column="samples_taken_datetime")
+    df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
     # df = assign_date_difference(
     #     df, "contact_known_or_suspected_covid_days_since", "contact_any_covid_date", "visit_datetime"
@@ -123,12 +123,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
-        "work_status",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
-    df = update_work_facing_now_column(
-        df,
-        "work_person_facing_now",
         "work_status",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
