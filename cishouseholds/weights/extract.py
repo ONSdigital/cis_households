@@ -1,5 +1,5 @@
-from pyspark.sql import DataFrame
-
+from pyspark.sql import DataFrame, SparkSession
+from pyspark import RDD
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import re
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -132,6 +132,43 @@ aps_value_map = {
     },
 }
 # fmt: on
+
+def validate_csv_fields(text_file: RDD, delimiter: str = ","):
+    """
+    Function to validate the number of fields within records of a csv file.
+    Parameters
+    ----------
+    text_file
+        A text file (csv) that has been ready by spark context
+    delimiter
+        Delimiter used in csv file, default as ','
+    """
+
+    def count_fields_in_row(delimiter, row):
+        f = StringIO(row)
+        reader = csv.reader(f, delimiter=delimiter)
+        n_fields = len(next(reader))
+        return n_fields
+
+    header = text_file.first()
+    number_of_columns = count_fields_in_row(delimiter, header)
+    error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
+    return True if error_count == 0 else False
+
+
+def validate_csv_header(text_file: RDD, expected_header: str):
+    """
+    Function to validate header in csv file matches expected header.
+
+    Parameters
+    ----------
+    text_file
+        A text file (csv) that has been ready by spark context
+    expected_header
+        Exact header expected in csv file
+    """
+    header = text_file.first()
+    return expected_header == header
 
 def read_csv_to_pyspark_df(
     spark_session: SparkSession,
