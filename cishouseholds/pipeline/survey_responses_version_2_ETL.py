@@ -70,6 +70,17 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         reference_columns=["symptoms_last_7_days_any", "think_have_covid_symptoms_now"],
         true_false_values=["Yes", "No"],
     )
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="sympt_now_cghfevamn",
+        reference_columns=[
+            "symptoms_last_7_days_cough",
+            "symptoms_last_7_days_fever",
+            "symptoms_last_7_days_loss_of_smell",
+            "symptoms_last_7_days_loss_of_taste"
+        ],
+        true_false_values=["Yes","No"]
+    )
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="any_symptoms_around_visit",
