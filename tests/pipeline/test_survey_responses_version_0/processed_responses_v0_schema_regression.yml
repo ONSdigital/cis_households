@@ -544,7 +544,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: sample_taken_date_string
+  name: samples_taken_date_string
   nullable: true
   type: string
 - metadata: {}

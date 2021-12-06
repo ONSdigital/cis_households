@@ -95,6 +95,16 @@ sample_ni_variable_name_map = {
     "interim_id": "cis_area_indicator",
 }
 
+nims_column_name_map = {
+    "cis_participant_id": "participant_id",
+    "product_dose_1": "nims_vaccine_dose_1_type",
+    "vaccination_date_dose_1": "nims_vaccine_dose_1_datetime",
+    "product_dose_2": "nims_vaccine_dose_2_type",
+    "vaccination_date_dose_2": "nims_vaccine_dose_2_datetime",
+    "found_pds": "nims_linkage_via_pds",
+    "pds_conflict": "nims_conflicting_linkage_via_pds",
+}
+
 
 survey_responses_v0_variable_name_map = {
     "ONS Household ID": "ons_household_id",
