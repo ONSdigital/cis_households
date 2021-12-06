@@ -3,6 +3,7 @@ from pyspark import RDD
 import csv
 from typing import Union
 from io import StringIO
+from pyspark.sql.types import StructType
 from operator import add
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import re
