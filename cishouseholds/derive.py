@@ -9,7 +9,18 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
-def count_true_row_wise(df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: int):
+def count_true_row_wise(
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+):
+    """
+    Assign a column to be the count of cells in selection row where condition is true
+    Parameters
+    ---------
+    df
+    column_name_to_assign
+    selection_columns
+    count_if_value
+    """
     df = (
         df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
         .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))

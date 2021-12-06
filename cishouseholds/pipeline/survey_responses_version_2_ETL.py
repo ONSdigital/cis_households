@@ -1,3 +1,4 @@
+import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
@@ -63,7 +64,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "sympt_covid_loss_of_smell",
             "sympt_covid_loss_of_taste",
         ],
-        true_false_values=[1, 0],
+        true_false_values=["Yed", "No"],
     )
     df = assign_true_if_any(
         df=df,
@@ -73,12 +74,23 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = assign_true_if_any(
         df=df,
-        column_name_to_assign="sympt_now_cghfevamn",
+        column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
         reference_columns=[
             "symptoms_last_7_days_cough",
             "symptoms_last_7_days_fever",
             "symptoms_last_7_days_loss_of_smell",
             "symptoms_last_7_days_loss_of_taste",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+        reference_columns=[
+            "symptoms_since_last_visit_cough",
+            "symptoms_since_last_visit_fever",
+            "symptoms_since_last_visit_loss_of_smell",
+            "symptoms_since_last_visit_loss_of_taste",
         ],
         true_false_values=["Yes", "No"],
     )
@@ -107,8 +119,28 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "symptoms_last_7_days_loss_of_taste",
             "symptoms_last_7_days_loss_of_smell",
         ],
-        count_if_value=1,
+        count_if_value="Yes",
     )
+    df = count_true_row_wise(
+        df=df,
+        column_name_to_assign="sympt_covid_count",
+        selection_columns=[
+            "symptoms_since_last_visit_fever",
+            "symptoms_since_last_visit_muscle_ache_myalgia",
+            "symptoms_since_last_visit_fatigue_weakness",
+            "symptoms_since_last_visit_sore_throat",
+            "symptoms_since_last_visit_cough",
+            "symptoms_since_last_visit_shortness_of_breath",
+            "symptoms_since_last_visit_headache",
+            "symptoms_since_last_visit_nausea_vomiting",
+            "symptoms_since_last_abdominal_pain",
+            "symptoms_since_last_visit_diarrhoea",
+            "symptoms_since_last_visit_loss_of_taste",
+            "symptoms_since_last_visit_loss_of_smell",
+        ],
+        count_if_value="Yes",
+    )
+    df = df.withColumn("symptoms_since_last_visit_count", F.col("sympt_covid_count"))
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
