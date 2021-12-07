@@ -20,7 +20,7 @@ def assign_column_given_proportion(
     Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
     """
     window = Window.partitionBy(groupby_column)
-    assign_true_if_any(
+    df = assign_true_if_any(
         df=df, column_name_to_assign="TEMP", reference_columns=reference_columns, true_false_values=[1, 0]
     )
     df = df.withColumn(
@@ -32,7 +32,7 @@ def assign_column_given_proportion(
             1,
         ).otherwise(0),
     )
-    return df
+    return df.drop("TEMP")
 
 
 def count_true_row_wise(

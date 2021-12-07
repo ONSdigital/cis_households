@@ -532,6 +532,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_have_covid_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
   name: age_at_visit
   nullable: true
   type: long
