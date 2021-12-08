@@ -899,7 +899,6 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
     return df.drop("month_more", "day_more")
 
 
-
 def assign_grouped_variable_from_days_since(
     df: DataFrame,
     binary_reference_column: str,
@@ -937,7 +936,7 @@ def assign_grouped_variable_from_days_since(
         .cast("string"),
     )
 
-  
+
 def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
     """Create a copy of each column in a list, with a '_raw' suffix."""
     for column in reference_columns:
@@ -980,4 +979,3 @@ def assign_work_health_care(
         column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
     )
     return df
-
