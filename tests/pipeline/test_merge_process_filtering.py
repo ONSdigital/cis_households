@@ -78,7 +78,7 @@ def test_merge_process_filtering(spark_session):
     ]
 
     df_input = spark_session.createDataFrame(data, schema=schema)
-    df_input = df_input.drop("best_match", "not_best_match", "failed_match")
+    df_input = df_input.drop("best_match", "not_best_match", "failed_match", "1tonone_swab", "noneto1_swab")
     none_record_df = spark_session.createDataFrame(data_none_record, schema=schema).drop(
         "best_match", "not_best_match", "failed_match"
     )
