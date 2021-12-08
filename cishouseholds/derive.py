@@ -1,11 +1,107 @@
 import re
 from itertools import chain
 from typing import List
+from typing import Union
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
+
+
+def assign_column_given_proportion(
+    df: DataFrame,
+    column_name_to_assign: str,
+    groupby_column: str,
+    reference_columns: List[str],
+    count_if: List[Union[str, int]],
+):
+    """
+    Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
+    """
+    window = Window.partitionBy(groupby_column)
+    df = assign_true_if_any(
+        df=df, column_name_to_assign="TEMP", reference_columns=reference_columns, true_false_values=[1, 0]
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.sum(F.when(F.col("TEMP").isin(count_if), F.lit(1)).otherwise(F.lit(0))).over(window)
+            / F.sum(F.when(F.col("TEMP").isNotNull(), F.lit(1)).otherwise(0)).over(window)
+            >= 0.3,
+            1,
+        ).otherwise(0),
+    )
+    return df.drop("TEMP")
+
+
+def count_value_occurrences_in_column_subset_row_wise(
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+):
+    """
+    Assign a column to be the count of cells in selection row where condition is true
+    Parameters
+    ---------
+    df
+    column_name_to_assign
+    selection_columns
+    count_if_value
+    """
+    df = (
+        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
+    )
+    return df
+
+
+def assign_any_symptoms_around_visit(
+    df: DataFrame,
+    column_name_to_assign: str,
+    symptoms_bool_column: str,
+    id_column: str,
+    visit_date_column: str,
+    visit_id_column: str,
+):
+    """
+    Assign a column with boolean (Yes, No) if sympoms present around visit, derived
+    from if symtoms bool columns reported any true values -1 +1 from time window
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column, visit_id_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(symptoms_bool_column) == "Yes")
+            | (F.lag(symptoms_bool_column, 1).over(window) == "Yes")
+            | (F.lag(symptoms_bool_column, -1).over(window) == "Yes"),
+            "Yes",
+        ).otherwise("No"),
+    )
+    return df
+
+
+def assign_true_if_any(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_columns: List[str],
+    true_false_values: List[Union[str, int, bool]],
+):
+    """
+    Assign column the second value of a list containing values for false and true
+    if either of a list of reference columns are true
+    column_name_to_assign is assigned initially to all false then assigned true when value found
+    in any of the reference columns
+    """
+    df = df.withColumn(column_name_to_assign, F.lit(true_false_values[1]))
+    for col in reference_columns:
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                F.col(col).eqNullSafe(true_false_values[0]),
+                true_false_values[0],
+            ).otherwise(F.col(column_name_to_assign)),
+        )
+    return df
 
 
 def assign_proportion_column(
