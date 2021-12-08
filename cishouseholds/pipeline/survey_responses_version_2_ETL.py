@@ -7,6 +7,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_school_year_september_start
@@ -85,6 +86,12 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
     return df
 
 

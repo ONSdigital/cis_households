@@ -43,6 +43,7 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
@@ -297,6 +298,7 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: carbonite1803@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-Gypsy or Irish Traveller
@@ -557,6 +559,7 @@
   date_of_birth: null
   date_of_birth_string: null
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Indian
@@ -817,6 +820,7 @@
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: -3.0
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Other ethnic group-Arab
@@ -1076,6 +1080,7 @@
   date_of_birth: '1997-08-21 11:10:00.000000'
   date_of_birth_string: '1997-08-21'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Pakistani
@@ -1335,6 +1340,7 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
@@ -1595,6 +1601,7 @@
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: '1997-02-07'
   days_since_think_had_covid: 1.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
@@ -1853,6 +1860,7 @@
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: '2003-10-07'
   days_since_think_had_covid: 3.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Any other Black background
@@ -2113,6 +2121,7 @@
   date_of_birth: '2015-04-22 10:53:00.000000'
   date_of_birth_string: '2015-04-22'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: White-Gypsy or Irish Traveller
@@ -2372,6 +2381,7 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African

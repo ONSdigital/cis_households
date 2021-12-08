@@ -992,6 +992,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
+- metadata: {}
   name: work_social_care
   nullable: true
   type: string

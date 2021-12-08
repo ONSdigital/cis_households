@@ -22,6 +22,7 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: ladybird1985@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
   full_name: Carlos Martin
@@ -170,6 +171,7 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnicity: Mixed-White & Black African
   full_name: Argentina Brady
@@ -318,6 +320,7 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
   full_name: Annika Reilly
@@ -466,6 +469,7 @@
   date_of_birth: '1997-01-25 05:44:00.000000'
   date_of_birth_string: '1997-01-25'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: depict1972@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
   full_name: Jae Cervantes
@@ -612,6 +616,7 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: cortina2016@gsnail.ac.uk
   ethnicity: White-Gypsy or Irish Traveller
   full_name: Alan Robbins
@@ -760,6 +765,7 @@
   date_of_birth: '1985-09-10 20:39:00.000000'
   date_of_birth_string: '1985-09-10'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: gunsmithing1948@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
   full_name: Caron Barton
@@ -909,6 +915,7 @@
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
   full_name: Clemmie Harper
@@ -1056,6 +1063,7 @@
   date_of_birth: '1988-12-04 21:47:00.000000'
   date_of_birth_string: '1988-12-04'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: saola2016@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
   full_name: Crystle Osborn
@@ -1202,6 +1210,7 @@
   date_of_birth: '1994-09-20 00:35:00.000000'
   date_of_birth_string: '1994-09-20'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
   full_name: Honey Porter
@@ -1347,6 +1356,7 @@
   date_of_birth: '1986-06-28 11:38:00.000000'
   date_of_birth_string: '1986-06-28'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   full_name: Barton Ramos

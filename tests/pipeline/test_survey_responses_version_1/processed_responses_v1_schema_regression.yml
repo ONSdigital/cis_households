@@ -723,4 +723,8 @@ fields:
   name: work_patient_facing_now
   nullable: true
   type: string
+- metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
 type: struct

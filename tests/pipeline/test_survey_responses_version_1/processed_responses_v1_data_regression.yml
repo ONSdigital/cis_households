@@ -25,6 +25,7 @@
   date_of_birth: '1994-09-20 00:35:00.000000'
   date_of_birth_string: '1994-09-20'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
@@ -218,6 +219,7 @@
   date_of_birth: '1997-01-25 05:44:00.000000'
   date_of_birth_string: '1997-01-25'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: null
   ethnicity: Any other ethnic group
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
@@ -413,6 +415,7 @@
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnicity: Mixed-White & Black African
   ethnicity_other: The Galactic Empire is nearing completion of the Death Star, a
@@ -603,6 +606,7 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: delage1844@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: Type classes first appeared in the Haskell programming language.
@@ -794,6 +798,7 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: null
   ethnicity: Mixed-White & Asian
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
@@ -983,6 +988,7 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnicity: Asian or Asian British-Pakistani
   ethnicity_other: Atoms are used within a program to denote distinguished values.
@@ -1173,6 +1179,7 @@
   date_of_birth: '1988-12-04 21:47:00.000000'
   date_of_birth_string: '1988-12-04'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: mastiff1901@gsnail.ac.uk
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Do you come here often?
@@ -1362,6 +1369,7 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: null
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
@@ -1557,6 +1565,7 @@
   date_of_birth: '1985-09-10 20:39:00.000000'
   date_of_birth_string: '1985-09-10'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: null
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: The arguments can be primitive data types or compound data types.
@@ -1748,6 +1757,7 @@
   date_of_birth: '1986-06-28 11:38:00.000000'
   date_of_birth_string: '1986-06-28'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk
   ethnicity: Any other Mixed background
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
