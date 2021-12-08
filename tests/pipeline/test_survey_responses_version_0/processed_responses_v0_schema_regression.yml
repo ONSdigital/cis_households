@@ -565,7 +565,7 @@ fields:
   type: string
 - metadata: {}
   name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: age_at_visit

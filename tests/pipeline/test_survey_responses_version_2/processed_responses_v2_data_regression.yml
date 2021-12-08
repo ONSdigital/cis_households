@@ -184,9 +184,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -228,7 +228,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'No'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
@@ -462,9 +462,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -506,7 +506,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-03 00:00:00.000000'
   think_had_covid_which_symptoms: Maybe
-  think_have_covid_cghfevamn_symptom_group: 'No'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -598,7 +598,7 @@
   ethnicity: Asian or Asian British-Indian
   ethnicity_other: Ports are used to communicate with the external world.
   ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 1
+  ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: My face is already covered for other reasons
     (e.g. religious or cultural reasons)
@@ -738,9 +738,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_cghfevamn_symptom_group: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'Yes'
@@ -782,7 +782,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_cghfevamn_symptom_group: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
@@ -1016,9 +1016,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -1060,7 +1060,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-05 00:00:00.000000'
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'No'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
@@ -1294,7 +1294,7 @@
   swab_taken: 'no'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_cghfevamn_symptom_group: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: null
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -1336,7 +1336,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: '2022-01-04 00:00:00.000000'
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: None
@@ -1425,7 +1425,7 @@
   ethnicity: Asian or Asian British-Pakistani
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 1
+  ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
@@ -1841,9 +1841,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'Yes'
@@ -1885,7 +1885,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-07 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_cghfevamn_symptom_group: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
@@ -2117,9 +2117,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_cghfevamn_symptom_group: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: null
@@ -2161,7 +2161,7 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_date: '2022-01-01 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_cghfevamn_symptom_group: 'No'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -2395,9 +2395,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -2439,7 +2439,7 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: null
+  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -2530,7 +2530,7 @@
   ethnicity: Mixed-White & Black African
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 1
+  ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
@@ -2716,7 +2716,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: None

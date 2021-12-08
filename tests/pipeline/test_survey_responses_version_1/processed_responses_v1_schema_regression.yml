@@ -733,7 +733,7 @@ fields:
   type: string
 - metadata: {}
   name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: age_at_visit
@@ -761,7 +761,7 @@ fields:
   type: integer
 - metadata: {}
   name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: symptoms_last_7_days_symptom_count
