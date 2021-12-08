@@ -46,7 +46,7 @@ fields:
 - metadata: {}
   name: no_paticicpants_not_consented
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: reason_participants_not_consented
   nullable: true
@@ -54,7 +54,7 @@ fields:
 - metadata: {}
   name: no_participants_not_present
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: reason_participants_not_present
   nullable: true
@@ -66,35 +66,35 @@ fields:
 - metadata: {}
   name: infant_1_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_2_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_3_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_4_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_5_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_6_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_7_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: infant_8_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: household_members_over_2_years_and_not_present
   nullable: true
@@ -102,39 +102,39 @@ fields:
 - metadata: {}
   name: person_1_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_2_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_3_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_4_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_5_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_6_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_7_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_8_age
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_1_reason_for_not_consenting
   nullable: true
@@ -142,7 +142,7 @@ fields:
 - metadata: {}
   name: person_2_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_2_reason_for_not_consenting
   nullable: true
@@ -150,7 +150,7 @@ fields:
 - metadata: {}
   name: person_3_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_3_reason_for_not_consenting
   nullable: true
@@ -158,7 +158,7 @@ fields:
 - metadata: {}
   name: person_4_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_4_reason_for_not_consenting
   nullable: true
@@ -166,7 +166,7 @@ fields:
 - metadata: {}
   name: person_5_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_5_reason_for_not_consenting
   nullable: true
@@ -174,7 +174,7 @@ fields:
 - metadata: {}
   name: person_6_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_6_reason_for_not_consenting
   nullable: true
@@ -182,7 +182,7 @@ fields:
 - metadata: {}
   name: person_7_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_7_reason_for_not_consenting
   nullable: true
@@ -190,7 +190,7 @@ fields:
 - metadata: {}
   name: person_8_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_8_reason_for_not_consenting
   nullable: true
@@ -198,7 +198,7 @@ fields:
 - metadata: {}
   name: person_9_not_consenting_age
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: person_9_reason_for_not_consenting
   nullable: true
@@ -230,11 +230,11 @@ fields:
 - metadata: {}
   name: no_email_address
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: bloods_taken
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: blood_sample_barcode
   nullable: true
@@ -242,7 +242,7 @@ fields:
 - metadata: {}
   name: swabs_taken
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: swab_sample_barcode
   nullable: true
@@ -270,27 +270,27 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: work_main_job_title
   nullable: true
@@ -312,11 +312,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care
+  name: work_health_care_v1_v2
   nullable: true
   type: string
 - metadata: {}
-  name: work_direct_contact_persons
+  name: work_direct_contact_patients_clients
   nullable: true
   type: string
 - metadata: {}
@@ -360,7 +360,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_status
+  name: work_status_v1
   nullable: true
   type: string
 - metadata: {}
@@ -380,7 +380,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: had_symptoms_last_7_days
+  name: symptoms_last_7_days_any
   nullable: true
   type: string
 - metadata: {}
@@ -482,7 +482,7 @@ fields:
 - metadata: {}
   name: hours_a_day_with_someone_else_at_home
   nullable: true
-  type: integer
+  type: double
 - metadata: {}
   name: physical_contact_under_18_years
   nullable: true
@@ -656,6 +656,42 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_any_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_v1_v2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_not_from_home_days_per_week_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_location_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
@@ -676,7 +712,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: sample_taken_date_string
+  name: samples_taken_date_string
   nullable: true
   type: string
 - metadata: {}

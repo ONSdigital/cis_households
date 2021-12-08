@@ -2,11 +2,8 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import unassayed_bloods_variable_name_map
-from cishouseholds.pipeline.timestamp_map import blood_datetime_map
-from cishouseholds.pipeline.unassayed_blood_ETL import transform_unassayed_blood
-from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_schema
+from cishouseholds.pipeline.input_file_processing import generate_input_processing_function
+from cishouseholds.pipeline.input_file_processing import unassayed_blood_delta_parameters
 from dummy_data_generation.schemas import get_unassayed_blood_data_description
 
 
@@ -18,14 +15,10 @@ def unassayed_blood_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     schema = Schema(schema=get_unassayed_blood_data_description(mimesis_field))
     pandas_df = pd.DataFrame(schema.create(iterations=5))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df)
-    processed_df = extract_validate_transform_input_data(
-        csv_file_path.as_posix(),
-        unassayed_bloods_variable_name_map,
-        blood_datetime_map,
-        unassayed_blood_validation_schema,
-        [transform_unassayed_blood],
+    processing_function = generate_input_processing_function(
+        **unassayed_blood_delta_parameters, include_hadoop_read_write=False
     )
-
+    processed_df = processing_function(resource_path=csv_file_path.as_posix())
     return processed_df
 
 

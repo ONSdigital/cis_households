@@ -1,7 +1,7 @@
 swab_variable_name_map = {
     "Sample": "swab_sample_barcode",
     "Result": "pcr_result_classification",
-    "Date Tested": "pcr_datetime",
+    "Date Tested": "pcr_result_recorded_datetime",
     "Lab ID": "pcr_lab_id",
     "testKit": "pcr_method",
     "CH1-Target": "orf1ab_gene_pcr_target",
@@ -95,6 +95,16 @@ sample_ni_variable_name_map = {
     "interim_id": "cis_area_indicator",
 }
 
+nims_column_name_map = {
+    "cis_participant_id": "participant_id",
+    "product_dose_1": "nims_vaccine_dose_1_type",
+    "vaccination_date_dose_1": "nims_vaccine_dose_1_datetime",
+    "product_dose_2": "nims_vaccine_dose_2_type",
+    "vaccination_date_dose_2": "nims_vaccine_dose_2_datetime",
+    "found_pds": "nims_linkage_via_pds",
+    "pds_conflict": "nims_conflicting_linkage_via_pds",
+}
+
 
 survey_responses_v0_variable_name_map = {
     "ONS Household ID": "ons_household_id",
@@ -168,12 +178,12 @@ survey_responses_v0_variable_name_map = {
     "Consent to be Contacted Extra Research": "consent_contact_extra_research",
     "Consent to Blood Samples": "consent_blood_test",
     "Consent to Surplus Blood Sample": "consent_use_of_surplus_blood_samples",
-    "Working Status (Main Job)": "work_status",
+    "Working Status (Main Job)": "work_status_v0",
     "Job Title": "work_main_job_title",
     "Main Job Responsibilities": "work_main_job_role",
     "Working Location": "work_location",
     "No. days a week working outside of home?": "work_not_from_home_days_per_week",
-    "Do you work in healthcare?": "work_health_care",
+    "Do you work in healthcare?": "work_health_care_v0",
     "Do you work in social care?": "work_social_care",
     "Do you have any of these symptoms Today?": "have_covid_symptoms",
     "Symptoms today": "symptoms_today",
@@ -301,8 +311,8 @@ survey_responses_v1_variable_name_map = {
     "Occupations_sectors_do_you_work_in": "work_sectors",
     "occupation_sector_other": "work_sectors_other",
     "Work_in_a_nursing_residential_care_home": "work_nursing_or_residential_care_home",
-    "Do_you_currently_work_in_healthcare": "work_health_care",
-    "Direct_contact_patients_clients_resid": "work_direct_contact_persons",
+    "Do_you_currently_work_in_healthcare": "work_health_care_v1_v2",
+    "Direct_contact_patients_clients_resid": "work_direct_contact_patients_clients",
     "Have_physical_mental_health_or_illnesses": "illness_lasting_over_12_months",
     "physical_mental_health_or_illness_reduces_activity_ability": "illness_reduces_activity_or_ability",
     "Have_you_ever_smoked_regularly": "have_ever_smoked_regularly",
@@ -313,12 +323,12 @@ survey_responses_v1_variable_name_map = {
     "Smoke_Yes_vape_e_cigarettes": "smokes_vape_e_cigarettes",
     "Smoke_No": "smoke_no",
     "Smoke_Hookah_shisha pipes": "smokes_hookah_shisha_pipes",
-    "What_is_your_current_working_status": "work_status",
+    "What_is_your_current_working_status": "work_status_v1",
     "Where_are_you_mainly_working_now": "work_location",
     "How_often_do_you_work_elsewhere": "work_not_from_home_days_per_week",
     "Can_you_socially_distance_at_work": "ability_to_socially_distance_at_work_or_school",
     "How_do_you_get_to_and_from_work_school": "transport_to_work_or_school",
-    "Had_symptoms_in_the_last_7_days": "had_symptoms_last_7_days",
+    "Had_symptoms_in_the_last_7_days": "symptoms_last_7_days_any",
     "Which_symptoms_in_the_last_7_days": "which_symptoms_last_7_days",
     "Date_of_first_symptom_onset": "symptoms_last_7_days_onset_date",
     "Symptoms_7_Fever": "symptoms_last_7_days_fever",
@@ -489,7 +499,7 @@ survey_responses_v2_variable_name_map = {
     "Occupations_sectors_do_you_work_in": "work_sectors",
     "occupation_sector_other": "work_sectors_other",
     "Work_in_a_nursing_residential_care_home": "work_nursing_or_residential_care_home",
-    "Do_you_currently_work_in_healthcare": "work_health_care",
+    "Do_you_currently_work_in_healthcare": "work_health_care_v1_v2",
     "Direct_contact_patients_clients_resid": "work_direct_contact_persons",
     "Have_physical_mental_health_or_illnesses": "illness_lasting_over_12_months",
     "physical_mental_health_or_illness_reduces_activity_ability": "illness_reduces_activity_or_ability",
@@ -501,7 +511,7 @@ survey_responses_v2_variable_name_map = {
     "Smoke_Yes_pipe": "smokes_pipe",
     "Smoke_Yes_vape_e_cigarettes": "smokes_vape_e_cigarettes",
     "Smoke_Hookah/shisha pipes": "smokes_hookah_shisha_pipes",
-    "What_is_your_current_working_status": "work_status",
+    "What_is_your_current_working_status": "work_status_v2",
     "Paid_employment": "work_in_additional_paid_employment",
     "Main_Job_Changed": "work_main_job_changed",
     "Where_are_you_mainly_working_now": "work_location",
@@ -621,4 +631,16 @@ survey_responses_v2_variable_name_map = {
     "been_outside_uk_last_country": "outside_uk_last_country",
     "been_outside_uk_last_date": "outside_uk_last_date",
     "Have_you_been_outside_UK_Lastspoke": "outside_uk_since_last_visit",
+}
+
+
+household_population_variable_name_map = {
+    "uprn": "uprn",
+    "postcode": "postcode",
+    "lsoa11cd": "lower_super_output_area_code_11",
+    "cis20cd": "cis_area_code_20",
+    "ctry12cd": "country_code_12",
+    "ctry20nm": "country_name_12",
+    "nhp_cis": "number_of_households_population_by_cis",
+    "nhp_cc12": "number_of_households_population_by_country",
 }

@@ -1,6 +1,7 @@
 from typing import Any
 from typing import Mapping
 
+from pandas.core.frame import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
@@ -16,6 +17,7 @@ sessions = {
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.sql.crossJoin.enabled", "true")
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
@@ -30,6 +32,7 @@ sessions = {
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
         .config("spark.debug.maxToStringFields", 2000)
+        .config("spark.sql.crossJoin.enabled", "true")
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
@@ -44,6 +47,7 @@ sessions = {
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.sql.crossJoin.enabled", "true")
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
@@ -59,6 +63,7 @@ sessions = {
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.sql.crossJoin.enabled", "true")
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
@@ -94,3 +99,8 @@ def get_or_create_spark_session() -> SparkSession:
     spark_session = sessions[session_size]
 
     return spark_session
+
+
+def column_to_list(df: DataFrame, column_name: str):
+    """Fast collection of all records in a column to a standard list."""
+    return [row[column_name] for row in df.collect()]

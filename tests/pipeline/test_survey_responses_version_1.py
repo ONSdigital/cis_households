@@ -2,12 +2,8 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import survey_responses_v1_variable_name_map
-from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
-from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
-from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
-from cishouseholds.pipeline.validation_schema import survey_responses_v1_validation_schema
+from cishouseholds.pipeline.input_file_processing import generate_input_processing_function
+from cishouseholds.pipeline.input_file_processing import survey_responses_v1_parameters
 from dummy_data_generation.schemas import get_voyager_1_data_description
 
 
@@ -19,14 +15,10 @@ def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     schema = Schema(schema=get_voyager_1_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processed_df = extract_validate_transform_input_data(
-        csv_file_path.as_posix(),
-        survey_responses_v1_variable_name_map,
-        survey_responses_datetime_map,
-        survey_responses_v1_validation_schema,
-        [transform_survey_responses_generic, transform_survey_responses_version_1_delta],
-        "|",
+    processing_function = generate_input_processing_function(
+        **survey_responses_v1_parameters, include_hadoop_read_write=False
     )
+    processed_df = processing_function(resource_path=csv_file_path.as_posix())
     return processed_df
 
 

@@ -6,76 +6,16 @@ from typing import Union
 
 import pandas as pd
 from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType
 
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pyspark_utils import column_to_list
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.validate import validate_csv_fields
-from cishouseholds.validate import validate_csv_header
 
 
 class InvalidFileError(Exception):
     pass
-
-
-def read_csv_to_pyspark_df(
-    spark_session: SparkSession,
-    csv_file_path: Union[str, list],
-    expected_raw_header_row: str,
-    schema: StructType,
-    sep: str = ",",
-    **kwargs,
-) -> DataFrame:
-    """
-    Validate and read a csv file into a PySpark DataFrame.
-
-    Parameters
-    ----------
-    csv_file_path
-        file to read to dataframe
-    expected_raw_header_row
-        expected first line of file
-    schema
-        schema to use for returned dataframe, including desired column names
-
-    Takes keyword arguments from ``pyspark.sql.DataFrameReader.csv``,
-    for example ``timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'"``.
-    """
-    spark_session = get_or_create_spark_session()
-    if not isinstance(csv_file_path, list):
-        csv_file_path = [csv_file_path]
-
-    for csv_file in csv_file_path:
-        error = None
-        text_file = spark_session.sparkContext.textFile(csv_file)
-        csv_header = validate_csv_header(text_file, expected_raw_header_row)
-        csv_fields = validate_csv_fields(text_file, delimiter=sep)
-
-        if not csv_header:
-            error = (
-                f"FILE ERROR: Header of {csv_file} ({text_file.first()}) "
-                f"does not match expected header: {expected_raw_header_row}"
-            )
-
-        if not csv_fields:
-            error = f"FILE ERROR: Number of fields in {csv_file} does not match expected number of columns from header"
-
-        if error:
-            print(error)  # functional
-            add_error_file_log_entry(csv_file, error)
-
-    return spark_session.read.csv(
-        csv_file_path,
-        header=True,
-        schema=schema,
-        ignoreLeadingWhiteSpace=True,
-        ignoreTrailingWhiteSpace=True,
-        sep=sep,
-        **kwargs,
-    )
 
 
 def list_contents(
@@ -178,25 +118,22 @@ def get_files_not_processed(file_list: list, table_name: str):
 
 
 def get_files_to_be_processed(
-    resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False
+    resource_path,
+    latest_only=False,
+    start_date=None,
+    end_date=None,
+    include_processed=False,
+    include_invalid=False,
 ):
     """
     Get list of files matching the specified pattern and optionally filter
-    to only those that have not been processed.
+    to only those that have not been processed or were previously invalid.
     """
-    storage_config = get_config()["storage"]
-    spark_session = get_or_create_spark_session()
-
     file_paths = get_files_by_date(resource_path, latest_only, start_date, end_date)
     if not include_processed:
         file_paths = get_files_not_processed(file_paths, "processed_filenames")
-    if check_table_exists("error_file_log"):
-        file_error_log_table = f'{storage_config["database"]}.{storage_config["table_prefix"]}error_file_log'
-        file_error_log_df = spark_session.read.table(file_error_log_table)
-        error_file_paths = file_error_log_df.toPandas()["file_path"].to_list()
-        for file_path in error_file_paths:
-            if file_path in file_paths:
-                file_paths.remove(file_path)
-        if len(file_paths) == 0:
-            print(f"        No valid file paths in {resource_path}")  # functional
+    if check_table_exists("error_file_log") and not include_invalid:
+        file_error_log_df = extract_from_table("error_file_log")
+        error_file_paths = column_to_list(file_error_log_df, "file_path")
+        file_paths = [p for p in file_paths if p not in error_file_paths]
     return file_paths

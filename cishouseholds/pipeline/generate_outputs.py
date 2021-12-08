@@ -1,4 +1,3 @@
-import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -28,15 +27,30 @@ def generate_outputs():
     # TODO: Check that output dir exists
 
     all_visits_df = extract_from_table("response_level_records")
-    participant_df = extract_from_table("participant_level_key_records")
+    participant_df = extract_from_table("participant_level_with_vaccination_data")
 
     linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
+    linked_df = linked_df.withColumn(
+        "completed_visits_subset",
+        F.when(
+            (F.col("visit_status") == "Completed")
+            | (F.col("blood_sample_barcode").isNotNull() | (F.col("swab_sample_barcode").isNotNull())),
+            True,
+        ).otherwise(False),
+    )
+
     all_visits_output_df = map_output_values_and_column_names(linked_df, output_name_map, category_map)
 
-    complete_visits_output_df = all_visits_output_df.where(F.col("visit_status") == 1)
+    complete_visits_output_df = all_visits_output_df.where(F.col("completed_visits_subset"))
 
-    write_csv_rename(all_visits_output_df, output_directory / f"cishouseholds_all_visits_{output_datetime}")
-    write_csv_rename(complete_visits_output_df, output_directory / f"cishouseholds_completed_visits_{output_datetime}")
+    write_csv_rename(
+        all_visits_output_df.drop("completed_visits_subset"),
+        output_directory / f"cishouseholds_all_visits_{output_datetime}",
+    )
+    write_csv_rename(
+        complete_visits_output_df.drop("completed_visits_subset"),
+        output_directory / f"cishouseholds_completed_visits_{output_datetime}",
+    )
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
@@ -141,14 +155,12 @@ def write_csv_rename(df: DataFrame, file_path: Path):
     temp_path = file_path / "_tmp"
     (df.coalesce(1).write.mode("overwrite").csv(temp_path.as_posix(), header=True))
 
-    partitions = list_contents(temp_path.as_posix())["filename"].to_list()
+    partitions = list_contents(temp_path.as_posix())["filename"].dropna().tolist()
 
-    if "_SUCCESS" in partitions:
-        partitions.remove("_SUCCESS")
+    partitions = [part for part in partitions if part.endswith(".csv")]
 
     # move temp file to target location and rename
     subprocess.check_call(["hadoop", "fs", "-mv", (temp_path / partitions[0]), file_path.as_posix() + ".csv"])
 
     # remove original subfolder inc tmp
-    with open(os.devnull, "w") as null_device:
-        subprocess.call(["hadoop", "fs", "-rm", "-r", file_path], stdout=null_device)
+    subprocess.call(["hadoop", "fs", "-rm", "-r", file_path], stdout=subprocess.DEVNULL)
