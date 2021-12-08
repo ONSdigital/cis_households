@@ -297,15 +297,15 @@ def validate_design_weights(df: DataFrame, column_name_to_assign: str, num_house
     - no design weights are missing
     """
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
-    df = df.withColumn(column_name_to_assign, F.lit("False"))
+    df = df.withColumn(column_name_to_assign, F.lit("True"))
 
     for col in columns:
         df = null_to_value(df, col)  # update nulls to 0
         df = df.withColumn(
             column_name_to_assign,
             F.when(
-                F.sum(col).over(window) == F.col(num_households_column),
-                "True",
+                F.sum(col).over(window) != F.col(num_households_column),
+                "False",
             ).otherwise(F.col(column_name_to_assign)),
         )  # check 1
         df = df.withColumn(
