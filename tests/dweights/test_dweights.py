@@ -1,54 +1,59 @@
 from chispa import assert_df_equality
 
+from cishouseholds.dweights_1167 import calculate_non_response_factors
 from cishouseholds.dweights_1167 import chose_scenario_of_dweight_for_antibody_different_household
 from cishouseholds.dweights_1167 import create_calibration_var
-from cishouseholds.dweights_1167 import function1179_1
-from cishouseholds.dweights_1167 import function1179_2
+from cishouseholds.dweights_1167 import derive_index_multiple_deprivation_group
+from cishouseholds.dweights_1167 import derive_total_responded_and_sampled_households
 from cishouseholds.dweights_1167 import generate_datasets_to_be_weighted_for_calibration
 
 
 # Jamie
-def test_function1179_1(spark_session):
-    schema_expected = """country_name string,
+def test_derive_index_multiple_deprivation_group(spark_session):
+    schema_expected = """country_name_12 string,
                         index_multiple_deprivation integer,
                         index_multiple_deprivation_group integer"""
     data_expected_df = [
         # fmt: off
-        ("england", 6569,   1),
-        ("england", 15607,  3),
+        ("England", 6569,   1),
+        ("engLAND", 15607,  3),
         ("england", 57579,  5),
-        ("wales",   383,    2),
+        ("WALES",   383,    2),
         ("wales",   1042,   3),
-        ("wales",   1358,   4),
+        ("Wales",   1358,   4),
+        ("Northern Ireland",   160,    1),
+        ("NORTHERN ireland",   296,    2),
+        ("northern ireland",   823,   5),
         # fmt: on
     ]
     df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected)
     df_input = df_expected.drop("index_multiple_deprivation_group")
 
-    df_output = function1179_1(df_input)
-    # import pdb; pdb.set_trace()
+    df_output = derive_index_multiple_deprivation_group(df_input)
+
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-def test_function1179_2(spark_session):
+def test_derive_total_responded_and_sampled_households(spark_session):
 
     schema_expected_df = """ons_household_id string,
                             sample_addressbase_indicator integer,
+                            country_name_12 string,
                             cis_area_code_20 integer,
                             index_multiple_deprivation_group integer,
                             interim_participant_id integer,
                             total_sampled_households_cis_imd_addressbase integer,
                             total_responded_households_cis_imd_addressbase integer"""
     data_expected_df = [
-        ("A1", 1, 1, 1, 1, 5, 3),
-        ("A2", 1, 1, 1, 1, 5, 3),
-        ("A3", 1, 1, 1, 1, 5, 3),
-        ("A4", 1, 1, 1, 0, 5, 3),
-        ("A5", 1, 1, 1, 0, 5, 3),
-        ("B1", 2, 2, 2, 1, 4, 2),
-        ("B2", 2, 2, 2, 1, 4, 2),
-        ("B3", 2, 2, 2, 0, 4, 2),
-        ("B4", 2, 2, 2, 0, 4, 2),
+        ("A1", 1, "england", 1, 1, 1, 5, 3),
+        ("A2", 1, "england", 1, 1, 1, 5, 3),
+        ("A3", 1, "england", 1, 1, 1, 5, 3),
+        ("A4", 1, "england", 1, 1, 0, 5, 3),
+        ("A5", 1, "england", 1, 1, 0, 5, 3),
+        ("B1", 2, "NORTHERN IRELAND", 2, 2, 1, 4, 2),
+        ("B2", 2, "Northern Ireland", 2, 2, 1, 4, 2),
+        ("B3", 2, "NORThern irelAND", 2, 2, 0, 4, 2),
+        ("B4", 2, "northern ireland", 2, 2, 0, 4, 2),
     ]
 
     df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected_df)
@@ -56,8 +61,38 @@ def test_function1179_2(spark_session):
     df_input = df_expected.drop(
         "total_sampled_households_cis_imd_addressbase", "total_responded_households_cis_imd_addressbase"
     )
-    # import pdb; pdb.set_trace()
-    df_output = function1179_2(df_input, "cis_area_code_20")
+    df_output = derive_total_responded_and_sampled_households(df_input)
+
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+
+
+def test_calculate_non_response_factors(spark_session):
+
+    schema_expected_df = """country_name_12 string,
+                            total_sampled_households_cis_imd_addressbase integer,
+                            total_responded_households_cis_imd_addressbase integer,
+                            raw_non_response_factor double,
+                            mean_raw_non_response_factor double,
+                            scaled_non_response_factor double,
+                            bounded_non_response_factor double"""
+    data_expected_df = [
+        ("England", 20, 6, 3.3, 5.0, 0.7, 0.7),
+        ("England", 17, 12, 1.4, 5.0, 0.3, 0.6),
+        ("England", 25, 19, 1.3, 5.0, 0.3, 0.6),
+        ("England", 28, 2, 14.0, 5.0, 2.8, 1.8),
+        ("Northern Ireland", 15, 10, 1.5, 3.2, 0.5, 0.5),
+        ("Northern Ireland", 11, 2, 5.5, 3.2, 1.7, 1.7),
+        ("Northern Ireland", 9, 7, 1.3, 3.2, 0.4, 0.6),
+        ("Northern Ireland", 18, 4, 4.5, 3.2, 1.4, 1.4),
+    ]
+
+    df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected_df)
+
+    df_input = df_expected.drop("raw_non_response_factor")
+
+    df_output = calculate_non_response_factors(df_input)
+
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
 def test_chose_scenario_of_dweight_for_antibody_different_household(spark_session):

@@ -8,7 +8,6 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 
 
@@ -261,38 +260,7 @@ def function_name_1178(
     return df
 
 
-# 1178 needed filtering function
-# def dataset_generation(df, logic):
-#     return df.where(logic)
-
-
-# 1179
-# def function1179_1(df):
-#     """
-#     Parameters
-#     ----------
-#     df
-#     """
-#     # A.1 group households  considering  values to index of multiple deprivation
-#     map_index_multiple_deprivation_group_country = {
-#         "england": {0: 1, 6569: 2, 13138: 3, 19707: 4, 26276: 5},
-#         "wales": {0: 1, 764: 2, 1146: 3, 1528: 4, 1529: 5},
-#         "scotland": {0: 1, 2790: 2, 4185: 3, 5580: 4, 5581: 5},
-#         "northen_ireland": {0: 1, 356: 2, 534: 3, 712: 4, 713: 5},
-#     }
-
-#     for country in map_index_multiple_deprivation_group_country.keys():
-#         df = assign_named_buckets(
-#             df=df,
-#             reference_column="index_multiple_deprivation",
-#             column_name_to_assign="index_multiple_deprivation_group",
-#             map=map_index_multiple_deprivation_group_country[country],
-#         )
-
-#     return df
-
-# Jamie
-def function1179_1(df: DataFrame):
+def derive_index_multiple_deprivation_group(df: DataFrame):
     """
     Parameters
     ----------
@@ -303,93 +271,48 @@ def function1179_1(df: DataFrame):
         "england": {0: 1, 6570: 2, 13139: 3, 19708: 4, 26277: 5},
         "wales": {0: 1, 383: 2, 765: 3, 1147: 4, 1529: 5},
         "scotland": {0: 1, 1396: 2, 2791: 3, 4186: 4, 5581: 5},
-        "northen_ireland": {0: 1, 179: 2, 357: 3, 535: 4, 713: 5},
+        "northern_ireland": {0: 1, 179: 2, 357: 3, 535: 4, 713: 5},
     }
 
-    # test
-    df = union_multiple_tables(
-        [
-            assign_named_buckets(
-                df=df.where(F.col("country_name") == country),
-                reference_column="index_multiple_deprivation",
-                column_name_to_assign="index_multiple_deprivation_group",
-                map=map_index_multiple_deprivation_group_country[country],
-            )
-            for country in map_index_multiple_deprivation_group_country.keys()
-        ]
-    )
-    return df
-
-
-# def function1179_1(df: DataFrame):
-#     map_deprivation_group_country = {
-#         "england": {
-#             1: F.col("index_multiple_deprivation").between(0, 6569),
-#             2: F.col("index_multiple_deprivation").between(6570, 13138),
-#             3: F.col("index_multiple_deprivation").between(13139, 19707),
-#             4: F.col("index_multiple_deprivation").between(19708, 26276),
-#             #F.col("index_multiple_deprivation").between(26277,),
-#         },
-#     }
-#         #     index_multiple_deprivation <= 6569
-#         # 6570 <= index_multiple_deprivation <= 13138
-#         # 13139 <= index_multiple_deprivation <= 19707
-#         # 19708 <= index_multiple_deprivation <= 26276
-#         # index_multiple_deprivation >= 26277
-
-#     for country in ['england']:
-#         for step in map_deprivation_group_country[country].keys():
-#             df = df.withColumn(
-#                 'index_multiple_deprivation_group',
-#                 F.when(
-#                     map_deprivation_group_country['england'][2] & (F.col('country_name') == country), 1
-#                 )
-#             )
-
-#     return df
-
-
-# 1179
-def assign_total_sampled_households_cis_imd_addressbase(df: DataFrame, country_column: str) -> DataFrame:
-    """
-    Parameters
-    ----------
-    df
-    country_column: For northen_ireland, use country, otherwise use cis_area_code_20
-    """
-    window_list = ["sample_addressbase_indicator", country_column, "index_multiple_deprivation_group"]
-
-    w = Window.partitionBy(*window_list)
-
-    df = df.withColumn("total_sampled_households_cis_imd_addressbase", F.count(F.col("ons_household_id")).over(w))
+    for country in map_index_multiple_deprivation_group_country.keys():
+        df = assign_named_buckets(
+            df=df,
+            reference_column="index_multiple_deprivation",
+            column_name_to_assign=f"index_multiple_deprivation_group_{country}",
+            map=map_index_multiple_deprivation_group_country[country],
+        )
 
     df = df.withColumn(
-        "total_responded_households_cis_imd_addressbase",
-        F.when(F.col("interim_participant_id") == 1, F.count(F.col("ons_household_id"))).over(w),
-    )
-
-    # B.1 calculate raw non_response_factor by dividing total respondent household
-    # to total sampled households (calculated above A.2, A.3)
-    df = df.withColumn(
-        "raw_non_response_factor",
+        "index_multiple_deprivation_group",
         (
-            F.col("total_sampled_households_cis_imd_addressbase")
-            / F.col("total_responded_households_cis_imd_addressbase")
+            F.when(F.lower(F.col("country_name_12")) == "wales", F.col("index_multiple_deprivation_group_wales"))
+            .when(F.lower(F.col("country_name_12")) == "england", F.col("index_multiple_deprivation_group_england"))
+            .when(F.lower(F.col("country_name_12")) == "scotland", F.col("index_multiple_deprivation_group_scotland"))
+            .when(
+                F.lower(F.col("country_name_12")) == "northern ireland",
+                F.col("index_multiple_deprivation_group_northern_ireland"),
+            )
         ),
     )
+
+    for country in map_index_multiple_deprivation_group_country.keys():
+        df = df.drop(f"index_multiple_deprivation_group_{country}")
+
     return df
 
 
-def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
+def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     """
+    A.2/3 create a variable to indicate for each country, how many households are in the sample,
+          create a variable to indicate for each country, how many households participated to the survey
     Parameters
     ----------
     df
     country_column: For northen_ireland, use country, otherwise use cis_area_code_20
     """
 
-    window_list_nni = ["sample_addressbase_indicator", "cis_area_code", "index_multiple_deprivation_group"]
-    window_list_ni = ["sample_addressbase_indicator", country_column, "index_multiple_deprivation_group"]
+    window_list_nni = ["sample_addressbase_indicator", "cis_area_code_20", "index_multiple_deprivation_group"]
+    window_list_ni = ["sample_addressbase_indicator", "country_name_12", "index_multiple_deprivation_group"]
 
     w1_nni = Window.partitionBy(*window_list_nni)
     w1_ni = Window.partitionBy(*window_list_ni)
@@ -397,7 +320,8 @@ def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
     df = df.withColumn(
         "total_sampled_households_cis_imd_addressbase",
         F.when(
-            F.col("country_name") != "northern_ireland", F.count(F.col("ons_household_id")).over(w1_nni).cast("int")
+            F.lower(F.col("country_name_12")) != "northern ireland",
+            F.count(F.col("ons_household_id")).over(w1_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
 
@@ -406,7 +330,8 @@ def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
         F.when(
-            F.col("country_name") != "northern_ireland", F.count(F.col("ons_household_id")).over(w2_nni).cast("int")
+            F.lower(F.col("country_name_12")) != "northern ireland",
+            F.count(F.col("ons_household_id")).over(w2_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w2_ni).cast("int")),
     )
 
@@ -420,49 +345,72 @@ def function1179_2(df: DataFrame, country_column: str) -> DataFrame:
     df = df.withColumn(
         "auxiliary",
         F.when(
-            F.col("country_name") != "northern_ireland",
+            F.lower(F.col("country_name_12")) != "northern ireland",
             F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_nni),
         ).otherwise(F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_ni)),
     )
+
     df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop("auxiliary")
 
     return df
 
 
-def function1179_3(df: DataFrame, country_list: List[str], test_type: str) -> DataFrame:
+def calculate_non_response_factors(df: DataFrame) -> DataFrame:
     """
+    B.1 calculate raw non_response_factor by dividing total_sampled_households_cis_imd_addressbase
+        total_responded_households_cis_imd_addressbase (derived in previous steps)
+    B.2 calculate scaled non_response_factor by dividing raw_non_response_factor to the mean
+        of raw_non_response_factor
+    B.3 calculate bounded non_response_factor by adjusting the values of the scaled non_response
+        factor to be contained in a certain, pre-defined range
     Parameters
     ----------
+    df
     """
-    # B.2 calculate scaled non_response_factor by dividing raw_non_response_factor
-    # to the mean of raw_non_response_factor
-    w_country = Window.partitionBy(country_list)
+    df = df.withColumn(
+        "raw_non_response_factor",
+        F.round(
+            F.col("total_sampled_households_cis_imd_addressbase")
+            / F.col("total_responded_households_cis_imd_addressbase"),
+            1,
+        ).cast("double"),
+    )
 
-    raw_non_response_factor_mean = df.select(F.mean(F.col("raw_non_response_factor"))).collect()[0][0]
+    w_country = Window.partitionBy("country_name_12")
 
     df = df.withColumn(
         "mean_raw_non_response_factor",
-        (F.col("raw_non_response_factor") / raw_non_response_factor_mean).over(w_country),
+        (F.mean(F.col("raw_non_response_factor"))).over(w_country),
     )
 
-    df = df.withColumn("scaled_non_response_factor", F.col("raw_non_response_factor") / raw_non_response_factor_mean)
+    df = df.withColumn(
+        "scaled_non_response_factor",
+        F.round(F.col("raw_non_response_factor") / F.col("mean_raw_non_response_factor"), 1),
+    )
 
-    # B.3 calculate bounded non_response_factor by adjusting the values of the scaled
-    # non_response factor to be contained in a certain, pre-defined range
     df = df.withColumn(
         "bounded_non_response_factor",
-        F.when(F.col("scaled_non_response_factor") < 0.5, 0.6).when(F.col("scaled_non_response_factor") > 2.0, 1.8),
-    )  # TODO: is this in a country window ?
+        F.when(F.col("scaled_non_response_factor") < 0.5, 0.6)
+        .when(F.col("scaled_non_response_factor") > 2.0, 1.8)
+        .otherwise(F.col("scaled_non_response_factor")),
+    )
 
-    # C1. adjust design weights by the non_response_factor by multiplying the desing
-    # weights with the non_response factor
+    return df
+
+
+def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
+    """
+    C1. adjust design weights by the non_response_factor by multiplying the design
+    weights with the non_response factor
+    """
+
     df = df.withColumn(
         "household_level_designweight_adjusted_swab",
         F.when(
             # TODO: when  data extracted is a swab or longcovid type of dataset
             True & F.col("response_indicator") == 1,
             F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"),
-        ).over(w_country),
+        ),
     )
 
     df = df.withColumn(
@@ -471,16 +419,23 @@ def function1179_3(df: DataFrame, country_list: List[str], test_type: str) -> Da
             # TODO: when  data extracted is a antibodies type of dataset
             True & F.col("response_indicator") == 1,
             F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"),
-        ).over(w_country),
+        ),
     )
 
-    # D.1 calculate the scaling factor and then apply the scaling factor the
-    # design weights adjusted by the non response factor.
-    # If there is a swab or long covid type dataset, then use the population
-    # totlas for swab and the naming will have "swab" incorporated.
-    # Same for antibodies type dataset
+    return df
 
-    # sum_adjusted_design_weight_swab or antibodies
+
+def adjusted_design_weights_to_population_totals(df: DataFrame, test_type: str) -> DataFrame:
+    """
+    D.1 calculate the scaling factor and then apply the scaling factor the
+    design weights adjusted by the non response factor.
+    If there is a swab or long covid type dataset, then use the population
+    totlas for swab and the naming will have "swab" incorporated.
+    Same for antibodies type dataset
+    sum_adjusted_design_weight_swab or antibodies
+    """
+    w_country = Window.partitionBy("country_name_12")
+
     df = df.withColumn(
         "sum_adjusted_design_weight_" + test_type,
         F.when(F.col("response_indicator") == 1, F.col("household_level_designweight_adjusted_" + test_type)).over(
