@@ -20,7 +20,8 @@ from cishouseholds.derive import assign_work_social_column
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
-from cishouseholds.edit import update_work_facing_now_column
+
+# from cishouseholds.edit import update_work_facing_now_column
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
@@ -135,7 +136,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-    df = update_work_facing_now_column(
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     # df = placeholder_for_derivation_number_20(df, "work_healthcare",
     # ["work_healthcare_v1", "work_direct_contact"])
