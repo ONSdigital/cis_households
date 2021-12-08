@@ -12,10 +12,12 @@ from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
+from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
@@ -23,7 +25,8 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
-from cishouseholds.edit import update_work_facing_now_column
+
+# from cishouseholds.edit import update_work_facing_now_column
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
@@ -31,6 +34,22 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     Generic transformation steps to be applied to all survey response records.
     """
     df = assign_filename_column(df, "survey_response_source_file")
+    raw_copy_list = [
+        "think_had_covid_any_symptoms",
+        "symptoms_last_7_days_any",
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_health_care_v0",
+        "work_health_care_v1_v2",
+        "work_status_v0",
+        "work_status_v1",
+        "work_status_v2",
+        "work_social_care",
+        "work_not_from_home_days_per_week",
+        "work_location",
+        "sex",
+    ]
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
@@ -215,9 +234,6 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
     df = assign_school_year_september_start(
         df, dob_column="date_of_birth", visit_date="visit_datetime", column_name_to_assign="school_year_september"
     )
-    df = assign_work_patient_facing_now(
-        df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care"
-    )
     return df
 
 
@@ -226,12 +242,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-    df = update_work_facing_now_column(
-        df,
-        "work_patient_facing_now",
-        "work_status",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
     # df = placeholder_for_derivation_number_23(df, "work_status", ["work_status_v1", "work_status_v2"])
     # df = placeholder_for_derivation_number_20(df, "work_healthcare",
     # ["work_healthcare_v1", "work_direct_contact"])
@@ -275,4 +285,28 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
+    return df
+
+
+def union_dependent_transformations(df):
+    """
+    Transformations that must be carried out after the union of the different survey response schemas.
+    """
+    df = assign_work_health_care(
+        df,
+        "work_health_care_combined",
+        direct_contact_column="work_direct_contact_patients_clients",
+        reference_health_care_column="work_health_care_v0",
+        other_health_care_column="work_health_care_v1_v2",
+    )
+    df = assign_work_patient_facing_now(
+        df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
+    )
+    # TODO: Add back in once work_status has been derived
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_patient_facing_now",
+    #     "work_status",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
     return df

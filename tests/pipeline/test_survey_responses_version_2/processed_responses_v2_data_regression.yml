@@ -168,6 +168,7 @@
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
@@ -223,6 +224,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
@@ -245,22 +247,31 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'Yes'
-  work_health_care: Primary care (e.g. GP, dentist)
+  work_health_care_v1_v2: Primary care (e.g. GP, dentist)
+  work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'Yes'
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
+  work_location_raw: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
   work_main_job_changed: null
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
+  work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
+    sentence.
   work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_title_raw: Atoms are used within a program to denote distinguished
+    values.
   work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: null
@@ -435,6 +446,7 @@
   samples_taken_datetime: '2022-01-03 01:42:17.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -490,6 +502,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-03 00:00:00.000000'
   think_had_covid_which_symptoms: Maybe
@@ -512,21 +525,28 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Moving location
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: null
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: MAKE ME A SANDWICH
+  work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
     EVALUATION
+  work_main_job_title_raw: Haskell features a type system with type inference and
+    lazy evaluation.
   work_not_from_home_days_per_week: '7'
+  work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Food production and agriculture (incl. farming)
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
@@ -702,6 +722,7 @@
   samples_taken_datetime: '2022-01-07 21:24:56.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -757,6 +778,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
@@ -779,23 +801,31 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: null
+  work_location_raw: null
   work_main_job_changed: 'No'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title_raw: Type classes first appeared in the Haskell programming
+    language.
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Hospitality (e.g. hotel or restaurant or cafe)
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
@@ -970,6 +1000,7 @@
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
@@ -1025,6 +1056,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-05 00:00:00.000000'
   think_had_covid_which_symptoms: null
@@ -1047,22 +1079,28 @@
   which_symptoms_last_7_days: Sore  Throat
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: 'No'
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS,
     THE FIRST CHARACTER BEING LOWERCASE
+  work_main_job_title_raw: They are written as strings of consecutive alphanumeric
+    characters, the first character being lowercase.
   work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Food Production and agriculture (incl. farming)
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
@@ -1238,6 +1276,7 @@
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'Yes'
@@ -1293,6 +1332,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: '2022-01-04 00:00:00.000000'
   think_had_covid_which_symptoms: null
@@ -1315,21 +1355,26 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
+  work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS?
+  work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
-  work_status: 5y and older in full-time education
+  work_status_v2: 5y and older in full-time education
+  work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -1503,6 +1548,7 @@
   samples_taken_datetime: '2022-01-03 02:16:58.000000'
   school_year_september: null
   sex: Female
+  sex_raw: Female
   smoke_cigarettes: 'Yes'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
@@ -1558,6 +1604,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
@@ -1581,22 +1628,29 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_health_care: Secondary care (e.g. hospital)
+  work_health_care_v1_v2: Secondary care (e.g. hospital)
+  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Retail Sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
@@ -1771,6 +1825,7 @@
   samples_taken_datetime: '2022-01-06 17:17:10.000000'
   school_year_september: null
   sex: Female
+  sex_raw: Female
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -1826,6 +1881,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-07 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
@@ -1849,21 +1905,28 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
+  work_location_raw: null
   work_main_job_changed: 'No'
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_role_raw: Atoms are used within a program to denote distinguished
+    values.
   work_main_job_title: MAKE ME A SANDWICH
+  work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
@@ -2038,6 +2101,7 @@
   samples_taken_datetime: '2022-01-05 03:25:31.000000'
   school_year_september: null
   sex: Male
+  sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'Yes'
@@ -2093,6 +2157,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: '2022-01-01 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
@@ -2115,23 +2180,30 @@
   which_symptoms_last_7_days: null
   withdrawal_reason: Moving location
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_main_job_title: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Health care
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -2307,6 +2379,7 @@
   samples_taken_datetime: '2022-01-04 09:53:28.000000'
   school_year_september: 2.0
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -2362,6 +2435,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
@@ -2384,22 +2458,29 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: null
-  work_health_care: Secondary care (e.g. hospital)
+  work_health_care_v1_v2: Secondary care (e.g. hospital)
+  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'Yes'
   work_main_job_role: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_main_job_title: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR,
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
+  work_main_job_title_raw: The Galactic Empire is nearing completion of the Death
+    Star, a space station with the power to destroy entire planets.
   work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
   accepted_invite_fingerprick: 'Yes'
@@ -2575,6 +2656,7 @@
   samples_taken_datetime: '2022-01-07 03:14:57.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
@@ -2630,6 +2712,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
@@ -2652,21 +2735,30 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: null
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'No'
   work_main_job_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
+  work_main_job_role_raw: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
   work_main_job_title: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA
     TYPES
+  work_main_job_title_raw: The arguments can be primitive data types or compound data
+    types.
   work_not_from_home_days_per_week: '2'
+  work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Art or entertainment or recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)

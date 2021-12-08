@@ -392,7 +392,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care
+  name: work_health_care_v1_v2
   nullable: true
   type: string
 - metadata: {}
@@ -440,7 +440,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_status
+  name: work_status_v2
   nullable: true
   type: string
 - metadata: {}
@@ -924,6 +924,38 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_v1_v2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_not_from_home_days_per_week_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_location_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
@@ -991,10 +1023,6 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
-- metadata: {}
-  name: work_patient_facing_now
-  nullable: true
-  type: string
 - metadata: {}
   name: work_social_care
   nullable: true

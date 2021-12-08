@@ -9,6 +9,7 @@ def test_assign_true_if_either(spark_session):
             ("false", "false", "false"),
             ("false", "true", "true"),
             ("true", "true", "true"),
+            ("true", None, "true"),
         ],
         schema="ref1 string, ref2 string, result string",
     )
