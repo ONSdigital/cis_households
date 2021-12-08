@@ -3,7 +3,7 @@ from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql import SparkSession as spark_session
+from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
@@ -14,11 +14,7 @@ from cishouseholds.pipeline.load import extract_from_table
 # 1167
 def chose_scenario_of_dweight_for_antibody_different_household(
     df: DataFrame,
-    eligibility_pct: str,
-    tranche_eligible_indicator: str,
-    # household_samples_dataframe: List[str],
-    n_eligible_hh_tranche_bystrata_column,
-    n_sampled_hh_tranche_bystrata_column,
+    tranche_eligible_indicator: bool,  # TODO: what format is it?
 ) -> Union[str, None]:
     """
     Decide what scenario to use for calculation of the design weights
@@ -33,35 +29,37 @@ def chose_scenario_of_dweight_for_antibody_different_household(
     n_sampled_hh_tranche_bystrata_column
     """
     df = df.withColumn(
-        eligibility_pct,
+        "eligibility_pct",
         F.when(
-            F.col(n_eligible_hh_tranche_bystrata_column).isNull()
-            & F.col(n_sampled_hh_tranche_bystrata_column).isNull(),
+            F.col("number_eligible_households_tranche_bystrata").isNull()
+            & F.col("number_sampled_households_tranche_bystrata").isNull(),
             0,
         )
         .when(
-            F.col(n_eligible_hh_tranche_bystrata_column).isNotNull()
-            & F.col(n_sampled_hh_tranche_bystrata_column).isNotNull()
-            & (F.col(n_sampled_hh_tranche_bystrata_column) > 0),
+            F.col("number_eligible_households_tranche_bystrata").isNotNull()
+            & F.col("number_sampled_households_tranche_bystrata").isNotNull()
+            & (F.col("number_sampled_households_tranche_bystrata") > 0),
             (
                 100
-                * (n_eligible_hh_tranche_bystrata_column - n_sampled_hh_tranche_bystrata_column)
-                / n_sampled_hh_tranche_bystrata_column
+                * (
+                    F.col("number_eligible_households_tranche_bystrata")
+                    - F.col("number_sampled_households_tranche_bystrata")
+                )
+                / F.col("number_sampled_households_tranche_bystrata")
             ),
         )
         .otherwise(None),  # TODO: check this
     )
-
     if not tranche_eligible_indicator:  # TODO: not in household_samples_dataframe?
         return "A"
     else:
-        if eligibility_pct == 0:
+        if df.select("eligibility_pct").collect()[0][0] == 0.0:
             return "B"
         else:
             return "C"
 
 
-# 1168
+# 1168 - test done stefen
 def raw_dweight_for_AB_scenario_for_antibody(
     df: DataFrame,
     hh_dweight_antibodies_column,
@@ -100,7 +98,7 @@ def raw_dweight_for_AB_scenario_for_antibody(
     return df
 
 
-# 1169
+# 1169 - test done stefen
 def function_name_1169(
     df: DataFrame,
     sample_new_previous: str,
@@ -121,7 +119,6 @@ def function_name_1169(
     previous dweight antibodies
     3 step: for cases with sample_new_previous = new, calculate  raw design weights antibodies
     by using  design weights for swab
-
     Parameters
     ----------
     df
@@ -159,7 +156,7 @@ def function_name_1169(
     return df
 
 
-# 1170
+# 1170 test done stefen
 def function_name_1170(df: DataFrame, dweights_column: str, carryforward_dweights_antibodies_column: str) -> DataFrame:
     """
     Bring the design weights calculated up until this point  into same variable: carryforward_dweights_antibodies.
@@ -179,7 +176,7 @@ def function_name_1170(df: DataFrame, dweights_column: str, carryforward_dweight
     return df
 
 
-# 1171
+# 1171 stefen has done test
 def function_name_1171(
     df: DataFrame,
     dweights_antibodies_column: str,
@@ -191,7 +188,6 @@ def function_name_1171(
     check the design weights antibodies are all are positive.
     check there are no missing design weights antibodies.
     check if they are the same across cis_area_code_20 by sample groups (by sample_source).
-
     Parameters
     ----------
     df
@@ -211,7 +207,7 @@ def function_name_1171(
     return df
 
 
-# 1178
+# 1178 stefen has done test
 def function_name_1178(
     hh_samples_df: DataFrame,
     df_extract_by_country: DataFrame,
@@ -260,6 +256,7 @@ def function_name_1178(
     return df
 
 
+# 1179 part1
 def derive_index_multiple_deprivation_group(df: DataFrame):
     """
     Parameters
@@ -301,6 +298,7 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
     return df
 
 
+# 1179 part2
 def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     """
     A.2/3 create a variable to indicate for each country, how many households are in the sample,
@@ -355,6 +353,7 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     return df
 
 
+# 1179 part 3
 def calculate_non_response_factors(df: DataFrame) -> DataFrame:
     """
     B.1 calculate raw non_response_factor by dividing total_sampled_households_cis_imd_addressbase
@@ -398,6 +397,7 @@ def calculate_non_response_factors(df: DataFrame) -> DataFrame:
     return df
 
 
+# 1179 Need test
 def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
     C1. adjust design weights by the non_response_factor by multiplying the design
@@ -425,6 +425,7 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     return df
 
 
+# Need tests
 def adjusted_design_weights_to_population_totals(df: DataFrame, test_type: str) -> DataFrame:
     """
     D.1 calculate the scaling factor and then apply the scaling factor the
@@ -467,8 +468,8 @@ def adjusted_design_weights_to_population_totals(df: DataFrame, test_type: str) 
     return df
 
 
-# 1179
-def precalibration_checkpoints(df, test_type, population_totals, dweight_list):
+# 1179 test done
+def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List[str]) -> DataFrame:
     """
     Parameters
     ----------
@@ -477,31 +478,43 @@ def precalibration_checkpoints(df, test_type, population_totals, dweight_list):
     population_totals
     dweight_list
     """
-    # TODO: create a column
+    # TODO: use validate_design_weights() stefen's function
     # check_1: The design weights are adding up to total population
-    check_1 = df.select(F.sum(F.col("scaled_design_weight_adjusted_") + test_type)).collect()[0][0] == population_totals
+    check_1 = (
+        df.select(F.sum(F.col("scaled_design_weight_adjusted_" + test_type))).collect()[0][0]
+        == df.select("number_of_households_population_by_cis").collect()[0][0]
+    )
 
     # check_2 and check_3: The  design weights are all are positive AND check there are no missing design weights
     for dweight in dweight_list:
-        df = df.withColumn("not_positive_or_null", F.when((F.col(dweight) < 0) | (F.col(dweight).isNull()), 1))
-    check_2_3 = 1 not in df.select("not_positive_or_null").distinct().collect()[0]
+        df = df.withColumn(
+            "not_positive_or_null",
+            F.when((F.col(dweight) < 0) | (F.col(dweight).isNull()), 1).otherwise(F.col("not_positive_or_null")),
+        )
+
+    check_2_3 = 0 == len(
+        df.distinct().where(F.col("not_positive_or_null") == 1).select("not_positive_or_null").collect()
+    )
 
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
-    # TODO check with Stefen
+    # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
+    # These should have the same dweights when window function is applied.
     check_4 = True
 
     return check_1, check_2_3, check_4
 
 
-# 1180
+# 1180 test done
 def function_1180(df):
     """
     Parameters
     ----------
     df
     """
+
     # A.1 re-code the region_code values, by replacing the alphanumeric code with numbers from 1 to 12
-    region_code_lookup_df = spark_session.createDataFrame(
+    spark = SparkSession.builder.getOrCreate()
+    region_code_lookup_df = spark.createDataFrame(
         data=[
             ("E12000001", 1),
             ("E12000002", 2),
@@ -516,60 +529,57 @@ def function_1180(df):
             ("S99999999", 11),
             ("N99999999", 12),
         ],
-        schema="reference_1 string, outcome integer",
+        schema="interim_region string, interim_region_code integer",
     )
     df = assign_from_lookup(
         df=df,
         column_name_to_assign="interim_region_code",
-        reference_columns=["reference_1"],
+        reference_columns=["interim_region"],
         lookup_df=region_code_lookup_df,
     )
-
+    # import pdb; pdb.set_trace()
     # A.2 re-code sex variable replacing string with integers
-    sex_code_lookup_df = spark_session.createDataFrame(
+    sex_code_lookup_df = spark.createDataFrame(
         data=[
             ("male", 1),
             ("female", 2),
         ],
-        schema="reference_1 string, outcome integer",
+        schema="sex string, interim_sex integer",
     )
     df = assign_from_lookup(
         df=df,
         column_name_to_assign="interim_sex",
-        reference_columns=["reference_1"],
+        reference_columns=["sex"],
         lookup_df=sex_code_lookup_df,
     )
 
     # A.3 create age groups considering certain age boundaries,
     # as needed for calibration weighting of swab data
-    map_age_at_visit = {2: 1, 12: 2, 17: 3, 25: 4, 35: 5, 50: 6, 70: 7}
-
+    map_age_at_visit_swab = {2: 1, 12: 2, 17: 3, 25: 4, 35: 5, 50: 6, 70: 7}
     df = assign_named_buckets(
         df=df,
-        reference_column="age_at_visit",
         column_name_to_assign="age_group_swab",
-        map=map_age_at_visit,
+        reference_column="age_at_visit",
+        map=map_age_at_visit_swab,
     )
 
     # A.4 create age groups considering certain age boundaries,
     # needed for calibration weighting of antibodies data
+    map_age_at_visit_antibodies = {16: 1, 25: 2, 35: 3, 50: 4, 70: 5}
     df = assign_named_buckets(
         df=df,
-        reference_column="age_at_visit",
         column_name_to_assign="age_group_antibodies",
-        map=map_age_at_visit,
+        reference_column="age_at_visit",
+        map=map_age_at_visit_antibodies,
     )
 
     # A.5 Creating first partition(p1)/calibration variable
     return df
 
 
-# 1180 - TEST DOING
+# 1180 - TEST DONE - check with team
 def create_calibration_var(
     df: DataFrame,
-    # datasets: List[DataFrame],
-    calibration_type: str,
-    dataset_type: List[str],
 ) -> DataFrame:
     """
     Parameters
@@ -585,40 +595,22 @@ def create_calibration_var(
             p1_for_antibodies_wales_scot_ni
             p2_for_antibodies
             p3_for_antibodies_28daysto_engl
-    dataset_type
-        allowed values:
-            england_swab_evernever
-            england_swab_14days
-            england_long_covid_24days
-            england_long_covid_42days
-            wales_swab_evernever
-            wales_swab_14days
-            wales_long_covid_24days
-            wales_long_covid_42days
-            scotland_swab_evernever
-            scotland_swab_14days
-            scotland_long_covid__24days
-            scotland_long_covid_42days
-            northen_ireland_swab_evernever
-            northen_ireland_swab_14days
-            northen_ireland_long_covid_24days
-            northen_ireland_long_covid_42days
-            england_antibodies_evernever
-            england_antibodies_28daysto
-            wales_antibodies_evernever
-            wales_antibodies_28daysto
-            scotland_antibodies_evernever
-            scotland_antibodies_28daysto
-            northen_ireland_antibodies_evernever
-            northen_ireland_antibodies_28daysto
+    dataset_type - allowed values:
+        swab_evernever
+        swab_14days
+        long_covid_24days
+        long_covid_42days
+        long_covid__24days
+        antibodies_evernever
+        antibodies_28daysto
     """
     calibration_dic = {
         "p1_swab_longcovid_england": {
             "dataset": [
-                "england_swab_evernever",
-                "england_swab_14days",
-                "england_long_covid_24days",
-                "england_long_covid_42days",
+                "swab_evernever",
+                "swab_14days",
+                "long_covid_24days",
+                "long_covid_42days",
             ],
             "country_name": ["england"],
             "condition": ((F.col("country_name") == "england")),
@@ -628,15 +620,9 @@ def create_calibration_var(
         },
         "p1_swab_longcovid_wales_scot_ni": {
             "dataset": [
-                "wales_long_covid_24days",
-                "wales_long_covid_42days",
-                "scotland_long_covid_24days",
-                "scotland_long_covid_42days",
-                "northen_ireland_long_covid_24days",
-                "northen_ireland_long_covid_42days",
-                "wales_swab_evernever",
-                "scotland_swab_evernever",
-                "northen_ireland_swab_evernever",
+                "long_covid_24days",
+                "long_covid_42days",
+                "swab_evernever",
             ],
             "country_name": ["wales", "scotland", "northen_ireland"],
             "condition": (
@@ -647,7 +633,7 @@ def create_calibration_var(
             "operation": ((F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
         },
         "p1_for_antibodies_evernever_engl": {
-            "dataset": ["england_antibodies_evernever"],
+            "dataset": ["antibodies_evernever"],
             "country_name": ["england"],
             "condition": (F.col("country_name") == "england"),
             "operation": (
@@ -655,13 +641,13 @@ def create_calibration_var(
             ),
         },
         "p1_for_antibodies_28daysto_engl": {
-            "dataset": ["england_antibodies_28daysto"],
+            "dataset": ["antibodies_28daysto"],
             "country_name": ["england"],
             "condition": F.col("country_name") == "england",
             "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
-            "dataset": ["northen_ireland_antibodies_evernever", "northen_ireland_antibodies_28daysto"],
+            "dataset": ["antibodies_evernever", "antibodies_28daysto"],
             "country_name": ["northern_ireland"],
             "condition": (
                 (F.col("country_name") == "wales")
@@ -672,17 +658,15 @@ def create_calibration_var(
         },
         "p2_for_antibodies": {
             "dataset": [
-                "england_antibodies_evernever",
-                "wales_antibodies_evernever",
-                "england_antibodies_28daysto",
-                "wales_antibodies_28daysto",
+                "antibodies_evernever",
+                "antibodies_28daysto",
             ],
             "country_name": ["england", "wales"],
             "condition": (((F.col("country_name") == "wales")) | ((F.col("country_name") == "england"))),
             "operation": (F.col("ethnicity_white") + 1),
         },
         "p3_for_antibodies_28daysto_engl": {
-            "dataset": ["england_antibodies_28daysto"],
+            "dataset": ["antibodies_28daysto"],
             "country_name": ["england"],
             "condition": ((F.col("country_name") == "england") & (F.col("age_at_visit") >= 16)),
             "operation": (F.col("interim_region_code")),
@@ -692,15 +676,31 @@ def create_calibration_var(
 
     # A.6 Create second partition (p2)/calibration variable
 
+    dataset_column = [
+        "swab_evernever",
+        "swab_14days",
+        "long_covid_24days",
+        "long_covid_42days",
+        "long_covid_24days",
+        "antibodies_evernever",
+        "antibodies_28daysto",
+    ]
+    for column in dataset_column:
+        df = df.withColumn(column, F.lit(None))
+
     for calibration_type in calibration_dic.keys():
         df = df.withColumn(
-            calibration_dic[calibration_type],
+            calibration_type,
             F.when(
-                calibration_dic[calibration_type]["condition"]
-                & (calibration_dic[calibration_type]["dataset"] == dataset_type),
+                calibration_dic[calibration_type]["condition"],
                 calibration_dic[calibration_type]["operation"],
             ),
         )
+        for column_dataset in calibration_dic[calibration_type]["dataset"]:
+            df = df.withColumn(
+                column_dataset,
+                F.when(calibration_dic[calibration_type]["condition"], F.lit(1)).otherwise(F.col(column_dataset)),
+            )
     return df
 
 
