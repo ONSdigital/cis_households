@@ -105,6 +105,14 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     #     visit_date_column="visit_date",
     #     visit_id_column="visit_id",
     # )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="sympt_now_cghfevamn",
+    #     visit_date_column="visit_date",
+    #     visit_id_column="visit_id"
+    # )
     # df = count_true_row_wise(
     #     df=df,
     #     column_name_to_assign="symptoms_last_7_days_symptom_count",
