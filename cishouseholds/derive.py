@@ -35,7 +35,7 @@ def assign_column_given_proportion(
     return df.drop("TEMP")
 
 
-def count_true_row_wise(
+def count_value_occurrences_in_column_subset_row_wise(
     df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
 ):
     """
@@ -84,10 +84,13 @@ def assign_true_if_any(
     df: DataFrame,
     column_name_to_assign: str,
     reference_columns: List[str],
-    true_false_values: List[Union[str, int]],
+    true_false_values: List[Union[str, int, bool]],
 ):
     """
-    Assign column true if either of 2 reference columns are true
+    Assign column the second value of a list containing values for false and true
+    if either of a list of reference columns are true
+    column_name_to_assign is assigned initially to all false then assigned true when value found
+    in any of the reference columns
     """
     df = df.withColumn(column_name_to_assign, F.lit(true_false_values[1]))
     for col in reference_columns:

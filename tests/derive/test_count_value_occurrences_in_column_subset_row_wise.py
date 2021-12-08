@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import count_true_row_wise
+from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 
 
-def test_count_true_row_wise(spark_session):
+def test_count_value_occurrences_in_column_subset_row_wise(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, 0, 0, 1),
@@ -17,7 +17,7 @@ def test_count_true_row_wise(spark_session):
         count integer
         """,
     )
-    output_df = count_true_row_wise(
+    output_df = count_value_occurrences_in_column_subset_row_wise(
         df=expected_df.drop("count"),
         column_name_to_assign="count",
         selection_columns=["primary_column", "secondary_column", "tertiary_column"],

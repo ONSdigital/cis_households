@@ -1016,6 +1016,22 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_around_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
