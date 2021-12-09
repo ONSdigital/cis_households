@@ -1,7 +1,0 @@
-PIPELINE_CONFIG_LOCATION environment variable should be set to the config file path. An empty dictionary will be used by default for this run.
-           -- 1/1 combination completed
-ELIGIBILITY:  0.0
-here
-SUCCESS: The process with PID 13204 (child process of PID 8392) has been terminated.
-SUCCESS: The process with PID 8392 (child process of PID 10468) has been terminated.
-SUCCESS: The process with PID 10468 (child process of PID 13760) has been terminated.
