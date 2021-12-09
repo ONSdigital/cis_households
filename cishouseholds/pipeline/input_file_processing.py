@@ -15,6 +15,7 @@ from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.survey_responses_version_0_ETL import transform_survey_responses_version_0_delta
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
+from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
 from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_work_status_columns
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
@@ -63,6 +64,7 @@ survey_responses_v2_parameters = {
     "transformation_functions": [
         transform_survey_responses_generic,
         derive_work_status_columns,
+        derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
     ],
     "sep": "|",
@@ -78,6 +80,7 @@ survey_responses_v1_parameters = {
     "datetime_column_map": survey_responses_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
+        derive_additional_v1_2_columns,
         transform_survey_responses_version_1_delta,
     ],
     "sep": "|",
