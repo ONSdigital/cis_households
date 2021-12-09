@@ -69,7 +69,12 @@ def test_calculate_generic_dweight_variables(spark_session):
     )
     window = Window.partitionBy("window")
     output_df = calculate_generic_dweight_variables(
-        df=input_df, design_weight_column="weight", groupby_columns=["groupby"], test_type="type1", cis_window=window
+        df=input_df,
+        design_weight_column="weight",
+        groupby_columns=["groupby"],
+        test_type="type1",
+        num_eligible_hosusehold_column="number_eligible_household_sample",
+        cis_window=window,
     )
 
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
