@@ -1,12 +1,38 @@
 import re
 from itertools import chain
 from typing import List
+from typing import Optional
 from typing import Union
 
 from pyspark.ml.feature import Bucketizer
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
+
+
+def assign_household_size(
+    df: DataFrame,
+    column_name_to_assign: str,
+    household_participant_count_column: Optional[str] = None,
+    household_size_group_column: Optional[str] = None,
+) -> DataFrame:
+    """
+    Assign column to represent number of participants in household
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    household_participant_count
+    household_size_group_column
+    """
+    if household_size_group_column in df.columns:
+        reference_column = household_size_group_column
+    else:
+        reference_column = household_participant_count_column
+
+    return df.withColumn(
+        column_name_to_assign, F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+")
+    )
 
 
 def assign_column_given_proportion(
