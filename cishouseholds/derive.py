@@ -9,6 +9,28 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_random_day_in_month(
+    df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
+) -> DataFrame:
+    """
+    Assign a random date in a given year and month
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    month_column
+    year_column
+    """
+    df = df.withColumn("TEMP_DAY", F.lit(1))
+    df = df.withColumn("TEMP_DATE", F.concat_ws("-", year_column, month_column, "TEMP_DAY"))
+    df = df.withColumn("TEMP_DAY", F.round(F.rand() * F.date_format(F.last_day("TEMP_DATE"), "d"), 0).cast("integer"))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(F.concat_ws("-", year_column, month_column, "TEMP_DAY"), format="yyyy-MM-dd"),
+    )
+    return df.drop("TEMP_DATE", "TEMP_DAY")
+
+
 def assign_column_given_proportion(
     df: DataFrame,
     column_name_to_assign: str,
