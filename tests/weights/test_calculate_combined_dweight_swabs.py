@@ -17,16 +17,15 @@ def test_calculate_combined_dweight_swabs(spark_session):
             """,
     )
     expected_df = spark_session.createDataFrame(
-        data=[(2, 1, 2, 2, 0.5, 1.0, "True"), (1, 1, 1, 1, 1.0, 1.0, "True")],
+        data=[(2, 1, 2, 2, 0.5, 1.0), (1, 1, 1, 1, 1.0, 1.0)],
         schema="""
            combined_design_weight_swab integer,
            number_of_households_population_by_cis integer,
            window integer,
            sum_combined_design_weight_swab long,
            scaling_factor_combined_design_weight_swab double,
-           scaled_design_weight_swab_nonadjusted double,
-           validated_design_weights string
-            """,
+           scaled_design_weight_swab_nonadjusted double
+        """,
     )
     window = Window.partitionBy("window")
     output_df = calculate_combined_dweight_swabs(

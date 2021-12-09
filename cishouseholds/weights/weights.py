@@ -295,10 +295,10 @@ def validate_design_weights(df: DataFrame, column_name_to_assign: str, num_house
     - design weights add to household population total
     - no design weights are negative
     - no design weights are missing
+    - dweights consistent by cis area
     """
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
     df = df.withColumn(column_name_to_assign, F.lit("True"))
-
     for col in columns:
         df = null_to_value(df, col)  # update nulls to 0
         df = df.withColumn(

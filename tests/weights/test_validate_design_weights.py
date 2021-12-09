@@ -5,8 +5,31 @@ from cishouseholds.weights.weights import validate_design_weights
 
 
 def test_validate_design_weights(spark_session):
+    input_df = spark_session.createDataFrame(
+        data=[
+            (1, 2.0, 2.0, 1),  # Fails check 1
+            (2, 1.0, 2.0, 4),  # Fails check 4
+            (2, 3.0, 2.0, 4),  # Fails check 4
+            (3, -1.0, -1.0, -1),  # Fails check 2
+            (4, None, None, None),  # Fails check 3
+            (5, 2.0, 2.0, 2),
+        ],
+        schema="""
+            window integer,
+            weight1 double,
+            weight2 double,
+            num_hh integer
+            """,
+    )
     expected_df = spark_session.createDataFrame(
-        data=[(2, 1.0, 2.0, 4, "True"), (2, 3.0, 2.0, 4, "True"), (1, 1.0, 2.0, 6, "False")],
+        data=[
+            (1, 2.0, 2.0, 1, "False"),  # Fails check 1
+            (2, 1.0, 2.0, 4, "False"),  # Fails check 4
+            (2, 3.0, 2.0, 4, "False"),  # Fails check 4
+            (3, -1.0, -1.0, -1, "False"),  # Fails check 2
+            (4, 0.0, 0.0, None, "False"),  # Fails check 3
+            (5, 2.0, 2.0, 2, "True"),
+        ],
         schema="""
             window integer,
             weight1 double,
@@ -17,7 +40,7 @@ def test_validate_design_weights(spark_session):
     )
     window = Window.partitionBy("window")
     output_df = validate_design_weights(
-        df=expected_df.drop("validated"),
+        df=input_df,
         column_name_to_assign="validated",
         num_households_column="num_hh",
         window=window,
