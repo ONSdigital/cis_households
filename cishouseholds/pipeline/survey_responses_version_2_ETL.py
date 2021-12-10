@@ -3,6 +3,7 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_any_symptoms_around_visit
+from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
@@ -62,7 +63,28 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
     # TODO: Add week and month commencing variables
-    # TODO: Add ethnicity grouping and editing
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
     df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
