@@ -1,4 +1,3 @@
-# import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
@@ -10,6 +9,7 @@ from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -83,6 +83,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     }
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
