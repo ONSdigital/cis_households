@@ -207,7 +207,7 @@ def function_name_1171(
     return df
 
 
-# 1178 stefen has done test
+# 1178 needs test
 def function_name_1178(
     hh_samples_df: DataFrame,
     df_extract_by_country: DataFrame,
@@ -397,7 +397,7 @@ def calculate_non_response_factors(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179 Need test
+# 1179 Jamie
 def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
     C1. adjust design weights by the non_response_factor by multiplying the design
@@ -407,26 +407,24 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "household_level_designweight_adjusted_swab",
         F.when(
-            # TODO: when  data extracted is a swab or longcovid type of dataset
-            True & F.col("response_indicator") == 1,
-            F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"),
+            F.col("response_indicator") == 1,
+            F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
     df = df.withColumn(
         "household_level_designweight_adjusted_antibodies",
         F.when(
-            # TODO: when  data extracted is a antibodies type of dataset
-            True & F.col("response_indicator") == 1,
-            F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"),
+            F.col("response_indicator") == 1,
+            F.round(F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
     return df
 
 
-# Need tests
-def adjusted_design_weights_to_population_totals(df: DataFrame, test_type: str) -> DataFrame:
+# 1179 Jamie
+def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     """
     D.1 calculate the scaling factor and then apply the scaling factor the
     design weights adjusted by the non response factor.
@@ -437,34 +435,38 @@ def adjusted_design_weights_to_population_totals(df: DataFrame, test_type: str) 
     """
     w_country = Window.partitionBy("country_name_12")
 
-    df = df.withColumn(
-        "sum_adjusted_design_weight_" + test_type,
-        F.when(F.col("response_indicator") == 1, F.col("household_level_designweight_adjusted_" + test_type)).over(
-            w_country
-        ),
-    )
+    test_type_list = ["antibodies", "swab"]
 
-    # scaling_factor_adjusted_design_weight_swab or antibodies
-    sum_adjusted_design_weight = df.select(F.sum(F.col("adjusted_design_weight_" + test_type))).collect()[0][0]
-
-    df = df.withColumn(
-        "scaling_factor_adjusted_design_weight_" + test_type,
-        F.when(
-            F.col("response_indicator") == 1, (F.col("population_country_" + test_type) / sum_adjusted_design_weight)
-        ).over(w_country),
-    )
-
-    # scaled_design_weight_adjusted_swab or antibodies
-    df = df.withColumn(
-        "scaled_design_weight_adjusted_" + test_type,
-        F.when(
-            F.col("response_indicator") == 1,
-            (
-                F.col("scaling_factor_adjusted_design_weight_" + test_type)
-                * F.col("household_level_designweight_adjusted_" + test_type)
+    for test_type in test_type_list:
+        df = df.withColumn(
+            "sum_adjusted_design_weight_" + test_type,
+            F.when(
+                F.col("response_indicator") == 1,
+                F.round(F.sum(F.col(f"household_level_designweight_adjusted_{test_type}")).over(w_country), 1),
             ),
-        ).over(w_country),
-    )
+        )
+
+        df = df.withColumn(
+            "scaling_factor_adjusted_design_weight_" + test_type,
+            F.when(
+                F.col("response_indicator") == 1,
+                F.round(F.col(f"population_country_{test_type}") / F.col(f"sum_adjusted_design_weight_{test_type}"), 1),
+            ),
+        )
+
+        # scaled_design_weight_adjusted_swab or antibodies
+        df = df.withColumn(
+            "scaled_design_weight_adjusted_" + test_type,
+            F.when(
+                F.col("response_indicator") == 1,
+                F.round(
+                    F.col(f"scaling_factor_adjusted_design_weight_{test_type}")
+                    * F.col(f"household_level_designweight_adjusted_{test_type}"),
+                    1,
+                ),
+            ),
+        )
+
     return df
 
 

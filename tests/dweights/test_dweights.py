@@ -1,6 +1,8 @@
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
+from cishouseholds.dweights_1167 import adjust_design_weight_by_non_response_factor
+from cishouseholds.dweights_1167 import adjusted_design_weights_to_population_totals
 from cishouseholds.dweights_1167 import calculate_non_response_factors
 from cishouseholds.dweights_1167 import chose_scenario_of_dweight_for_antibody_different_household
 from cishouseholds.dweights_1167 import create_calibration_var
@@ -63,7 +65,6 @@ def test_raw_dweight_for_AB_scenario_for_antibody(spark_session):
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-# Jamie
 def test_derive_index_multiple_deprivation_group(spark_session):
     schema_expected = """country_name_12 string,
                         index_multiple_deprivation integer,
@@ -122,7 +123,6 @@ def test_derive_total_responded_and_sampled_households(spark_session):
 
 
 def test_calculate_non_response_factors(spark_session):
-
     schema_expected_df = """country_name_12 string,
                             total_sampled_households_cis_imd_addressbase integer,
                             total_responded_households_cis_imd_addressbase integer,
@@ -146,6 +146,63 @@ def test_calculate_non_response_factors(spark_session):
     df_input = df_expected.drop("raw_non_response_factor")
 
     df_output = calculate_non_response_factors(df_input)
+
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+
+
+def test_adjust_design_weight_by_non_response_factor(spark_session):
+    schema_expected = """response_indicator integer,
+                        household_level_designweight_swab double,
+                        household_level_designweight_antibodies double,
+                        bounded_non_response_factor double,
+                        household_level_designweight_adjusted_swab double,
+                        household_level_designweight_adjusted_antibodies double"""
+    data_expected_df = [
+        (1, 1.3, 1.6, 1.8, 2.3, 2.9),
+        (1, 1.7, 1.4, 0.6, 1.0, 0.8),
+        (0, 1.3, 1.6, 1.8, None, None),
+    ]
+
+    df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected)
+
+    df_input = df_expected.drop(
+        "household_level_designweight_adjusted_swab", "household_level_designweight_adjusted_antibodies"
+    )
+
+    df_output = adjust_design_weight_by_non_response_factor(df_input)
+
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+
+
+def test_adjusted_design_weights_to_population_totals(spark_session):
+    schema_expected = """country_name_12 string,
+                         response_indicator integer,
+                         household_level_designweight_adjusted_swab double,
+                         household_level_designweight_adjusted_antibodies double,
+                         population_country_swab integer,
+                         population_country_antibodies integer,
+                         sum_adjusted_design_weight_swab double,
+                         sum_adjusted_design_weight_antibodies double,
+                         scaling_factor_adjusted_design_weight_swab double,
+                         scaling_factor_adjusted_design_weight_antibodies double,
+                         scaled_design_weight_adjusted_swab double,
+                         scaled_design_weight_adjusted_antibodies double
+                         """
+    data_expected_df = [
+        ("England", 1, 1.2, 1.4, 250, 350, 5.8, 5.4, 43.1, 64.8, 51.7, 90.7),
+        ("England", 1, 1.5, 1.2, 250, 350, 5.8, 5.4, 43.1, 64.8, 64.7, 77.8),
+        ("England", 1, 1.8, 1.6, 250, 350, 5.8, 5.4, 43.1, 64.8, 77.6, 103.7),
+        ("England", 1, 0.7, 0.4, 250, 350, 5.8, 5.4, 43.1, 64.8, 30.2, 25.9),
+        ("England", 1, 0.6, 0.8, 250, 350, 5.8, 5.4, 43.1, 64.8, 25.9, 51.8),
+        ("England", 0, None, None, 250, 350, None, None, None, None, None, None),
+        ("England", 0, None, None, 250, 350, None, None, None, None, None, None),
+    ]
+
+    df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected)
+
+    df_input = df_expected.drop("sum_adjusted_design_weight_swab double", "sum_adjusted_design_weight_antibody double")
+
+    df_output = adjusted_design_weights_to_population_totals(df_input)
 
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
