@@ -12,6 +12,7 @@ from cishouseholds.dweights_1167 import function_1180
 from cishouseholds.dweights_1167 import generate_datasets_to_be_weighted_for_calibration
 from cishouseholds.dweights_1167 import precalibration_checkpoints
 from cishouseholds.dweights_1167 import raw_dweight_for_AB_scenario_for_antibody
+from cishouseholds.dweights_1167 import survey_extraction_household_data_response_factor
 
 
 def test_chose_scenario_of_dweight_for_antibody_different_household(spark_session):
@@ -62,6 +63,80 @@ def test_raw_dweight_for_AB_scenario_for_antibody(spark_session):
 
     df_output = raw_dweight_for_AB_scenario_for_antibody(df_input)
 
+    assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+
+
+def test_survey_extraction_household_data_response_factor(spark_session):
+    schema_expected = """
+                        ons_household_id integer,
+                        participant_id integer,
+                        sex string,
+                        ethnicity_white integer,
+                        age_at_visit integer,
+
+                        country_12 string,
+                        antibody integer,
+                        swab integer,
+                        longcovid integer,
+
+                        response_indicator integer,
+                        check_if_missing integer,
+                        population_swab integer,
+                        population_antibody integer
+                    """
+    data_expected = [
+        (1, 1, "male", 1, 50, "england", 1, None, None, 1, None, None, 90),
+        (1, 2, "female", 1, 40, "england", None, 1, 1, 1, None, 100, None),
+        (2, 4, "female", 0, 30, "wales", None, 1, 1, 1, None, 33, None),
+        (2, 5, "male", 1, 32, "wales", 1, None, None, 1, None, None, 15),
+        (2, None, "male", 0, 5, "wales", 1, None, None, None, 1, None, 15),
+        # country population swab join to work as swab OR longcovid flagging columns required
+        (2, 7, "male", 0, 14, "wales", None, 1, None, 1, None, 33, None),
+        # both antibody and swab/longcovid flags for datasets to pass
+        (2, 8, "male", 0, 13, "wales", 1, 1, 1, 1, None, 33, 15),
+    ]
+    df_expected = spark_session.createDataFrame(data=data_expected, schema=schema_expected)
+
+    df_input_survey = df_expected.drop(
+        "response_indicator", "check_if_missing", "population_swab", "population_antibody"
+    )
+
+    # schema_households = """
+    #                     participant_id integer,
+    #                     response_indicator integer
+    #                     """
+
+    # data_households = [
+    #     # fmt: off
+    #         (1,     1),
+    #         (2,     1),
+    #         (3,     1),
+    #     # fmt: on
+    # ]
+    # df_input_households = spark_session.createDataFrame(data=data_households, schema=schema_households)
+
+    schema_country = """
+                        country_12 string,
+                        population_swab integer,
+                        population_antibody integer
+                        """
+    data_country = [
+        # fmt: off
+            ('england',             100,    90),
+            ('wales',               33,     15),
+            ('scotland',            60,     30),
+            ('northern_ireland',    40,     60),
+        # fmt: on
+    ]
+    df_input_country = spark_session.createDataFrame(data=data_country, schema=schema_country)
+
+    df_output = survey_extraction_household_data_response_factor(
+        df=df_input_survey,
+        # hh_samples_df=df_input_households,
+        df_extract_by_country=df_input_country,
+        # table_name='',
+        required_extracts_column_list=["ons_household_id", "participant_id", "sex", "ethnicity_white", "age_at_visit"],
+    )
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 

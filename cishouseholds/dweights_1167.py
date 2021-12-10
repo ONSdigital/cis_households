@@ -8,7 +8,6 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.pipeline.load import extract_from_table
 
 
 # 1167
@@ -207,14 +206,13 @@ def function_name_1171(
     return df
 
 
-# 1178 needs test
-def function_name_1178(
-    hh_samples_df: DataFrame,
+# 1178
+def survey_extraction_household_data_response_factor(
+    df: DataFrame,
+    # hh_samples_df: DataFrame,
     df_extract_by_country: DataFrame,
-    table_name: str,
+    # table_name: str,
     required_extracts_column_list: List[str],
-    mandatory_extracts_column_list: List[str],
-    population_join_column: str,
 ) -> DataFrame:
     """
     Parameters
@@ -226,33 +224,52 @@ def function_name_1178(
     mandatory_extracts_column_list
     population_join_column: Only swab/antibody
     """
-    # STEP 1 - create: extract_dataset as per requirements
+    # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
-    df = extract_from_table(table_name).select(*required_extracts_column_list)
+    # df = extract_from_table(table_name).select(*required_extracts_column_list) TODO temporarily disabled
+    # will be added once the mock pytest is enabled
 
     # STEP 2 -  check there are no missing values
-    for var in mandatory_extracts_column_list:
+    df = df.withColumn("check_if_missing", F.lit(None))
+    for var in required_extracts_column_list:
         df = df.withColumn(
-            "check_if_missing", F.when(F.col(var).isNull(), 1)
+            "check_if_missing", F.when(F.col(var).isNull(), 1).otherwise(F.col("check_if_missing"))
         )  # TODO: check if multiple columns are needed
 
     # STEP 3 -  create household level of the extract to be used in calculation of non response factor
     df = (
         df.withColumn("response_indicator", F.when(F.col("participant_id").isNotNull(), 1).otherwise(None))
-        .drop("participant_id")
-        .dropDuplicates("ons_household_id")
+        # .drop("participant_id") # ?
+        # .dropDuplicates("ons_household_id") # ?
     )
+
+    # df = df.join(
+    #     hh_samples_df,
+    #     on='participant_id',
+    #     how="left"
+    # )
 
     # STEP 4 - merge hh_samples_df (36 processing step) and household level extract (69 processing step)
     # TODO: check if population_by_country comes by country separated or together
-    hh_samples_df = hh_samples_df.join(
-        df=df.select(*required_extracts_column_list, "check_if_missing"), on="ons_household_id", how="left"
-    )
+    df_extract_by_country = df_extract_by_country.withColumnRenamed("country_12", "country_12_right")
+    df = df.join(
+        df_extract_by_country,
+        (
+            (df.country_12 == df_extract_by_country.country_12_right)
+            & ((df.antibody == 1) | ((df.swab == 1) | (df.longcovid == 1)))
+        ),
+        how="left",
+    ).drop("country_12_right")
 
-    hh_samples_df = hh_samples_df.join(
-        df=df_extract_by_country, on="population_country_{population_join_column}", how="left"
+    # TODO: is there a possibility that population_swab and population_antibody values
+    # are kept in the same record?
+    df = df.withColumn(
+        "population_swab",
+        F.when((F.col("swab") == 1) | (F.col("longcovid") == 1), F.col("population_swab")).otherwise(None),
     )
-
+    df = df.withColumn(
+        "population_antibody", F.when((F.col("antibody") == 1), F.col("population_antibody")).otherwise(None)
+    )
     return df
 
 
@@ -397,7 +414,7 @@ def calculate_non_response_factors(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179 Jamie
+# 1179 Part 4
 def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
     C1. adjust design weights by the non_response_factor by multiplying the design
@@ -423,7 +440,7 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179 Jamie
+# 1179 Part 5
 def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     """
     D.1 calculate the scaling factor and then apply the scaling factor the
