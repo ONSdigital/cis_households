@@ -9,13 +9,51 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str) -> DataFrame:
+    """
+    Assign a column to contain only the first date a participant visited
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    id_column
+    visit_date_column
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    return df.withColumn(column_name_to_assign, F.first(visit_date_column).over(window))
+
+
+def assign_last_visit(
+    df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str, visit_status_column: str
+) -> DataFrame:
+    """
+    Assign a column to contain only the last date a participant completed a visited
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    id_column
+    visit_date_column
+    visit_status_column
+    """
+    window = Window.partitionBy(id_column).orderBy(F.desc(visit_date_column))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.first(
+            F.when(~F.col(visit_status_column).isin("Cancelled", "Patient did not attend"), F.col(visit_date_column)),
+            ignorenulls=True,
+        ).over(window),
+    )
+    return df
+
+
 def assign_column_given_proportion(
     df: DataFrame,
     column_name_to_assign: str,
     groupby_column: str,
     reference_columns: List[str],
     count_if: List[Union[str, int]],
-):
+) -> DataFrame:
     """
     Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
     """
@@ -37,7 +75,7 @@ def assign_column_given_proportion(
 
 def count_value_occurrences_in_column_subset_row_wise(
     df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
-):
+) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
     Parameters
@@ -62,7 +100,7 @@ def assign_any_symptoms_around_visit(
     id_column: str,
     visit_date_column: str,
     visit_id_column: str,
-):
+) -> DataFrame:
     """
     Assign a column with boolean (Yes, No) if sympoms present around visit, derived
     from if symtoms bool columns reported any true values -1 +1 from time window
@@ -85,7 +123,7 @@ def assign_true_if_any(
     column_name_to_assign: str,
     reference_columns: List[str],
     true_false_values: List[Union[str, int, bool]],
-):
+) -> DataFrame:
     """
     Assign column the second value of a list containing values for false and true
     if either of a list of reference columns are true
@@ -106,7 +144,7 @@ def assign_true_if_any(
 
 def assign_proportion_column(
     df: DataFrame, column_name_to_assign: str, numerator_column: str, denominator_column: str, numerator_selector: str
-):
+) -> DataFrame:
     """
     Assign a column as the result of a division operation on total of select values from numerator column
     divided by grouped by another selector
@@ -129,7 +167,7 @@ def assign_proportion_column(
 
 def assign_work_social_column(
     df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
-):
+) -> DataFrame:
     """
     Assign column for work social with standard string values depending on 3 given reference inputs
     Parameters
@@ -167,7 +205,7 @@ def assign_work_social_column(
     return df
 
 
-def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]):
+def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_columns: List[str]) -> DataFrame:
     """
     Assign a unique column from concatenating multiple input columns
     Parameters
@@ -179,7 +217,7 @@ def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_co
 
 def assign_has_been_to_column(
     df: DataFrame, column_name_to_assign: str, contact_participant_column: str, contact_other_column: str
-):
+) -> DataFrame:
     """
     Assign a column to evidence whether a relevant party has been to a given place using the 2 input
     contact columns as reference and standardized output string column values
@@ -206,7 +244,9 @@ def assign_has_been_to_column(
     return df
 
 
-def assign_covid_contact_status(df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str):
+def assign_covid_contact_status(
+    df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str
+) -> DataFrame:
     """
     Assign column for possibility of having covid-19
     Parameters
@@ -235,7 +275,9 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     )
 
 
-def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict):
+def assign_column_from_mapped_list_key(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict
+) -> DataFrame:
     """
     Assing a specific column value using a dictionary of values to assign as keys and
     the list criteria corresponding to when that value should be assign as a value
@@ -255,7 +297,7 @@ def assign_column_from_mapped_list_key(df: DataFrame, column_name_to_assign: str
     return df
 
 
-def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str):
+def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str) -> DataFrame:
     """
     Assign a column for the appropriate test target type corresponding
     to that contained within the filename column (S, N)
@@ -275,7 +317,9 @@ def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_colum
     return df
 
 
-def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str):
+def assign_school_year_september_start(
+    df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str
+) -> DataFrame:
     """
     Assign a column for the approximate school year of an individual given their age at the time
     of visit
@@ -307,7 +351,7 @@ def assign_school_year_september_start(df: DataFrame, dob_column: str, visit_dat
 
 def assign_work_patient_facing_now(
     df: DataFrame, column_name_to_assign: str, age_column: str, work_healthcare_column: str
-):
+) -> DataFrame:
     """
     Assign column for work person facing depending on values of given input reference
     columns mapped to a list of outputs
@@ -348,7 +392,7 @@ def assign_work_person_facing_now(
     column_name_to_assign: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
-):
+) -> DataFrame:
     """
     Assign column for work patient facing depending on values of given input reference
     columns mapped to a list of outputs
@@ -386,7 +430,7 @@ def assign_work_person_facing_now(
 
 def assign_named_buckets(
     df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, use_current_values=False
-):
+) -> DataFrame:
     """
     Assign a new column with named ranges for given integer ranges contianed within a reference column
     Parameters
@@ -417,7 +461,7 @@ def assign_named_buckets(
 
 def assign_age_group_school_year(
     df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
-):
+) -> DataFrame:
     """
     Assign column_age_group_school_year using multiple references column values in a specific pattern
     to determin a string coded representation of school year
@@ -478,7 +522,7 @@ def assign_ethnicity_white(df: DataFrame, column_name_to_assign: str, ethnicity_
     return df
 
 
-def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_column: str) -> DataFrame:
     """
     Uses references column value to assign a taken column "yes" or "no" depending on whether
     reference is Null
@@ -493,7 +537,7 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     return df
 
 
-def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference_column: str) -> DataFrame:
     """
     Assign column outer postcode with cleaned data from reference postcode column.
     take only left part of postcode and capitalise
@@ -511,7 +555,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     return df
 
 
-def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args):
+def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args) -> DataFrame:
     """
     Assign new column with values from coalesced columns.
     From households_aggregate_processes.xlsx, derivation number 6.
@@ -532,7 +576,9 @@ def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args
     return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
 
 
-def assign_substring(df: DataFrame, column_name_to_assign, column_to_substring, start_position, substring_length):
+def assign_substring(
+    df: DataFrame, column_name_to_assign, column_to_substring, start_position, substring_length
+) -> DataFrame:
     """
     Criteria - returns data with new column which is a substring
     of an existing variable
@@ -629,7 +675,7 @@ def assign_school_year(
     return df
 
 
-def derive_cq_pattern(df: DataFrame, column_names, spark_session):
+def derive_cq_pattern(df: DataFrame, column_names, spark_session) -> DataFrame:
     """
     Derive a new column containing string of pattern in
     ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
@@ -672,7 +718,7 @@ def derive_cq_pattern(df: DataFrame, column_names, spark_session):
     return df
 
 
-def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list):
+def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list) -> DataFrame:
     """
     Create a new column containing the mean of multiple existing columns.
 
@@ -705,7 +751,7 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
 
 def assign_date_difference(
     df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
-):
+) -> DataFrame:
     """
     Calculate the difference in days between two dates.
     From households_aggregate_processes.xlsx, derivation number 27.
@@ -729,7 +775,7 @@ def assign_date_difference(
     )
 
 
-def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value):
+def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
     """
     Assign a column with a uniform value.
     From households_aggregate_processes.xlsx, derivation number 11.
@@ -755,7 +801,9 @@ def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, unifo
     return df.withColumn(column_name_to_assign, F.lit(uniform_value))
 
 
-def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, reference_column: str, pattern: str):
+def assign_column_regex_match(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, pattern: str
+) -> DataFrame:
     """
     Assign a boolean column based on a regex match on reference column.
     From households_aggregate_processes.xlsx, derivation number 12.
@@ -778,7 +826,7 @@ def assign_column_regex_match(df: DataFrame, column_name_to_assign: str, referen
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
 
 
-def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list):
+def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list) -> DataFrame:
     """
     Assign new column of value for the maximum consent version.
     From households_aggregate_processes.xlsx, derivation number 19.
@@ -815,7 +863,7 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str):
+def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str) -> DataFrame:
     """
     Assign a column with a TimeStampType to a formatted date string.
     Does not use a DateType object, as this is incompatible with out HIVE tables.
@@ -870,7 +918,9 @@ def assign_single_column_from_split(
     return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
 
 
-def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list):
+def assign_isin_list(
+    df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list
+) -> DataFrame:
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
     with existing values in the database (null values will be carried forward as null)
@@ -898,7 +948,9 @@ def assign_isin_list(df: DataFrame, column_name_to_assign: str, reference_column
     )
 
 
-def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_columns: list, lookup_df: DataFrame):
+def assign_from_lookup(
+    df: DataFrame, column_name_to_assign: str, reference_columns: list, lookup_df: DataFrame
+) -> DataFrame:
     """
     Assign a new column based on values from a lookup DF (null values will be carried forward as null)
     From households_aggregate_processes.xlsx, derivation number 10
@@ -946,7 +998,7 @@ def assign_from_lookup(df: DataFrame, column_name_to_assign: str, reference_colu
     )
 
 
-def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, date_of_birth):
+def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, date_of_birth) -> DataFrame:
     """
     Assign a new column containing age at a specified date
     Assume that parameters will be in date format
@@ -970,7 +1022,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     return df.drop("date_diff")
 
 
-def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth):
+def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth) -> DataFrame:
     """
     Uses correct logic to calculate complete years elapsed between 2 dates
     """
@@ -1003,7 +1055,7 @@ def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
 
 def assign_work_health_care(
     df, column_name_to_assign, direct_contact_column, reference_health_care_column, other_health_care_column
-):
+) -> DataFrame:
     """
     Combine the different versions of work health care responses.
     Uses direct contact status to edit these.
