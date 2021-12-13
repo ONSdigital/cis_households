@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.household_population import household_population_total
+from cishouseholds.weights.weights import household_dweights
 
 
 def test_household_population(spark_session):
@@ -67,6 +67,6 @@ def test_household_population(spark_session):
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected).drop("uprn")
 
-    df_output = household_population_total(df_address_base, df_nspl, df_lsoa, df_country_code)
+    df_output = household_dweights(df_address_base, df_nspl, df_lsoa, df_country_code)
 
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
