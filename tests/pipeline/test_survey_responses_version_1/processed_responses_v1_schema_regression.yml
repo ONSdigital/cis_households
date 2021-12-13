@@ -312,11 +312,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care
+  name: work_health_care_v1_v2
   nullable: true
   type: string
 - metadata: {}
-  name: work_direct_contact_persons
+  name: work_direct_contact_patients_clients
   nullable: true
   type: string
 - metadata: {}
@@ -360,7 +360,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_status
+  name: work_status_v1
   nullable: true
   type: string
 - metadata: {}
@@ -380,7 +380,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: had_symptoms_last_7_days
+  name: symptoms_last_7_days_any
   nullable: true
   type: string
 - metadata: {}
@@ -656,6 +656,42 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_any_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_v1_v2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_not_from_home_days_per_week_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_location_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
@@ -676,7 +712,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: sample_taken_date_string
+  name: samples_taken_date_string
   nullable: true
   type: string
 - metadata: {}
@@ -693,6 +729,10 @@ fields:
   type: string
 - metadata: {}
   name: blood_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_cghfevamn_symptom_group
   nullable: false
   type: string
 - metadata: {}
@@ -720,7 +760,19 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: work_patient_facing_now
-  nullable: true
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_around_cghfevamn_symptom_group
+  nullable: false
   type: string
 type: struct
