@@ -24,6 +24,8 @@
   days_since_think_had_covid: null
   email: ladybird1985@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Carlos Martin
   gender: Male
   have_covid_symptoms: 'Yes'
@@ -183,6 +185,8 @@
   days_since_think_had_covid: null
   email: null
   ethnicity: Mixed-White & Black African
+  ethnicity_group: Mixed
+  ethnicity_white: Non-White
   full_name: Argentina Brady
   gender: null
   have_covid_symptoms: 'Yes'
@@ -342,6 +346,8 @@
   days_since_think_had_covid: null
   email: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
+  ethnicity_group: Black
+  ethnicity_white: Non-White
   full_name: Annika Reilly
   gender: null
   have_covid_symptoms: 'Yes'
@@ -500,6 +506,8 @@
   days_since_think_had_covid: null
   email: depict1972@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Jae Cervantes
   gender: Male
   have_covid_symptoms: 'No'
@@ -655,6 +663,8 @@
   days_since_think_had_covid: null
   email: cortina2016@gsnail.ac.uk
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
+  ethnicity_white: White
   full_name: Alan Robbins
   gender: Female
   have_covid_symptoms: null
@@ -812,6 +822,8 @@
   days_since_think_had_covid: null
   email: gunsmithing1948@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Caron Barton
   gender: Male
   have_covid_symptoms: 'No'
@@ -972,6 +984,8 @@
   days_since_think_had_covid: null
   email: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
+  ethnicity_group: Mixed
+  ethnicity_white: Non-White
   full_name: Clemmie Harper
   gender: Female
   have_covid_symptoms: null
@@ -1128,6 +1142,8 @@
   days_since_think_had_covid: null
   email: saola2016@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Crystle Osborn
   gender: null
   have_covid_symptoms: 'No'
@@ -1284,6 +1300,8 @@
   days_since_think_had_covid: null
   email: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
+  ethnicity_group: White
+  ethnicity_white: White
   full_name: Honey Porter
   gender: Prefer not to say
   have_covid_symptoms: 'No'
@@ -1439,6 +1457,8 @@
   days_since_think_had_covid: null
   email: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Barton Ramos
   gender: Prefer not to say
   have_covid_symptoms: 'Yes'

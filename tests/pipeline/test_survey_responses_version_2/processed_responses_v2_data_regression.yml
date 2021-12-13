@@ -46,7 +46,9 @@
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: I don't even care.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -319,8 +321,10 @@
   email: carbonite1803@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -596,7 +600,9 @@
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Indian
+  ethnicity_group: Asian
   ethnicity_other: Ports are used to communicate with the external world.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -874,8 +880,10 @@
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Other ethnic group-Arab
+  ethnicity_group: Other
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1149,8 +1157,10 @@
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1423,7 +1433,9 @@
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1700,7 +1712,9 @@
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: Make me a sandwich.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1975,8 +1989,10 @@
   email: null
   ethnic_group: White
   ethnicity: Any other Black background
+  ethnicity_group: Black
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -2252,8 +2268,10 @@
   email: balate1925@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -2528,7 +2546,9 @@
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
+  ethnicity_group: Mixed
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
