@@ -708,6 +708,14 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: ethnicity_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: ethnicity_white
+  nullable: false
+  type: string
+- metadata: {}
   name: visit_date_string
   nullable: true
   type: string
@@ -729,6 +737,10 @@ fields:
   type: string
 - metadata: {}
   name: blood_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_cghfevamn_symptom_group
   nullable: false
   type: string
 - metadata: {}
@@ -756,11 +768,23 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: work_patient_facing_now
+  name: days_since_think_had_covid_group
   nullable: true
   type: string
 - metadata: {}
-  name: days_since_think_had_covid_group
-  nullable: true
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_around_cghfevamn_symptom_group
+  nullable: false
   type: string
 type: struct

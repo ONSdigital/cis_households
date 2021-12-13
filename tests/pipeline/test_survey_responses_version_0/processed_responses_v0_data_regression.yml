@@ -25,6 +25,8 @@
   days_since_think_had_covid_group: Date not given
   email: ladybird1985@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Carlos Martin
   gender: Male
   have_covid_symptoms: 'Yes'
@@ -130,6 +132,7 @@
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
+  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-01 06:11:57
@@ -184,6 +187,8 @@
   days_since_think_had_covid_group: null
   email: null
   ethnicity: Mixed-White & Black African
+  ethnicity_group: Mixed
+  ethnicity_white: Non-White
   full_name: Argentina Brady
   gender: null
   have_covid_symptoms: 'Yes'
@@ -289,6 +294,7 @@
   think_had_covid_tested: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-04 19:23:52
@@ -343,6 +349,8 @@
   days_since_think_had_covid_group: null
   email: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
+  ethnicity_group: Black
+  ethnicity_white: Non-White
   full_name: Annika Reilly
   gender: null
   have_covid_symptoms: 'Yes'
@@ -450,6 +458,7 @@
   think_had_covid_tested: null
   think_had_covid_which_symptoms: He looked inquisitively at his keyboard and wrote
     another sentence.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   type_of_visit: First Visit
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
@@ -501,6 +510,8 @@
   days_since_think_had_covid_group: Date not given
   email: depict1972@gsnail.ac.uk
   ethnicity: Asian or Asian British-Bangladeshi
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Jae Cervantes
   gender: Male
   have_covid_symptoms: 'No'
@@ -606,6 +617,7 @@
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DVH-2564559272-DHR-229883187696-2022-01-03 07:01:12
@@ -656,6 +668,8 @@
   days_since_think_had_covid_group: null
   email: cortina2016@gsnail.ac.uk
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
+  ethnicity_white: White
   full_name: Alan Robbins
   gender: Female
   have_covid_symptoms: null
@@ -763,6 +777,7 @@
   think_had_covid_date: null
   think_had_covid_tested: 'No'
   think_had_covid_which_symptoms: Make me a sandwich.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-06 17:36:59
@@ -813,6 +828,8 @@
   days_since_think_had_covid_group: null
   email: gunsmithing1948@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Caron Barton
   gender: Male
   have_covid_symptoms: 'No'
@@ -921,6 +938,7 @@
   think_had_covid_tested: null
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
     language.
+  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-02 01:35:07
@@ -973,6 +991,8 @@
   days_since_think_had_covid_group: null
   email: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
+  ethnicity_group: Mixed
+  ethnicity_white: Non-White
   full_name: Clemmie Harper
   gender: Female
   have_covid_symptoms: null
@@ -1079,6 +1099,7 @@
   think_had_covid_tested: null
   think_had_covid_which_symptoms: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   type_of_visit: First Visit
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-08 05:06:21
@@ -1129,6 +1150,8 @@
   days_since_think_had_covid_group: null
   email: saola2016@gsnail.ac.uk
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Crystle Osborn
   gender: null
   have_covid_symptoms: 'No'
@@ -1234,6 +1257,7 @@
   think_had_covid_date: null
   think_had_covid_tested: null
   think_had_covid_which_symptoms: Do you come here often?
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DVH-7139656872-DHR-422525832950-2022-01-02 21:34:20
@@ -1285,6 +1309,8 @@
   days_since_think_had_covid_group: null
   email: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
+  ethnicity_group: White
+  ethnicity_white: White
   full_name: Honey Porter
   gender: Prefer not to say
   have_covid_symptoms: 'No'
@@ -1389,6 +1415,7 @@
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
     and writing poetry.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   type_of_visit: First Visit
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-07 11:10:34
@@ -1440,6 +1467,8 @@
   days_since_think_had_covid_group: null
   email: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
+  ethnicity_group: Asian
+  ethnicity_white: Non-White
   full_name: Barton Ramos
   gender: Prefer not to say
   have_covid_symptoms: 'Yes'
@@ -1549,6 +1578,7 @@
   think_had_covid_tested: 'No'
   think_had_covid_which_symptoms: Haskell features a type system with type inference
     and lazy evaluation.
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   type_of_visit: Follow-up Visit
   unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-08 11:41:44
