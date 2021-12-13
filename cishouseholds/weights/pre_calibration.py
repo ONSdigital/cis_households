@@ -308,6 +308,8 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
     )
 
     # check_2 and check_3: The  design weights are all are positive AND check there are no missing design weights
+    df = df.withColumn("not_positive_or_null", F.lit(None))
+
     for dweight in dweight_list:
         df = df.withColumn(
             "not_positive_or_null",

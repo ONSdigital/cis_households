@@ -294,9 +294,9 @@ def test_precalibration_checkpoints(spark_session):
     expected_df_not_pass = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (3.0,     1.0,   2.5,    1.0,    1),
-                (3.0,     1.0,   -1.5,   1.2,    None),
-                (3.0,     1.0,   -1.5,   None,   None),
+                (2.0,     1.0,   2.5,    1.0,    1),
+                (2.0,     1.0,   -1.5,   1.2,    None),
+                (2.0,     1.0,   -1.5,   None,   None),
             # fmt: on
         ],
         schema=schema,
