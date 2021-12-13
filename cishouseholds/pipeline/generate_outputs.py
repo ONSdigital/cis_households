@@ -27,7 +27,7 @@ def generate_outputs():
     # TODO: Check that output dir exists
 
     all_visits_df = extract_from_table("response_level_records")
-    participant_df = extract_from_table("participant_level_key_records")
+    participant_df = extract_from_table("participant_level_with_vaccination_data")
 
     linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
     linked_df = linked_df.withColumn(

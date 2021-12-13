@@ -8,6 +8,7 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_transformations
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -26,7 +27,7 @@ def union_survey_response_files():
     unioned_survey_responses = unioned_survey_responses.dropDuplicates(
         subset=[column for column in unioned_survey_responses.columns if column != "survey_response_source_file"]
     )
-
+    unioned_survey_responses = union_dependent_transformations(unioned_survey_responses)
     update_table(unioned_survey_responses, "unioned_survey_responses", mode_overide="overwrite")
 
 
@@ -160,8 +161,9 @@ def merge_swab(survey_df, swab_df):
         labs_df=swab_df,
         barcode_column_name="swab_sample_barcode",
         visit_date_column_name="visit_datetime",
-        received_date_column_name="pcr_datetime",
-        void_value="Void",
+        received_date_column_name="pcr_result_recorded_datetime",
+        void_value="void",
+
     )
 
     survey_antibody_swab_df = survey_antibody_swab_df.drop(
