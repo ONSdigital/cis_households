@@ -12,6 +12,7 @@ from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
+from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -25,6 +26,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
@@ -61,6 +63,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     # TODO: Add postcode cleaning
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
+    df = clean_postcode(df, "postcode")
     df = assign_consent_code(
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
@@ -116,6 +119,12 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
 
     return df
 
