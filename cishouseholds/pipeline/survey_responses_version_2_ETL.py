@@ -1,15 +1,18 @@
-# import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_any_symptoms_around_visit
+from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import assign_first_visit
+from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
@@ -62,7 +65,31 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
     # TODO: Add week and month commencing variables
-    # TODO: Add ethnicity grouping and editing
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
+
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
     df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
@@ -301,6 +328,16 @@ def union_dependent_transformations(df):
     )
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
+    )
+    df = assign_first_visit(
+        df=df, column_name_to_assign="first_visit_date", id_column="participant_id", visit_status_column="visit_status"
+    )
+    df = assign_last_visit(
+        df=df,
+        column_name_to_assign="last_visit_date",
+        id_column="participant_id",
+        visit_status_column="visit_status",
+        visit_date_column="visit_date",
     )
     # TODO: Add back in once work_status has been derived
     # df = update_work_facing_now_column(
