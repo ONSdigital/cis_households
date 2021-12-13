@@ -9,6 +9,24 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+    """
+    Clean a barcode string using defined rules and set to none if format does not match required form
+    Parameters
+    ----------
+    df
+    barcode_column
+    """
+    df = df.withColumn(barcode_column, F.regexp_replace(F.lower(F.col(barcode_column)), " ", ""))
+    df = df.withColumn(
+        barcode_column,
+        F.when(
+            F.col(barcode_column).rlike(r"^\w{3}\d{8}"), F.regexp_replace(barcode_column, r"^\w{3}", "ONS")
+        ).otherwise(None),
+    )
+    return df
+
+
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
     update postcode variable to include only uppercase alpha numeric characters and set
