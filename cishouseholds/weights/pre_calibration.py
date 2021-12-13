@@ -129,8 +129,10 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     country_column: For northen_ireland, use country, otherwise use cis_area_code_20
     """
 
+    df = df.withColumn("country_name_lower", F.lower(F.col("country_name_12")))
+
     window_list_nni = ["sample_addressbase_indicator", "cis_area_code_20", "index_multiple_deprivation_group"]
-    window_list_ni = ["sample_addressbase_indicator", "country_name_12", "index_multiple_deprivation_group"]
+    window_list_ni = ["sample_addressbase_indicator", "country_name_lower", "index_multiple_deprivation_group"]
 
     w1_nni = Window.partitionBy(*window_list_nni)
     w1_ni = Window.partitionBy(*window_list_ni)
@@ -168,7 +170,9 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
         ).otherwise(F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_ni)),
     )
 
-    df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop("auxiliary")
+    df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop(
+        "auxiliary", "country_name_lower"
+    )
 
     return df
 

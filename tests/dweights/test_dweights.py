@@ -177,15 +177,17 @@ def test_derive_total_responded_and_sampled_households(spark_session):
                             total_sampled_households_cis_imd_addressbase integer,
                             total_responded_households_cis_imd_addressbase integer"""
     data_expected_df = [
-        ("A1", 1, "england", 1, 1, 1, 5, 3),
-        ("A2", 1, "england", 1, 1, 1, 5, 3),
-        ("A3", 1, "england", 1, 1, 1, 5, 3),
-        ("A4", 1, "england", 1, 1, 0, 5, 3),
-        ("A5", 1, "england", 1, 1, 0, 5, 3),
-        ("B1", 2, "NORTHERN IRELAND", 2, 2, 1, 4, 2),
-        ("B2", 2, "Northern Ireland", 2, 2, 1, 4, 2),
-        ("B3", 2, "NORThern irelAND", 2, 2, 0, 4, 2),
-        ("B4", 2, "northern ireland", 2, 2, 0, 4, 2),
+        # fmt: off
+            ("A1", 1, "england",            1, 1, 1, 5, 3),
+            ("A2", 1, "england",            1, 1, 1, 5, 3),
+            ("A3", 1, "england",            1, 1, 1, 5, 3),
+            ("A4", 1, "england",            1, 1, 0, 5, 3),
+            ("A5", 1, "england",            1, 1, 0, 5, 3),
+            ("B1", 2, "NORTHERN IRELAND",   2, 2, 1, 4, 2),
+            ("B2", 2, "Northern Ireland",   2, 2, 1, 4, 2),
+            ("B3", 2, "NORThern irelAND",   2, 2, 0, 4, 2),
+            ("B4", 2, "northern ireland",   2, 2, 0, 4, 2),
+        # fmt: on
     ]
 
     df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected_df)
