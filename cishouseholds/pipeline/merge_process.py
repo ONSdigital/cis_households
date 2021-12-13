@@ -504,8 +504,8 @@ def merge_process_filtering(
         f"failed_mtom_{merge_type}",
         f"failed_flag_mtom_{merge_type}",
         f"1to1_{merge_type}",
-        f"1tonone_{merge_type}",
-        f"noneto1_{merge_type}",
+        # f"1tonone_{merge_type}",
+        # f"noneto1_{merge_type}",
         "best_match",
         "not_best_match",
         "failed_match",
@@ -541,7 +541,9 @@ def merge_process_filtering(
     df_all_iqvia = M.union_multiple_tables(
         tables=[df_all_iqvia, none_record_df.filter(F.col(unique_id).isNull()).drop(*drop_list)]
     )
-    df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
+    # df_all_iqvia = M.union_multiple_tables(
+    #       tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())]
+    # )
 
     # window function count number of unique id
     window = Window.partitionBy("unique_participant_response_id")
