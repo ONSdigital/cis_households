@@ -511,7 +511,6 @@ def assign_age_group_school_year(
     return df
 
 
-
 def assign_ethnicity_white(df: DataFrame, column_name_to_assign: str, ethnicity_group_column_name: str):
     """
     Assign string variable for ethnicity white / non-white based on the 5 major ethnicity groups
