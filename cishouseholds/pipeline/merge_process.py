@@ -242,7 +242,7 @@ def execute_merge_specific_swabs(
             "unique_participant_response_id",
             "unique_pcr_test_id",
             "visit_datetime",
-            "pcr_datetime",
+            "pcr_result_recorded_datetime",
             "pcr_result_classification",
             "count_barcode_" + merge_type,
             "count_barcode_voyager",

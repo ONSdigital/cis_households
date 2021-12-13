@@ -34,7 +34,7 @@ def test_merge_swab(spark_session):
     swab_schema = """
         unique_pcr_test_id string,
         swab_sample_barcode string,
-        pcr_datetime string,
+        pcr_result_recorded_datetime string,
         pcr_result_classification string,
         merge_type_info string
     """
@@ -65,7 +65,7 @@ def test_merge_swab(spark_session):
         visit_datetime string,
         iqvia_column string,
         unique_pcr_test_id string,
-        pcr_datetime string,
+        pcr_result_recorded_datetime string,
         pcr_result_classification string,
         merge_type_info string
     """
@@ -95,7 +95,7 @@ def test_merge_swab(spark_session):
     expected_df_swab_residuals_schema = """
         unique_pcr_test_id string,
         swab_sample_barcode string,
-        pcr_datetime string,
+        pcr_result_recorded_datetime string,
         pcr_result_classification string,
         merge_type_info string
     """
@@ -119,7 +119,7 @@ def test_merge_swab(spark_session):
         visit_datetime string,
         iqvia_column string,
         unique_pcr_test_id string,
-        pcr_datetime string,
+        pcr_result_recorded_datetime string,
         pcr_result_classification string,
         merge_type_info string
     """
