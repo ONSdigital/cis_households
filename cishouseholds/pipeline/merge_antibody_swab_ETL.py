@@ -163,7 +163,6 @@ def merge_swab(survey_df, swab_df):
         visit_date_column_name="visit_datetime",
         received_date_column_name="pcr_result_recorded_datetime",
         void_value="void",
-
     )
 
     survey_antibody_swab_df = survey_antibody_swab_df.drop(
