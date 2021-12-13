@@ -25,6 +25,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
@@ -61,6 +62,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     # TODO: Add postcode cleaning
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
+    df = clean_postcode(df, "postcode")
     df = assign_consent_code(
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
