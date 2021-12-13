@@ -511,15 +511,14 @@ def assign_age_group_school_year(
     return df
 
 
-def assign_ethnicity_white(df: DataFrame, white_bool_column: str, column_name_to_assign: str) -> DataFrame:
+def assign_ethnicity_white(df: DataFrame, column_name_to_assign: str, ethnicity_group_column_name: str):
     """
-    Assign string variable for ethnicity white / non-white depending on bool value 0 / 1
-    Parameters
-    ----------
-    df
-    white_bool_column
+    Assign string variable for ethnicity white / non-white based on the 5 major ethnicity groups
     """
-    df = df.withColumn(column_name_to_assign, F.when(F.col(white_bool_column) == 1, "white").otherwise("non-white"))
+
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.col(ethnicity_group_column_name) == "White", "White").otherwise("Non-White")
+    )
     return df
 
 
