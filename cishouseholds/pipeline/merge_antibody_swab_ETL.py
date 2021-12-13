@@ -159,7 +159,7 @@ def merge_swab(survey_df, swab_df):
         survey_df=survey_df,
         labs_df=swab_df,
         barcode_column_name="swab_sample_barcode",
-        visit_date_column_name="visit_datetime",
+        visit_date_column_name="pcr_result_recorded_datetime",
         received_date_column_name="pcr_datetime",
         void_value="Void",
     )
