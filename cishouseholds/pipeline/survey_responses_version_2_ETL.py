@@ -28,8 +28,6 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 
-# from cishouseholds.edit import convert_barcode_null_if_zero
-
 # from cishouseholds.edit import update_work_facing_now_column
 
 
