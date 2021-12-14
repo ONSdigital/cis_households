@@ -768,6 +768,10 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
+- metadata: {}
   name: symptoms_last_7_days_cghfevamn_symptom_group
   nullable: false
   type: string
