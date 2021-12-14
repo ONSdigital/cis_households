@@ -1,9 +1,10 @@
+from pathlib import Path
+
+import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.extract import read_csv_to_pyspark_df
-from pathlib import Path
-import pyspark.sql.functions as F
+from cishouseholds.weights.population_projections import proccess_population_projection_df
 
 
 def test_end_to_end_population_projection(spark_session):
@@ -35,7 +36,7 @@ def test_end_to_end_population_projection(spark_session):
             ("S12000010", "S99999999", "S92000003", "Scotland", None, 558.829564, 522.6814978, None, 484.3186683),
             ("S12000011", "S99999999", "S92000003", "Scotland", None, 453.2125183, 509.115384, None, 949.0701877),
             ("S12000013", "S99999999", "S92000003", "Scotland", None, 123.0232389, 106.1571497, None, 493.4904287),
-        ]
+        ],
     )
     previous_population_df = spark_session.createDataFrame(
         schema="""
@@ -65,7 +66,7 @@ def test_end_to_end_population_projection(spark_session):
             ("S12000010", "S99999999", "S92000003", "Scotland", None, 345.0, 522.194, None, 498.0),
             ("S12000011", "S99999999", "S92000003", "Scotland", None, 476.0, 588.65, None, 990.0),
             ("S12000013", "S99999999", "S92000003", "Scotland", None, 192.0, 105.11, None, 438.49),
-        ]
+        ],
     )
     aps_lookup = spark_session.createDataFrame(
         schema="""
@@ -84,22 +85,28 @@ def test_end_to_end_population_projection(spark_session):
             (18, 1, 57, 1, "NA", 25404.24882),
             (19, 4, 65, 1, "NA", 6139.407165),
             (20, 1, 58, 8, "NA", 28241.52192),
-        ]
+        ],
     )
 
     auxillary_dfs = {
-        "population_projection_current":current_population_df,
-        "population_projection_previous":previous_population_df,
-        "aps_lookup":aps_lookup,
+        "population_projection_current": current_population_df,
+        "population_projection_previous": previous_population_df,
+        "aps_lookup": aps_lookup,
     }
 
-    header = ""    
+    header = ""
     expected_df_path = Path(__file__).parent / "test_files/output2.csv"
-    expected_df = read_csv_to_pyspark_df(spark_session=spark_session,csv_file_path=expected_df_path.as_posix(),expected_raw_header_row=header,schema=None,sep=",")
+    expected_df = read_csv_to_pyspark_df(
+        spark_session=spark_session,
+        csv_file_path=expected_df_path.as_posix(),
+        expected_raw_header_row=header,
+        schema=None,
+        sep=",",
+    )
 
     output_dfs = proccess_population_projection_df(dfs=auxillary_dfs, month=7)
     print(len(output_dfs))
     for i, df in enumerate(output_dfs):
-        df.toPandas().to_csv(f"output{i+2}.csv",index=False)
-    
+        df.toPandas().to_csv(f"output{i+2}.csv", index=False)
+
     # assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

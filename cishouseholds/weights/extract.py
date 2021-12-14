@@ -1,7 +1,8 @@
 import csv
 from io import StringIO
 from operator import add
-from typing import List, Union
+from typing import List
+from typing import Union
 
 from pyspark import RDD
 from pyspark.sql import DataFrame
@@ -242,7 +243,7 @@ def read_csv_to_pyspark_df(
 # --------------------------------------------
 
 
-def load_auxillary_data(specify:List=[]):
+def load_auxillary_data(specify: List = []):
     """
     create dictionary of renamed dataframes after extracting from csv file
     """
@@ -254,12 +255,12 @@ def load_auxillary_data(specify:List=[]):
             )
     return auxillary_dfs
 
-def prepare_auxillary_data(auxillary_dfs:dict):
+
+def prepare_auxillary_data(auxillary_dfs: dict):
     auxillary_dfs = rename_columns(auxillary_dfs)
     if "aps_lookup" in auxillary_dfs:
         auxillary_dfs["aps_lookup"] = recode_column_values(auxillary_dfs["aps_lookup"], aps_value_map)
     return auxillary_dfs
-
 
 
 def rename_columns(auxillary_dfs: dict):

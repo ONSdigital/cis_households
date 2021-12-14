@@ -11,15 +11,16 @@ from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
 from cishouseholds.weights.edit import reformat_calibration_df
 from cishouseholds.weights.edit import update_population_values
-from cishouseholds.weights.extract import load_auxillary_data, prepare_auxillary_data
+from cishouseholds.weights.extract import load_auxillary_data
+from cishouseholds.weights.extract import prepare_auxillary_data
 
 
 # 1174
-def proccess_population_projection_df(dfs:dict, month: int):
+def proccess_population_projection_df(dfs: dict, month: int):
     """
     process and format population projections tables by reshaping new datafrmae and recalculating predicted values
     """
-    #dfs = load_auxillary_data(specify=["population_projection_current", "population_projection_previous", "aps_lookup"])
+    # dfs = load_auxillary_data(specify=["population_projection_current", "population_projection_previous", "aps_lookup"])
     dfs = prepare_auxillary_data(dfs)
     previous_projection_df = dfs["population_projection_previous"]
     current_projection_df = dfs["population_projection_current"]
