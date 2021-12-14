@@ -13,11 +13,11 @@ from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import null_to_value
 from cishouseholds.weights.edit import update_data
 from cishouseholds.weights.extract import load_auxillary_data
+from cishouseholds.weights.extract import prepare_auxillary_data
 
 
-def generate_weights():
-    # initialise all dataframes in dictionary
-    auxillary_dfs = load_auxillary_data()
+def generate_weights(auxillary_dfs):
+    auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
     # initialise lookup dataframes
     household_info_df = household_dweights(
@@ -41,7 +41,7 @@ def generate_weights():
     df = union_multiple_tables(tables=[df, old_df])
 
     # transform sample files
-    df = assign_sample_new_previous(df, "sample_new_previous", "date _sample_created", "batch_number")
+    df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
     df = df.join(auxillary_dfs["tranche"], on="ons_household_id", how="outer").drop("UAC")
     df = assign_tranche_factor(
         df=df,
@@ -67,7 +67,7 @@ def generate_weights():
         df=df,
         column_name_to_assign="validated_design_weights",
         num_households_column="number_of_households_population_by_cis",
-        cis_window=cis_window,
+        window=cis_window,
     )
     df = carry_forward_design_weights(
         df=df,
@@ -75,6 +75,7 @@ def generate_weights():
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
+    return df
     # df.toPandas().to_csv("full_out.csv", index=False)
 
 
@@ -486,7 +487,7 @@ def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: s
 
 # if __name__ == "__main__":
 #     try:
-#         generate_weights()
+#         generate_weights(load_auxillary_data())
 #     except Exception as e:
 #         pass
 # generate_weights()
