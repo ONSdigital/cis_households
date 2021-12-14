@@ -66,14 +66,22 @@ def test_merge_process_filtering(spark_session):
         # E is extra/specific cases
         ("I", "L", "E1", 18, 18, 1, None, None, None, 1, None, None, None, None, None, 1, None, None, None, None, None, 1),
         ("I", "L", "E1", 19, 18, None, None, None, None, 1, None, None, 1, None, None, 1, None, None, None, None, None, 1),
+        # fmt: on
+    ]
 
+    data_none_record = [
+        # fmt: off
         # F one to None and None to one cases
         ("I", None, "F1", 20, None, None, None, 1, None, None, None, None, None, None, None, None, None, None, None, None, None, None),
         (None, "L", "F2", None, 21, None, None, None, 1, None, None, None, None, None, None, None, None, None, None, None, None, None),
         # fmt: on
     ]
+
     df_input = spark_session.createDataFrame(data, schema=schema)
     df_input = df_input.drop("best_match", "not_best_match", "failed_match")
+    none_record_df = spark_session.createDataFrame(data_none_record, schema=schema).drop(
+        "best_match", "not_best_match", "failed_match"
+    )
 
     schema_iqvia = """
         iqvia_col string,
@@ -130,12 +138,12 @@ def test_merge_process_filtering(spark_session):
 
     df_all_iqvia, df_residuals, df_failed = merge_process_filtering(
         df=df_input,
+        none_record_df=none_record_df,
         merge_type="swab",
         barcode_column_name="barcode",
         lab_columns_list=["lab_col", "unique_pcr_test_id"],
         merge_combination=["1tom", "mto1", "mtom"],
     )
-
     assert_df_equality(df_all_iqvia_expected, df_all_iqvia, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(df_residuals_expected, df_residuals, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(df_failed_expected, df_failed, ignore_row_order=True, ignore_column_order=True)

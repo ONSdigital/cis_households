@@ -119,7 +119,7 @@ def test_merge_blood(spark_session):
         ("BLOODS-6","ONS004","2020-08-11",None,"Negative",None,12, "1:m dropped"),
         ("BLOODS-8","ONS006","2020-08-03",None,"Void",None,10, "m:1 dropped"),
         ("BLOODS-12","ONS008","2020-08-04",None,"Positive",None,10, "m:m dropped"),
-        ("BLOODS-17","ONS012","2020-08-04",None,"Positive",None,None,None),
+        ("BLOODS-17","ONS012","2020-08-04",None,"Positive",None,10, 'none:1'),
         # fmt: on
     ]
     expected_df_bloods_residuals = spark_session.createDataFrame(
@@ -156,8 +156,6 @@ def test_merge_blood(spark_session):
     df_voyager_bloods, df_bloods_residuals, df_failed_records = merge_blood(voyager_df, bloods_df)
 
     assert_df_equality(expected_df_voyager_bloods, df_voyager_bloods, ignore_row_order=True, ignore_column_order=True)
-    expected_df_bloods_residuals.toPandas().to_csv("expected_df.csv", index=False)
-    df_bloods_residuals.toPandas().to_csv("residuals.csv", index=False)
     assert_df_equality(
         expected_df_bloods_residuals, df_bloods_residuals, ignore_row_order=True, ignore_column_order=True
     )

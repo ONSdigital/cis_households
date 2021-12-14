@@ -88,7 +88,7 @@ def test_merge_process_antibody(spark_session):
     # fmt: on
     # expected_df = spark_session.createDataFrame(data, schema=schema)
 
-    output_df = execute_merge_specific_antibody(
+    output_df, _ = execute_merge_specific_antibody(
         survey_df=df_input_survey,
         labs_df=df_input_antibody,
         barcode_column_name="blood_sample_barcode",

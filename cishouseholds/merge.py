@@ -815,23 +815,23 @@ def merge_one_to_many_swab_result_pcr_logic(
 
     df = df.withColumn(
         "other_than", F.when(~(F.col(pcr_result_column_name) == void_value), 1).cast("integer")
-    ).withColumn("void", F.when(F.col(pcr_result_column_name) == void_value, 1))
+    ).withColumn(void_value, F.when(F.col(pcr_result_column_name) == void_value, 1))
 
     df = (
-        df.dropDuplicates([group_by_column, "other_than", "void"])
+        df.dropDuplicates([group_by_column, "other_than", void_value])
         .drop(pcr_result_column_name)
         .groupBy(group_by_column)
-        .agg(F.sum("other_than").alias("other_than"), F.sum("void").alias("void"))
+        .agg(F.sum("other_than").alias("other_than"), F.sum(void_value).alias(void_value))
         .withColumn(
             result_pcr_logic_flag_column_name,
-            F.when((F.col("other_than").isNotNull()) & (F.col("void").isNotNull()), 1).cast("integer"),
+            F.when((F.col("other_than").isNotNull()) & (F.col(void_value).isNotNull()), 1).cast("integer"),
         )
         .select(group_by_column, result_pcr_logic_flag_column_name)
     )
 
     return df_output.join(df, [group_by_column], "inner").withColumn(
         result_pcr_logic_flag_column_name,
-        F.when((F.col(pcr_result_column_name) == "void") & (F.col(result_pcr_logic_flag_column_name) == 1), 1)
+        F.when((F.col(pcr_result_column_name) == void_value) & (F.col(result_pcr_logic_flag_column_name) == 1), 1)
         .otherwise(None)
         .cast("integer"),
     )
