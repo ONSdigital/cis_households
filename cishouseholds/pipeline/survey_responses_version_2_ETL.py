@@ -28,7 +28,6 @@ from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
-from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 
