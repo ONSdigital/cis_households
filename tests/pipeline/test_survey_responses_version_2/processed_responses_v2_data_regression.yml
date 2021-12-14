@@ -43,10 +43,13 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: I don't even care.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -316,11 +319,14 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: carbonite1803@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -593,10 +599,13 @@
   date_of_birth: null
   date_of_birth_string: null
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Indian
+  ethnicity_group: Asian
   ethnicity_other: Ports are used to communicate with the external world.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -871,11 +880,14 @@
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: -3.0
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Other ethnic group-Arab
+  ethnicity_group: Other
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1146,11 +1158,14 @@
   date_of_birth: '1997-08-21 11:10:00.000000'
   date_of_birth_string: '1997-08-21'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1420,10 +1435,13 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1697,10 +1715,13 @@
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: '1997-02-07'
   days_since_think_had_covid: 1.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: Make me a sandwich.
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -1972,11 +1993,14 @@
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: '2003-10-07'
   days_since_think_had_covid: 3.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Any other Black background
+  ethnicity_group: Black
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -2249,11 +2273,14 @@
   date_of_birth: '2015-04-22 10:53:00.000000'
   date_of_birth_string: '2015-04-22'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ethnicity_white: White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
@@ -2525,10 +2552,13 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
+  ethnicity_group: Mixed
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ethnicity_white: Non-White
   ever_care_home_worker: 0
   ever_had_long_term_health_condition: 0
   ever_work_person_facing_or_social_care: 0
