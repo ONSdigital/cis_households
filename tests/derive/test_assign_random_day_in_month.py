@@ -17,4 +17,4 @@ def test_assign_random_day_in_month(spark_session):
     output_df = assign_random_day_in_month(
         df=expected_df.drop("result"), column_name_to_assign="result", year_column="year", month_column="month"
     )
-    assert output_df.schema["result"].dataType == "TimestampType"
+    assert str(output_df.schema["result"].dataType) == "TimestampType"
