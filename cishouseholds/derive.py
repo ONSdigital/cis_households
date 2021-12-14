@@ -1066,6 +1066,44 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
     return df.drop("month_more", "day_more")
 
 
+def assign_grouped_variable_from_days_since(
+    df: DataFrame,
+    binary_reference_column: str,
+    days_since_reference_column: str,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Function create variables applied for days_since_think_had_covid_group and
+    contact_known_or_suspected_covid_days_since_group. The variable
+    days_since_think_had_covid and contact_known_or_suspected_covid_days_since will
+    give a number that will be grouped in a range.
+    Parameters
+    ----------
+    df
+    binary_reference_column
+        yes/no values that describe whether the patient thinks have had covid
+    days_since_reference_column
+        column from which extract the number of days transcurred that needs to
+        be grouped
+    column_name_to_assign
+        grouping column
+    """
+    df = assign_named_buckets(
+        df=df,
+        reference_column=days_since_reference_column,
+        column_name_to_assign=column_name_to_assign,
+        map={0: "0-14", 15: "15-28", 29: "29-60", 61: "61-90", 91: "91+"},
+    )
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()), "Date not given"
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("string"),
+    )
+
+
 def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
     """Create a copy of each column in a list, with a '_raw' suffix."""
     for column in reference_columns:
