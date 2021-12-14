@@ -24,9 +24,11 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.edit import convert_barcode_null_if_zero
+from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+
+# from cishouseholds.edit import convert_barcode_null_if_zero
 
 # from cishouseholds.edit import update_work_facing_now_column
 
@@ -63,6 +65,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_consent_code(
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode")
     # TODO: Add week and month commencing variables
     # TODO: Add ethnicity grouping and editing
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
@@ -73,8 +77,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
-    df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
+    # df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
+    # df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     df = assign_true_if_any(
