@@ -23,14 +23,11 @@ def assign_random_day_in_month(
     """
     df = df.withColumn("TEMP_DAY", F.lit(1))
     df = df.withColumn("TEMP_DATE", F.concat_ws("-", year_column, month_column, "TEMP_DAY"))
-    df = df.withColumn("RAND",F.rand())
-    df = df.withColumn("TEMP_DAY", (F.col("RAND") * (F.date_format(F.last_day("TEMP_DATE"), "d")).cast("float")))
-    df.show()
+    df = df.withColumn("TEMP_DAY", (F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d")).cast("float")))
     df = df.withColumn(
         column_name_to_assign,
         F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
     )
-    df.toPandas().to_csv("hello.csv")
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
 
