@@ -73,7 +73,7 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
             grouped_df = grouped_df.unionByName(temp_df)
 
     grouped_df = grouped_df.withColumnRenamed(f"sum({population_column})", "population_total")
-    return grouped_df
+    return grouped_df.filter(F.col("group") != "missing")
 
 
 def update_population_values(df: DataFrame):

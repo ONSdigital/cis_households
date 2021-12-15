@@ -6,11 +6,11 @@ from cishouseholds.weights.derive import assign_tranche_factor
 def test_assign_tranche_factor(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            ("A", "J1", 1, "Yes", 2, 0, "missing"),
+            ("A", "J1", 1, "Yes", 2, 1, "missing"),
             ("B", "J2", 2, "Yes", 2, 2, 1.0),
             ("C", "J2", 2, "Yes", 2, 2, 1.0),
             ("D", "J1", 2, "Yes", 2, 1, 2.0),
-            (None, "J1", 1, "No", 0, 0, "missing"),
+            (None, "J1", 1, "No", 2, 1, "missing"),
         ],
         schema="""
             barcode string,
