@@ -12,8 +12,9 @@ from cishouseholds.weights.derive import get_matches
 from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import null_to_value
 from cishouseholds.weights.edit import update_data
-from cishouseholds.weights.extract import load_auxillary_data
 from cishouseholds.weights.extract import prepare_auxillary_data
+
+# from cishouseholds.weights.extract import load_auxillary_data
 
 
 def generate_weights(auxillary_dfs):
