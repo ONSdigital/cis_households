@@ -309,7 +309,6 @@ def execute_merge_specific_swabs(
     return unioned_df, none_record_df
 
 
-
 def execute_merge_specific_antibody(
     survey_df: DataFrame,
     labs_df: DataFrame,
@@ -410,7 +409,6 @@ def execute_merge_specific_antibody(
         how="left",
     )
     return unioned_df, none_record_df
-
 
 
 def merge_process_filtering(
