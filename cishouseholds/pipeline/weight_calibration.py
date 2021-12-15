@@ -7,7 +7,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 regenesees = importr(
     "ReGenesees",
-    # Fix clonflicting method names in R
+    # Fix conflicting method names in R
     robject_translations={
         "dim.GVF.db": "dim_GVF_db_",
         "print.GVF.db": "print_GVF_db_",
@@ -42,7 +42,7 @@ def weight_calibration(calibration_config):
                 "calibration_weight",
                 population_totals_df,
                 sample_design,
-                dataset_options["calibration_model"],
+                dataset_options["calibration_model_components"],
                 bounds,
             )
             r_df = assign_calibration_factors(r_df, "calibration_weight", dataset_options["design_weight_column"])
@@ -62,7 +62,7 @@ def convert_columns_to_r_factors(df, columns_to_covert: list):
 
 
 def assign_calibration_weight(
-    df, column_name_to_assign, population_totals, sample_design, calibration_model: str, bounds: tuple
+    df, column_name_to_assign, population_totals, sample_design, calibration_model_components: list, bounds: tuple
 ):
     """
     Assign calibration weights to the specified column.
@@ -71,7 +71,7 @@ def assign_calibration_weight(
         regenesees.e_calibrate(
             sample_design,
             population_totals,
-            calmodel=robjects.Formula(calibration_model),
+            calmodel=robjects.Formula("+".join(calibration_model_components)),
             calfun="linear",
             bounds=robjects.ListVector(bounds[0], bounds[1]),
             aggregate_stage=1,
