@@ -91,6 +91,7 @@ def proccess_population_projection_df(dfs: dict, month: int):
     england_df, wales_df, scotland_df, ni_df, england_28_df, england_evernever_df = get_calibration_dfs(
         current_projection_df, "country_name_#", "age"
     )
+    england_df.show()
     return [england_df, wales_df, scotland_df, ni_df, england_28_df, england_evernever_df]
 
 

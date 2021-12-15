@@ -95,14 +95,14 @@ def test_end_to_end_population_projection(spark_session):
     }
 
     header = ""
-    expected_df_path = Path(__file__).parent / "test_files/output2.csv"
-    expected_df = read_csv_to_pyspark_df(
-        spark_session=spark_session,
-        csv_file_path=expected_df_path.as_posix(),
-        expected_raw_header_row=header,
-        schema=None,
-        sep=",",
-    )
+    # expected_df_path = Path(__file__).parent / "test_files/output1.csv"
+    # expected_df = read_csv_to_pyspark_df(
+    #     spark_session=spark_session,
+    #     csv_file_path=expected_df_path.as_posix(),
+    #     expected_raw_header_row=header,
+    #     schema=None,
+    #     sep=",",
+    # )
 
     output_dfs = proccess_population_projection_df(dfs=auxillary_dfs, month=7)
     print(len(output_dfs))
