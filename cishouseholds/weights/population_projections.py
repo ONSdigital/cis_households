@@ -168,6 +168,8 @@ def calculate_population_totals(
 # necessary columns:
 # - p1_for_swab_longcovid
 # - population
+# Note:
+# calibrated dataframe contains missing p3 values as the excel doc does not ask for them to be omitted
 def calibarate_df(
     df: DataFrame,
     groupby_columns: List[str],

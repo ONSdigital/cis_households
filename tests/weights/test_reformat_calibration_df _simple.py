@@ -19,7 +19,7 @@ def test_reformat_calibration_df_simple(spark_session):
             """,
     )
     expected_df = spark_session.createDataFrame(
-        data=[("1A", 15), ("2B", 6)],
+        data=[("P1A", 15), ("P2B", 6)],
         schema="""
             group string,
             population_total long

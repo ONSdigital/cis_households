@@ -26,29 +26,28 @@ def test_get_calibration_dfs(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (5, 5, 2, 2, 2, 5, 5, 10, 10),
+            ("P111", 5, "england_population_swab_longcovid"),
+            ("P112", 5, "england_population_swab_longcovid"),
+            ("P16", 2, "wales_population_swab_longcovid"),
+            ("P16", 2, "scotland_population_swab_longcovid"),
+            ("P16", 2, "northen_ireland_population_swab_longcovid"),
+            ("P19", 2, "wales_population_any_antibodies"),
+            ("P16", 2, "scotland_population_any_antibodies"),
+            ("P11", 2, "northen_ireland_population_any_antibodies"),
+            ("P13", 5, "england_population_antibodies_evernever"),
+            ("P12", 5, "england_population_antibodies_evernever"),
+            ("P17", 10, "england_population_antibodies_28daysto"),
+            ("P35", 10, "england_population_antibodies_28daysto"),
         ],
         schema="""
-            P11 integer,
-            P12 integer,
-            P9 integer,
-            P6 integer,
-            P1 integer,
-            P2 integer,
-            P3 integer,
-            P7 integer,
-            P5 integer
+            group string,
+            population_total long,
+            dataset_name string
             """,
     )
-    output_df1, output_df2, output_df3, output_df4, output_df5, output_df6 = get_calibration_dfs(
+    output_df = get_calibration_dfs(
         df=input_df,
         country_column="country",
         age_column="age",
     )
-    for df, cols in zip(
-        [output_df1, output_df2, output_df3, output_df4, output_df5, output_df6],
-        [["P11", "P12"], ["P9"], ["P6"], ["P1"], ["P2", "P3"], ["P7", "P5"]],
-    ):
-        assert_df_equality(
-            df, expected_df.select(*cols), ignore_column_order=True, ignore_row_order=True, ignore_nullable=True
-        )
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=False, ignore_nullable=True)
