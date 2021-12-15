@@ -3,7 +3,9 @@ from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 regenesees = importr(
     "ReGenesees",
@@ -17,19 +19,20 @@ regenesees = importr(
 
 
 @register_pipeline_stage("weight_calibration")
-def weight_calibration(calibration_config):
+def weight_calibration(calibration_config: dict):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
     """
+    spark_session = get_or_create_spark_session()
     population_totals_df = extract_from_table(calibration_config["population_totals_table_name"]).toPandas()
     with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
         population_totals_df = robjects.conversion.py2rpy(population_totals_df)
 
     for dataset_options in calibration_config["dataset_options"]:
-        pd_df = extract_from_table(dataset_options["input_table_name"]).toPandas()
+        pandas_df = extract_from_table(dataset_options["input_table_name"]).toPandas()
 
         with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-            r_df = robjects.conversion.py2rpy(pd_df)
+            r_df = robjects.conversion.py2rpy(pandas_df)
 
         sample_design = regenesees.e_svydesign(
             dat=r_df,
@@ -45,12 +48,20 @@ def weight_calibration(calibration_config):
                 dataset_options["calibration_model_components"],
                 bounds,
             )
-            r_df = assign_calibration_factors(r_df, "calibration_weight", dataset_options["design_weight_column"])
+            r_df = assign_calibration_factors(
+                r_df, "calibration_factors", "calibration_weight", dataset_options["design_weight_column"]
+            )
 
-        # TODO: Write output and summary
+        with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+            pandas_df = robjects.conversion.rpy2rp(r_df)
+
+        df = spark_session.createDataFrame(pandas_df)
+        update_table(
+            df, dataset_options["output_table_name"] + "_" + bounds[0] + "_" + bounds[1], mode_overide="overwrite"
+        )
 
 
-def convert_columns_to_r_factors(df, columns_to_covert: list):
+def convert_columns_to_r_factors(df: robjects.DataFrame, columns_to_covert: list) -> robjects.DataFrame:
     """
     Convert columns of an R dataframe to factors.
     Returns the dataframe, though changes are likely made in-place on the original dataframe.
@@ -62,8 +73,13 @@ def convert_columns_to_r_factors(df, columns_to_covert: list):
 
 
 def assign_calibration_weight(
-    df, column_name_to_assign, population_totals, sample_design, calibration_model_components: list, bounds: tuple
-):
+    df: robjects.DataFrame,
+    column_name_to_assign: str,
+    population_totals: robjects.DataFrame,
+    sample_design,
+    calibration_model_components: list,
+    bounds: tuple,
+) -> robjects.DataFrame:
     """
     Assign calibration weights to the specified column.
     """
@@ -80,7 +96,9 @@ def assign_calibration_weight(
     return df
 
 
-def assign_calibration_factors(df, column_name_to_assign, calibration_weight_column, design_weight_column):
+def assign_calibration_factors(
+    df: robjects.DataFrame, column_name_to_assign: str, calibration_weight_column: str, design_weight_column: str
+) -> robjects.DataFrame:
     """Assign calibration factors to specified column."""
     df[column_name_to_assign] = df[calibration_weight_column] / df[design_weight_column]
     return df
