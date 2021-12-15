@@ -32,7 +32,7 @@ def assign_household_size(
 
     return df.withColumn(
         column_name_to_assign, F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+")
-    )
+    ).cast("string")
 
 
 def assign_column_given_proportion(
