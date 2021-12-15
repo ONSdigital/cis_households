@@ -62,7 +62,8 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
             .withColumn(
                 "group",
                 F.when(
-                    F.col("group").isNotNull(), F.concat_ws("", F.lit(f"{col.split('_')[1]}"), F.col("group"))
+                    F.col("group").isNotNull(),
+                    F.concat_ws("", F.lit(f"P{col.split('_')[0][1:]}"), F.col("group").cast("integer")),
                 ).otherwise("missing"),
             )
         )
@@ -70,9 +71,8 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
             grouped_df = temp_df
         else:
             grouped_df = grouped_df.unionByName(temp_df)
-    grouped_df = grouped_df.filter(F.col("group") != "missing").withColumnRenamed(
-        f"sum({population_column})", "population_total"
-    )
+
+    grouped_df = grouped_df.withColumnRenamed(f"sum({population_column})", "population_total")
     return grouped_df
 
 

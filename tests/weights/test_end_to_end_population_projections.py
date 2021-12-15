@@ -94,19 +94,14 @@ def test_end_to_end_population_projection(spark_session):
         "aps_lookup": aps_lookup,
     }
 
-    header = ""
-    # expected_df_path = Path(__file__).parent / "test_files/output1.csv"
-    # expected_df = read_csv_to_pyspark_df(
-    #     spark_session=spark_session,
-    #     csv_file_path=expected_df_path.as_posix(),
-    #     expected_raw_header_row=header,
-    #     schema=None,
-    #     sep=",",
-    # )
+    expected_df_path = "tests/weights/test_files/output2.csv"
+    expected_df = spark_session.read.csv(
+        expected_df_path, header=True, schema=None, ignoreLeadingWhiteSpace=True, ignoreTrailingWhiteSpace=True, sep=","
+    )
 
-    output_dfs = proccess_population_projection_df(dfs=auxillary_dfs, month=7)
-    print(len(output_dfs))
-    for i, df in enumerate(output_dfs):
-        df.toPandas().to_csv(f"output{i+2}.csv", index=False)
+    output_df = proccess_population_projection_df(dfs=auxillary_dfs, month=7)
 
-    # assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
+    for col, type in output_df.dtypes:
+        expected_df = expected_df.withColumn(col, F.col(col).cast(type))
+
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

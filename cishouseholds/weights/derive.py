@@ -138,10 +138,15 @@ def count_distinct_in_filtered_df(
     """
     Count distinct rows that meet a given condition over a predefined window (window)
     """
-    eligible_df = df.filter(filter_positive)
-    eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
-    ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
-    df = eligible_df.unionByName(ineligible_df)
+    # eligible_df = df.filter(filter_positive)
+    # eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
+    # ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
+    # df = eligible_df.unionByName(ineligible_df)
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.approx_count_distinct(F.when(filter_positive, F.col(column_to_count)).otherwise(None)).over(window),
+    )
     return df
 
 
