@@ -23,19 +23,19 @@
   city: Marlow
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -43,10 +43,16 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: I don't even care.
+  ethnicity_white: White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Yes at work/school only
   face_covering_work: Participant Would Not/Could Not Answer
@@ -61,7 +67,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[1, 10, 23, 23, 1, 5, 6, 22]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: null
@@ -69,7 +75,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 2.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 5.0
   infant_6_age: 3.0
   infant_7_age: 4.0
@@ -107,7 +113,7 @@
   middle_name: Clarence
   no_blood_reason_fingerprick: Other
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '392744995712'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -127,7 +133,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Cancelled
-  person_1_age: 21
+  person_1_age: 21.0
   person_1_not_consenting_age: 37.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 61.0
@@ -140,7 +146,7 @@
   person_4_age: 6.0
   person_4_not_consenting_age: 100.0
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 91
+  person_5_age: 91.0
   person_5_not_consenting_age: 0.0
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 6.0
@@ -161,10 +167,11 @@
   postcode: PS0F 2CG
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
-  sample_taken_date_string: null
+  samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
@@ -180,7 +187,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -196,9 +205,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: 'No'
   symptoms_last_7_days_sore_throat: null
+  symptoms_last_7_days_symptom_count: 2
   symptoms_last_7_noisy_breathing_wheezing: 'No'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: null
+  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'Yes'
@@ -216,9 +227,11 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
@@ -228,7 +241,7 @@
   title: Mr.
   transport_to_work_or_school: On foot
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-455927236237-2022-01-02 10:00:19
+  unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-02 10:00:19
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 10:00:19.000000'
   visit_id: DHVF-0156218256
@@ -237,22 +250,31 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Participant does not want to self swab
   work_direct_contact_persons: 'Yes'
-  work_health_care: Primary care (e.g. GP, dentist)
+  work_health_care_v1_v2: Primary care (e.g. GP, dentist)
+  work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'Yes'
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
+  work_location_raw: From home (in the same grounds or building as your home)Somewhere
+    else (not at your home)
   work_main_job_changed: null
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
+  work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
+    sentence.
   work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_title_raw: Atoms are used within a program to denote distinguished
+    values.
   work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: 'Yes'
   accepted_invite_fingerprick: null
@@ -277,19 +299,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: null
@@ -297,11 +319,17 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: carbonite1803@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ethnicity_white: White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: My face is already covered for other reasons
     (e.g. religious or cultural reasons)
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
@@ -318,7 +346,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[4, 7, 23, 15, 10, 12, 2, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -326,7 +354,7 @@
   infant_1_age: 8.0
   infant_2_age: 2.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 7.0
   infant_6_age: 0.0
   infant_7_age: 0.0
@@ -365,7 +393,7 @@
   middle_name: Gale
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Poor venous access
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -385,7 +413,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -399,7 +427,7 @@
   person_4_age: null
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 6
+  person_5_age: 6.0
   person_5_not_consenting_age: 66.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -420,10 +448,11 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  sample_taken_date_string: '2022-01-03'
+  samples_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 01:42:17.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -439,7 +468,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -455,9 +486,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'Yes'
   symptoms_last_7_days_shortness_of_breath: 'Yes'
   symptoms_last_7_days_sore_throat: null
+  symptoms_last_7_days_symptom_count: 5
   symptoms_last_7_noisy_breathing_wheezing: null
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_count: 5
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: 'Yes'
@@ -475,9 +508,11 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-03 00:00:00.000000'
   think_had_covid_which_symptoms: Maybe
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -487,7 +522,7 @@
   title: Mr.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-077145284257-2022-01-05 12:07:35
+  unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-05 12:07:35
   visit_date_string: '2022-01-05'
   visit_datetime: '2022-01-05 12:07:35.000000'
   visit_id: DHVF-0988308904
@@ -496,21 +531,28 @@
   which_symptoms_last_7_days: Fever
   withdrawal_reason: Moving location
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: null
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: MAKE ME A SANDWICH
+  work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
     EVALUATION
+  work_main_job_title_raw: Haskell features a type system with type inference and
+    lazy evaluation.
   work_not_from_home_days_per_week: '7'
+  work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Food production and agriculture (incl. farming)
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
@@ -537,19 +579,19 @@
   city: Inverurie
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'Yes'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -557,10 +599,16 @@
   date_of_birth: null
   date_of_birth_string: null
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Indian
+  ethnicity_group: Asian
   ethnicity_other: Ports are used to communicate with the external world.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: My face is already covered for other reasons
     (e.g. religious or cultural reasons)
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
@@ -576,7 +624,7 @@
   have_mobile_number: 'No'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[15, 8, 19, 18, 16, 5, 4, 0]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'Yes'
@@ -584,7 +632,7 @@
   infant_1_age: 5.0
   infant_2_age: 7.0
   infant_3_age: 6.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: null
   infant_6_age: 4.0
   infant_7_age: 0.0
@@ -622,7 +670,7 @@
   middle_name: Quinn
   no_blood_reason_fingerprick: Bruising or pain after first attempt
   no_blood_reason_venous: Two attempts made
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -642,7 +690,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Re-scheduled
-  person_1_age: 64
+  person_1_age: 64.0
   person_1_not_consenting_age: 81.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 22.0
@@ -656,7 +704,7 @@
   person_4_not_consenting_age: 62.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 39
+  person_5_age: 39.0
   person_5_not_consenting_age: 51.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -679,10 +727,11 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  sample_taken_date_string: '2022-01-07'
+  samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 21:24:56.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -698,7 +747,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'Yes'
@@ -714,9 +765,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: 'No'
   symptoms_last_7_days_sore_throat: 'No'
+  symptoms_last_7_days_symptom_count: 3
   symptoms_last_7_noisy_breathing_wheezing: null
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: null
   symptoms_since_last_visit_fever: null
@@ -734,9 +787,11 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
@@ -746,7 +801,7 @@
   title: Ms.
   transport_to_work_or_school: null
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-456442497105-2022-01-01 18:18:57
+  unique_participant_response_id: DHVF-1496963502-DHR-456442497105-2022-01-01 18:18:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 18:18:57.000000'
   visit_id: DHVF-1496963502
@@ -755,23 +810,31 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: null
+  work_location_raw: null
   work_main_job_changed: 'No'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title_raw: Type classes first appeared in the Haskell programming
+    language.
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Hospitality (e.g. hotel or restaurant or cafe)
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
@@ -797,19 +860,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -817,11 +880,17 @@
   date_of_birth: '1997-03-07 10:06:00.000000'
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: -3.0
+  days_since_think_had_covid_group: null
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Other ethnic group-Arab
+  ethnicity_group: Other
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
@@ -836,7 +905,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[23, 22, 20, 3, 11, 5, 9, 1]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'No'
@@ -844,7 +913,7 @@
   infant_1_age: 8.0
   infant_2_age: 4.0
   infant_3_age: 7.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 3.0
   infant_6_age: 6.0
   infant_7_age: 8.0
@@ -883,7 +952,7 @@
   middle_name: Jae
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Two attempts made
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -903,7 +972,7 @@
   participant_status: Completed
   participant_testing_group: Swab Only
   participant_visit_status: Scheduled
-  person_1_age: 31
+  person_1_age: 31.0
   person_1_not_consenting_age: 94.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 22.0
@@ -917,7 +986,7 @@
   person_4_not_consenting_age: 5.0
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 84
+  person_5_age: 84.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
   person_6_age: 79.0
@@ -939,10 +1008,11 @@
   postcode: WP8S 5ZJ
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  sample_taken_date_string: null
+  samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
@@ -958,7 +1028,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -974,9 +1046,11 @@
   symptoms_last_7_days_runny_nose_sneezing: null
   symptoms_last_7_days_shortness_of_breath: null
   symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_last_7_days_symptom_count: 3
   symptoms_last_7_noisy_breathing_wheezing: 'No'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: null
+  symptoms_since_last_visit_count: 3
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'Yes'
@@ -994,9 +1068,11 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-05 00:00:00.000000'
   think_had_covid_which_symptoms: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
@@ -1006,7 +1082,7 @@
   title: Ms.
   transport_to_work_or_school: Other method
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-144229485098-2022-01-02 22:16:30
+  unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-02 22:16:30
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 22:16:30.000000'
   visit_id: DHVF-4476904382
@@ -1015,22 +1091,28 @@
   which_symptoms_last_7_days: Sore  Throat
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: 'No'
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS,
     THE FIRST CHARACTER BEING LOWERCASE
+  work_main_job_title_raw: They are written as strings of consecutive alphanumeric
+    characters, the first character being lowercase.
   work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Food Production and agriculture (incl. farming)
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
@@ -1056,19 +1138,19 @@
   city: null
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'No'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -1076,11 +1158,17 @@
   date_of_birth: '1997-08-21 11:10:00.000000'
   date_of_birth_string: '1997-08-21'
   days_since_think_had_covid: 2.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Yes sometimes
@@ -1095,7 +1183,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: '[23, 6, 2, 10, 17, 7, 14, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   illness_lasting_over_12_months: 'No'
@@ -1103,7 +1191,7 @@
   infant_1_age: 8.0
   infant_2_age: 8.0
   infant_3_age: 8.0
-  infant_4_age: 8
+  infant_4_age: 8.0
   infant_5_age: 0.0
   infant_6_age: 6.0
   infant_7_age: 5.0
@@ -1142,7 +1230,7 @@
   middle_name: Jessika
   no_blood_reason_fingerprick: No stock
   no_blood_reason_venous: Participant time constraints
-  no_email_address: 0
+  no_email_address: 0.0
   ons_household_id: '217846198988'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -1162,7 +1250,7 @@
   participant_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 23
+  person_1_age: 23.0
   person_1_not_consenting_age: 30.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_2_age: 0.0
@@ -1176,7 +1264,7 @@
   person_4_age: 68.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 33
+  person_5_age: 33.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_6_age: null
@@ -1199,10 +1287,11 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  sample_taken_date_string: null
+  samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'Yes'
@@ -1218,7 +1307,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: null
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -1234,9 +1325,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: 'Yes'
   symptoms_last_7_days_sore_throat: null
+  symptoms_last_7_days_symptom_count: 3
   symptoms_last_7_noisy_breathing_wheezing: 'Yes'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_count: 5
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: null
   symptoms_since_last_visit_fever: 'Yes'
@@ -1254,9 +1347,11 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: '2022-01-04 00:00:00.000000'
   think_had_covid_which_symptoms: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: None
@@ -1266,7 +1361,7 @@
   title: Ms.
   transport_to_work_or_school: null
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-389263959191-2022-01-06 18:33:36
+  unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-06 18:33:36
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:33:36.000000'
   visit_id: DHVF-8828437201
@@ -1275,21 +1370,26 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
+  work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS?
+  work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
-  work_status: 5y and older in full-time education
+  work_status_v2: 5y and older in full-time education
+  work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -1315,19 +1415,19 @@
   city: Coatbridge
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'No'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -1335,10 +1435,16 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: Asian
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
   face_covering_work: My face is already covered for other reasons (e.g. religious
@@ -1354,7 +1460,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[1, 5, 2, 6, 15, 8, 8, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'Yes'
@@ -1362,7 +1468,7 @@
   infant_1_age: null
   infant_2_age: 2.0
   infant_3_age: 6.0
-  infant_4_age: 0
+  infant_4_age: 0.0
   infant_5_age: 0.0
   infant_6_age: 4.0
   infant_7_age: null
@@ -1400,7 +1506,7 @@
   middle_name: Hank
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 0
+  no_email_address: 0.0
   ons_household_id: '602276804025'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
@@ -1420,7 +1526,7 @@
   participant_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 20
+  person_1_age: 20.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 74.0
@@ -1434,7 +1540,7 @@
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 14
+  person_5_age: 14.0
   person_5_not_consenting_age: 84.0
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -1456,10 +1562,11 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  sample_taken_date_string: '2022-01-03'
+  samples_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 02:16:58.000000'
   school_year_september: null
   sex: Female
+  sex_raw: Female
   smoke_cigarettes: 'Yes'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
@@ -1475,7 +1582,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
   symptoms_last_7_days_fatigue_weakness: null
@@ -1491,9 +1600,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: null
   symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_last_7_days_symptom_count: 4
   symptoms_last_7_noisy_breathing_wheezing: null
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_count: 4
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: null
@@ -1511,9 +1622,11 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
@@ -1524,7 +1637,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-593586857022-2022-01-06 18:06:58
+  unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -1533,22 +1646,29 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer convenient
   work_direct_contact_persons: null
-  work_health_care: Secondary care (e.g. hospital)
+  work_health_care_v1_v2: Secondary care (e.g. hospital)
+  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Retail Sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
@@ -1575,19 +1695,19 @@
   city: Hove
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -1595,10 +1715,16 @@
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: '1997-02-07'
   days_since_think_had_covid: 1.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other white background
+  ethnicity_group: White
   ethnicity_other: Make me a sandwich.
+  ethnicity_white: White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Yes always
@@ -1613,7 +1739,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[18, 9, 18, 19, 6, 1, 0, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -1621,7 +1747,7 @@
   infant_1_age: 6.0
   infant_2_age: 1.0
   infant_3_age: null
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 5.0
   infant_6_age: 6.0
   infant_7_age: 1.0
@@ -1660,7 +1786,7 @@
   middle_name: Isaac
   no_blood_reason_fingerprick: Bruising or pain after first attempt
   no_blood_reason_venous: Bruising or pain after first attempt
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -1680,7 +1806,7 @@
   participant_status: Withdrawn
   participant_testing_group: Swab Only
   participant_visit_status: Patient did not attend
-  person_1_age: 75
+  person_1_age: 75.0
   person_1_not_consenting_age: 61.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_age: 9.0
@@ -1693,7 +1819,7 @@
   person_4_age: 62.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 36
+  person_5_age: 36.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
@@ -1716,10 +1842,11 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  sample_taken_date_string: '2022-01-06'
+  samples_taken_date_string: '2022-01-06'
   samples_taken_datetime: '2022-01-06 17:17:10.000000'
   school_year_september: null
   sex: Female
+  sex_raw: Female
   smoke_cigarettes: null
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -1735,7 +1862,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'Yes'
@@ -1751,9 +1880,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'Yes'
   symptoms_last_7_days_shortness_of_breath: null
   symptoms_last_7_days_sore_throat: 'Yes'
+  symptoms_last_7_days_symptom_count: 4
   symptoms_last_7_noisy_breathing_wheezing: 'No'
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_count: 3
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: null
@@ -1771,9 +1902,11 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: '2022-01-07 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
@@ -1784,7 +1917,7 @@
   title: Prof.
   transport_to_work_or_school: Bus
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-603506140323-2022-01-08 00:44:46
+  unique_participant_response_id: DVH-3037894756-DHR-603506140323-2022-01-08 00:44:46
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 00:44:46.000000'
   visit_id: DVH-3037894756
@@ -1793,21 +1926,28 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: Swab / blood process to distressing
   work_direct_contact_persons: 'Yes'
-  work_health_care: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2: Other healthcare (e.g. mental health)
+  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
   work_location: null
+  work_location_raw: null
   work_main_job_changed: 'No'
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_role_raw: Atoms are used within a program to denote distinguished
+    values.
   work_main_job_title: MAKE ME A SANDWICH
+  work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
-  work_status: Employed and currently working (including if on leave or sick leave
+  work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
+  work_status_v2_raw: Employed and currently working (including if on leave or sick
+    leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
@@ -1833,19 +1973,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: null
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'No'
@@ -1853,11 +1993,17 @@
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: '2003-10-07'
   days_since_think_had_covid: 3.0
+  days_since_think_had_covid_group: 0-14
   email: null
   ethnic_group: White
   ethnicity: Any other Black background
+  ethnicity_group: Black
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered for other reasons (e.g.
     religious or cultural reasons)
@@ -1873,7 +2019,7 @@
   have_mobile_number: 'Yes'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: '[3, 3, 7, 21, 19, 20, 21, 5]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: null
@@ -1881,7 +2027,7 @@
   infant_1_age: 0.0
   infant_2_age: 5.0
   infant_3_age: 6.0
-  infant_4_age: 3
+  infant_4_age: 3.0
   infant_5_age: null
   infant_6_age: null
   infant_7_age: 8.0
@@ -1919,7 +2065,7 @@
   middle_name: My
   no_blood_reason_fingerprick: Couldn't get enough blood
   no_blood_reason_venous: Participant refused
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -1939,7 +2085,7 @@
   participant_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: null
-  person_1_age: 13
+  person_1_age: 13.0
   person_1_not_consenting_age: 88.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_age: 28.0
@@ -1952,7 +2098,7 @@
   person_4_age: 82.0
   person_4_not_consenting_age: 33.0
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_5_age: 22
+  person_5_age: 22.0
   person_5_not_consenting_age: 81.0
   person_5_reason_for_not_consenting: Let them eat cake.
   person_6_age: 71.0
@@ -1975,10 +2121,11 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  sample_taken_date_string: '2022-01-05'
+  samples_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 03:25:31.000000'
   school_year_september: null
   sex: Male
+  sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'Yes'
@@ -1994,7 +2141,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: null
@@ -2010,9 +2159,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'Yes'
   symptoms_last_7_days_shortness_of_breath: 'No'
   symptoms_last_7_days_sore_throat: 'No'
+  symptoms_last_7_days_symptom_count: 3
   symptoms_last_7_noisy_breathing_wheezing: 'No'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
+  symptoms_since_last_visit_count: 4
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: null
@@ -2030,9 +2181,11 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: '2022-01-01 00:00:00.000000'
   think_had_covid_which_symptoms: 'Yes'
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -2042,7 +2195,7 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   type_of_visit: Follow-up Visit
-  unique_participant_response_id: DHR-627540089585-2022-01-04 19:29:32
+  unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-04 19:29:32
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:29:32.000000'
   visit_id: DVH-6911152672
@@ -2051,23 +2204,30 @@
   which_symptoms_last_7_days: null
   withdrawal_reason: Moving location
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_main_job_title: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
     SINCE BEEN RESTORED
+  work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: null
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Health care
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -2093,19 +2253,19 @@
   city: null
   confirm_receive_vouchers: 'false'
   consent: null
-  consent_16_visits: 'No'
-  consent_1_visit: 'Yes'
-  consent_5_visits: 'Yes'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: null
@@ -2113,11 +2273,17 @@
   date_of_birth: '2015-04-22 10:53:00.000000'
   date_of_birth_string: '2015-04-22'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: White-Gypsy or Irish Traveller
+  ethnicity_group: White
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ethnicity_white: White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: My face is already covered for other reasons (e.g. religious
@@ -2133,7 +2299,7 @@
   have_mobile_number: 'No'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
-  hours_a_day_with_someone_else_at_home: '[1, 6, 6, 7, 12, 3, 5, 16]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   illness_lasting_over_12_months: null
@@ -2141,7 +2307,7 @@
   infant_1_age: 6.0
   infant_2_age: null
   infant_3_age: 4.0
-  infant_4_age: 1
+  infant_4_age: 1.0
   infant_5_age: 8.0
   infant_6_age: 6.0
   infant_7_age: 6.0
@@ -2180,7 +2346,7 @@
   middle_name: Buck
   no_blood_reason_fingerprick: Two attempts made
   no_blood_reason_venous: Participant felt unwell/fainted
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -2200,7 +2366,7 @@
   participant_status: Active
   participant_testing_group: null
   participant_visit_status: Cancelled
-  person_1_age: 69
+  person_1_age: 69.0
   person_1_not_consenting_age: 13.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_age: 87.0
@@ -2213,7 +2379,7 @@
   person_4_age: 55.0
   person_4_not_consenting_age: null
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 20
+  person_5_age: 20.0
   person_5_not_consenting_age: 13.0
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -2236,10 +2402,11 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
-  sample_taken_date_string: '2022-01-04'
+  samples_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 09:53:28.000000'
   school_year_september: 2.0
   sex: null
+  sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
@@ -2255,7 +2422,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -2271,9 +2440,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: 'No'
   symptoms_last_7_days_sore_throat: null
+  symptoms_last_7_days_symptom_count: 2
   symptoms_last_7_noisy_breathing_wheezing: 'Yes'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'No'
@@ -2291,9 +2462,11 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
+  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -2303,7 +2476,7 @@
   title: Dr.
   transport_to_work_or_school: On foot
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-858742267562-2022-01-03 01:57:08
+  unique_participant_response_id: DVH-7714195028-DHR-858742267562-2022-01-03 01:57:08
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 01:57:08.000000'
   visit_id: DVH-7714195028
@@ -2312,22 +2485,29 @@
   which_symptoms_last_7_days: Muscle ache
   withdrawal_reason: No longer wants to take part
   work_direct_contact_persons: null
-  work_health_care: Secondary care (e.g. hospital)
+  work_health_care_v1_v2: Secondary care (e.g. hospital)
+  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
   work_location: Both (work from home and work somewhere else)
+  work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'Yes'
   work_main_job_role: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_main_job_title: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR,
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
+  work_main_job_title_raw: The Galactic Empire is nearing completion of the Death
+    Star, a space station with the power to destroy entire planets.
   work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
-  work_patient_facing_now: <=15y
   work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_social_care: 'No'
-  work_status: null
+  work_status_v2: null
+  work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
   accepted_invite_fingerprick: 'Yes'
@@ -2352,19 +2532,19 @@
   city: null
   confirm_receive_vouchers: 'true'
   consent: null
-  consent_16_visits: 'Yes'
-  consent_1_visit: 'No'
-  consent_5_visits: 'No'
+  consent_16_visits: null
+  consent_1_visit: null
+  consent_5_visits: null
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: 'Yes'
-  consent_contact_extra_research: 'No'
+  consent_blood_test: null
+  consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
-  consent_use_of_surplus_blood_samples: 'Yes'
+  consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
@@ -2372,10 +2552,16 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
+  ethnicity_group: Mixed
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ethnicity_white: Non-White
+  ever_care_home_worker: 0
+  ever_had_long_term_health_condition: 0
+  ever_work_person_facing_or_social_care: 0
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
@@ -2391,7 +2577,7 @@
   have_mobile_number: null
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: '[23, 12, 23, 20, 0, 17, 16, 12]'
+  hours_a_day_with_someone_else_at_home: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'No'
   illness_lasting_over_12_months: 'Yes'
@@ -2399,7 +2585,7 @@
   infant_1_age: 6.0
   infant_2_age: 3.0
   infant_3_age: 5.0
-  infant_4_age: 6
+  infant_4_age: 6.0
   infant_5_age: 6.0
   infant_6_age: 0.0
   infant_7_age: 2.0
@@ -2438,7 +2624,7 @@
   middle_name: Argentina
   no_blood_reason_fingerprick: Participant time constraints
   no_blood_reason_venous: Other
-  no_email_address: 1
+  no_email_address: 1.0
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
@@ -2458,7 +2644,7 @@
   participant_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_age: 28
+  person_1_age: 28.0
   person_1_not_consenting_age: null
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
@@ -2474,7 +2660,7 @@
   person_4_not_consenting_age: 80.0
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 24
+  person_5_age: 24.0
   person_5_not_consenting_age: null
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -2496,10 +2682,11 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
-  sample_taken_date_string: '2022-01-07'
+  samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 03:14:57.000000'
   school_year_september: null
   sex: null
+  sex_raw: null
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
@@ -2515,7 +2702,9 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
   symptoms_last_7_days_fatigue_weakness: 'No'
@@ -2531,9 +2720,11 @@
   symptoms_last_7_days_runny_nose_sneezing: 'No'
   symptoms_last_7_days_shortness_of_breath: 'Yes'
   symptoms_last_7_days_sore_throat: 'No'
+  symptoms_last_7_days_symptom_count: 3
   symptoms_last_7_noisy_breathing_wheezing: 'Yes'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'No'
+  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: 'Yes'
@@ -2551,9 +2742,11 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
+  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: None
@@ -2563,7 +2756,7 @@
   title: null
   transport_to_work_or_school: null
   type_of_visit: First Visit
-  unique_participant_response_id: DHR-329500167403-2022-01-06 11:34:20
+  unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 11:34:20
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 11:34:20.000000'
   visit_id: DVH-8720322983
@@ -2572,21 +2765,30 @@
   which_symptoms_last_7_days: Weakness/tiredness
   withdrawal_reason: null
   work_direct_contact_persons: null
-  work_health_care: null
+  work_health_care_v1_v2: null
+  work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'No'
   work_main_job_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
+  work_main_job_role_raw: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
   work_main_job_title: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA
     TYPES
+  work_main_job_title_raw: The arguments can be primitive data types or compound data
+    types.
   work_not_from_home_days_per_week: '2'
+  work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'No'
-  work_patient_facing_now: null
   work_person_facing_now: 'No'
   work_sectors: Art or entertainment or recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
-  work_status: Attending university (including if temporarily absent)Self-employed
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)

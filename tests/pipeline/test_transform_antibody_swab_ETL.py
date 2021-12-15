@@ -26,7 +26,7 @@ def test_transform_antibody_swab_ETL(spark_session):
 
     swab_schema = """
                 swab_sample_barcode string,
-                pcr_datetime string,
+                pcr_result_recorded_datetime string,
                 pcr_result_classification string
                 """
     swab_data = [
