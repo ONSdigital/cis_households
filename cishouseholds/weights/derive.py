@@ -152,7 +152,12 @@ def count_distinct_in_filtered_df(
 
 # 1065
 def assign_tranche_factor(
-    df: DataFrame, column_name_to_assign: str, barcode_column: str, tranche_column: str, group_by_columns: List[str]
+    df: DataFrame,
+    column_name_to_assign: str,
+    barcode_column: str,
+    barcode_ref_column: str,
+    tranche_column: str,
+    group_by_columns: List[str],
 ):
     """
     Assign a variable tranche factor as the ratio between 2 derived columns
@@ -161,7 +166,7 @@ def assign_tranche_factor(
     as the barcode column is not null and the tranche
     value is maximum within the predefined window (window)
     """
-    df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_ref_column).isNull(), "No").otherwise("Yes"))
     window = Window.partitionBy(*group_by_columns)
     df = count_distinct_in_filtered_df(
         df=df,
@@ -188,4 +193,4 @@ def assign_tranche_factor(
             / F.col("number_sampled_households_tranche_bystrata_enrolment"),
         ).otherwise("missing"),
     )
-    return df
+    return df.drop(barcode_ref_column)

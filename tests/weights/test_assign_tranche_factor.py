@@ -6,14 +6,15 @@ from cishouseholds.weights.derive import assign_tranche_factor
 def test_assign_tranche_factor(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            ("A", "J1", 1, "Yes", 2, 1, "missing"),
-            ("B", "J2", 2, "Yes", 2, 2, 1.0),
-            ("C", "J2", 2, "Yes", 2, 2, 1.0),
-            ("D", "J1", 2, "Yes", 2, 1, 2.0),
-            (None, "J1", 1, "No", 2, 1, "missing"),
+            ("A", "A", "J1", 1, "Yes", 2, 1, "missing"),
+            ("B", "B", "J2", 2, "Yes", 2, 2, 1.0),
+            ("C", "C", "J2", 2, "Yes", 2, 2, 1.0),
+            ("D", "D", "J1", 2, "Yes", 2, 1, 2.0),
+            ("E", None, "J1", 1, "No", 2, 1, "missing"),
         ],
         schema="""
             barcode string,
+            barcode_ref string,
             groupby string,
             tranche integer,
             tranche_eligible_households string,
@@ -30,6 +31,7 @@ def test_assign_tranche_factor(spark_session):
         ),
         column_name_to_assign="tranche_factor",
         barcode_column="barcode",
+        barcode_ref_column="barcode_ref",
         tranche_column="tranche",
         group_by_columns=["groupby"],
     )

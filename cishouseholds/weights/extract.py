@@ -78,7 +78,6 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
-        "tranche": "tranche_number_indicator",
         "sample": "sample_source",
         "sample_direct": "sample_addressbase_indicator",
         "hh_dweight_swab": "household_level_designweight_swab",
@@ -90,7 +89,13 @@ lookup_variable_name_maps = {
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
     },
-    "tranche": {"UAC": "ons_household_id"},
+    "tranche": {
+        "UAC": "ons_household_id",
+        "lsoa_11": "lower_super_output_area_code_11",
+        "cis20cd": "cis_area_code_20",
+        "ctry12": "country_code_12",
+        "ctry_name12": "country_name_12"
+    },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
         "rgn": "region_code",
