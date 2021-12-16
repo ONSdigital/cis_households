@@ -17,7 +17,7 @@ def assign_household_size(
     household_size_group_column: Optional[str] = None,
 ) -> DataFrame:
     """
-    Assign a column to contain only the first date a participant visited
+    Assign a column to contain the number of participants residing in a given household
     Parameters
     ----------
     df
@@ -31,8 +31,9 @@ def assign_household_size(
         reference_column = household_participant_count_column
 
     return df.withColumn(
-        column_name_to_assign, F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+")
-    ).cast("string")
+        column_name_to_assign,
+        F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+").cast("string"),
+    )
 
 
 def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str) -> DataFrame:
