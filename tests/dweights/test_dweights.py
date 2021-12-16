@@ -370,7 +370,7 @@ def test_create_calibration_var(spark_session):
             # fmt: on
         ],
         schema="""
-                country_name string,
+                country_name_12 string,
                 interim_region_code integer,
                 interim_sex integer,
                 ethnicity_white integer,
@@ -413,7 +413,7 @@ def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
                 ('northen_ireland', 1, 0.6,  1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
             # fmt: on
         ],
-        schema="""country_name string,
+        schema="""country_name_12 string,
                 participant_id integer,
                 scaled_design_weight_adjusted_swab double,
                 p1_swab_longcovid_england double,
@@ -433,7 +433,7 @@ def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
             ('northen_ireland',     1,      1.0,    1.0),
             # fmt: on
         ],
-        schema="""country_name string,
+        schema="""country_name_12 string,
                 participant_id integer,
                 scaled_design_weight_adjusted_antibodies double,
                 p1_for_antibodies_wales_scot_ni double""",
