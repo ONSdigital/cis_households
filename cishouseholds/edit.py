@@ -95,7 +95,7 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
             .withColumnRenamed(school_year_column, column_name)
         )
         df = df.join(temp_df, on=[country_column, id_column], how="left")
-    return df.drop(school_year_column)
+    return df
 
 
 def update_social_column(df: DataFrame, social_column: str, health_column: str):

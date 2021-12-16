@@ -31,8 +31,6 @@ from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 
-# from cishouseholds.edit import update_work_facing_now_column
-
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
@@ -53,6 +51,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
+        "withdrawal_reason",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
@@ -269,6 +268,14 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
     df = assign_school_year_september_start(
         df, dob_column="date_of_birth", visit_date="visit_datetime", column_name_to_assign="school_year_september"
     )
+    # TODO: Enable once country data is linked on after merge
+    # df = split_school_year_by_country(
+    #   df, school_year_column = "school_year_september", country_column = "country_name", id_column="participant_id"
+    # )
+    # df = assign_age_group_school_year(
+    #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
+    #   age_column="age_at_visit", school_year_column="school_year_september"
+    # )
     return df
 
 
