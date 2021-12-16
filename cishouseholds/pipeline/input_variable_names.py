@@ -48,7 +48,7 @@ historical_blood_variable_name_map = {
     "result_tdi": "antibody_test_result_classification",
     "result_siemens": "siemens_antibody_test_result_classification",
     "result_tdi_date": "antibody_test_result_recorded_date",
-    "assay_tdi": "tdi_antibody_test_result_value",
+    "assay_tdi": "antibody_test_tdi_result_value",
     "assay_category": "antibody_assay_category",
     "assay_siemens": "siemens_antibody_test_result_value",
     "plate_tdi": "antibody_test_plate_id",

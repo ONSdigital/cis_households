@@ -51,6 +51,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
+        "withdrawal_reason",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
