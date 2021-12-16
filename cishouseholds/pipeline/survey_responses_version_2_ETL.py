@@ -102,8 +102,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    # df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
-    # df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     df = assign_true_if_any(

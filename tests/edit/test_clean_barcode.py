@@ -7,8 +7,10 @@ def test_clean_barcode(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("ons12345678", "ONS12345678"),
+            ("ONC12345678", "ONC12345678"),
             ("ran  12345678", "ONS12345678"),
-            ("LOL ** 12345678", None),
+            ("LO11 12345678", None),
+            ("ONS00000000", None),
         ],
         schema="barcode string, clean_barcode string",
     )

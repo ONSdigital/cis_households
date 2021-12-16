@@ -11,18 +11,21 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     """
-    Clean a barcode string using defined rules and set to none if format does not match required form
-    Parameters
-    ----------
-    df
-    barcode_column
+    Clean lab sample barcodes.
+    Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
+    matching the expected format.
     """
-    df = df.withColumn(barcode_column, F.regexp_replace(F.lower(F.col(barcode_column)), " ", ""))
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(
         barcode_column,
         F.when(
-            F.col(barcode_column).rlike(r"^\w{3}\d{8}"), F.regexp_replace(barcode_column, r"^\w{3}", "ONS")
-        ).otherwise(None),
+            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
+            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
+        ).otherwise(F.col(barcode_column)),
+    )
+    df = df.withColumn(
+        barcode_column,
+        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
     )
     return df
 
