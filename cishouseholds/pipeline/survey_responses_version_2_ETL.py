@@ -12,6 +12,7 @@ from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
+from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -25,7 +26,8 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.edit import convert_barcode_null_if_zero
+from cishouseholds.edit import clean_barcode
+from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 
@@ -59,11 +61,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_regex_match(
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
-    # TODO: Add postcode cleaning
+    df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode")
     # TODO: Add week and month commencing variables
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
@@ -98,8 +102,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
-    df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     df = assign_true_if_any(
@@ -116,6 +118,12 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
 
     return df
 

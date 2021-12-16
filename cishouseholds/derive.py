@@ -10,6 +10,26 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_random_day_in_month(
+    df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
+) -> DataFrame:
+    """
+    Assign a random date in a given year and month
+    Parameters
+    ----------
+    month_column
+    year_column
+    """
+    df = df.withColumn("TEMP_DAY", F.lit(1))
+    df = df.withColumn("TEMP_DATE", F.concat_ws("-", year_column, month_column, "TEMP_DAY"))
+    df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
+    )
+    return df.drop("TEMP_DATE", "TEMP_DAY")
+
+
 def assign_household_size(
     df: DataFrame,
     column_name_to_assign: str,
@@ -19,7 +39,7 @@ def assign_household_size(
     """
     Assign a column to contain the number of participants residing in a given household
     Parameters
-    ----------
+    -----------
     df
     column_name_to_assign
     household_participant_count
@@ -57,8 +77,6 @@ def assign_last_visit(
     Assign a column to contain only the last date a participant completed a visited
     Parameters
     ----------
-    df
-    column_name_to_assign
     id_column
     visit_date_column
     visit_status_column
@@ -1071,6 +1089,44 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
         + F.round((F.col("month_more") + F.col("day_more")) / 3, 0).cast("int"),
     )
     return df.drop("month_more", "day_more")
+
+
+def assign_grouped_variable_from_days_since(
+    df: DataFrame,
+    binary_reference_column: str,
+    days_since_reference_column: str,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Function create variables applied for days_since_think_had_covid_group and
+    contact_known_or_suspected_covid_days_since_group. The variable
+    days_since_think_had_covid and contact_known_or_suspected_covid_days_since will
+    give a number that will be grouped in a range.
+    Parameters
+    ----------
+    df
+    binary_reference_column
+        yes/no values that describe whether the patient thinks have had covid
+    days_since_reference_column
+        column from which extract the number of days transcurred that needs to
+        be grouped
+    column_name_to_assign
+        grouping column
+    """
+    df = assign_named_buckets(
+        df=df,
+        reference_column=days_since_reference_column,
+        column_name_to_assign=column_name_to_assign,
+        map={0: "0-14", 15: "15-28", 29: "29-60", 61: "61-90", 91: "91+"},
+    )
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()), "Date not given"
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("string"),
+    )
 
 
 def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
