@@ -113,15 +113,19 @@ def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_co
     Assign column by checking for highest batch number in most recent date where new is value if true
     and previous otherwise
     """
-    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
     df = df.withColumn(date_column, F.to_timestamp(F.col(date_column), format="dd/MM/yyyy"))
+    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
 
     df = df.withColumn("DATE_REFERENCE", F.lit(df.select(date_column).collect()[0][0]))
     df = df.withColumn("BATCH_REFERENCE", F.lit(df.select(batch_colum).collect()[0][0]))
     df = df.withColumn(
         colum_name_to_assign,
         F.when(
-            ((F.col(date_column) == F.col("DATE_REFERENCE")) & (F.col(batch_colum) == F.col("BATCH_REFERENCE"))), "new"
+            (
+                (F.col(date_column).eqNullSafe(F.col("DATE_REFERENCE")))
+                & (F.col(batch_colum).eqNullSafe(F.col("BATCH_REFERENCE")))
+            ),
+            "new",
         ).otherwise("previous"),
     )
     return df.drop("DATE_REFERENCE", "BATCH_REFERENCE")

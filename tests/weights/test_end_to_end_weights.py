@@ -108,8 +108,8 @@ def test_end_to_end_weights(spark_session):
             (1, "A", "S1", "J5", "W", "Wales", 2, "AB", 1, "15/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", 3.5, 3.5, "W99999999", "W06000015", "W00010121", "W02000398", "C1", 999),
             (2, "B", "S2", "J5", "N", "Wales", 2, "LFS", 0, "15/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", 3.5, 3.5, "W99999999", "W06000015", "W00010121", "W02000398", "C1", 999),
             (3, "C", "S2", "J2", "N", "Wales", 2, "AB", 1, "15/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", 6.0, 6.0, "W99999999", "W06000015", "W00010121", "W02000398", "C1", 999),
-            (4, "D", "S4", "J2", "N", "NorthernIreland", 2, "LFS", 0, "15/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", 6.0, 6.0, "N99999999", "N09000003", "N00001155", "N99999999", None, 29),
-            (5, "E", "S3", "J4", "E", "NorthernIreland", 2, "AB", 1, "15/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", 4.0, 4.0, "N99999999", "N09000003", "N00001155", "N99999999", None, 29),
+            (4, "D", "S4", "J2", "N", "Northern Ireland", 2, "LFS", 0, "15/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", 6.0, 6.0, "N99999999", "N09000003", "N00001155", "N99999999", None, 29),
+            (5, "E", "S3", "J4", "E", "Northern Ireland", 2, "AB", 1, "15/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", 4.0, 4.0, "N99999999", "N09000003", "N00001155", "N99999999", None, 29),
             (6, "F", "S3", "J3", "E", "Scotland", 2, "LFS", 0, "15/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", 4.0, 4.0, "S99999999", "S12000033", "S00090381", "S02001236", 3, 6253),
             (7, "A", "S5", "J2", "N", "Scotland", 2, "AB", 1, "15/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", 4.0, 4.0, "S99999999", "S12000033", "S00090399", "S02001237", 3, 6715),
             (8, "C", "S1", "J3", "S", "England", 2, "LFS", 0, "15/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", 6.5, 6.5, "E12000008", "E07000091", "E00116842", "E02004794", "F1", 13619),
@@ -137,18 +137,18 @@ def test_end_to_end_weights(spark_session):
             imd integer
         """,
         data=[
-            (1, "A", "S1", "J1", "E", "England", "LFS", 0, 44513, 2, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063413", "E02002622", "C1", 3369),
-            (2, "B", "S1", "J5", "E", "England", "AB", 1, 44513, 3, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063735", "E02002620", "C1", 7612),
-            (3, "C", "S2", "J3", "E", "England", "AB", 1, 44513, 1, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063401", "E02002621", "C1", 2666),
-            (4, "D", "S2", "J3", "S", "Scotland", "LFS", 0, 44514, 4, "sample_direct_eng_wc15112021_4.csv", "S99999999", "S12000034", "S00091321", "S02001296", 6, 5069),
-            (5, "E", "S3", "J2", "N", "Scotland", "AB", 1, 44514, 2, "sample_direct_eng_wc15112021_4.csv",  "S99999999", "S12000034", "S00092401", "S02001296", 6, 5069),
-            (6, "F", "S3", "J4", "N", "Scotland", "AB", 1, 44514, 3, "sample_direct_eng_wc15112021_4.csv", "S99999999", "S12000034", "S00092401", "S02001296", 6, 5069),
-            (7, "E", "S4", "J3", "W", "NorthernIreland", "LFS", 0, 44514, 1, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001131", "N99999999", None, 49),
-            (8, "D", "S5", "J1", "S", "NorthernIreland", "AB", 1, 44515, 3, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001352", "N99999999", None, 25),
-            (9, "C", "S5", "J1", "E", "NorthernIreland", "AB", 1, 44515, 4, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001352", "N99999999", None, 25),
-            (10, "B", "S6", "J3", "N", "Wales", "AB", 1, 44515, 1, "sample_direct_eng_wc15112021_4.csv", "W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
-            (11, "A", "S6", "J3", "E", "Wales", "AB", 1, 44515, 2, "sample_direct_eng_wc15112021_4.csv","W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
-            (12, "F", "S7", "J4", "N", "Wales", "AB", 1, 44515, 4, "sample_direct_eng_wc15112021_4.csv", "W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
+            (1, "A", "S1", "J1", "E", "England", "LFS", 0, "14/11/2021", 2, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063413", "E02002622", "C1", 3369),
+            (2, "B", "S1", "J5", "E", "England", "AB", 1, "14/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063735", "E02002620", "C1", 7612),
+            (3, "C", "S2", "J3", "E", "England", "AB", 1, "14/11/2021", 1, "sample_direct_eng_wc15112021_4.csv", "E12000002", "E06000008", "E00063401", "E02002621", "C1", 2666),
+            (4, "D", "S2", "J3", "S", "Scotland", "LFS", 0, "14/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", "S99999999", "S12000034", "S00091321", "S02001296", 6, 5069),
+            (5, "E", "S3", "J2", "N", "Scotland", "AB", 1, "14/11/2021", 2, "sample_direct_eng_wc15112021_4.csv",  "S99999999", "S12000034", "S00092401", "S02001296", 6, 5069),
+            (6, "F", "S3", "J4", "N", "Scotland", "AB", 1, "14/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", "S99999999", "S12000034", "S00092401", "S02001296", 6, 5069),
+            (7, "E", "S4", "J3", "W", "Northern Ireland", "LFS", 0, "14/11/2021", 1, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001131", "N99999999", None, 49),
+            (8, "D", "S5", "J1", "S", "Northern Ireland", "AB", 1, "14/11/2021", 3, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001352", "N99999999", None, 25),
+            (9, "C", "S5", "J1", "E", "Northern Ireland", "AB", 1, "14/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", "N99999999", "N09000003", "N00001352", "N99999999", None, 25),
+            (10, "B", "S6", "J3", "N", "Wales", "AB", 1, "14/11/2021", 1, "sample_direct_eng_wc15112021_4.csv", "W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
+            (11, "A", "S6", "J3", "E", "Wales", "AB", 1, "14/11/2021", 2, "sample_direct_eng_wc15112021_4.csv","W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
+            (12, "F", "S7", "J4", "N", "Wales", "AB", 1, "14/11/2021", 4, "sample_direct_eng_wc15112021_4.csv", "W99999999", "W06000015", "W00010141", "W02000398", "C1", 833),
         ]
     )
     tranche_df = spark_session.createDataFrame(
@@ -192,6 +192,7 @@ def test_end_to_end_weights(spark_session):
     )
 
     output_df = generate_weights(auxillary_dfs=auxillary_dfs)
+    # output_df.toPandas().to_csv("output1.csv", index=False)
     for col, type in output_df.dtypes:
         expected_df = expected_df.withColumn(col, F.col(col).cast(type))
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
