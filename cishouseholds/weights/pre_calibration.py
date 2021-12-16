@@ -26,6 +26,7 @@ def survey_extraction_household_data_response_factor(
     required_extracts_column_list
     mandatory_extracts_column_list
     population_join_column: Only swab/antibodies
+
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
@@ -233,6 +234,7 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
         "household_level_designweight_adjusted_swab",
         F.when(
             F.col("response_indicator") == 1,  # TODO: consider interim_participant_id as well
+
             F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
@@ -343,11 +345,6 @@ def function_1180(df):
     ----------
     df
     """
-    # df = df.withColumn('interim_region_code', F.lit(None).cast('integer'))
-    # df = df.withColumn('interim_sex', F.lit(None).cast('integer'))
-    # df = df.withColumn('age_group_swab', F.lit(None).cast('integer'))
-    # df = df.withColumn('age_group_antibodies', F.lit(None).cast('integer'))
-
     # A.1 re-code the region_code values, by replacing the alphanumeric code with numbers from 1 to 12
     spark = SparkSession.builder.getOrCreate()
     region_code_lookup_df = spark.createDataFrame(
@@ -366,13 +363,16 @@ def function_1180(df):
             ("N99999999", 12),
         ],
         schema="region_code string, interim_region_code integer",
+
     )
     df = assign_from_lookup(
         df=df,
         column_name_to_assign="interim_region_code",
+
         reference_columns=["region_code"],
         lookup_df=region_code_lookup_df,
     )
+    
     # A.2 re-code sex variable replacing string with integers
     sex_code_lookup_df = spark.createDataFrame(
         data=[
@@ -435,7 +435,7 @@ def create_calibration_var(
         swab_14days
         longcovid_24days
         longcovid_42days
-        longcovid__24days
+        longcovid_24days
         antibodies_evernever
         antibodies_28daysto
     """
@@ -449,12 +449,14 @@ def create_calibration_var(
             ],
             "country_name_12": ["england"],
             "condition": ((F.col("country_name_12") == "england")),
+
             "operation": (
                 (F.col("interim_region_code") - 1) * 14 + (F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")
             ),
         },
         "p1_swab_longcovid_wales_scot_ni": {
             "dataset": [
+
                 "longcovid_24days",
                 "longcovid_42days",
                 "swab_evernever",
@@ -479,6 +481,7 @@ def create_calibration_var(
             "dataset": ["antibodies_28daysto"],
             "country_name_12": ["england"],
             "condition": F.col("country_name_12") == "england",
+
             "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
