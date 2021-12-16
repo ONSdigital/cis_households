@@ -599,7 +599,7 @@ def generate_datasets_to_be_weighted_for_calibration(
                 "wales_longcovid_42days",
                 "scotland_swab_evernever",
                 "scotland_swab_14days",
-                "scotland_longcovid__24days",
+                "scotland_longcovid_24days",
                 "scotland_longcovid_42days",
                 "northen_ireland_swab_evernever",
                 "northen_ireland_swab_14days",

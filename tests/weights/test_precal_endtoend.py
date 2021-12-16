@@ -160,13 +160,13 @@ def test_precal_end_to_end(spark_session):
     df = adjusted_design_weights_to_population_totals(df)
 
     # TODO: add for loop with test_type
-    check_1, check_2_3, check_4 = precalibration_checkpoints(
-        df,
-        test_type="swab",
-        dweight_list=["household_level_designweight_swab", "household_level_designweight_antibodies"],
-    )
-    df = function_1180(df)
+    # check_1, check_2_3, check_4 = precalibration_checkpoints(
+    #     df,
+    #     test_type="swab",
+    #     dweight_list=["household_level_designweight_swab", "household_level_designweight_antibodies"],
+    # )
 
+    df = function_1180(df)
     df = create_calibration_var(df)
 
     # df1 = df.select(

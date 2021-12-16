@@ -10,7 +10,8 @@ from cishouseholds.weights.pre_calibration import derive_total_responded_and_sam
 from cishouseholds.weights.pre_calibration import function_1180
 from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
-from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
+
+# from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
 
 # from cishouseholds.weights.pre_calibration  import chose_scenario_of_dweight_for_antibody_different_household
 # from cishouseholds.weights.pre_calibration  import raw_dweight_for_AB_scenario_for_antibody
@@ -363,10 +364,10 @@ def test_create_calibration_var(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('england',			    1,1,1,16, 3, 2,	3, 		None, 	2,		2, 		None,	2,		1, 		1,	1,		1,1, 1,1),
-                ('wales',				1,1,1,16, 3, 2, None,	3,		None, 	None,	2,		2, 		None, 	1, 	None,	1,1, 1,1),
-                ('northern_ireland',	2,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1),
-                ('scotland',			3,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1),
+                ('england',			    1,1,1,16, 3, 2,	3, 		None, 	2,		2, 		None,	2,		1, 		1,	1,		1,1, 1,1, 1,1),
+                ('wales',				1,1,1,16, 3, 2, None,	3,		None, 	None,	2,		2, 		None, 	1, 	None,	1,1, 1,1, 1,1),
+                ('northern_ireland',	2,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1, 1,1),
+                ('scotland',			3,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1, 1,1),
             # fmt: on
         ],
         schema="""
@@ -389,7 +390,9 @@ def test_create_calibration_var(spark_session):
                 long_covid_24days integer,
                 long_covid_42days integer,
                 antibodies_evernever integer,
-                antibodies_28daysto integer
+                antibodies_28daysto integer,
+                longcovid_24days integer,
+                longcovid_42days integer
             """,
     )
 
