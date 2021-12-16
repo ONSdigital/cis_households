@@ -234,7 +234,6 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
         "household_level_designweight_adjusted_swab",
         F.when(
             F.col("response_indicator") == 1,  # TODO: consider interim_participant_id as well
-
             F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
@@ -363,16 +362,14 @@ def function_1180(df):
             ("N99999999", 12),
         ],
         schema="region_code string, interim_region_code integer",
-
     )
     df = assign_from_lookup(
         df=df,
         column_name_to_assign="interim_region_code",
-
         reference_columns=["region_code"],
         lookup_df=region_code_lookup_df,
     )
-    
+
     # A.2 re-code sex variable replacing string with integers
     sex_code_lookup_df = spark.createDataFrame(
         data=[
@@ -449,14 +446,12 @@ def create_calibration_var(
             ],
             "country_name_12": ["england"],
             "condition": ((F.col("country_name_12") == "england")),
-
             "operation": (
                 (F.col("interim_region_code") - 1) * 14 + (F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")
             ),
         },
         "p1_swab_longcovid_wales_scot_ni": {
             "dataset": [
-
                 "longcovid_24days",
                 "longcovid_42days",
                 "swab_evernever",
@@ -481,7 +476,6 @@ def create_calibration_var(
             "dataset": ["antibodies_28daysto"],
             "country_name_12": ["england"],
             "condition": F.col("country_name_12") == "england",
-
             "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
