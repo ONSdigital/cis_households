@@ -8,7 +8,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: type_of_visit
+  name: visit_type
   nullable: true
   type: string
 - metadata: {}
@@ -52,11 +52,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_participants_not_present
+  name: not_present_household_count
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: reason_participants_not_present
+  name: not_present_household_reason
   nullable: true
   type: string
 - metadata: {}
@@ -352,7 +352,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: sympotms_today_abdominal_pain
+  name: symptoms_today_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
@@ -360,11 +360,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_taste_loss
+  name: symptoms_today_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_smell_loss
+  name: symptoms_today_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
@@ -376,7 +376,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptoms
+  name: think_have_covid_symptoms_now
   nullable: true
   type: string
 - metadata: {}
@@ -404,11 +404,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_2wks_household
+  name: hospital_last_28_days_other_household_member
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_2wks_household
+  name: hospital_last_28_days_other_household_member
   nullable: true
   type: string
 - metadata: {}
@@ -480,7 +480,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_codiv_test_result
+  name: think_had_covid_test_result
   nullable: true
   type: string
 - metadata: {}
@@ -521,6 +521,10 @@ fields:
   type: string
 - metadata: {}
   name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: withdrawal_reason_raw
   nullable: true
   type: string
 - metadata: {}
