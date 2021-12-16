@@ -10,8 +10,9 @@ from cishouseholds.weights.pre_calibration import derive_index_multiple_deprivat
 from cishouseholds.weights.pre_calibration import derive_total_responded_and_sampled_households
 from cishouseholds.weights.pre_calibration import function_1180
 from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
-from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
+
+# from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 
 
 def test_precal_end_to_end(spark_session):
@@ -179,6 +180,6 @@ def test_precal_end_to_end(spark_session):
     #     "p3_for_antibodies_28daysto_engl",
     # )
 
-    df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
+    # df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
 
-    # assert_df_equality(input_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
+    assert_df_equality(df, df_expected, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
