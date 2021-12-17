@@ -444,8 +444,15 @@ def create_calibration_var(
                 "longcovid_24days",
                 "longcovid_42days",
             ],
-            "country_name_12": ["england"],
-            "condition": ((F.col("country_name_12") == "england")),
+            "condition": ((F.col("country_name_12") == "england"))
+            & (
+                (
+                    (F.col("swab") == 1) & (F.col("ever_never") == 1) | (F.col("14_days") == 1)
+                )  # TODO: is it OR(ever_never, 14_days)?
+                | (
+                    (F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1))
+                )  # assumed to be OR(28, 42_days)
+            ),
             "operation": (
                 (F.col("interim_region_code") - 1) * 14 + (F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")
             ),
@@ -456,36 +463,40 @@ def create_calibration_var(
                 "longcovid_42days",
                 "swab_evernever",
             ],
-            "country_name_12": ["wales", "scotland", "northen_ireland"],
             "condition": (
                 (F.col("country_name_12") == "wales")
                 | (F.col("country_name_12") == "scotland")
                 | (F.col("country_name_12") == "northern_ireland")  # TODO: double-check name
+            )
+            & (
+                ((F.col("swab") == 1) & (F.col("ever_never") == 1) & (F.col("14_days") == 1))
+                | (
+                    (F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1))
+                )  # Assumed OR(28_day, 42_day)
             ),
             "operation": ((F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
         },
         "p1_for_antibodies_evernever_engl": {
             "dataset": ["antibodies_evernever"],
-            "country_name_12": ["england"],
-            "condition": (F.col("country_name_12") == "england"),
+            "condition": (F.col("country_name_12") == "england")
+            & ((F.col("antibodies") == 1) & (F.col("ever_never") == 1)),  # clarify if OR(antibodies, ever_never)
             "operation": (
                 (F.col("interim_region_code") - 1) * 10 + (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")
             ),
         },
         "p1_for_antibodies_28daysto_engl": {
             "dataset": ["antibodies_28daysto"],
-            "country_name_12": ["england"],
-            "condition": F.col("country_name_12") == "england",
+            "condition": (F.col("country_name_12") == "england") & (F.col("antibodies") == 1) & (F.col("28_days") == 1),
             "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
             "dataset": ["antibodies_evernever", "antibodies_28daysto"],
-            "country_name_12": ["northern_ireland"],
             "condition": (
                 (F.col("country_name_12") == "wales")
                 | (F.col("country_name_12") == "scotland")
                 | (F.col("country_name_12") == "northern_ireland")  # TODO: double-check name
-            ),
+            )
+            & ((F.col("antibodies") == 1) & (F.col("ever_never") == 1) & (F.col("28_days") == 1)),
             "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
         },
         "p2_for_antibodies": {
@@ -493,14 +504,21 @@ def create_calibration_var(
                 "antibodies_evernever",
                 "antibodies_28daysto",
             ],
-            "country_name_12": ["england", "wales"],
-            "condition": (((F.col("country_name_12") == "wales")) | ((F.col("country_name_12") == "england"))),
+            "condition": ((F.col("country_name_12") == "wales") | (F.col("country_name_12") == "england"))
+            & (
+                ((F.col("antibodies") == 1) & (F.col("ever_never") == 1))
+                | ((F.col("antibodies") == 1) & (F.col("28_days") == 1))
+            ),
             "operation": (F.col("ethnicity_white") + 1),
         },
         "p3_for_antibodies_28daysto_engl": {
             "dataset": ["antibodies_28daysto"],
-            "country_name_12": ["england"],
-            "condition": ((F.col("country_name_12") == "england") & (F.col("age_at_visit") >= 16)),
+            "condition": (
+                (F.col("country_name_12") == "england")
+                & (F.col("age_at_visit") >= 16)
+                & (F.col("antibodies") == 1)
+                & (F.col("28_days") == 1)
+            ),
             "operation": (F.col("interim_region_code")),
         },
     }

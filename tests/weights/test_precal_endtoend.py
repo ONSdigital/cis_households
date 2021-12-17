@@ -31,13 +31,20 @@ def test_precal_end_to_end(spark_session):
         cis_area_code_20 integer,
         household_level_designweight_swab double,
         household_level_designweight_antibodies double,
-        number_of_households_population_by_cis integer,
+        check_if_missing integer,
 
-        no_missing_values integer,
+        swab integer,
+        antibodies integer,
+        longcovid integer,
+        ever_never integer,
+        14_days integer,
+        28_days integer,
+        42_days integer,
+
+        number_of_households_population_by_cis integer,
         response_indicator integer,
         interim_participant_id integer,
-
-        multiple_deprivation_group integer,
+        index_multiple_deprivation_group integer,
         population_country_swab integer,
         population_country_antibodies integer,
 
@@ -57,19 +64,6 @@ def test_precal_end_to_end(spark_session):
         scaling_factor_adjusted_design_weight_antibodies double,
         scaled_design_weight_adjusted_antibodies double,
 
-        swab integer,
-        antibodies integer,
-        longcovid integer,
-        ever_never integer,
-        14_days integer,
-        28_days integer,
-        42_days integer,
-
-        check_1_scaled_design_weight_adjusted_swab integer,
-        check_1_total_population integer,
-        check_2_3 integer,
-        check_4 integer,
-
         interim_region_code integer,
         interim_sex integer,
         age_group_swab integer,
@@ -81,7 +75,14 @@ def test_precal_end_to_end(spark_session):
         p1_for_antibodies_28daysto_engl double,
         p1_for_antibodies_wales_scot_ni double,
         p2_for_antibodies double,
-        p3_for_antibodies_28daysto_engl double
+        p3_for_antibodies_28daysto_engl double,
+
+        antibodies_28daysto integer,
+        antibodies_evernever integer,
+        longcovid_24days integer,
+        longcovid_42days integer,
+        swab_14days integer,
+        swab_evernever integer
     """
 
     df_expected = spark_session.read.csv(
@@ -92,9 +93,6 @@ def test_precal_end_to_end(spark_session):
         ignoreTrailingWhiteSpace=True,
         sep=",",
     )
-
-    # for col, type_col in (df_expected.columns, type_list):
-    #     df_expected = df_expected.withColumn(col, F.col(col).cast(type_col))
 
     df_input_country = spark_session.createDataFrame(
         data=[
@@ -113,7 +111,6 @@ def test_precal_end_to_end(spark_session):
     )
 
     df_input = df_expected.drop(
-        "no_missing_values",
         "response_indicator",
         "multiple_deprivation_group",
         "population_country_swab",
@@ -126,16 +123,13 @@ def test_precal_end_to_end(spark_session):
         "bounded_non_response_factor",
         "household_level_designweight_adjusted_swab",
         "household_level_designweight_adjusted_antibodies",
+        "check_if_missing",
         "sum_adjusted_design_weight_swab",
         "scaling_factor_adjusted_design_weight_swab",
         "scaled_design_weight_adjusted_swab",
         "sum_adjusted_design_weight_antibodies",
         "scaling_factor_adjusted_design_weight_antibodies",
         "scaled_design_weight_adjusted_antibodies",
-        "check_1_scaled_design_weight_adjusted_swab",
-        "check_1_total_population",
-        "check_2_3",
-        "check_4",
         "interim_region_code",
         "interim_sex",
         "age_group_swab",
@@ -147,6 +141,12 @@ def test_precal_end_to_end(spark_session):
         "p1_for_antibodies_wales_scot_ni",
         "p2_for_antibodies",
         "p3_for_antibodies_28daysto_engl",
+        "antibodies_28daysto",
+        "antibodies_evernever",
+        "longcovid_24days",
+        "longcovid_42days",
+        "swab_14days",
+        "swab_evernever",
     )
 
     df = survey_extraction_household_data_response_factor(
@@ -183,3 +183,25 @@ def test_precal_end_to_end(spark_session):
     # df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
 
     assert_df_equality(df, df_expected, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
+
+    # df.select(
+    #     "swab",
+    #     "antibodies",
+    #     "longcovid",
+    #     "ever_never",
+    #     "14_days",
+    #     "28_days",
+    #     "42_days",
+    #     "participant_id",
+    #     "country_name_12",
+    #     "p1_for_antibodies_28daysto_engl",
+    #     "p1_for_antibodies_evernever_engl",
+    #     "p1_for_antibodies_wales_scot_ni",
+    #     "p1_swab_longcovid_england",
+    #     "p1_swab_longcovid_wales_scot_ni",
+    #     "p2_for_antibodies",
+    #     "p3_for_antibodies_28daysto_engl",
+    # ).orderBy("participant_id")
+    import pdb
+
+    pdb.set_trace()
