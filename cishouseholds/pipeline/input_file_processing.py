@@ -179,6 +179,7 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+        return df
 
     _inner_function.__name__ = stage_name
     return _inner_function
