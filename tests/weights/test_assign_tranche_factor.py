@@ -35,4 +35,4 @@ def test_assign_tranche_factor(spark_session):
         tranche_column="tranche",
         group_by_columns=["groupby"],
     )
-    assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True)
+    assert_df_equality(output_df, expected_df.drop("barcode_ref"), ignore_nullable=True, ignore_row_order=True)
