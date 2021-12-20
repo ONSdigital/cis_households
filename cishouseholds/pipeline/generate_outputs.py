@@ -35,7 +35,7 @@ def generate_outputs():
     linked_df = linked_df.withColumn(
         "completed_visits_subset",
         F.when(
-            (F.col("visit_status") == "Completed")
+            (F.col("participant_visit_status") == "Completed")
             | (F.col("blood_sample_barcode").isNotNull() | (F.col("swab_sample_barcode").isNotNull())),
             True,
         ).otherwise(False),
