@@ -509,3 +509,29 @@ def impute_by_k_nearest_neighbours(
 
     logging.info("Finished")
     return output_df
+
+
+def impute_latest_date_flag(df: DataFrame, window_columns: List[str], imputation_flag_columns: str):
+    """
+    Parameters
+    ----------
+
+    """
+    window = Window.partitionBy(window_columns).orderBy(F.desc("visit_date"), F.desc("visit_id"))
+
+    df = df.withColumn(
+        imputation_flag_columns,
+        F.when(
+            (
+                (F.col("contact_any_covid") == 1)
+                & (F.lag("contact_any_covid", 1))
+                & (F.col("contact_any_covid_date").isNull())
+            )
+            | (
+                (F.col("contact_any_covid_date") < F.lag("contact_any_covid_date", 1))
+                & (F.col("visit_date") >= F.lag("contact_any_covid_date", 1))
+            ),
+            1,
+        ).otherwise(None),
+    ).over(window)
+    return df
