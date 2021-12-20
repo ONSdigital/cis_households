@@ -26,7 +26,7 @@ def generate_outputs():
     output_directory = Path(get_config()["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
-    linked_df = extract_from_table("merged_responses_antibody_swab_delta")
+    linked_df = extract_from_table("merged_responses_antibody_swab_data")
 
     #    all_visits_df = extract_from_table("response_level_records")
     #    participant_df = extract_from_table("participant_level_with_vaccination_data")
