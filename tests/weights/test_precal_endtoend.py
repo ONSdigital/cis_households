@@ -181,27 +181,31 @@ def test_precal_end_to_end(spark_session):
     # )
 
     # df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
-
+    import pdb;pdb.set_trace()
     assert_df_equality(df, df_expected, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
 
-    # df.select(
-    #     "swab",
-    #     "antibodies",
-    #     "longcovid",
-    #     "ever_never",
-    #     "14_days",
-    #     "28_days",
-    #     "42_days",
-    #     "participant_id",
-    #     "country_name_12",
-    #     "p1_for_antibodies_28daysto_engl",
-    #     "p1_for_antibodies_evernever_engl",
-    #     "p1_for_antibodies_wales_scot_ni",
-    #     "p1_swab_longcovid_england",
-    #     "p1_swab_longcovid_wales_scot_ni",
-    #     "p2_for_antibodies",
-    #     "p3_for_antibodies_28daysto_engl",
-    # ).orderBy("participant_id")
-    import pdb
-
-    pdb.set_trace()
+    df.select(
+        'participant_id',
+        'p1_swab_longcovid_england',
+        'p1_swab_longcovid_wales_scot_ni',
+        'p1_for_antibodies_evernever_engl',
+        'p1_for_antibodies_28daysto_engl',
+        'p1_for_antibodies_wales_scot_ni',
+        'p2_for_antibodies',
+        'p3_for_antibodies_28daysto_engl',
+    ).orderBy("participant_id").show()
+    
+    df.select(
+        'participant_id',
+        'mean_raw_non_response_factor',
+        'scaled_non_response_factor',
+        'bounded_non_response_factor',
+        'household_level_designweight_adjusted_swab',
+        'household_level_designweight_adjusted_antibodies',
+        'sum_adjusted_design_weight_swab',
+        'scaling_factor_adjusted_design_weight_swab',
+        'scaled_design_weight_adjusted_swab',
+        'sum_adjusted_design_weight_antibodies',
+        'scaling_factor_adjusted_design_weight_antibodies',
+        'scaled_design_weight_adjusted_antibodies',
+    ).orderBy("participant_id").show()
