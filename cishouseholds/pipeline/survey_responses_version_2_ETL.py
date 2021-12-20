@@ -354,7 +354,7 @@ def union_dependent_transformations(df):
         df=df,
         column_name_to_assign="last_attended_visit_datetime",
         id_column="participant_id",
-        visit_status_column="visit_status",
+        visit_status_column="participant_visit_status",
         visit_date_column="visit_datetime",
     )
     # TODO: Add back in once work_status has been derived
