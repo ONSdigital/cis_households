@@ -345,7 +345,7 @@ def union_dependent_transformations(df):
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
     df = assign_first_visit(
-        df=df, column_name_to_assign="first_visit_date", id_column="participant_id", visit_status_column="visit_status"
+        df=df, column_name_to_assign="first_visit_date", id_column="participant_id", visit_date_column="visit_date"
     )
     df = assign_last_visit(
         df=df,
