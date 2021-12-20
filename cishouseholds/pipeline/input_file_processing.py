@@ -57,7 +57,7 @@ swab_delta_parameters = {
 }
 
 survey_responses_v2_parameters = {
-    "stage_name": "survey_responses_vversion_2_ETL",
+    "stage_name": "survey_responses_version_2_ETL",
     "validation_schema": survey_responses_v2_validation_schema,
     "column_name_map": survey_responses_v2_variable_name_map,
     "datetime_column_map": survey_responses_datetime_map,
