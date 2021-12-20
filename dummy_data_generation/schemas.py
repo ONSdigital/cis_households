@@ -8,6 +8,18 @@ start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
 
+def get_nims_data_description(_, participant_ids=[]):
+    return lambda: {  # noqa: E731
+        "cis_participant_id": _("choice", items=participant_ids + [None]),
+        "product_dose_1": _("choice", items=["AstraZeneca", "Pfizer", "Moderna", "unknown", None]),
+        "vaccination_date_dose_1": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S.%f", start=2020, end=2021),
+        "product_dose_2": _("choice", items=["AstraZeneca", "Pfizer", "Moderna", "unknown", None]),
+        "vaccination_date_dose_2": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S.%f", start=2020, end=2021),
+        "found_pds": _("custom_random.random_integer", lower=0, upper=1, null_percent=0),
+        "pds_conflict": _("custom_random.random_integer", lower=0, upper=1, null_percent=0),
+    }
+
+
 def get_swab_data_description(_):
     return lambda: {  # noqa: E731
         "Sample": _("random.custom_code", mask="ONS########", digit="#"),
@@ -44,6 +56,16 @@ def get_blood_data_description(_, target):
         "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
         "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
         "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
+    }
+
+
+def get_unassayed_blood_data_description(_):
+    return lambda: {  # noqa: E731
+        "Date Received": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
+        "Sample ID": _("random.custom_code", mask="ONS########", digit="#"),
+        "Rejection Code": _("random.randint", a=1, b=9999),
+        "Reason for rejection": _("text.sentence"),
+        "Sample Type V/C": _("choice", items=["V", "C"]),
     }
 
 

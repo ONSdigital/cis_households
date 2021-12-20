@@ -38,8 +38,6 @@ def merge_process_preparation(
     ----
     It is assumed that the barcode column name for survey and labs is the same.
     """
-    print("        -preparing tables for merge")  # functional
-
     survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
@@ -53,6 +51,11 @@ def merge_process_preparation(
         interval_upper_bound = 240
         unique_id = "unique_antibody_test_id"
 
+    # take none:1 and 1:none out
+    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col(unique_id).isNull())
+    # check if barcode column is null dump the records in none_record_df
+    none_record_df = outer_df.filter(none_records_logic)
+    outer_df = outer_df.filter(~none_records_logic)
     df = outer_df.select(*merge_type_necessary_columns)
 
     merge_type_necessary_columns.remove("unique_participant_response_id")
@@ -85,7 +88,15 @@ def merge_process_preparation(
         one_to_one_df,
         no_merge_df,
     ) = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
-    return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df, df_non_specific_merge
+    return (
+        many_to_many_df,
+        one_to_many_df,
+        many_to_one_df,
+        one_to_one_df,
+        no_merge_df,
+        df_non_specific_merge,
+        none_record_df,
+    )
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
@@ -116,6 +127,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
 
     many_to_one_df = df.filter(F.col("mto1" + "_" + merge_type) == 1)
 
+    # TODO: if none_record_df method works, discard no_merge_df
     no_merge_df = df.filter(
         (F.col("mtom" + "_" + merge_type).isNull())
         & (F.col("1tom" + "_" + merge_type).isNull())
@@ -171,10 +183,13 @@ def merge_process_validation(
     for df, flag_column, failed_column in zip(input_dfs, flag_column_names_syntax, failed_column_names_syntax):
         existing_failure_column = None
         group_by = [barcode_column_name]
+
         if failed_column in existing_failure_column_dict:
             existing_failure_column = existing_failure_column_dict[failed_column]
+
         if "mtom" in failed_column:
             group_by = [barcode_column_name, "unique_participant_response_id"]
+
         df = check_singular_match(
             df=df,
             drop_flag_column_name=flag_column,
@@ -192,7 +207,7 @@ def execute_merge_specific_swabs(
     barcode_column_name: str,
     visit_date_column_name: str,
     received_date_column_name: str,
-    void_value: str = "void",
+    void_value: str = "Void",
 ) -> DataFrame:
     """
     Specific high level function to execute the process for swab.
@@ -204,7 +219,7 @@ def execute_merge_specific_swabs(
     visit_date_column_name
     received_date_column_name
     void_value
-        by default is "void" but it is possible to specify what is considered as void in the PCR result test.
+        by default is "Void" but it is possible to specify what is considered as void in the PCR result test.
     """
     merge_type = "swab"
     (
@@ -214,6 +229,7 @@ def execute_merge_specific_swabs(
         one_to_one_df,
         no_merge_df,
         df_non_specific_merge,
+        none_record_df,
     ) = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
@@ -226,7 +242,7 @@ def execute_merge_specific_swabs(
             "unique_participant_response_id",
             "unique_pcr_test_id",
             "visit_datetime",
-            "pcr_datetime",
+            "pcr_result_recorded_datetime",
             "pcr_result_classification",
             "count_barcode_" + merge_type,
             "count_barcode_voyager",
@@ -239,7 +255,6 @@ def execute_merge_specific_swabs(
         visit_date_column_name,
         # Stata also uses uncleaned barcode from labs
     ]
-    print("        -executing one to many swabs")  # functional
     one_to_many_df = M.one_to_many_swabs(
         df=one_to_many_df,
         group_by_column=barcode_column_name,
@@ -248,14 +263,12 @@ def execute_merge_specific_swabs(
         void_value=void_value,
         flag_column_name="drop_flag_1tom_" + merge_type,
     )
-    print("        -executing many to one swabs")  # functional
     many_to_one_df = M.many_to_one_swab_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
         group_by_column=barcode_column_name,
         ordering_columns=window_columns,
     )
-    print("        -executing many to many swabs")  # functional
     many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -270,7 +283,6 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
-    print("        -validating swab merge process")  # functional
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
         one_to_many_df=one_to_many_df,
         many_to_one_df=many_to_one_df,
@@ -278,26 +290,23 @@ def execute_merge_specific_swabs(
         merge_type="swab",
         barcode_column_name=barcode_column_name,
     )
-    print("        -combining swab tables")  # functional
+
+    one_to_many_df.cache().count()
+    many_to_one_df.cache().count()
+    many_to_many_df.cache().count()
+
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
 
-    df_non_specific_merge = df_non_specific_merge.withColumnRenamed(
-        "unique_pcr_test_id", "unique_pcr_test_id_right"
-    ).withColumnRenamed("unique_participant_response_id", "unique_participant_response_id_right")
-    unioned_df = unioned_df.join(
+    unioned_df = M.null_safe_join(
+        unioned_df,
         df_non_specific_merge,
-        on=(
-            (
-                unioned_df["unique_participant_response_id"]
-                == df_non_specific_merge["unique_participant_response_id_right"]
-            )
-            & unioned_df["unique_pcr_test_id"].eqNullSafe(df_non_specific_merge["unique_pcr_test_id_right"])
-        ),
+        null_safe_on=["unique_pcr_test_id"],
+        null_unsafe_on=["unique_participant_response_id"],
         how="left",
-    ).drop("unique_participant_response_id_right", "unique_pcr_test_id_right")
-    return unioned_df
+    )
+    return unioned_df, none_record_df
 
 
 def execute_merge_specific_antibody(
@@ -325,6 +334,7 @@ def execute_merge_specific_antibody(
         one_to_one_df,
         no_merge_df,
         df_non_specific_merge,
+        none_record_df,
     ) = merge_process_preparation(
         survey_df=survey_df,
         labs_df=labs_df,
@@ -346,7 +356,6 @@ def execute_merge_specific_antibody(
         ],
     )
 
-    print("        -executing one to many antibody")  # functional
     one_to_many_df = M.one_to_many_antibody_flag(
         df=one_to_many_df,
         column_name_to_assign="drop_flag_1tom_" + merge_type,
@@ -356,7 +365,6 @@ def execute_merge_specific_antibody(
         tdi_column="antibody_test_result_classification_s_protein",
         visit_date=visit_date_column_name,
     )
-    print("        -executing many to one antibody")  # functional
     many_to_one_df = M.many_to_one_antibody_flag(
         df=many_to_one_df,
         column_name_to_assign="drop_flag_mto1_" + merge_type,
@@ -368,7 +376,6 @@ def execute_merge_specific_antibody(
         "unique_participant_response_id",
         "unique_antibody_test_id",
     ]
-    print("        -executing many to many antibody")  # functional
     many_to_many_df = M.many_to_many_flag(
         df=many_to_many_df,
         drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
@@ -379,7 +386,6 @@ def execute_merge_specific_antibody(
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
 
-    print("        -validating antibody merge process")  # functional
     one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
         one_to_many_df=one_to_many_df,
         many_to_one_df=many_to_one_df,
@@ -387,31 +393,27 @@ def execute_merge_specific_antibody(
         merge_type=merge_type,
         barcode_column_name=barcode_column_name,
     )
+    one_to_many_df.cache().count()
+    many_to_one_df.cache().count()
+    many_to_many_df.cache().count()
 
-    print("        -combining antibody tables")  # functional
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
 
-    df_non_specific_merge = df_non_specific_merge.withColumnRenamed(
-        "unique_antibody_test_id", "unique_antibody_test_id_right"
-    ).withColumnRenamed("unique_participant_response_id", "unique_participant_response_id_right")
-    unioned_df = unioned_df.join(
+    unioned_df = M.null_safe_join(
+        unioned_df,
         df_non_specific_merge,
-        on=(
-            (
-                unioned_df["unique_participant_response_id"]
-                == df_non_specific_merge["unique_participant_response_id_right"]
-            )
-            & unioned_df["unique_antibody_test_id"].eqNullSafe(df_non_specific_merge["unique_antibody_test_id_right"])
-        ),
+        null_safe_on=["unique_antibody_test_id"],
+        null_unsafe_on=["unique_participant_response_id"],
         how="left",
-    ).drop("unique_participant_response_id_right", "unique_antibody_test_id_right")
-    return unioned_df
+    )
+    return unioned_df, none_record_df
 
 
 def merge_process_filtering(
     df: DataFrame,
+    none_record_df: DataFrame,
     merge_type: str,
     barcode_column_name: str,
     lab_columns_list: List[str],
@@ -439,7 +441,6 @@ def merge_process_filtering(
     - Residuals df (i.e. all lab records not matched)
     - Failed records df (records that have failed process)
     """
-    print("        -filtering antibody merge result")  # functional
     df = df.withColumn("failed_match", F.lit(None).cast("integer"))
 
     df = df.withColumn("not_best_match", F.when(F.col(f"out_of_date_range_{merge_type}") == 1, 1))
@@ -528,15 +529,25 @@ def merge_process_filtering(
     df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
     df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
 
+    if merge_type == "swab":
+        unique_id = "unique_pcr_test_id"
+        drop_list = ["count_barcode_voyager", "count_barcode_swab"]
+    elif merge_type == "antibody":
+        unique_id = "unique_antibody_test_id"
+        drop_list = ["count_barcode_voyager", "count_barcode_antibody"]
+
     print("        -creating residuals table")  # functional
     df_lab_residuals = M.union_multiple_tables(
         tables=[
             df_lab_residuals,
-            df.where(F.col("noneto1_" + merge_type).isNotNull()).select(barcode_column_name, *lab_columns_list),
+            none_record_df.filter(F.col("unique_participant_response_id").isNull()).select(*df_lab_residuals.columns),
         ]
     )
 
     print("        -creating IQVIA only table")  # functional
+    df_all_iqvia = M.union_multiple_tables(
+        tables=[df_all_iqvia, none_record_df.filter(F.col(unique_id).isNull()).drop(*drop_list)]
+    )
     df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
 
     # window function count number of unique id

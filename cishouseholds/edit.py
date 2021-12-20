@@ -9,6 +9,27 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+    """
+    Clean lab sample barcodes.
+    Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
+    matching the expected format.
+    """
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
+    df = df.withColumn(
+        barcode_column,
+        F.when(
+            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
+            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
+        ).otherwise(F.col(barcode_column)),
+    )
+    df = df.withColumn(
+        barcode_column,
+        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
+    )
+    return df
+
+
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
     update postcode variable to include only uppercase alpha numeric characters and set
@@ -57,7 +78,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
     """
-    Create seperate columns for school year depending on the individuals counrty of residience
+    Create separate columns for school year depending on the individuals country of residence
     Parameters
     ----------
     df
@@ -74,7 +95,7 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
             .withColumnRenamed(school_year_column, column_name)
         )
         df = df.join(temp_df, on=[country_column, id_column], how="left")
-    return df.drop(school_year_column)
+    return df
 
 
 def update_social_column(df: DataFrame, social_column: str, health_column: str):
@@ -378,4 +399,22 @@ def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") 
     for column_name, column_type in df.dtypes:
         if column_type == "null":
             df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
+    return df
+
+
+def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
+    """
+    Convert string columns to a given datatype.
+    Parameters
+    ----------
+    df
+    column_list
+        list of columns to be converted
+    cast_type
+        string containing the datatype for re_casting
+    """
+    for column_name in column_list:
+        if column_name in df.columns:
+            df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
+
     return df

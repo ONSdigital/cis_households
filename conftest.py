@@ -11,6 +11,10 @@ from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "integration: mark integration tests (likely to run slowly)")
+
+
 def timestamp_representer(dumper, timestamp):
     """Custom represented for using Timestamp type in data_regression testing"""
     return dumper.represent_data(timestamp.strftime("%Y-%m-%d %H:%M:%S.%f"))
@@ -22,7 +26,16 @@ RegressionYamlDumper.add_custom_yaml_representer(Timestamp, timestamp_represente
 @pytest.fixture(scope="session")
 def spark_session():
     """Session-wide SparkSession to optimise testing PySpark functions."""
-    spark_session = SparkSession.builder.master("local[*]").getOrCreate()
+    spark_session = (
+        SparkSession.builder.master("local[*]")
+        .config("spark.executor.memory", "6g")
+        .config("spark.executor.cores", 3)
+        .config("spark.dynamicAllocation.enabled", "true")
+        .config("spark.dynamicAllocation.maxExecutors", 3)
+        .config("spark.sql.shuffle.partitions", 18)
+        .config("spark.sql.crossJoin.enabled", "true")
+        .getOrCreate()
+    )
     yield spark_session
     spark_session.stop()
 
