@@ -1,6 +1,7 @@
 import csv
 from io import StringIO
 from operator import add
+from typing import List
 from typing import Union
 
 from pyspark import RDD
@@ -77,19 +78,24 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
-        "tranche": "tranche_number_indicator",
         "sample": "sample_source",
         "sample_direct": "sample_addressbase_indicator",
         "hh_dweight_swab": "household_level_designweight_swab",
         "hh_dweight_atb": "household_level_designweight_antibodies",
-        "rgn/gor9d": "region_code",
+        "rgngor9d": "region_code",  # had to remove slashes to make df creation work should be rgn/gor9d
         "laua": "local_authority_unity_authority_code",
-        "oa11/oac11": "output_area_code_11/census_output_area_classification_11",
+        "oa11oac11": "output_area_code_11/census_output_area_classification_11",  # had to remove slashes to make df creation work should be oa11/oac11 # noqa: E501
         "msoa11": "middle_super_output_area_code_11",
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
     },
-    "tranche": {"UAC": "ons_household_id"},
+    "tranche": {
+        "UAC": "ons_household_id",
+        "lsoa_11": "lower_super_output_area_code_11",
+        "cis20cd": "cis_area_code_20",
+        "ctry12": "country_code_12",
+        "ctry_name12": "country_name_12"
+    },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
         "rgn": "region_code",
@@ -242,7 +248,7 @@ def read_csv_to_pyspark_df(
 # --------------------------------------------
 
 
-def load_auxillary_data(specify=[]):
+def load_auxillary_data(specify: List = []):
     """
     create dictionary of renamed dataframes after extracting from csv file
     """
@@ -252,6 +258,10 @@ def load_auxillary_data(specify=[]):
             auxillary_dfs[name] = read_csv_to_pyspark_df(
                 spark_session, resource_path["path"], resource_path["header"], None
             )
+    return auxillary_dfs
+
+
+def prepare_auxillary_data(auxillary_dfs: dict):
     auxillary_dfs = rename_columns(auxillary_dfs)
     if "aps_lookup" in auxillary_dfs:
         auxillary_dfs["aps_lookup"] = recode_column_values(auxillary_dfs["aps_lookup"], aps_value_map)

@@ -8,7 +8,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: visit_status
+  name: household_visit_status
   nullable: true
   type: string
 - metadata: {}
@@ -16,7 +16,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: participant_status
+  name: participant_survey_status
   nullable: true
   type: string
 - metadata: {}
@@ -24,7 +24,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: type_of_visit
+  name: visit_type
   nullable: true
   type: string
 - metadata: {}
@@ -60,7 +60,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: fingerprick_status_household
+  name: household_fingerprick_status
   nullable: true
   type: string
 - metadata: {}
@@ -252,7 +252,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: confirm_receive_vouchers
+  name: confirm_received_vouchers
   nullable: true
   type: string
 - metadata: {}
@@ -364,7 +364,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: accepted_invite_fingerprick
+  name: accepted_fingerprick_invite
   nullable: true
   type: string
 - metadata: {}
@@ -536,7 +536,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_noisy_breathing_wheezing
+  name: symptoms_last_7_days_noisy_breathing_wheezing
   nullable: true
   type: string
 - metadata: {}
@@ -544,7 +544,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: is_self_isolating
+  name: is_self_isolating_detailed
   nullable: true
   type: string
 - metadata: {}
@@ -904,19 +904,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_since_april_2020
+  name: been_outside_uk_since_april_2020
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_country
+  name: been_outside_uk_last_country
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_date
+  name: been_outside_uk_last_date
   nullable: true
-  type: timestamp
+  type: string
 - metadata: {}
-  name: outside_uk_since_last_visit
+  name: been_outside_uk_since_last_visit
   nullable: true
   type: string
 - metadata: {}
@@ -953,6 +953,10 @@ fields:
   type: string
 - metadata: {}
   name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: withdrawal_reason_raw
   nullable: true
   type: string
 - metadata: {}
