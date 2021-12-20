@@ -345,14 +345,17 @@ def union_dependent_transformations(df):
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
     df = assign_first_visit(
-        df=df, column_name_to_assign="first_visit_date", id_column="participant_id", visit_date_column="visit_date"
+        df=df,
+        column_name_to_assign="household_first_visit_datetime",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
     )
     df = assign_last_visit(
         df=df,
-        column_name_to_assign="last_visit_date",
+        column_name_to_assign="last_attended_visit_datetime",
         id_column="participant_id",
         visit_status_column="visit_status",
-        visit_date_column="visit_date",
+        visit_date_column="visit_datetime",
     )
     # TODO: Add back in once work_status has been derived
     # df = update_work_facing_now_column(
