@@ -7,6 +7,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'Yes'
   city: null
   consent: 16.0
   consent_16_visits: 1.0
@@ -169,6 +170,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
   consent: 1.0
   consent_16_visits: 0.0
@@ -191,7 +193,7 @@
   full_name: Argentina Brady
   gender: null
   have_covid_symptoms: 'Yes'
-  hospital_last_28_days_other_household_member: 'Yes'
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -331,6 +333,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 5.0
   consent_16_visits: 0.0
@@ -492,6 +495,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'No'
   city: Saltash
   consent: 16.0
   consent_16_visits: 1.0
@@ -514,7 +518,7 @@
   full_name: Jae Cervantes
   gender: Male
   have_covid_symptoms: 'No'
-  hospital_last_28_days_other_household_member: 'No'
+  hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -650,6 +654,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 1.0
   consent_16_visits: 0.0
@@ -810,6 +815,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'No'
   city: Hove
   consent: 16.0
   consent_16_visits: 1.0
@@ -832,7 +838,7 @@
   full_name: Caron Barton
   gender: Male
   have_covid_symptoms: 'No'
-  hospital_last_28_days_other_household_member: 'No'
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -973,6 +979,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
+  care_home_last_28_days_other_household_member: null
   city: Felixstowe
   consent: 1.0
   consent_16_visits: 0.0
@@ -995,7 +1002,7 @@
   full_name: Clemmie Harper
   gender: Female
   have_covid_symptoms: null
-  hospital_last_28_days_other_household_member: null
+  hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -1132,6 +1139,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 16.0
   consent_16_visits: 1.0
@@ -1291,6 +1299,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
+  care_home_last_28_days_other_household_member: null
   city: null
   consent: 5.0
   consent_16_visits: 0.0
@@ -1449,6 +1458,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
+  care_home_last_28_days_other_household_member: 'No'
   city: Inverurie
   consent: 5.0
   consent_16_visits: 0.0
@@ -1471,7 +1481,7 @@
   full_name: Barton Ramos
   gender: Prefer not to say
   have_covid_symptoms: 'Yes'
-  hospital_last_28_days_other_household_member: 'No'
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: null

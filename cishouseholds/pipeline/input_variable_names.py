@@ -209,7 +209,7 @@ survey_responses_v0_variable_name_map = {
     "If Suspect; Last contact date": "last_suspected_covid_contact_date",
     "If Suspect; Type of contact": "last_suspected_covid_contact_location",
     "Household been Hospital last 2 wks": "hospital_last_28_days_other_household_member",
-    "Household been in Care home last 2 wks": "hospital_last_28_days_other_household_member",
+    "Household been in Care home last 2 wks": "care_home_last_28_days_other_household_member",
     "Do you think you have had Covid 19?": "think_had_covid",
     "Which symptoms did you have?": "think_had_covid_which_symptoms",
     "Previous Symptoms-Fever": "symptoms_since_last_visit_fever",
