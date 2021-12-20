@@ -163,7 +163,7 @@ def generate_input_processing_function(
             print(f"        - No files selected in {kwargs['resource_path']}")  # functional
             return
 
-        valid_file_paths = validate_files(kwargs["resource_path"], validation_schema, sep=sep)
+        valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {kwargs['resource_path']}.")  # functional
             return
