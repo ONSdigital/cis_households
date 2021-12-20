@@ -8,6 +8,20 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
+    columns = [col for col in df_to_join.columns if col in df.columns]
+    for col in columns:
+        if col not in on:
+            df_to_join = df_to_join.withColumnRenamed(col, f"{col}_FT")
+    df = df.join(df_to_join, on=on, how="left")
+    for col in columns:
+        if col not in on:
+            df = df.withColumn(
+                col, F.when(F.col(f"{col}_FT").isNotNull(), F.col(f"{col}_FT")).otherwise(F.col(col))
+            ).drop(f"{col}_FT")
+    return df
+
+
 def null_to_value(df: DataFrame, column_name_to_update: str, value: int = 0):
     return df.withColumn(
         column_name_to_update,
@@ -62,7 +76,8 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
             .withColumn(
                 "group",
                 F.when(
-                    F.col("group").isNotNull(), F.concat_ws("", F.lit(f"{col.split('_')[1]}"), F.col("group"))
+                    F.col("group").isNotNull(),
+                    F.concat_ws("", F.lit(f"P{col.split('_')[0][1:]}"), F.col("group").cast("integer")),
                 ).otherwise("missing"),
             )
         )
@@ -70,10 +85,9 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
             grouped_df = temp_df
         else:
             grouped_df = grouped_df.unionByName(temp_df)
-    grouped_df = grouped_df.filter(F.col("group") != "missing").withColumnRenamed(
-        f"sum({population_column})", "population_total"
-    )
-    return grouped_df
+
+    grouped_df = grouped_df.withColumnRenamed(f"sum({population_column})", "population_total")
+    return grouped_df.filter(F.col("group") != "missing")
 
 
 def update_population_values(df: DataFrame):
