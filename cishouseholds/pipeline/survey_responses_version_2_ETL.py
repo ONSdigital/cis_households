@@ -364,4 +364,5 @@ def union_dependent_transformations(df):
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
+    df = assign_named_buckets(df, reference_column="")
     return df
