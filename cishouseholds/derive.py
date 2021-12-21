@@ -9,6 +9,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+def assign_self_isolating()
+
 
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
@@ -976,7 +978,7 @@ def assign_single_column_from_split(
 
 
 def assign_isin_list(
-    df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list
+    df: DataFrame, column_name_to_assign: str, reference_column: str, values_list:List[Union[str,int]], true_false_values:List[Union[str,int]]
 ) -> DataFrame:
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
@@ -992,15 +994,16 @@ def assign_isin_list(
         name of column to check for list values
     values_list
         list of values to check against reference column
-
+    true_false_values
+        true value (index 0), false value (index 1)
     Return
     ------
     pyspark.sql.DataFrame
     """
     return df.withColumn(
         column_name_to_assign,
-        F.when((F.col(reference_column_name).isin(values_list)), 1)
-        .when((~F.col(reference_column_name).isin(values_list)), 0)
+        F.when((F.col(reference_column).isin(values_list)), true_false_values[0])
+        .when((~F.col(reference_column).isin(values_list)), true_false_values[1])
         .otherwise(None),
     )
 

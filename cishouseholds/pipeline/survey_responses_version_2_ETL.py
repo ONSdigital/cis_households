@@ -1,6 +1,6 @@
 from pyspark.sql import DataFrame
 
-from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_age_at_date, assign_isin_list
 from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
@@ -26,7 +26,9 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.edit import clean_barcode
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
@@ -122,6 +124,31 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         binary_reference_column="think_had_covid",
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
+    )
+    df = update_column_values_from_map(
+        df=df,
+        column="self_isolating_detailed",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_detailed",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+        ],
+        true_false_values=["Yes", "No"],
     )
 
     return df
@@ -377,5 +404,27 @@ def union_dependent_transformations(df):
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
-    df = assign_named_buckets(df, reference_column="")
+    df = assign_named_buckets(
+        df,
+        reference_column="days_since_enrolment",
+        column_name_to_assign="visit_number",
+        map={
+            0: 0,
+            4: 1,
+            11: 2,
+            18: 3,
+            25: 4,
+            43: 5,
+            71: 6,
+            99: 7,
+            127: 8,
+            155: 9,
+            183: 10,
+            211: 11,
+            239: 12,
+            267: 13,
+            295: 14,
+            323: 15,
+        },
+    )
     return df

@@ -16,6 +16,6 @@ def test_assign_isin_list(spark_session):
 
     input_df = expected_df.drop("outcome")
 
-    actual_df = assign_isin_list(input_df, "outcome", "pattern", value_list)
+    actual_df = assign_isin_list(input_df, "outcome", "pattern", value_list, [1, 0])
 
     assert_df_equality(actual_df, expected_df)
