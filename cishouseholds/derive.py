@@ -795,7 +795,11 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
 
 
 def assign_date_difference(
-    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    start_reference_column: str,
+    end_reference_column: str,
+    format: Optional[str] = "days",
 ) -> DataFrame:
     """
     Calculate the difference in days between two dates.
@@ -810,14 +814,22 @@ def assign_date_difference(
         First date column name.
     end_reference_column
         Second date column name.
-
+    format
+        time format (days, weeks, months)
     Return
     ------
     pyspark.sql.DataFrame
     """
-    return df.withColumn(
-        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
-    )
+    if start_reference_column == "survey start":
+        start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
+    else:
+        start = F.col(start_reference_column)
+
+    modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
+    df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
+    if format in modifications:
+        df = df.withColumn(column_name_to_assign, modifications[format])
+    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
 
 
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
