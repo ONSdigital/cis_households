@@ -464,8 +464,8 @@ def impute_by_k_nearest_neighbours(
     no_donors_count = no_donors.count()
     if no_donors_count != 0:
         message = f"{no_donors_count} donor pools with no donors"
-        logging.warning(message)
-        logging.warning(no_donors.toPandas())
+        logging.error(message)
+        logging.error(no_donors.toPandas())
         raise ValueError(message)
 
     unique_imputation_group_window = Window.partitionBy("unique_imputation_group")
@@ -480,8 +480,8 @@ def impute_by_k_nearest_neighbours(
             f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
             "minimum donor(s)"
         )
-        logging.warning(message)
-        logging.warning(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
+        logging.error(message)
+        logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
         raise ValueError(message)
 
     frequencies = frequencies.withColumn(
@@ -529,13 +529,11 @@ def impute_by_k_nearest_neighbours(
         "unique_imputation_group", "donor_row_id"
     )
 
-    df.cache().count()
-
+    output_df_length = df.cache().count()
     logging.info(
         f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
     )
-
-    output_df_length = df.count()
+    logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
     if output_df_length != input_df_length:
         raise ValueError(
             f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."
