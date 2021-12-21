@@ -125,9 +125,17 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
+
+    return df
+
+
+def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
+    """
+    Transformations specific to the v1 and 2 packages only
+    """
     df = update_column_values_from_map(
         df=df,
-        column="self_isolating_detailed",
+        column="is_self_isolating_detailed",
         map={
             "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
             "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
@@ -142,7 +150,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_isin_list(
         df=df,
         column_name_to_assign="self_isolating",
-        reference_column="self_isolating_detailed",
+        reference_column="is_self_isolating_detailed",
         values_list=[
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
@@ -150,14 +158,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ],
         true_false_values=["Yes", "No"],
     )
-
-    return df
-
-
-def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
-    """
-    Transformations specific to the v1 and 2 packages only
-    """
     df = assign_true_if_any(
         df=df,
         column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
