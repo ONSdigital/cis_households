@@ -30,7 +30,7 @@ def impute_by_distribution(
     ----------
     df
     column_name_to_assign
-        The colum that will be created with the impute values
+        The column that will be created with the imputed values
     reference_column
         The column for which imputation values will be calculated
     group_columns
@@ -354,6 +354,8 @@ def impute_by_k_nearest_neighbours(
 ):
     """
     Minimal PySpark implementation of RBEIS, for K-nearest neighbours imputation.
+    Uses a weighted distance to select unique groups of donors. Then applies probability
+    proportional to size (PPS) sampling from final pool of donors.
 
     Parameters
     ----------
@@ -375,6 +377,11 @@ def impute_by_k_nearest_neighbours(
         minimum number of donors required in each imputation pool, must be >= 0
     maximum_distance
         maximum sum weighted distance for a valid donor. Set to None for no maximum.
+
+    Note
+    ----
+    Uses a broadcast join to apply selected values for imputation, so assumes that the number of values to be imputed
+    is relatively low.
     """
 
     if reference_column not in df.columns:
@@ -385,20 +392,25 @@ def impute_by_k_nearest_neighbours(
         message = f"Imputation columns ({donor_group_columns}) are not all found in input dataset."
         raise ValueError(message)
 
-    imputing_df = df.filter(F.col(reference_column).isNull())
-    donor_df = df.filter(F.col(reference_column).isNotNull())
-    df_length = df.count()
+    to_impute_condition = F.col(reference_column).isNull()
+    donor_df = df.filter(~to_impute_condition)
+    donor_df = donor_df.withColumn("unique_donor_group", F.concat_ws("-", *donor_group_columns))
+    # Leave this on the original df, for joining imputed values on
+    df = df.withColumn("unique_imputation_group", F.when(to_impute_condition, F.concat_ws("-", *donor_group_columns)))
+    imputing_df = df.filter(to_impute_condition)
+
+    input_df_length = df.count()
     impute_count = imputing_df.count()
     donor_count = donor_df.count()
 
-    assert impute_count + donor_count == df_length, "Donor and imputing records don't sum to the whole df length"
+    assert impute_count + donor_count == input_df_length, "Donor and imputing records don't sum to the whole df length"
 
     if impute_count == 0:
         return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
     _create_log(start_time=datetime.now(), log_path=log_file_path)
     logging.info(f"Function parameters:\n{locals()}")
 
-    logging.info(f"Input dataframe length: {df_length}")
+    logging.info(f"Input dataframe length: {input_df_length}")
     logging.info(f"Records to impute: {impute_count}")
     logging.info(f"Donor records: {donor_count}")
 
@@ -419,33 +431,36 @@ def impute_by_k_nearest_neighbours(
         df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
     )
 
-    imputing_df = imputing_df.withColumn("imp_uniques", F.concat_ws("-", *donor_group_columns))
-    donor_df = donor_df.withColumn("don_uniques", F.concat_ws("-", *donor_group_columns))
-
-    # unique groupings of impute vars
-    imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["imp_uniques"])
-    donor_df_unique = donor_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["don_uniques"])
+    imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(
+        donor_group_columns + ["unique_imputation_group"]
+    )
+    donor_df_unique = donor_df.dropDuplicates(donor_group_columns).select(donor_group_columns + ["unique_donor_group"])
 
     for var in donor_group_columns + [reference_column]:
         donor_df_unique = donor_df_unique.withColumnRenamed(var, "don_" + var)
         donor_df = donor_df.withColumnRenamed(var, "don_" + var)
 
     joined_uniques = imputing_df_unique.crossJoin(donor_df_unique)
-    joined_uniques = joined_uniques.repartition("imp_uniques")
+    joined_uniques = joined_uniques.repartition("unique_imputation_group")
 
     candidates = weighted_distance(
-        joined_uniques, "imp_uniques", donor_group_columns, donor_group_column_weights
-    ).select("imp_uniques", "don_uniques")
+        joined_uniques, "unique_imputation_group", donor_group_columns, donor_group_column_weights
+    ).select("unique_imputation_group", "unique_donor_group")
     if maximum_distance is not None:
         candidates = candidates.where(F.col("distance") <= maximum_distance)
 
-    # only counting one row for matching imp_vars
-    donor_group_window = Window.partitionBy("don_uniques", "don_" + reference_column)
-    frequencies = donor_df.withColumn("frequency", F.count("*").over(donor_group_window))
-    frequencies = frequencies.join(candidates, on="don_uniques")
+    frequencies = donor_df.groupby("unique_donor_group", "don_" + reference_column).agg(
+        F.count("*").alias("donor_group_value_frequency")
+    )
+    frequencies = frequencies.join(candidates, on="unique_donor_group")
+    frequencies = frequencies.join(
+        imputing_df.groupby("unique_imputation_group").agg(F.count("*").alias("imputation_group_size")),
+        on="unique_imputation_group",
+    )
+
     frequencies.cache().count()
 
-    no_donors = imputing_df_unique.join(frequencies, on="imp_uniques", how="left_anti")
+    no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
     no_donors_count = no_donors.count()
     if no_donors_count != 0:
         message = f"{no_donors_count} donor pools with no donors"
@@ -453,80 +468,82 @@ def impute_by_k_nearest_neighbours(
         logging.warning(no_donors.toPandas())
         raise ValueError(message)
 
-    imp_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.lit(None))
-    frequencies = frequencies.withColumn("donor_count", F.sum("frequency").over(imp_uniques_window))
+    unique_imputation_group_window = Window.partitionBy("unique_imputation_group")
+    frequencies = frequencies.withColumn(
+        "total_donor_pool_size", F.sum("donor_group_value_frequency").over(unique_imputation_group_window)
+    )
 
-    below_minimum_donor_count = frequencies.filter(F.col("donor_count") < minimum_donors).count()
-    if below_minimum_donor_count > 0:
+    below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
+    below_minimum_donor_count_count = below_minimum_donor_count.count()
+    if below_minimum_donor_count_count > 0:
         message = (
-            f"{below_minimum_donor_count} donor pools found with less than the required {minimum_donors} "
+            f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
             "minimum donor(s)"
         )
         logging.warning(message)
-        logging.warning(frequencies.filter(F.col("donor_count") <= minimum_donors).toPandas())
+        logging.warning(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
         raise ValueError(message)
 
-    frequencies = frequencies.withColumn("probs", F.col("frequency") / F.col("donor_count"))
-
-    # best donor uniques to get donors from
-    full_df = frequencies.withColumn("imp_group_size", F.count("imp_uniques").over(imp_uniques_window))
-
-    full_df = full_df.withColumn("exp_freq", F.col("probs") * F.col("imp_group_size"))
-    full_df = full_df.withColumn("int_part", F.floor(F.col("exp_freq")))
-    full_df = full_df.withColumn("dec_part", F.col("exp_freq") - F.col("int_part"))
-
-    # Integer part
-    full_df = full_df.withColumn("new_imp_group_size", F.col("imp_group_size") - F.col("int_part"))
-    integer_part_donors = full_df.select("int_part", "imp_uniques", "don_" + reference_column).filter(
-        F.col("int_part") >= 1
+    frequencies = frequencies.withColumn(
+        "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
+    )
+    frequencies = frequencies.withColumn("expected_frequency", F.col("probability") * F.col("imputation_group_size"))
+    frequencies = frequencies.withColumn("expected_frequency_integer_part", F.floor(F.col("expected_frequency")))
+    frequencies = frequencies.withColumn(
+        "expected_frequency_decimal_part", F.col("expected_frequency") - F.col("expected_frequency_integer_part")
     )
 
-    # Decimal part
-    decimal_part_donors = full_df.select(
-        "probs", "imp_uniques", "don_" + reference_column, "new_imp_group_size"
-    ).filter(F.col("dec_part") > 0)
-
-    decimal_part_donors = decimal_part_donors.withColumn("random_number", F.rand() * F.col("probs"))
-    random_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("random_number").desc())
-    decimal_part_donors = decimal_part_donors.withColumn("row", F.row_number().over(random_uniques_window)).filter(
-        F.col("row") <= F.col("new_imp_group_size")
+    frequencies = frequencies.withColumn(
+        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("expected_frequency_integer_part")
+    )
+    integer_part_donors = frequencies.select(
+        "expected_frequency_integer_part", "unique_imputation_group", "don_" + reference_column
+    )
+    integer_part_donors = integer_part_donors.filter(F.col("expected_frequency_integer_part") >= 1)
+    integer_part_donors = integer_part_donors.withColumn(
+        "expected_frequency_integer_part",
+        F.expr("explode(array_repeat(expected_frequency_integer_part, int(expected_frequency_integer_part)))"),
     )
 
-    to_impute = integer_part_donors.select("imp_uniques", "don_" + reference_column).unionByName(
-        decimal_part_donors.select("imp_uniques", "don_" + reference_column)
+    decimal_part_donors = frequencies.filter(F.col("expected_frequency_decimal_part") > 0).select(
+        "probability", "unique_imputation_group", "don_" + reference_column, "required_decimal_donor_count"
     )
-    rand_uniques_window = Window.partitionBy("imp_uniques").orderBy(F.col("rand"))
-    to_impute = to_impute.withColumn("rand", F.rand())
-    to_impute = to_impute.withColumn("row", F.row_number().over(rand_uniques_window))
-    to_impute = to_impute.withColumnRenamed("don_" + reference_column, column_name_to_assign)
 
-    donor_df_final = df.filter((F.col(reference_column).isNotNull()) & ~(F.isnan(reference_column)))
-    imputing_df = imputing_df.withColumn("row", F.row_number().over(imp_uniques_window))
-
-    imputing_df_final = imputing_df.join(
-        to_impute, on=(imputing_df.imp_uniques == to_impute.imp_uniques) & (imputing_df.row == to_impute.row)
-    ).drop("imp_uniques", "row", "rand")
-
-    donor_df_final = donor_df_final.withColumn(
-        column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType)
+    random_uniques_window = Window.partitionBy("unique_imputation_group").orderBy(
+        (F.rand() * F.col("probability")).desc()
     )
-    output_df = imputing_df_final.unionByName(donor_df_final)
-    output_df.cache().count()
+    decimal_part_donors = decimal_part_donors.withColumn("donor_row_id", F.row_number().over(random_uniques_window))
+    decimal_part_donors = decimal_part_donors.filter(F.col("donor_row_id") <= F.col("required_decimal_donor_count"))
+
+    to_impute_df = integer_part_donors.select("unique_imputation_group", "don_" + reference_column).unionByName(
+        decimal_part_donors.select("unique_imputation_group", "don_" + reference_column)
+    )
+    rand_uniques_window = Window.partitionBy("unique_imputation_group").orderBy(F.rand())
+    to_impute_df = to_impute_df.withColumn("donor_row_id", F.row_number().over(rand_uniques_window))
+
+    to_impute_df = to_impute_df.withColumnRenamed("don_" + reference_column, column_name_to_assign)
+
+    unique_imputation_group_window = Window.partitionBy("unique_imputation_group").orderBy(F.lit(None))
+    df = df.withColumn("donor_row_id", F.row_number().over(unique_imputation_group_window))
+    df = df.join(F.broadcast(to_impute_df), on=["unique_imputation_group", "donor_row_id"], how="left").drop(
+        "unique_imputation_group", "donor_row_id"
+    )
+
+    df.cache().count()
 
     logging.info(
         f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
     )
-    logging.info(output_df.select(column_name_to_assign, reference_column).summary().toPandas())
 
-    output_df_length = output_df.count()
-    if output_df_length != df_length:
+    output_df_length = df.count()
+    if output_df_length != input_df_length:
         raise ValueError(
-            "{output_df_length} records are found in the output, which is less than {df_length} in the input."
+            f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."
         )
 
-    missing_count = output_df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
+    missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
     if missing_count != 0:
-        raise ValueError(f"{missing_count} records still have missing {reference_column} after imputation.")
+        raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
 
     logging.info("KNN imputation completed\n")
-    return output_df
+    return df
