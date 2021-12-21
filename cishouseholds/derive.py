@@ -9,8 +9,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
-def assign_self_isolating()
-
 
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
@@ -978,7 +976,11 @@ def assign_single_column_from_split(
 
 
 def assign_isin_list(
-    df: DataFrame, column_name_to_assign: str, reference_column: str, values_list:List[Union[str,int]], true_false_values:List[Union[str,int]]
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    values_list: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched

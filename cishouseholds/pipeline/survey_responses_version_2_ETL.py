@@ -1,6 +1,6 @@
 from pyspark.sql import DataFrame
 
-from cishouseholds.derive import assign_age_at_date, assign_isin_list
+from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -26,12 +27,11 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import assign_isin_list
 from cishouseholds.edit import clean_barcode
-from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import update_column_values_from_map
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
@@ -129,12 +129,12 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df=df,
         column="self_isolating_detailed",
         map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
             "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
         },
@@ -232,14 +232,14 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        id_column="participant_id",
-        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
     return df
 
 
@@ -426,5 +426,13 @@ def union_dependent_transformations(df):
             295: 14,
             323: 15,
         },
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        symptoms_bool_column="sympt_now_cghfevamn",
+        id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
     )
     return df
