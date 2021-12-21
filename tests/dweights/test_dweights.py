@@ -225,7 +225,9 @@ def test_calculate_non_response_factors(spark_session):
     df_input = df_expected.drop("raw_non_response_factor")
 
     df_output = calculate_non_response_factors(df_input)
+    import pdb
 
+    pdb.set_trace()
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
