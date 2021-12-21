@@ -8,8 +8,8 @@ from cishouseholds.weights.pre_calibration import calculate_non_response_factors
 from cishouseholds.weights.pre_calibration import create_calibration_var
 from cishouseholds.weights.pre_calibration import derive_index_multiple_deprivation_group
 from cishouseholds.weights.pre_calibration import derive_total_responded_and_sampled_households
-from cishouseholds.weights.pre_calibration import function_1180
 from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
+from cishouseholds.weights.pre_calibration import grouping_from_lookup
 from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
 
 # from cishouseholds.weights.pre_calibration import precalibration_checkpoints
@@ -69,13 +69,13 @@ def test_precal_end_to_end(spark_session):
         age_group_swab integer,
         age_group_antibodies integer,
 
-        p1_swab_longcovid_england double,
-        p1_swab_longcovid_wales_scot_ni double,
-        p1_for_antibodies_evernever_engl double,
-        p1_for_antibodies_28daysto_engl double,
-        p1_for_antibodies_wales_scot_ni double,
-        p2_for_antibodies double,
-        p3_for_antibodies_28daysto_engl double,
+        p1_swab_longcovid_england integer,
+        p1_swab_longcovid_wales_scot_ni integer,
+        p1_for_antibodies_evernever_engl integer,
+        p1_for_antibodies_28daysto_engl integer,
+        p1_for_antibodies_wales_scot_ni integer,
+        p2_for_antibodies integer,
+        p3_for_antibodies_28daysto_engl integer,
 
         antibodies_28daysto integer,
         antibodies_evernever integer,
@@ -167,45 +167,10 @@ def test_precal_end_to_end(spark_session):
     #     dweight_list=["household_level_designweight_swab", "household_level_designweight_antibodies"],
     # )
 
-    df = function_1180(df)
+    df = grouping_from_lookup(df)
     df = create_calibration_var(df)
+    import pdb
 
-    # df1 = df.select(
-    #     "p1_swab_longcovid_england",
-    #     "p1_swab_longcovid_wales_scot_ni",
-    #     "p1_for_antibodies_evernever_engl",
-    #     "p1_for_antibodies_28daysto_engl",
-    #     "p1_for_antibodies_wales_scot_ni",
-    #     "p2_for_antibodies",
-    #     "p3_for_antibodies_28daysto_engl",
-    # )
-
+    pdb.set_trace()
     # df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
-    import pdb;pdb.set_trace()
     assert_df_equality(df, df_expected, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
-
-    df.select(
-        'participant_id',
-        'p1_swab_longcovid_england',
-        'p1_swab_longcovid_wales_scot_ni',
-        'p1_for_antibodies_evernever_engl',
-        'p1_for_antibodies_28daysto_engl',
-        'p1_for_antibodies_wales_scot_ni',
-        'p2_for_antibodies',
-        'p3_for_antibodies_28daysto_engl',
-    ).orderBy("participant_id").show()
-    
-    df.select(
-        'participant_id',
-        'mean_raw_non_response_factor',
-        'scaled_non_response_factor',
-        'bounded_non_response_factor',
-        'household_level_designweight_adjusted_swab',
-        'household_level_designweight_adjusted_antibodies',
-        'sum_adjusted_design_weight_swab',
-        'scaling_factor_adjusted_design_weight_swab',
-        'scaled_design_weight_adjusted_swab',
-        'sum_adjusted_design_weight_antibodies',
-        'scaling_factor_adjusted_design_weight_antibodies',
-        'scaled_design_weight_adjusted_antibodies',
-    ).orderBy("participant_id").show()

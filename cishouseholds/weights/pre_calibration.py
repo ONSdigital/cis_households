@@ -180,7 +180,7 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
 
 
 # 1179 part 3
-def calculate_non_response_factors(df: DataFrame) -> DataFrame:
+def calculate_non_response_factors(df: DataFrame, n_decimals: int = 3) -> DataFrame:
     """
     B.1 calculate raw non_response_factor by dividing total_sampled_households_cis_imd_addressbase
         total_responded_households_cis_imd_addressbase (derived in previous steps)
@@ -205,19 +205,19 @@ def calculate_non_response_factors(df: DataFrame) -> DataFrame:
 
     df = df.withColumn(
         "mean_raw_non_response_factor",
-        (F.mean(F.col("raw_non_response_factor"))).over(w_country),
+        F.round(F.mean(F.col("raw_non_response_factor")).over(w_country), n_decimals),
     )
 
     df = df.withColumn(
         "scaled_non_response_factor",
-        F.round(F.col("raw_non_response_factor") / F.col("mean_raw_non_response_factor"), 1),
+        F.round(F.col("raw_non_response_factor") / F.col("mean_raw_non_response_factor"), n_decimals),
     )
 
     df = df.withColumn(
         "bounded_non_response_factor",
         F.when(F.col("scaled_non_response_factor") < 0.5, 0.6)
         .when(F.col("scaled_non_response_factor") > 2.0, 1.8)
-        .otherwise(F.col("scaled_non_response_factor")),
+        .otherwise(None),
     )
 
     return df
@@ -338,7 +338,7 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
 
 
 # 1180
-def function_1180(df):
+def grouping_from_lookup(df):
     """
     Parameters
     ----------
@@ -515,7 +515,7 @@ def create_calibration_var(
             "dataset": ["antibodies_28daysto"],
             "condition": (
                 (F.col("country_name_12") == "england")
-                & (F.col("age_at_visit") >= 16)
+                & (F.col("age_at_visit") >= 16)  # TODO: age of visit to be put as input?
                 & (F.col("antibodies") == 1)
                 & (F.col("28_days") == 1)
             ),

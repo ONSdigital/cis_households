@@ -7,8 +7,8 @@ from cishouseholds.weights.pre_calibration import calculate_non_response_factors
 from cishouseholds.weights.pre_calibration import create_calibration_var
 from cishouseholds.weights.pre_calibration import derive_index_multiple_deprivation_group
 from cishouseholds.weights.pre_calibration import derive_total_responded_and_sampled_households
-from cishouseholds.weights.pre_calibration import function_1180
 from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
+from cishouseholds.weights.pre_calibration import grouping_from_lookup
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 
 # from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
@@ -356,7 +356,7 @@ def test_function_1180(spark_session):
     )
     input_df = expected_df.drop("interim_region_code", "interim_sex", "age_group_swab", "age_group_antibodies")
 
-    output_df = function_1180(df=input_df)
+    output_df = grouping_from_lookup(df=input_df)
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
