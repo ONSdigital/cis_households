@@ -113,15 +113,19 @@ def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_co
     Assign column by checking for highest batch number in most recent date where new is value if true
     and previous otherwise
     """
-    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
     df = df.withColumn(date_column, F.to_timestamp(F.col(date_column), format="dd/MM/yyyy"))
+    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
 
     df = df.withColumn("DATE_REFERENCE", F.lit(df.select(date_column).collect()[0][0]))
     df = df.withColumn("BATCH_REFERENCE", F.lit(df.select(batch_colum).collect()[0][0]))
     df = df.withColumn(
         colum_name_to_assign,
         F.when(
-            ((F.col(date_column) == F.col("DATE_REFERENCE")) & (F.col(batch_colum) == F.col("BATCH_REFERENCE"))), "new"
+            (
+                (F.col(date_column).eqNullSafe(F.col("DATE_REFERENCE")))
+                & (F.col(batch_colum).eqNullSafe(F.col("BATCH_REFERENCE")))
+            ),
+            "new",
         ).otherwise("previous"),
     )
     return df.drop("DATE_REFERENCE", "BATCH_REFERENCE")
@@ -138,16 +142,26 @@ def count_distinct_in_filtered_df(
     """
     Count distinct rows that meet a given condition over a predefined window (window)
     """
-    eligible_df = df.filter(filter_positive)
-    eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
-    ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
-    df = eligible_df.unionByName(ineligible_df)
+    # eligible_df = df.filter(filter_positive)
+    # eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
+    # ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
+    # df = eligible_df.unionByName(ineligible_df)
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.approx_count_distinct(F.when(filter_positive, F.col(column_to_count)).otherwise(None)).over(window),
+    )
     return df
 
 
 # 1065
 def assign_tranche_factor(
-    df: DataFrame, column_name_to_assign: str, barcode_column: str, tranche_column: str, group_by_columns: List[str]
+    df: DataFrame,
+    column_name_to_assign: str,
+    barcode_column: str,
+    barcode_ref_column: str,
+    tranche_column: str,
+    group_by_columns: List[str],
 ):
     """
     Assign a variable tranche factor as the ratio between 2 derived columns
@@ -156,7 +170,7 @@ def assign_tranche_factor(
     as the barcode column is not null and the tranche
     value is maximum within the predefined window (window)
     """
-    df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_ref_column).isNull(), "No").otherwise("Yes"))
     window = Window.partitionBy(*group_by_columns)
     df = count_distinct_in_filtered_df(
         df=df,
@@ -183,4 +197,4 @@ def assign_tranche_factor(
             / F.col("number_sampled_households_tranche_bystrata_enrolment"),
         ).otherwise("missing"),
     )
-    return df
+    return df.drop(barcode_ref_column)

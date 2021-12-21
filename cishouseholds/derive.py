@@ -1,6 +1,7 @@
 import re
 from itertools import chain
 from typing import List
+from typing import Optional
 from typing import Union
 
 from pyspark.ml.feature import Bucketizer
@@ -9,9 +10,55 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_random_day_in_month(
+    df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
+) -> DataFrame:
+    """
+    Assign a random date in a given year and month
+    Parameters
+    ----------
+    month_column
+    year_column
+    """
+    df = df.withColumn("TEMP_DAY", F.lit(1))
+    df = df.withColumn("TEMP_DATE", F.concat_ws("-", year_column, month_column, "TEMP_DAY"))
+    df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
+    )
+    return df.drop("TEMP_DATE", "TEMP_DAY")
+
+
+def assign_household_size(
+    df: DataFrame,
+    column_name_to_assign: str,
+    household_participant_count_column: Optional[str] = None,
+    household_size_group_column: Optional[str] = None,
+) -> DataFrame:
+    """
+    Assign a column to contain the number of participants residing in a given household
+    Parameters
+    -----------
+    df
+    column_name_to_assign
+    household_participant_count
+    household_size_group_column
+    """
+    if household_size_group_column in df.columns:
+        reference_column = household_size_group_column
+    else:
+        reference_column = household_participant_count_column
+
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+").cast("string"),
+    )
+
+
 def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str) -> DataFrame:
     """
-    Assign a column to contain only the first date a participant visited
+    Assign column to represent number of participants in household
     Parameters
     ----------
     df
@@ -30,8 +77,6 @@ def assign_last_visit(
     Assign a column to contain only the last date a participant completed a visited
     Parameters
     ----------
-    df
-    column_name_to_assign
     id_column
     visit_date_column
     visit_status_column

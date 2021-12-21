@@ -25,7 +25,7 @@ dev_requires = [
 
 setuptools.setup(
     name="cishouseholds",
-    version="1.0.0-beta.7",
+    version="1.2.0-beta.10",
     author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
     description="Data engineering pipeline for the Office for National Statistics COVID-19 Infection Survey (CIS)",

@@ -7,7 +7,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'Yes'
+  care_home_last_28_days_other_household_member: 'Yes'
   city: null
   consent: 16.0
   consent_16_visits: 1.0
@@ -30,7 +30,7 @@
   full_name: Carlos Martin
   gender: Male
   have_covid_symptoms: 'Yes'
-  hospital_last_2wks_household: 'Yes'
+  hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -49,8 +49,9 @@
   last_suspected_covid_contact_location: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: I'm gonna make him an offer he can't refuse.
   ons_household_id: '736535270957'
   outward_postcode: DD7O
   participant_id: DHR-350245644249
@@ -87,7 +88,6 @@
     gonna get.
   postcode: DD7O 7LP
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
-  reason_participants_not_present: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
   samples_taken_date_string: '2022-01-08'
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
@@ -99,7 +99,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'Yes'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'No'
   symptoms_since_last_visit_diarrhoea: null
@@ -113,33 +112,35 @@
   symptoms_since_last_visit_shortness_of_breath: 'Yes'
   symptoms_since_last_visit_sore_throat: 'No'
   symptoms_today: null
+  symptoms_today_abdominal_pain: 'Yes'
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: null
   symptoms_today_fever: 'No'
   symptoms_today_headache: 'Yes'
+  symptoms_today_loss_of_smell: 'No'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: 'No'
   symptoms_today_nausea: null
   symptoms_today_shortness_of_breath: 'No'
-  symptoms_today_smell_loss: 'No'
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: 'Yes'
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'No'
-  think_have_covid_symptoms: 'No'
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: 'No'
   unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-01 06:11:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 06:11:57.000000'
   visit_id: DHVF-3442149696
+  visit_type: Follow-up Visit
   withdrawal_reason: Participant does not want to self swab
+  withdrawal_reason_raw: Participant does not want to self swab
   work_health_care_v0: 'No'
   work_health_care_v0_raw: 'No'
   work_location: Make me a sandwich.
@@ -169,7 +170,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'Yes'
+  care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
   consent: 1.0
   consent_16_visits: 0.0
@@ -192,7 +193,7 @@
   full_name: Argentina Brady
   gender: null
   have_covid_symptoms: 'Yes'
-  hospital_last_2wks_household: null
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -210,8 +211,9 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Here's looking at you, kid.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Let them eat cake.
   ons_household_id: '167403959807'
   outward_postcode: null
   participant_id: DHR-750309883089
@@ -249,7 +251,6 @@
   phase: Houston, we have a problem.
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
-  reason_participants_not_present: Let them eat cake.
   received_shielding_letter: null
   samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
@@ -261,7 +262,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'No'
   symptoms_since_last_visit_diarrhoea: 'No'
@@ -275,33 +275,35 @@
   symptoms_since_last_visit_shortness_of_breath: null
   symptoms_since_last_visit_sore_throat: null
   symptoms_today: null
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: null
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'No'
   symptoms_today_headache: 'Yes'
+  symptoms_today_loss_of_smell: 'No'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: 'Yes'
   symptoms_today_nausea: null
   symptoms_today_shortness_of_breath: null
-  symptoms_today_smell_loss: 'No'
   symptoms_today_sore_throat: 'Yes'
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: 'Yes'
-  think_had_codiv_test_result: 'No'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
+  think_had_covid_test_result: 'No'
   think_had_covid_tested: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: 'No'
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: 'No'
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-04 19:23:52
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:23:52.000000'
   visit_id: DHVF-5198266175
+  visit_type: Follow-up Visit
   withdrawal_reason: Too many visits
+  withdrawal_reason_raw: Too many visits
   work_health_care_v0: 'No'
   work_health_care_v0_raw: 'No'
   work_location: The Galactic Empire is nearing completion of the Death Star, a space
@@ -331,7 +333,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 5.0
   consent_16_visits: 0.0
@@ -354,7 +356,7 @@
   full_name: Annika Reilly
   gender: null
   have_covid_symptoms: 'Yes'
-  hospital_last_2wks_household: 'No'
+  hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -373,8 +375,9 @@
   last_suspected_covid_contact_location: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Houston, we have a problem.
   ons_household_id: '602276804025'
   outward_postcode: null
   participant_id: DHR-593586857022
@@ -413,7 +416,6 @@
   postcode: null
   reason_participants_not_consented: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  reason_participants_not_present: Houston, we have a problem.
   received_shielding_letter: 'No'
   samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
@@ -425,7 +427,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: null
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
   symptoms_since_last_visit_diarrhoea: null
@@ -439,33 +440,35 @@
   symptoms_since_last_visit_shortness_of_breath: 'No'
   symptoms_since_last_visit_sore_throat: 'Yes'
   symptoms_today: 'Yes'
+  symptoms_today_abdominal_pain: null
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: null
   symptoms_today_headache: null
+  symptoms_today_loss_of_smell: 'No'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: null
   symptoms_today_nausea: null
   symptoms_today_shortness_of_breath: null
-  symptoms_today_smell_loss: 'No'
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: 'Yes'
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: null
   think_had_covid_which_symptoms: He looked inquisitively at his keyboard and wrote
     another sentence.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: 'Yes'
-  type_of_visit: First Visit
+  think_have_covid_symptoms_now: 'Yes'
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
+  visit_type: First Visit
   withdrawal_reason: No longer wants to take part
+  withdrawal_reason_raw: No longer wants to take part
   work_health_care_v0: 'Yes'
   work_health_care_v0_raw: 'Yes'
   work_location: Do you come here often?
@@ -492,7 +495,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: Saltash
   consent: 16.0
   consent_16_visits: 1.0
@@ -515,7 +518,7 @@
   full_name: Jae Cervantes
   gender: Male
   have_covid_symptoms: 'No'
-  hospital_last_2wks_household: 'Yes'
+  hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -533,8 +536,10 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: I'm gonna make him an offer he can't refuse.
   no_email_address: 0.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+    down this wall!
   ons_household_id: '558190156218'
   outward_postcode: null
   participant_id: DHR-229883187696
@@ -571,8 +576,6 @@
   postcode: null
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
-  reason_participants_not_present: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
-    down this wall!
   received_shielding_letter: null
   samples_taken_date_string: '2022-01-02'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
@@ -584,7 +587,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
   symptoms_since_last_visit_diarrhoea: null
@@ -598,33 +600,35 @@
   symptoms_since_last_visit_shortness_of_breath: null
   symptoms_since_last_visit_sore_throat: null
   symptoms_today: 'Yes'
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'No'
   symptoms_today_headache: 'No'
+  symptoms_today_loss_of_smell: null
+  symptoms_today_loss_of_taste: null
   symptoms_today_muscle_ache: 'Yes'
   symptoms_today_nausea: 'No'
   symptoms_today_shortness_of_breath: 'No'
-  symptoms_today_smell_loss: null
   symptoms_today_sore_throat: 'No'
-  symptoms_today_taste_loss: null
   symtpoms_today_cough: 'Yes'
-  think_had_codiv_test_result: null
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
+  think_had_covid_test_result: null
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: null
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: null
   unique_participant_response_id: DVH-2564559272-DHR-229883187696-2022-01-03 07:01:12
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 07:01:12.000000'
   visit_id: DVH-2564559272
+  visit_type: Follow-up Visit
   withdrawal_reason: No longer convenient
+  withdrawal_reason_raw: No longer convenient
   work_health_care_v0: 'No'
   work_health_care_v0_raw: 'No'
   work_location: I don't even care.
@@ -650,7 +654,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 1.0
   consent_16_visits: 0.0
@@ -673,7 +677,7 @@
   full_name: Alan Robbins
   gender: Female
   have_covid_symptoms: null
-  hospital_last_2wks_household: 'No'
+  hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
   infant_1_age: 0.0
@@ -691,8 +695,9 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Frankly, my dear, I don't give a damn.
   ons_household_id: '769043821442'
   outward_postcode: null
   participant_id: DHR-449957129557
@@ -733,7 +738,6 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  reason_participants_not_present: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
   samples_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
@@ -745,7 +749,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
   symptoms_since_last_visit_diarrhoea: 'Yes'
@@ -759,32 +762,34 @@
   symptoms_since_last_visit_shortness_of_breath: 'Yes'
   symptoms_since_last_visit_sore_throat: null
   symptoms_today: 'No'
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'Yes'
   symptoms_today_headache: 'No'
+  symptoms_today_loss_of_smell: 'Yes'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: null
   symptoms_today_nausea: 'Yes'
   symptoms_today_shortness_of_breath: null
-  symptoms_today_smell_loss: 'Yes'
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: null
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: 'No'
   think_had_covid_which_symptoms: Make me a sandwich.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: 'No'
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: 'No'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-06 17:36:59
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 17:36:59.000000'
   visit_id: DVH-2948509899
+  visit_type: Follow-up Visit
   withdrawal_reason: No longer convenient
+  withdrawal_reason_raw: No longer convenient
   work_health_care_v0: 'Yes'
   work_health_care_v0_raw: 'Yes'
   work_location: Atoms are used within a program to denote distinguished values.
@@ -810,7 +815,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: Hove
   consent: 16.0
   consent_16_visits: 1.0
@@ -833,7 +838,7 @@
   full_name: Caron Barton
   gender: Male
   have_covid_symptoms: 'No'
-  hospital_last_2wks_household: null
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -851,8 +856,10 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Ask not what your country can do for you; ask what
+    you can do for your country.
   ons_household_id: '105638762102'
   outward_postcode: NC0C
   participant_id: DHR-848695986758
@@ -892,8 +899,6 @@
   phase: Elementary, my dear Watson.
   postcode: NC0C 6UK
   reason_participants_not_consented: Let them eat cake.
-  reason_participants_not_present: Ask not what your country can do for you; ask what
-    you can do for your country.
   received_shielding_letter: null
   samples_taken_date_string: '2022-01-01'
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
@@ -905,7 +910,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'No'
   symptoms_since_last_visit_diarrhoea: 'Yes'
@@ -919,33 +923,35 @@
   symptoms_since_last_visit_shortness_of_breath: null
   symptoms_since_last_visit_sore_throat: 'No'
   symptoms_today: 'Yes'
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: null
   symptoms_today_fever: null
   symptoms_today_headache: null
+  symptoms_today_loss_of_smell: null
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: null
   symptoms_today_nausea: 'Yes'
   symptoms_today_shortness_of_breath: null
-  symptoms_today_smell_loss: null
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: null
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: null
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
     language.
   think_have_covid_cghfevamn_symptom_group: 'No'
-  think_have_covid_symptoms: 'No'
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: 'No'
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-02 01:35:07
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 01:35:07.000000'
   visit_id: DVH-4804616426
+  visit_type: Follow-up Visit
   withdrawal_reason: Bad experience with tester / survey
+  withdrawal_reason_raw: Bad experience with tester / survey
   work_health_care_v0: 'Yes'
   work_health_care_v0_raw: 'Yes'
   work_location: Where are my pants?
@@ -973,7 +979,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
-  care_home_last_2wks_household: null
+  care_home_last_28_days_other_household_member: null
   city: Felixstowe
   consent: 1.0
   consent_16_visits: 0.0
@@ -996,7 +1002,7 @@
   full_name: Clemmie Harper
   gender: Female
   have_covid_symptoms: null
-  hospital_last_2wks_household: 'No'
+  hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -1014,8 +1020,10 @@
   last_suspected_covid_contact_location: Ask not what your country can do for you;
     ask what you can do for your country.
   no_email_address: 0.0
-  no_participants_not_present: 4.0
   no_paticicpants_not_consented: null
+  not_present_household_count: '4'
+  not_present_household_reason: Ask not what your country can do for you; ask what
+    you can do for your country.
   ons_household_id: '826911152672'
   outward_postcode: null
   participant_id: DHR-851138788221
@@ -1053,8 +1061,6 @@
   phase: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   postcode: null
   reason_participants_not_consented: Let them eat cake.
-  reason_participants_not_present: Ask not what your country can do for you; ask what
-    you can do for your country.
   received_shielding_letter: 'No'
   samples_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
@@ -1066,7 +1072,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: null
   symptoms_since_last_visit_diarrhoea: 'Yes'
@@ -1080,33 +1085,35 @@
   symptoms_since_last_visit_shortness_of_breath: 'No'
   symptoms_since_last_visit_sore_throat: 'Yes'
   symptoms_today: null
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: 'Yes'
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'No'
   symptoms_today_headache: 'Yes'
+  symptoms_today_loss_of_smell: null
+  symptoms_today_loss_of_taste: null
   symptoms_today_muscle_ache: 'No'
   symptoms_today_nausea: 'No'
   symptoms_today_shortness_of_breath: 'No'
-  symptoms_today_smell_loss: null
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: null
   symtpoms_today_cough: null
-  think_had_codiv_test_result: null
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
+  think_had_covid_test_result: null
   think_had_covid_tested: null
   think_had_covid_which_symptoms: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: 'No'
-  type_of_visit: First Visit
+  think_have_covid_symptoms_now: 'No'
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-08 05:06:21
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 05:06:21.000000'
   visit_id: DVH-6249804207
+  visit_type: First Visit
   withdrawal_reason: Bad experience with tester / survey
+  withdrawal_reason_raw: Bad experience with tester / survey
   work_health_care_v0: null
   work_health_care_v0_raw: null
   work_location: Make me a sandwich.
@@ -1132,7 +1139,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 0.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: null
   consent: 16.0
   consent_16_visits: 1.0
@@ -1155,7 +1162,7 @@
   full_name: Crystle Osborn
   gender: null
   have_covid_symptoms: 'No'
-  hospital_last_2wks_household: 'No'
+  hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
   infant_1_age: 0.0
@@ -1172,8 +1179,9 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Elementary, my dear Watson.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: 7.0
+  not_present_household_count: null
+  not_present_household_reason: Let them eat cake.
   ons_household_id: '212633229661'
   outward_postcode: null
   participant_id: DHR-422525832950
@@ -1213,7 +1221,6 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  reason_participants_not_present: Let them eat cake.
   received_shielding_letter: null
   samples_taken_date_string: '2022-01-09'
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
@@ -1225,7 +1232,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'Yes'
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'No'
   symptoms_since_last_visit_diarrhoea: 'No'
@@ -1239,32 +1245,34 @@
   symptoms_since_last_visit_shortness_of_breath: 'Yes'
   symptoms_since_last_visit_sore_throat: null
   symptoms_today: 'Yes'
+  symptoms_today_abdominal_pain: 'Yes'
   symptoms_today_diarrhoea: null
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'No'
   symptoms_today_headache: null
+  symptoms_today_loss_of_smell: 'Yes'
+  symptoms_today_loss_of_taste: null
   symptoms_today_muscle_ache: 'No'
   symptoms_today_nausea: null
   symptoms_today_shortness_of_breath: null
-  symptoms_today_smell_loss: 'Yes'
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: null
   symtpoms_today_cough: 'No'
-  think_had_codiv_test_result: 'No'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
+  think_had_covid_test_result: 'No'
   think_had_covid_tested: null
   think_had_covid_which_symptoms: Do you come here often?
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: 'Yes'
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: 'Yes'
   unique_participant_response_id: DVH-7139656872-DHR-422525832950-2022-01-02 21:34:20
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 21:34:20.000000'
   visit_id: DVH-7139656872
+  visit_type: Follow-up Visit
   withdrawal_reason: Participant does not want to self swab
+  withdrawal_reason_raw: Participant does not want to self swab
   work_health_care_v0: 'No'
   work_health_care_v0_raw: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
@@ -1291,7 +1299,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
-  care_home_last_2wks_household: null
+  care_home_last_28_days_other_household_member: null
   city: null
   consent: 5.0
   consent_16_visits: 0.0
@@ -1314,7 +1322,7 @@
   full_name: Honey Porter
   gender: Prefer not to say
   have_covid_symptoms: 'No'
-  hospital_last_2wks_household: null
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: 0.0
@@ -1333,8 +1341,9 @@
   last_suspected_covid_contact_location: Get your stinking paws off me, you damned
     dirty ape.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Elementary, my dear Watson.
   ons_household_id: '407714528425'
   outward_postcode: null
   participant_id: DHR-621954781044
@@ -1370,7 +1379,6 @@
   phase: Houston, we have a problem.
   postcode: null
   reason_participants_not_consented: Let them eat cake.
-  reason_participants_not_present: Elementary, my dear Watson.
   received_shielding_letter: 'No'
   samples_taken_date_string: '2022-01-02'
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
@@ -1382,7 +1390,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'Yes'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'Yes'
   symptoms_since_last_visit_diarrhoea: null
@@ -1396,33 +1403,35 @@
   symptoms_since_last_visit_shortness_of_breath: null
   symptoms_since_last_visit_sore_throat: null
   symptoms_today: 'No'
+  symptoms_today_abdominal_pain: 'Yes'
   symptoms_today_diarrhoea: null
   symptoms_today_fatigue: 'Yes'
   symptoms_today_fever: 'Yes'
   symptoms_today_headache: null
+  symptoms_today_loss_of_smell: 'Yes'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: 'Yes'
   symptoms_today_nausea: 'No'
   symptoms_today_shortness_of_breath: 'Yes'
-  symptoms_today_smell_loss: 'Yes'
   symptoms_today_sore_throat: null
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: 'Yes'
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: 'Yes'
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
     and writing poetry.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: null
-  type_of_visit: First Visit
+  think_have_covid_symptoms_now: null
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-07 11:10:34
   visit_date_string: '2022-01-07'
   visit_datetime: '2022-01-07 11:10:34.000000'
   visit_id: DVH-7239645123
+  visit_type: First Visit
   withdrawal_reason: No longer wants to take part
+  withdrawal_reason_raw: No longer wants to take part
   work_health_care_v0: 'Yes'
   work_health_care_v0_raw: 'Yes'
   work_location: Where are my pants?
@@ -1449,7 +1458,7 @@
   blood_sample_barcode: null
   blood_taken: 'no'
   bloods_taken: 1.0
-  care_home_last_2wks_household: 'No'
+  care_home_last_28_days_other_household_member: 'No'
   city: Inverurie
   consent: 5.0
   consent_16_visits: 0.0
@@ -1472,7 +1481,7 @@
   full_name: Barton Ramos
   gender: Prefer not to say
   have_covid_symptoms: 'Yes'
-  hospital_last_2wks_household: null
+  hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   infant_1_age: null
@@ -1491,8 +1500,9 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 1.0
-  no_participants_not_present: null
   no_paticicpants_not_consented: null
+  not_present_household_count: null
+  not_present_household_reason: Here's looking at you, kid.
   ons_household_id: '846198988073'
   outward_postcode: null
   participant_id: DHR-263959191921
@@ -1533,7 +1543,6 @@
   postcode: null
   reason_participants_not_consented: Ask not what your country can do for you; ask
     what you can do for your country.
-  reason_participants_not_present: Here's looking at you, kid.
   received_shielding_letter: 'Yes'
   samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
@@ -1545,7 +1554,6 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
-  sympotms_today_abdominal_pain: 'No'
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: 'Yes'
   symptoms_since_last_visit_diarrhoea: 'Yes'
@@ -1559,33 +1567,35 @@
   symptoms_since_last_visit_shortness_of_breath: 'Yes'
   symptoms_since_last_visit_sore_throat: 'Yes'
   symptoms_today: null
+  symptoms_today_abdominal_pain: 'No'
   symptoms_today_diarrhoea: 'No'
   symptoms_today_fatigue: null
   symptoms_today_fever: null
   symptoms_today_headache: 'Yes'
+  symptoms_today_loss_of_smell: 'Yes'
+  symptoms_today_loss_of_taste: 'Yes'
   symptoms_today_muscle_ache: 'No'
   symptoms_today_nausea: null
   symptoms_today_shortness_of_breath: 'Yes'
-  symptoms_today_smell_loss: 'Yes'
   symptoms_today_sore_throat: 'No'
-  symptoms_today_taste_loss: 'Yes'
   symtpoms_today_cough: 'No'
-  think_had_codiv_test_result: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
+  think_had_covid_test_result: 'Yes'
   think_had_covid_tested: 'No'
   think_had_covid_which_symptoms: Haskell features a type system with type inference
     and lazy evaluation.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms: null
-  type_of_visit: Follow-up Visit
+  think_have_covid_symptoms_now: null
   unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-08 11:41:44
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 11:41:44.000000'
   visit_id: DVH-9888271882
+  visit_type: Follow-up Visit
   withdrawal_reason: Bad experience with tester / survey
+  withdrawal_reason_raw: Bad experience with tester / survey
   work_health_care_v0: null
   work_health_care_v0_raw: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
