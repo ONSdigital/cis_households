@@ -357,6 +357,19 @@ def union_dependent_transformations(df):
         visit_status_column="participant_visit_status",
         visit_date_column="visit_datetime",
     )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="days_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="last_attended_visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="household_weeks_since_survey_enrolment",
+        start_reference_column="survey start",
+        end_reference_column="visit_datetime",
+        format="weeks",
+    )
     # TODO: Add back in once work_status has been derived
     # df = update_work_facing_now_column(
     #     df,
