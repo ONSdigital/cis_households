@@ -180,7 +180,7 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
 
 
 # 1179 part 3
-def calculate_non_response_factors(df: DataFrame, n_decimals: int = 3) -> DataFrame:
+def calculate_non_response_factors(df: DataFrame, n_decimals: int = 2) -> DataFrame:
     """
     B.1 calculate raw non_response_factor by dividing total_sampled_households_cis_imd_addressbase
         total_responded_households_cis_imd_addressbase (derived in previous steps)
@@ -308,14 +308,10 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
     """
     # TODO: use validate_design_weights() stefen's function
     # check_1: The design weights are adding up to total population
-    df = df.withColumn("scaled_design_weight_adjusted_" + test_type, F.lit(None).cast("integer"))
-    df = df.withColumn("not_positive_or_null" + test_type, F.lit(None).cast("integer"))
-
     check_1 = (
         df.select(F.sum(F.col("scaled_design_weight_adjusted_" + test_type))).collect()[0][0]
         == df.select("number_of_households_population_by_cis").collect()[0][0]
     )
-
     # check_2 and check_3: The  design weights are all are positive AND check there are no missing design weights
     df = df.withColumn("not_positive_or_null", F.lit(None))
 
@@ -333,7 +329,6 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
     # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
     # These should have the same dweights when window function is applied.
     check_4 = True
-
     return check_1, check_2_3, check_4
 
 
@@ -531,7 +526,6 @@ def create_calibration_var(
         "swab_14days",
         "longcovid_24days",
         "longcovid_42days",
-        "longcovid_24days",
         "antibodies_evernever",
         "antibodies_28daysto",
     ]
