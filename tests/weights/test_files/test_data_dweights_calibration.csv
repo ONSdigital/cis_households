@@ -1,0 +1,21 @@
+﻿ons_household_id,participant_id,sex,ethnicity_white,age_at_visit,index_multiple_deprivation,sample_addressbase_indicator,country_name_12,region_code,cis_area_code_20,household_level_designweight_swab,household_level_designweight_antibodies,check_if_missing,swab,antibodies,longcovid,ever_never,14_days,28_days,42_days,number_of_households_population_by_cis,response_indicator,interim_participant_id,index_multiple_deprivation_group,population_country_swab,population_country_antibodies,total_sampled_households_cis_imd_addressbase,total_responded_households_cis_imd_addressbase,raw_non_response_factor,mean_raw_non_response_factor,scaled_non_response_factor,bounded_non_response_factor,household_level_designweight_adjusted_swab,household_level_designweight_adjusted_antibodies,sum_adjusted_design_weight_swab,scaling_factor_adjusted_design_weight_swab,scaled_design_weight_adjusted_swab,sum_adjusted_design_weight_antibodies,scaling_factor_adjusted_design_weight_antibodies,scaled_design_weight_adjusted_antibodies,interim_region_code,interim_sex,age_group_swab,age_group_antibodies,p1_swab_longcovid_england,p1_swab_longcovid_wales_scot_ni,p1_for_antibodies_evernever_engl,p1_for_antibodies_28daysto_engl,p1_for_antibodies_wales_scot_ni,p2_for_antibodies,p3_for_antibodies_28daysto_engl,antibodies_28daysto              ,antibodies_evernever             ,longcovid_24days               ,longcovid_42days               ,swab_14days                  ,swab_evernever
+1,1,male,1,50,7000,1,england,E12000001,1,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,2,1500,1200,1,1,1,1.176,0.85,,,,,,,,,,1,1,6,4,6,,4,4,,2,1,1,1,1,1,1,1
+2,4,female,0,30,6500,3,england,E12000002,3,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,1,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,2,2,4,2,25,,17,7,,1,2,1,1,1,1,1,1
+2,5,male,1,32,6500,3,england,E12000002,3,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,1,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,2,1,4,2,18,,12,2,,2,2,1,1,1,1,1,1
+2,6,male,0,5,6500,3,england,E12000002,3,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,1,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,2,1,1,,15,,,,,1,,1,1,1,1,1,1
+2,7,male,0,3,6500,3,england,E12000002,3,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,1,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,2,1,1,,15,,,,,1,,1,1,1,1,1,1
+3,,male,1,2,15000,5,england,E12000003,5,0.9,1.1,1,1,1,1,1,1,1,1,17,,,3,1500,1200,3,2,1.5,1.176,1.276,,,,,,,,,,3,1,1,,29,,,,,2,,1,1,1,1,1,1
+3,8,male,1,2,15000,5,england,E12000003,5,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,3,1500,1200,3,2,1.5,1.176,1.276,,,,,,,,,,3,1,1,,29,,,,,2,,1,1,1,1,1,1
+3,8,,,2,15000,5,england,E12000003,5,0.9,1.1,1,1,1,1,1,1,1,1,17,1,1,3,1500,1200,3,2,1.5,1.176,1.276,,,,,,,,,,3,,1,,,,,,,,,1,1,1,1,1,1
+4,9,male,1,30,400,6,wales,E12000004,6,0.9,1.1,,1,1,1,1,1,1,1,1,1,1,2,900,800,1,1,1,1,1,,,,,,,,,,4,1,4,2,,4,,,2,2,,1,1,1,1,,1
+5,10,male,1,50,7000,7,england,E12000005,7,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,2,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,5,1,6,4,62,,44,4,,2,5,1,1,1,1,1,1
+5,11,male,1,50,7000,7,england,E12000005,7,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,2,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,5,1,6,4,62,,44,4,,2,5,1,1,1,1,1,1
+5,12,male,1,50,7000,7,england,E12000005,7,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,2,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,5,1,6,4,62,,44,4,,2,5,1,1,1,1,1,1
+5,13,male,1,50,7000,7,england,E12000005,7,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,2,1500,1200,4,4,1,1.176,0.85,,,,,,,,,,5,1,6,4,62,,44,4,,2,5,1,1,1,1,1,1
+6,14,male,1,50,800,11,northern_ireland,E12000006,11,0.9,1.1,,1,1,1,1,1,1,1,2,1,1,,600,700,1,1,1,1,1,,,,,,,,,,6,1,6,4,,6,,,4,,,1,1,1,1,,1
+6,15,male,0,50,800,12,northern_ireland,E12000006,12,0.9,1.1,,1,1,1,1,1,1,1,2,1,1,,600,700,1,1,1,1,1,,,,,,,,,,6,1,6,4,,6,,,4,,,1,1,1,1,,1
+7,16,male,0,50,800,13,england,E12000007,13,0.9,1.1,,1,1,1,1,1,1,1,17,1,,1,1500,1200,5,4,1.3,1.176,1.105,,,,,,,,,,7,1,6,4,90,,64,4,,1,7,1,1,1,1,1,1
+7,17,male,0,50,800,13,england,E12000007,13,0.9,1.1,,1,1,1,1,1,1,1,17,1,,1,1500,1200,5,4,1.3,1.176,1.105,,,,,,,,,,7,1,6,4,90,,64,4,,1,7,1,1,1,1,1,1
+7,18,male,0,50,800,13,england,E12000007,13,0.9,1.1,,1,1,1,1,1,1,1,17,1,1,1,1500,1200,5,4,1.3,1.176,1.105,,,,,,,,,,7,1,6,4,90,,64,4,,1,7,1,1,1,1,1,1
+7,19,male,0,50,800,13,england,E12000007,13,0.9,1.1,,1,1,1,1,1,1,1,17,1,,1,1500,1200,5,4,1.3,1.176,1.105,,,,,,,,,,7,1,6,4,90,,64,4,,1,7,1,1,1,1,1,1
+7,20,male,0,50,800,13,england,E12000007,13,0.9,1.1,,1,1,1,1,1,1,1,17,1,,1,1500,1200,5,4,1.3,1.176,1.105,,,,,,,,,,7,1,6,4,90,,64,4,,1,7,1,1,1,1,1,1

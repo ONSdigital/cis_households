@@ -7,138 +7,10 @@ from cishouseholds.weights.pre_calibration import calculate_non_response_factors
 from cishouseholds.weights.pre_calibration import create_calibration_var
 from cishouseholds.weights.pre_calibration import derive_index_multiple_deprivation_group
 from cishouseholds.weights.pre_calibration import derive_total_responded_and_sampled_households
-from cishouseholds.weights.pre_calibration import function_1180
 from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
+from cishouseholds.weights.pre_calibration import grouping_from_lookup
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
-from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
 
-# from cishouseholds.weights.pre_calibration  import chose_scenario_of_dweight_for_antibody_different_household
-# from cishouseholds.weights.pre_calibration  import raw_dweight_for_AB_scenario_for_antibody
-
-
-# def test_chose_scenario_of_dweight_for_antibody_different_household(spark_session):
-#     expected_df = spark_session.createDataFrame(
-#         data=[
-#             # fmt: off
-#                 (None,  None,   0.0), # scenario AB
-#                 (3.0,   2.0,    50.0),
-#             # scenario C
-#             # fmt: on
-#         ],
-#         schema="""
-#                 number_eligible_households_tranche_bystrata double,
-#                 number_sampled_households_tranche_bystrata double,
-#                 eligibility_pct double
-#             """,
-#     )
-#     input_df_scenario_AB = expected_df.filter(F.col("eligibility_pct") == 0.0).drop("eligibility_pct")
-
-#     scenario = chose_scenario_of_dweight_for_antibody_different_household(
-#         df=input_df_scenario_AB, tranche_eligible_indicator=False
-#     )
-#     assert scenario == "A"
-
-#     scenario = chose_scenario_of_dweight_for_antibody_different_household(
-#         df=input_df_scenario_AB, tranche_eligible_indicator=True
-#     )
-#     assert scenario == "B"
-
-#     input_df_scenario_C = expected_df.filter(F.col("eligibility_pct") == 50.0).drop("eligibility_pct")
-
-#     scenario = chose_scenario_of_dweight_for_antibody_different_household(
-#         df=input_df_scenario_C, tranche_eligible_indicator=True
-#     )
-#     assert scenario == "C"
-
-
-# def test_raw_dweight_for_AB_scenario_for_antibody(spark_session):
-#     schema_expected = """
-#                     """
-#     data_expected_df = [
-#         # fmt: off
-#         (),
-#         # fmt: on
-#     ]
-#     df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected)
-#     df_input = df_expected.drop("")
-
-#     df_output = raw_dweight_for_AB_scenario_for_antibody(df_input)
-
-#     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
-
-
-# def test_survey_extraction_household_data_response_factor(spark_session):
-#     schema_expected = """
-#                         ons_household_id integer,
-#                         participant_id integer,
-#                         sex string,
-#                         ethnicity_white integer,
-#                         age_at_visit integer,
-
-#                         country_12 string,
-#                         antibody integer,
-#                         swab integer,
-#                         longcovid integer,
-
-#                         response_indicator integer,
-#                         check_if_missing integer,
-#                         population_swab integer,
-#                         population_antibody integer
-#                     """
-#     data_expected = [
-#         (1, 1, "male", 1, 50, "england", 1, None, None, 1, None, None, 90),
-#         (1, 2, "female", 1, 40, "england", None, 1, 1, 1, None, 100, None),
-#         (2, 4, "female", 0, 30, "wales", None, 1, 1, 1, None, 33, None),
-#         (2, 5, "male", 1, 32, "wales", 1, None, None, 1, None, None, 15),
-#         (2, None, "male", 0, 5, "wales", 1, None, None, None, 1, None, 15),
-#         # country population swab join to work as swab OR longcovid flagging columns required
-#         (2, 7, "male", 0, 14, "wales", None, 1, None, 1, None, 33, None),
-#         # both antibody and swab/longcovid flags for datasets to pass
-#         (2, 8, "male", 0, 13, "wales", 1, 1, 1, 1, None, 33, 15),
-#     ]
-#     df_expected = spark_session.createDataFrame(data=data_expected, schema=schema_expected)
-
-#     df_input_survey = df_expected.drop(
-#         "response_indicator", "check_if_missing", "population_swab", "population_antibody"
-#     )
-
-#     # schema_households = """
-#     #                     participant_id integer,
-#     #                     response_indicator integer
-#     #                     """
-
-#     # data_households = [
-#     #     # fmt: off
-#     #         (1,     1),
-#     #         (2,     1),
-#     #         (3,     1),
-#     #     # fmt: on
-#     # ]
-#     # df_input_households = spark_session.createDataFrame(data=data_households, schema=schema_households)
-
-#     schema_country = """
-#                         country_12 string,
-#                         population_swab integer,
-#                         population_antibody integer
-#                         """
-#     data_country = [
-#         # fmt: off
-#             ('england',             100,    90),
-#             ('wales',               33,     15),
-#             ('scotland',            60,     30),
-#             ('northern_ireland',    40,     60),
-#         # fmt: on
-#     ]
-#     df_input_country = spark_session.createDataFrame(data=data_country, schema=schema_country)
-
-#     df_output = survey_extraction_household_data_response_factor(
-#         df=df_input_survey,
-#         # hh_samples_df=df_input_households,
-#         df_extract_by_country=df_input_country,
-#         # table_name='',
-#         required_extracts_column_list=["ons_household_id", "participant_id", "sex", "ethnicity_white", "age_at_visit"],
-#     )
-#     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
 def test_derive_index_multiple_deprivation_group(spark_session):
@@ -209,22 +81,27 @@ def test_calculate_non_response_factors(spark_session):
                             scaled_non_response_factor double,
                             bounded_non_response_factor double"""
     data_expected_df = [
-        ("England", 20, 6, 3.3, 5.0, 0.7, 0.7),
-        ("England", 17, 12, 1.4, 5.0, 0.3, 0.6),
-        ("England", 25, 19, 1.3, 5.0, 0.3, 0.6),
-        ("England", 28, 2, 14.0, 5.0, 2.8, 1.8),
-        ("Northern Ireland", 15, 10, 1.5, 3.2, 0.5, 0.5),
-        ("Northern Ireland", 11, 2, 5.5, 3.2, 1.7, 1.7),
-        ("Northern Ireland", 9, 7, 1.3, 3.2, 0.4, 0.6),
-        ("Northern Ireland", 18, 4, 4.5, 3.2, 1.4, 1.4),
+        # fmt: off
+            # scaled_non_response has to be smaller than 0.5 or larger than 2.0 non-inclusive
+            ("England", 20, 6, 3.3, 5.0, 0.7, None),
+            ("England", 17, 12, 1.4, 5.0, 0.3, 0.6),
+            ("England", 25, 19, 1.3, 5.0, 0.3, 0.6),
+            ("England", 28, 2, 14.0, 5.0, 2.8, 1.8),
+            ("Northern Ireland", 15, 10, 1.5, 3.2, 0.5, None),
+            ("Northern Ireland", 11, 2, 5.5, 3.2, 1.7, None),
+            ("Northern Ireland", 9, 7, 1.3, 3.2, 0.4, 0.6),
+            ("Northern Ireland", 18, 4, 4.5, 3.2, 1.4, None),
+        # fmt: off
     ]
 
     df_expected = spark_session.createDataFrame(data_expected_df, schema=schema_expected_df)
 
     df_input = df_expected.drop("raw_non_response_factor")
 
-    df_output = calculate_non_response_factors(df_input)
-
+    df_output = calculate_non_response_factors(
+        df=df_input,
+        n_decimals=1
+    )
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
@@ -304,6 +181,18 @@ def test_precalibration_checkpoints(spark_session):
         schema=schema,
     )
 
+    input_df_not_pass = expected_df_not_pass.drop("not_positive_or_null")
+
+    check_1, check_2_3, check_4 = precalibration_checkpoints(
+        df=input_df_not_pass,
+        test_type="swab",
+        dweight_list=["dweight_1", "dweight_2"],
+    )
+    assert check_1 is not True
+    assert check_2_3 is not True
+    assert check_4 is True
+
+
     expected_df_pass = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -315,26 +204,19 @@ def test_precalibration_checkpoints(spark_session):
         schema=schema,
     )
 
-    input_df_not_pass = expected_df_not_pass.drop("not_positive_or_null")
-
-    check_1, check_2_3, check_4 = precalibration_checkpoints(
-        df=input_df_not_pass, test_type="swab", dweight_list=["dweight_1", "dweight_2"]
-    )
-    assert check_1 is not True
-    assert check_2_3 is not True
-    assert check_4 is True
-
     input_df_pass = expected_df_pass.drop("not_positive_or_null")
 
     check_1, check_2_3, check_4 = precalibration_checkpoints(
-        df=input_df_pass, test_type="swab", dweight_list=["dweight_1", "dweight_2"]
+        df=input_df_pass,
+        test_type="swab",
+        dweight_list=["dweight_1", "dweight_2"],
     )
     assert check_1 is True
     assert check_2_3 is True
     assert check_4 is True
 
 
-def test_function_1180(spark_session):
+def test_grouping_from_lookup(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -344,7 +226,7 @@ def test_function_1180(spark_session):
             # fmt: on
         ],
         schema="""
-                interim_region string,
+                region_code string,
                 interim_region_code integer,
                 sex string,
                 interim_sex integer,
@@ -355,7 +237,8 @@ def test_function_1180(spark_session):
     )
     input_df = expected_df.drop("interim_region_code", "interim_sex", "age_group_swab", "age_group_antibodies")
 
-    output_df = function_1180(df=input_df)
+    output_df = grouping_from_lookup(df=input_df)
+
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
@@ -363,20 +246,30 @@ def test_create_calibration_var(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('england',			    1,1,1,16, 3, 2,	3, 		None, 	2,		2, 		None,	2,		1, 		1,	1,		1,1, 1,1),
-                ('wales',				1,1,1,16, 3, 2, None,	3,		None, 	None,	2,		2, 		None, 	1, 	None,	1,1, 1,1),
-                ('northern_ireland',	2,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1),
-                ('scotland',			3,1,1,16, 3, 2, None,	3,		None, 	None,	2, 		None, 	None, 	1, 	None,	1,1, 1,1),
+                ('england',			    1,1,1,16, 3, 2,1,	1,		1, 1, 1,1, 1,1,		    3, 		None, 	2,		2, 		None,	    2,		1, 		1, 1, 1, 1, 1, 1),
+                ('wales',				1,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None,		None, 	None, 	1, None, 1, 1, None, None),
+                ('northern_ireland',	2,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
+                ('scotland',			3,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
             # fmt: on
         ],
         schema="""
-                country_name string,
+                country_name_12 string,
                 interim_region_code integer,
                 interim_sex integer,
                 ethnicity_white integer,
                 age_at_visit integer,
                 age_group_swab integer,
                 age_group_antibodies integer,
+
+                swab integer,
+                antibodies integer,
+                ever_never integer,
+                longcovid integer,
+                14_days integer,
+                28_days integer,
+                24_days integer,
+                42_days integer,
+
                 p1_swab_longcovid_england integer,
                 p1_swab_longcovid_wales_scot_ni integer,
                 p1_for_antibodies_evernever_engl integer,
@@ -384,25 +277,36 @@ def test_create_calibration_var(spark_session):
                 p1_for_antibodies_wales_scot_ni integer,
                 p2_for_antibodies integer,
                 p3_for_antibodies_28daysto_engl integer,
+
                 swab_evernever integer,
                 swab_14days integer,
-                long_covid_24days integer,
-                long_covid_42days integer,
+                longcovid_24days integer,
+                longcovid_42days integer,
                 antibodies_evernever integer,
                 antibodies_28daysto integer
             """,
     )
 
-    input_df = expected_df.drop("")
-
-    output_df = create_calibration_var(
-        df=input_df,
+    input_df = expected_df.drop(
+        'p1_swab_longcovid_england',
+        'p1_swab_longcovid_wales_scot_ni',
+        'p1_for_antibodies_evernever_engl',
+        'p1_for_antibodies_28daysto_engl',
+        'p1_for_antibodies_wales_scot_ni',
+        'p2_for_antibodies',
+        'p3_for_antibodies_28daysto_engl',
+        'swab_evernever',
+        'swab_14days',
+        'longcovid_24days',
+        'longcovid_42days',
+        'antibodies_evernever',
+        'antibodies_28daysto',
     )
+    output_df = create_calibration_var(df=input_df)
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
 def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
-
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -413,7 +317,7 @@ def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
                 ('northen_ireland', 1, 0.6,  1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
             # fmt: on
         ],
-        schema="""country_name string,
+        schema="""country_name_12 string,
                 participant_id integer,
                 scaled_design_weight_adjusted_swab double,
                 p1_swab_longcovid_england double,
@@ -429,11 +333,11 @@ def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            ('scotland',            1,      1.0,    1.0),
-            ('northen_ireland',     1,      1.0,    1.0),
+                ('scotland',            1,      1.0,    1.0),
+                ('northen_ireland',     1,      1.0,    1.0),
             # fmt: on
         ],
-        schema="""country_name string,
+        schema="""country_name_12 string,
                 participant_id integer,
                 scaled_design_weight_adjusted_antibodies double,
                 p1_for_antibodies_wales_scot_ni double""",
