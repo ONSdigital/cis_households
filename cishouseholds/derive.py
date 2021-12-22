@@ -820,16 +820,19 @@ def assign_date_difference(
     ------
     pyspark.sql.DataFrame
     """
-    if start_reference_column == "survey start":
-        start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
+    allowed_formats = ["days", "weeks"]
+    if format in allowed_formats:
+        if start_reference_column == "survey start":
+            start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
+        else:
+            start = F.col(start_reference_column)
+        modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
+        df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
+        if format in modifications:
+            df = df.withColumn(column_name_to_assign, modifications[format])
+        return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
     else:
-        start = F.col(start_reference_column)
-
-    modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
-    df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
-    if format in modifications:
-        df = df.withColumn(column_name_to_assign, modifications[format])
-    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+        raise TypeError(f"{format} format not supported")
 
 
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
