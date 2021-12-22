@@ -134,6 +134,14 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         contact_known_covid_date_column="last_covid_contact_date",
         contact_suspect_covid_date_column="last_suspected_covid_contact_date",
     )
+    df = impute_latest_date_flag(
+        df=df,
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        visit_id_column="visit_id",
+        contact_any_covid_column="contact_any_covid",
+        contact_any_covid_date_column="contact_any_covid_type",
+    )
     return df
 
 
