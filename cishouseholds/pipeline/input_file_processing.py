@@ -57,7 +57,7 @@ swab_delta_parameters = {
 }
 
 survey_responses_v2_parameters = {
-    "stage_name": "survey_responses_vversion_2_ETL",
+    "stage_name": "survey_responses_version_2_ETL",
     "validation_schema": survey_responses_v2_validation_schema,
     "column_name_map": survey_responses_v2_variable_name_map,
     "datetime_column_map": survey_responses_datetime_map,
@@ -163,7 +163,7 @@ def generate_input_processing_function(
             print(f"        - No files selected in {kwargs['resource_path']}")  # functional
             return
 
-        valid_file_paths = validate_files(kwargs["resource_path"], validation_schema, sep=sep)
+        valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {kwargs['resource_path']}.")  # functional
             return

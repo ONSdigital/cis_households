@@ -26,7 +26,7 @@ def generate_outputs():
     output_directory = Path(get_config()["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
-    linked_df = extract_from_table("merged_responses_antibody_swab_delta")
+    linked_df = extract_from_table("merged_responses_antibody_swab_data")
 
     #    all_visits_df = extract_from_table("response_level_records")
     #    participant_df = extract_from_table("participant_level_with_vaccination_data")
@@ -35,7 +35,7 @@ def generate_outputs():
     linked_df = linked_df.withColumn(
         "completed_visits_subset",
         F.when(
-            (F.col("visit_status") == "Completed")
+            (F.col("participant_visit_status") == "Completed")
             | (F.col("blood_sample_barcode").isNotNull() | (F.col("swab_sample_barcode").isNotNull())),
             True,
         ).otherwise(False),

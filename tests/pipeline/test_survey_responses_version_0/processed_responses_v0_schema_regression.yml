@@ -408,7 +408,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: care_home_last_28_days_other_household_member
   nullable: true
   type: string
 - metadata: {}
