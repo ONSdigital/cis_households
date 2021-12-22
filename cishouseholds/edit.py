@@ -9,6 +9,21 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+    """
+    update value to no if symptoms are ongoing
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    count_reference_column
+    """
+    df = df.withColumn(
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+    )
+    return df
+
+
 def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.

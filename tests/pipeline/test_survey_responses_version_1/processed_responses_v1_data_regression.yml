@@ -560,7 +560,7 @@
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -775,7 +775,7 @@
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -987,7 +987,7 @@
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -1195,7 +1195,7 @@
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -1406,7 +1406,7 @@
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
@@ -1616,7 +1616,7 @@
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: 'No'
@@ -1831,7 +1831,7 @@
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -2043,7 +2043,7 @@
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
