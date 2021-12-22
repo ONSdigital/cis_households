@@ -532,27 +532,50 @@ def impute_by_k_nearest_neighbours(
     return output_df
 
 
-def impute_latest_date_flag(df: DataFrame, window_columns: List[str], imputation_flag_columns: str):
+def impute_latest_date_flag(
+    df: DataFrame,
+    participant_id_column: str,
+    visit_date_column: str,
+    visit_id_column: str,
+    contact_any_covid_column: str,
+    contact_any_covid_date_column: str,
+) -> DataFrame:
     """
     Parameters
     ----------
-
+    df
+    participant_id_column
+    visit_date_column
+    visit_id_column
+    contact_any_covid_column
+    contact_any_covid_date_column
     """
-    window = Window.partitionBy(window_columns).orderBy(F.desc("visit_date"), F.desc("visit_id"))
+    window = Window.partitionBy(participant_id_column).orderBy(
+        F.desc(contact_any_covid_date_column),
+        F.desc(visit_date_column),
+        F.desc(visit_id_column),
+    )
 
     df = df.withColumn(
-        imputation_flag_columns,
+        "imputation_flag",
         F.when(
             (
-                (F.col("contact_any_covid") == 1)
-                & (F.lag("contact_any_covid", 1))
-                & (F.col("contact_any_covid_date").isNull())
+                (F.lag(contact_any_covid_column, 1).over(window) == 1)
+                & (F.col(contact_any_covid_column) == 1)
+                & (F.col(contact_any_covid_date_column).isNull())
             )
             | (
-                (F.col("contact_any_covid_date") < F.lag("contact_any_covid_date", 1))
-                & (F.col("visit_date") >= F.lag("contact_any_covid_date", 1))
+                (F.col(contact_any_covid_date_column) < F.lag(contact_any_covid_date_column, 1).over(window))
+                & (F.col(visit_date_column) >= F.lag(contact_any_covid_date_column, 1).over(window))
             ),
             1,
-        ).otherwise(None),
-    ).over(window)
-    return df
+        ).otherwise(0),
+    )
+    df = df.withColumn(
+        contact_any_covid_date_column,
+        F.when(F.col("imputation_flag") == 1, F.first(contact_any_covid_date_column).over(window)).otherwise(
+            F.col(contact_any_covid_date_column)
+        ),
+    )
+
+    return df.drop("imputation_flag")
