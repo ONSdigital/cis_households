@@ -1171,3 +1171,36 @@ def assign_work_health_care(
         column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
     )
     return df
+
+
+def contact_known_or_suspected_covid_type(
+    df: DataFrame,
+    contact_known_covid_type_column: str,
+    contact_any_covid_type_column: str,
+    contact_any_covid_date_column: str,
+    contact_known_covid_date_column: str,
+    contact_suspect_covid_date_column: str,
+):
+    """
+    Parameters
+    ----------
+    df
+    contact_known_covid_type_column
+    contact_suspect_covid_type_column
+    contact_any_covid_date_column
+    contact_known_covid_date_column
+    contact_suspect_covid_date_column
+    """
+    df = df.withColumn(
+        contact_any_covid_type_column,
+        F.when(
+            F.col(contact_any_covid_date_column) == F.col(contact_known_covid_date_column),
+            F.col(contact_known_covid_type_column),
+        )
+        .when(
+            F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
+            F.col(contact_known_covid_type_column),
+        )
+        .otherwise(None),
+    )
+    return df
