@@ -17,6 +17,9 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 
 # from cishouseholds.weights.extract import load_auxillary_data
 
+# notes:
+# validation checks relate to final dweights for entire column for both datasets (each hh must have a dweight)
+
 
 def generate_weights(auxillary_dfs):
     auxillary_dfs = prepare_auxillary_data(auxillary_dfs)

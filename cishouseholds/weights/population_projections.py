@@ -244,7 +244,7 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         [],
         ["p22_white_population_antibodies"],
     ]
-    min_ages = [2, 2, 2, 2, 16, 16, 16, 16, 16]
+    min_ages = [2, 2, 2, 2, 16, 12, 16, 16, 16]
     countries = [
         "England",
         "Wales",

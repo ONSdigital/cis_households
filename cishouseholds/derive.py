@@ -795,7 +795,11 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
 
 
 def assign_date_difference(
-    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    start_reference_column: str,
+    end_reference_column: str,
+    format: Optional[str] = "days",
 ) -> DataFrame:
     """
     Calculate the difference in days between two dates.
@@ -810,14 +814,25 @@ def assign_date_difference(
         First date column name.
     end_reference_column
         Second date column name.
-
+    format
+        time format (days, weeks, months)
     Return
     ------
     pyspark.sql.DataFrame
     """
-    return df.withColumn(
-        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
-    )
+    allowed_formats = ["days", "weeks"]
+    if format in allowed_formats:
+        if start_reference_column == "survey start":
+            start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
+        else:
+            start = F.col(start_reference_column)
+        modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
+        df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
+        if format in modifications:
+            df = df.withColumn(column_name_to_assign, modifications[format])
+        return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+    else:
+        raise TypeError(f"{format} format not supported")
 
 
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
@@ -964,7 +979,11 @@ def assign_single_column_from_split(
 
 
 def assign_isin_list(
-    df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    values_list: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
@@ -980,15 +999,16 @@ def assign_isin_list(
         name of column to check for list values
     values_list
         list of values to check against reference column
-
+    true_false_values
+        true value (index 0), false value (index 1)
     Return
     ------
     pyspark.sql.DataFrame
     """
     return df.withColumn(
         column_name_to_assign,
-        F.when((F.col(reference_column_name).isin(values_list)), 1)
-        .when((~F.col(reference_column_name).isin(values_list)), 0)
+        F.when((F.col(reference_column).isin(values_list)), true_false_values[0])
+        .when((~F.col(reference_column).isin(values_list)), true_false_values[1])
         .otherwise(None),
     )
 
