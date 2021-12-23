@@ -32,6 +32,7 @@ from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.impute import impute_latest_date_flag
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
@@ -422,4 +423,13 @@ def union_dependent_transformations(df):
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
+
+    df = impute_latest_date_flag(
+        df=df,
+        participant_id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
+        contact_any_covid_column="contact_any_covid",
+        contact_any_covid_date_column="contact_any_covid_date",
+    )
     return df
