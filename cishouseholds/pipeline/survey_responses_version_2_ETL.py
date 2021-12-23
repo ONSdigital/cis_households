@@ -443,6 +443,7 @@ def union_dependent_transformations(df):
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Participant Would Not/Could Not Answer": None,
         },
+    )
     df = assign_date_difference(
         df=df,
         column_name_to_assign="days_since_enrolment",
