@@ -28,5 +28,11 @@ def transform_swab_delta(df: DataFrame) -> DataFrame:
     df = mean_across_columns(
         df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
     )
-    df = assign_isin_list(df, "one_positive_pcr_target_only", "cq_pattern", ["N only", "OR only", "S only"])
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="one_positive_pcr_target_only",
+        reference_column="cq_pattern",
+        values_list=["N only", "OR only", "S only"],
+        true_false_values=[1, 0],
+    )
     return df

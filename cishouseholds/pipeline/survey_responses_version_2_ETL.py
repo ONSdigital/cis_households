@@ -14,6 +14,7 @@ from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -135,6 +136,31 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
     Transformations specific to the v1 and 2 packages only
     """
+    df = update_column_values_from_map(
+        df=df,
+        column="is_self_isolating_detailed",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="is_self_isolating_detailed",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+        ],
+        true_false_values=["Yes", "No"],
+    )
     df = assign_true_if_any(
         df=df,
         column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
@@ -204,14 +230,14 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        id_column="participant_id",
-        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
     return df
 
 
@@ -417,6 +443,18 @@ def union_dependent_transformations(df):
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Participant Would Not/Could Not Answer": None,
         },
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="days_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="last_attended_visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="household_weeks_since_survey_enrolment",
+        start_reference_column="survey start",
+        end_reference_column="visit_datetime",
+        format="weeks",
     )
     # TODO: Add back in once work_status has been derived
     # df = update_work_facing_now_column(
@@ -425,6 +463,37 @@ def union_dependent_transformations(df):
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
+    df = assign_named_buckets(
+        df,
+        reference_column="days_since_enrolment",
+        column_name_to_assign="visit_number",
+        map={
+            0: 0,
+            4: 1,
+            11: 2,
+            18: 3,
+            25: 4,
+            43: 5,
+            71: 6,
+            99: 7,
+            127: 8,
+            155: 9,
+            183: 10,
+            211: 11,
+            239: 12,
+            267: 13,
+            295: 14,
+            323: 15,
+        },
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        symptoms_bool_column="sympt_now_cghfevamn",
+        id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
+    )
 
     df = impute_latest_date_flag(
         df=df,

@@ -26,6 +26,49 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     return df
 
 
+def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
+    """
+    Ensures visit order row value in list of allowed values
+    Parameters
+    df
+    visit_order_column
+    """
+    allowed = [
+        "First Visit",
+        "Follow-up 1",
+        "Follow-up 2",
+        "Follow-up 3",
+        "Follow-up 4",
+        "Month 2",
+        "Month 3",
+        "Month 4",
+        "Month 5",
+        "Month 6",
+        "Month 7",
+        "Month 8",
+        "Month 9",
+        "Month 10",
+        "Month 11",
+        "Month 12",
+        "Month 13",
+        "Month 14",
+        "Month 15",
+        "Month 16",
+        "Month 17",
+        "Month 18",
+        "Month 19",
+        "Month 20",
+        "Month 21",
+        "Month 22",
+        "Month 23",
+        "Month 24",
+    ]
+    df = df.withColumn(
+        visit_order_column, F.when(F.col(visit_order_column).isin(allowed), F.col(visit_order_column)).otherwise(None)
+    )
+    return df
+
+
 def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
