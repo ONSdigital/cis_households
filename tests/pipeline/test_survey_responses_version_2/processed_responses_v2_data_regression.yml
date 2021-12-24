@@ -171,6 +171,7 @@
   samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
+  self_isolating: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -188,7 +189,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -366,8 +366,7 @@
   infant_7_age: 0.0
   infant_8_age: 7.0
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or
-    a positive test
+  is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_location: Outside your home
   last_name: Hunt
@@ -453,6 +452,7 @@
   samples_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 01:42:17.000000'
   school_year_september: null
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -470,7 +470,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -733,6 +732,7 @@
   samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 21:24:56.000000'
   school_year_september: null
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -750,7 +750,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -927,8 +926,7 @@
   infant_7_age: 8.0
   infant_8_age: null
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating_detailed: Yes because you live with someone who has/has had symptoms
-    but you haven't had them yourself
+  is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
   last_name: Cervantes
@@ -1015,6 +1013,7 @@
   samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1032,7 +1031,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -1206,8 +1204,7 @@
   infant_7_age: 5.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: null
-  is_self_isolating_detailed: Yes because you live with someone who has/has had symptoms
-    but you haven't had them yourself
+  is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
   last_name: Romero
@@ -1295,6 +1292,7 @@
   samples_taken_date_string: null
   samples_taken_datetime: null
   school_year_september: null
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -1312,7 +1310,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
@@ -1484,7 +1481,7 @@
   infant_7_age: null
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating_detailed: Yes for other reasons (e.g. going into hospital or quarantining)
+  is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
   last_name: Day
@@ -1571,6 +1568,7 @@
   samples_taken_date_string: '2022-01-03'
   samples_taken_datetime: '2022-01-03 02:16:58.000000'
   school_year_september: null
+  self_isolating: 'Yes'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1588,7 +1586,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -1764,8 +1761,7 @@
   infant_7_age: 1.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: null
-  is_self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or
-    a positive test
+  is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_covid_contact_location: null
   last_name: Waters
@@ -1852,6 +1848,7 @@
   samples_taken_date_string: '2022-01-06'
   samples_taken_datetime: '2022-01-06 17:17:10.000000'
   school_year_september: null
+  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1869,7 +1866,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -2045,7 +2041,7 @@
   infant_7_age: 8.0
   infant_8_age: 7.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating_detailed: Yes for other reasons (e.g. going into hospital or quarantining)
+  is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
   last_name: Bolton
@@ -2132,6 +2128,7 @@
   samples_taken_date_string: '2022-01-05'
   samples_taken_datetime: '2022-01-05 03:25:31.000000'
   school_year_september: null
+  self_isolating: 'Yes'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -2149,7 +2146,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -2326,8 +2322,7 @@
   infant_7_age: 6.0
   infant_8_age: 0.0
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or
-    a positive test
+  is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_covid_contact_location: Living in your own home
   last_name: Meyers
@@ -2414,6 +2409,7 @@
   samples_taken_date_string: '2022-01-04'
   samples_taken_datetime: '2022-01-04 09:53:28.000000'
   school_year_september: 2.0
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -2431,7 +2427,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -2695,6 +2690,7 @@
   samples_taken_date_string: '2022-01-07'
   samples_taken_datetime: '2022-01-07 03:14:57.000000'
   school_year_september: null
+  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -2712,7 +2708,6 @@
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_taken: 'no'
-  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
