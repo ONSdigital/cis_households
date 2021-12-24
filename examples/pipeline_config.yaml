@@ -1,12 +1,99 @@
+table_names:
+  input:
+    blood: "transformed_blood_test_data"
+    unioned_survey: "unioned_survey_responses"
+    antibody: "joined_blood_test_data"
+    merged_survey: "merged_responses_antibody_data"
+    swab: "transformed_swab_test_data"
+    merged_antibody_swab: "merged_responses_antibody_swab_data"
+    imputed_values: "imputed_value_lookup"
+    participant_records: "participant_level_key_records"
+    vaccination_data: "participant_level_with_vaccination_data"
+    response_records: "response_level_records"
+    invalid_response_records: "invalid_response_records_future"
+    error: "error_file_log"
+    transformed_survey: "transformed_survey_responses_v*_data"
+    nims: ""
+    failed_blood: "failed_blood_test_join"
+
+  output:
+    antibody: [
+        "merged_responses_antibody_data",
+        "antibody_merge_residuals",
+        "antibody_merge_failed_records",
+    ]
+    swab: [
+        "merged_responses_antibody_swab_data",
+        "swab_merge_residuals",
+        "swab_merge_failed_records",
+    ]
+
+
 stages:
-  - function:
-    run:
-    resource_path:
-    output_path:
+  - function: delete_tables
+    run: False
+    table_names: ["TABLE_NAMES"]
+
+  - function: historical_blood_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/historical_bloods/historical_bloods_*.csv"
+    include_invalid: True
+    include_processed: True
+
+  - function: blood_delta_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/bloods/Unioxf_medtest*.csv"
+    include_invalid: True
+    include_processed: True
+
+  - function: swab_delta_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/swabs/ONS_GL_Report_*.csv"
+    include_invalid: True
+    include_processed: True
+
+  - function: survey_responses_version_0_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v0/ONS_Datafile_*.csv"
+    latest_only: True
+    include_invalid: True
+    include_processed: True
+    end_date: 2028-12-31
+
+  - function: survey_responses_version_1_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v1/ONSECRF4_Datafile_*.csv"
+    latest_only: True
+    include_invalid: True
+    include_processed: True
+    end_date: 2028-12-31
+
+  - function: survey_responses_version_2_ETL
+    run: True
+    resource_path: "hdfs:///ons/covserolink/landing_zone/responses_v2/ONSECRF5_Datafile_*.csv"
+    latest_only: True
+    include_invalid: True
+    include_processed: True
+    end_date: 2028-12-31
+
+  - function: union_survey_response_files
+    run: True
+
+  - function: outer_join_blood_results
+    run: True
+
+  - function: merge_blood_ETL
+    run: True
+
+  - function: merge_swab_ETL
+    run: True
+
+  - function: generate_outputs
+    run: False
 
 storage:
-  database:
-  table_prefix:
-  write_mode:
+    database: covserolink_dev
+    table_prefix: USERNAME_
+    write_mode: append
 
-csv_output_path:
+pyspark_session_size: m
