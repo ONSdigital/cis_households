@@ -10,6 +10,42 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_ever_long_term_disable(
+    df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
+):
+    """
+    Assign a column that identifies if patient is long term disabled by applying several
+    preset functions
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    health_conditions_column
+    condition_impact_column
+    """
+    df = df.withColumn(
+        "TEMP_EVERNEVER",
+        F.when(
+            (F.col(health_conditions_column) == "Yes")
+            & (F.col(condition_impact_column).isin(["Yes, a little", "Yes, a lot"])),
+            "Yes",
+        )
+        .when(
+            (F.col(health_conditions_column).isin(["Yes", "No"]))
+            & ((F.col(condition_impact_column) == "Not at all") | (F.col(condition_impact_column).isNull())),
+            "No",
+        )
+        .otherwise(None),
+    )
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        groupby_column="participant_id",
+        reference_columns=["TEMP_EVERNEVER"],
+        count_if=["Yes"],
+    )  # not sure of correct  PIPELINE categories
+
+
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
 ) -> DataFrame:
