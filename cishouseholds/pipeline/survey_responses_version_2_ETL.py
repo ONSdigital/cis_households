@@ -328,6 +328,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care"],
         count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -335,6 +336,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
         count_if=["Yes, care/residential home, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -342,6 +344,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["illness_lasting_over_12_months"],
         count_if=["Yes"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
 
     return df

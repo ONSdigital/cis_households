@@ -10,7 +10,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
-def assign_ever_long_term_disable(
+def assign_ever_long_term_disabled(
     df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
 ):
     """
@@ -43,7 +43,10 @@ def assign_ever_long_term_disable(
         groupby_column="participant_id",
         reference_columns=["TEMP_EVERNEVER"],
         count_if=["Yes"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
+
+    return df.drop("TEMP_EVERNEVER")
 
 
 def assign_random_day_in_month(
@@ -134,23 +137,35 @@ def assign_column_given_proportion(
     groupby_column: str,
     reference_columns: List[str],
     count_if: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
     """
     window = Window.partitionBy(groupby_column)
-    df = assign_true_if_any(
-        df=df, column_name_to_assign="TEMP", reference_columns=reference_columns, true_false_values=[1, 0]
-    )
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            F.sum(F.when(F.col("TEMP").isin(count_if), F.lit(1)).otherwise(F.lit(0))).over(window)
-            / F.sum(F.when(F.col("TEMP").isNotNull(), F.lit(1)).otherwise(0)).over(window)
-            >= 0.3,
-            1,
-        ).otherwise(0),
-    )
+
+    df = df.withColumn("TEMP", F.lit(0))
+    df = df.withColumn(column_name_to_assign, F.lit("No"))
+
+    for col in reference_columns:
+        df = df.withColumn(
+            "TEMP",
+            F.when((F.col(col).isin(count_if)) & (F.col("TEMP").isNotNull()), 1)
+            .when((F.col(col).isNotNull()) & (F.col("TEMP").isNotNull()), F.col("TEMP"))
+            .otherwise(None),
+        )
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                (
+                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
+                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
+                    >= 0.3
+                )
+                & F.col(col).isin(count_if),
+                true_false_values[0],
+            ).otherwise(true_false_values[1]),
+        )
     return df.drop("TEMP")
 
 
@@ -204,6 +219,7 @@ def assign_true_if_any(
     column_name_to_assign: str,
     reference_columns: List[str],
     true_false_values: List[Union[str, int, bool]],
+    ignore_nulls: Optional[bool] = False,
 ) -> DataFrame:
     """
     Assign column the second value of a list containing values for false and true
@@ -218,7 +234,9 @@ def assign_true_if_any(
             F.when(
                 F.col(col).eqNullSafe(true_false_values[0]),
                 true_false_values[0],
-            ).otherwise(F.col(column_name_to_assign)),
+            )
+            .when(F.col(col).isNull() & F.lit(ignore_nulls), None)
+            .otherwise(F.col(column_name_to_assign)),
         )
     return df
 
