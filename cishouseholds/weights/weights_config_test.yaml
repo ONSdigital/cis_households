@@ -1,0 +1,5 @@
+population_projections:
+  - column: "p1_for_swab_longcovid"
+    country: "England"
+    logic_if_country: "((interim_region_code -1) * 14) + (interim_sex - 1) + age_group_swab"
+    logic_otherwise: "((interim_sex - 1) * 7) + age_group_swab"

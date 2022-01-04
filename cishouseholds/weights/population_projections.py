@@ -1,5 +1,7 @@
+import re
 from typing import List
 
+import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
@@ -141,6 +143,25 @@ def calculate_additional_population_columns(
         .when(F.col(country_name_column) == "England", "missing")
         .otherwise(None),
     )
+    return df
+
+
+def run_from_config(df: DataFrame, config_location: str):
+    with open(config_location) as fh:
+        config = yaml.load(fh, Loader=yaml.FullLoader)["population_projections"]
+    for col in config:
+        for index in ["logic_if_country", "logic_otherwise"]:
+            matches = re.findall("[a-zA-Z_]{1,}", col[index])
+            for match in matches:
+                if match != "None":
+                    col[index] = re.sub(match, f"F.col('{match}')", col[index])
+        df = df.withColumn(
+            col["column"],
+            F.when(
+                F.col("country") == col["country"],
+                eval(col["logic_if_country"]),
+            ).otherwise(eval(col["logic_otherwise"])),
+        )
     return df
 
 
