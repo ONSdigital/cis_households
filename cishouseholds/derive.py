@@ -150,9 +150,7 @@ def assign_column_given_proportion(
     for col in reference_columns:
         df = df.withColumn(
             "TEMP",
-            F.when((F.col(col).isin(count_if)) & (F.col("TEMP").isNotNull()), 1)
-            .when((F.col(col).isNotNull()) & (F.col("TEMP").isNotNull()), F.col("TEMP"))
-            .otherwise(None),
+            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
         )
         df = df.withColumn(
             column_name_to_assign,
@@ -161,11 +159,11 @@ def assign_column_given_proportion(
                     F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
                     / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
                     >= 0.3
-                )
-                & F.col(col).isin(count_if),
-                true_false_values[0],
-            ).otherwise(true_false_values[1]),
+                ),
+                1,
+            ).otherwise(0),
         )
+    df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     return df.drop("TEMP")
 
 
