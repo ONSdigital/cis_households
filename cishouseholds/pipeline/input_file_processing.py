@@ -30,6 +30,7 @@ from cishouseholds.pipeline.validation_schema import survey_responses_v0_validat
 from cishouseholds.pipeline.validation_schema import survey_responses_v1_validation_schema
 from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
 from cishouseholds.pipeline.validation_schema import swab_validation_schema
+from cishouseholds.pipeline.validation_schema import swab_validation_schema_testKit
 from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_schema
 from cishouseholds.validate import validate_files
 
@@ -48,6 +49,17 @@ blood_delta_parameters = {
 swab_delta_parameters = {
     "stage_name": "swab_delta_ETL",
     "validation_schema": swab_validation_schema,
+    "column_name_map": swab_variable_name_map,
+    "datetime_column_map": swab_datetime_map,
+    "transformation_functions": [transform_swab_delta],
+    "output_table_name": "transformed_swab_test_data",
+    "source_file_column": "swab_test_source_file",
+    "write_mode": "append",
+}
+
+swab_delta_parameters_testKit = {
+    "stage_name": "swab_delta_ETL",
+    "validation_schema": swab_validation_schema_testKit,
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
     "transformation_functions": [transform_swab_delta],
