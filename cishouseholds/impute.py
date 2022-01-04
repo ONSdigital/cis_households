@@ -547,7 +547,6 @@ def impute_by_k_nearest_neighbours(
     return df
 
 
-
 def impute_latest_date_flag(
     df: DataFrame,
     participant_id_column: str,
