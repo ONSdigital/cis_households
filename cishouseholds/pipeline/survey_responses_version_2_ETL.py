@@ -350,8 +350,8 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = assign_ever_had_long_term_health_condition_or_disabled(
         df=df,
         column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-        health_conditions_column="health_conditions",
-        condition_impact_column="health_conditions_impact",
+        health_conditions_column="illness_lasting_over_12_months",
+        condition_impact_column="illness_reduces_activity_or_ability",
     )
     return df
 
