@@ -10,7 +10,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
-def assign_ever_long_term_disabled(
+def assign_ever_had_long_term_health_condition_or_disabled(
     df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
 ):
     """
@@ -164,6 +164,10 @@ def assign_column_given_proportion(
             ).otherwise(0),
         )
     df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
+    )
     return df.drop("TEMP")
 
 

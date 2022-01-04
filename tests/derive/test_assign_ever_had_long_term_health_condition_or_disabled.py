@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import assign_ever_long_term_disabled
+from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 
 
 def test_assign_ever_long_term_disabled(spark_session):
@@ -19,7 +19,7 @@ def test_assign_ever_long_term_disabled(spark_session):
         """,
     )
 
-    output_df = assign_ever_long_term_disabled(
+    output_df = assign_ever_had_long_term_health_condition_or_disabled(
         expected_df.drop("ever"),
         column_name_to_assign="ever",
         health_conditions_column="health",
