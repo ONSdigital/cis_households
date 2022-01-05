@@ -9,6 +9,70 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
+    """
+    Ensures visit order row value in list of allowed values
+    Parameters
+    df
+    visit_order_column
+    """
+    allowed = [
+        "First Visit",
+        "Follow-up 1",
+        "Follow-up 2",
+        "Follow-up 3",
+        "Follow-up 4",
+        "Month 2",
+        "Month 3",
+        "Month 4",
+        "Month 5",
+        "Month 6",
+        "Month 7",
+        "Month 8",
+        "Month 9",
+        "Month 10",
+        "Month 11",
+        "Month 12",
+        "Month 13",
+        "Month 14",
+        "Month 15",
+        "Month 16",
+        "Month 17",
+        "Month 18",
+        "Month 19",
+        "Month 20",
+        "Month 21",
+        "Month 22",
+        "Month 23",
+        "Month 24",
+    ]
+    df = df.withColumn(
+        visit_order_column, F.when(F.col(visit_order_column).isin(allowed), F.col(visit_order_column)).otherwise(None)
+    )
+    return df
+
+
+def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+    """
+    Clean lab sample barcodes.
+    Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
+    matching the expected format.
+    """
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
+    df = df.withColumn(
+        barcode_column,
+        F.when(
+            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
+            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
+        ).otherwise(F.col(barcode_column)),
+    )
+    df = df.withColumn(
+        barcode_column,
+        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
+    )
+    return df
+
+
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
     update postcode variable to include only uppercase alpha numeric characters and set
@@ -55,7 +119,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     return df
 
 
-def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
+def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
     """
     Create separate columns for school year depending on the individuals country of residence
     Parameters
@@ -68,13 +132,10 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
     countries = [["England", "Wales"], ["Scotland"], ["NI"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
     for column_name, country_set in zip(column_names, countries):
-        temp_df = (
-            df.select(country_column, school_year_column, id_column)
-            .filter(F.col(country_column).isin(country_set))
-            .withColumnRenamed(school_year_column, column_name)
+        df = df.withColumn(
+            column_name, F.when(F.col(country_column).isin(country_set), F.col(school_year_column)).otherwise(None)
         )
-        df = df.join(temp_df, on=[country_column, id_column], how="left")
-    return df.drop(school_year_column)
+    return df
 
 
 def update_social_column(df: DataFrame, social_column: str, health_column: str):

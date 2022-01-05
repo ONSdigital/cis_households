@@ -65,7 +65,13 @@ def process_post_merge():
         *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
     )
     response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
+
+    response_level_records_df, response_level_records_filtered_df = filter_response_records(
+        response_level_records_df, "visit_datetime"
+    )
+
     update_table(response_level_records_df, "response_level_records", mode_overide="overwrite")
+    update_table(response_level_records_filtered_df, "invalid_response_records_future", mode_overide=None)
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
@@ -171,3 +177,24 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
+
+
+def filter_response_records(df: DataFrame, visit_date: str):
+    """Creating column for file datetime and filter out dates after file date"""
+    df = df.withColumn("file_date", F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0))
+    df = df.withColumn("file_date", F.to_timestamp(F.col("file_date"), format="yyyyMMdd"))
+    df = df.withColumn(
+        "filter_response_flag",
+        F.when(
+            (
+                (F.col("file_date") < F.col(visit_date))
+                & F.col("swab_sample_barcode").isNull()
+                & F.col("blood_sample_barcode").isNull()
+            ),
+            1,
+        ).otherwise(None),
+    )
+    df_flagged = df.where(F.col("filter_response_flag") == 1)
+    df = df.where(F.col("filter_response_flag").isNull())
+
+    return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")

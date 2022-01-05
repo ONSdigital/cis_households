@@ -8,7 +8,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: type_of_visit
+  name: visit_type
   nullable: true
   type: string
 - metadata: {}
@@ -52,11 +52,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_participants_not_present
+  name: not_present_household_count
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: reason_participants_not_present
+  name: not_present_household_reason
   nullable: true
   type: string
 - metadata: {}
@@ -352,7 +352,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: smoke_no
+  name: smokes_nothing_now
   nullable: true
   type: string
 - metadata: {}
@@ -440,7 +440,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: is_self_isolating
+  name: is_self_isolating_detailed
   nullable: true
   type: string
 - metadata: {}
@@ -692,6 +692,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: withdrawal_reason_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
@@ -772,6 +776,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: self_isolating
+  nullable: true
+  type: string
+- metadata: {}
   name: symptoms_last_7_days_cghfevamn_symptom_group
   nullable: false
   type: string
@@ -783,8 +791,4 @@ fields:
   name: symptoms_since_last_visit_count
   nullable: false
   type: integer
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
-  nullable: false
-  type: string
 type: struct

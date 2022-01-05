@@ -9,17 +9,23 @@ from cishouseholds.weights.derive import assign_population_projections
 from cishouseholds.weights.derive import assign_white_proportion
 from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
-from cishouseholds.weights.edit import reformat_calibration_df
+from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
 from cishouseholds.weights.extract import load_auxillary_data
+from cishouseholds.weights.extract import prepare_auxillary_data
+
+# from cishouseholds.weights.edit import reformat_calibration_df
+
+# from cishouseholds.weights.extract import load_auxillary_data
 
 
 # 1174
-def proccess_population_projection_df(month: int):
+def proccess_population_projection_df(dfs: dict, month: int):
     """
     process and format population projections tables by reshaping new datafrmae and recalculating predicted values
     """
-    dfs = load_auxillary_data(specify=["population_projection_current", "population_projection_previous", "aps_lookup"])
+    # dfs = load_auxillary_data(specify=["population_projection_current", "population_projection_previous", "aps_lookup"]) # noqa: E501
+    dfs = prepare_auxillary_data(dfs)
     previous_projection_df = dfs["population_projection_previous"]
     current_projection_df = dfs["population_projection_current"]
 
@@ -86,9 +92,8 @@ def proccess_population_projection_df(month: int):
         white_proportion_column="percentage_white_ethnicity_country_over16",
     )
 
-    england_df, wales_df, scotland_df, ni_df, england_28_df, england_evernever_df = get_calibration_dfs(
-        current_projection_df, "country_name_#", "age"
-    )
+    calibrated_df = get_calibration_dfs(current_projection_df, "country_name_#", "age")
+    return calibrated_df
 
 
 # 1175
@@ -163,6 +168,8 @@ def calculate_population_totals(
 # necessary columns:
 # - p1_for_swab_longcovid
 # - population
+# Note:
+# calibrated dataframe contains missing p3 values as the excel doc does not ask for them to be omitted
 def calibarate_df(
     df: DataFrame,
     groupby_columns: List[str],
@@ -172,14 +179,14 @@ def calibarate_df(
     age_column: str,
     additional_columns: List[str] = [],
 ):
-    df = df.filter(
-        (F.col(country_column) == country)
-        & (F.col(age_column) >= min_age)
-        & (F.col("p1_for_swab_longcovid").isNotNull())
-    ).select(*groupby_columns, "population", *additional_columns)
+    df = df.filter((F.col(country_column) == country) & (F.col(age_column) >= min_age))
+    if "p1_for_swab_longcovid" in groupby_columns:
+        df = df.filter((F.col("p1_for_swab_longcovid").isNotNull()))
+    df = df.select(*groupby_columns, "population", *additional_columns)
     if df.count() > 0:
-        df = reformat_calibration_df(df=df, pivot_column="population", groupby_columns=groupby_columns)
-    return df
+        df = reformat_calibration_df_simple(df=df, population_column="population", groupby_columns=groupby_columns)
+        return df
+    return None
 
 
 # 1176
@@ -206,36 +213,75 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
     """
     groupby_columns_set = [
         ["p1_for_swab_longcovid"],
+        ["p1_for_swab_longcovid"],
+        ["p1_for_swab_longcovid"],
+        ["p1_for_swab_longcovid"],
         ["p1_for_antibodies_wales_scot_ni"],
         ["p1_for_antibodies_wales_scot_ni"],
         ["p1_for_antibodies_wales_scot_ni"],
         ["p1_for_antibodies_evernever_engl"],
         ["p1_for_antibodies_28daysto_engl", "p3_for_antibodies_28daysto_engl"],
     ]
-    additional_columns_set = [[], ["p22_white_population_antibodies"], [], [], [], ["p22_white_population_antibodies"]]
-    min_ages = [2, 16, 16, 16, 16, 16]
-    countries = ["England", "Wales", "Scotland", "Northern Ireland", "England", "England"]
+    data_set_names = [
+        "england_population_swab_longcovid",
+        "wales_population_swab_longcovid",
+        "scotland_population_swab_longcovid",
+        "northen_ireland_population_swab_longcovid",
+        "wales_population_any_antibodies",
+        "scotland_population_any_antibodies",
+        "northen_ireland_population_any_antibodies",
+        "england_population_antibodies_evernever",
+        "england_population_antibodies_28daysto",
+    ]
+    additional_columns_set = [
+        [],
+        [],
+        [],
+        [],
+        ["p22_white_population_antibodies"],
+        [],
+        [],
+        [],
+        ["p22_white_population_antibodies"],
+    ]
+    min_ages = [2, 2, 2, 2, 16, 12, 16, 16, 16]
+    countries = [
+        "England",
+        "Wales",
+        "Scotland",
+        "Northern Ireland",
+        "Wales",
+        "Scotland",
+        "Northern Ireland",
+        "England",
+        "England",
+    ]
 
-    dfs = []
-    for country, min_age, groupby_columns, additional_columns in zip(
-        countries, min_ages, groupby_columns_set, additional_columns_set
+    output_df = None
+    for dataset_name, country, min_age, groupby_columns, additional_columns in zip(
+        data_set_names, countries, min_ages, groupby_columns_set, additional_columns_set
     ):
-        dfs.append(
-            calibarate_df(
-                df=df,
-                groupby_columns=groupby_columns,
-                country=country,
-                country_column=country_column,
-                min_age=min_age,
-                age_column=age_column,
-                additional_columns=additional_columns,  # type: ignore
-            )
+        calibrated_df = calibarate_df(
+            df=df,
+            groupby_columns=groupby_columns,
+            country=country,
+            country_column=country_column,
+            min_age=min_age,
+            age_column=age_column,
+            additional_columns=additional_columns,  # type: ignore
         )
+        if calibrated_df is not None:
+            calibrated_df = calibrated_df.withColumn("dataset_name", F.lit(dataset_name))
+            if output_df is None:
+                output_df = calibrated_df
+            else:
+                output_df = output_df.union(calibrated_df)
 
-    return tuple(dfs)
+    return output_df
 
 
 if __name__ == "__main__":
     proccess_population_projection_df(
+        dfs=load_auxillary_data(),
         month=7,
     )

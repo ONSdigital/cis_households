@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -26,12 +27,12 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
-from cishouseholds.edit import convert_barcode_null_if_zero
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
-
-# from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.impute import impute_latest_date_flag
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
@@ -53,6 +54,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
+        "withdrawal_reason",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
@@ -61,12 +63,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_regex_match(
         df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
-    # TODO: Add postcode cleaning
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = clean_postcode(df, "postcode")
+    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
         df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode")
     # TODO: Add week and month commencing variables
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
@@ -101,8 +104,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = convert_barcode_null_if_zero(df, "swab_sample_barcode")
-    df = convert_barcode_null_if_zero(df, "blood_sample_barcode")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     df = assign_true_if_any(
@@ -125,7 +126,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
-
     return df
 
 
@@ -133,6 +133,31 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
     Transformations specific to the v1 and 2 packages only
     """
+    df = update_column_values_from_map(
+        df=df,
+        column="is_self_isolating_detailed",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="is_self_isolating_detailed",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+        ],
+        true_false_values=["Yes", "No"],
+    )
     df = assign_true_if_any(
         df=df,
         column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
@@ -207,14 +232,14 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        id_column="participant_id",
-        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
     return df
 
 
@@ -270,6 +295,14 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
     df = assign_school_year_september_start(
         df, dob_column="date_of_birth", visit_date="visit_datetime", column_name_to_assign="school_year_september"
     )
+    # TODO: Enable once country data is linked on after merge
+    # df = split_school_year_by_country(
+    #   df, school_year_column = "school_year_september", country_column = "country_name"
+    # )
+    # df = assign_age_group_school_year(
+    #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
+    #   age_column="age_at_visit", school_year_column="school_year_september"
+    # )
     return df
 
 
@@ -339,14 +372,30 @@ def union_dependent_transformations(df):
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
     df = assign_first_visit(
-        df=df, column_name_to_assign="first_visit_date", id_column="participant_id", visit_status_column="visit_status"
+        df=df,
+        column_name_to_assign="household_first_visit_datetime",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
     )
     df = assign_last_visit(
         df=df,
-        column_name_to_assign="last_visit_date",
+        column_name_to_assign="last_attended_visit_datetime",
         id_column="participant_id",
-        visit_status_column="visit_status",
-        visit_date_column="visit_date",
+        visit_status_column="participant_visit_status",
+        visit_date_column="visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="days_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="last_attended_visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="household_weeks_since_survey_enrolment",
+        start_reference_column="survey start",
+        end_reference_column="visit_datetime",
+        format="weeks",
     )
     # TODO: Add back in once work_status has been derived
     # df = update_work_facing_now_column(
@@ -355,4 +404,44 @@ def union_dependent_transformations(df):
     #     "work_status",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
+    df = assign_named_buckets(
+        df,
+        reference_column="days_since_enrolment",
+        column_name_to_assign="visit_number",
+        map={
+            0: 0,
+            4: 1,
+            11: 2,
+            18: 3,
+            25: 4,
+            43: 5,
+            71: 6,
+            99: 7,
+            127: 8,
+            155: 9,
+            183: 10,
+            211: 11,
+            239: 12,
+            267: 13,
+            295: 14,
+            323: 15,
+        },
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        symptoms_bool_column="sympt_now_cghfevamn",
+        id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
+    )
+
+    df = impute_latest_date_flag(
+        df=df,
+        participant_id_column="participant_id",
+        visit_date_column="visit_date",
+        visit_id_column="visit_id",
+        contact_any_covid_column="contact_any_covid",
+        contact_any_covid_date_column="contact_any_covid_date",
+    )
     return df
