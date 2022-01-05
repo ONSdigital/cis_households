@@ -13,7 +13,6 @@ from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
 from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
-from cishouseholds.weights.extract import load_auxillary_data
 from cishouseholds.weights.extract import prepare_auxillary_data
 
 # from cishouseholds.weights.edit import reformat_calibration_df
@@ -146,23 +145,47 @@ def calculate_additional_population_columns(
     return df
 
 
-def run_from_config(df: DataFrame, config_location: str):
+def run_from_config(df: DataFrame, config_location: str, country_column: str, age_group_antibody_column: str):
     with open(config_location) as fh:
         config = yaml.load(fh, Loader=yaml.FullLoader)["population_projections"]
+
+    operations = {
+        1: {"function": operation1, "logic_keys": ["logic_if_country", "logic_otherwise"]},
+        2: {"function": operation2, "logic_keys": ["logic1", "logic2", "logic_otherwise"]},
+    }
+
     for col in config:
-        for index in ["logic_if_country", "logic_otherwise"]:
-            matches = re.findall("[a-zA-Z_]{1,}", col[index])
+        operation = operations[col["operation"]]
+        for index in operation["logic_keys"]:  # type: ignore
+            matches = re.findall("<[a-zA-Z0-9_]{1,}>", col[index])
             for match in matches:
                 if match != "None":
-                    col[index] = re.sub(match, f"F.col('{match}')", col[index])
-        df = df.withColumn(
-            col["column"],
-            F.when(
-                F.col("country") == col["country"],
-                eval(col["logic_if_country"]),
-            ).otherwise(eval(col["logic_otherwise"])),
-        )
+                    col[index] = re.sub(match, f"F.col('{match[1:-1]}')", col[index])
+        df = operation["function"](df, col, country_column, age_group_antibody_column)  # type: ignore
+
     return df
+
+
+def operation1(df, col, country_column, *args):
+    return df.withColumn(
+        col["column"],
+        F.when(
+            F.col(country_column) == col["country"],
+            eval(col["logic_if_country"]),
+        ).otherwise(eval(col["logic_otherwise"])),
+    )
+
+
+def operation2(df, col, country_column, age_group_antibody_column):
+    return df.withColumn(
+        col["column"],
+        F.when(
+            (F.col(country_column) == col["country"]) & (F.col(age_group_antibody_column).isNull()),
+            eval(col["logic1"]),
+        )
+        .when(F.col(country_column) == col["country"], eval(col["logic2"]))
+        .otherwise(eval(col["logic_otherwise"])),
+    )
 
 
 # 1175
@@ -301,8 +324,8 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
     return output_df
 
 
-if __name__ == "__main__":
-    proccess_population_projection_df(
-        dfs=load_auxillary_data(),
-        month=7,
-    )
+# if __name__ == "__main__":
+# proccess_population_projection_df(
+#    dfs=load_auxillary_data(),
+#    month=7,
+# )
