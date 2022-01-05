@@ -27,5 +27,5 @@ def test_split_school_year_by_country(spark_session):
         schema="id integer, country string, school_year integer, school_year_england_wales integer, \
         school_year_scotland integer,school_year_northern_ireland integer",
     )
-    output_df = split_school_year_by_country(input_df, "school_year", "country", "id")
+    output_df = split_school_year_by_country(input_df, "school_year", "country")
     assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)
