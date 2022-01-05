@@ -58,6 +58,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
             pipeline_stages[stage_name](**stage_config)
+            print(stage_config)
         except Exception:
             pipeline_error_count += 1
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
