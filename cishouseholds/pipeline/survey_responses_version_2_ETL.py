@@ -398,16 +398,11 @@ def union_dependent_transformations(df):
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "5y and older in full-time education": "5y and older in full-time education",  # noqa: E501
-            "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
-            "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",  # noqa: E501
             "Self-employed and currently working": "Self-employed",
             "Participant Would Not/Could Not Answer": None,
         },
