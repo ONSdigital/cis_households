@@ -20,6 +20,7 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_work_st
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
+from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
 from cishouseholds.pipeline.timestamp_map import swab_datetime_map
@@ -58,11 +59,11 @@ swab_delta_parameters = {
 }
 
 swab_delta_parameters_testKit = {
-    "stage_name": "swab_delta_ETL",
+    "stage_name": "swab_testKit_delta_ETL",
     "validation_schema": swab_validation_schema_testKit,
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
-    "transformation_functions": [transform_swab_delta],
+    "transformation_functions": [transform_swab_delta_testKit, transform_swab_delta],
     "output_table_name": "transformed_swab_test_data",
     "source_file_column": "swab_test_source_file",
     "write_mode": "append",
