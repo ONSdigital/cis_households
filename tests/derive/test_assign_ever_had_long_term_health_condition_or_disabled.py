@@ -3,13 +3,13 @@ from chispa import assert_df_equality
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 
 
-def test_assign_ever_long_term_disabled(spark_session):
+def test_assign_ever_had_long_term_health_condition_or_disabled(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, "Yes", "Yes, a little", "Yes"),
             (1, "Yes", "Yes, a little", "Yes"),
-            (1, None, "Not at all", "No"),
-            (1, "No", "Not at all", "No"),
+            (2, None, "Not at all", "No"),
+            (2, "No", "Not at all", "No"),
         ],
         schema="""
         participant_id integer,
