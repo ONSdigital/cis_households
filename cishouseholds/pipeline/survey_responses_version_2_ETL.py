@@ -297,7 +297,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
     )
     # TODO: Enable once country data is linked on after merge
     # df = split_school_year_by_country(
-    #   df, school_year_column = "school_year_september", country_column = "country_name", id_column="participant_id"
+    #   df, school_year_column = "school_year_september", country_column = "country_name"
     # )
     # df = assign_age_group_school_year(
     #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
