@@ -20,6 +20,6 @@ def test_run_from_config(spark_session):
     input_df = expected_df.drop("p1_for_swab_longcovid")
 
     output_df = run_from_config(
-        df=input_df, config_location="C:\code\cis_households\cishouseholds\weights\weights_config_test.yaml"
+        df=input_df, config_location="C:\code\cis_households\cishouseholds\weights\weights_config.yaml"
     )
     assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)
