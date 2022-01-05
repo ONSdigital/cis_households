@@ -1012,6 +1012,18 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
+- metadata: {}
   name: age_at_visit
   nullable: true
   type: long
@@ -1063,18 +1075,6 @@ fields:
   name: self_isolating
   nullable: true
   type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
 - metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
