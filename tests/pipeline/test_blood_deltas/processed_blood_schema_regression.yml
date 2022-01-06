@@ -32,6 +32,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: antibody_test_tdi_result_value
+  nullable: true
+  type: float
+- metadata: {}
   name: antibody_test_undiluted_result_value
   nullable: true
   type: float
@@ -77,10 +81,6 @@ fields:
   type: string
 - metadata: {}
   name: siemens_antibody_test_result_value
-  nullable: true
-  type: float
-- metadata: {}
-  name: tdi_antibody_test_result_value
   nullable: true
   type: float
 - metadata: {}
