@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.population_projections import run_from_config
+from cishouseholds.weights.weights_config import wrapper
 
 
 def test_run_from_config(spark_session):
@@ -29,10 +29,10 @@ def test_run_from_config(spark_session):
         "p3_for_antibodies_28daysto_engl string",
     )
 
-    output_df = run_from_config(
+    output_df = wrapper(
         df=input_df,
-        config_location=r"C:\code\cis_households\cishouseholds\weights\weights_config.yaml",
         country_column="country",
         age_group_antibody_column="age_group_antibody",
     )
+    output_df.show()
     assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)
