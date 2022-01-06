@@ -118,7 +118,7 @@ def get_files_to_be_processed(
     Get list of files matching the specified pattern and optionally filter
     to only those that have not been processed or were previously invalid.
     """
-    file_paths = get_files_by_date(resource_path, latest_only, start_date, end_date)
+    file_paths = get_files_by_date(resource_path, start_date, end_date)
 
     if check_table_exists("error_file_log") and not include_invalid:
         file_paths = remove_list_items_in_table(file_paths, "error_file_log", "processed_filename")
