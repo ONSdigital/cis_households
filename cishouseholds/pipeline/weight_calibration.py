@@ -37,8 +37,6 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
         population_totals_subset = (
             population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"]).toPandas().transpose()
         )
-        with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-            population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
 
         columns_to_select = calibration_datasets[dataset_options["dataset_name"]]["columns_to_select"]
         responses_subset_df = (
@@ -48,7 +46,9 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
             .select(columns_to_select)
             .toPandas()
         )
+
         with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+            population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
             responses_subset_df_r_df = robjects.conversion.py2rpy(responses_subset_df)
 
         sample_design = regenesees.e_svydesign(
