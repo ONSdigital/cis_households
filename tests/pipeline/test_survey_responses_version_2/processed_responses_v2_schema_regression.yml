@@ -1009,7 +1009,7 @@ fields:
   type: string
 - metadata: {}
   name: think_have_covid_cghfevamn_symptom_group
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: age_at_visit
@@ -1050,22 +1050,26 @@ fields:
 - metadata: {}
   name: ever_work_person_facing_or_social_care
   nullable: false
-  type: integer
+  type: string
 - metadata: {}
   name: ever_care_home_worker
   nullable: false
-  type: integer
+  type: string
 - metadata: {}
   name: ever_had_long_term_health_condition
   nullable: false
-  type: integer
+  type: string
+- metadata: {}
+  name: ever_had_long_term_health_condition_or_disabled
+  nullable: false
+  type: string
 - metadata: {}
   name: self_isolating
   nullable: true
   type: string
 - metadata: {}
   name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: symptoms_last_7_days_symptom_count
