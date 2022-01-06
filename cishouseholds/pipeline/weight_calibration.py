@@ -8,6 +8,7 @@ from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.weights.pre_calibration import calibration_datasets
 
 regenesees = importr(
     "ReGenesees",
@@ -21,7 +22,7 @@ regenesees = importr(
 
 
 @register_pipeline_stage("weight_calibration")
-def weight_calibration(calibration_config_path: str):
+def weight_calibration(table_names: dict, calibration_config_path: str):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
     """
@@ -29,10 +30,10 @@ def weight_calibration(calibration_config_path: str):
 
     with open(calibration_config_path, "r") as config_file:
         calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
-    population_totals_df = extract_from_table(calibration_config["population_totals_table_name"])
-    full_response_level_df = extract_from_table(calibration_config["survey_responses_table_name"])
+    population_totals_df = extract_from_table(table_names["input"]["population_totals"])
+    full_response_level_df = extract_from_table(table_names["input"]["survey_responses"])
 
-    for dataset_options in calibration_config["dataset_options"]:
+    for dataset_options in calibration_config:
         population_totals_subset = (
             population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"]).toPandas().transpose()
         )
@@ -77,7 +78,13 @@ def weight_calibration(calibration_config_path: str):
         calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
         update_table(
             calibrated_df,
-            dataset_options["output_table_name"] + "_" + bounds[0] + "_" + bounds[1],
+            table_names["output"]["base_output_table_name"]
+            + "_"
+            + dataset_options["dataset_name"]
+            + "_"
+            + bounds[0]
+            + "-"
+            + bounds[1],
             mode_overide="overwrite",
         )
 
