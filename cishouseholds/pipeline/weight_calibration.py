@@ -1,4 +1,6 @@
 import rpy2.robjects as robjects
+import yaml
+from pyspark.sql import functions as F
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 
@@ -19,45 +21,64 @@ regenesees = importr(
 
 
 @register_pipeline_stage("weight_calibration")
-def weight_calibration(calibration_config: dict):
+def weight_calibration(calibration_config_path: str):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
     """
     spark_session = get_or_create_spark_session()
-    population_totals_df = extract_from_table(calibration_config["population_totals_table_name"]).toPandas()
-    with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-        population_totals_df = robjects.conversion.py2rpy(population_totals_df)
+
+    with open(calibration_config_path, "r") as config_file:
+        calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
+    population_totals_df = extract_from_table(calibration_config["population_totals_table_name"])
+    full_response_level_df = extract_from_table(calibration_config["survey_responses_table_name"])
 
     for dataset_options in calibration_config["dataset_options"]:
-        pandas_df = extract_from_table(dataset_options["input_table_name"]).toPandas()
-
+        population_totals_subset = (
+            population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"]).toPandas().transpose()
+        )
         with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-            r_df = robjects.conversion.py2rpy(pandas_df)
+            population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
+
+        columns_to_select = calibration_datasets[dataset_options["dataset_name"]]["columns_to_select"]
+        responses_subset_df = (
+            full_response_level_df.where(
+                F.col(calibration_datasets[dataset_options["dataset_name"]]["subset_flag_column"]) == 1
+            )
+            .select(columns_to_select)
+            .toPandas()
+        )
+        with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+            responses_subset_df_r_df = robjects.conversion.py2rpy(responses_subset_df)
 
         sample_design = regenesees.e_svydesign(
-            dat=r_df,
+            dat=responses_subset_df_r_df,
             ids=robjects.Formula("~participant_id"),
             weights=robjects.Formula(f"~{dataset_options['design_weight_column']}"),
         )
         for bounds in dataset_options["bounds"]:
-            r_df = assign_calibration_weight(
-                r_df,
+            responses_subset_df_r_df = assign_calibration_weight(
+                responses_subset_df_r_df,
                 "calibration_weight",
-                population_totals_df,
+                population_totals_subset_r_df,
                 sample_design,
                 dataset_options["calibration_model_components"],
                 bounds,
             )
-            r_df = assign_calibration_factors(
-                r_df, "calibration_factors", "calibration_weight", dataset_options["design_weight_column"]
+            responses_subset_df_r_df = assign_calibration_factors(
+                responses_subset_df_r_df,
+                "calibration_factors",
+                "calibration_weight",
+                dataset_options["design_weight_column"],
             )
 
         with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-            pandas_df = robjects.conversion.rpy2rp(r_df)
+            calibrated_pandas_df = robjects.conversion.rpy2rp(responses_subset_df_r_df)
 
-        df = spark_session.createDataFrame(pandas_df)
+        calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
         update_table(
-            df, dataset_options["output_table_name"] + "_" + bounds[0] + "_" + bounds[1], mode_overide="overwrite"
+            calibrated_df,
+            dataset_options["output_table_name"] + "_" + bounds[0] + "_" + bounds[1],
+            mode_overide="overwrite",
         )
 
 
