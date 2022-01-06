@@ -57,6 +57,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
+            print("conf: ",stage_config)
             pipeline_stages[stage_name](**stage_config)
             print(stage_config)
         except Exception:

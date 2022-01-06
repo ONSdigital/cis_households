@@ -16,10 +16,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: pcr_method
-  nullable: true
-  type: string
-- metadata: {}
   name: orf1ab_gene_pcr_target
   nullable: true
   type: string
