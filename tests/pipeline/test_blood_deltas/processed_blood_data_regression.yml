@@ -6,6 +6,7 @@
   antibody_test_result_recorded_date: '2018-01-24 00:00:00.000000'
   antibody_test_result_value: 2237.9938
   antibody_test_target: N
+  antibody_test_tdi_result_value: null
   antibody_test_undiluted_result_value: 9012.0
   antibody_test_well_id: O25
   blood_sample_arrayed_date: '2018-11-24 00:00:00.000000'
@@ -17,7 +18,6 @@
   plate_storage_method: null
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
-  tdi_antibody_test_result_value: null
   unique_antibody_test_id: ONS60227680-40250-O25
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 32.099998474121094
@@ -27,6 +27,7 @@
   antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
   antibody_test_result_value: 2066.7238
   antibody_test_target: N
+  antibody_test_tdi_result_value: null
   antibody_test_undiluted_result_value: 3070.0
   antibody_test_well_id: G29
   blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
@@ -38,7 +39,6 @@
   plate_storage_method: null
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
-  tdi_antibody_test_result_value: null
   unique_antibody_test_id: ONS66171396-56872-G29
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 73.0
@@ -48,6 +48,7 @@
   antibody_test_result_recorded_date: '2021-04-15 00:00:00.000000'
   antibody_test_result_value: 857.1215
   antibody_test_target: N
+  antibody_test_tdi_result_value: null
   antibody_test_undiluted_result_value: 3358.0
   antibody_test_well_id: Z35
   blood_sample_arrayed_date: '2018-03-23 00:00:00.000000'
@@ -59,7 +60,6 @@
   plate_storage_method: null
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
-  tdi_antibody_test_result_value: null
   unique_antibody_test_id: ONS80863193-00868-Z35
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 212.0
@@ -69,6 +69,7 @@
   antibody_test_result_recorded_date: '2018-04-27 00:00:00.000000'
   antibody_test_result_value: 765.2329
   antibody_test_target: N
+  antibody_test_tdi_result_value: null
   antibody_test_undiluted_result_value: 869.0
   antibody_test_well_id: N00
   blood_sample_arrayed_date: '2020-02-07 00:00:00.000000'
@@ -80,7 +81,6 @@
   plate_storage_method: null
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
-  tdi_antibody_test_result_value: null
   unique_antibody_test_id: ONS83639422-52583-N00
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 359.0
@@ -90,6 +90,7 @@
   antibody_test_result_recorded_date: '2018-07-03 00:00:00.000000'
   antibody_test_result_value: 2368.4482
   antibody_test_target: N
+  antibody_test_tdi_result_value: null
   antibody_test_undiluted_result_value: 2848.0
   antibody_test_well_id: F29
   blood_sample_arrayed_date: '2022-06-19 00:00:00.000000'
@@ -101,5 +102,4 @@
   plate_storage_method: null
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
-  tdi_antibody_test_result_value: null
   unique_antibody_test_id: ONS86857022-02126-F29
