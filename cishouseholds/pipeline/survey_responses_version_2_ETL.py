@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
+from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
@@ -329,6 +330,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care"],
         count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -336,6 +338,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
         count_if=["Yes, care/residential home, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -343,8 +346,14 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["illness_lasting_over_12_months"],
         count_if=["Yes"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
-
+    df = assign_ever_had_long_term_health_condition_or_disabled(
+        df=df,
+        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
+        health_conditions_column="illness_lasting_over_12_months",
+        condition_impact_column="illness_reduces_activity_or_ability",
+    )
     return df
 
 

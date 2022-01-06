@@ -54,9 +54,10 @@
   ethnicity_group: White
   ethnicity_other: I don't even care.
   ethnicity_white: White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Yes at work/school only
   face_covering_work: Participant Would Not/Could Not Answer
@@ -332,9 +333,10 @@
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   ethnicity_white: White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: My face is already covered for other reasons
     (e.g. religious or cultural reasons)
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
@@ -611,9 +613,10 @@
   ethnicity_group: Asian
   ethnicity_other: Ports are used to communicate with the external world.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: My face is already covered for other reasons
     (e.g. religious or cultural reasons)
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
@@ -894,9 +897,10 @@
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
@@ -1172,9 +1176,10 @@
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Yes sometimes
@@ -1448,9 +1453,10 @@
   ethnicity_group: Asian
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
   face_covering_work: My face is already covered for other reasons (e.g. religious
@@ -1729,9 +1735,10 @@
   ethnicity_group: White
   ethnicity_other: Make me a sandwich.
   ethnicity_white: White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Yes always
@@ -2008,9 +2015,10 @@
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered for other reasons (e.g.
     religious or cultural reasons)
@@ -2289,9 +2297,10 @@
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   ethnicity_white: White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: My face is already covered for other reasons (e.g. religious
@@ -2567,9 +2576,10 @@
   ethnicity_group: Mixed
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   ethnicity_white: Non-White
-  ever_care_home_worker: 0
-  ever_had_long_term_health_condition: 0
-  ever_work_person_facing_or_social_care: 0
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
