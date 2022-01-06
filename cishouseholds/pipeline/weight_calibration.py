@@ -25,6 +25,15 @@ regenesees = importr(
 def weight_calibration(table_names: dict, calibration_config_path: str):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
+
+    calibration_config_path
+        path to YAML file containing a list of dictionaries with keys:
+            dataset_name: swab_evernever
+            country: string country name in title case
+            bounds: list of lists containing lower and upper bounds
+            design_weight_column: string column name
+            calibration_model_components: list of string column names
+
     """
     spark_session = get_or_create_spark_session()
 
@@ -35,13 +44,17 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
 
     for dataset_options in calibration_config:
         population_totals_subset = (
-            population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"]).toPandas().transpose()
+            population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"])
+            .drop("dataset_name")
+            .toPandas()
+            .transpose()
         )
 
         columns_to_select = calibration_datasets[dataset_options["dataset_name"]]["columns_to_select"]
         responses_subset_df = (
             full_response_level_df.where(
-                F.col(calibration_datasets[dataset_options["dataset_name"]]["subset_flag_column"]) == 1
+                (F.col(calibration_datasets[dataset_options["dataset_name"]]["subset_flag_column"]) == 1)
+                & (F.col("country") == dataset_options["country"])
             )
             .select(columns_to_select)
             .toPandas()
@@ -81,6 +94,8 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
             table_names["output"]["base_output_table_name"]
             + "_"
             + dataset_options["dataset_name"]
+            + "_"
+            + dataset_options["country"]
             + "_"
             + bounds[0]
             + "-"
