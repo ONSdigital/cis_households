@@ -121,7 +121,7 @@ def get_files_to_be_processed(
     file_paths = get_files_by_date(resource_path, start_date, end_date)
 
     if check_table_exists("error_file_log") and not include_invalid:
-        file_paths = remove_list_items_in_table(file_paths, "error_file_log", "processed_filename")
+        file_paths = remove_list_items_in_table(file_paths, "error_file_log", "file_path")
     if latest_only and len(file_paths) > 0:
         file_paths = [file_paths[-1]]
     if check_table_exists("processed_filenames") and not include_processed:
