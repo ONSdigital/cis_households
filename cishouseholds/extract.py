@@ -133,7 +133,7 @@ def get_files_to_be_processed(
     if not include_processed:
         file_paths = get_files_not_processed(file_paths, "processed_filenames")
     if check_table_exists("error_file_log") and not include_invalid:
-        file_error_log_df = extract_from_table("error_file_log")
+        file_error_log_df = extract_from_table(get_config()["table_names"]["input"]["error"])
         error_file_paths = column_to_list(file_error_log_df, "file_path")
         file_paths = [p for p in file_paths if p not in error_file_paths]
     return file_paths
