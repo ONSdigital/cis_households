@@ -32,16 +32,17 @@ def sample_file_ETL():
 
 @register_pipeline_stage("population_projection")
 def population_projection(population_projection_current_path: str, aps_lookup_path: str, populations_for_calibration_table: str, population_projections_table: str):
-    # TODO: Read "population_projection_current", "population_projection_previous", "aps_lookup"
+    # TODO: Read "population_projection_current", "aps_lookup" from CSV
     population_projection_previous = extract_from_table(population_projections_table)
     populations_for_calibration, population_projections = proccess_population_projection_df(dfs=None, month=None)
     update_table(populations_for_calibration, populations_for_calibration_table, mode_overide="overwrite")
     update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
+
 @register_pipeline_stage("pre_calibration")
-def pre_calibration(population_projections_table: str, responses_pre_calibration_table: str):
+def pre_calibration(population_projections_table: str, participant_geographies_design_weights_table: str, responses_pre_calibration_table: str):
     population_projections = extract_from_table(population_projections_table)
-    participant_level_with_design_weights = extract_from_table("participant_geographies_design_weights")
+    participant_level_with_design_weights = extract_from_table(participant_geographies_design_weights_table)
     df_for_calibration = pre_calibration_high_level(participant_level_with_design_weights, population_projections)
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
 
