@@ -7,6 +7,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -23,6 +24,14 @@ def check_table_exists(table_name: str):
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
+
+
+@register_pipeline_stage("delete_tables")
+def delete_tables(table_names: str):
+    spark_session = get_or_create_spark_session()
+    prefix = get_config()["storage"]["table_prefix"]
+    for table_name in table_names:
+        spark_session.sql(f"DROP TABLE IF EXISTS {prefix}_{table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
