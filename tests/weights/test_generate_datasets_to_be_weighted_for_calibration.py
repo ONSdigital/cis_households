@@ -1,9 +1,11 @@
+import pytest
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
-from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
+# from cishouseholds.weights.pre_calibration import generate_datasets_to_be_weighted_for_calibration
 
 
+@pytest.mark.xfail(reason="function is not needed, instead use create_calibration_var()")
 def test_generate_datasets_to_be_weighted_for_calibration(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
