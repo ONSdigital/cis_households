@@ -143,13 +143,13 @@ def update_data(df: DataFrame, auxillary_dfs: dict):
     """
     df = update_column(
         df=df,
-        lookup_df=auxillary_dfs["nspl_lookup"],
+        lookup_df=auxillary_dfs["postcode_lookup"],
         column_name_to_update="lower_super_output_area_code_11",
         join_on_columns=["country_code_12", "postcode"],
     )
     df = update_column(
         df=df,
-        lookup_df=auxillary_dfs["cis20cd_lookup"],
+        lookup_df=auxillary_dfs["cis_lookup"],
         column_name_to_update="cis_area_code_20",
         join_on_columns=["lower_super_output_area_code_11"],
     )

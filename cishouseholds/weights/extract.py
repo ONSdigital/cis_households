@@ -16,63 +16,63 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 spark_session = get_or_create_spark_session()
 
 # fmt: off
-resource_paths = {
-    "old": {
-        "path": r"C:\code\weights_inputs\old_sample_file.csv",
-        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,sample,sample_direct,date _sample_created ,\
-            batch_number,file_name,hh_dweight_swab,hh_dweight_atb,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
-    },
-    "new": {
-        "path": r"C:\code\weights_inputs\new_sample_file.csv",
-        "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,\
-            batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
-    },
-    "nspl_lookup": {"path": r"C:\code\weights_inputs\lookup.csv", "header": "pcd,ctry,lsoa11"},
-    "cis20cd_lookup": {
-        "path": r"C:\code\weights_inputs\cis20lookup.csv",
-        "header": "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD",
-    },
-    "address_lookup": {
-        "path": r"C:\code\weights_inputs\Address_lookup.csv",
-        "header": "uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal",
-    },
-    "country_lookup": {
-        "path": r"C:\code\weights_inputs\country_lookup.csv",
-        "header": "LAD20CD,LAD20NM,CTRY20CD,CTRY20NM",
-    },
-    "tranche": {
-        "path": r"C:\code\weights_inputs\tranche.csv",
-        "header": "enrolement_date,UAC,lsoa_11,cis20cd,ctry12,ctry_name12,tranche",
-    },
-    "population_projection_current": {
-        "path": r"C:\code\weights_inputs\population_projectionC.csv",
-        "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
-    },
-    "population_projection_previous": {
-        "path": r"C:\code\weights_inputs\population_projectionP.csv",
-        "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
-    },
-    "aps_lookup": {
-        "path": r"C:\code\weights_inputs\aps_lookup.csv",
-        "header": "CASENO,COUNTRY,AGE,ETHGBEUL,ETH11NI,PWTA18"
-    }
-}
+# resource_paths = {
+#     "old": {
+#         "path": r"C:\code\weights_inputs\old_sample_file.csv",
+#         "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,sample,sample_direct,date _sample_created ,\
+#             batch_number,file_name,hh_dweight_swab,hh_dweight_atb,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
+#     },
+#     "new": {
+#         "path": r"C:\code\weights_inputs\new_sample_file.csv",
+#         "header": "UAC,postcode,lsoa_11,cis20cd,ctry12,ctry_name12,sample,sample_direct,date _sample_created ,\
+#             batch_number,file_name,rgn/gor9d,laua,oa11/ oac11,msoa11,ru11ind,imd",
+#     },
+#     "nspl_lookup": {"path": r"C:\code\weights_inputs\lookup.csv", "header": "pcd,ctry,lsoa11"},
+#     "cis20cd_lookup": {
+#         "path": r"C:\code\weights_inputs\cis20lookup.csv",
+#         "header": "LSOA11CD,LSOA11NM,CIS20CD,RGN19CD",
+#     },
+#     "address_lookup": {
+#         "path": r"C:\code\weights_inputs\Address_lookup.csv",
+#         "header": "uprn,town_name,postcode,ctry18nm,la_code,ew,address_type,council_tax,udprn,address_base_postal",
+#     },
+#     "country_lookup": {
+#         "path": r"C:\code\weights_inputs\country_lookup.csv",
+#         "header": "LAD20CD,LAD20NM,CTRY20CD,CTRY20NM",
+#     },
+#     "tranche": {
+#         "path": r"C:\code\weights_inputs\tranche.csv",
+#         "header": "enrolement_date,UAC,lsoa_11,cis20cd,ctry12,ctry_name12,tranche",
+#     },
+#     "population_projection_current": {
+#         "path": r"C:\code\weights_inputs\population_projectionC.csv",
+#         "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
+#     },
+#     "population_projection_previous": {
+#         "path": r"C:\code\weights_inputs\population_projectionP.csv",
+#         "header": "laua,rgn,ctry,ctry_name,surge,m0,m25,f0,f25",
+#     },
+#     "aps_lookup": {
+#         "path": r"C:\code\weights_inputs\aps_lookup.csv",
+#         "header": "CASENO,COUNTRY,AGE,ETHGBEUL,ETH11NI,PWTA18"
+#     }
+# }
 
 lookup_variable_name_maps = {
     "address_lookup": {
         "uprn": "unique_property_reference_code",
         "postcode": "postcode"},
-    "nspl_lookup": {
+    "postcode_lookup": {
         "pcd": "postcode",
         "lsoa11": "lower_super_output_area_code_11",
         "ctry": "country_code_12"},
-    "cis20cd_lookup": {
+    "cis_lookup": {
         "LSOA11CD": "lower_super_output_area_code_11",
         "CIS20CD": "cis_area_code_20"},
     "country_lookup": {
         "CTRY20CD": "country_code_12",
         "CTRY20NM": "country_name_12"},
-    "old_new": {
+    "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
         "cis20cd": "cis_area_code_20",

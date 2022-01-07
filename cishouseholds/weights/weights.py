@@ -27,15 +27,15 @@ def generate_weights(auxillary_dfs):
     # initialise lookup dataframes
     household_info_df = household_dweights(
         auxillary_dfs["address_lookup"],
-        auxillary_dfs["nspl_lookup"],
-        auxillary_dfs["cis20cd_lookup"],
+        auxillary_dfs["postcode_lookup"],
+        auxillary_dfs["cis_lookup"],
         auxillary_dfs["country_lookup"],
     )
 
     # 1164
     df = get_matches(
-        old_sample_df=auxillary_dfs["old"],
-        new_sample_df=auxillary_dfs["new"],
+        old_sample_df=auxillary_dfs["old_sample_file"],
+        new_sample_df=auxillary_dfs["new_sample_file"],
         selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
         barcode_column="ons_household_id",
     )
@@ -43,7 +43,7 @@ def generate_weights(auxillary_dfs):
     # update and clean sample df's
     df = update_data(df, auxillary_dfs)
     df = clean_df(df)
-    old_df = clean_df(auxillary_dfs["old"])
+    old_df = clean_df(auxillary_dfs["old_sample_file"])
     df = union_multiple_tables(tables=[df, old_df])
 
     # transform sample files
