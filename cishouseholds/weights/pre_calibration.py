@@ -9,6 +9,29 @@ from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
 
+def pre_calibration_high_level(df: DataFrame, df_country: DataFrame) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    df_country
+    """
+    df = survey_extraction_household_data_response_factor(
+        df=df,
+        df_extract_by_country=df_country,
+        required_extracts_column_list=["ons_household_id", "participant_id", "sex", "ethnicity_white", "age_at_visit"],
+    )
+    df = derive_index_multiple_deprivation_group(df)
+    df = derive_total_responded_and_sampled_households(df)
+    df = calculate_non_response_factors(df, n_decimals=3)
+    df = adjust_design_weight_by_non_response_factor(df)
+    df = adjusted_design_weights_to_population_totals(df)
+    df = grouping_from_lookup(df)
+    df = create_calibration_var(df)
+
+    return df
+
+
 # 1178
 def survey_extraction_household_data_response_factor(
     df: DataFrame,

@@ -93,7 +93,7 @@ def proccess_population_projection_df(dfs: dict, month: int):
     )
 
     calibrated_df = get_calibration_dfs(current_projection_df, "country_name_#", "age")
-    return calibrated_df
+    return calibrated_df, current_projection_df
 
 
 # 1175

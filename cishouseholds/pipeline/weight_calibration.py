@@ -1,3 +1,5 @@
+from cishouseholds.weights.population_projections import proccess_population_projection_df
+from cishouseholds.weights.weights import generate_weights
 import rpy2.robjects as robjects
 import yaml
 from pyspark.sql import functions as F
@@ -8,7 +10,7 @@ from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.weights.pre_calibration import calibration_datasets
+from cishouseholds.weights.pre_calibration import calibration_datasets, pre_calibration_high_level
 
 regenesees = importr(
     "ReGenesees",
@@ -21,8 +23,31 @@ regenesees = importr(
 )
 
 
+@register_pipeline_stage("sample_file_ETL")
+def sample_file_ETL():
+    # TODO: Read lookups and input data
+    design_weights = generate_weights()
+    update_table(design_weights, "participant_geographies_design_weights", mode_overide="overwrite")
+
+
+@register_pipeline_stage("population_projection")
+def population_projection(population_projection_current_path: str, aps_lookup_path: str, populations_for_calibration_table: str, population_projections_table: str):
+    # TODO: Read "population_projection_current", "population_projection_previous", "aps_lookup"
+    population_projection_previous = extract_from_table(population_projections_table)
+    populations_for_calibration, population_projections = proccess_population_projection_df(dfs=None, month=None)
+    update_table(populations_for_calibration, populations_for_calibration_table, mode_overide="overwrite")
+    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+
+@register_pipeline_stage("pre_calibration")
+def pre_calibration(population_projections_table: str, responses_pre_calibration_table: str):
+    population_projections = extract_from_table(population_projections_table)
+    participant_level_with_design_weights = extract_from_table("participant_geographies_design_weights")
+    df_for_calibration = pre_calibration_high_level(participant_level_with_design_weights, population_projections)
+    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+
+
 @register_pipeline_stage("weight_calibration")
-def weight_calibration(table_names: dict, calibration_config_path: str):
+def weight_calibration(population_totals_table: str, responses_pre_calibration_table: str, base_output_table_name: str, calibration_config_path: str):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
 
@@ -39,8 +64,8 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
 
     with open(calibration_config_path, "r") as config_file:
         calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
-    population_totals_df = extract_from_table(table_names["input"]["population_totals"])
-    full_response_level_df = extract_from_table(table_names["input"]["survey_responses"])
+    population_totals_df = extract_from_table(population_totals_table)
+    full_response_level_df = extract_from_table(responses_pre_calibration_table)
 
     for dataset_options in calibration_config:
         population_totals_subset = (
@@ -91,7 +116,7 @@ def weight_calibration(table_names: dict, calibration_config_path: str):
         calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
         update_table(
             calibrated_df,
-            table_names["output"]["base_output_table_name"]
+            base_output_table_name
             + "_"
             + dataset_options["dataset_name"]
             + "_"

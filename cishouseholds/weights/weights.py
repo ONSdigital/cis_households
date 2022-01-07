@@ -59,7 +59,7 @@ def generate_weights(auxillary_dfs):
         barcode_column="ons_household_id",
         barcode_ref_column="TRANCHE_BARCODE_REF",
         tranche_column="tranche",
-        group_by_columns=["cis_area_code_20", "enrolement_date"],
+        group_by_columns=["cis_area_code_20", "enrolment_date"],
     )
 
     cis_window = Window.partitionBy("cis_area_code_20")
