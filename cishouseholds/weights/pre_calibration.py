@@ -1,5 +1,6 @@
 from typing import List
 
+import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -337,7 +338,7 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
     return check_1, check_2_3, check_4
 
 
-# 1180
+# 1180 - TODO: make them external
 def grouping_from_lookup(df):
     """
     Parameters
@@ -346,21 +347,11 @@ def grouping_from_lookup(df):
     """
     # A.1 re-code the region_code values, by replacing the alphanumeric code with numbers from 1 to 12
     spark = SparkSession.builder.getOrCreate()
+
+    lookup_dict = yaml.safe_load(open("cishouseholds/weights/precal_config.yaml", "r"))
+
     region_code_lookup_df = spark.createDataFrame(
-        data=[
-            ("E12000001", 1),
-            ("E12000002", 2),
-            ("E12000003", 3),
-            ("E12000004", 4),
-            ("E12000005", 5),
-            ("E12000006", 6),
-            ("E12000007", 7),
-            ("E12000008", 8),
-            ("E12000009", 9),
-            ("W99999999", 10),
-            ("S99999999", 11),
-            ("N99999999", 12),
-        ],
+        data=[(k, v) for k, v in lookup_dict["region_code"].items()],
         schema="region_code string, interim_region_code integer",
     )
     df = assign_from_lookup(
@@ -372,10 +363,7 @@ def grouping_from_lookup(df):
 
     # A.2 re-code sex variable replacing string with integers
     sex_code_lookup_df = spark.createDataFrame(
-        data=[
-            ("male", 1),
-            ("female", 2),
-        ],
+        data=[(k, v) for k, v in lookup_dict["sex_code"].items()],
         schema="sex string, interim_sex integer",
     )
     df = assign_from_lookup(
@@ -387,22 +375,20 @@ def grouping_from_lookup(df):
 
     # A.3 create age groups considering certain age boundaries,
     # as needed for calibration weighting of swab data
-    map_age_at_visit_swab = {2: 1, 12: 2, 17: 3, 25: 4, 35: 5, 50: 6, 70: 7}
     df = assign_named_buckets(
         df=df,
         column_name_to_assign="age_group_swab",
         reference_column="age_at_visit",
-        map=map_age_at_visit_swab,
+        map=lookup_dict["age_at_visit_swab"],
     )
 
     # A.4 create age groups considering certain age boundaries,
     # needed for calibration weighting of antibodies data
-    map_age_at_visit_antibodies = {16: 1, 25: 2, 35: 3, 50: 4, 70: 5}
     df = assign_named_buckets(
         df=df,
         column_name_to_assign="age_group_antibodies",
         reference_column="age_at_visit",
-        map=map_age_at_visit_antibodies,
+        map=lookup_dict["age_at_visit_antibodies"],
     )
     return df
 
