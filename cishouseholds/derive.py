@@ -10,6 +10,30 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_n_participants_corrected(
+    df: DataFrame, column_name_to_assign: str, n_participants: str, non_consented_num: str
+):
+    """
+    Assign number of participants corrected within household
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    """
+    infant_pattern = "infant_[0-9]{1,}_age"
+    not_present_age = "notpresent_[0-9]{1,}_age"
+    matched_columns = []
+
+    for col in df.columns:
+        for pattern in [infant_pattern, not_present_age]:
+            if re.match(pattern, col):
+                matched_columns.append(col)
+    df = df.withColumn("TEMP", F.array(matched_columns))
+    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
+    df = df.withColumn(column_name_to_assign, F.col(n_participants) + F.col(non_consented_num) + F.col("TEMP"))
+    return df.drop("TEMP")
+
+
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
 ) -> DataFrame:
