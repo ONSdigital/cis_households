@@ -13,6 +13,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pipeline.weight_calibration import sample_file_ETL
 
 
 def run_from_config():
