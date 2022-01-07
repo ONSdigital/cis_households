@@ -1,5 +1,3 @@
-from cishouseholds.weights.population_projections import proccess_population_projection_df
-from cishouseholds.weights.weights import generate_weights
 import rpy2.robjects as robjects
 import yaml
 from pyspark.sql import functions as F
@@ -10,7 +8,10 @@ from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.weights.pre_calibration import calibration_datasets, pre_calibration_high_level
+from cishouseholds.weights.population_projections import proccess_population_projection_df
+from cishouseholds.weights.pre_calibration import calibration_datasets
+from cishouseholds.weights.pre_calibration import pre_calibration_high_level
+from cishouseholds.weights.weights import generate_weights
 
 regenesees = importr(
     "ReGenesees",
@@ -31,12 +32,18 @@ def sample_file_ETL():
 
 
 @register_pipeline_stage("population_projection")
-def population_projection(population_projection_current_path: str, aps_lookup_path: str, populations_for_calibration_table: str, population_projections_table: str):
+def population_projection(
+    population_projection_current_path: str,
+    aps_lookup_path: str,
+    populations_for_calibration_table: str,
+    population_projections_table: str,
+):
     # TODO: Read "population_projection_current", "population_projection_previous", "aps_lookup"
     population_projection_previous = extract_from_table(population_projections_table)
     populations_for_calibration, population_projections = proccess_population_projection_df(dfs=None, month=None)
     update_table(populations_for_calibration, populations_for_calibration_table, mode_overide="overwrite")
     update_table(population_projections, population_projections_table, mode_overide="overwrite")
+
 
 @register_pipeline_stage("pre_calibration")
 def pre_calibration(population_projections_table: str, responses_pre_calibration_table: str):
@@ -47,7 +54,12 @@ def pre_calibration(population_projections_table: str, responses_pre_calibration
 
 
 @register_pipeline_stage("weight_calibration")
-def weight_calibration(population_totals_table: str, responses_pre_calibration_table: str, base_output_table_name: str, calibration_config_path: str):
+def weight_calibration(
+    population_totals_table: str,
+    responses_pre_calibration_table: str,
+    base_output_table_name: str,
+    calibration_config_path: str,
+):
     """
     Run weight calibration for multiple datasets, as specified by the stage configuration.
 
