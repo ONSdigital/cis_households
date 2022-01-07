@@ -2,7 +2,6 @@ import pyspark.sql.functions as F
 
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
