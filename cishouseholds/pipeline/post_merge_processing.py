@@ -21,12 +21,11 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
 @register_pipeline_stage("process_post_merge")
-def process_post_merge():
+def process_post_merge(**kwargs):
+    df = extract_from_table(kwargs["merged_antibody_swab_table"])
 
-    df = extract_from_table("merged_responses_antibody_swab_data")
-
-    if check_table_exists("imputed_value_lookup"):
-        imputed_value_lookup_df = extract_from_table("imputed_value_lookup")
+    if check_table_exists(kwargs["imputed_values_table"]):
+        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"])
     else:
         imputed_value_lookup_df = None
 
@@ -49,14 +48,14 @@ def process_post_merge():
             (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
         )
     )
-    update_table(key_columns_imputed_df, "participant_level_key_records", mode_overide="overwrite")
+    update_table(key_columns_imputed_df, kwargs["participant_records_table"], mode_overide="overwrite")
 
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
     imputed_values = imputed_values_df.select(
         "participant_id",
         *lookup_columns,
     )
-    update_table(imputed_values, "imputed_value_lookup")
+    update_table(imputed_values, kwargs["imputed_values_table"])
 
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
@@ -70,8 +69,8 @@ def process_post_merge():
         response_level_records_df, "visit_datetime"
     )
 
-    update_table(response_level_records_df, "response_level_records", mode_overide="overwrite")
-    update_table(response_level_records_filtered_df, "invalid_response_records_future", mode_overide=None)
+    update_table(response_level_records_df, kwargs["response_records_table"], mode_overide="overwrite")
+    update_table(response_level_records_filtered_df, kwargs["invalid_response_records_table"], mode_overide=None)
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
@@ -150,18 +149,18 @@ def merge_dependent_transform(df: DataFrame):
 
 
 @register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data():
+def join_vaccination_data(**kwargs):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
     """
-    participant_df = extract_from_table("participant_level_key_records")
-    nims_df = extract_from_table(get_config()["nims_table"])
+    participant_df = extract_from_table(kwargs["participant_records_table"])
+    nims_df = extract_from_table(kwargs["nims_table"])
     nims_df = nims_transformations(nims_df)
 
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
-    update_table(participant_df, "participant_level_with_vaccination_data", mode_overide="overwrite")
+    update_table(participant_df, kwargs["vaccination_data_table"], mode_overide="overwrite")
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:
