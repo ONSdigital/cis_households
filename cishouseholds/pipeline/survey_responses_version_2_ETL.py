@@ -72,7 +72,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode")
-    # TODO: Add week and month commencing variables
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
@@ -116,47 +115,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "symptoms_since_last_visit_fever",
             "symptoms_since_last_visit_loss_of_smell",
             "symptoms_since_last_visit_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
-    # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
-    #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
-    df = derive_age_columns(df)
-    df = assign_grouped_variable_from_days_since(
-        df=df,
-        binary_reference_column="think_had_covid",
-        days_since_reference_column="days_since_think_had_covid",
-        column_name_to_assign="days_since_think_had_covid_group",
-    )
-    return df
-
-
-def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
-    """
-    Transformations specific to the v1 and 2 packages only
-    """
-    df = update_column_values_from_map(
-        df=df,
-        column="is_self_isolating_detailed",
-        map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="self_isolating",
-        reference_column="is_self_isolating_detailed",
-        values_list=[
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
         ],
         true_false_values=["Yes", "No"],
     )
@@ -237,6 +195,49 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
+
+    # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
+    #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
+    df = derive_age_columns(df)
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
+    return df
+
+
+def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
+    """
+    Transformations specific to the v1 and 2 packages only
+    """
+    df = update_column_values_from_map(
+        df=df,
+        column="is_self_isolating_detailed",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="is_self_isolating_detailed",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+
     return df
 
 
