@@ -312,59 +312,59 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: have_covid_symptoms
+  name: had_symptoms_last_7_days
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today
+  name: which_symptoms_last_7_days
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_fever
+  name: symptoms_last_7_days_fever
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_muscle_ache
+  name: symptoms_last_7_days_muscle_ache_myalgia
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_fatigue
+  name: symptoms_last_7_days_fatigue_weakness
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_sore_throat
+  name: symptoms_last_7_days_sore_throat
   nullable: true
   type: string
 - metadata: {}
-  name: symtpoms_today_cough
+  name: symptoms_last_7_days_cough
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_shortness_of_breath
+  name: symptoms_last_7_days_shortness_of_breath
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_headache
+  name: symptoms_last_7_days_headache
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_nausea
+  name: symptoms_last_7_days_nausea_vomiting
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_abdominal_pain
+  name: symptoms_last_7_days_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_diarrhoea
+  name: symptoms_last_7_days_diarrhoea
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_loss_of_taste
+  name: symptoms_last_7_days_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_today_loss_of_smell
+  name: symptoms_last_7_days_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
@@ -579,6 +579,18 @@ fields:
   name: think_have_covid_cghfevamn_symptom_group
   nullable: true
   type: string
+- metadata: {}
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
 - metadata: {}
   name: age_at_visit
   nullable: true
