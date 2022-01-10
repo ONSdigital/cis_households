@@ -9,13 +9,22 @@ from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
 
-def pre_calibration_high_level(df: DataFrame, df_country: DataFrame) -> DataFrame:
+def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_country: DataFrame) -> DataFrame:
     """
     Parameters
     ----------
     df
     df_country
     """
+
+    df = df_dweights.join(
+        df_survey,
+        on="ons_household_id",
+        how="inner",
+    )
+    import pdb
+
+    pdb.set_trace()
     df = survey_extraction_household_data_response_factor(
         df=df,
         df_extract_by_country=df_country,

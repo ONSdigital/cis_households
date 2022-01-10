@@ -440,9 +440,9 @@ def union_dependent_transformations(df):
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        symptoms_bool_column="sympt_now_cghfevamn",
+        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
         id_column="participant_id",
-        visit_date_column="visit_date",
+        visit_date_column="visit_datetime",
         visit_id_column="visit_id",
     )
 
