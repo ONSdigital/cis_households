@@ -156,7 +156,6 @@
   symptoms_last_7_days_symptom_count: 7
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 4
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: null
   symptoms_since_last_visit_fever: null
@@ -174,7 +173,6 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
@@ -370,7 +368,6 @@
   symptoms_last_7_days_symptom_count: 4
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 6
   symptoms_since_last_visit_diarrhoea: 'Yes'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'No'
@@ -388,7 +385,6 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
@@ -578,7 +574,6 @@
   symptoms_last_7_days_symptom_count: 3
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: null
@@ -596,7 +591,6 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: null
@@ -793,7 +787,6 @@
   symptoms_last_7_days_symptom_count: 6
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 7
   symptoms_since_last_visit_diarrhoea: 'Yes'
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: 'No'
@@ -811,7 +804,6 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
@@ -1005,7 +997,6 @@
   symptoms_last_7_days_symptom_count: 3
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 8
   symptoms_since_last_visit_diarrhoea: 'Yes'
   symptoms_since_last_visit_fatigue_weakness: 'Yes'
   symptoms_since_last_visit_fever: 'Yes'
@@ -1023,7 +1014,6 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: 'Yes'
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
@@ -1213,7 +1203,6 @@
   symptoms_last_7_days_symptom_count: 5
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 6
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'Yes'
@@ -1231,7 +1220,6 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
@@ -1424,7 +1412,6 @@
   symptoms_last_7_days_symptom_count: 2
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: null
   symptoms_since_last_visit_fever: null
@@ -1442,7 +1429,6 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_date: null
   think_had_covid_which_symptoms: 'No'
-  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
@@ -1634,7 +1620,6 @@
   symptoms_last_7_days_symptom_count: 3
   symptoms_since_last_visit_abdominal_pain: 'Yes'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 4
   symptoms_since_last_visit_diarrhoea: 'No'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'No'
@@ -1652,7 +1637,6 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
@@ -1849,7 +1833,6 @@
   symptoms_last_7_days_symptom_count: 3
   symptoms_since_last_visit_abdominal_pain: 'No'
   symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_count: 3
   symptoms_since_last_visit_diarrhoea: null
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'No'
@@ -1867,7 +1850,6 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: null
@@ -2061,7 +2043,6 @@
   symptoms_last_7_days_symptom_count: 7
   symptoms_since_last_visit_abdominal_pain: null
   symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_count: 2
   symptoms_since_last_visit_diarrhoea: 'Yes'
   symptoms_since_last_visit_fatigue_weakness: 'No'
   symptoms_since_last_visit_fever: 'No'
@@ -2079,7 +2060,6 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_date: null
   think_had_covid_which_symptoms: null
-  think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
