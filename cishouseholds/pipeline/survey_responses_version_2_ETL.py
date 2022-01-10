@@ -211,12 +211,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         visit_id_column="visit_id",
     )
 
-    df = assign_date_difference(
-        df,
-        "contact_known_or_suspected_covid_days_since",
-        "contact_known_or_suspected_covid_latest_date",
-        "visit_datetime",
-    )
+    # TODO: Add in once dependencies are derived
+    # df = assign_date_difference(
+    #     df,
+    #     "contact_known_or_suspected_covid_days_since",
+    #     "contact_known_or_suspected_covid_latest_date",
+    #     "visit_datetime",
+    # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
@@ -231,7 +232,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
 def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
-    Transformations specific to the v1 and 2 packages only
+    Transformations specific to the v1 and v2 survey responses.
     """
     df = update_column_values_from_map(
         df=df,
@@ -326,7 +327,9 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
-    df = df.withColumn("work_status", F.coalesce(F.col("work_status_v0", "work_status_v1", "work_status_v2")))
+    df = df.withColumn(
+        "work_status", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
+    )
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
@@ -411,6 +414,7 @@ def union_dependent_transformations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = derive_work_status_columns(df)
     df = assign_work_health_care(
         df,
         "work_health_care_combined",
@@ -480,15 +484,15 @@ def union_dependent_transformations(df):
         visit_date_column="visit_date",
         visit_id_column="visit_id",
     )
-
-    df = impute_latest_date_flag(
-        df=df,
-        participant_id_column="participant_id",
-        visit_date_column="visit_date",
-        visit_id_column="visit_id",
-        contact_any_covid_column="contact_known_or_suspected_covid",
-        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-    )
+    # TODO: Add in once dependencies are derived
+    # df = impute_latest_date_flag(
+    #     df=df,
+    #     participant_id_column="participant_id",
+    #     visit_date_column="visit_date",
+    #     visit_id_column="visit_id",
+    #     contact_any_covid_column="contact_known_or_suspected_covid",
+    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
 
     df = assign_household_participant_count(
         df,
