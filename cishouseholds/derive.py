@@ -16,14 +16,15 @@ def assign_n_participants_corrected(
     """
     Assign number of participants corrected within household
     Parameters
-    ----------
+    -----------
     df
     column_name_to_assign
+    n_participants
+    non_consented_num
     """
     infant_pattern = "infant_[0-9]{1,}_age"
     not_present_age = "notpresent_[0-9]{1,}_age"
     matched_columns = []
-
     for col in df.columns:
         for pattern in [infant_pattern, not_present_age]:
             if re.match(pattern, col):
@@ -32,6 +33,46 @@ def assign_n_participants_corrected(
     df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
     df = df.withColumn(column_name_to_assign, F.col(n_participants) + F.col(non_consented_num) + F.col("TEMP"))
     return df.drop("TEMP")
+
+
+def assign_ever_had_long_term_health_condition_or_disabled(
+    df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
+):
+    """
+    Assign a column that identifies if patient is long term disabled by applying several
+    preset functions
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    health_conditions_column
+    condition_impact_column
+    """
+
+    df = df.withColumn(
+        "TEMP_EVERNEVER",
+        F.when(
+            (F.col(health_conditions_column) == "Yes")
+            & (F.col(condition_impact_column).isin(["Yes, a little", "Yes, a lot"])),
+            "Yes",
+        )
+        .when(
+            (F.col(health_conditions_column).isin(["Yes", "No"]))
+            & ((F.col(condition_impact_column) == "Not at all") | (F.col(condition_impact_column).isNull())),
+            "No",
+        )
+        .otherwise(None),
+    )
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        groupby_column="participant_id",
+        reference_columns=["TEMP_EVERNEVER"],
+        count_if=["Yes"],
+        true_false_values=["Yes", "No"],
+    )  # not sure of correct  PIPELINE categories
+
+    return df.drop("TEMP_EVERNEVER")
 
 
 def assign_random_day_in_month(
@@ -122,22 +163,36 @@ def assign_column_given_proportion(
     groupby_column: str,
     reference_columns: List[str],
     count_if: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
     """
     window = Window.partitionBy(groupby_column)
-    df = assign_true_if_any(
-        df=df, column_name_to_assign="TEMP", reference_columns=reference_columns, true_false_values=[1, 0]
-    )
+
+    df = df.withColumn("TEMP", F.lit(0))
+    df = df.withColumn(column_name_to_assign, F.lit("No"))
+
+    for col in reference_columns:
+        df = df.withColumn(
+            "TEMP",
+            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
+        )
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                (
+                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
+                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
+                    >= 0.3
+                ),
+                1,
+            ).otherwise(0),
+        )
+    df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            F.sum(F.when(F.col("TEMP").isin(count_if), F.lit(1)).otherwise(F.lit(0))).over(window)
-            / F.sum(F.when(F.col("TEMP").isNotNull(), F.lit(1)).otherwise(0)).over(window)
-            >= 0.3,
-            1,
-        ).otherwise(0),
+        F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df.drop("TEMP")
 
@@ -192,6 +247,7 @@ def assign_true_if_any(
     column_name_to_assign: str,
     reference_columns: List[str],
     true_false_values: List[Union[str, int, bool]],
+    ignore_nulls: Optional[bool] = False,
 ) -> DataFrame:
     """
     Assign column the second value of a list containing values for false and true
@@ -206,7 +262,9 @@ def assign_true_if_any(
             F.when(
                 F.col(col).eqNullSafe(true_false_values[0]),
                 true_false_values[0],
-            ).otherwise(F.col(column_name_to_assign)),
+            )
+            .when(F.col(col).isNull() & F.lit(ignore_nulls), None)
+            .otherwise(F.col(column_name_to_assign)),
         )
     return df
 
