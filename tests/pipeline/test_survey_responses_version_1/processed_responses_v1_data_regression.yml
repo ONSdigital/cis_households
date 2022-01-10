@@ -4,6 +4,8 @@
   age_group_5_year_intervals: 25-29
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -137,6 +139,7 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'No'
@@ -217,6 +220,8 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -351,6 +356,7 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'No'
@@ -431,6 +437,8 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -559,8 +567,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -642,6 +651,8 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -774,8 +785,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -856,6 +868,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -986,8 +1000,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
@@ -1065,6 +1080,8 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1194,8 +1211,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
@@ -1276,6 +1294,8 @@
   age_group_5_year_intervals: 30-34
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1405,8 +1425,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
@@ -1485,6 +1506,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1615,8 +1638,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: 'No'
@@ -1700,6 +1724,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1830,8 +1856,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
@@ -1910,6 +1937,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -2042,8 +2071,9 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
+  symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'

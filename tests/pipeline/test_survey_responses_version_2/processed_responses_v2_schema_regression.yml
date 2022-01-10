@@ -468,7 +468,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: had_symptoms_last_7_days
+  name: symptoms_last_7_days_any
   nullable: true
   type: string
 - metadata: {}
@@ -928,6 +928,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: symptoms_last_7_days_any_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: work_main_job_title_raw
   nullable: true
   type: string
@@ -996,10 +1000,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: days_since_think_had_covid
-  nullable: true
-  type: integer
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1012,10 +1012,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
   name: symptoms_last_7_days_symptom_count
   nullable: false
   type: integer
@@ -1023,6 +1019,30 @@ fields:
   name: symptoms_since_last_visit_count
   nullable: false
   type: integer
+- metadata: {}
+  name: any_symptoms_last_7_days_or_now
+  nullable: true
+  type: string
+- metadata: {}
+  name: any_symptoms_around_visit
+  nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_around_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
 - metadata: {}
   name: age_at_visit
   nullable: true
@@ -1047,34 +1067,6 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
-- metadata: {}
-  name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_social_care
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_person_facing_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: ever_work_person_facing_or_social_care
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_care_home_worker
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_had_long_term_health_condition
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_had_long_term_health_condition_or_disabled
-  nullable: false
-  type: string
 - metadata: {}
   name: self_isolating
   nullable: true
