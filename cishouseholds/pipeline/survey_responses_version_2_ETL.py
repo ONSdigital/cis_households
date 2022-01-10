@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
+from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
@@ -26,7 +27,6 @@ from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
-from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
@@ -71,7 +71,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode")
-    # TODO: Add week and month commencing variables
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
@@ -109,15 +108,57 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
     df = assign_true_if_any(
         df=df,
-        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+        column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
         reference_columns=[
-            "symptoms_since_last_visit_cough",
-            "symptoms_since_last_visit_fever",
-            "symptoms_since_last_visit_loss_of_smell",
-            "symptoms_since_last_visit_loss_of_taste",
+            "symptoms_last_7_days_cough",
+            "symptoms_last_7_days_fever",
+            "symptoms_last_7_days_loss_of_smell",
+            "symptoms_last_7_days_loss_of_taste",
         ],
         true_false_values=["Yes", "No"],
     )
+    # df = assign_true_if_any(
+    #     df=df,
+    #     column_name_to_assign="any_symptoms_last_7_days_or_now",
+    #     reference_columns=["symptoms_last_7_days_any", "think_have_covid_symptoms_now"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    df = count_value_occurrences_in_column_subset_row_wise(
+        df=df,
+        column_name_to_assign="symptoms_last_7_days_symptom_count",
+        selection_columns=[
+            "symptoms_last_7_days_fever",
+            "symptoms_last_7_days_muscle_ache_myalgia",
+            "symptoms_last_7_days_fatigue_weakness",
+            "symptoms_last_7_days_sore_throat",
+            "symptoms_last_7_days_cough",
+            "symptoms_last_7_days_shortness_of_breath",
+            "symptoms_last_7_days_headache",
+            "symptoms_last_7_days_nausea_vomiting",
+            "symptoms_last_7_days_abdominal_pain",
+            "symptoms_last_7_days_diarrhoea",
+            "symptoms_last_7_days_loss_of_taste",
+            "symptoms_last_7_days_loss_of_smell",
+        ],
+        count_if_value="Yes",
+    )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="any_symptoms_around_visit",
+    #     symptoms_bool_column="any_symptoms_last_7_days_or_now",
+    #     id_column="participant_id",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
+
     # df = placeholder_for_derivation_number_17(df, "country_barcode", ["swab_barcode_cleaned","blood_barcode_cleaned"],
     #  {0:"ONS", 1:"ONW", 2:"ONN", 3:"ONC"})
     df = derive_age_columns(df)
@@ -126,23 +167,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         binary_reference_column="think_had_covid",
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
-    )
-
-    df = contact_known_or_suspected_covid_type(
-        df=df,
-        contact_known_covid_type_column="last_covid_contact_location",
-        contact_any_covid_type_column="contact_known_or_suspected_covid_type",
-        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-        contact_known_covid_date_column="last_covid_contact_date",
-        contact_suspect_covid_date_column="last_suspected_covid_contact_date",
-    )
-    df = impute_latest_date_flag(
-        df=df,
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-        contact_any_covid_column="contact_any_covid",
-        contact_any_covid_date_column="contact_any_covid_type",
     )
     return df
 
@@ -176,88 +200,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         ],
         true_false_values=["Yes", "No"],
     )
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
-        reference_columns=[
-            "symptoms_last_7_days_cough",
-            "symptoms_last_7_days_fever",
-            "symptoms_last_7_days_loss_of_smell",
-            "symptoms_last_7_days_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
-        reference_columns=[
-            "symptoms_since_last_visit_cough",
-            "symptoms_since_last_visit_fever",
-            "symptoms_since_last_visit_loss_of_smell",
-            "symptoms_since_last_visit_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
-    # df = assign_true_if_any(
-    #     df=df,
-    #     column_name_to_assign="any_symptoms_last_7_days_or_now",
-    #     reference_columns=["symptoms_last_7_days_any", "think_have_covid_symptoms_now"],
-    #     true_false_values=["Yes", "No"],
-    # )
-    df = count_value_occurrences_in_column_subset_row_wise(
-        df=df,
-        column_name_to_assign="symptoms_last_7_days_symptom_count",
-        selection_columns=[
-            "symptoms_last_7_days_fever",
-            "symptoms_last_7_days_muscle_ache_myalgia",
-            "symptoms_last_7_days_fatigue_weakness",
-            "symptoms_last_7_days_sore_throat",
-            "symptoms_last_7_days_cough",
-            "symptoms_last_7_days_shortness_of_breath",
-            "symptoms_last_7_days_headache",
-            "symptoms_last_7_days_nausea_vomiting",
-            "symptoms_last_7_days_abdominal_pain",
-            "symptoms_last_7_days_diarrhoea",
-            "symptoms_last_7_days_loss_of_taste",
-            "symptoms_last_7_days_loss_of_smell",
-        ],
-        count_if_value="Yes",
-    )
-    df = count_value_occurrences_in_column_subset_row_wise(
-        df=df,
-        column_name_to_assign="symptoms_since_last_visit_count",
-        selection_columns=[
-            "symptoms_since_last_visit_fever",
-            "symptoms_since_last_visit_muscle_ache_myalgia",
-            "symptoms_since_last_visit_fatigue_weakness",
-            "symptoms_since_last_visit_sore_throat",
-            "symptoms_since_last_visit_cough",
-            "symptoms_since_last_visit_shortness_of_breath",
-            "symptoms_since_last_visit_headache",
-            "symptoms_since_last_visit_nausea_vomiting",
-            "symptoms_since_last_visit_abdominal_pain",
-            "symptoms_since_last_visit_diarrhoea",
-            "symptoms_since_last_visit_loss_of_taste",
-            "symptoms_since_last_visit_loss_of_smell",
-        ],
-        count_if_value="Yes",
-    )
-    # df = assign_any_symptoms_around_visit(
-    #     df=df,
-    #     column_name_to_assign="any_symptoms_around_visit",
-    #     symptoms_bool_column="any_symptoms_last_7_days_or_now",
-    #     id_column="participant_id",
-    #     visit_date_column="visit_datetime",
-    #     visit_id_column="visit_id",
-    # )
-    # df = assign_any_symptoms_around_visit(
-    #     df=df,
-    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-    #     id_column="participant_id",
-    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
-    #     visit_date_column="visit_datetime",
-    #     visit_id_column="visit_id",
-    # )
+
     return df
 
 
@@ -315,7 +258,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
     )
     # TODO: Enable once country data is linked on after merge
     # df = split_school_year_by_country(
-    #   df, school_year_column = "school_year_september", country_column = "country_name", id_column="participant_id"
+    #   df, school_year_column = "school_year_september", country_column = "country_name"
     # )
     # df = assign_age_group_school_year(
     #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
@@ -346,6 +289,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care"],
         count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -353,6 +297,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
         count_if=["Yes, care/residential home, resident-facing"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
     df = assign_column_given_proportion(
         df=df,
@@ -360,8 +305,14 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         groupby_column="participant_id",
         reference_columns=["illness_lasting_over_12_months"],
         count_if=["Yes"],
+        true_false_values=["Yes", "No"],
     )  # not sure of correct  PIPELINE categories
-
+    df = assign_ever_had_long_term_health_condition_or_disabled(
+        df=df,
+        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
+        health_conditions_column="illness_lasting_over_12_months",
+        condition_impact_column="illness_reduces_activity_or_ability",
+    )
     return df
 
 
