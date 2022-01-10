@@ -330,7 +330,7 @@ output_name_map = {
     "symptoms_last_7_days_shortness_of_breath": "sympt_now_shortness_of_breath",
     "symptoms_last_7_days_sore_throat": "sympt_now_sore_throat",
     "tenure_group": "tenure_group",
-    "think_have_covid_symptoms_now": "think_have_covid_sympt_now",
+    "think_have_covid_symptoms": "think_have_covid_sympt_now",
     "been_outside_uk_since_april_2020": "travel_abroad",
     "been_outside_uk_last_country": "travel_abroad_country",
     "been_outside_uk_last_date": "travel_abroad_date",

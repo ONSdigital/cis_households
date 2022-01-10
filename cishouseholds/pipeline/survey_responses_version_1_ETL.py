@@ -7,12 +7,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 1 survey deltas.
     """
-    # df = assign_true_if_any(
-    #     df=df,
-    #     column_name_to_assign="any_symptoms_last_7_days_or_now",
-    #     reference_columns=["symptoms_last_7_days_any", "think_have_covid_symptoms_now"],
-    #     true_false_values=["Yes", "No"],
-    # )
+
     df = update_column_values_from_map(
         df=df,
         column="work_status_v1",

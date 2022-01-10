@@ -201,7 +201,7 @@ survey_responses_v0_variable_name_map = {
     "Symptoms today- Loss of smell": "symptoms_last_7_days_loss_of_smell",
     "Are you self Isolating?": "is_self_isolating",
     "Received shielding letter from NHS?": "received_shielding_letter",
-    "Do you think you have Covid Symptoms?": "think_have_covid_symptoms_now",
+    "Do you think you have Covid Symptoms?": "think_have_covid_symptoms",
     "Contact with Known Positive COVID19 Case": "contact_known_positive_covid_last_28_days",
     "If Known; Last contact date": "last_covid_contact_date",
     "If Known; Type of contact": "last_covid_contact_location",
