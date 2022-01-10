@@ -16,15 +16,19 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df
     df_country
     """
+    import pdb
 
-    df = df_dweights.join(
-        df_survey,
+    pdb.set_trace()
+
+    df = df_survey.join(
+        df_dweights,
         on="ons_household_id",
-        how="inner",
+        how="left",
     )
     import pdb
 
     pdb.set_trace()
+
     df = survey_extraction_household_data_response_factor(
         df=df,
         df_extract_by_country=df_country,

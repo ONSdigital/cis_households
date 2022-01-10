@@ -75,13 +75,10 @@ def extract_df_list(list_paths, previous, **kwargs):
 
 @register_pipeline_stage("pre_calibration")
 def pre_calibration(**kwargs):
-    participant_level_with_design_weights = extract_from_table(kwargs["design_weight_table"])
+    household_level_with_design_weights = extract_from_table(kwargs["design_weight_table"])
     population_by_country = extract_from_table(kwargs["population_country_table"])
+
     survey_response = extract_from_table(kwargs["survey_response_table"])
-
-    import pdb
-
-    pdb.set_trace()
 
     survey_response = survey_response.select(
         "ons_household_id",
@@ -89,28 +86,28 @@ def pre_calibration(**kwargs):
         "sex",
         "age_at_visit",
         "ethnicity_white",
-        "region_code",
     )
 
     # NEEDED:
-    # participant_level_with_design_weights.select(
+    # household_level_with_design_weights.select(
     #     'index_multiple_deprivation',
     #     'country_name_12',
     #     'index_multiple_deprivation',
     #     'sample_addressbase_indicator',
     #     'cis_area_code_20',
+    #     'region_code',
     # )
 
     population_by_country = population_by_country.select(
-        "country_code_#",
-        "country_name_#",
+        "country_code_12",
+        "country_name_12",
         "population_country_swab",
         "population_country_antibodies",
     ).distinct()
 
     df_for_calibration = pre_calibration_high_level(
         df_survey=survey_response,
-        df_dweights=participant_level_with_design_weights,
+        df_dweights=household_level_with_design_weights,
         df_country=population_by_country,
     )
     update_table(df_for_calibration, "responses_pre_calibration_table", mode_overide="overwrite")

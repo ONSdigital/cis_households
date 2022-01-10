@@ -34,8 +34,8 @@ def proccess_population_projection_df(dfs: dict, month: int):
     selected_columns = [
         "local_authority_unitary_authority_code",
         "region_code",
-        "country_code_#",
-        "country_name_#",
+        "country_code_12",
+        "country_name_12",
         *m_f_columns,
     ]
     previous_projection_df = previous_projection_df.select(*selected_columns).withColumn(

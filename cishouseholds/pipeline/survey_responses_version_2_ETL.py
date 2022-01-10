@@ -445,13 +445,13 @@ def union_dependent_transformations(df):
         visit_date_column="visit_datetime",
         visit_id_column="visit_id",
     )
-
-    df = impute_latest_date_flag(
-        df=df,
-        participant_id_column="participant_id",
-        visit_date_column="visit_date",
-        visit_id_column="visit_id",
-        contact_any_covid_column="contact_any_covid",
-        contact_any_covid_date_column="contact_any_covid_date",
-    )
+    # TODO uncomment back
+    # df = impute_latest_date_flag(
+    #     df=df,
+    #     participant_id_column="participant_id",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    #     contact_any_covid_column="contact_known_or_suspected_covid",\
+    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
     return df
