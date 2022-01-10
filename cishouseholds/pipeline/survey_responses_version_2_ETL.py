@@ -14,10 +14,12 @@ from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_d
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_household_participant_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_people_in_household_count
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
@@ -454,4 +456,15 @@ def union_dependent_transformations(df):
         contact_any_covid_column="contact_any_covid",
         contact_any_covid_date_column="contact_any_covid_date",
     )
+
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = assign_people_in_household_count(
+        df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
+    )
+
     return df

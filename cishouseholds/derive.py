@@ -10,28 +10,33 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
-def assign_n_participants_corrected(
-    df: DataFrame, column_name_to_assign: str, n_participants: str, non_consented_num: str
+def assign_household_participant_count(
+    df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
 ):
+    """Assign the count of participants within each household."""
+    household_window = Window.partitionBy(household_id_column)
+    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    return df
+
+
+def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
     """
-    Assign number of participants corrected within household
-    Parameters
-    -----------
-    df
-    column_name_to_assign
-    n_participants
-    non_consented_num
+    Assign number of people within household, including those not participating. Assumes each row contains counts of
+    participants for the household.
+
+    Uses specific column name patterns to count non-participating members.
     """
-    infant_pattern = "infant_[0-9]{1,}_age"
-    not_present_age = "notpresent_[0-9]{1,}_age"
+    infant_pattern = "infant_[1-8]_age"
+    not_present_pattern = "person_[1-8]_age"
+    not_consenting_pattern = "person_[1-9]_not_consenting_age"
     matched_columns = []
     for col in df.columns:
-        for pattern in [infant_pattern, not_present_age]:
+        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
             if re.match(pattern, col):
                 matched_columns.append(col)
     df = df.withColumn("TEMP", F.array(matched_columns))
     df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
-    df = df.withColumn(column_name_to_assign, F.col(n_participants) + F.col(non_consented_num) + F.col("TEMP"))
+    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
     return df.drop("TEMP")
 
 
@@ -99,25 +104,20 @@ def assign_household_size(
     df: DataFrame,
     column_name_to_assign: str,
     household_participant_count_column: Optional[str] = None,
-    household_size_group_column: Optional[str] = None,
+    existing_group_column: Optional[str] = None,
 ) -> DataFrame:
     """
-    Assign a column to contain the number of participants residing in a given household
-    Parameters
-    -----------
-    df
-    column_name_to_assign
-    household_participant_count
-    household_size_group_column
+    Assign household group size (grouped above 5+), using participant count to impute values missing in existing group
+    column.
     """
-    if household_size_group_column in df.columns:
-        reference_column = household_size_group_column
-    else:
-        reference_column = household_participant_count_column
-
     return df.withColumn(
         column_name_to_assign,
-        F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+").cast("string"),
+        F.coalesce(
+            F.col(existing_group_column),
+            F.when(F.col(household_participant_count_column) < 5, F.col(household_participant_count_column))
+            .otherwise("5+")
+            .cast("string"),
+        ),
     )
 
 
