@@ -468,7 +468,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: had_symptoms_last_7_days
+  name: symptoms_last_7_days_any
   nullable: true
   type: string
 - metadata: {}
@@ -925,6 +925,10 @@ fields:
   type: string
 - metadata: {}
   name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_any_raw
   nullable: true
   type: string
 - metadata: {}

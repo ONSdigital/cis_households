@@ -62,7 +62,6 @@
   face_covering_work: Participant Would Not/Could Not Answer
   first_name: Clemmie
   gender: Male
-  had_symptoms_last_7_days: 'Yes'
   have_email_address: null
   have_ever_smoked_regularly: null
   have_landline_number: null
@@ -190,6 +189,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
@@ -342,7 +343,6 @@
     or cultural reasons)
   first_name: Honey
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'Yes'
   have_email_address: 'Yes'
   have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'No'
@@ -471,6 +471,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -620,7 +622,6 @@
   face_covering_work: Participant Would Not/Could Not Answer
   first_name: Myung
   gender: null
-  had_symptoms_last_7_days: 'Yes'
   have_email_address: 'Yes'
   have_ever_smoked_regularly: null
   have_landline_number: null
@@ -751,6 +752,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -902,7 +905,6 @@
   face_covering_work: Not going to place of work or education
   first_name: Remedios
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'Yes'
   have_email_address: 'Yes'
   have_ever_smoked_regularly: null
   have_landline_number: 'No'
@@ -1032,6 +1034,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -1180,7 +1184,6 @@
   face_covering_work: Yes sometimes
   first_name: Caron
   gender: Prefer not to say
-  had_symptoms_last_7_days: null
   have_email_address: 'Yes'
   have_ever_smoked_regularly: 'No'
   have_landline_number: 'Yes'
@@ -1311,6 +1314,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: null
@@ -1457,7 +1462,6 @@
     or cultural reasons)
   first_name: Annika
   gender: null
-  had_symptoms_last_7_days: null
   have_email_address: null
   have_ever_smoked_regularly: 'Yes'
   have_landline_number: null
@@ -1587,6 +1591,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -1737,7 +1743,6 @@
   face_covering_work: Yes always
   first_name: Shawnee
   gender: Prefer not to say
-  had_symptoms_last_7_days: null
   have_email_address: 'No'
   have_ever_smoked_regularly: 'No'
   have_landline_number: null
@@ -1867,6 +1872,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -2017,7 +2024,6 @@
   face_covering_work: Participant Would Not/Could Not Answer
   first_name: Shaun
   gender: Female
-  had_symptoms_last_7_days: 'No'
   have_email_address: 'Yes'
   have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'No'
@@ -2147,6 +2153,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -2298,7 +2306,6 @@
     or cultural reasons)
   first_name: Forest
   gender: Female
-  had_symptoms_last_7_days: 'No'
   have_email_address: null
   have_ever_smoked_regularly: 'No'
   have_landline_number: null
@@ -2428,6 +2435,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -2576,7 +2585,6 @@
   face_covering_work: Not going to place of work or education
   first_name: Reiko
   gender: Male
-  had_symptoms_last_7_days: null
   have_email_address: 'No'
   have_ever_smoked_regularly: null
   have_landline_number: 'Yes'
@@ -2709,6 +2717,8 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'

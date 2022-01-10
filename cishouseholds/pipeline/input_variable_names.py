@@ -518,7 +518,7 @@ survey_responses_v2_variable_name_map = {
     "How_often_do_you_work_elsewhere": "work_not_from_home_days_per_week",
     "How_do_you_get_to_and_from_work_school": "transport_to_work_or_school",
     "Can_you_socially_distance_at_work": "ability_to_socially_distance_at_work_or_school",
-    "Had_symptoms_in_the_last_7_days": "had_symptoms_last_7_days",
+    "Had_symptoms_in_the_last_7_days": "symptoms_last_7_days_any",
     "Which_symptoms_in_the_last_7_days": "which_symptoms_last_7_days",
     "Date_of_first_symptom_onset": "symptoms_last_7_days_onset_date",
     "Symptoms_7_Fever": "symptoms_last_7_days_fever",
