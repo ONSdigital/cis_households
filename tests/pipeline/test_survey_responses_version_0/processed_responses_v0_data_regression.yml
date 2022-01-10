@@ -3,6 +3,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -29,7 +31,6 @@
   ethnicity_white: Non-White
   full_name: Carlos Martin
   gender: Male
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
@@ -99,7 +100,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -135,7 +139,7 @@
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'No'
-  think_have_covid_symptoms_now: 'No'
+  think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-01 06:11:57
   visit_date_string: '2022-01-01'
   visit_datetime: '2022-01-01 06:11:57.000000'
@@ -169,6 +173,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -195,7 +201,6 @@
   ethnicity_white: Non-White
   full_name: Argentina Brady
   gender: null
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -265,7 +270,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
@@ -301,7 +309,7 @@
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: 'No'
+  think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-04 19:23:52
   visit_date_string: '2022-01-04'
   visit_datetime: '2022-01-04 19:23:52.000000'
@@ -335,6 +343,8 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -361,7 +371,6 @@
   ethnicity_white: Non-White
   full_name: Annika Reilly
   gender: null
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -433,7 +442,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -469,7 +481,7 @@
   think_had_covid_which_symptoms: He looked inquisitively at his keyboard and wrote
     another sentence.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: 'Yes'
+  think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 18:06:58.000000'
@@ -500,6 +512,8 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -526,7 +540,6 @@
   ethnicity_white: Non-White
   full_name: Jae Cervantes
   gender: Male
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -596,7 +609,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -632,7 +648,7 @@
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: null
+  think_have_covid_symptoms: null
   unique_participant_response_id: DVH-2564559272-DHR-229883187696-2022-01-03 07:01:12
   visit_date_string: '2022-01-03'
   visit_datetime: '2022-01-03 07:01:12.000000'
@@ -662,6 +678,8 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -688,7 +706,6 @@
   ethnicity_white: White
   full_name: Alan Robbins
   gender: Female
-  had_symptoms_last_7_days: null
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
@@ -761,7 +778,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 1.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -796,7 +816,7 @@
   think_had_covid_tested: 'No'
   think_had_covid_which_symptoms: Make me a sandwich.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: 'No'
+  think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-06 17:36:59
   visit_date_string: '2022-01-06'
   visit_datetime: '2022-01-06 17:36:59.000000'
@@ -826,6 +846,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -852,7 +874,6 @@
   ethnicity_white: Non-White
   full_name: Caron Barton
   gender: Male
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -925,7 +946,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -961,7 +985,7 @@
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
     language.
   think_have_covid_cghfevamn_symptom_group: 'No'
-  think_have_covid_symptoms_now: 'No'
+  think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-02 01:35:07
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 01:35:07.000000'
@@ -993,6 +1017,8 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1019,7 +1045,6 @@
   ethnicity_white: Non-White
   full_name: Clemmie Harper
   gender: Female
-  had_symptoms_last_7_days: null
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1090,7 +1115,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -1126,7 +1154,7 @@
   think_had_covid_which_symptoms: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: 'No'
+  think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-08 05:06:21
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 05:06:21.000000'
@@ -1156,6 +1184,8 @@
   age_group_5_year_intervals: 30-34
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1182,7 +1212,6 @@
   ethnicity_white: Non-White
   full_name: Crystle Osborn
   gender: null
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
@@ -1253,7 +1282,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: null
@@ -1288,7 +1320,7 @@
   think_had_covid_tested: null
   think_had_covid_which_symptoms: Do you come here often?
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: 'Yes'
+  think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-7139656872-DHR-422525832950-2022-01-02 21:34:20
   visit_date_string: '2022-01-02'
   visit_datetime: '2022-01-02 21:34:20.000000'
@@ -1319,6 +1351,8 @@
   age_group_5_year_intervals: 25-29
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1345,7 +1379,6 @@
   ethnicity_white: White
   full_name: Honey Porter
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1414,7 +1447,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
@@ -1450,7 +1486,7 @@
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
     and writing poetry.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: null
+  think_have_covid_symptoms: null
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-07 11:10:34
   visit_date_string: '2022-01-07'
   visit_datetime: '2022-01-07 11:10:34.000000'
@@ -1481,6 +1517,8 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_taken: 'no'
@@ -1507,7 +1545,6 @@
   ethnicity_white: Non-White
   full_name: Barton Ramos
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1581,7 +1618,10 @@
   swab_sample_barcode: null
   swab_taken: 'no'
   swabs_taken: 0.0
+  symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -1617,7 +1657,7 @@
   think_had_covid_which_symptoms: Haskell features a type system with type inference
     and lazy evaluation.
   think_have_covid_cghfevamn_symptom_group: 'Yes'
-  think_have_covid_symptoms_now: null
+  think_have_covid_symptoms: null
   unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-08 11:41:44
   visit_date_string: '2022-01-08'
   visit_datetime: '2022-01-08 11:41:44.000000'
