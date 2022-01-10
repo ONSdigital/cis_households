@@ -312,7 +312,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: had_symptoms_last_7_days
+  name: symptoms_last_7_days_any
   nullable: true
   type: string
 - metadata: {}
@@ -490,6 +490,10 @@ fields:
 - metadata: {}
   name: survey_response_source_file
   nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_any_raw
+  nullable: true
   type: string
 - metadata: {}
   name: work_main_job_title_raw

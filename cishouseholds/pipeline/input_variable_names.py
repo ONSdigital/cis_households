@@ -185,7 +185,7 @@ survey_responses_v0_variable_name_map = {
     "No. days a week working outside of home?": "work_not_from_home_days_per_week",
     "Do you work in healthcare?": "work_health_care_v0",
     "Do you work in social care?": "work_social_care",
-    "Do you have any of these symptoms Today?": "had_symptoms_last_7_days",
+    "Do you have any of these symptoms Today?": "symptoms_last_7_days_any",
     "Symptoms today": "which_symptoms_last_7_days",
     "Symptoms today- Fever": "symptoms_last_7_days_fever",
     "Symptoms today- Muscle ache (myalgia)": "symptoms_last_7_days_muscle_ache_myalgia",

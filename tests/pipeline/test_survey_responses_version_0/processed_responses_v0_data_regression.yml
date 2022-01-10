@@ -29,7 +29,6 @@
   ethnicity_white: Non-White
   full_name: Carlos Martin
   gender: Male
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
@@ -100,6 +99,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -195,7 +196,6 @@
   ethnicity_white: Non-White
   full_name: Argentina Brady
   gender: null
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -266,6 +266,8 @@
   swab_taken: 'no'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
@@ -361,7 +363,6 @@
   ethnicity_white: Non-White
   full_name: Annika Reilly
   gender: null
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -434,6 +435,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -526,7 +529,6 @@
   ethnicity_white: Non-White
   full_name: Jae Cervantes
   gender: Male
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -597,6 +599,8 @@
   swab_taken: 'no'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: 'No'
@@ -688,7 +692,6 @@
   ethnicity_white: White
   full_name: Alan Robbins
   gender: Female
-  had_symptoms_last_7_days: null
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
@@ -762,6 +765,8 @@
   swab_taken: 'no'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -852,7 +857,6 @@
   ethnicity_white: Non-White
   full_name: Caron Barton
   gender: Male
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -926,6 +930,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'No'
@@ -1019,7 +1025,6 @@
   ethnicity_white: Non-White
   full_name: Clemmie Harper
   gender: Female
-  had_symptoms_last_7_days: null
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1091,6 +1096,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: null
   symptoms_last_7_days_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_cough: null
   symptoms_last_7_days_diarrhoea: 'Yes'
@@ -1182,7 +1189,6 @@
   ethnicity_white: Non-White
   full_name: Crystle Osborn
   gender: null
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
@@ -1254,6 +1260,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: null
@@ -1345,7 +1353,6 @@
   ethnicity_white: White
   full_name: Honey Porter
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'No'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1415,6 +1422,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'No'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'Yes'
   symptoms_last_7_days_diarrhoea: null
@@ -1507,7 +1516,6 @@
   ethnicity_white: Non-White
   full_name: Barton Ramos
   gender: Prefer not to say
-  had_symptoms_last_7_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1582,6 +1590,8 @@
   swab_taken: 'no'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
+  symptoms_last_7_days_any: 'No'
+  symptoms_last_7_days_any_raw: 'Yes'
   symptoms_last_7_days_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_cough: 'No'
   symptoms_last_7_days_diarrhoea: 'No'
