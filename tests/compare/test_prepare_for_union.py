@@ -56,6 +56,6 @@ def test_prepare_for_union(spark_session):
                new_col_1 integer, new_col_2 integer, col_2 integer, col_3 integer, test_3 integer",
     )
 
-    output_df, ref = prepare_for_union(example_df, example_ref)
+    output_df, ref = prepare_for_union([example_df, example_ref])
     assert_df_equality(output_df, expected_df)
     assert_df_equality(ref, expected_ref)
