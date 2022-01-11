@@ -10,6 +10,47 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 
+def assign_multigen(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column,
+    hh_id_column: str,
+    visit_date_column: str,
+    dob_column: str,
+):
+    """ """
+    transformed_df = df.groupBy(hh_id_column, visit_date_column).count()
+    transformed_df = transformed_df.join(df.select(hh_id_column, participant_id_column, dob_column), on=hh_id_column)
+    transformed_df = assign_school_year_september_start(
+        df=transformed_df,
+        dob_column=dob_column,
+        visit_date_column=visit_date_column,
+        column_name_to_assign="school_year",
+    )
+    transformed_df = assign_age_at_date(
+        df=transformed_df,
+        column_name_to_assign="age_at_visit",
+        base_date=F.col(visit_date_column),
+        date_of_birth=F.col(dob_column),
+    )
+
+    gen1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    gen2_flag = F.when(
+        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    ).otherwise(0)
+    gen3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+
+    window = Window.partitionBy(hh_id_column, visit_date_column)
+    gen1_exists = F.when(F.sum(gen1_flag).over(window) >= 1, 1).otherwise(0)
+    gen2_exists = F.when(F.sum(gen2_flag).over(window) >= 1, 1).otherwise(0)
+    gen3_exists = F.when(F.sum(gen3_flag).over(window) >= 1, 1).otherwise(0)
+
+    transformed_df = transformed_df.withColumn(
+        column_name_to_assign, F.when((gen1_exists == 1) & (gen2_exists == 1) & (gen3_exists == 1), 1).otherwise(0)
+    )
+    return transformed_df.drop("age_at_visit", "school_year", "count")
+
+
 def assign_household_participant_count(
     df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
 ):
@@ -445,7 +486,7 @@ def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_colum
 
 
 def assign_school_year_september_start(
-    df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str
+    df: DataFrame, dob_column: str, visit_date_column: str, column_name_to_assign: str
 ) -> DataFrame:
     """
     Assign a column for the approximate school year of an individual given their age at the time
@@ -458,14 +499,14 @@ def assign_school_year_september_start(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+            ((F.month(F.col(visit_date_column))) >= 9) & ((F.month(F.col(dob_column))) < 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 3,
         )
         .when(
-            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+            (F.month(F.col(visit_date_column)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 4,
         )
-        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
+        .otherwise((F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 5),
     )
     df = df.withColumn(
         column_name_to_assign,

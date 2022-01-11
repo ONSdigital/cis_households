@@ -5,6 +5,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_multigen
 from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
@@ -67,6 +68,15 @@ def process_post_merge(**kwargs):
 
     response_level_records_df, response_level_records_filtered_df = filter_response_records(
         response_level_records_df, "visit_datetime"
+    )
+
+    response_level_records_df = assign_multigen(
+        df=response_level_records_df,
+        column_name_to_assign="multigen",
+        participant_id_column="participant_id",
+        hh_id_column="ons_household_id",
+        visit_date_column="visit_date_string",
+        dob_column="date_of_birth",
     )
 
     update_table(response_level_records_df, kwargs["response_records_table"], mode_overide="overwrite")
