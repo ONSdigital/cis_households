@@ -11,20 +11,13 @@ from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
 from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
-from cishouseholds.weights.extract import load_auxillary_data
 from cishouseholds.weights.extract import prepare_auxillary_data
 
-# from cishouseholds.weights.edit import reformat_calibration_df
 
-# from cishouseholds.weights.extract import load_auxillary_data
-
-
-# 1174
 def proccess_population_projection_df(dfs: dict, month: int):
     """
-    process and format population projections tables by reshaping new datafrmae and recalculating predicted values
+    process and format population projections tables by reshaping new dataframe and recalculating predicted values
     """
-    # dfs = load_auxillary_data(specify=["population_projection_current", "population_projection_previous", "aps_lookup"]) # noqa: E501
     dfs = prepare_auxillary_data(dfs)
     previous_projection_df = dfs["population_projection_previous"]
     current_projection_df = dfs["population_projection_current"]
@@ -54,7 +47,6 @@ def proccess_population_projection_df(dfs: dict, month: int):
 
     current_projection_df = reformat_age_population_table(current_projection_df, m_f_columns)
 
-    # 1175
     aps_lookup_df = assign_ethnicity_white(
         dfs["aps_lookup"],
         "ethnicity_white",
@@ -96,7 +88,6 @@ def proccess_population_projection_df(dfs: dict, month: int):
     return calibrated_df, current_projection_df
 
 
-# 1175
 def calculate_additional_population_columns(
     df: DataFrame,
     country_name_column: str,
@@ -144,7 +135,6 @@ def calculate_additional_population_columns(
     return df
 
 
-# 1175
 def calculate_population_totals(
     df: DataFrame, group_by_column: str, population_column: str, white_proportion_column: str
 ):
@@ -164,12 +154,6 @@ def calculate_population_totals(
     return df
 
 
-# 1176
-# necessary columns:
-# - p1_for_swab_longcovid
-# - population
-# Note:
-# calibrated dataframe contains missing p3 values as the excel doc does not ask for them to be omitted
 def calibarate_df(
     df: DataFrame,
     groupby_columns: List[str],
@@ -189,14 +173,6 @@ def calibarate_df(
     return None
 
 
-# 1176
-# necessary columns:
-# - p1_for_swab_longcovid
-# - population
-# - p1_for_antibodies_wales_scot_ni
-# - p1_for_antibodies_evernever_engl
-# - p3_for_antibodies_28daysto_engl
-# - p22_white_population_antibodies
 def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
     """
     create separate dataframes for population totals for specific groups
@@ -278,10 +254,3 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
                 output_df = output_df.union(calibrated_df)
 
     return output_df
-
-
-if __name__ == "__main__":
-    proccess_population_projection_df(
-        dfs=load_auxillary_data(),
-        month=7,
-    )

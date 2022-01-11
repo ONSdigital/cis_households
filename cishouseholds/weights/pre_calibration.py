@@ -21,20 +21,14 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         df_dweights,
         on="ons_household_id",
         how="left",
-    )  # there will be no same ons_household_id as df_dweights is all dummy data.
+    )
 
     # TEMPORARY
     for column_name in ["ever_never_swab", "ever_never_antibodies", "longcovid", "14_days", "28_days", "42_days"]:
         df = df.withColumn(column_name, F.lit(1))
-    df = df.withColumn(
-        "index_multiple_deprivation", F.col("index_multiple_deprivation").cast("float")
-    )  # recast index_multiple_deprivation as numeric flaot.
-    df = df.withColumn("interim_participant_id", F.lit(1))  # add function that gets interim_participant_id
-    df = df.withColumn("region_code", F.lit("E12000002"))  # region_code needs to be imported
-
+    df = df.withColumn("index_multiple_deprivation", F.col("index_multiple_deprivation").cast("float"))
     # TODO - define logic for ever_never_swab, longcovid, 14_days, etc.
     # TODO - extract index_multiple_deprivation, region_code columns
-    # TODO - define logic for interim_participant_id
 
     df = survey_extraction_household_data_response_factor(
         df=df,
@@ -183,8 +177,8 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
         ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
 
-    w2_nni = Window.partitionBy(*window_list_nni, "interim_participant_id")
-    w2_ni = Window.partitionBy(*window_list_ni, "interim_participant_id")
+    w2_nni = Window.partitionBy(*window_list_nni, "participant_id")
+    w2_ni = Window.partitionBy(*window_list_ni, "participant_id")
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
         F.when(
@@ -195,9 +189,7 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
 
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
-        F.when(F.col("interim_participant_id") != 1, 0).otherwise(
-            F.col("total_responded_households_cis_imd_addressbase")
-        ),
+        F.when(F.col("participant_id") != 1, 0).otherwise(F.col("total_responded_households_cis_imd_addressbase")),
     )
 
     df = df.withColumn(
@@ -269,7 +261,7 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "household_level_designweight_adjusted_swab",
         F.when(
-            F.col("response_indicator") == 1,  # TODO: consider interim_participant_id as well
+            F.col("response_indicator") == 1,
             F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
@@ -575,137 +567,4 @@ def create_calibration_var(
                 column_dataset,
                 F.when(calibration_dic[calibration_type]["condition"], F.lit(1)).otherwise(F.col(column_dataset)),
             )
-    return df
-
-
-# 1180
-def generate_datasets_to_be_weighted_for_calibration(
-    df: DataFrame,
-    processing_step: int
-    # dataset,
-    # dataset_type:str
-):
-    """
-    Parameters
-    ----------
-    df
-    processing_step:
-        1 for
-            england_swab_evernever, england_swab_14days, england_longcovid_28days, england_longcovid_42days
-        2 for
-            wales_swab_evernever, wales_swab_14days, wales_longcovid_28days, wales_longcovid_42days,
-            scotland_swab_evernever, scotland_swab_14days, scotland_longcovid_28days, scotland_longcovid_42days,
-            northen_ireland_swab_evernever, northen_ireland_swab_14days, northen_ireland_longcovid_28days,
-            northen_ireland_longcovid_42days
-        3 for
-            england_antibodies_evernever
-        4 for
-            england_antibodies_28daysto
-        5 for
-            wales_antibodies_evernever
-            wales_antibodies_28daysto
-        6 for
-            scotland_antibodies_evernever
-            scotland_antibodies_28daysto
-            northen_ireland_antibodies_evernever
-            northen_ireland_antibodies_28daysto
-    """
-    dataset_dict = {
-        1: {
-            "variable": ["england"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_swab",
-                "p1_swab_longcovid_england",
-            ],
-            "create_dataset": [
-                "england_swab_evernever",
-                "england_swab_14days",
-                "england_longcovid_24days",
-                "england_longcovid_42days",
-            ],
-        },
-        2: {
-            "variable": ["wales", "scotland", "northen_ireland"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_swab",
-                "p1_swab_longcovid_wales_scot_ni",
-            ],
-            "create_dataset": [
-                "wales_swab_evernever",
-                "wales_swab_14days",
-                "wales_longcovid_24days",
-                "wales_longcovid_42days",
-                "scotland_swab_evernever",
-                "scotland_swab_14days",
-                "scotland_longcovid_24days",
-                "scotland_longcovid_42days",
-                "northen_ireland_swab_evernever",
-                "northen_ireland_swab_14days",
-                "northen_ireland_longcovid_24days",
-                "northen_ireland_longcovid_42days",
-            ],
-        },
-        3: {
-            "variable": ["england"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_antibodies",
-                "p1_for_antibodies_evernever_engl",
-                "p2_for_antibodies",
-            ],
-            "create_dataset": ["england_antibodies_evernever"],
-        },
-        4: {
-            "variable": ["england"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_antibodies",
-                "p1_for_antibodies_28daysto_engl",
-                "p2_for_antibodies",
-                "p3_for_antibodies_28daysto_engl",
-            ],
-            "create_dataset": ["england_antibodies_28daysto"],
-        },
-        5: {
-            "variable": ["wales"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_antibodies",
-                "p1_for_antibodies_wales_scot_ni",
-                "p2_for_antibodies",
-            ],
-            "create_dataset": ["wales_antibodies_evernever", "wales_antibodies_28daysto"],
-        },
-        6: {
-            "variable": ["scotland", "northen_ireland"],
-            "keep_var": [
-                "country_name_12",
-                "participant_id",
-                "scaled_design_weight_adjusted_antibodies",
-                "p1_for_antibodies_wales_scot_ni",
-            ],
-            "create_dataset": [
-                "scotland_antibodies_evernever",
-                "scotland_antibodies_28daysto",
-                "northen_ireland_antibodies_evernever",
-                "northen_ireland_antibodies_28daysto",
-            ],
-        },
-    }
-
-    df = df.where(F.col("country_name_12").isin(dataset_dict[processing_step]["variable"])).select(
-        *dataset_dict[processing_step]["keep_var"]
-    )
-
-    # df.where(F.col('country_name_12').isin(dataset_dict[processing_step]['variable']))
-    # TODO: create datasets dataset_dict[processing_step]['create_dataset']
-
-    # TODO: no need to create multiple df
     return df
