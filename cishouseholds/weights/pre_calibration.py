@@ -23,14 +23,18 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         how="left",
     )  # there will be no same ons_household_id as df_dweights is all dummy data.
 
-    # TEMPORARY: TODO only temporary placeholder until logic of flag datasets is worked out.
+    # TEMPORARY
     for column_name in ["ever_never_swab", "ever_never_antibodies", "longcovid", "14_days", "28_days", "42_days"]:
         df = df.withColumn(column_name, F.lit(1))
     df = df.withColumn(
         "index_multiple_deprivation", F.col("index_multiple_deprivation").cast("float")
-    )  # TODO: recast index_multiple_deprivation as numeric flaot.
-    df = df.withColumn("interim_participant_id", F.lit(1))  # TODO add function that gets interim_participant_id
-    df = df.withColumn("region_code", F.lit("E12000002"))  # TODO region_code needs to be imported
+    )  # recast index_multiple_deprivation as numeric flaot.
+    df = df.withColumn("interim_participant_id", F.lit(1))  # add function that gets interim_participant_id
+    df = df.withColumn("region_code", F.lit("E12000002"))  # region_code needs to be imported
+
+    # TODO - define logic for ever_never_swab, longcovid, 14_days, etc.
+    # TODO - extract index_multiple_deprivation, region_code columns
+    # TODO - define logic for interim_participant_id
 
     df = survey_extraction_household_data_response_factor(
         df=df,
@@ -44,7 +48,6 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df = adjusted_design_weights_to_population_totals(df)
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
-
     return df
 
 
