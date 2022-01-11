@@ -30,11 +30,13 @@ def extract_from_table(table_name: str):
 def delete_tables(**kwargs):
     spark_session = get_or_create_spark_session()
     prefix = get_config()["storage"]["table_prefix"]
-    if kwargs["table_names"]:
+    if "table_names" in kwargs and kwargs["table_names"] != "":
         for table_name in kwargs["table_names"]:
             spark_session.sql(f"DROP TABLE IF EXISTS {prefix}_{table_name}")
-    if kwargs["pattern"]:
-        spark_session.sql(f"DROP TABLE IF EXISTS LIKE[{kwargs['pattern']}]")
+    if "pattern" in kwargs and kwargs["pattern"] != "":
+        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['pattern']}")
+    if "prefix" in kwargs and kwargs["prefix"] != "":
+        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix']}%")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
