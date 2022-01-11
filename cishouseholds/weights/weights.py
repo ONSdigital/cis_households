@@ -1,8 +1,9 @@
+from typing import List
+from typing import Union
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-from typing import List
-from typing import Union
 
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
