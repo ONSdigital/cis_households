@@ -17,6 +17,7 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df_dweights
     df_country
     """
+    # TODO: there will be no same ons_household_id as df_dweights is all dummy data.
     df = df_survey.join(
         df_dweights,
         on="ons_household_id",
@@ -30,14 +31,24 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         df_extract_by_country=df_country,
         required_extracts_column_list=["ons_household_id", "participant_id", "sex", "ethnicity_white", "age_at_visit"],
     )
+    # TODO temp: recast index_multiple_deprivation as numeric flaot.
+    df = df.withColumn("index_multiple_deprivation", F.col("index_multiple_deprivation").cast("float"))
+
     df = derive_index_multiple_deprivation_group(df)
+
+    # TODO: add function that gets interim_participant_id
+    df = df.withColumn("interim_participant_id", F.lit(1))
+
     df = derive_total_responded_and_sampled_households(df)
     df = calculate_non_response_factors(df, n_decimals=3)
     df = adjust_design_weight_by_non_response_factor(df)
     df = adjusted_design_weights_to_population_totals(df)
+
+    # TODO: region_code needs to be imported from either of the df inputs
+    df = df.withColumn("region_code", F.lit("E12000002"))
+
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
-
     return df
 
 
@@ -302,7 +313,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     """
     w_country = Window.partitionBy("country_name_12")
 
-    test_type_list = ["ever_never_antibodies", "ever_never_swab"]
+    test_type_list = ["antibodies", "swab"]
 
     for test_type in test_type_list:
         df = df.withColumn(
