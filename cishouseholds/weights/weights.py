@@ -1,9 +1,8 @@
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
@@ -14,8 +13,6 @@ from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
 from cishouseholds.weights.edit import update_data
 from cishouseholds.weights.extract import prepare_auxillary_data
-
-# from cishouseholds.weights.extract import load_auxillary_data
 
 # notes:
 # validation checks relate to final dweights for entire column for both datasets (each hh must have a dweight)
@@ -466,10 +463,6 @@ def calculate_scenario_c_antibody_dweights(
     return df
 
 
-# 1170
-# necessary columns:
-# - raw_design_weight_antibodies_ab OR
-# - combined_design_weight_antibody
 def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: str, household_population_column: str):
     """
     Use scenario lookup to apply dependent function to carry forward design weights variable
@@ -494,11 +487,3 @@ def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: s
         F.col("scaling_factor_carryforward_design_weight_antibodies") * F.col("carryforward_design_weight_antibodies"),
     )
     return df
-
-
-# if __name__ == "__main__":
-#     try:
-#         generate_weights(load_auxillary_data())
-#     except Exception as e:
-#         pass
-# generate_weights()

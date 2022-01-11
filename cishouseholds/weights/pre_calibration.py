@@ -1,9 +1,8 @@
-from typing import List
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
+from typing import List
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
@@ -177,8 +176,8 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
         ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
 
-    w2_nni = Window.partitionBy(*window_list_nni, "participant_id")
-    w2_ni = Window.partitionBy(*window_list_ni, "participant_id")
+    w2_nni = Window.partitionBy(*window_list_nni, "response_indicator")
+    w2_ni = Window.partitionBy(*window_list_ni, "response_indicator")
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
         F.when(
@@ -189,7 +188,7 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
 
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
-        F.when(F.col("participant_id") != 1, 0).otherwise(F.col("total_responded_households_cis_imd_addressbase")),
+        F.when(F.col("response_indicator") != 1, 0).otherwise(F.col("total_responded_households_cis_imd_addressbase")),
     )
 
     df = df.withColumn(

@@ -1,6 +1,7 @@
+from pyspark.sql import functions as F
+
 import rpy2.robjects as robjects
 import yaml
-from pyspark.sql import functions as F
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 
@@ -9,8 +10,8 @@ from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
-from cishouseholds.weights.pre_calibration import calibration_datasets
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 
@@ -27,7 +28,6 @@ regenesees = importr(
 
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(**kwargs):
-    # TODO: Read lookups and input data
     list_paths = [
         "address_lookup",
         "cis_lookup",
@@ -37,20 +37,20 @@ def sample_file_ETL(**kwargs):
         "tranche",
     ]
     dfs = extract_df_list(list_paths, "old_sample_file", **kwargs)
+    dfs = prepare_auxillary_data(dfs)
     design_weights = generate_weights(dfs)
-    update_table(design_weights, "participant_geographies_design_weights", mode_overide="overwrite")
+    update_table(design_weights, kwargs["design_weight_table"], mode_overide="overwrite")
 
 
 @register_pipeline_stage("population_projection")
-def population_projection(**kwargs):
+def population_projection(population_totals_table, population_projections_table, **kwargs):
     list_paths = ["population_projection_current", "aps_lookup"]
     dfs = extract_df_list(list_paths, "population_projection_previous", **kwargs)
-    (
-        population_projections,
-        populations_for_calibration,
-    ) = proccess_population_projection_df(dfs=dfs, month=kwargs["month"])
-    update_table(populations_for_calibration, "populations_for_calibration_table", mode_overide="overwrite")
-    update_table(population_projections, "population_projections_table", mode_overide="overwrite")
+    (populations_for_calibration, population_projections) = proccess_population_projection_df(
+        dfs=dfs, month=kwargs["month"]
+    )
+    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
+    update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
 
 def extract_df_list(list_paths, previous, **kwargs):
@@ -59,7 +59,6 @@ def extract_df_list(list_paths, previous, **kwargs):
         list_paths.append(previous)
 
     elif check_table_or_path == "table":
-        # TODO: Read "population_projection_current", "aps_lookup" from CSV
         population_projection_previous = extract_from_table(kwargs[previous])
 
     dfs = {}
@@ -73,11 +72,13 @@ def extract_df_list(list_paths, previous, **kwargs):
 
 
 @register_pipeline_stage("pre_calibration")
-def pre_calibration(**kwargs):
-    household_level_with_design_weights = extract_from_table(kwargs["design_weight_table"])
-    population_by_country = extract_from_table(kwargs["population_country_table"])
+def pre_calibration(
+    design_weight_table, population_projections_table, survey_response_table, responses_pre_calibration_table
+):
+    household_level_with_design_weights = extract_from_table(design_weight_table)
+    population_by_country = extract_from_table(population_projections_table)
 
-    survey_response = extract_from_table(kwargs["survey_response_table"])
+    survey_response = extract_from_table(survey_response_table)
 
     survey_response = survey_response.select(
         "ons_household_id",
@@ -88,6 +89,7 @@ def pre_calibration(**kwargs):
     )
 
     population_by_country = population_by_country.select(
+        "region_code",
         "country_name_12",
         "population_country_swab",
         "population_country_antibodies",
@@ -98,7 +100,7 @@ def pre_calibration(**kwargs):
         df_dweights=household_level_with_design_weights,
         df_country=population_by_country,
     )
-    update_table(df_for_calibration, "responses_pre_calibration_table", mode_overide="overwrite")
+    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("weight_calibration")
@@ -114,7 +116,7 @@ def weight_calibration(
     calibration_config_path
         path to YAML file containing a list of dictionaries with keys:
             dataset_name: swab_evernever
-            country: string country name in title case
+            country: string country name in lower case
             bounds: list of lists containing lower and upper bounds
             design_weight_column: string column name
             calibration_model_components: list of string column names
@@ -135,13 +137,17 @@ def weight_calibration(
             .transpose()
         )
 
-        columns_to_select = calibration_datasets[dataset_options["dataset_name"]]["columns_to_select"]
+        columns_to_select = (
+            ["participant_id", "country_name_12"]
+            + [dataset_options["design_weight_column"]]
+            + dataset_options["calibration_model_components"]
+        )
         responses_subset_df = (
-            full_response_level_df.where(
-                (F.col(calibration_datasets[dataset_options["dataset_name"]]["subset_flag_column"]) == 1)
-                & (F.col("country") == dataset_options["country"])
+            full_response_level_df.select(columns_to_select)
+            .where(
+                (F.col(dataset_options["subset_flag_column"]) == 1)
+                & (F.col("country_name_12") == dataset_options["country"])
             )
-            .select(columns_to_select)
             .toPandas()
         )
 
@@ -170,23 +176,23 @@ def weight_calibration(
                 dataset_options["design_weight_column"],
             )
 
-        with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
-            calibrated_pandas_df = robjects.conversion.rpy2rp(responses_subset_df_r_df)
+            with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+                calibrated_pandas_df = robjects.conversion.rpy2rp(responses_subset_df_r_df)
 
-        calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
-        update_table(
-            calibrated_df,
-            base_output_table_name
-            + "_"
-            + dataset_options["dataset_name"]
-            + "_"
-            + dataset_options["country"]
-            + "_"
-            + bounds[0]
-            + "-"
-            + bounds[1],
-            mode_overide="overwrite",
-        )
+            calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
+            update_table(
+                calibrated_df,
+                base_output_table_name
+                + "_"
+                + dataset_options["dataset_name"]
+                + "_"
+                + dataset_options["country_name_12"]
+                + "_"
+                + bounds[0]
+                + "-"
+                + bounds[1],
+                mode_overide="overwrite",
+            )
 
 
 def convert_columns_to_r_factors(df: robjects.DataFrame, columns_to_covert: list) -> robjects.DataFrame:
