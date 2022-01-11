@@ -27,11 +27,14 @@ def extract_from_table(table_name: str):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables(table_names: str):
+def delete_tables(**kwargs):
     spark_session = get_or_create_spark_session()
     prefix = get_config()["storage"]["table_prefix"]
-    for table_name in table_names:
-        spark_session.sql(f"DROP TABLE IF EXISTS {prefix}_{table_name}")
+    if kwargs["table_names"]:
+        for table_name in kwargs["table_names"]:
+            spark_session.sql(f"DROP TABLE IF EXISTS {prefix}_{table_name}")
+    if kwargs["pattern"]:
+        spark_session.sql(f"DROP TABLE IF EXISTS LIKE[{kwargs['pattern']}]")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
