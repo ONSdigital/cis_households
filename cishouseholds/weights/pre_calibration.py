@@ -98,7 +98,7 @@ def survey_extraction_household_data_response_factor(
         df_extract_by_country,
         (
             (df["country_name_12"] == df_extract_by_country["country_name_12_right"])
-            & ((df["antibodies"] == 1) | ((df["swab"] == 1) | (df["longcovid"] == 1)))
+            & ((df["ever_never_antibodies"] == 1) | ((df["ever_never_swab"] == 1) | (df["longcovid"] == 1)))
         ),
         how="left",
     ).drop("country_name_12" + "_right")
@@ -107,11 +107,13 @@ def survey_extraction_household_data_response_factor(
     # are kept in the same record?
     df = df.withColumn(
         "population_country_swab",
-        F.when((F.col("swab") == 1) | (F.col("longcovid") == 1), F.col("population_country_swab")).otherwise(None),
+        F.when((F.col("ever_never_swab") == 1) | (F.col("longcovid") == 1), F.col("population_country_swab")).otherwise(
+            None
+        ),
     )
     df = df.withColumn(
         "population_country_antibodies",
-        F.when((F.col("antibodies") == 1), F.col("population_country_antibodies")).otherwise(None),
+        F.when((F.col("ever_never_antibodies") == 1), F.col("population_country_antibodies")).otherwise(None),
     )
     return df
 
@@ -299,7 +301,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     """
     w_country = Window.partitionBy("country_name_12")
 
-    test_type_list = ["antibodies", "swab"]
+    test_type_list = ["ever_never_antibodies", "ever_never_swab"]
 
     for test_type in test_type_list:
         df = df.withColumn(
@@ -500,23 +502,23 @@ def create_calibration_var(
                 | (F.col("country_name_12") == "northern_ireland")  # TODO: double-check name
             )
             & (
-                ((F.col("swab") == 1) & (F.col("ever_never_swab") == 1) & (F.col("14_days") == 1))
-                | (
-                    (F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1))
-                )  # Assumed OR(28_day, 42_day)
+                ((F.col("ever_never_swab") == 1) & (F.col("14_days") == 1))
+                | ((F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1)))
             ),
             "operation": ((F.col("interim_sex") - 1) * 7 + F.col("age_group_swab")),
         },
         "p1_for_antibodies_evernever_engl": {
             "dataset": ["antibodies_evernever"],
-            "condition": (F.col("country_name_12") == "england") & ((F.col("ever_never_antibodies") == 1)),
+            "condition": (F.col("country_name_12") == "england") & (F.col("ever_never_antibodies") == 1),
             "operation": (
                 (F.col("interim_region_code") - 1) * 10 + (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")
             ),
         },
         "p1_for_antibodies_28daysto_engl": {
             "dataset": ["antibodies_28daysto"],
-            "condition": (F.col("country_name_12") == "england") & (F.col("antibodies") == 1) & (F.col("28_days") == 1),
+            "condition": (F.col("country_name_12") == "england")
+            & (F.col("ever_never_antibodies") == 1)
+            & (F.col("28_days") == 1),
             "operation": (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies"),
         },
         "p1_for_antibodies_wales_scot_ni": {
@@ -535,7 +537,7 @@ def create_calibration_var(
                 "antibodies_28daysto",
             ],
             "condition": ((F.col("country_name_12") == "wales") | (F.col("country_name_12") == "england"))
-            & ((F.col("ever_never_antibodies") == 1) | ((F.col("antibodies") == 1) & (F.col("28_days") == 1))),
+            & ((F.col("ever_never_antibodies") == 1) | (F.col("28_days") == 1)),
             "operation": (F.col("ethnicity_white") + 1),
         },
         "p3_for_antibodies_28daysto_engl": {
@@ -543,7 +545,7 @@ def create_calibration_var(
             "condition": (
                 (F.col("country_name_12") == "england")
                 & (F.col("age_at_visit") >= 16)  # TODO: age of visit to be put as input?
-                & (F.col("antibodies") == 1)
+                & (F.col("ever_never_antibodies") == 1)
                 & (F.col("28_days") == 1)
             ),
             "operation": (F.col("interim_region_code")),
