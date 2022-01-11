@@ -33,10 +33,9 @@ def test_precal_end_to_end(spark_session):
         household_level_designweight_antibodies double,
         check_if_missing integer,
 
-        swab integer,
-        antibodies integer,
+        ever_never_swab integer,
+        ever_never_antibodies integer,
         longcovid integer,
-        ever_never integer,
         14_days integer,
         28_days integer,
         42_days integer,
@@ -159,16 +158,7 @@ def test_precal_end_to_end(spark_session):
     df = calculate_non_response_factors(df, n_decimals=3)
     df = adjust_design_weight_by_non_response_factor(df)
     df = adjusted_design_weights_to_population_totals(df)
-
-    # TODO: add for loop with test_type
-    # check_1, check_2_3, check_4 = precalibration_checkpoints(
-    #     df,
-    #     test_type="swab",
-    #     dweight_list=["household_level_designweight_swab", "household_level_designweight_antibodies"],
-    # )
-
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
 
-    # df1 = generate_datasets_to_be_weighted_for_calibration(df=df, processing_step=1)
     assert_df_equality(df, df_expected, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
