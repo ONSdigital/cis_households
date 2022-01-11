@@ -16,19 +16,14 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df
     df_country
     """
-    import pdb
-
-    pdb.set_trace()
-
     df = df_survey.join(
         df_dweights,
         on="ons_household_id",
         how="left",
     )
-    import pdb
 
-    pdb.set_trace()
-
+    # temporary: add columns ever_never_swab, ever_never_antibodies
+    df = dataset_flag_generator(df)
     df = survey_extraction_household_data_response_factor(
         df=df,
         df_extract_by_country=df_country,
@@ -45,12 +40,25 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     return df
 
 
+def dataset_flag_generator(df):
+    # TODO: only temporary placeholder until logic of flag datasets is worked out.
+    list_dataset_flag_column = [
+        "ever_never_swab",
+        "ever_never_antibodies",
+        "longcovid",
+        "14_days",
+        "28_days",
+        "42_days",
+    ]
+    for column_name in list_dataset_flag_column:
+        df = df.withColumn(column_name, F.lit(1))
+    return df
+
+
 # 1178
 def survey_extraction_household_data_response_factor(
     df: DataFrame,
-    # hh_samples_df: DataFrame,
     df_extract_by_country: DataFrame,
-    # table_name: str,
     required_extracts_column_list: List[str],
 ) -> DataFrame:
     """
@@ -82,12 +90,6 @@ def survey_extraction_household_data_response_factor(
         # .drop("participant_id") # ?
         # .dropDuplicates("ons_household_id") # ?
     )
-
-    # df = df.join(
-    #     hh_samples_df,
-    #     on='participant_id',
-    #     how="left"
-    # )
 
     # STEP 4 - merge hh_samples_df (36 processing step) and household level extract (69 processing step)
     # TODO: check if population_by_country comes by country separated or together
@@ -477,9 +479,7 @@ def create_calibration_var(
             ],
             "condition": ((F.col("country_name_12") == "england"))
             & (
-                (
-                    (F.col("swab") == 1) & (F.col("ever_never") == 1) | (F.col("14_days") == 1)
-                )  # TODO: is it OR(ever_never, 14_days)?
+                ((F.col("ever_never_swab") == 1) | (F.col("14_days") == 1))
                 | (
                     (F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1))
                 )  # assumed to be OR(28, 42_days)
@@ -500,7 +500,7 @@ def create_calibration_var(
                 | (F.col("country_name_12") == "northern_ireland")  # TODO: double-check name
             )
             & (
-                ((F.col("swab") == 1) & (F.col("ever_never") == 1) & (F.col("14_days") == 1))
+                ((F.col("swab") == 1) & (F.col("ever_never_swab") == 1) & (F.col("14_days") == 1))
                 | (
                     (F.col("longcovid") == 1) & ((F.col("28_days") == 1) | (F.col("42_days") == 1))
                 )  # Assumed OR(28_day, 42_day)
@@ -509,8 +509,7 @@ def create_calibration_var(
         },
         "p1_for_antibodies_evernever_engl": {
             "dataset": ["antibodies_evernever"],
-            "condition": (F.col("country_name_12") == "england")
-            & ((F.col("antibodies") == 1) & (F.col("ever_never") == 1)),  # clarify if OR(antibodies, ever_never)
+            "condition": (F.col("country_name_12") == "england") & ((F.col("ever_never_antibodies") == 1)),
             "operation": (
                 (F.col("interim_region_code") - 1) * 10 + (F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")
             ),
@@ -527,7 +526,7 @@ def create_calibration_var(
                 | (F.col("country_name_12") == "scotland")
                 | (F.col("country_name_12") == "northern_ireland")  # TODO: double-check name
             )
-            & ((F.col("antibodies") == 1) & (F.col("ever_never") == 1) & (F.col("28_days") == 1)),
+            & ((F.col("ever_never_antibodies") == 1) & (F.col("28_days") == 1)),
             "operation": ((F.col("interim_sex") - 1) * 5 + F.col("age_group_antibodies")),
         },
         "p2_for_antibodies": {
@@ -536,10 +535,7 @@ def create_calibration_var(
                 "antibodies_28daysto",
             ],
             "condition": ((F.col("country_name_12") == "wales") | (F.col("country_name_12") == "england"))
-            & (
-                ((F.col("antibodies") == 1) & (F.col("ever_never") == 1))
-                | ((F.col("antibodies") == 1) & (F.col("28_days") == 1))
-            ),
+            & ((F.col("ever_never_antibodies") == 1) | ((F.col("antibodies") == 1) & (F.col("28_days") == 1))),
             "operation": (F.col("ethnicity_white") + 1),
         },
         "p3_for_antibodies_28daysto_engl": {

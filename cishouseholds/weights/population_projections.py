@@ -73,13 +73,13 @@ def proccess_population_projection_df(dfs: dict, month: int):
 
     current_projection_df = current_projection_df.join(
         aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16"),
-        current_projection_df["country_name_#"] == dfs["aps_lookup"]["country_name"],
+        current_projection_df["country_name_12"] == dfs["aps_lookup"]["country_name"],
         how="left",
     )
     current_projection_df = update_population_values(current_projection_df)
     current_projection_df = calculate_additional_population_columns(
         df=current_projection_df,
-        country_name_column="country_name_#",
+        country_name_column="country_name_12",
         region_code_column="interim_region_code",
         sex_column="interim_sex",
         age_group_swab_column="age_group_swab",
@@ -87,12 +87,12 @@ def proccess_population_projection_df(dfs: dict, month: int):
     )
     current_projection_df = calculate_population_totals(
         df=current_projection_df,
-        group_by_column="country_name_#",
+        group_by_column="country_name_12",
         population_column="population",
         white_proportion_column="percentage_white_ethnicity_country_over16",
     )
 
-    calibrated_df = get_calibration_dfs(current_projection_df, "country_name_#", "age")
+    calibrated_df = get_calibration_dfs(current_projection_df, "country_name_12", "age")
     return calibrated_df, current_projection_df
 
 
