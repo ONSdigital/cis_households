@@ -1,8 +1,9 @@
+from typing import List
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
-from typing import List
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
