@@ -13,7 +13,8 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     """
     Parameters
     ----------
-    df
+    df_survey
+    df_dweights
     df_country
     """
     df = df_survey.join(
@@ -22,7 +23,7 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         how="left",
     )
 
-    # temporary: add columns ever_never_swab, ever_never_antibodies
+    # TODO: temporary ~ add columns ever_never_swab, ever_never_antibodies
     df = dataset_flag_generator(df)
     df = survey_extraction_household_data_response_factor(
         df=df,
