@@ -2,6 +2,7 @@ from pyspark.sql import functions as F
 
 import rpy2.robjects as robjects
 import yaml
+from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 
@@ -136,6 +137,10 @@ def weight_calibration(
             .toPandas()
             .transpose()
         )
+        population_totals_subset = population_totals_subset.rename(columns=population_totals_subset.iloc[0]).drop(
+            population_totals_subset.index[0]
+        )
+        assert population_totals_subset.shape[0] != 0, "Population totals subset is empty."
 
         columns_to_select = (
             ["participant_id", "country_name_12"]
@@ -150,8 +155,9 @@ def weight_calibration(
             )
             .toPandas()
         )
+        assert responses_subset_df.shape[0] != 0, "Responses subset is empty."
 
-        with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+        with localconverter(robjects.default_converter + pandas2ri.converter):
             population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
             responses_subset_df_r_df = robjects.conversion.py2rpy(responses_subset_df)
 
@@ -176,7 +182,7 @@ def weight_calibration(
                 dataset_options["design_weight_column"],
             )
 
-            with localconverter(robjects.default_converter + robjects.pandas2ri.converter):
+            with localconverter(robjects.default_converter + pandas2ri.converter):
                 calibrated_pandas_df = robjects.conversion.rpy2rp(responses_subset_df_r_df)
 
             calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
