@@ -99,7 +99,6 @@ def pre_calibration(**kwargs):
     # )
 
     population_by_country = population_by_country.select(
-        "country_code_12",
         "country_name_12",
         "population_country_swab",
         "population_country_antibodies",
