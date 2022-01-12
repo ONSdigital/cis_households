@@ -42,7 +42,7 @@ def delete_tables(**kwargs):
     if "pattern" in kwargs and kwargs["pattern"] != "":
         spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['pattern']}")
     if "prefix" in kwargs and kwargs["prefix"] != "":
-        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix'].replace('_','~_')}% ESCAPE '~'")  # noqa: W605
+        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix'].replace('_','~_')}% ESCAPE '~'")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
