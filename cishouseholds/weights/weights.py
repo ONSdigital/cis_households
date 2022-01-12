@@ -8,12 +8,13 @@ from pyspark.sql.window import Window
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.derive import get_matches
 from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
 from cishouseholds.weights.edit import update_data
 from cishouseholds.weights.extract import prepare_auxillary_data
+
+# from cishouseholds.weights.derive import get_matches
 
 # notes:
 # validation checks relate to final dweights for entire column for both datasets (each hh must have a dweight)
@@ -31,18 +32,18 @@ def generate_weights(auxillary_dfs):
     )
 
     # 1164
-    df = get_matches(
-        old_sample_df=auxillary_dfs["old_sample_file"],
-        new_sample_df=auxillary_dfs["new_sample_file"],
-        selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
-        barcode_column="ons_household_id",
-    )
+    # modify this to check that the column names may change and if they do to access the correct lookups
+    # df = get_matches(
+    #     old_sample_df=auxillary_dfs["old_sample_file"],
+    #     new_sample_df=auxillary_dfs["new_sample_file"],
+    #     selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
+    #     barcode_column="ons_household_id",
+    # )
+    df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
 
     # update and clean sample df's
     df = update_data(df, auxillary_dfs)
     df = clean_df(df)
-    old_df = clean_df(auxillary_dfs["old_sample_file"])
-    df = union_multiple_tables(tables=[df, old_df])
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
