@@ -10,6 +10,7 @@ survey_responses_datetime_map = {
         "other_antibody_test_last_negative_date",
         "cis_covid_vaccine_date",
         "outside_uk_last_date",
+        "improved_visit_date",
     ],
     "dd/MM/yy HH:mm": ["date_of_birth"],
     "yyyy-MM-dd'T'HH:mm:ss.SSSS": ["visit_datetime", "samples_taken_datetime"],
