@@ -28,6 +28,12 @@ def extract_from_table(table_name: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables(**kwargs):
+    """
+    All key word args are optional:
+    Specify table_names as a list contaning absolute table names to remove.
+    Specify pattern as a string in SQL format to set a specific SQL pattern to remove.
+    Specify prefix to remove all tables with a given prefix.
+    """
     spark_session = get_or_create_spark_session()
     prefix = get_config()["storage"]["table_prefix"]
     if "table_names" in kwargs and kwargs["table_names"] != "":
@@ -36,7 +42,7 @@ def delete_tables(**kwargs):
     if "pattern" in kwargs and kwargs["pattern"] != "":
         spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['pattern']}")
     if "prefix" in kwargs and kwargs["prefix"] != "":
-        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix']}%")
+        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix'].replace('_','~_')}% ESCAPE '~'")  # noqa: W605
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
