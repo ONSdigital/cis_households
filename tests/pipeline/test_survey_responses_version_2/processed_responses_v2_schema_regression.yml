@@ -24,6 +24,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: withdrawal_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: not_attended_reason
+  nullable: true
+  type: string
+- metadata: {}
   name: visit_type
   nullable: true
   type: string
@@ -39,6 +47,14 @@ fields:
   name: visit_datetime
   nullable: true
   type: timestamp
+- metadata: {}
+  name: improved_visit_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: deferred
+  nullable: true
+  type: string
 - metadata: {}
   name: street
   nullable: true
@@ -899,6 +915,54 @@ fields:
   name: cis_covid_vaccine_date
   nullable: true
   type: timestamp
+- metadata: {}
+  name: cis_covid_vaccine_type_1
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_1
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_1
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_2
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_2
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_2
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_3
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_3
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_3
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_4
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_4
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_4
+  nullable: true
+  type: string
 - metadata: {}
   name: cis_flu_vaccine_received
   nullable: true
