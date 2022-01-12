@@ -1,13 +1,12 @@
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
-
-from pyspark.sql import DataFrame
-from pyspark.sql import functions as F
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
@@ -20,10 +19,22 @@ from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
+@register_pipeline_stage("tables_to_csv")
+def tables_to_csv(table_dictonary):
+    config = get_config()
+    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
+    output_directory = Path(config["output_directory"]) / output_datetime
+
+    for table_name, output_file in table_dictonary:
+        df = extract_from_table(table_name)
+        df = map_output_values_and_column_names(df, output_name_map, category_map)
+        write_csv_rename(df, output_directory / f"{output_file}_{output_datetime}")
+
+
 @register_pipeline_stage("generate_outputs")
 def generate_outputs():
     config = get_config()
-    output_datetime = datetime.today().strftime("%Y%m%d%H%M%S")
+    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
     output_directory = Path(config["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
