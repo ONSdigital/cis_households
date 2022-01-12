@@ -70,7 +70,7 @@ def process_post_merge(**kwargs):
         response_level_records_df, "visit_datetime"
     )
 
-    response_level_records_df = assign_multigeneration(
+    multigeneration_df = assign_multigeneration(
         df=response_level_records_df,
         column_name_to_assign="multigen",
         participant_id_column="participant_id",
@@ -79,6 +79,7 @@ def process_post_merge(**kwargs):
         date_of_birth_column="date_of_birth",
     )
 
+    update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
     update_table(response_level_records_df, kwargs["response_records_table"], mode_overide="overwrite")
     update_table(response_level_records_filtered_df, kwargs["invalid_response_records_table"], mode_overide=None)
 

@@ -9,7 +9,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
-from cishouseholds.edit import split_school_year_by_country
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def assign_multigeneration(
@@ -23,6 +23,7 @@ def assign_multigeneration(
 ):
     """
     Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
+    Note: school year lookup dataframe must be amended to account for changes in school year start dates
     Parameters
     ----------
     df
@@ -33,18 +34,28 @@ def assign_multigeneration(
     date_of_birth_column
     country_column
     """
+    spark_session = get_or_create_spark_session()
+    school_year_lookup_df = spark_session.createDataFrame(
+        data=[
+            ("England", "09", "01", "09", "01"),
+            ("Wales", "09", "01", "09", "01"),
+            ("Scotland", "08", "15", "03", "01"),
+            ("NI", "09", "01", "07", "02"),
+        ],
+        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+    )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(
-        df.select(household_id_column, participant_id_column, date_of_birth_column), on=household_id_column
+        df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
+        on=household_id_column,
     )
-    transformed_df = assign_school_year_september_start(
+    transformed_df = assign_school_year(
         df=transformed_df,
-        dob_column=date_of_birth_column,
-        visit_date_column=visit_date_column,
         column_name_to_assign="school_year",
-    )
-    transformed_df = split_school_year_by_country(
-        df=df, school_year_column="school_year", country_column=country_column
+        reference_date_column=visit_date_column,
+        dob_column=date_of_birth_column,
+        country_column=country_column,
+        school_year_lookup=school_year_lookup_df,
     )
     transformed_df = assign_age_at_date(
         df=transformed_df,
@@ -52,17 +63,16 @@ def assign_multigeneration(
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
-
-    gen1_flag = F.when((F.col("age_at_visit") > 49), True).otherwise(True)
-    gen2_flag = F.when(
-        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), True
-    ).otherwise(False)
-    gen3_flag = F.when((F.col("school_year") <= 11), True).otherwise(False)
+    generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    generation2_flag = F.when(
+        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    ).otherwise(0)
+    generation3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
 
     window = Window.partitionBy(household_id_column, visit_date_column)
-    gen1_exists = F.when(F.sum(gen1_flag).over(window) >= 1, 1).otherwise(0)
-    gen2_exists = F.when(F.sum(gen2_flag).over(window) >= 1, 1).otherwise(0)
-    gen3_exists = F.when(F.sum(gen3_flag).over(window) >= 1, 1).otherwise(0)
+    gen1_exists = F.when(F.sum(generation1_flag).over(window) >= 1, True).otherwise(False)
+    gen2_exists = F.when(F.sum(generation2_flag).over(window) >= 1, True).otherwise(False)
+    gen3_exists = F.when(F.sum(generation3_flag).over(window) >= 1, True).otherwise(False)
 
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
