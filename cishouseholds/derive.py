@@ -12,7 +12,7 @@ from pyspark.sql import Window
 from cishouseholds.edit import split_school_year_by_country
 
 
-def assign_multigen(
+def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column,
@@ -53,11 +53,11 @@ def assign_multigen(
         date_of_birth=F.col(date_of_birth_column),
     )
 
-    gen1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    gen1_flag = F.when((F.col("age_at_visit") > 49), True).otherwise(True)
     gen2_flag = F.when(
-        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
-    ).otherwise(0)
-    gen3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), True
+    ).otherwise(False)
+    gen3_flag = F.when((F.col("school_year") <= 11), True).otherwise(False)
 
     window = Window.partitionBy(household_id_column, visit_date_column)
     gen1_exists = F.when(F.sum(gen1_flag).over(window) >= 1, 1).otherwise(0)
@@ -65,7 +65,7 @@ def assign_multigen(
     gen3_exists = F.when(F.sum(gen3_flag).over(window) >= 1, 1).otherwise(0)
 
     transformed_df = transformed_df.withColumn(
-        column_name_to_assign, F.when((gen1_exists == 1) & (gen2_exists == 1) & (gen3_exists == 1), 1).otherwise(0)
+        column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
     return transformed_df.drop("age_at_visit", "school_year", "count")
 
