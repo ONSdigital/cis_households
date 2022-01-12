@@ -153,8 +153,7 @@ def update_data(df: DataFrame, auxillary_dfs: dict):
         column_name_to_update="cis_area_code_20",
         join_on_columns=["lower_super_output_area_code_11"],
     )
-    drop_columns = [col for col in df.columns if "MATCHED" in col]
-    return df.drop(*drop_columns)
+    return df
 
 
 # 1165
@@ -169,7 +168,7 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
     df = df.withColumn(
         column_name_to_update,
         F.when(
-            F.col(f"MATCHED_{column_name_to_update}").isNull(),
+            F.col(column_name_to_update).isNull(),
             F.when(
                 F.col(f"{column_name_to_update}_from_lookup").isNotNull(), F.col(f"{column_name_to_update}_from_lookup")
             ).otherwise(("N/A")),
