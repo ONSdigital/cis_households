@@ -74,9 +74,9 @@ def process_post_merge(**kwargs):
         df=response_level_records_df,
         column_name_to_assign="multigen",
         participant_id_column="participant_id",
-        hh_id_column="ons_household_id",
+        household_id_column="ons_household_id",
         visit_date_column="visit_date_string",
-        dob_column="date_of_birth",
+        date_of_birth_column="date_of_birth",
     )
 
     update_table(response_level_records_df, kwargs["response_records_table"], mode_overide="overwrite")
