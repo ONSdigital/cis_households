@@ -174,3 +174,10 @@ def assign_date_interval_and_flag(
         column_name_inside_interval,
         F.when(~F.col(column_name_time_interval).between(lower_interval, upper_interval), 1).otherwise(None),
     )
+
+
+def file_exclude(df: DataFrame, drop_file_list: list, source_file_col: str):
+    for item in drop_file_list:
+        df = df.filter(~F.col(source_file_col).isin(item))
+
+    return df
