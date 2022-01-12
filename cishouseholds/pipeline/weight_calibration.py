@@ -1,6 +1,7 @@
+from pyspark.sql import functions as F
+
 import rpy2.robjects as robjects
 import yaml
-from pyspark.sql import functions as F
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
@@ -140,6 +141,7 @@ def weight_calibration(
             population_totals_subset.index[0]
         )
         assert population_totals_subset.shape[0] != 0, "Population totals subset is empty."
+        population_totals_vector = robjects.vectors.FloatVector(population_totals_subset.iloc[0].tolist())
 
         columns_to_select = (
             ["participant_id", "country_name_12"]
@@ -157,7 +159,7 @@ def weight_calibration(
         assert responses_subset_df.shape[0] != 0, "Responses subset is empty."
 
         with localconverter(robjects.default_converter + pandas2ri.converter):
-            population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
+            # population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
             responses_subset_df_r_df = robjects.conversion.py2rpy(responses_subset_df)
 
         sample_design = regenesees.e_svydesign(
@@ -169,7 +171,7 @@ def weight_calibration(
             responses_subset_df_r_df = assign_calibration_weight(
                 responses_subset_df_r_df,
                 "calibration_weight",
-                population_totals_subset_r_df,
+                population_totals_vector,
                 sample_design,
                 dataset_options["calibration_model_components"],
                 bounds,
