@@ -90,7 +90,7 @@ def pre_calibration(
     )
 
     population_by_country = population_by_country.select(
-        "region_code",
+        #"region_code",
         "country_name_12",
         "population_country_swab",
         "population_country_antibodies",

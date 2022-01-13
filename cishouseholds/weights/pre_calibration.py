@@ -40,6 +40,7 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df = calculate_non_response_factors(df, n_decimals=3)
     df = adjust_design_weight_by_non_response_factor(df)
     df = adjusted_design_weights_to_population_totals(df)
+    import pdb; pdb.set_trace()
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
     return df
