@@ -91,6 +91,11 @@ stages:
   - function: generate_outputs
     run: False
 
+  - function: tables_to_csv
+    run: False
+    table_file_pairs:
+      - [unioned_survey_responses, unioned_survey_responses]
+
 storage:
     database: covserolink_dev
     table_prefix: USERNAME_
