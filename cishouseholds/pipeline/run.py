@@ -9,11 +9,11 @@ import cishouseholds.pipeline.post_merge_processing  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_1_ETL  # noqa: F401
 import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
+import cishouseholds.pipeline.weight_calibration  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
-from cishouseholds.pipeline.weight_calibration import sample_file_ETL
 
 
 def run_from_config():
