@@ -17,18 +17,11 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df_dweights
     df_country
     """
-    import pdb
-
-    pdb.set_trace()
-
     df = df_survey.join(
         df_dweights,
         on="ons_household_id",
         how="left",
     )
-    import pdb
-
-    pdb.set_trace()
     # TEMPORARY
     for column_name in ["ever_never_swab", "ever_never_antibodies", "longcovid", "14_days", "28_days", "42_days"]:
         df = df.withColumn(column_name, F.lit(1))
@@ -90,9 +83,7 @@ def survey_extraction_household_data_response_factor(
     # STEP 4 - merge hh_samples_df (36 processing step) and household level extract (69 processing step)
     # TODO: check if population_by_country comes by country separated or together
     df_extract_by_country = df_extract_by_country.withColumnRenamed("country_name_12", "country_name_12_right")
-    import pdb
 
-    pdb.set_trace()
     df = df.join(
         df_extract_by_country,
         (
@@ -101,9 +92,6 @@ def survey_extraction_household_data_response_factor(
         ),
         how="left",
     ).drop("country_name_12" + "_right")
-    import pdb
-
-    pdb.set_trace()
 
     # TODO: is there a possibility that population_country_swab and population_country_antibodies values
     # are kept in the same record?
