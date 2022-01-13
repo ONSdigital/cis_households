@@ -1,9 +1,6 @@
 # import rpy2.robjects as robjects
 import yaml
 from pyspark.sql import functions as F
-# from rpy2.robjects import pandas2ri
-# from rpy2.robjects.conversion import localconverter
-# from rpy2.robjects.packages import importr
 
 from cishouseholds.pipeline.ETL_scripts import extract_input_data
 from cishouseholds.pipeline.load import extract_from_table
@@ -14,6 +11,10 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
+
+# from rpy2.robjects import pandas2ri
+# from rpy2.robjects.conversion import localconverter
+# from rpy2.robjects.packages import importr
 
 # regenesees = importr(
 #     "ReGenesees",
@@ -39,7 +40,7 @@ def sample_file_ETL(**kwargs):
     dfs = extract_df_list(list_paths, "old_sample_file", **kwargs)
     dfs = prepare_auxillary_data(dfs)
     design_weights = generate_weights(dfs)
-    #design_weights.toPandas().to_csv("full_out.csv",index=False)
+    # design_weights.toPandas().to_csv("full_out.csv",index=False)
     update_table(design_weights, kwargs["design_weight_table"], mode_overide="overwrite")
 
 
