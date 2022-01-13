@@ -1,13 +1,11 @@
 import csv
 from io import StringIO
 from operator import add
-from typing import List
-from typing import Union
-
 from pyspark import RDD
 from pyspark.sql import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
+from typing import Union
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -188,9 +186,6 @@ def read_csv_to_pyspark_df(
         sep=sep,
         **kwargs,
     )
-
-
-# --------------------------------------------
 
 
 def prepare_auxillary_data(auxillary_dfs: dict):
