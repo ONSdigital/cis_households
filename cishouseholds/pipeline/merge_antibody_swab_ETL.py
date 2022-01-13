@@ -1,5 +1,6 @@
 import pyspark.sql.functions as F
 
+from cishouseholds.filter import file_exclude
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -66,13 +67,18 @@ def merge_blood_ETL(**kwargs):
     """
     survey_table = kwargs["unioned_survey_table"]
     antibody_table = kwargs["antibody_table"]
+    survey_file_exclude_list = kwargs["files_to_exclude_survey"]
+    blood_file_exclude_list = kwargs["files_to_exclude_blood"]
 
     survey_df = extract_from_table(survey_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
+    survey_df = file_exclude(survey_df, "survey_response_source_file", survey_file_exclude_list)
+
     antibody_df = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
+    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_file_exclude_list)
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
@@ -91,13 +97,19 @@ def merge_swab_ETL(**kwargs):
     """
     survey_table = kwargs["merged_survey_table"]
     swab_table = kwargs["swab_table"]
+    survey_file_exclude_list = kwargs["files_to_exclude_survey"]
+    swab_file_exclude_list = kwargs["files_to_exclude_swab"]
 
     survey_df = extract_from_table(survey_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
+    survey_df = file_exclude(survey_df, "survey_response_source_file", survey_file_exclude_list)
+
     swab_df = extract_from_table(swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
+    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_file_exclude_list)
+
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
