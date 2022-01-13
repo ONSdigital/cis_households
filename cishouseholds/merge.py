@@ -7,6 +7,8 @@ from pyspark.sql.window import Window
 
 from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 
 
 def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List[str], str], drop_flag_column: str):
@@ -30,6 +32,27 @@ def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List
     return df.drop("ROW_NUMBER")
 
 
+def union_tables_hadoop(hadoop_table_name: str, tables: List[DataFrame]):
+    """
+    Helper function for executing the union function on tables with mismatched columns
+    through loading to hadoop table
+    Parameters
+    ---------
+    tables
+    reorder_columns
+    """
+    try:
+        dataframes = prepare_for_union(tables=tables)
+
+        update_table(dataframes[0], hadoop_table_name, mode_overide="overwrite")
+        for dfn in dataframes[1:]:
+            update_table(dfn, hadoop_table_name, mode_overide="append")
+
+        return extract_from_table(hadoop_table_name)
+    except Exception as e:
+        print(f"Unable to connect to hadoop {e}")  # functional
+
+
 def union_multiple_tables(tables: List[DataFrame]):
     """
     Given a list of tables combine them through a union process
@@ -39,11 +62,10 @@ def union_multiple_tables(tables: List[DataFrame]):
     tables
         list of objects representing the respective input tables
     """
-    merged_df = tables[0]
-
-    for i, table_n in enumerate(tables[1:]):
-        merged_df, dfn = prepare_for_union(merged_df, table_n)
-        merged_df = merged_df.unionByName(dfn)
+    dataframes = prepare_for_union(tables=tables)
+    merged_df = dataframes[0]
+    for dfn in dataframes[1:]:
+        merged_df = merged_df.union(dfn)
     return merged_df
 
 

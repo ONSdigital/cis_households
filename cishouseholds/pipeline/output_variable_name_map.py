@@ -378,4 +378,8 @@ output_name_map = {
     "household_weeks_since_survey_enrolment": "hh_enrol_week",
     "confirm_received_vouchers": "confirm_received_vouchers",
     "plate_storage_method": "platestorage",
+    "withdrawal_type": "withdrawal_type",
+    "not_attended_reason": "not_attended_reason",
+    "improved_visit_date": "improved_visit_date",
+    "deferred": "deferred",
 }

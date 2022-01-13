@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 
 from cishouseholds.merge import join_assayed_bloods
-from cishouseholds.merge import union_multiple_tables
+from cishouseholds.merge import union_tables_hadoop
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
@@ -22,7 +22,7 @@ def union_survey_response_files(**kwargs):
         survey_table = kwargs["transformed_survey_table"].replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    unioned_survey_responses = union_multiple_tables(survey_df_list)
+    unioned_survey_responses = union_tables_hadoop("unioned_survey_table", survey_df_list)
     unioned_survey_responses = unioned_survey_responses.dropDuplicates(
         subset=[column for column in unioned_survey_responses.columns if column != "survey_response_source_file"]
     )
