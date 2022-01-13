@@ -313,7 +313,10 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
         },
     )
     df = assign_school_year_september_start(
-        df, dob_column="date_of_birth", visit_date="visit_datetime", column_name_to_assign="school_year_september"
+        df,
+        dob_column="date_of_birth",
+        visit_date_column="visit_datetime",
+        column_name_to_assign="school_year_september",
     )
     # TODO: Enable once country data is linked on after merge
     # df = split_school_year_by_country(
