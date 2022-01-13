@@ -1,24 +1,12 @@
-exclusion_files:
-  survey_responses: [
-
-  ]
-  blood: [
-
-  ]
-  swab: [
-
-  ]
-
-
 stages:
   - function: delete_tables
-    run: True
+    run: False
     table_names:
     pattern:
     prefix:
 
   - function: historical_blood_ETL
-    run: True
+    run: False
     resource_path: "hdfs:///ons/covserolink/landing_zone/historical_bloods/historical_bloods_*.csv"
     include_invalid: True
     include_processed: True
@@ -112,6 +100,10 @@ stages:
   - function: generate_outputs
     run: False
 
+  - function: tables_to_csv
+    run: False
+    table_file_pairs:
+      - [unioned_survey_responses, unioned_survey_responses]
 
 storage:
     database: covserolink_dev

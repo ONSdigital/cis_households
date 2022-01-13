@@ -333,12 +333,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "work_status", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
     )
-    df = update_work_facing_now_column(
-        df,
-        "work_patient_facing_now",
-        "work_status",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -428,6 +422,12 @@ def union_dependent_transformations(df):
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
+    df = update_work_facing_now_column(
+        df,
+        "work_patient_facing_now",
+        "work_status",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
@@ -482,7 +482,7 @@ def union_dependent_transformations(df):
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        symptoms_bool_column="sympt_now_cghfevamn",
+        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
         id_column="participant_id",
         visit_date_column="visit_date",
         visit_id_column="visit_id",
@@ -497,14 +497,14 @@ def union_dependent_transformations(df):
     #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
     # )
 
-    df = assign_household_participant_count(
-        df,
-        column_name_to_assign="household_participant_count",
-        household_id_column="ons_household_id",
-        participant_id_column="participant_id",
-    )
-    df = assign_people_in_household_count(
-        df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
-    )
+    # df = assign_household_participant_count(
+    #     df,
+    #     column_name_to_assign="household_participant_count",
+    #     household_id_column="ons_household_id",
+    #     participant_id_column="participant_id",
+    # )
+    # df = assign_people_in_household_count(
+    #     df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
+    # )
 
     return df
