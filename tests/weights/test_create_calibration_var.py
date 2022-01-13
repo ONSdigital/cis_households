@@ -8,10 +8,10 @@ def test_create_calibration_var(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('england',			    1,1,1,16, 3, 2,1,	1,		1, 1, 1,1, 1,1,		    3, 		None, 	2,		2, 		None,	    2,		1, 		1, 1, 1, 1, 1, 1),
-                ('wales',				1,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None,		None, 	None, 	1, None, 1, 1, None, None),
-                ('northern_ireland',	2,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
-                ('scotland',			3,1,1,16, 3, 2,1, 	None,	1, 1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
+                ('england',			    1,1,1,16, 3, 2,1,	1,	 	1, 1,1, 1,1,		    3, 		None, 	2,		2, 		None,	2,		1, 		1, 1,   1,  1, 1,   1),
+                ('wales',				1,1,1,16, 3, 2,1, 	None, 	1, 1,1, 1,1, 		None,	3,		None, 	None,	None,		2, 	    None, 	1, None, 1, 1, 1,   1),
+                ('northern_ireland',	2,1,1,16, 3, 2,1, 	None, 	1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
+                ('scotland',			3,1,1,16, 3, 2,1, 	None, 	1, 1,1, 1,1, 		None,	3,		None, 	None,	None, 		None, 	None, 	1, None, 1, 1, None, None),
             # fmt: on
         ],
         schema="""
@@ -23,9 +23,8 @@ def test_create_calibration_var(spark_session):
                 age_group_swab integer,
                 age_group_antibodies integer,
 
-                swab integer,
-                antibodies integer,
-                ever_never integer,
+                ever_never_swab integer,
+                ever_never_antibodies integer,
                 longcovid integer,
                 14_days integer,
                 28_days integer,
