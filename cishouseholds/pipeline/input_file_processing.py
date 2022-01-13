@@ -199,6 +199,7 @@ def generate_input_processing_function(
 for parameters in [
     blood_delta_parameters,
     swab_delta_parameters,
+    swab_delta_parameters_testKit,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,
