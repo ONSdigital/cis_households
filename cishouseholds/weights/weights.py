@@ -32,13 +32,7 @@ def generate_weights(auxillary_dfs):
     )
 
     # 1164
-    # modify this to check that the column names may change and if they do to access the correct lookups
-    # df = get_matches(
-    #     old_sample_df=auxillary_dfs["old_sample_file"],
-    #     new_sample_df=auxillary_dfs["new_sample_file"],
-    #     selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
-    #     barcode_column="ons_household_id",
-    # )
+
     df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
 
     # update and clean sample df's
@@ -79,14 +73,15 @@ def generate_weights(auxillary_dfs):
         num_households_column="number_of_households_population_by_cis",
         window=cis_window,
     )
+
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
+
     return df
-    # df.toPandas().to_csv("full_out.csv", index=False)
 
 
 # 1163
