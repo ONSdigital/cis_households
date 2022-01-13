@@ -641,13 +641,35 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             "choice",
             items=[
                 None,
-                "Bad experience with tester / survey",
-                "Moving location",
-                "No longer convenient",
-                "No longer wants to take part",
-                "Participant does not want to self swab",
-                "Swab / blood process to distressing",
-                "Too many visits",
+                "Withdrawn_no_future_linkage_or_use of samples",
+                "Withdrawn_no_future_linkage",
+                "Withdrawn",
+            ],
+        ),
+        "Withdrawn_Type": _(
+            "choice",
+            items=[
+                None,
+                "Phone not answered",
+                "At School",
+                "On Holiday",
+                "Other",
+                "At Work",
+                "Doctor Appointment",
+                "Living Away - For Education",
+            ],
+        ),
+        "NotAttendReason": _(
+            "choice",
+            items=[
+                None,
+                "Phone not answered",
+                "At School",
+                "On Holiday",
+                "Other",
+                "At Work",
+                "Doctor Appointment",
+                "Living Away",
             ],
         ),
         "Type_of_Visit": _("choice", items=["First Visit", "Follow-up Visit"]),
@@ -686,6 +708,19 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
+        "actual_visit_date": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y/%m/%d",
+        ),
+        "Deferred": _(
+            "choice",
+            items=[
+                None,
+                "Deferred 1",
+            ],
+        ),
         "Street": _("choice", items=[None, _("address.street_name")]),
         "City": _("choice", items=[None, _("address.city")]),
         "County": _("choice", items=[None, _("address.province")]),
@@ -1314,11 +1349,77 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other": _(
-            "choice", items=["OtherVaxx", None]
-        ),  # This is usually freetext, depends on the previous question, may need to change
+        "Vaccination_Other": _("choice", items=["OtherVaxx", None]),
         "Number_Of_Doses": _("choice", items=["1", "2", "3 or more", None]),
         "Date_Of_Vaccination": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "Type_Of_Vaccination_1": _(
+            "choice",
+            items=[
+                "Janssen/Johnson&Johnson",
+                "Moderna",
+                "Don't know type",
+                "Oxford/AstraZeneca",
+                "Pfizer/BioNTech",
+                None,
+            ],
+        ),
+        "Vaccination_Other_1": _("choice", items=[None]),
+        "Date_Of_Vaccination_1": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "Type_Of_Vaccination_2": _(
+            "choice",
+            items=[
+                "Janssen/Johnson&Johnson",
+                "Moderna",
+                "Don't know type",
+                "Oxford/AstraZeneca",
+                "Pfizer/BioNTech",
+                None,
+            ],
+        ),
+        "Vaccination_Other_2": _("choice", items=[None]),
+        "Date_Of_Vaccination_2": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "Type_Of_Vaccination_3": _(
+            "choice",
+            items=[
+                "Janssen/Johnson&Johnson",
+                "Moderna",
+                "Don't know type",
+                "Oxford/AstraZeneca",
+                "Pfizer/BioNTech",
+                None,
+            ],
+        ),
+        "Vaccination_Other_3": _("choice", items=[None]),
+        "Date_Of_Vaccination_3": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "Type_Of_Vaccination_4": _(
+            "choice",
+            items=[
+                "Janssen/Johnson&Johnson",
+                "Moderna",
+                "Don't know type",
+                "Oxford/AstraZeneca",
+                "Pfizer/BioNTech",
+                None,
+            ],
+        ),
+        "Vaccination_Other_4": _("choice", items=[None]),
+        "Date_Of_Vaccination_4": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
