@@ -9,6 +9,76 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_multigeneration(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column,
+    household_id_column: str,
+    visit_date_column: str,
+    date_of_birth_column: str,
+    country_column: str,
+):
+    """
+    Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
+    Note: school year lookup dataframe must be amended to account for changes in school year start dates
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    participant_id_column
+    household_id_column
+    visit_date_column
+    date_of_birth_column
+    country_column
+    """
+    spark_session = get_or_create_spark_session()
+    school_year_lookup_df = spark_session.createDataFrame(
+        data=[
+            ("England", "09", "01", "09", "01"),
+            ("Wales", "09", "01", "09", "01"),
+            ("Scotland", "08", "15", "03", "01"),
+            ("NI", "09", "01", "07", "02"),
+        ],
+        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+    )
+    transformed_df = df.groupBy(household_id_column, visit_date_column).count()
+    transformed_df = transformed_df.join(
+        df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
+        on=household_id_column,
+    )
+    transformed_df = assign_school_year(
+        df=transformed_df,
+        column_name_to_assign="school_year",
+        reference_date_column=visit_date_column,
+        dob_column=date_of_birth_column,
+        country_column=country_column,
+        school_year_lookup=school_year_lookup_df,
+    )
+    transformed_df = assign_age_at_date(
+        df=transformed_df,
+        column_name_to_assign="age_at_visit",
+        base_date=F.col(visit_date_column),
+        date_of_birth=F.col(date_of_birth_column),
+    )
+    generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    generation2_flag = F.when(
+        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    ).otherwise(0)
+    generation3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+
+    window = Window.partitionBy(household_id_column, visit_date_column)
+    gen1_exists = F.when(F.sum(generation1_flag).over(window) >= 1, True).otherwise(False)
+    gen2_exists = F.when(F.sum(generation2_flag).over(window) >= 1, True).otherwise(False)
+    gen3_exists = F.when(F.sum(generation3_flag).over(window) >= 1, True).otherwise(False)
+
+    transformed_df = transformed_df.withColumn(
+        column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
+    )
+    return transformed_df.drop("age_at_visit", "school_year", "count")
+
 
 def assign_household_participant_count(
     df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
@@ -445,7 +515,7 @@ def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_colum
 
 
 def assign_school_year_september_start(
-    df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str
+    df: DataFrame, dob_column: str, visit_date_column: str, column_name_to_assign: str
 ) -> DataFrame:
     """
     Assign a column for the approximate school year of an individual given their age at the time
@@ -458,14 +528,14 @@ def assign_school_year_september_start(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+            ((F.month(F.col(visit_date_column))) >= 9) & ((F.month(F.col(dob_column))) < 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 3,
         )
         .when(
-            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+            (F.month(F.col(visit_date_column)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 4,
         )
-        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
+        .otherwise((F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 5),
     )
     df = df.withColumn(
         column_name_to_assign,

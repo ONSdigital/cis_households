@@ -5,7 +5,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 import cishouseholds.merge as M
-from cishouseholds.compare import prepare_for_union
 from cishouseholds.validate import check_singular_match
 
 
@@ -147,9 +146,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
 
 
 def merge_process_validation(
-    one_to_many_df: DataFrame,
-    many_to_one_df: DataFrame,
-    many_to_many_df: DataFrame,
+    df: DataFrame,
     merge_type: str,
     barcode_column_name: str,
 ) -> DataFrame:
@@ -158,15 +155,11 @@ def merge_process_validation(
     this function will apply the validation function after identifying what type of merge it is.
     Parameters
     ----------
-    one_to_many_df
-    many_to_one_df
-    many_to_many_df
+    df
     merge_type
         either swab or antibody, no other value accepted.
     barcode_column_name
     """
-    input_dfs = [one_to_many_df, many_to_one_df, many_to_many_df]
-    output_dfs = []
 
     flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
     flag_column_names_syntax = [column + merge_type for column in flag_column_names]
@@ -180,7 +173,7 @@ def merge_process_validation(
         "failed_mtom_swab": "failed_flag_mtom_swab",
     }
 
-    for df, flag_column, failed_column in zip(input_dfs, flag_column_names_syntax, failed_column_names_syntax):
+    for flag_column, failed_column in zip(flag_column_names_syntax, failed_column_names_syntax):
         existing_failure_column = None
         group_by = [barcode_column_name]
 
@@ -197,8 +190,7 @@ def merge_process_validation(
             group_by_columns=group_by,
             existing_failure_column=existing_failure_column,
         )
-        output_dfs.append(df)
-    return tuple(output_dfs)
+    return df
 
 
 def execute_merge_specific_swabs(
@@ -283,13 +275,6 @@ def execute_merge_specific_swabs(
         process_type="swab",
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
-    one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
-        one_to_many_df=one_to_many_df,
-        many_to_one_df=many_to_one_df,
-        many_to_many_df=many_to_many_df,
-        merge_type="swab",
-        barcode_column_name=barcode_column_name,
-    )
 
     one_to_many_df.cache().count()
     many_to_one_df.cache().count()
@@ -297,6 +282,12 @@ def execute_merge_specific_swabs(
 
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
+    )
+
+    unioned_df = merge_process_validation(
+        df=unioned_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
     )
 
     unioned_df = M.null_safe_join(
@@ -386,19 +377,18 @@ def execute_merge_specific_antibody(
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
 
-    one_to_many_df, many_to_one_df, many_to_many_df = merge_process_validation(
-        one_to_many_df=one_to_many_df,
-        many_to_one_df=many_to_one_df,
-        many_to_many_df=many_to_many_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-    )
     one_to_many_df.cache().count()
     many_to_one_df.cache().count()
     many_to_many_df.cache().count()
 
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
+    )
+
+    unioned_df = merge_process_validation(
+        df=unioned_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
     )
 
     unioned_df = M.null_safe_join(
@@ -523,11 +513,7 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
     df_failed_records_iqvia = df_failed_records.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
 
-    df_best_match, df_not_best_match = prepare_for_union(df_best_match, df_not_best_match)
-    df_all_iqvia = df_best_match.unionByName(df_not_best_match)
-
-    df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
-    df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
+    df_all_iqvia = M.union_multiple_tables(tables=[df_best_match, df_not_best_match, df_failed_records_iqvia])
 
     if merge_type == "swab":
         unique_id = "unique_pcr_test_id"
