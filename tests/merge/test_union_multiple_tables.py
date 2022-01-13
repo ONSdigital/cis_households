@@ -42,5 +42,5 @@ def test_union_multiple_tables(spark_session):
         ],
         schema="id string, col1 integer, col2 integer, col3 integer",
     )
-    output_df = union_multiple_tables([input_df0, input_df1, input_df2])
+    output_df = union_multiple_tables(tables=[input_df0, input_df1, input_df2])
     assert_df_equality(expected_df, output_df, ignore_row_order=True, ignore_column_order=True)
