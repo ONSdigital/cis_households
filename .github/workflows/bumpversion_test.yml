@@ -5,7 +5,7 @@ name: bumpversion_test
 # Test to bumpversion of code
 on:
   schedule:
-  - cron: '35 11 * * 5'
+  - cron: '20 13 * * 5'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,11 +15,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.6.8
+      uses: actions/setup-python@v2
+      with:
+          python-version: 3.6.8
     # Runs a single command using the runners shell
     - name: Test cron bumpversion
       run: |
         echo "This is a test!!"
-        bumpversion pre
+        pip3 install bump2version
+        bumpversion --dry-run --verbose pre 
         git push
         git push --tags
         
