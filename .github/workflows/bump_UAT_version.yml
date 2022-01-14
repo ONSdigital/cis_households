@@ -23,14 +23,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
           python-version: 3.6.8
-    - name: Test cron bumpversion
+    - name: bump-UAT-version
       run: |
-        echo "This is a test!!"
         pip3 install bump2version
-        bumpversion --verbose pre 
+        bumpversion --verbose pre
+        git config --global user.name 'CIS-DEV'
+        git config --global user.email 'CIS.DEV@ons.gov.uk'
         git push
         git push --tags
-        
-        
-        
-        
