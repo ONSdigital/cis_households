@@ -22,12 +22,21 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         on="ons_household_id",
         how="left",
     )
-    # TEMPORARY
-    for column_name in ["ever_never_swab", "ever_never_antibodies", "longcovid", "14_days", "28_days", "42_days"]:
-        df = df.withColumn(column_name, F.lit(1))
-    df = df.withColumn("index_multiple_deprivation", F.col("index_multiple_deprivation").cast("float"))
-    # TODO - define logic for ever_never_swab, longcovid, 14_days, etc.
-    # TODO - extract index_multiple_deprivation, region_code columns
+
+    # TODO: find the right column name for each of the inputs
+    df = dataset_generation(
+        df=df,
+        # these cutoff dates need to be provided
+        cutoff_date_swab="2022-02-09",
+        cutoff_date_antibodies="2022-03-01",
+        cutoff_date_longcovid="2022-02-20",
+        column_test_result_swab="swab_result",
+        column_test_result_antibodies="antibodies_result",
+        column_test_result_longcovid="long_covid_have_symptoms",
+        patient_id_column="participant_id",
+        visit_date_column="visit_date",
+        age_column="age_at_visit",
+    )
 
     df = survey_extraction_household_data_response_factor(
         df=df,
@@ -58,9 +67,22 @@ def dataset_flag_generation_evernever_OR_longcovid(
     cutoff_days_column: str = "",
 ) -> DataFrame:
     """
+    This function will carry forward last observation of antibodies,
+    swab or longcovid result prioritising positive cases and age of patient.
+
     Parameters
     ----------
     df
+    column_test_result
+    patient_id_column
+    visit_date_column
+    age_column
+    dataset_flag_column
+    type_test
+    positive_case
+    negative_case
+    cutoff_days
+    cutoff_days_column
     """
     if type_test == "antibodies":
         df = df.withColumn("antibodies_date_change", F.lit("2021-11-27"))
@@ -106,6 +128,8 @@ def dataset_flag_generation_evernever_OR_longcovid(
 
 def cutoff_day_to_ever_never(df, days, cutoff_date):
     """
+    This function will flag the visit_dates coming after a cutoff_date provided after days
+
     Parameters
     ----------
     df
@@ -133,7 +157,29 @@ def dataset_generation(
     visit_date_column: str,
     age_column: str,
 ) -> DataFrame:
-    """ """
+    """
+    Function wraps the ever_never_OR_longcovid and cutoff dates to generate the following datasets:
+        - swab ever never
+        - swab 14 days
+        - swab 7 days
+        - antibodies ever never
+        - antibodies 28 days
+        - long covid 28 days
+        - long covid 42 days
+
+    Parameters
+    ----------
+    df
+    cutoff_date_swab
+    cutoff_date_antibodies
+    cutoff_date_longcovid
+    column_test_result_swab
+    column_test_result_antibodies
+    column_test_result_longcovid
+    patient_id_column
+    visit_date_column
+    age_column
+    """
     # 1- swab_ever_never
     df = dataset_flag_generation_evernever_OR_longcovid(
         df=df,
