@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: bumpversion_test
+name: bump_UAT_version
 
 # Test to bumpversion of code
 on:
@@ -23,12 +23,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
           python-version: 3.6.8
-    # Runs a single command using the runners shell
     - name: Test cron bumpversion
       run: |
         echo "This is a test!!"
         pip3 install bump2version
-        bumpversion --dry-run --verbose pre 
+        bumpversion --verbose pre 
         git push
         git push --tags
         
