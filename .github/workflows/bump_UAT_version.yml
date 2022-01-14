@@ -26,8 +26,8 @@ jobs:
     - name: bump-UAT-version
       run: |
         pip3 install bump2version
-        bumpversion --verbose pre
         git config --global user.name 'CIS-DEV'
         git config --global user.email 'CIS.DEV@ons.gov.uk'
+        bumpversion --verbose pre
         git push
         git push --tags
