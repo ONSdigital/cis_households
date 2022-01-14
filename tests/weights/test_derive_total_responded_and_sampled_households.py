@@ -11,7 +11,7 @@ def test_derive_total_responded_and_sampled_households(spark_session):
                             country_name_12 string,
                             cis_area_code_20 integer,
                             index_multiple_deprivation_group integer,
-                            interim_participant_id integer,
+                            response_indicator integer,
                             total_sampled_households_cis_imd_addressbase integer,
                             total_responded_households_cis_imd_addressbase integer"""
     data_expected_df = [
