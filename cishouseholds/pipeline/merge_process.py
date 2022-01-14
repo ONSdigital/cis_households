@@ -5,7 +5,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 import cishouseholds.merge as M
-from cishouseholds.compare import prepare_for_union
 from cishouseholds.validate import check_singular_match
 
 
@@ -514,11 +513,7 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
     df_failed_records_iqvia = df_failed_records.drop(*lab_columns_list).drop(*drop_list_columns).distinct()
 
-    df_best_match, df_not_best_match = prepare_for_union(df_best_match, df_not_best_match)
-    df_all_iqvia = df_best_match.unionByName(df_not_best_match)
-
-    df_all_iqvia, df_failed_records_iqvia = prepare_for_union(df_all_iqvia, df_failed_records_iqvia)
-    df_all_iqvia = df_all_iqvia.unionByName(df_failed_records_iqvia)
+    df_all_iqvia = M.union_multiple_tables(tables=[df_best_match, df_not_best_match, df_failed_records_iqvia])
 
     if merge_type == "swab":
         unique_id = "unique_pcr_test_id"

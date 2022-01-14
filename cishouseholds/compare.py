@@ -1,4 +1,5 @@
-from typing import Union
+from typing import Any
+from typing import List
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -6,30 +7,28 @@ from pyspark.sql import functions as F
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def prepare_for_union(df1: Union[str, DataFrame], df2: Union[str, DataFrame]):
+def prepare_for_union(tables: List[DataFrame]):
     spark_session = get_or_create_spark_session()
+    dataframes = []
 
-    if isinstance(df1, str):
-        df1 = spark_session.read.parquet(df1)
-    if isinstance(df2, str):
-        df2 = spark_session.read.parquet(df2)
-    copy_df1 = df1
-    copy_df2 = df2
-    missmatches_df, missmatches_ref = get_inconsistent_columns(df1, df2)
-    for col in missmatches_ref:
-        df1 = add_matching_col(df1, df2, col)
-    for col in missmatches_df:
-        df2 = add_matching_col(df2, df1, col)
-    df1 = df1.select([x.name for x in df2.schema.fields])
-    col_order = get_new_order(
-        [x.name for x in copy_df2.schema.fields], [x.name for x in copy_df1.schema.fields], missmatches_df
-    )
-    df2 = df2.select([col for col in col_order])
-    df1 = df1.select([col for col in col_order])
-    return df1, df2
+    for table in tables:
+        if type(table) == str:
+            dataframes.append(spark_session.read.parquet(table))
+        else:
+            dataframes.append(table)
+
+    all_columns, missing = get_missing_columns(dataframes)
+    dataframes = add_missing_columns(dataframes, missing)
+
+    dataframes = [df.select(*all_columns) for df in dataframes]
+
+    return dataframes
 
 
-def add_after(list: list, element: str, add: str):
+def add_after(list: list, element: Any, add: Any):
+    """
+    Add {add} after {element} in {list}
+    """
     el_index = list.index(element)
     new_list = list[: el_index + 1]
     new_list.append(add)
@@ -37,32 +36,39 @@ def add_after(list: list, element: str, add: str):
     return new_list
 
 
-def get_new_order(df1_names: list, df2_names: list, df2_missmatches: list):
-    right_of = {}
-    for col in df2_missmatches:
-        right_of[df2_names[df2_names.index(col) - 1]] = col
-    while len(right_of) > 0:
-        added = []
-        for key, val in right_of.items():
-            if key in df1_names:
-                df1_names = add_after(df1_names, key, val)
-                added.append(key)
-        for key in added:
-            right_of.pop(key)
-    return df1_names
+def get_missing_columns(dataframes: List[DataFrame]):
+    """
+    get missing columns from each dataframe compared across all input dfs
+    """
+    all_columns: List[Any] = []
+
+    for df in dataframes:
+        i = 0
+        for col, type in df.dtypes:
+            if col not in all_columns:
+                if i > 0:
+                    all_columns = add_after(all_columns, prev_element, {"col": col, "type": type})  # noqa: F821
+                else:
+                    all_columns.append({"col": col, "type": type})
+            prev_element: dict = {"col": col, "type": type}  # noqa: F841
+            i += 1
+
+    missing = [[col for col in all_columns if col["col"] not in df.columns] for df in dataframes]
+    col_strings = []
+    for col in all_columns:
+        if col["col"] not in col_strings:
+            col_strings.append(col["col"])
+    return col_strings, missing
 
 
-def get_inconsistent_columns(df1: DataFrame, df2: DataFrame):
-    df1_schema = df1.schema.fields
-    df2_schema = df2.schema.fields
-    df1_names = [x.name for x in df1_schema]
-    df2_names = [x.name for x in df2_schema]
-    matches = set(df1_names) & set(df2_names)
-    df_1_missmatches = set(df1_names) ^ matches
-    df_2_missmatches = set(df2_names) ^ matches
-    return list(df_1_missmatches), list(df_2_missmatches)
-
-
-def add_matching_col(df: DataFrame, df_ref: DataFrame, col_name: str):
-    col_name, type = df_ref.select(col_name).dtypes[0]
-    return df.withColumn(col_name, F.lit(None).cast(type))
+def add_missing_columns(dataframes: List[DataFrame], missing: List[List[Any]]):
+    """
+    add columns with None casted to the correct data type and name that are missing
+    from the respective dataframe
+    """
+    transformed_dfs = []
+    for df, missing_set in zip(dataframes, missing):
+        for col in missing_set:
+            df = df.withColumn(col["col"], F.lit(None).cast(col["type"]))
+        transformed_dfs.append(df)
+    return transformed_dfs
