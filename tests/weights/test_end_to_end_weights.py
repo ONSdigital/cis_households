@@ -153,7 +153,7 @@ def test_end_to_end_weights(spark_session):
     )
     tranche_df = spark_session.createDataFrame(
         schema="""
-            enrolement_date string,
+            enrolment_date string,
             UAC integer,
             lsoa_11 string,
             cis20cd string,
@@ -175,12 +175,12 @@ def test_end_to_end_weights(spark_session):
     )
 
     auxillary_dfs = {
-        "old": old_sample_df,
-        "new": new_sample_df,
-        "nspl_lookup": nspl_lookup,
+        "old_sample_file": old_sample_df,
+        "new_sample_file": new_sample_df,
+        "postcode_lookup": nspl_lookup,
         "address_lookup": address_lookup,
         "country_lookup": country_lookup,
-        "cis20cd_lookup": cis_20_lookup,
+        "cis_lookup": cis_20_lookup,
         "tranche": tranche_df,
     }
 
