@@ -20,6 +20,9 @@ jobs:
       run: |
         echo "This is a test!!"
         bumpversion pre
-        cis_households --version
+        git push
+        git push --tags
+        
+        
         
         
