@@ -265,7 +265,7 @@ def dataset_generation(
             cutoff_days=True,
             cutoff_days_column=f"{days}_days",
         )
-    return df
+    return df.drop("7_days", "14_days", "28_days", "42_days")
 
 
 # 1178

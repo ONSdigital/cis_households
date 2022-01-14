@@ -88,17 +88,17 @@ def test_cutoff_day_to_ever_never(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     '2022-01-30',   16,     None),  # outside
-                (1,     '2022-02-01',   14,     1),     # edge case, inside
-                (1,     '2022-02-10',   5,      1),     # inside
-                (1,     '2022-02-20',   -5,     None),
+				(1,     '2022-01-30',      None), #16, outside
+                (1,     '2022-02-01',      1),    #14, edge case, inside
+                (1,     '2022-02-10',      1),    #5,  inside
+                (1,     '2022-02-20',      None),
+            # -5, negative
             # outside
             # fmt: on
         ],
         schema="""
             patient_id integer,
             visit_date string,
-            diff_visit_cutoff integer,
             14_days integer
             """,
     )
@@ -152,12 +152,12 @@ def test_all_dataset_generation(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     '2022-02-01',   'positive',	'negative', 'yes',   18, 		1,	    1, 	    1,	    None,	None,	None, 	None),
-                (1,     '2022-02-03',   'positive',	'negative', 'no',    18, 		None,	None, 	None,	1,	    1,	    None, 	None),
+                (1,     '2022-02-01',   'positive',	'negative', 'yes',   18, 		None,	None, 	None,	None,	None,	1, 	    1),
+                (1,     '2022-02-03',   'positive',	'negative', 'no',    18, 		1,	    1, 	    1,	    1,	    1,	    None, 	None),
 
-                (2,     '2021-12-04',   'positive',	'negative', 'no',    18, 		1,	    1, 	    1,	    None,	None,	None, 	None),
+                (2,     '2021-12-04',   'positive',	'negative', 'no',    18, 		1,	    None, 	None,	None,	None,	None, 	None),
                 (2,     '2022-02-01',   'negative',	'negative', 'no',    18, 		None,	None, 	None,	None,	None,	None, 	None),
-                (2,     '2022-02-02',   'negative',	'positive', 'yes',   18, 		None,	None, 	None,	1,	    None,	1, 	    1),
+                (2,     '2022-02-02',   'negative',	'positive', 'yes',   18, 		None,	None, 	None,	1,	    1,	    1, 	    1),
                 (2,     '2022-02-03',   'negative',	'negative', 'no',    18, 		None,	None, 	None,	None,	None,	None, 	None),
             # fmt: on
         ],
@@ -181,7 +181,6 @@ def test_all_dataset_generation(spark_session):
             """,
     )
     input_df = expected_df.drop(
-        "ever_never_swab",
         "ever_never_swab",
         "swab_7_days",
         "swab_14_days",
