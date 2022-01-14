@@ -88,7 +88,7 @@ def test_cutoff_day_to_ever_never(spark_session):
         data=[
             # fmt: off
                 (1,     '2022-01-30',   16,     None),  # outside
-                (1,     '2022-02-01',   14,     None),  # edge case
+                (1,     '2022-02-01',   14,     1),     # edge case, inside
                 (1,     '2022-02-10',   5,      1),     # inside
                 (1,     '2022-02-20',   -5,     None),
             # outside
@@ -97,7 +97,7 @@ def test_cutoff_day_to_ever_never(spark_session):
         schema="""
             patient_id integer,
             visit_date string,
-            diff_visit_cutoff string,
+            diff_visit_cutoff integer,
             14_days integer
             """,
     )

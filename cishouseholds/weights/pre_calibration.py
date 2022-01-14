@@ -109,7 +109,7 @@ def cutoff_day_to_ever_never(df, days, cutoff_date):
     df = df.withColumn("diff_visit_cutoff", F.datediff(F.col("date_cutoff"), F.col("visit_date")))
     df = df.withColumn(
         "14_days", F.when((F.col("diff_visit_cutoff") > 0) & (F.col("diff_visit_cutoff") <= days), 1).otherwise(None)
-    )
+    ).drop("date_cutoff")
     return df
 
 
