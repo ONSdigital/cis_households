@@ -129,9 +129,9 @@ def test_end_to_end_weights(spark_session):
             date_sample_created  string,
             batch_number integer,
             file_name string,
-            rgngor9d string,
+            rgn/gor9d string,
             laua string,
-            oa11oac11 string,
+            oa11/oac11 string,
             msoa11 string,
             ru11ind string,
             imd integer

@@ -7,12 +7,12 @@ from datetime import timedelta
 from pathlib import Path
 
 import pandas as pd
-from helpers import code_mask
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from dummy_data_generation.helpers import code_mask
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
