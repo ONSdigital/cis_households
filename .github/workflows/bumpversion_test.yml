@@ -17,4 +17,9 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Test cron bumpversion
-      run: echo "This test has worked!!"
+      run: |
+        echo "This is a test!!"
+        bumpversion pre
+        cis_households --version
+        
+        
