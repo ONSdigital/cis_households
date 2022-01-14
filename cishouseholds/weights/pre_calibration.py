@@ -1,8 +1,9 @@
+from typing import List
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
-from typing import List
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
@@ -41,6 +42,76 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
     df = adjusted_design_weights_to_population_totals(df)
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
+    return df
+
+
+def dataset_flag_generation_ever_never(
+    df: DataFrame,
+    column_test_result: str,
+    patient_id_column: str,
+    visit_date_column: str,
+    age_column: str,
+    ever_never_column: str,
+    type_test: str,
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    """
+    if type_test == "antibodies":
+        df = df.withColumn("antibodies_date_change", F.lit("2021-11-27"))
+        df = df.withColumn(
+            "min_age",
+            F.when(F.datediff(F.col(visit_date_column), F.col("antibodies_date_change")) > 0, 8).otherwise(16),
+        )
+    elif type_test == "swab":
+        df = df.withColumn("min_age", F.lit(2))
+
+    window = Window.partitionBy(patient_id_column, column_test_result).orderBy(F.desc(visit_date_column))
+
+    for result_type, result_flag in zip(["positive", "negative"], ["latest_known_positive", "latest_known_negative"]):
+        df = df.withColumn(result_flag, F.when(F.col(column_test_result) == result_type, F.row_number().over(window)))
+
+        df = df.withColumn(
+            result_flag,
+            F.when((F.col(result_flag) != 1) | (F.col(age_column) < F.col("min_age")), None).otherwise(
+                F.col(result_flag)
+            ),
+        )
+
+    window_positive = Window.partitionBy(patient_id_column).orderBy()
+
+    df = df.withColumn("any_positive_result", F.max(F.col("latest_known_positive")).over(window_positive))
+
+    df = df.withColumn(
+        "latest_known_negative",
+        F.when(F.col("any_positive_result") == 1, None).otherwise(F.col("latest_known_negative")),
+    )
+
+    df = df.withColumn(
+        ever_never_column, F.coalesce(F.col("latest_known_positive"), F.col("latest_known_negative"))
+    ).drop("any_positive_result", "latest_known_positive", "latest_known_negative", "antibodies_date_change", "min_age")
+    return df
+
+
+def cutoff_day_to_ever_never(df, days, cutoff_date):
+    """
+    Parameters
+    ----------
+    df
+    days
+    cutoff_date
+    """
+
+    df = df.withColumn("date_cutoff", F.lit(cutoff_date))
+    df = df.withColumn("diff_visit_cutoff", F.datediff(F.col("date_cutoff"), F.col("visit_date")))
+    df = df.withColumn(
+        "14_days", F.when((F.col("diff_visit_cutoff") > 0) & (F.col("diff_visit_cutoff") <= days), 1).otherwise(None)
+    )
+    import pdb
+
+    pdb.set_trace()
     return df
 
 
