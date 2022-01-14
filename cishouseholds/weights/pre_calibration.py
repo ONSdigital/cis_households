@@ -111,13 +111,9 @@ def cutoff_day_to_ever_never(df, days, cutoff_date):
     df = df.withColumn(
         "14_days", F.when((F.col("diff_visit_cutoff") > 0) & (F.col("diff_visit_cutoff") <= days), 1).otherwise(None)
     )
-    import pdb
-
-    pdb.set_trace()
     return df
 
 
-# SPECIFIC DATASETS
 def dataset_generation(df):
     # swab_ever_never
     df = dataset_flag_generation_evernever_OR_longcovid(
@@ -143,7 +139,7 @@ def dataset_generation(df):
             patient_id_column="patient_id",
             visit_date_column="visit_date",
             age_column="age",
-            dataset_flag_column="ever_never_swab",
+            dataset_flag_column=f"swab_{days}_days",
             type_test="swab",
             positive_case="positive",
             negative_case="negative",
@@ -167,8 +163,8 @@ def dataset_generation(df):
         days=28,
         cutoff_date="2022-02-15",  # ??
     )
-    # longcovid_28_days
-    for days in [28, 42]:
+
+    for days in [28, 42]:  # longcovid_28_days, longcovid_42_days
         df = cutoff_day_to_ever_never(
             df=df,
             days=days,
@@ -185,8 +181,6 @@ def dataset_generation(df):
             positive_case="yes",
             negative_case="no",
         )
-    # longcovid_42_days
-
     return df
 
 
