@@ -129,9 +129,9 @@ def test_end_to_end_weights(spark_session):
             date_sample_created  string,
             batch_number integer,
             file_name string,
-            rgn/gor9d string,
+            rgngor9d string,
             laua string,
-            oa11/oac11 string,
+            oa11oac11 string,
             msoa11 string,
             ru11ind string,
             imd integer
@@ -194,5 +194,5 @@ def test_end_to_end_weights(spark_session):
     output_df = generate_weights(auxillary_dfs=auxillary_dfs)
     # output_df.toPandas().to_csv("output1.csv", index=False)
     for col, type in output_df.dtypes:
-        expected_df = expected_df.withColumn(col, F.col(col).cast(type))
+        expected_df = expected_df.withColumn(col.replace("`",""), F.col(col).cast(type))
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
