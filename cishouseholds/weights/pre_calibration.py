@@ -54,6 +54,8 @@ def dataset_flag_generation_evernever_OR_longcovid(
     type_test: str,
     positive_case: str,
     negative_case: str,
+    cutoff_days: bool = False,
+    cutoff_days_column: str = "",
 ) -> DataFrame:
     """
     Parameters
@@ -66,7 +68,7 @@ def dataset_flag_generation_evernever_OR_longcovid(
             "min_age",
             F.when(F.datediff(F.col(visit_date_column), F.col("antibodies_date_change")) > 0, 8).otherwise(16),
         )
-    else:
+    elif (type_test == "swab") or (type_test == "longcovid"):
         df = df.withColumn("min_age", F.lit(2))
 
     window = Window.partitionBy(patient_id_column, column_test_result).orderBy(F.desc(visit_date_column))
@@ -93,6 +95,12 @@ def dataset_flag_generation_evernever_OR_longcovid(
     df = df.withColumn(
         dataset_flag_column, F.coalesce(F.col("latest_known_positive"), F.col("latest_known_negative"))
     ).drop("any_positive_result", "latest_known_positive", "latest_known_negative", "antibodies_date_change", "min_age")
+
+    if cutoff_days:
+        df = df.withColumn(
+            dataset_flag_column,
+            F.when(F.col(cutoff_days_column).isNotNull(), F.col(dataset_flag_column)).otherwise(None),
+        )
     return df
 
 
@@ -104,81 +112,112 @@ def cutoff_day_to_ever_never(df, days, cutoff_date):
     days
     cutoff_date
     """
-
     df = df.withColumn("date_cutoff", F.lit(cutoff_date))
     df = df.withColumn("diff_visit_cutoff", F.datediff(F.col("date_cutoff"), F.col("visit_date")))
     df = df.withColumn(
-        "14_days", F.when((F.col("diff_visit_cutoff") > 0) & (F.col("diff_visit_cutoff") <= days), 1).otherwise(None)
-    ).drop("date_cutoff")
+        f"{days}_days",
+        F.when((F.col("diff_visit_cutoff") > 0) & (F.col("diff_visit_cutoff") <= days), 1).otherwise(None),
+    ).drop("date_cutoff", "diff_visit_cutoff")
     return df
 
 
-def dataset_generation(df):
-    # swab_ever_never
+def dataset_generation(
+    df: DataFrame,
+    cutoff_date_swab: str,
+    cutoff_date_antibodies: str,
+    cutoff_date_longcovid: str,
+    column_test_result_swab: str,
+    column_test_result_antibodies: str,
+    column_test_result_longcovid: str,
+    patient_id_column: str,
+    visit_date_column: str,
+    age_column: str,
+) -> DataFrame:
+    """ """
+    # 1- swab_ever_never
     df = dataset_flag_generation_evernever_OR_longcovid(
         df=df,
-        column_test_result="result_mk",
-        patient_id_column="patient_id",
-        visit_date_column="visit_date",
-        age_column="age",
+        column_test_result=column_test_result_swab,
+        patient_id_column=patient_id_column,
+        visit_date_column=visit_date_column,
+        age_column=age_column,
         dataset_flag_column="ever_never_swab",
         type_test="swab",
         positive_case="positive",
         negative_case="negative",
     )
-    for days in [7, 14]:  # swab_7_days swab_14_days and then ever_never
+    # 2- swab_7_days swab_14_days
+    for days in [7, 14]:
+
         df = cutoff_day_to_ever_never(
             df=df,
             days=days,
-            cutoff_date="2022-02-15",  # ??
+            cutoff_date=cutoff_date_swab,
         )
         df = dataset_flag_generation_evernever_OR_longcovid(
             df=df,
-            column_test_result="result_mk",
-            patient_id_column="patient_id",
-            visit_date_column="visit_date",
-            age_column="age",
+            column_test_result=column_test_result_swab,
+            patient_id_column=patient_id_column,
+            visit_date_column=visit_date_column,
+            age_column=age_column,
             dataset_flag_column=f"swab_{days}_days",
             type_test="swab",
             positive_case="positive",
             negative_case="negative",
+            cutoff_days=True,
+            cutoff_days_column=f"{days}_days",
         )
-
-    # antibodies_ever_never
+    # 3- antibodies_ever_never
     df = dataset_flag_generation_evernever_OR_longcovid(
         df=df,
-        column_test_result="pcr_result",
-        patient_id_column="patient_id",
-        visit_date_column="visit_date",
-        age_column="age",
+        column_test_result=column_test_result_antibodies,
+        patient_id_column=patient_id_column,
+        visit_date_column=visit_date_column,
+        age_column=age_column,
         dataset_flag_column="ever_never_antibodies",
         type_test="antibodies",
         positive_case="positive",
         negative_case="negative",
     )
-    # antibodies_28_days
+    # 4- antibodies_28_days
     df = cutoff_day_to_ever_never(
         df=df,
         days=28,
-        cutoff_date="2022-02-15",  # ??
+        cutoff_date=cutoff_date_antibodies,
     )
+    df = dataset_flag_generation_evernever_OR_longcovid(
+        df=df,
+        column_test_result=column_test_result_antibodies,
+        patient_id_column=patient_id_column,
+        visit_date_column=visit_date_column,
+        age_column=age_column,
+        dataset_flag_column="antibodies_28_days",
+        type_test="antibodies",
+        positive_case="positive",
+        negative_case="negative",
+        cutoff_days=True,
+        cutoff_days_column="28_days",
+    )
+    # 5- longcovid_28_days, longcovid_42_days
+    for days in [28, 42]:
 
-    for days in [28, 42]:  # longcovid_28_days, longcovid_42_days
         df = cutoff_day_to_ever_never(
             df=df,
             days=days,
-            cutoff_date="2022-02-15",  # ??
+            cutoff_date=cutoff_date_longcovid,
         )
         df = dataset_flag_generation_evernever_OR_longcovid(
             df=df,
-            column_test_result="long_covid_have_symptoms",
-            patient_id_column="patient_id",
-            visit_date_column="visit_date",
-            age_column="age",
+            column_test_result=column_test_result_longcovid,
+            patient_id_column=patient_id_column,
+            visit_date_column=visit_date_column,
+            age_column=age_column,
             dataset_flag_column=f"longcovid_{days}_days",
-            type_test="swab",
+            type_test="longcovid",
             positive_case="yes",
             negative_case="no",
+            cutoff_days=True,
+            cutoff_days_column=f"{days}_days",
         )
     return df
 
