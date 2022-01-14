@@ -10,7 +10,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
-from cishouseholds.edit import assign_from_map
+from cishouseholds.edit import update_column_values_from_map
 
 
 def impute_think_had_covid(
@@ -22,8 +22,19 @@ def impute_think_had_covid(
     contact_column: str,
     hierarchy_map: dict,
 ):
-    """ """
-    date_exists_df = df.filter(F.col(date_column).isNotNull()).select(participant_id_column, date_column)
+    """
+    impute think had covid and associated variables
+    Parameters
+    ----------
+    df
+    participant_id_column
+    date_column
+    visit_date_column
+    type_column
+    contact_column
+    hierarchy_map
+    """
+    date_exists_df = df.select(participant_id_column, date_column)
     transformed_df = df.join(
         date_exists_df.withColumnRenamed(date_column, f"{date_column}_ref"), on=participant_id_column, how="left"
     )
@@ -31,24 +42,30 @@ def impute_think_had_covid(
         f"{date_column}_ref",
         F.when(F.col(f"{date_column}_ref") <= F.col(visit_date_column), F.col(f"{date_column}_ref")).otherwise(None),
     )
-    transformed_df = (
-        transformed_df.groupBy(participant_id_column, visit_date_column)
-        .agg({f"{date_column}_ref": "max"})
-        .withColumnRenamed(f"max({date_column}_ref)", date_column)
-    )
-    df = df.drop(date_column).join(transformed_df, on=[participant_id_column, visit_date_column], how="left")
+
+    window = Window.partitionBy(participant_id_column, visit_date_column, f"{date_column}_ref")
+    transformed_df = update_column_values_from_map(transformed_df, type_column, hierarchy_map)
+    transformed_df = transformed_df.withColumn(type_column, F.min(type_column).over(window))
 
     reverse_map = {}
     for key, value in hierarchy_map.items():
         reverse_map[value] = key
 
-    window = Window.partitionBy(participant_id_column, date_column)
-    df = assign_from_map(df, "type_hierarchy", type_column, hierarchy_map)
-    df = df.withColumn(type_column, F.min("type_hierarchy").over(window))
-    df = df.withColumn(contact_column, F.when(F.col(visit_date_column) >= F.col(date_column), "Yes").otherwise("No"))
-    df = assign_from_map(df, type_column, "type", reverse_map)
-    df = df.withColumn(type_column, F.when(F.col(date_column).isNull(), None).otherwise(F.col(type_column)))
-    return df.drop("type_hierarchy")
+    transformed_df = update_column_values_from_map(transformed_df, type_column, reverse_map)
+
+    window = Window.partitionBy(participant_id_column, visit_date_column)
+    transformed_df = transformed_df.withColumn(date_column, F.max(F.col(f"{date_column}_ref")).over(window))
+    transformed_df = (
+        transformed_df.filter(F.col(f"{date_column}_ref").eqNullSafe(F.col(date_column)))
+        .distinct()
+        .drop(f"{date_column}_ref")
+    )
+
+    transformed_df = transformed_df.withColumn(
+        contact_column, F.when(F.col(visit_date_column) >= F.col(date_column), "Yes").otherwise("No")
+    )
+
+    return transformed_df
 
 
 def impute_by_distribution(

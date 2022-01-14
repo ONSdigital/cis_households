@@ -13,19 +13,27 @@ def test_impute_think_had_covid(spark_session):
             (2, None, "2020-11-20", "A", "Yes"),
             (2, "2020-04-05", "2020-12-20", None, "Yes"),
             (3, "2020-05-09", "2020-12-20", "B", "Yes"),
+            (4, None, "2020-10-20", None, "No"),
+            (4, "2020-11-09", "2020-11-20", None, "Yes"),
+            (4, "2020-11-22", "2021-01-11", "B", "Yes"),
+            (4, None, "2021-02-11", "A", "Yes"),
         ],
         schema="id integer, date string, visit_date string, type string, contact string",
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2020-01-20", None, None, "No"),
-            (3, "2020-12-20", "2020-05-09", "B", "Yes"),
-            (2, "2020-12-20", "2020-04-05", "A", "Yes"),
-            (2, "2020-11-20", "2020-04-05", "A", "Yes"),
-            (1, "2020-11-20", "2020-03-12", "A", "Yes"),
-            (1, "2020-12-20", "2020-03-12", "A", "Yes"),
+            (4, None, "2020-10-20", None, "No"),
+            (4, "2020-11-09", "2020-11-20", None, "Yes"),
+            (4, "2020-11-22", "2021-01-11", "B", "Yes"),
+            (4, "2020-11-22", "2021-02-11", "A", "Yes"),
+            (1, None, "2020-01-20", "B", "No"),
+            (1, "2020-03-12", "2020-11-20", "B", "Yes"),
+            (1, "2020-03-12", "2020-12-20", "A", "Yes"),
+            (3, "2020-05-09", "2020-12-20", "B", "Yes"),
+            (2, "2020-04-05", "2020-11-20", "A", "Yes"),
+            (2, "2020-04-05", "2020-12-20", None, "Yes"),
         ],
-        schema="id integer, visit_date string, date string, type string, contact string",
+        schema="id integer, date string, visit_date string, type string, contact string",
     )
     for col in ["date", "visit_date"]:
         input_df = input_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
