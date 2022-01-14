@@ -153,7 +153,7 @@ def test_end_to_end_weights(spark_session):
     )
     tranche_df = spark_session.createDataFrame(
         schema="""
-            enrolement_date string,
+            enrolment_date string,
             UAC integer,
             lsoa_11 string,
             cis20cd string,
