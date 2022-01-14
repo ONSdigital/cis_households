@@ -153,7 +153,7 @@ def test_end_to_end_weights(spark_session):
     )
     tranche_df = spark_session.createDataFrame(
         schema="""
-            enrolement_date string,
+            enrolment_date string,
             UAC integer,
             lsoa_11 string,
             cis20cd string,
@@ -175,12 +175,12 @@ def test_end_to_end_weights(spark_session):
     )
 
     auxillary_dfs = {
-        "old": old_sample_df,
-        "new": new_sample_df,
-        "nspl_lookup": nspl_lookup,
+        "old_sample_file": old_sample_df,
+        "new_sample_file": new_sample_df,
+        "postcode_lookup": nspl_lookup,
         "address_lookup": address_lookup,
         "country_lookup": country_lookup,
-        "cis20cd_lookup": cis_20_lookup,
+        "cis_lookup": cis_20_lookup,
         "tranche": tranche_df,
     }
 
@@ -194,5 +194,5 @@ def test_end_to_end_weights(spark_session):
     output_df = generate_weights(auxillary_dfs=auxillary_dfs)
     # output_df.toPandas().to_csv("output1.csv", index=False)
     for col, type in output_df.dtypes:
-        expected_df = expected_df.withColumn(col, F.col(col).cast(type))
+        expected_df = expected_df.withColumn(col.replace("`",""), F.col(col).cast(type))
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

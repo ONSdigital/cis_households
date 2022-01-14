@@ -8,14 +8,13 @@ from pyspark.sql.window import Window
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.derive import get_matches
 from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
 from cishouseholds.weights.edit import update_data
 from cishouseholds.weights.extract import prepare_auxillary_data
 
-# from cishouseholds.weights.extract import load_auxillary_data
+# from cishouseholds.weights.derive import get_matches
 
 # notes:
 # validation checks relate to final dweights for entire column for both datasets (each hh must have a dweight)
@@ -27,24 +26,18 @@ def generate_weights(auxillary_dfs):
     # initialise lookup dataframes
     household_info_df = household_dweights(
         auxillary_dfs["address_lookup"],
-        auxillary_dfs["nspl_lookup"],
-        auxillary_dfs["cis20cd_lookup"],
+        auxillary_dfs["postcode_lookup"],
+        auxillary_dfs["cis_lookup"],
         auxillary_dfs["country_lookup"],
     )
 
     # 1164
-    df = get_matches(
-        old_sample_df=auxillary_dfs["old"],
-        new_sample_df=auxillary_dfs["new"],
-        selection_columns=["lower_super_output_area_code_11", "cis_area_code_20"],
-        barcode_column="ons_household_id",
-    )
+
+    df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
 
     # update and clean sample df's
     df = update_data(df, auxillary_dfs)
     df = clean_df(df)
-    old_df = clean_df(auxillary_dfs["old"])
-    df = union_multiple_tables(tables=[df, old_df])
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
@@ -59,7 +52,7 @@ def generate_weights(auxillary_dfs):
         barcode_column="ons_household_id",
         barcode_ref_column="TRANCHE_BARCODE_REF",
         tranche_column="tranche",
-        group_by_columns=["cis_area_code_20", "enrolement_date"],
+        group_by_columns=["cis_area_code_20", "enrolment_date"],
     )
 
     cis_window = Window.partitionBy("cis_area_code_20")
@@ -80,14 +73,15 @@ def generate_weights(auxillary_dfs):
         num_households_column="number_of_households_population_by_cis",
         window=cis_window,
     )
+
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
+
     return df
-    # df.toPandas().to_csv("full_out.csv", index=False)
 
 
 # 1163
@@ -466,10 +460,6 @@ def calculate_scenario_c_antibody_dweights(
     return df
 
 
-# 1170
-# necessary columns:
-# - raw_design_weight_antibodies_ab OR
-# - combined_design_weight_antibody
 def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: str, household_population_column: str):
     """
     Use scenario lookup to apply dependent function to carry forward design weights variable
@@ -494,11 +484,3 @@ def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: s
         F.col("scaling_factor_carryforward_design_weight_antibodies") * F.col("carryforward_design_weight_antibodies"),
     )
     return df
-
-
-# if __name__ == "__main__":
-#     try:
-#         generate_weights(load_auxillary_data())
-#     except Exception as e:
-#         pass
-# generate_weights()
