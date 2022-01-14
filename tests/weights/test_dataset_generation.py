@@ -3,6 +3,7 @@ from chispa import assert_df_equality
 from cishouseholds.weights.pre_calibration import cutoff_day_to_ever_never
 from cishouseholds.weights.pre_calibration import dataset_flag_generation_evernever_OR_longcovid
 from cishouseholds.weights.pre_calibration import dataset_generation
+from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 
 
 def test_dataset_generation_ever_never_swab(spark_session):

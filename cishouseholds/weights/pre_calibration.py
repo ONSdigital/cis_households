@@ -1,5 +1,7 @@
+import os
 from typing import List
 
+import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -23,18 +25,19 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         how="left",
     )
 
-    # TODO: find the right column name for each of the inputs
+    with open(os.getcwd() + "\\cishouseholds\\weights\\precal_config.yaml", "r") as file:
+        config_file = yaml.safe_load(file)
+
     df = dataset_generation(
         df=df,
-        # these cutoff dates need to be provided
-        cutoff_date_swab="2022-02-09",
-        cutoff_date_antibodies="2022-03-01",
-        cutoff_date_longcovid="2022-02-20",
-        column_test_result_swab="swab_result",
-        column_test_result_antibodies="antibodies_result",
-        column_test_result_longcovid="long_covid_have_symptoms",
+        cutoff_date_swab=config_file["cut_off_dates"]["cutoff_date_swab"],
+        cutoff_date_antibodies=config_file["cut_off_dates"]["cutoff_date_antibodies"],
+        cutoff_date_longcovid=config_file["cut_off_dates"]["cutoff_date_longcovid"],
+        column_test_result_swab="pcr_result_classification",
+        column_test_result_antibodies="antibody_test_result_classification",
+        column_test_result_longcovid="have_long_covid_symptoms",
         patient_id_column="participant_id",
-        visit_date_column="visit_date",
+        visit_date_column="visit_date_string",
         age_column="age_at_visit",
     )
 
