@@ -35,14 +35,32 @@ def delete_tables(**kwargs):
     Specify prefix to remove all tables with a given prefix.
     """
     spark_session = get_or_create_spark_session()
-    prefix = get_config()["storage"]["table_prefix"]
-    if "table_names" in kwargs and kwargs["table_names"] != "":
-        for table_name in kwargs["table_names"]:
-            spark_session.sql(f"DROP TABLE IF EXISTS {prefix}_{table_name}")
-    if "pattern" in kwargs and kwargs["pattern"] != "":
-        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['pattern']}")
-    if "prefix" in kwargs and kwargs["prefix"] != "":
-        spark_session.sql(f"DROP TABLE IF EXISTS LIKE {kwargs['prefix'].replace('_','~')}% ESCAPE '~'")
+    storage_config = get_config()["storage"]
+
+    if "table_names" in kwargs:
+        if kwargs["table_names"] is not None:
+            for table_name in kwargs["table_names"]:
+                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['prefix']}_{table_name}")
+    if "pattern" in kwargs:
+        if kwargs["pattern"] is not None:
+            tables = (
+                spark_session.sql(f"SHOW TABLES IN covserolink_dev LIKE '{kwargs['pattern']}'")
+                .select("tableName")
+                .toPandas()["tableName"]
+                .tolist()
+            )
+            for table_name in tables:
+                spark_session.sql(f"DROP TABLE IF EXISTS {table_name}")
+    if "prefix" in kwargs:
+        if kwargs["prefix"] is not None:
+            tables = (
+                spark_session.sql(f"SHOW TABLES IN covserolink_dev LIKE '{kwargs['prefix']}*'")
+                .select("tableName")
+                .toPandas()["tableName"]
+                .tolist()
+            )
+            for table_name in tables:
+                spark_session.sql(f"DROP TABLE IF EXISTS {table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
