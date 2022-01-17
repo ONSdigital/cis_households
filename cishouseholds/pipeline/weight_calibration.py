@@ -74,8 +74,14 @@ def extract_df_list(list_paths, previous, **kwargs):
 
 @register_pipeline_stage("pre_calibration")
 def pre_calibration(
-    design_weight_table, population_projections_table, survey_response_table, responses_pre_calibration_table
+    design_weight_table,
+    population_projections_table,
+    survey_response_table,
+    responses_pre_calibration_table,
+    pre_calibration_config_path,
 ):
+    with open(pre_calibration_config_path, "r") as config_file:
+        pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
     household_level_with_design_weights = extract_from_table(design_weight_table)
     population_by_country = extract_from_table(population_projections_table)
 
@@ -100,6 +106,7 @@ def pre_calibration(
         df_survey=survey_response,
         df_dweights=household_level_with_design_weights,
         df_country=population_by_country,
+        pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
 

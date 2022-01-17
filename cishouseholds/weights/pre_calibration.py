@@ -1,17 +1,21 @@
-import os
 from typing import List
 
-import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
 
-def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_country: DataFrame) -> DataFrame:
+def pre_calibration_high_level(
+    df_survey: DataFrame,
+    df_dweights: DataFrame,
+    df_country: DataFrame,
+    pre_calibration_config: dict,
+) -> DataFrame:
     """
     Parameters
     ----------
@@ -24,15 +28,16 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         on="ons_household_id",
         how="left",
     )
-
-    with open(os.getcwd() + "\\cishouseholds\\weights\\precal_config.yaml", "r") as file:
-        config_file = yaml.safe_load(file)
-
+    df = assign_ethnicity_white(
+        df=df,
+        column_name_to_assign="ethnicity_white",
+        ethnicity_group_column_name="ethnicity_group",
+    )
     df = dataset_generation(
         df=df,
-        cutoff_date_swab=config_file["cut_off_dates"]["cutoff_date_swab"],
-        cutoff_date_antibodies=config_file["cut_off_dates"]["cutoff_date_antibodies"],
-        cutoff_date_longcovid=config_file["cut_off_dates"]["cutoff_date_longcovid"],
+        cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
+        cutoff_date_antibodies=pre_calibration_config["cut_off_dates"]["cutoff_date_antibodies"],
+        cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
         column_test_result_swab="pcr_result_classification",
         column_test_result_antibodies="antibody_test_result_classification",
         column_test_result_longcovid="have_long_covid_symptoms",
@@ -40,7 +45,6 @@ def pre_calibration_high_level(df_survey: DataFrame, df_dweights: DataFrame, df_
         visit_date_column="visit_date_string",
         age_column="age_at_visit",
     )
-
     df = survey_extraction_household_data_response_factor(
         df=df,
         df_extract_by_country=df_country,
