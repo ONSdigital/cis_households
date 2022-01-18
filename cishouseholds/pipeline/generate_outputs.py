@@ -36,13 +36,13 @@ def tables_to_csv(table_file_pairs, update_map_name=None):
     output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
     output_directory = Path(config["output_directory"]) / output_datetime
 
+    name_map = output_name_map.copy()
+    if update_map_name is not None:
+        name_map.update(update_output_name_maps[update_map_name])
+
     for table_name, output_file_name in table_file_pairs:
         df = extract_from_table(table_name)
-        if update_map_name is not None:
-            map = output_name_map.update(update_output_name_maps[update_map_name])
-        else:
-            map = output_name_map
-        df = map_output_values_and_column_names(df, map, category_map)
+        df = map_output_values_and_column_names(df, name_map, category_map)
         write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
 
 
