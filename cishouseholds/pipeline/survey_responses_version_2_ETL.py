@@ -31,6 +31,7 @@ from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
+from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
@@ -227,6 +228,16 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
 
     df = derive_age_columns(df)
+
+    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
+    # df = contact_known_or_suspected_covid_type(
+    #     df=df,
+    #     contact_known_covid_type_column='contact_known_covid_type',
+    #     contact_any_covid_type_column='contact_any_covid_type',
+    #     contact_any_covid_date_column='contact_any_covid_date',
+    #     contact_known_covid_date_column='contact_known_covid_date',
+    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
+    # )
     return df
 
 
