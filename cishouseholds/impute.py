@@ -47,9 +47,7 @@ def impute_think_had_covid(
     transformed_df = update_column_values_from_map(transformed_df, type_column, hierarchy_map)
     transformed_df = transformed_df.withColumn(type_column, F.min(type_column).over(window))
 
-    reverse_map = {}
-    for key, value in hierarchy_map.items():
-        reverse_map[value] = key
+    reverse_map = {value: key for key, value in hierarchy_map.items()}
 
     transformed_df = update_column_values_from_map(transformed_df, type_column, reverse_map)
 
