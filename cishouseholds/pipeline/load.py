@@ -65,7 +65,7 @@ def delete_tables(**kwargs):
             )
             for table_name in tables:
                 print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS{storage_config['database']}.{table_name}")
+                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
