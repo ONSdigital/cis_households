@@ -40,7 +40,10 @@ def delete_tables(**kwargs):
     if "table_names" in kwargs:
         if kwargs["table_names"] is not None:
             for table_name in kwargs["table_names"]:
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['prefix']}_{table_name}")
+                print(f"dropping table: {table_name}")  # functional
+                spark_session.sql(
+                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['prefix']}_{table_name}"
+                )
     if "pattern" in kwargs:
         if kwargs["pattern"] is not None:
             tables = (
@@ -50,7 +53,8 @@ def delete_tables(**kwargs):
                 .tolist()
             )
             for table_name in tables:
-                spark_session.sql(f"DROP TABLE IF EXISTS {table_name}")
+                print(f"dropping table: {table_name}")  # functional
+                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
     if "prefix" in kwargs:
         if kwargs["prefix"] is not None:
             tables = (
@@ -60,7 +64,8 @@ def delete_tables(**kwargs):
                 .tolist()
             )
             for table_name in tables:
-                spark_session.sql(f"DROP TABLE IF EXISTS {table_name}")
+                print(f"dropping table: {table_name}")  # functional
+                spark_session.sql(f"DROP TABLE IF EXISTS{storage_config['database']}.{table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
