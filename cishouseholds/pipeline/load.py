@@ -30,7 +30,7 @@ def extract_from_table(table_name: str):
 def delete_tables(**kwargs):
     """
     All key word args are optional:
-    Specify table_names as a list contaning absolute table names to remove.
+    Specify table_names as a list containing absolute table names to remove.
     Specify pattern as a string in SQL format to set a specific SQL pattern to remove.
     Specify prefix to remove all tables with a given prefix.
     """
@@ -47,7 +47,7 @@ def delete_tables(**kwargs):
     if "pattern" in kwargs:
         if kwargs["pattern"] is not None:
             tables = (
-                spark_session.sql(f"SHOW TABLES IN covserolink_dev LIKE '{kwargs['pattern']}'")
+                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['pattern']}'")
                 .select("tableName")
                 .toPandas()["tableName"]
                 .tolist()
@@ -58,7 +58,7 @@ def delete_tables(**kwargs):
     if "prefix" in kwargs:
         if kwargs["prefix"] is not None:
             tables = (
-                spark_session.sql(f"SHOW TABLES IN covserolink_dev LIKE '{kwargs['prefix']}*'")
+                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['prefix']}*'")
                 .select("tableName")
                 .toPandas()["tableName"]
                 .tolist()
