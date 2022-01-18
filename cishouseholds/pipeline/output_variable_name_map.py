@@ -1,3 +1,18 @@
+iqvia_raw_update_map = {
+    "self_isolating_detailed": "self_isolating_v1",
+    "consent_blood_samples_if_positiveyn": "consent_blood_if_positiveYN",
+    "symptoms_since_last_visit_trouble_sleeping": "sympt_covid_trouble_sleeping",
+    "symptoms_since_last_visit_noisy_breathing": "sympt_covid_noisy_breathing",
+    "consent_16_visits": "consent_v16",
+    "contact_suspected_positive_covid_last_28_days": "contact_suspect_covid",
+    # "":"consent_blood",
+    "not_attended_reason": "not_attend_reason",
+    "visit_datetime": "actual_visit_date_time",
+    "Had_symptoms_in_the_last_7_days": "sympt_now_any",
+    "household_been_hospital_last_2_weeks": "contact_hospital",
+    "household_been_in_carehome_last_2_weeks": "contact_carehome",
+}
+
 output_name_map = {
     "blood_sample_received_date": "DateSamplesReceivedOxford",
     "able_to_take_blood": "able_to_take_blood",
