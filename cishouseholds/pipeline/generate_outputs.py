@@ -29,6 +29,8 @@ def tables_to_csv(table_file_pairs, update_map_name=None):
     Takes a list of 2-item tuples or lists:
         table_file_pairs:
             - [HIVE_table_name, output_csv_file_name]
+
+    Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
     config = get_config()
     output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
