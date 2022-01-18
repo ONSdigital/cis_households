@@ -1,3 +1,38 @@
+update_output_name_maps = {
+    "unioned_responses_update_map": {
+        "cis_covid_vaccine_date": "covid_vaccine_date",
+        "cis_covid_vaccine_date_1": "covid_vaccine_date1",
+        "cis_covid_vaccine_date_2": "covid_vaccine_date2",
+        "cis_covid_vaccine_date_3": "covid_vaccine_date3",
+        "cis_covid_vaccine_date_4": "covid_vaccine_date4",
+        "cis_covid_vaccine_type_1": "covid_vaccine_type1",
+        "cis_covid_vaccine_type_2": "covid_vaccine_type2",
+        "cis_covid_vaccine_type_3": "covid_vaccine_type3",
+        "cis_covid_vaccine_type_4": "covid_vaccine_type4",
+        "cis_covid_vaccine_type_other_1": "covid_vaccine_type_other1",
+        "cis_covid_vaccine_type_other_2": "covid_vaccine_type_other2",
+        "cis_covid_vaccine_type_other_3": "covid_vaccine_type_other3",
+        "cis_covid_vaccine_type_other_4": "covid_vaccine_type_other4",
+        "date_of_birth": "dob",
+        "withdrawal_type": "withdrawn_type",
+        "self_isolating_detailed": "self_isolating_v1",
+        "consent_blood_samples_if_positive": "consent_blood_if_positive",
+        "consent_blood_test": "consent_blood",
+        "symptoms_since_last_visit_trouble_sleeping": "sympt_covid_trouble_sleeping",
+        "symptoms_since_last_visit_noisy_breathing": "sympt_covid_noisy_breathing",
+        "consent_16_visits": "consent_v16",
+        "contact_suspected_positive_covid_last_28_days": "contact_suspect_covid",
+        "not_attended_reason": "not_attend_reason",
+        "improved_visit_date": "actual_visit_date_time",
+        "improved_visit_date_string": "actual_visit_date",
+        "symptoms_last_7_days_any": "sympt_now_any",
+        "think_had_covid_any_symptoms": "sympt_covid_any",
+        "household_been_hospital_last_2_weeks": "contact_hospital",
+        "household_been_in_carehome_last_2_weeks": "contact_carehome",
+        "work_status_v1_raw": "orig_v1_work_status",
+    }
+}
+
 output_name_map = {
     "blood_sample_received_date": "DateSamplesReceivedOxford",
     "able_to_take_blood": "able_to_take_blood",

@@ -17,17 +17,20 @@ from cishouseholds.pipeline.category_map import category_map
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
+from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
 @register_pipeline_stage("tables_to_csv")
-def tables_to_csv(table_file_pairs):
+def tables_to_csv(table_file_pairs, update_map_name=None):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
 
     Takes a list of 2-item tuples or lists:
         table_file_pairs:
             - [HIVE_table_name, output_csv_file_name]
+
+    Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
     config = get_config()
     output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
@@ -35,7 +38,11 @@ def tables_to_csv(table_file_pairs):
 
     for table_name, output_file_name in table_file_pairs:
         df = extract_from_table(table_name)
-        df = map_output_values_and_column_names(df, output_name_map, category_map)
+        if update_map_name is not None:
+            map = output_name_map.update(update_output_name_maps[update_map_name])
+        else:
+            map = output_name_map
+        df = map_output_values_and_column_names(df, map, category_map)
         write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
 
 
