@@ -23,16 +23,9 @@ def impute_think_had_covid(
     hierarchy_map: dict,
 ):
     """
-    impute think had covid and associated variables
-    Parameters
-    ----------
-    df
-    participant_id_column
-    date_column
-    visit_date_column
-    type_column
-    contact_column
-    hierarchy_map
+    hierarchy map
+        specify a positional rank of the type column to define how occupancies of  duplicate visit dates will be
+        disambiguated
     """
     date_exists_df = df.select(participant_id_column, date_column)
     transformed_df = df.join(
