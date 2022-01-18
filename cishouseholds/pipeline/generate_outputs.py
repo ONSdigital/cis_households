@@ -16,6 +16,7 @@ from cishouseholds.extract import list_contents
 from cishouseholds.pipeline.category_map import category_map
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.output_variable_name_map import iqvia_raw_update_map
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
@@ -35,7 +36,11 @@ def tables_to_csv(table_file_pairs):
 
     for table_name, output_file_name in table_file_pairs:
         df = extract_from_table(table_name)
-        df = map_output_values_and_column_names(df, output_name_map, category_map)
+        if table_name == "data_iqvia_raw":
+            map = output_name_map.update(iqvia_raw_update_map)
+        else:
+            map = output_name_map
+        df = map_output_values_and_column_names(df, map, category_map)
         write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
 
 
