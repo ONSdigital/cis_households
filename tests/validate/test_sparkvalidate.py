@@ -9,10 +9,10 @@ def test_sparkvalidate(spark_session):
     df_input = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('a',   1,  7,  'yes'),
+                ('a',   1,  4,  'yes'),
                 ('b',   2,  8,  'no'),
                 ('aa',  12, 9,  'no'),
-                ('ab',	3,  10, 'yes'),
+                ('ab',	8,  10, 'yes'),
                 ('ab',	3,  10, 'yes'),
             # fmt: on
         ],
@@ -24,30 +24,21 @@ def test_sparkvalidate(spark_session):
         """,
     )
 
-<<<<<<< HEAD
-    import pdb
-
-    pdb.set_trace()
-=======
->>>>>>> ef14753524871bb2a531105673fb90c1b271312e
-
     # initialise
     validate_df = SparkValidate(df_input)
 
-    # validate
-<<<<<<< HEAD
-    operations = {"column_1": {"contains": "a"}}
-=======
-    operations = {"column_1": {'contains': 'a'}}
+    validation_checks_dict = {
+        "column_1": {"contains": "a"},
+        "column_4": {"isin": "no"},
+        "column_3": {"between": {"lower_bound": 8, "upper_bound": 9}},
+    }
+    validate_df.validate_column(operations=validation_checks_dict)
 
-    import pdb; pdb.set_trace()
->>>>>>> ef14753524871bb2a531105673fb90c1b271312e
+    # duplicate
+    operations = {"duplicated": ["column_1", "column_2"]}
     validate_df.validate(operations=operations)
 
-    # validate_df.dataframe.show()
+    import pdb
 
-    # execute_check
-
-    # contains
-
-    # inin
+    pdb.set_trace()
+    validate_df.dataframe.show()
