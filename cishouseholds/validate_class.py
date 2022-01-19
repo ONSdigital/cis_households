@@ -50,7 +50,20 @@ class SparkValidate:
         return F.col(column_name).isin(options)
 
     def between(self, column_name, range):
-        return (F.col(column_name) >= range["lower_bound"]) & (F.col(column_name) <= range["upper_bound"])
+
+        lb = (
+            (F.col(column_name) >= range["lower_bound"])
+            if range["lower_bound"]["inclusive"]
+            else (F.col(column_name) > range["lower_bound"])
+        )
+
+        ub = (
+            (F.col(column_name) <= range["upper_bound"])
+            if range["upper_bound"]["inclusive"]
+            else (F.col(column_name) < range["upper_bound"])
+        )
+
+        return lb & ub
 
     def duplicated(self, column_list):
         window = Window.partitionBy(*column_list)
