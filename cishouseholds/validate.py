@@ -209,7 +209,7 @@ class SparkValidate:
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             check = self.functions[method.keys()[0]]
-            self.execute_check(check["function"],check["error_message"],method.values()[0])
+            self.execute_check(check["function"],check["error_message"],column_name,method.values()[0])
 
 
         # self.dataframe = (reduce(
