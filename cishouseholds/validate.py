@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from functools import reduce
 from io import StringIO
 from operator import add
 from typing import List
@@ -18,10 +19,7 @@ from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 # from typing import List
-
 # from typing import List
-
-from functools import reduce
 
 
 class PySparkValidator(Validator):
