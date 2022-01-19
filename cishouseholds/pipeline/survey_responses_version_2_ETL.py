@@ -107,7 +107,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
     df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
-    # df = assign_column_to_date_string(df, "improved_visit_date_string", "improved_visit_datetime")
 
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
@@ -389,6 +388,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = assign_column_to_date_string(df, "improved_visit_date_string", "improved_visit_date")
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")

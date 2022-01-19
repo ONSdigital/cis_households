@@ -91,6 +91,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -382,6 +383,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 4.0
   infant_2_age: 7.0
   infant_3_age: 0.0
@@ -674,6 +676,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 1.0
   infant_3_age: 3.0
@@ -969,6 +972,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 5.0
   infant_3_age: null
@@ -1266,6 +1270,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 6.0
   infant_3_age: 0.0
@@ -1564,6 +1569,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 7.0
   infant_3_age: 2.0
@@ -1858,6 +1864,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 8.0
   infant_3_age: 8.0
@@ -2153,6 +2160,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 1.0
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -2451,6 +2459,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 2.0
   infant_3_age: null
@@ -2752,6 +2761,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 6.0
   infant_2_age: 2.0
   infant_3_age: 0.0

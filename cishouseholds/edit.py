@@ -1,14 +1,13 @@
 from itertools import chain
 from typing import List
 from typing import Mapping
+from typing import Optional
 from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-#######################################################################################################
 
 
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
@@ -178,7 +177,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
-    error_if_value_not_found: bool = False,
+    error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
     """

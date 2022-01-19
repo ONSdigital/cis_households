@@ -1139,4 +1139,8 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: improved_visit_date_string
+  nullable: true
+  type: string
 type: struct
