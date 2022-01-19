@@ -62,7 +62,7 @@
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Any other white background
@@ -355,7 +355,7 @@
   date_of_birth_string: '1997-02-07'
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
-  deferred: Deferred 1
+  deferred: Deferred
   email: coater1966@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Asian
@@ -646,7 +646,7 @@
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Asian or Asian British
   ethnicity: White-Irish
@@ -940,7 +940,7 @@
   date_of_birth_string: '2015-04-22'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: Deferred 1
+  deferred: Deferred
   email: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Any other white background
@@ -1238,7 +1238,7 @@
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: Deferred 1
+  deferred: Deferred
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
@@ -1534,7 +1534,7 @@
   date_of_birth_string: '1997-08-21'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,African-African
@@ -1830,7 +1830,7 @@
   date_of_birth_string: null
   days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
-  deferred: null
+  deferred: N/A
   email: dashed1989@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Any other Black background
@@ -2125,7 +2125,7 @@
   date_of_birth_string: '2003-10-07'
   days_since_think_had_covid: 4.0
   days_since_think_had_covid_group: 0-14
-  deferred: Deferred 1
+  deferred: Deferred
   email: ladybird1985@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
@@ -2423,7 +2423,7 @@
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Indian
@@ -2725,7 +2725,7 @@
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
-  deferred: Deferred 1
+  deferred: Deferred
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other Mixed background
