@@ -30,15 +30,13 @@ def test_sparkvalidate(spark_session):
     validation_checks_dict = {
         "column_1": {"contains": "a"},
         "column_4": {"isin": "no"},
-        "column_3": {"between": {"lower_bound": 8, "upper_bound": 9}},
+        "column_3": {
+            "between": {"lower_bound": {"inclusive": True, "value": 8}, "upper_bound": {"inclusive": True, "value": 9}}
+        },
     }
+
     validate_df.validate_column(operations=validation_checks_dict)
 
     # duplicate
     operations = {"duplicated": ["column_1", "column_2"]}
     validate_df.validate(operations=operations)
-
-    import pdb
-
-    pdb.set_trace()
-    validate_df.dataframe.show()
