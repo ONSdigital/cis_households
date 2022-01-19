@@ -206,13 +206,16 @@ class SparkValidate:
             self.dataframe = self.dataframe.withColumn(column_name,method)
 
 
-        # self.dataframe =  (reduce(
-        # lambda memo_df, col_name: df.withColumn(col_name, lower(col(col_name))),
-        # source_df.columns,
-        # source_df
-        # ))
+        self.dataframe = (reduce(
+            lambda df, col_name: df.withColumn(col_name, lower(col(col_name))),
+            source_df.columns,
+            source_df
+        ))
+    def execute_check(self, check, error_message, *params):
+        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params)),F.array_union(self.dataframe[self.error_column],F.lit(error_message))))
 
-    def contains(self, column_name,error_message,contains):
-        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(F.col(column_name).rlike(contains),None).otherwise(error_message))
+    def contains(self, column_name,contains):
+       return F.col(column_name).rlike(contains)
 
-    def 
+    def isin(self, column_name, options):
+        return F.col(column_name).isin(options)
