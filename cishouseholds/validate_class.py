@@ -1,5 +1,7 @@
+from curses import window
 import imp
 from pyspark.sql.functions import DataFrame
+from pyspark.sql import Window
 import pyspark.sql.functions as F
 
 class SparkValidate:
@@ -26,10 +28,17 @@ class SparkValidate:
         #     source_df
         # ))
     def execute_check(self, check, error_message, *params):
-        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params),F.array_union(F.col(self.error_column),F.array(F.lit(error_message)))))
+        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params),F.array_union(F.col(self.error_column),F.array(F.lit(error_message)))).otherwise(F.col(self.error_column)))
 
     def contains(self, column_name,contains):
        return F.col(column_name).rlike(contains)
 
     def isin(self, column_name, options):
         return F.col(column_name).isin(options)
+
+    def between(self, column_name, range):
+        return (F.col(column_name) >= range["lower_bound"]) & (F.col(column_name) <= range["upper_bound"])
+
+    def duplicated(self, column_list):
+        window = Window.partitionBy(*column_list)
+        return F.when(F.sum(1).over(window) == 1, True).otherwise(False)
