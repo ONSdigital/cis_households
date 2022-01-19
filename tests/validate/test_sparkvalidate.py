@@ -9,18 +9,19 @@ def test_sparkvalidate(spark_session):
     df_input = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('a',   1,  4,  'yes'),
-                ('b',   2,  8,  'no'),
-                ('aa',  12, 9,  'no'),
-                ('ab',	8,  10, 'yes'),
-                ('ab',	3,  10, 'yes'),
+                ('a',   1,  4,  'yes',  []),
+                ('b',   2,  8,  'no',   ['inst_in', 'not_between']),
+                ('aa',  12, 9,  'no',   ['not_contained']),
+                ('ab',	8,  10, 'yes',  ['inst_in', 'not_between']),
+                ('ab',	3,  10, 'yes',  ['inst_in', 'not_between']),
             # fmt: on
         ],
         schema="""
                 column_1 string,
                 column_2 integer,
                 column_3 integer,
-                column_4 string
+                column_4 string,
+                error array
         """,
     )
 
