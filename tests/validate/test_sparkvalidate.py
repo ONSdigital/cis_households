@@ -13,6 +13,7 @@ def test_sparkvalidate(spark_session):
                 ('b',   2,  8,  'no'),
                 ('aa',  12, 9,  'no'),
                 ('ab',	3,  10, 'yes'),
+                ('ab',	3,  10, 'yes'),
             # fmt: on
         ],
         schema="""
@@ -23,13 +24,15 @@ def test_sparkvalidate(spark_session):
         """,
     )
 
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
 
     # initialise
     validate_df = SparkValidate(df_input)
 
     # validate
-    operations = {"column_1": {'contains': 'a'}}
+    operations = {"column_1": {"contains": "a"}}
     validate_df.validate(operations=operations)
 
     # validate_df.dataframe.show()
@@ -39,5 +42,3 @@ def test_sparkvalidate(spark_session):
     # contains
 
     # inin
-
-    
