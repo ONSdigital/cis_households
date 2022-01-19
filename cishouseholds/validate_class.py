@@ -29,8 +29,8 @@ class SparkValidate:
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
-        for method, param in operations.items():
-            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], param)
+        for method, params in operations.items():
+            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], *params)
 
     def execute_check(self, check, error_message, *params):
         self.dataframe = self.dataframe.withColumn(
@@ -40,13 +40,16 @@ class SparkValidate:
             ),
         )
 
-    def contains(self, column_name, contains):
+    @staticmethod
+    def contains(column_name, contains):
         return F.col(column_name).rlike(contains)
 
-    def isin(self, column_name, options):
+    @staticmethod
+    def isin(column_name, options):
         return F.col(column_name).isin(options)
 
-    def between(self, column_name, range):
+    @staticmethod
+    def between(column_name, range):
         lb = (
             (F.col(column_name) >= range["lower_bound"]["value"])
             if range["lower_bound"]["inclusive"]
@@ -60,6 +63,7 @@ class SparkValidate:
         return lb & ub
 
     # Non column wise functions
-    def duplicated(self, column_list):
+    @staticmethod
+    def duplicated(column_list):
         window = Window.partitionBy(*column_list)
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False)
