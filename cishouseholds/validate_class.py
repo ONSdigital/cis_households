@@ -19,17 +19,23 @@ class SparkValidate:
             "between": {"function": self.between, "error_message": "not_between"},
         }
 
+    def new_function(self, function_name, function_method, error_message="default error"):
+        self.functions[function_name] = {"function":function_method, "error_message":error_message}
+
+    def update_error_message(self, function_name, new_error_message):
+        self.functions[function_name]["error_message"] = new_error_message
+
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-        # operations = (reduce(
-        #     lambda df, col_name: self.execute_check(check["function"],check["error_message"],column_name,list(method.values())[0]),
-        #     self.dataframe.columns,
-        #     self.dataframe
-        # ))
+        operations = (reduce(
+            lambda df, col_name: self.execute_check(check["function"],check["error_message"],column_name,list(method.values())[0]),
+            self.dataframe.columns,
+            self.dataframe
+        ))
 
     def validate(self, operations):
         for method, param in operations.items():
@@ -65,6 +71,14 @@ class SparkValidate:
 
         return lb & ub
 
+
+    # Non column wise functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     def duplicated(self, column_list):
         window = Window.partitionBy(*column_list)
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False)
+<<<<<<< HEAD
+
+    
+=======
+>>>>>>> 0eb03a4e50834cab811f81ec09634074f8290810
