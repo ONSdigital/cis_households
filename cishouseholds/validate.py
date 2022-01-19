@@ -218,7 +218,7 @@ class SparkValidate:
         #     source_df
         # ))
     def execute_check(self, check, error_message, *params):
-        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params)),F.array_union(self.dataframe[self.error_column],F.lit(error_message))))
+        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params)),F.array_union(self.dataframe[self.error_column],F.lit(error_message)))
 
     def contains(self, column_name,contains):
        return F.col(column_name).rlike(contains)
