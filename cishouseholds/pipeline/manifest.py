@@ -41,10 +41,10 @@ class Manifest:
         self.manifest_datetime = pipeline_run_datetime.strftime("%Y%m%d_%H%M%S")
 
         self.manifest_file_path = os.path.join(outgoing_directory, (self.manifest_datetime + "_manifest.json"))
-        self.manifest = {"files": []} 
+        self.manifest = {"files": []}
         self.written = False
 
-        self.invalid_headers = []  
+        self.invalid_headers = []
         self.dry_run = dry_run
 
     def add_file(self, relative_file_path: str, column_header: str, validate_col_name_length: bool = True):
