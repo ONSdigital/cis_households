@@ -35,9 +35,9 @@ class SparkValidate:
     def execute_check(self, check, error_message, *params, **kwargs):
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(~check(*params, **kwargs), F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
-                F.col(self.error_column)
-            ),
+            F.when(
+                ~check(*params, **kwargs), F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))
+            ).otherwise(F.col(self.error_column)),
         )
 
     @staticmethod
