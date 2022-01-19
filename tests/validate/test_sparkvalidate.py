@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
-from cishouseholds.validate import SparkValidate
+from cishouseholds.validate_class import SparkValidate
 
 
 def test_sparkvalidate(spark_session):
@@ -23,13 +23,14 @@ def test_sparkvalidate(spark_session):
         """,
     )
 
-    import pdb; pdb.set_trace()
 
     # initialise
     validate_df = SparkValidate(df_input)
 
     # validate
     operations = {"column_1": {'contains': 'a'}}
+
+    import pdb; pdb.set_trace()
     validate_df.validate(operations=operations)
 
     # validate_df.dataframe.show()
