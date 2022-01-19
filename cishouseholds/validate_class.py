@@ -3,6 +3,7 @@ import imp
 from pyspark.sql.functions import DataFrame
 from pyspark.sql import Window
 import pyspark.sql.functions as F
+from functools import reduce
 
 class SparkValidate:
     def __init__(self, dataframe:DataFrame) -> None:
@@ -12,21 +13,27 @@ class SparkValidate:
 
         self.functions = {
             "contains":{"function":self.contains, "error_message":"error!"},
-            "isin":{"function":self.isin, "error_message":"error!"}
+            "isin":{"function":self.isin, "error_message":"error!"},
+            "duplicated":{"function":self.duplicated, "error_message":"error!"},
         }
 
-    def validate(self, operations):
+    def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"],check["error_message"],column_name,list(method.values())[0])
 
 
-        # self.dataframe = (reduce(
-        #     lambda df, col_name: df.withColumn(col_name, lower(col(col_name))),
-        #     source_df.columns,
-        #     source_df
+        # operations = (reduce(
+        #     lambda df, col_name: self.execute_check(check["function"],check["error_message"],column_name,list(method.values())[0]),
+        #     self.dataframe.columns,
+        #     self.dataframe
         # ))
+
+    def validate(self, operations):
+        for method, param in operations.items(): 
+            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], param)
+
     def execute_check(self, check, error_message, *params):
         self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params),F.array_union(F.col(self.error_column),F.array(F.lit(error_message)))).otherwise(F.col(self.error_column)))
 
