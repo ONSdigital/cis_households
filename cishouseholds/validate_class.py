@@ -30,12 +30,12 @@ class SparkValidate:
 
     def validate(self, operations):
         for method, params in operations.items():
-            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], *params)
+            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **params)
 
-    def execute_check(self, check, error_message, *params):
+    def execute_check(self, check, error_message, *params, **kwargs):
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(~check(*params), F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
+            F.when(~check(*params, **kwargs), F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
                 F.col(self.error_column)
             ),
         )

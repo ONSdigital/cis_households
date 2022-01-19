@@ -45,20 +45,21 @@ def test_sparkvalidate(spark_session):
 
     validate_df.validate_column(operations=validation_checks_dict)
 
-    # duplicate
-    operations = {
-        "duplicated": ["column_1", "column_2"],
-        "test_function": ["column_2", "column_3"],
-    }
-    validate_df.validate(operations=operations)
-
     def function_add_up_to(column_1, column_2):
         return F.col(column_1) + F.col(column_2) < 10
 
     validate_df.new_function("test_function", function_add_up_to, error_message="larger_than_10")
-    import pdb
 
-    pdb.set_trace()
+    # duplicate
+    operations = {
+        "duplicated": {"column_list":["column_1", "column_2"]},
+        "test_function": {"column_1":"column_2","column_2":"column_3"},
+    }
+    validate_df.validate(operations=operations)
+
+    #import pdb
+
+    #pdb.set_trace()
 
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
