@@ -2,7 +2,7 @@ import csv
 from curses import A_ALTCHARSET
 from datetime import datetime
 from io import StringIO
-from operator import add
+from operator import add, contains
 from typing import List
 from typing import Union
 
@@ -200,17 +200,23 @@ class SparkValidate:
         self.error_column = "error"
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
+        self.functions = {
+            "contains":{"function":contains, "error_message":"error!"},
+            "isin":{"function":isin, "error_message":"error!"}
+        }
+
     def validate(self, operations):
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
-            self.dataframe = self.dataframe.withColumn(column_name,method)
+            check = self.functions[method.keys()[0]]
+            self.execute_check(check["function"],check["error_message"],method.values()[0])
 
 
-        self.dataframe = (reduce(
-            lambda df, col_name: df.withColumn(col_name, lower(col(col_name))),
-            source_df.columns,
-            source_df
-        ))
+        # self.dataframe = (reduce(
+        #     lambda df, col_name: df.withColumn(col_name, lower(col(col_name))),
+        #     source_df.columns,
+        #     source_df
+        # ))
     def execute_check(self, check, error_message, *params):
         self.dataframe = self.dataframe.withColumn(self.error_column, F.when(~check(*params)),F.array_union(self.dataframe[self.error_column],F.lit(error_message))))
 
