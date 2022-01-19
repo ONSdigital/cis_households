@@ -7,7 +7,7 @@ from cishouseholds.derive import assign_taken_column
 @pytest.fixture
 def expected_df(spark_session):
     return spark_session.createDataFrame(
-        data=[(None, "no"), ("ONS123456768", "yes")],
+        data=[(None, "No"), ("ONS123456768", "Yes")],
         schema="barcode string, taken string",
     )
 

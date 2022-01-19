@@ -729,7 +729,7 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "no").otherwise("yes"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "No").otherwise("Yes"))
 
     return df
 
