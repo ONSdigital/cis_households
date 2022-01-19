@@ -8,8 +8,6 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
-#######################################################################################################
-
 
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """

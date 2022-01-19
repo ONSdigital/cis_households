@@ -1,4 +1,5 @@
 import csv
+from curses import A_ALTCHARSET
 from datetime import datetime
 from io import StringIO
 from operator import add
@@ -20,6 +21,8 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 # from typing import List
 
 # from typing import List
+
+from functools import reduce
 
 
 class PySparkValidator(Validator):
@@ -190,3 +193,26 @@ def check_singular_match(
             failure_column_name, F.when(F.col(existing_failure_column) == 1, 1).otherwise(F.col(failure_column_name))
         )
     return df.drop("TOTAL")
+
+class SparkValidate:
+    def __init__(self, dataframe:DataFrame) -> None:
+        self.dataframe = dataframe
+        self.error_column = "error"
+        self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
+
+    def validate(self, operations):
+        # operations : {"column_name": "method"(function or string)}
+        for column_name, method in operations.items():
+            self.dataframe = self.dataframe.withColumn(column_name,method)
+
+
+        # self.dataframe =  (reduce(
+        # lambda memo_df, col_name: df.withColumn(col_name, lower(col(col_name))),
+        # source_df.columns,
+        # source_df
+        # ))
+
+    def contains(self, column_name,error_message,contains):
+        self.dataframe = self.dataframe.withColumn(self.error_column, F.when(F.col(column_name).rlike(contains),None).otherwise(error_message))
+
+    def 
