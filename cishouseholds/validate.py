@@ -201,8 +201,8 @@ class SparkValidate:
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
-            "contains":{"function":contains, "error_message":"error!"},
-            "isin":{"function":isin, "error_message":"error!"}
+            "contains":{"function":self.contains, "error_message":"error!"},
+            "isin":{"function":self.isin, "error_message":"error!"}
         }
 
     def validate(self, operations):
