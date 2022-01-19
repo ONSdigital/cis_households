@@ -13,11 +13,11 @@ def test_sparkvalidate(spark_session):
     df_expected = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('a',   1,  4,  'yes',  []),
-                ('b',   2,  8,  'no',   ['inst_in', 'not_between']),
-                ('aa',  12, 9,  'no',   ['not_contained']),
-                ('ab',	8,  10, 'yes',  ['inst_in', 'not_between']),
-                ('ab',	3,  10, 'yes',  ['inst_in', 'not_between']),
+                ('a',   1,  4,  'yes',  ['isnt_in', 'not_between']),
+                ('aa',  12, 9,  'no',   ['larger_than_10']),
+                ('ab',	3,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
+                ('ab',	8,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
+                ('b',   2,  7,  'no',   ['not_contained', 'not_between']),
             # fmt: on
         ],
         schema=StructType(
@@ -52,15 +52,11 @@ def test_sparkvalidate(spark_session):
 
     # duplicate
     operations = {
-        "duplicated": {"column_list": ["column_1", "column_2"]},
+        "duplicated": {"column_list": ["column_1", "column_3"]},
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
-
-    # import pdb
-
-    # pdb.set_trace()
-
+    
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )
