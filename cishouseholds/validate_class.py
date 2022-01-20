@@ -1,3 +1,5 @@
+from typing import Callable
+
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.functions import DataFrame
@@ -19,11 +21,12 @@ class SparkValidate:
     def new_function(self, function_name, function_method, error_message="default error"):
         self.functions[function_name] = {"function": function_method, "error_message": error_message}
 
-    def update_error_message(self, function_name, new_error_message):
+    def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
+
         for column_name, method in operations.items():
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
@@ -32,12 +35,17 @@ class SparkValidate:
         for method, params in operations.items():
             self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **params)
 
+    def validate_udl(self, logic, error_message):
+        self.execute_check(logic, error_message)
+
     def execute_check(self, check, error_message, *params, **kwargs):
+        if type(check) == Callable:
+            check = check(*params, **kwargs)
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(
-                ~check(*params, **kwargs), F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))
-            ).otherwise(F.col(self.error_column)),
+            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
+                F.col(self.error_column)
+            ),
         )
 
     @staticmethod
