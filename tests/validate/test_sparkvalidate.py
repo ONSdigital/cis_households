@@ -53,8 +53,8 @@ def test_sparkvalidate(spark_session):
 
     # user defined function directly
     validate_df.validate_udl(
-        logic=((F.col('column_2') > 4) & (F.col('column_3') < 10)),
-        error_message='col_2 and col_3 should_be_within_interval 4 and 10'
+        logic=((F.col("column_2") > 4) & (F.col("column_3") < 10)),
+        error_message="col_2 and col_3 should_be_within_interval 4 and 10",
     )
     # duplicate
     operations = {
@@ -63,7 +63,9 @@ def test_sparkvalidate(spark_session):
     }
     validate_df.validate(operations=operations)
 
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
 
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True

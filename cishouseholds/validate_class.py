@@ -44,12 +44,7 @@ class SparkValidate:
 
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(
-                ~check, 
-                F.array_union(
-                    F.col(self.error_column), F.array(F.lit(error_message))
-                )
-            ).otherwise(
+            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
                 F.col(self.error_column)
             ),
         )
@@ -61,7 +56,7 @@ class SparkValidate:
 
     @staticmethod
     def isin(error_message, column_name, options):
-        error_message = error_message.format(column_name, ', '.join(options))
+        error_message = error_message.format(column_name, ", ".join(options))
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
@@ -83,5 +78,5 @@ class SparkValidate:
     @staticmethod
     def duplicated(error_message, column_list):
         window = Window.partitionBy(*column_list)
-        error_message = error_message.format(', '.join(column_list))
+        error_message = error_message.format(", ".join(column_list))
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
