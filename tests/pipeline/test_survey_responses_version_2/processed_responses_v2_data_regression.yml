@@ -16,7 +16,7 @@
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -205,7 +205,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -309,7 +309,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
@@ -496,7 +496,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -600,7 +600,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -788,7 +788,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -894,7 +894,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -1083,7 +1083,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1192,7 +1192,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
@@ -1380,7 +1380,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -1488,7 +1488,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
@@ -1679,7 +1679,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -1784,7 +1784,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
@@ -1973,7 +1973,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -2079,7 +2079,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -2267,7 +2267,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -2377,7 +2377,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -2568,7 +2568,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -2679,7 +2679,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
@@ -2864,7 +2864,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'

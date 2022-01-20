@@ -7,7 +7,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: null
@@ -98,7 +98,7 @@
   street: null
   suffix: U
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -177,7 +177,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
@@ -268,7 +268,7 @@
   street: null
   suffix: C
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -347,7 +347,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -440,7 +440,7 @@
   street: null
   suffix: C
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -516,7 +516,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Saltash
@@ -607,7 +607,7 @@
   street: null
   suffix: A
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -682,7 +682,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -776,7 +776,7 @@
   street: null
   suffix: B
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -850,7 +850,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Hove
@@ -944,7 +944,7 @@
   street: Drumagrove
   suffix: O
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1021,7 +1021,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: Felixstowe
@@ -1113,7 +1113,7 @@
   street: null
   suffix: U
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1188,7 +1188,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -1280,7 +1280,7 @@
   street: null
   suffix: B
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1355,7 +1355,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: null
@@ -1445,7 +1445,7 @@
   street: null
   suffix: M
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1521,7 +1521,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: Inverurie
@@ -1616,7 +1616,7 @@
   street: null
   suffix: L
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
