@@ -107,13 +107,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="samples_taken_date_string",
         reference_column="samples_taken_datetime",
-        time_format="ddMMMyyy",  # DDmonYYYY
+        time_format="ddMMMyyy",
     )
     df = assign_column_to_date_string(
         df=df,
         column_name_to_assign="samples_taken_datetime_string",
         reference_column="samples_taken_datetime",
-        time_format="ddMMMyyyy HH:mm:ss",  # 19may2020 13:38:00
+        time_format="ddMMMyyyy HH:mm:ss",
     )
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
