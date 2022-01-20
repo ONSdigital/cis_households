@@ -1,5 +1,3 @@
-from typing import Callable
-
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.functions import DataFrame
@@ -16,6 +14,7 @@ class SparkValidate:
             "isin": {"function": self.isin, "error_message": "{}, the row is '{}'"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique."},
             "between": {"function": self.between, "error_message": "{} should be in between {} and {}."},
+            "null": {"function": self.not_null, "error_message": "{} should not be null."},
         }
 
     def new_function(self, function_name, function_method, error_message="default error"):
@@ -23,6 +22,20 @@ class SparkValidate:
 
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
+
+    def report(self, selected_errors, all=False):
+        min_size = 1
+        if all:
+            min_size = len(selected_errors)
+        passed_df = self.dataframe.filter(
+            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
+            >= min_size
+        )
+        failed_df = self.dataframe.filter(
+            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
+            < min_size
+        )
+        return passed_df, failed_df
 
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
@@ -44,15 +57,15 @@ class SparkValidate:
 
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(
-                ~check, 
-                F.array_union(
-                    F.col(self.error_column), F.array(F.lit(error_message))
-                )
-            ).otherwise(
+            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
                 F.col(self.error_column)
             ),
         )
+
+    @staticmethod
+    def not_null(error_message, column_name):
+        error_message = error_message.format(column_name)
+        return F.col(column_name).isNotNull()
 
     @staticmethod
     def contains(error_message, column_name, contains):
@@ -61,7 +74,7 @@ class SparkValidate:
 
     @staticmethod
     def isin(error_message, column_name, options):
-        error_message = error_message.format(column_name, ', '.join(options))
+        error_message = error_message.format(column_name, ", ".join(options))
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
@@ -83,5 +96,5 @@ class SparkValidate:
     @staticmethod
     def duplicated(error_message, column_list):
         window = Window.partitionBy(*column_list)
-        error_message = error_message.format(', '.join(column_list))
+        error_message = error_message.format(", ".join(column_list))
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
