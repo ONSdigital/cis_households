@@ -32,30 +32,38 @@ def test_sparkvalidate(spark_session):
     )
     df_input = df_expected.drop("error")
 
-    # initialise
+    # initialise dataframe
     validate_df = SparkValidate(df_input)
 
+    # single column test
     validation_checks_dict = {
         "column_1": {"contains": "a"},
-        "column_4": {"isin": "no"},
+        "column_4": {"isin": ["no"]},
         "column_3": {
             "between": {"lower_bound": {"inclusive": True, "value": 8}, "upper_bound": {"inclusive": True, "value": 9}}
         },
     }
-
     validate_df.validate_column(operations=validation_checks_dict)
 
-    def function_add_up_to(column_1, column_2):
-        return F.col(column_1) + F.col(column_2) < 10
+    # user defined function external definition
+    def function_add_up_to(error_message, column_1, column_2):
+        return (F.col(column_1) + F.col(column_2)) < 10, error_message
 
     validate_df.new_function("test_function", function_add_up_to, error_message="larger_than_10")
 
+    # user defined function directly
+    validate_df.validate_udl(
+        logic=((F.col('column_2') > 4) & (F.col('column_3') < 10)),
+        error_message='col_2 and col_3 should_be_within_interval 4 and 10'
+    )
     # duplicate
     operations = {
         "duplicated": {"column_list": ["column_1", "column_3"]},
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
+
+    import pdb; pdb.set_trace()
 
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True

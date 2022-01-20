@@ -12,10 +12,10 @@ class SparkValidate:
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
-            "contains": {"function": self.contains, "error_message": "not_contained"},
-            "isin": {"function": self.isin, "error_message": "isnt_in"},
-            "duplicated": {"function": self.duplicated, "error_message": "duplication"},
-            "between": {"function": self.between, "error_message": "not_between"},
+            "contains": {"function": self.contains, "error_message": "{} should contain '{}'."},
+            "isin": {"function": self.isin, "error_message": "{}, the row is '{}'"},
+            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique."},
+            "between": {"function": self.between, "error_message": "{} should be in between {} and {}."},
         }
 
     def new_function(self, function_name, function_method, error_message="default error"):
@@ -39,25 +39,33 @@ class SparkValidate:
         self.execute_check(logic, error_message)
 
     def execute_check(self, check, error_message, *params, **kwargs):
-        if type(check) == Callable:
-            check = check(*params, **kwargs)
+        if callable(check):
+            check, error_message = check(error_message, *params, **kwargs)
+
         self.dataframe = self.dataframe.withColumn(
             self.error_column,
-            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
+            F.when(
+                ~check, 
+                F.array_union(
+                    F.col(self.error_column), F.array(F.lit(error_message))
+                )
+            ).otherwise(
                 F.col(self.error_column)
             ),
         )
 
     @staticmethod
-    def contains(column_name, contains):
-        return F.col(column_name).rlike(contains)
+    def contains(error_message, column_name, contains):
+        error_message = error_message.format(column_name, contains)
+        return F.col(column_name).rlike(contains), error_message
 
     @staticmethod
-    def isin(column_name, options):
-        return F.col(column_name).isin(options)
+    def isin(error_message, column_name, options):
+        error_message = error_message.format(column_name, ', '.join(options))
+        return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(column_name, range):
+    def between(error_message, column_name, range):
         lb = (
             (F.col(column_name) >= range["lower_bound"]["value"])
             if range["lower_bound"]["inclusive"]
@@ -68,10 +76,12 @@ class SparkValidate:
             if range["upper_bound"]["inclusive"]
             else (F.col(column_name) < range["upper_bound"]["value"])
         )
-        return lb & ub
+        error_message = error_message.format(column_name, *range)
+        return lb & ub, error_message
 
     # Non column wise functions
     @staticmethod
-    def duplicated(column_list):
+    def duplicated(error_message, column_list):
         window = Window.partitionBy(*column_list)
-        return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False)
+        error_message = error_message.format(', '.join(column_list))
+        return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
