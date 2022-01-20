@@ -1,8 +1,5 @@
 """A collection of HDFS utils."""
-import re
 import subprocess
-from typing import List
-from typing import Optional
 
 
 def _perform(command, str_ouput=False):
@@ -42,7 +39,7 @@ def isdir(path):
     Args: path (String)
 
     Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    bool: Returns True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-test", "-d", path]
     return _perform(command)
