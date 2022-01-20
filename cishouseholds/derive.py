@@ -1080,6 +1080,7 @@ def assign_column_to_date_string(
     column_name_to_assign: str,
     reference_column: str,
     time_format: str = "yyyy-MM-dd",
+    lower_case: bool = False,
 ) -> DataFrame:
     """
     Assign a column with a TimeStampType to a formatted date string.
@@ -1100,7 +1101,11 @@ def assign_column_to_date_string(
     -------
     pyspark.sql.DataFrame
     """
-    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), time_format))
+    df = df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), time_format))
+
+    if lower_case:
+        df = df.withColumn(column_name_to_assign, F.lower(F.col(column_name_to_assign)))
+    return df
 
 
 def assign_single_column_from_split(

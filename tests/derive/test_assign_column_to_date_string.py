@@ -31,7 +31,7 @@ def test_assign_column_to_date_string_specify_format(spark_session):
                         time_column_string string
                     """
     data_input_df = [
-        ("2020-05-19 13:38:00", "19May2020 13:38:00"),
+        ("2020-05-19 13:38:00", "19may2020 13:38:00"),
     ]
     expected_df = spark_session.createDataFrame(data_input_df, schema=schema_input_df)
 
@@ -41,5 +41,6 @@ def test_assign_column_to_date_string_specify_format(spark_session):
         column_name_to_assign="time_column_string",
         reference_column="time_column",
         time_format="ddMMMyyyy HH:mm:ss",
+        lower_case=True,
     )
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)
