@@ -102,9 +102,21 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
     df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
-    df = assign_column_to_date_string(df, "samples_taken_date_string", reference_column="samples_taken_datetime")
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="samples_taken_date_string",
+        reference_column="samples_taken_datetime",
+        time_format="ddMMMyyy",
+        lower_case=True,
+    )
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="samples_taken_datetime_string",
+        reference_column="samples_taken_datetime",
+        time_format="ddMMMyyyy HH:mm:ss",
+        lower_case=True,
+    )
     df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
