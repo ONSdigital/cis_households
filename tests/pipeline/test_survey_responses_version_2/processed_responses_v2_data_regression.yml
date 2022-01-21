@@ -187,6 +187,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -478,6 +479,7 @@
   reconsented_blood: 'False'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'Yes'
   sex: null
@@ -770,6 +772,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: null
   sex: null
@@ -1065,6 +1068,7 @@
   reconsented_blood: 'False'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: 2.0
   self_isolating: 'No'
   sex: Female
@@ -1360,8 +1364,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-03'
+  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
+  samples_taken_datetime_string: 03jan2022 12:02:32
   school_year_september: null
   self_isolating: 'Yes'
   sex: Female
@@ -1659,8 +1664,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-02'
+  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
+  samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -1953,8 +1959,9 @@
   postcode: UK0X 5SF
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
+  samples_taken_datetime_string: 09jan2022 13:56:27
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -2247,8 +2254,9 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: '2022-01-07'
+  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
+  samples_taken_datetime_string: 07jan2022 13:21:56
   school_year_september: null
   self_isolating: 'Yes'
   sex: Female
@@ -2550,6 +2558,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -2844,8 +2853,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  samples_taken_date_string: '2022-01-07'
+  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
+  samples_taken_datetime_string: 07jan2022 16:06:21
   school_year_september: null
   self_isolating: 'No'
   sex: Male
