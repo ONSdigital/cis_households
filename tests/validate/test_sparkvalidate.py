@@ -18,6 +18,7 @@ def test_sparkvalidate(spark_session):
                 ('ab',	3,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
                 ('ab',	8,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
                 ('b',   2,  7,  'no',   ['not_contained', 'not_between']),
+                (None,   2,  7,  'no',   ['not_contained', 'not_between']),
             # fmt: on
         ],
         schema=StructType(
@@ -33,7 +34,7 @@ def test_sparkvalidate(spark_session):
     df_input = df_expected.drop("error")
 
     # initialise dataframe
-    validate_df = SparkValidate(df_input)
+    validate_df = SparkValidate(df_input, "error")
 
     # single column test
     validation_checks_dict = {
@@ -58,7 +59,7 @@ def test_sparkvalidate(spark_session):
     )
     # duplicate
     operations = {
-        "duplicated": {"column_list": ["column_1", "column_3"]},
+        "duplicated": {"check_columns": ["column_1", "column_3"]},
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)

@@ -1,4 +1,5 @@
-- ability_to_socially_distance_at_work_or_school: 'Yes'
+- ERROR: []
+  ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 27
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 25-29
@@ -214,7 +215,8 @@
     what you're gonna get.
   work_status_v1_raw: Mama always said life was like a box of chocolates. You never
     know what you're gonna get.
-- ability_to_socially_distance_at_work_or_school: 'No'
+- ERROR: []
+  ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -431,7 +433,8 @@
   work_sectors_other: Do you come here often?
   work_status_v1: The only thing we have to fear is fear itself.
   work_status_v1_raw: The only thing we have to fear is fear itself.
-- ability_to_socially_distance_at_work_or_school: null
+- ERROR: []
+  ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -645,7 +648,9 @@
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
-- ability_to_socially_distance_at_work_or_school: 'No'
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 1
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -862,7 +867,9 @@
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
-- ability_to_socially_distance_at_work_or_school: 'Yes'
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1074,7 +1081,9 @@
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
-- ability_to_socially_distance_at_work_or_school: 'No'
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 0
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -1288,7 +1297,9 @@
   work_sectors_other: I don't even care.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ability_to_socially_distance_at_work_or_school: 'No'
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 33
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 30-34
@@ -1500,7 +1511,9 @@
   work_sectors_other: Make me a sandwich.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ability_to_socially_distance_at_work_or_school: null
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 39
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1718,7 +1731,9 @@
     wrote serious, sombre and religious pieces beginning in the 1930s.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ability_to_socially_distance_at_work_or_school: 'Yes'
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1931,7 +1946,9 @@
     a space station with the power to destroy entire planets.
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
-- ability_to_socially_distance_at_work_or_school: null
+- ERROR:
+  - visit_id should contain '^DHV'.
+  ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 35
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
