@@ -16,7 +16,7 @@
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -62,7 +62,7 @@
   date_of_birth_string: '2021-12-18'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Any other white background
@@ -91,6 +91,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -187,6 +188,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -205,7 +207,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -309,7 +311,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
@@ -355,7 +357,7 @@
   date_of_birth_string: '1997-02-07'
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
-  deferred: Deferred 1
+  deferred: Deferred
   email: coater1966@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Asian
@@ -382,6 +384,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 4.0
   infant_2_age: 7.0
   infant_3_age: 0.0
@@ -478,6 +481,7 @@
   reconsented_blood: 'False'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'Yes'
   sex: null
@@ -496,7 +500,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -600,7 +604,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -646,7 +650,7 @@
   date_of_birth_string: '1997-03-07'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Asian or Asian British
   ethnicity: White-Irish
@@ -674,6 +678,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 1.0
   infant_3_age: 3.0
@@ -770,6 +775,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: null
   sex: null
@@ -788,7 +794,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -894,7 +900,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -940,7 +946,7 @@
   date_of_birth_string: '2015-04-22'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: Deferred 1
+  deferred: Deferred
   email: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Any other white background
@@ -969,6 +975,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 5.0
   infant_3_age: null
@@ -1065,6 +1072,7 @@
   reconsented_blood: 'False'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: 2.0
   self_isolating: 'No'
   sex: Female
@@ -1083,7 +1091,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1192,7 +1200,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
@@ -1238,7 +1246,7 @@
   date_of_birth_string: '2020-02-01'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: Deferred 1
+  deferred: Deferred
   email: belie1852@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Asian or Asian British-Pakistani
@@ -1266,6 +1274,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 6.0
   infant_3_age: 0.0
@@ -1360,8 +1369,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-03'
+  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
+  samples_taken_datetime_string: 03jan2022 12:02:32
   school_year_september: null
   self_isolating: 'Yes'
   sex: Female
@@ -1380,7 +1390,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -1488,7 +1498,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
@@ -1534,7 +1544,7 @@
   date_of_birth_string: '1997-08-21'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,African-African
@@ -1564,6 +1574,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 7.0
   infant_3_age: 2.0
@@ -1659,8 +1670,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-02'
+  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
+  samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -1679,7 +1691,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -1784,7 +1796,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
@@ -1830,7 +1842,7 @@
   date_of_birth_string: null
   days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
-  deferred: null
+  deferred: N/A
   email: dashed1989@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Any other Black background
@@ -1858,6 +1870,7 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 8.0
   infant_3_age: 8.0
@@ -1953,8 +1966,9 @@
   postcode: UK0X 5SF
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
+  samples_taken_datetime_string: 09jan2022 13:56:27
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -1973,7 +1987,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -2079,7 +2093,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -2125,7 +2139,7 @@
   date_of_birth_string: '2003-10-07'
   days_since_think_had_covid: 4.0
   days_since_think_had_covid_group: 0-14
-  deferred: Deferred 1
+  deferred: Deferred
   email: ladybird1985@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black African
@@ -2153,6 +2167,7 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 1.0
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -2247,8 +2262,9 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: '2022-01-07'
+  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
+  samples_taken_datetime_string: 07jan2022 13:21:56
   school_year_september: null
   self_isolating: 'Yes'
   sex: Female
@@ -2267,7 +2283,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -2377,7 +2393,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -2423,7 +2439,7 @@
   date_of_birth_string: '1985-10-14'
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
-  deferred: null
+  deferred: N/A
   email: null
   ethnic_group: White
   ethnicity: Asian or Asian British-Indian
@@ -2451,6 +2467,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 2.0
   infant_3_age: null
@@ -2550,6 +2567,7 @@
   reconsented_blood: 'True'
   samples_taken_date_string: null
   samples_taken_datetime: null
+  samples_taken_datetime_string: null
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -2568,7 +2586,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
@@ -2679,7 +2697,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
@@ -2725,7 +2743,7 @@
   date_of_birth_string: '1982-12-15'
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
-  deferred: Deferred 1
+  deferred: Deferred
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other Mixed background
@@ -2752,6 +2770,7 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
+  improved_visit_date_string: null
   infant_1_age: 6.0
   infant_2_age: 2.0
   infant_3_age: 0.0
@@ -2844,8 +2863,9 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  samples_taken_date_string: '2022-01-07'
+  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
+  samples_taken_datetime_string: 07jan2022 16:06:21
   school_year_september: null
   self_isolating: 'No'
   sex: Male
@@ -2864,7 +2884,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'

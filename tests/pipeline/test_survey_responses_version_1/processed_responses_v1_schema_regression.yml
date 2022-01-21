@@ -728,6 +728,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: samples_taken_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
   name: date_of_birth_string
   nullable: true
   type: string
