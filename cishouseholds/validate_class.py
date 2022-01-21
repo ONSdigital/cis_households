@@ -4,9 +4,9 @@ from pyspark.sql.functions import DataFrame
 
 
 class SparkValidate:
-    def __init__(self, dataframe: DataFrame) -> None:
+    def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
         self.dataframe = dataframe
-        self.error_column = "error"
+        self.error_column = error_column_name
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
@@ -64,9 +64,9 @@ class SparkValidate:
         )
 
     @staticmethod
-    def not_null(error_message, column_list):  # works in validate and validate_column
-        error_message = error_message.format(", ".join(column_list))
-        return (~F.array_contains(F.array(*column_list), None)), error_message
+    def not_null(error_message, check_columns):  # works in validate and validate_column
+        error_message = error_message.format(", ".join(check_columns))
+        return (~F.array_contains(F.array(*check_columns), None)), error_message
 
     @staticmethod
     def contains(error_message, column_name, contains):
@@ -95,9 +95,9 @@ class SparkValidate:
 
     # Non column wise functions
     @staticmethod
-    def duplicated(error_message, column_list):
-        window = Window.partitionBy(*column_list)
-        error_message = error_message.format(", ".join(column_list))
+    def duplicated(error_message, check_columns):
+        window = Window.partitionBy(*check_columns)
+        error_message = error_message.format(", ".join(check_columns))
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
@@ -105,16 +105,3 @@ class SparkValidate:
         return (F.col(visit_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
-
-
-# calls
-
-calls = {
-    "visit_date": {
-        "between": {
-            "lower_bound": {"inclusive": True, "value": "26/04/2020"},
-            "upper_bound": {"inclusive": True, "value": F.col("file_date")},
-        }
-    },
-    "visit_id": {"containts": r"^DHV"},
-}

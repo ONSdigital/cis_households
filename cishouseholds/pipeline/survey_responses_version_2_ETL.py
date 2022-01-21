@@ -41,12 +41,14 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import impute_latest_date_flag
+from cishouseholds.validate_class import SparkValidate
 
 
 def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     Generic transformation steps to be applied to all survey response records.
     """
+
     df = assign_filename_column(df, "survey_response_source_file")
     raw_copy_list = [
         "think_had_covid_any_symptoms",
@@ -238,6 +240,47 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     #     contact_known_covid_date_column='contact_known_covid_date',
     #     contact_suspect_covid_date_column='contact_suspect_covid_date',
     # )
+
+    SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
+
+    # calls
+
+    column_calls = {
+        "visit_date": {
+            "between": {
+                "lower_bound": {"inclusive": True, "value": "26/04/2020"},
+                "upper_bound": {"inclusive": True, "value": F.col("file_date")},
+            }
+        },
+        "visit_id": {"containts": r"^DHV"},
+    }
+
+    dataset_calls = {
+        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
+        "valid_vaccination": {
+            "visit_type_column": "visit_type",
+            "check_columns": [
+                "cis_covid_vaccine_type_1",
+                "cis_covid_vaccine_type_other_1",
+                "cis_covid_vaccine_date_1",
+                "cis_covid_vaccine_type_2",
+                "cis_covid_vaccine_type_other_2",
+                "cis_covid_vaccine_date_2",
+                "cis_covid_vaccine_type_3",
+                "cis_covid_vaccine_type_other_3",
+                "cis_covid_vaccine_date_3",
+                "cis_covid_vaccine_type_4",
+                "cis_covid_vaccine_type_other_4",
+                "cis_covid_vaccine_date_4",
+            ],
+        },
+    }
+
+    SparkVal.validate_column(column_calls)
+    SparkVal.validate_column(dataset_calls)
+
+    df = SparkVal.dataframe
+
     return df
 
 
