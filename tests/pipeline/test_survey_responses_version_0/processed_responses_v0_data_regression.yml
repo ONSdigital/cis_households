@@ -8,7 +8,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: null
@@ -91,15 +91,16 @@
   postcode: DD7O 7LP
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
-  samples_taken_date_string: '2022-01-08'
+  samples_taken_date_string: 08jan2022
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
+  samples_taken_datetime_string: 08jan2022 20:30:26
   school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
   suffix: U
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -179,7 +180,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
@@ -262,15 +263,16 @@
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
+  samples_taken_datetime_string: 09jan2022 17:18:11
   school_year_september: null
   sex: null
   sex_raw: null
   street: null
   suffix: C
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -351,7 +353,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -436,15 +438,16 @@
   reason_participants_not_consented: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
   received_shielding_letter: 'No'
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
+  samples_taken_datetime_string: 09jan2022 10:19:02
   school_year_september: null
   sex: null
   sex_raw: null
   street: null
   suffix: C
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -522,7 +525,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Saltash
@@ -605,15 +608,16 @@
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
   received_shielding_letter: null
-  samples_taken_date_string: '2022-01-02'
+  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
+  samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
   suffix: A
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -690,7 +694,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -776,15 +780,16 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   received_shielding_letter: null
-  samples_taken_date_string: '2022-01-04'
+  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
+  samples_taken_datetime_string: 04jan2022 14:19:49
   school_year_september: null
   sex: Male
   sex_raw: Male
   street: null
   suffix: B
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -860,7 +865,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Hove
@@ -946,15 +951,16 @@
   postcode: NC0C 6UK
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: null
-  samples_taken_date_string: '2022-01-01'
+  samples_taken_date_string: 01jan2022
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
+  samples_taken_datetime_string: 01jan2022 19:43:35
   school_year_september: null
   sex: Male
   sex_raw: Male
   street: Drumagrove
   suffix: O
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1033,7 +1039,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: Felixstowe
@@ -1117,15 +1123,16 @@
   postcode: null
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
-  samples_taken_date_string: '2022-01-05'
+  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
+  samples_taken_datetime_string: 05jan2022 04:57:22
   school_year_september: null
   sex: null
   sex_raw: null
   street: null
   suffix: U
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1202,7 +1209,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -1286,15 +1293,16 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   received_shielding_letter: null
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
+  samples_taken_datetime_string: 09jan2022 08:41:07
   school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
   suffix: B
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1371,7 +1379,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: null
@@ -1453,15 +1461,16 @@
   postcode: null
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
-  samples_taken_date_string: '2022-01-02'
+  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
+  samples_taken_datetime_string: 02jan2022 00:55:57
   school_year_september: null
   sex: null
   sex_raw: null
   street: null
   suffix: M
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1539,7 +1548,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: Inverurie
@@ -1626,15 +1635,16 @@
   reason_participants_not_consented: Ask not what your country can do for you; ask
     what you can do for your country.
   received_shielding_letter: 'Yes'
-  samples_taken_date_string: '2022-01-07'
+  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
+  samples_taken_datetime_string: 07jan2022 14:29:59
   school_year_september: null
   sex: Male
   sex_raw: Male
   street: null
   suffix: L
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'

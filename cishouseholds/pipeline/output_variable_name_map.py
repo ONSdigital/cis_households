@@ -303,7 +303,7 @@ output_name_map = {
     "result_edited_to_void": "result_to_void",
     "rural_or_urban_classification": "rural_urban",
     "samples_taken_date_string": "samples_taken_date",
-    "samples_taken_datetime": "samples_taken_date_time",
+    "samples_taken_datetime_string": "samples_taken_date_time",
     "school_year_england_wales": "school_year",
     "school_year_northern_ireland": "school_year_NI",
     "school_year_scotland": "school_year_Scot",
