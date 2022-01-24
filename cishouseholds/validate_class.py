@@ -1,5 +1,3 @@
-from typing import Callable
-
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.functions import DataFrame
@@ -12,10 +10,10 @@ class SparkValidate:
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
-            "contains": {"function": self.contains, "error_message": "{} should contain '{}'."},
-            "isin": {"function": self.isin, "error_message": "{}, the row is '{}'"},
-            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique."},
-            "between": {"function": self.between, "error_message": "{} should be in between {} and {}."},
+            "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
+            "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
+            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
+            "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
         }
 
     def new_function(self, function_name, function_method, error_message="default error"):
