@@ -8,7 +8,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
@@ -117,8 +117,9 @@
   physical_contact_under_18_years: 'No'
   postcode: WP8S 5ZJ
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
-  samples_taken_date_string: '2022-01-08'
+  samples_taken_date_string: 08jan2022
   samples_taken_datetime: '2022-01-08 22:45:03.000000'
+  samples_taken_datetime_string: 08jan2022 22:45:03
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -137,7 +138,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -224,7 +225,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
@@ -333,8 +334,9 @@
   physical_contact_under_18_years: 'Yes'
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
-  samples_taken_date_string: '2022-01-03'
+  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 01:57:08.000000'
+  samples_taken_datetime_string: 03jan2022 01:57:08
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -354,7 +356,7 @@
   street: Benwee
   study_cohort: Swab Only
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -441,7 +443,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
@@ -545,8 +547,9 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: '2022-01-04'
+  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 13:40:38.000000'
+  samples_taken_datetime_string: 04jan2022 13:40:38
   school_year_september: null
   self_isolating: 'No'
   sex: Male
@@ -565,7 +568,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -655,7 +658,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -763,8 +766,9 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: Here's looking at you, kid.
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
+  samples_taken_datetime_string: 09jan2022 10:19:02
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -783,7 +787,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -872,7 +876,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -978,8 +982,9 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
-  samples_taken_date_string: '2022-01-06'
+  samples_taken_date_string: 06jan2022
   samples_taken_datetime: '2022-01-06 00:02:45.000000'
+  samples_taken_datetime_string: 06jan2022 00:02:45
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -998,7 +1003,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -1084,7 +1089,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
@@ -1190,8 +1195,9 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
-  samples_taken_date_string: '2022-01-03'
+  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 18:48:19.000000'
+  samples_taken_datetime_string: 03jan2022 18:48:19
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -1209,7 +1215,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -1298,7 +1304,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
@@ -1403,8 +1409,9 @@
   postcode: FN0F 6OF
   reason_participants_not_consented: Get your stinking paws off me, you damned dirty
     ape.
-  samples_taken_date_string: '2022-01-05'
+  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
+  samples_taken_datetime_string: 05jan2022 08:58:26
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -1423,7 +1430,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: null
@@ -1510,7 +1517,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
@@ -1616,8 +1623,9 @@
   postcode: DD7O 7LP
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
-  samples_taken_date_string: '2022-01-09'
+  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 11:37:05.000000'
+  samples_taken_datetime_string: 09jan2022 11:37:05
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -1636,7 +1644,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1728,7 +1736,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -1834,8 +1842,9 @@
   physical_contact_under_18_years: null
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
-  samples_taken_date_string: '2022-01-04'
+  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 17:37:39.000000'
+  samples_taken_datetime_string: 04jan2022 17:37:39
   school_year_september: null
   self_isolating: 'No'
   sex: null
@@ -1854,7 +1863,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1941,7 +1950,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
-  blood_taken: 'no'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -2049,8 +2058,9 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: '2022-01-05'
+  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 17:19:17.000000'
+  samples_taken_datetime_string: 05jan2022 17:19:17
   school_year_september: null
   self_isolating: 'No'
   sex: Female
@@ -2069,7 +2079,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
-  swab_taken: 'no'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
