@@ -95,9 +95,7 @@ def test_sparkvalidate(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
-    import pdb
 
-    pdb.set_trace()
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )
