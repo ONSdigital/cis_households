@@ -1,6 +1,5 @@
 import csv
 from datetime import datetime
-from functools import reduce
 from io import StringIO
 from operator import add
 from typing import List
