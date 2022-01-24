@@ -251,8 +251,12 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
                 "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("26/04/2020"), format="dd/MM/yyyy")},
                 "upper_bound": {
                     "inclusive": True,
-                    "value": F.to_timestamp(
-                        F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0), format="yyyyMMdd"
+                    "value": F.date_add(
+                        F.to_timestamp(
+                            F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0),
+                            format="yyyyMMdd",
+                        ),
+                        1,
                     ),
                 },
             }
