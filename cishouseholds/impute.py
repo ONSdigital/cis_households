@@ -13,6 +13,60 @@ from pyspark.sql.window import Window
 from cishouseholds.edit import update_column_values_from_map
 
 
+def impute_contact_covid(
+    df: DataFrame,
+    participant_id_column: str,
+    covid_date_column: str,
+    visit_date_column: str,
+    carry_forward_columns: List[str],
+    contact_column: str,
+):
+    """ """
+    # get latest covid date
+    date_exists_df = df.select(participant_id_column, covid_date_column, *carry_forward_columns)
+    for col in carry_forward_columns:
+        date_exists_df = date_exists_df.withColumnRenamed(col, f"{col}_ref")
+
+    transformed_df = df.join(
+        date_exists_df.withColumnRenamed(covid_date_column, f"{covid_date_column}_ref"),
+        on=participant_id_column,
+        how="left",
+    )
+    transformed_df = transformed_df.withColumn(
+        f"{covid_date_column}_ref",
+        F.when(
+            F.col(f"{covid_date_column}_ref") < F.col(visit_date_column), F.col(f"{covid_date_column}_ref")
+        ).otherwise(None),
+    )
+
+    window = Window.partitionBy(participant_id_column, visit_date_column)
+    transformed_df = transformed_df.withColumn(covid_date_column, F.max(F.col(f"{covid_date_column}_ref")).over(window))
+    reference_columns = [f"{col}_ref" for col in carry_forward_columns]
+    transformed_df = (
+        transformed_df.filter(
+            (
+                F.col(f"{covid_date_column}_ref").eqNullSafe(F.col(covid_date_column))
+                & (F.col(covid_date_column).isNotNull())
+            )
+            | (
+                F.col(covid_date_column).isNull()
+                & (
+                    F.size(F.array_intersect(F.array(*carry_forward_columns), F.array(*reference_columns)))
+                    == len(carry_forward_columns)
+                )
+            )
+        )
+        .distinct()
+        .drop(f"{covid_date_column}_ref")
+    )
+    for col, ref_col in zip(carry_forward_columns, reference_columns):
+        transformed_df = transformed_df.drop(col).withColumnRenamed(ref_col, col)
+    transformed_df = transformed_df.withColumn(
+        contact_column, F.when(F.col(covid_date_column).isNotNull(), "Yes").otherwise("No")
+    )
+    return transformed_df
+
+
 def impute_think_had_covid(
     df: DataFrame,
     participant_id_column: str,
@@ -33,7 +87,7 @@ def impute_think_had_covid(
     )
     transformed_df = transformed_df.withColumn(
         f"{date_column}_ref",
-        F.when(F.col(f"{date_column}_ref") <= F.col(visit_date_column), F.col(f"{date_column}_ref")).otherwise(None),
+        F.when(F.col(f"{date_column}_ref") < F.col(visit_date_column), F.col(f"{date_column}_ref")).otherwise(None),
     )
 
     window = Window.partitionBy(participant_id_column, visit_date_column, f"{date_column}_ref")
