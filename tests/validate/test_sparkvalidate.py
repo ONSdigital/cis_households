@@ -64,8 +64,6 @@ def test_sparkvalidate(spark_session):
     }
     validate_df.validate(operations=operations)
 
-    passed, failed = validate_df.report(selected_errors=["col_2 and col_3 should_be_within_interval 4 and 10"])
-
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )
