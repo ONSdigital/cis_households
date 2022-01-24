@@ -1,12 +1,71 @@
 from itertools import chain
 from typing import List
 from typing import Mapping
+from typing import Optional
 from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+    """
+    update value to no if symptoms are ongoing
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    count_reference_column
+    """
+    df = df.withColumn(
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+    )
+    return df
+
+
+def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
+    """
+    Ensures visit order row value in list of allowed values
+    Parameters
+    df
+    visit_order_column
+    """
+    allowed = [
+        "First Visit",
+        "Follow-up 1",
+        "Follow-up 2",
+        "Follow-up 3",
+        "Follow-up 4",
+        "Month 2",
+        "Month 3",
+        "Month 4",
+        "Month 5",
+        "Month 6",
+        "Month 7",
+        "Month 8",
+        "Month 9",
+        "Month 10",
+        "Month 11",
+        "Month 12",
+        "Month 13",
+        "Month 14",
+        "Month 15",
+        "Month 16",
+        "Month 17",
+        "Month 18",
+        "Month 19",
+        "Month 20",
+        "Month 21",
+        "Month 22",
+        "Month 23",
+        "Month 24",
+    ]
+    df = df.withColumn(
+        visit_order_column, F.when(F.col(visit_order_column).isin(allowed), F.col(visit_order_column)).otherwise(None)
+    )
+    return df
 
 
 def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
@@ -76,7 +135,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     return df
 
 
-def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str, id_column: str):
+def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
     """
     Create separate columns for school year depending on the individuals country of residence
     Parameters
@@ -89,12 +148,9 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
     countries = [["England", "Wales"], ["Scotland"], ["NI"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
     for column_name, country_set in zip(column_names, countries):
-        temp_df = (
-            df.select(country_column, school_year_column, id_column)
-            .filter(F.col(country_column).isin(country_set))
-            .withColumnRenamed(school_year_column, column_name)
+        df = df.withColumn(
+            column_name, F.when(F.col(country_column).isin(country_set), F.col(school_year_column)).otherwise(None)
         )
-        df = df.join(temp_df, on=[country_column, id_column], how="left")
     return df
 
 
@@ -117,7 +173,13 @@ def update_social_column(df: DataFrame, social_column: str, health_column: str):
     return df
 
 
-def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
+def update_column_values_from_map(
+    df: DataFrame,
+    column: str,
+    map: dict,
+    error_if_value_not_found: Optional[bool] = False,
+    default_value: Union[str, bool, int] = None,
+) -> DataFrame:
     """
     Convert column values matching map key to value
     Parameters
@@ -125,7 +187,13 @@ def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_i
     df
     column
     map
+    error_if_value_not_found
+    default_value
     """
+
+    if default_value is None:
+        default_value = F.col(column)
+
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
     if error_if_value_not_found:
         temp_df = df.distinct()
@@ -137,7 +205,7 @@ def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_i
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(F.col(column))
+            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
         )
     return df
 

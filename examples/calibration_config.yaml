@@ -1,0 +1,7 @@
+- dataset_name: england_population_swab_longcovid
+  subset_flag_column: ever_never_swab
+  country: england
+  bounds:
+    - [0, 1]
+  design_weight_column: scaled_design_weight_adjusted_swab
+  calibration_model_components: [p1_swab_longcovid_england]
