@@ -5,14 +5,13 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 
 
-@pytest.mark.xfail(reason="Test runs, but expected data need defining")
 def test_transform_antibody_swab_ETL(spark_session):
     # df survey data
     survey_schema = """
-    swab_sample_barcode string,
-    blood_sample_barcode string,
-    visit_date_string string,
-    visit_datetime string
+        swab_sample_barcode string,
+        blood_sample_barcode string,
+        visit_date_string string,
+        visit_datetime string
     """
     survey_data = [
         ("A", "A", "2020-01-01", "2020-01-01"),
@@ -47,70 +46,16 @@ def test_transform_antibody_swab_ETL(spark_session):
                 assay_category string
             """
     blood_data = [
-        (
-            "w1",
-            "p1",
-            "A",
-            "2020-01-01",
-            "2020-01-02",
-            "2020-01-04 12:00:00",
-            "positive",
-            1.1,
-            1.1,
-            None,
-            "positive",
-            "positive",
-            "V",
-            None,
-            None,
-            None,
-            None,
-            None,
-        ),
-        (
-            "w1",
-            "p2",
-            "B",
-            "2020-01-01",
-            "2020-01-02",
-            "2020-01-04 12:00:00",
-            "positive",
-            1.2,
-            1.2,
-            None,
-            "positive",
-            "positive",
-            "C",
-            None,
-            None,
-            None,
-            None,
-            None,
-        ),
-        (
-            "w1",
-            "p3",
-            "F",
-            "2020-01-01",
-            "2020-01-02",
-            "2020-01-04 12:00:00",
-            "positive",
-            1.3,
-            1.3,
-            None,
-            "positive",
-            "positive",
-            "V",
-            None,
-            None,
-            None,
-            None,
-            None,
-        ),
+        # fmt: off
+        ("w1","p1","A","2020-01-01","2020-01-02","2020-01-04 12:00:00","positive",  1.1,1.1,None,"positive","positive","V", None,None,None,None,None),
+        ("w1","p2","B","2020-01-01","2020-01-02","2020-01-04 12:00:00","positive",  1.2,1.2,None,"positive","positive","C", None,None,None,None,None),
+        ("w1","p3","F","2020-01-01","2020-01-02","2020-01-04 12:00:00","positive",  1.3,1.3,None,"positive","positive","V", None,None,None,None,None),
+        # fmt: on
     ]
     df_input_antibody = spark_session.createDataFrame(blood_data, schema=blood_schema)
 
-    expected_schema = """visit_datetime string,
+    expected_schema = """
+                visit_datetime string,
                 blood_sample_barcode string,
                 blood_sample_received_date string,
                 blood_sample_arrayed_date string,
@@ -127,38 +72,10 @@ def test_transform_antibody_swab_ETL(spark_session):
                 """
 
     expected_data = [
-        (
-            "A",
-            "2020-01-01",
-            "2020-01-02",
-            "2020-01-04 12:00:00",
-            "positive",
-            "positive",
-            "positive",
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-        ),
-        (
-            "B",
-            "2020-01-01",
-            "2020-01-02",
-            "2020-01-04 12:00:00",
-            "positive",
-            "positive",
-            "positive",
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-        ),
+        # fmt: off
+        ("A","2020-01-01","2020-01-02","2020-01-04 12:00:00","positive","positive","positive",None,None,None,None,None,None,None),
+        ("B","2020-01-01","2020-01-02","2020-01-04 12:00:00","positive","positive","positive",None,None,None,None,None,None,None),
+        # fmt: on
     ]
     expected_antibody_swab_merged_df = spark_session.createDataFrame(expected_data, schema=expected_schema)
 
