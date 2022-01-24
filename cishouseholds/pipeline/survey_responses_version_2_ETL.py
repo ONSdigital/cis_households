@@ -40,6 +40,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 
 
@@ -117,6 +118,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         time_format="ddMMMyyyy HH:mm:ss",
         lower_case=True,
     )
+
     df = assign_column_to_date_string(
         df=df,
         column_name_to_assign="date_of_birth_string",
@@ -404,8 +406,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = assign_column_to_date_string(df, "improved_visit_date_string", "improved_visit_date")
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
+    df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
     df = update_column_values_from_map(
         df=df,
         column="work_status_v2",
@@ -440,6 +444,13 @@ def union_dependent_transformations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = impute_by_ordered_fill_forward(
+        df=df,
+        column_name_to_assign="date_of_birth",
+        column_identity="participant_id",
+        reference_column="date_of_birth",
+        order_by_column="visit_datetime",
+    )
     df = derive_work_status_columns(df)
     df = assign_work_health_care(
         df,
