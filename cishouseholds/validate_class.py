@@ -116,5 +116,5 @@ calls = {
             "upper_bound": {"inclusive": True, "value": F.col("file_date")},
         }
     },
-    "visit_id": {"containts": r"^DHV"},
+    "visit_id": {"contains": r"^DHV"},
 }
