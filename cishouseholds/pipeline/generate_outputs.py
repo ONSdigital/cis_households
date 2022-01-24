@@ -17,16 +17,43 @@ from cishouseholds.pipeline.category_map import category_map
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
+from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("tables_to_csv")
+def tables_to_csv(table_file_pairs, update_map_name=None):
+    """
+    Writes data from an existing HIVE table to csv output, including mapping of column names and values.
+
+    Takes a list of 2-item tuples or lists:
+        table_file_pairs:
+            - [HIVE_table_name, output_csv_file_name]
+
+    Optionally also point to an update map to be used for the variable name mapping of these outputs.
+    """
+    config = get_config()
+    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
+    output_directory = Path(config["output_directory"]) / output_datetime
+
+    name_map = output_name_map.copy()
+    if update_map_name is not None:
+        name_map.update(update_output_name_maps[update_map_name])
+
+    for table_name, output_file_name in table_file_pairs:
+        df = extract_from_table(table_name)
+        df = map_output_values_and_column_names(df, name_map, category_map)
+        write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
 
 
 @register_pipeline_stage("generate_outputs")
 def generate_outputs():
-    output_datetime = datetime.today().strftime("%Y%m%d%H%M%S")
-    output_directory = Path(get_config()["output_directory"]) / output_datetime
+    config = get_config()
+    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
+    output_directory = Path(config["output_directory"]) / output_datetime
     # TODO: Check that output dir exists
 
-    linked_df = extract_from_table("merged_responses_antibody_swab_data")
+    linked_df = extract_from_table(config["table_names"]["input"]["merged_antibody_swab"])
 
     #    all_visits_df = extract_from_table("response_level_records")
     #    participant_df = extract_from_table("participant_level_with_vaccination_data")
@@ -137,7 +164,9 @@ def configure_outputs(
             df = df.withColumnRenamed(current_name, to_be_name)
     if value_map is not None:
         for column_name_to_assign, map in value_map.items():
-            df = update_column_values_from_map(df, column_name_to_assign, map, complete_map)
+            df = update_column_values_from_map(
+                df=df, column=column_name_to_assign, map=map, error_if_value_not_found=complete_map
+            )
     return df
 
 

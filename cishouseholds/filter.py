@@ -174,3 +174,19 @@ def assign_date_interval_and_flag(
         column_name_inside_interval,
         F.when(~F.col(column_name_time_interval).between(lower_interval, upper_interval), 1).otherwise(None),
     )
+
+
+def file_exclude(df: DataFrame, source_file_col: str, files_to_exclude: list):
+    """
+    Function to exclude specific files from pipeline processing
+
+    Parameters
+    --------
+    df
+    source_file_column = Column in input dataframe which contains the source file
+    files_to_exclude = List of files to exclude (feed in from config)
+    """
+    for item in files_to_exclude:
+        df = df.filter(~F.col(source_file_col).isin(item))
+
+    return df

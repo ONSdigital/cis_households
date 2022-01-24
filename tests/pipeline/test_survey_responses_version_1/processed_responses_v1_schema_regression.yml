@@ -728,13 +728,13 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: date_of_birth_string
+  name: samples_taken_datetime_string
   nullable: true
   type: string
 - metadata: {}
-  name: days_since_think_had_covid
+  name: date_of_birth_string
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: swab_taken
   nullable: false
@@ -745,7 +745,39 @@ fields:
   type: string
 - metadata: {}
   name: think_have_covid_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_symptom_count
   nullable: false
+  type: integer
+- metadata: {}
+  name: symptoms_since_last_visit_count
+  nullable: false
+  type: integer
+- metadata: {}
+  name: any_symptoms_last_7_days_or_now
+  nullable: true
+  type: string
+- metadata: {}
+  name: any_symptoms_around_visit
+  nullable: false
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_cghfevamn_symptom_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_around_cghfevamn_symptom_group
+  nullable: false
+  type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
   type: string
 - metadata: {}
   name: age_at_visit
@@ -772,23 +804,7 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: days_since_think_had_covid_group
+  name: self_isolating
   nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
-  nullable: false
   type: string
 type: struct

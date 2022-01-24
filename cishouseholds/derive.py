@@ -9,6 +9,146 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_multigeneration(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column,
+    household_id_column: str,
+    visit_date_column: str,
+    date_of_birth_column: str,
+    country_column: str,
+):
+    """
+    Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
+    Note: school year lookup dataframe must be amended to account for changes in school year start dates
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    participant_id_column
+    household_id_column
+    visit_date_column
+    date_of_birth_column
+    country_column
+    """
+    spark_session = get_or_create_spark_session()
+    school_year_lookup_df = spark_session.createDataFrame(
+        data=[
+            ("England", "09", "01", "09", "01"),
+            ("Wales", "09", "01", "09", "01"),
+            ("Scotland", "08", "15", "03", "01"),
+            ("NI", "09", "01", "07", "02"),
+        ],
+        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+    )
+    transformed_df = df.groupBy(household_id_column, visit_date_column).count()
+    transformed_df = transformed_df.join(
+        df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
+        on=household_id_column,
+    )
+    transformed_df = assign_school_year(
+        df=transformed_df,
+        column_name_to_assign="school_year",
+        reference_date_column=visit_date_column,
+        dob_column=date_of_birth_column,
+        country_column=country_column,
+        school_year_lookup=school_year_lookup_df,
+    )
+    transformed_df = assign_age_at_date(
+        df=transformed_df,
+        column_name_to_assign="age_at_visit",
+        base_date=F.col(visit_date_column),
+        date_of_birth=F.col(date_of_birth_column),
+    )
+    generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    generation2_flag = F.when(
+        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    ).otherwise(0)
+    generation3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+
+    window = Window.partitionBy(household_id_column, visit_date_column)
+    gen1_exists = F.when(F.sum(generation1_flag).over(window) >= 1, True).otherwise(False)
+    gen2_exists = F.when(F.sum(generation2_flag).over(window) >= 1, True).otherwise(False)
+    gen3_exists = F.when(F.sum(generation3_flag).over(window) >= 1, True).otherwise(False)
+
+    transformed_df = transformed_df.withColumn(
+        column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
+    )
+    return transformed_df.drop("age_at_visit", "school_year", "count")
+
+
+def assign_household_participant_count(
+    df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
+):
+    """Assign the count of participants within each household."""
+    household_window = Window.partitionBy(household_id_column)
+    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    return df
+
+
+def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
+    """
+    Assign number of people within household, including those not participating. Assumes each row contains counts of
+    participants for the household.
+
+    Uses specific column name patterns to count non-participating members.
+    """
+    infant_pattern = "infant_[1-8]_age"
+    not_present_pattern = "person_[1-8]_age"
+    not_consenting_pattern = "person_[1-9]_not_consenting_age"
+    matched_columns = []
+    for col in df.columns:
+        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
+            if re.match(pattern, col):
+                matched_columns.append(col)
+    df = df.withColumn("TEMP", F.array(matched_columns))
+    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
+    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
+    return df.drop("TEMP")
+
+
+def assign_ever_had_long_term_health_condition_or_disabled(
+    df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
+):
+    """
+    Assign a column that identifies if patient is long term disabled by applying several
+    preset functions
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    health_conditions_column
+    condition_impact_column
+    """
+
+    df = df.withColumn(
+        "TEMP_EVERNEVER",
+        F.when(
+            (F.col(health_conditions_column) == "Yes")
+            & (F.col(condition_impact_column).isin(["Yes, a little", "Yes, a lot"])),
+            "Yes",
+        )
+        .when(
+            (F.col(health_conditions_column).isin(["Yes", "No"]))
+            & ((F.col(condition_impact_column) == "Not at all") | (F.col(condition_impact_column).isNull())),
+            "No",
+        )
+        .otherwise(None),
+    )
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        groupby_column="participant_id",
+        reference_columns=["TEMP_EVERNEVER"],
+        count_if=["Yes"],
+        true_false_values=["Yes", "No"],
+    )  # not sure of correct  PIPELINE categories
+
+    return df.drop("TEMP_EVERNEVER")
+
 
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
@@ -34,25 +174,20 @@ def assign_household_size(
     df: DataFrame,
     column_name_to_assign: str,
     household_participant_count_column: Optional[str] = None,
-    household_size_group_column: Optional[str] = None,
+    existing_group_column: Optional[str] = None,
 ) -> DataFrame:
     """
-    Assign a column to contain the number of participants residing in a given household
-    Parameters
-    -----------
-    df
-    column_name_to_assign
-    household_participant_count
-    household_size_group_column
+    Assign household group size (grouped above 5+), using participant count to impute values missing in existing group
+    column.
     """
-    if household_size_group_column in df.columns:
-        reference_column = household_size_group_column
-    else:
-        reference_column = household_participant_count_column
-
     return df.withColumn(
         column_name_to_assign,
-        F.when(F.col(reference_column) < 5, F.col(reference_column)).otherwise("5+").cast("string"),
+        F.coalesce(
+            F.col(existing_group_column),
+            F.when(F.col(household_participant_count_column) < 5, F.col(household_participant_count_column))
+            .otherwise("5+")
+            .cast("string"),
+        ),
     )
 
 
@@ -98,22 +233,36 @@ def assign_column_given_proportion(
     groupby_column: str,
     reference_columns: List[str],
     count_if: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Assign a column boolean 1, 0 when the proportion of values meeting a condition is above 0.3
     """
     window = Window.partitionBy(groupby_column)
-    df = assign_true_if_any(
-        df=df, column_name_to_assign="TEMP", reference_columns=reference_columns, true_false_values=[1, 0]
-    )
+
+    df = df.withColumn("TEMP", F.lit(0))
+    df = df.withColumn(column_name_to_assign, F.lit("No"))
+
+    for col in reference_columns:
+        df = df.withColumn(
+            "TEMP",
+            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
+        )
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                (
+                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
+                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
+                    >= 0.3
+                ),
+                1,
+            ).otherwise(0),
+        )
+    df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            F.sum(F.when(F.col("TEMP").isin(count_if), F.lit(1)).otherwise(F.lit(0))).over(window)
-            / F.sum(F.when(F.col("TEMP").isNotNull(), F.lit(1)).otherwise(0)).over(window)
-            >= 0.3,
-            1,
-        ).otherwise(0),
+        F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df.drop("TEMP")
 
@@ -168,6 +317,7 @@ def assign_true_if_any(
     column_name_to_assign: str,
     reference_columns: List[str],
     true_false_values: List[Union[str, int, bool]],
+    ignore_nulls: Optional[bool] = False,
 ) -> DataFrame:
     """
     Assign column the second value of a list containing values for false and true
@@ -182,7 +332,9 @@ def assign_true_if_any(
             F.when(
                 F.col(col).eqNullSafe(true_false_values[0]),
                 true_false_values[0],
-            ).otherwise(F.col(column_name_to_assign)),
+            )
+            .when(F.col(col).isNull() & F.lit(ignore_nulls), None)
+            .otherwise(F.col(column_name_to_assign)),
         )
     return df
 
@@ -363,7 +515,7 @@ def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_colum
 
 
 def assign_school_year_september_start(
-    df: DataFrame, dob_column: str, visit_date: str, column_name_to_assign: str
+    df: DataFrame, dob_column: str, visit_date_column: str, column_name_to_assign: str
 ) -> DataFrame:
     """
     Assign a column for the approximate school year of an individual given their age at the time
@@ -376,14 +528,14 @@ def assign_school_year_september_start(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            ((F.month(F.col(visit_date))) >= 9) & ((F.month(F.col(dob_column))) < 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 3,
+            ((F.month(F.col(visit_date_column))) >= 9) & ((F.month(F.col(dob_column))) < 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 3,
         )
         .when(
-            (F.month(F.col(visit_date)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
-            (F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 4,
+            (F.month(F.col(visit_date_column)) >= 9) | ((F.month(F.col(dob_column))) >= 9),
+            (F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 4,
         )
-        .otherwise((F.year(F.col(visit_date))) - (F.year(F.col(dob_column))) - 5),
+        .otherwise((F.year(F.col(visit_date_column))) - (F.year(F.col(dob_column))) - 5),
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -577,7 +729,7 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "no").otherwise("yes"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "No").otherwise("Yes"))
 
     return df
 
@@ -795,7 +947,11 @@ def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list)
 
 
 def assign_date_difference(
-    df: DataFrame, column_name_to_assign: str, start_reference_column: str, end_reference_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    start_reference_column: str,
+    end_reference_column: str,
+    format: Optional[str] = "days",
 ) -> DataFrame:
     """
     Calculate the difference in days between two dates.
@@ -810,14 +966,25 @@ def assign_date_difference(
         First date column name.
     end_reference_column
         Second date column name.
-
+    format
+        time format (days, weeks, months)
     Return
     ------
     pyspark.sql.DataFrame
     """
-    return df.withColumn(
-        column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=F.col(start_reference_column))
-    )
+    allowed_formats = ["days", "weeks"]
+    if format in allowed_formats:
+        if start_reference_column == "survey start":
+            start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
+        else:
+            start = F.col(start_reference_column)
+        modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
+        df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
+        if format in modifications:
+            df = df.withColumn(column_name_to_assign, modifications[format])
+        return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+    else:
+        raise TypeError(f"{format} format not supported")
 
 
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
@@ -908,7 +1075,13 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str) -> DataFrame:
+def assign_column_to_date_string(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    time_format: str = "yyyy-MM-dd",
+    lower_case: bool = False,
+) -> DataFrame:
     """
     Assign a column with a TimeStampType to a formatted date string.
     Does not use a DateType object, as this is incompatible with out HIVE tables.
@@ -920,13 +1093,19 @@ def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, refe
         Name of column to be assigned
     reference_column
         Name of column of TimeStamp type to be converted
+    time_format
+        as a string and by using the accepted characters of Pyspark, define what time format is required
+        by default, it will be yyyy-MM-dd, e.g. 2021-01-03
 
     Returns
     -------
     pyspark.sql.DataFrame
     """
+    df = df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), time_format))
 
-    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
+    if lower_case:
+        df = df.withColumn(column_name_to_assign, F.lower(F.col(column_name_to_assign)))
+    return df
 
 
 def assign_single_column_from_split(
@@ -964,7 +1143,11 @@ def assign_single_column_from_split(
 
 
 def assign_isin_list(
-    df: DataFrame, column_name_to_assign: str, reference_column_name: str, values_list: list
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    values_list: List[Union[str, int]],
+    true_false_values: List[Union[str, int]],
 ) -> DataFrame:
     """
     Create a new column containing either 1 or 0 derived from values in a list, matched
@@ -980,15 +1163,16 @@ def assign_isin_list(
         name of column to check for list values
     values_list
         list of values to check against reference column
-
+    true_false_values
+        true value (index 0), false value (index 1)
     Return
     ------
     pyspark.sql.DataFrame
     """
     return df.withColumn(
         column_name_to_assign,
-        F.when((F.col(reference_column_name).isin(values_list)), 1)
-        .when((~F.col(reference_column_name).isin(values_list)), 0)
+        F.when((F.col(reference_column).isin(values_list)), true_false_values[0])
+        .when((~F.col(reference_column).isin(values_list)), true_false_values[1])
         .otherwise(None),
     )
 
@@ -1169,5 +1353,38 @@ def assign_work_health_care(
     ).otherwise(F.col(other_health_care_column))
     df = df.withColumn(
         column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
+    )
+    return df
+
+
+def contact_known_or_suspected_covid_type(
+    df: DataFrame,
+    contact_known_covid_type_column: str,
+    contact_any_covid_type_column: str,
+    contact_any_covid_date_column: str,
+    contact_known_covid_date_column: str,
+    contact_suspect_covid_date_column: str,
+):
+    """
+    Parameters
+    ----------
+    df
+    contact_known_covid_type_column
+    contact_suspect_covid_type_column
+    contact_any_covid_date_column
+    contact_known_covid_date_column
+    contact_suspect_covid_date_column
+    """
+    df = df.withColumn(
+        contact_any_covid_type_column,
+        F.when(
+            F.col(contact_any_covid_date_column) == F.col(contact_known_covid_date_column),
+            F.col(contact_known_covid_type_column),
+        )
+        .when(
+            F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
+            F.col(contact_known_covid_type_column),
+        )
+        .otherwise(None),
     )
     return df
