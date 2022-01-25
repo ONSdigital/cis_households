@@ -276,6 +276,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             }
         },
         "visit_id": {"contains": r"^DHV"},
+        "blood_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
+        "swab_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
     }
 
     dataset_calls = {
@@ -298,11 +300,17 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         #     ],
         # },
     }
-
+    SparkVal.validate_unique(
+        [
+            {"column_list": "all", "error": "rows should be unique"},
+            {"column_list": ["participant_id", "visit_id", "visit_datetime"], "error": "these rows should be unique"},
+            {"column_list": ["visit_id"], "error": "visit id should be unique"},
+        ]
+    )
     SparkVal.validate_column(column_calls)
     SparkVal.validate(dataset_calls)
 
-    df = SparkVal.dataframe
+    df = SparkVal.filter("ons_household_id, visit_id, visit_date_string should not be null")
 
     return df
 
