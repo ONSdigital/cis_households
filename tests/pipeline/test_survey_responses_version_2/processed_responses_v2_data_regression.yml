@@ -1,5 +1,4 @@
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
@@ -294,8 +293,7 @@
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
@@ -588,8 +586,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
@@ -885,8 +882,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
@@ -1186,9 +1182,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
@@ -1486,9 +1480,7 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
@@ -1786,9 +1778,7 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
@@ -2085,9 +2075,7 @@
     evaluation.
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
@@ -2387,9 +2375,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
@@ -2693,9 +2679,7 @@
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status_v2: null
   work_status_v2_raw: null
-- ERROR:
-  - visit_id should contain '^DHV'.
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
