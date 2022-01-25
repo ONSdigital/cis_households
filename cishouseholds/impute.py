@@ -11,6 +11,13 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 
+def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
+    df = df.withColumn(
+        visit_datetime_column, F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column))
+    )
+    return df
+
+
 def impute_by_distribution(
     df: DataFrame,
     column_name_to_assign: str,
