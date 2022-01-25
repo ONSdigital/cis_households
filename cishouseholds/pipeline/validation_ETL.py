@@ -63,5 +63,13 @@ def validation_ETL(**kwargs):
     )
     SparkVal.validate_column(column_calls)
     SparkVal.validate(dataset_calls)
+    SparkVal.validate_udl(
+        F.when(
+            (F.col("covid_vaccine_type") == "Other" & F.col("covid_vaccine_type_other").isNull())
+            | (F.col("covid_vaccine_type") != "Other"),
+            True,
+        ).otherwise(False),
+        "Vaccine type other should be null unless vaccine type is 'Other'",
+    )
 
     valid_survey_responses, erroneous_survey_responses = SparkVal.filter("all", True)
