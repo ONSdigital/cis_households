@@ -13,12 +13,12 @@ def test_sparkvalidate(spark_session):
     df_expected = spark_session.createDataFrame(
         data=[
             # fmt: off
-                ('a',   1,  4,  'yes',  ['isnt_in', 'not_between']),
-                ('aa',  12, 9,  'no',   ['larger_than_10']),
-                ('ab',	3,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
-                ('ab',	8,  10, 'yes',  ['isnt_in', 'not_between', 'duplication', 'larger_than_10']),
-                ('b',   2,  7,  'no',   ['not_contained', 'not_between']),
-                (None,   2,  7,  'no',   ['not_contained', 'not_between']),
+                ('a',   1,  4,  'yes', ["column_4, the row is 'no'", 'column_3 should be in between lower_bound and upper_bound.','col_2 and col_3 should_be_within_interval 4 and 10']),
+                ('aa',  12, 9,  'no', ['larger_than_10']),
+                ('ab',	3,  10, 'yes', ["column_4, the row is 'no'", 'column_3 should be in between lower_bound and upper_bound.','col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique.', 'larger_than_10']),
+                ('ab',	8,  10, 'yes', ["column_4, the row is 'no'", 'column_3 should be in between lower_bound and upper_bound.','col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique.', 'larger_than_10']),
+                ('b',   2,  7,  'no', ["column_1 should contain 'a'.",'column_3 should be in between lower_bound and upper_bound.', 'col_2 and col_3 should_be_within_interval 4 and 10']),
+                (None,   2,  7,  'no',   ['column_3 should be in between lower_bound and upper_bound.', 'col_2 and col_3 should_be_within_interval 4 and 10']),
             # fmt: on
         ],
         schema=StructType(
@@ -63,6 +63,8 @@ def test_sparkvalidate(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
+
+    validate_df.dataframe.toPandas().to_csv("out.csv", index=False)
 
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
