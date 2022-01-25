@@ -4,9 +4,9 @@ from pyspark.sql.functions import DataFrame
 
 
 class SparkValidate:
-    def __init__(self, dataframe: DataFrame) -> None:
+    def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
         self.dataframe = dataframe
-        self.error_column = "error"
+        self.error_column = error_column_name
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
@@ -14,6 +14,8 @@ class SparkValidate:
             "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
             "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
+            "null": {"function": self.not_null, "error_message": "{} should not be null"},
+            "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
         }
 
     def new_function(self, function_name, function_method, error_message="default error"):
@@ -21,6 +23,20 @@ class SparkValidate:
 
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
+
+    def report(self, selected_errors, all=False):
+        min_size = 1
+        if all:
+            min_size = len(selected_errors)
+        passed_df = self.dataframe.filter(
+            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
+            >= min_size
+        )
+        failed_df = self.dataframe.filter(
+            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
+            < min_size
+        )
+        return passed_df, failed_df
 
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
@@ -45,6 +61,14 @@ class SparkValidate:
             F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
                 F.col(self.error_column)
             ),
+        )
+
+    @staticmethod
+    def not_null(error_message, check_columns):  # works in validate and validate_column
+        error_message = error_message.format(", ".join(check_columns))
+        return (
+            F.when(sum([F.isnull(F.col(col)).cast("integer") for col in check_columns]) > 0, False).otherwise(True),
+            error_message,
         )
 
     @staticmethod
@@ -74,7 +98,13 @@ class SparkValidate:
 
     # Non column wise functions
     @staticmethod
-    def duplicated(error_message, column_list):
-        window = Window.partitionBy(*column_list)
-        error_message = error_message.format(", ".join(column_list))
+    def duplicated(error_message, check_columns):
+        window = Window.partitionBy(*check_columns)
+        error_message = error_message.format(", ".join(check_columns))
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
+
+    @staticmethod
+    def valid_vaccination(error_message, visit_type_column, check_columns):
+        return (F.col(visit_type_column) != "First Visit") | (
+            ~F.array_contains(F.array(*check_columns), None)
+        ), error_message
