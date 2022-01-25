@@ -11,7 +11,7 @@ class SparkValidate:
 
         self.functions = {
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
-            "isin": {"function": self.isin, "error_message": "{}, the row is '{}'"},
+            "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
             "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
