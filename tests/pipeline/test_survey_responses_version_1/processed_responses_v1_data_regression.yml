@@ -652,7 +652,7 @@
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 1
   age_group_5_intervals: null
@@ -872,7 +872,7 @@
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
@@ -1087,7 +1087,7 @@
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 0
   age_group_5_intervals: null
@@ -1304,7 +1304,7 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 33
   age_group_5_intervals: 20-49
@@ -1519,7 +1519,7 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 39
   age_group_5_intervals: 20-49
@@ -1740,7 +1740,7 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
@@ -1956,7 +1956,7 @@
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 35
   age_group_5_intervals: 20-49

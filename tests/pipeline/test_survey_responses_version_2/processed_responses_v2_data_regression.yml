@@ -1187,7 +1187,7 @@
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -1487,7 +1487,7 @@
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
@@ -1787,7 +1787,7 @@
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -2086,7 +2086,7 @@
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
@@ -2388,7 +2388,7 @@
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
@@ -2694,7 +2694,7 @@
   work_status_v2: null
   work_status_v2_raw: null
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'

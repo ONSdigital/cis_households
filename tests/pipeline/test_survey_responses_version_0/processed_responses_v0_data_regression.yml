@@ -343,7 +343,7 @@
   work_status_v0_raw: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 1
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -515,7 +515,7 @@
   work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -684,7 +684,7 @@
   work_status_v0: Where are my pants?
   work_status_v0_raw: Where are my pants?
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 0
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -855,7 +855,7 @@
   work_status_v0: Where are my pants?
   work_status_v0_raw: Where are my pants?
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 36
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1029,7 +1029,7 @@
   work_status_v0_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -1199,7 +1199,7 @@
   work_status_v0: Any element of a tuple can be accessed in constant time.
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 33
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 30-34
@@ -1369,7 +1369,7 @@
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
   work_status_v0_raw: Its main implementation is the Glasgow Haskell Compiler.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 27
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 25-29
@@ -1538,7 +1538,7 @@
   work_status_v0: Any element of a tuple can be accessed in constant time.
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - ERROR:
-  - visit_id should contain '^DHV'.
+  - visit_id should contain '^DHV'
   age_at_visit: 35
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
