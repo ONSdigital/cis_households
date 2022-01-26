@@ -264,7 +264,7 @@
   title: null
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
-  visit_date_string: '2022-01-08'
+  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DHVF-0988308904
   visit_order: Month 12
@@ -557,7 +557,7 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
-  visit_date_string: '2022-01-04'
+  visit_date_string: 04jan2022
   visit_datetime: null
   visit_id: DHVF-2240364141
   visit_order: Month 8
@@ -851,7 +851,7 @@
   title: Mrs.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
-  visit_date_string: '2022-01-01'
+  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DHVF-4476904382
   visit_order: null
@@ -1148,7 +1148,7 @@
   title: Mr.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
-  visit_date_string: '2022-01-02'
+  visit_date_string: 02jan2022
   visit_datetime: null
   visit_id: DHVF-4869598675
   visit_order: Follow-up 2
@@ -1448,7 +1448,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_date_string: '2022-01-06'
+  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-0165258086
   visit_order: Month 6
@@ -1748,7 +1748,7 @@
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0739888271-DHR-389263959191-2022-01-04 06:40:18
-  visit_date_string: '2022-01-04'
+  visit_date_string: 04jan2022
   visit_datetime: null
   visit_id: DVH-0739888271
   visit_order: Month 5
@@ -2044,7 +2044,7 @@
   title: Ms.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
-  visit_date_string: '2022-01-03'
+  visit_date_string: 03jan2022
   visit_datetime: null
   visit_id: DVH-6338733442
   visit_order: Month 9
@@ -2340,7 +2340,7 @@
   title: Prof.
   transport_to_work_or_school: null
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
-  visit_date_string: '2022-01-08'
+  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DVH-6911152672
   visit_order: Month 13
@@ -2644,7 +2644,7 @@
   title: Mr.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 18:14:23
-  visit_date_string: '2022-01-06'
+  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-8720322983
   visit_order: Follow-up 3
@@ -2941,7 +2941,7 @@
   title: Prof.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DVH-9557055819-DHR-455927236237-2022-01-07 10:41:50
-  visit_date_string: '2022-01-07'
+  visit_date_string: 07jan2022
   visit_datetime: null
   visit_id: DVH-9557055819
   visit_order: Month 15
