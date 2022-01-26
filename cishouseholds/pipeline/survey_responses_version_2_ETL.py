@@ -110,7 +110,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="samples_taken_date_string",
         reference_column="samples_taken_datetime",
-        time_format="ddMMMyyy",
+        time_format="ddMMMyyyy",
         lower_case=True,
     )
     df = assign_column_to_date_string(
@@ -120,8 +120,14 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         time_format="ddMMMyyyy HH:mm:ss",
         lower_case=True,
     )
-    df = assign_column_to_date_string(df, "date_of_birth_string", reference_column="date_of_birth")
 
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="date_of_birth_string",
+        reference_column="date_of_birth",
+        time_format="ddMMMyyyy",
+        lower_case=True,
+    )
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
