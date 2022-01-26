@@ -1,6 +1,7 @@
+from tkinter.messagebox import NO
+
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
-from tkinter.messagebox import NO
 
 from cishouseholds.impute import impute_contact_covid
 
@@ -40,7 +41,7 @@ def test_impute_contact_covid(spark_session):
             (2, "2020-04-05", "2020-11-20", None, None, 1, "Yes"),
             (2, "2020-04-05", "2020-12-20", None, None, 1, "Yes"),
         ],
-        schema="id integer, date string, visit_date string, col_1 string, col_2 integer, col_3 integer",
+        schema="id integer, date string, visit_date string, col_1 string, col_2 integer, col_3 integer, contact string",
     )
     for col in ["date", "visit_date"]:
         input_df = input_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
