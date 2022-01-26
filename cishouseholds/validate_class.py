@@ -108,3 +108,16 @@ class SparkValidate:
         return (F.col(visit_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
+
+    @staticmethod
+    def validate_relationship_between_socialcare_columns(
+        work_social_care_column,
+        work_care_nursing_home_column,
+        work_direct_contact_column,
+        value_yes="yes",
+        value_no="no",
+    ):
+        return F.when(
+            (F.col(work_social_care_column) == value_yes)
+            & (F.col(work_care_nursing_home_column) | F.col(work_direct_contact_column))
+        )
