@@ -109,6 +109,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(
         df=df,
         column_name_to_assign="visit_date_string",
+        reference_column="visit_date",
+        time_format="ddMMMyyyy",
+        lower_case=True,
+    )
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="visit_date_string",
         reference_column="visit_datetime",
         time_format="ddMMMyyyy HH:mm:ss",
         lower_case=True,
