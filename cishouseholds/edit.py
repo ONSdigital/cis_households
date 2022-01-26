@@ -84,7 +84,7 @@ def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     )
     df = df.withColumn(
         barcode_column,
-        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).otherwise().cast("string"),
+        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
     )
     return df
 
