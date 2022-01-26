@@ -72,4 +72,21 @@ def validation_ETL(**kwargs):
         "Vaccine type other should be null unless vaccine type is 'Other'",
     )
 
+    SparkVal.validate_udl(
+        logic=(
+            (F.col("work_socialcare") == "Yes")
+            & ((F.col("work_care_nursing_home") == "Yes") | (F.col("work_direct_contact") == "Yes")),
+        )
+        | (F.col("work_socialcare") == "No"),
+        error_message="relationship between socialcare columns",
+    )
+
+    SparkVal.validate_udl(
+        logic=(
+            (F.col("contact_face_covering_other").isNotNull() | F.col("contact_face_covering_workschool").isNotNull())
+            & (F.col("contact_face_covering").isNull())
+        ),
+        error_message="Validate face covering",
+    )
+
     valid_survey_responses, erroneous_survey_responses = SparkVal.filter("all", True)
