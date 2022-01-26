@@ -91,6 +91,7 @@ def test_transform_antibody_swab_ETL(spark_session):
     # data = []
     # expected_antibody_swab_residuals_df = spark_session.createDataFrame(data, schema=schema)
 
+    import pdb; pdb.set_trace()
     responses_with_blood_df, blood_residuals, _ = merge_blood(df_input_survey, df_input_antibody)
     responses_with_blood_and_swab_df, swab_residuals, _ = merge_swab(responses_with_blood_df, df_input_swab)
 
