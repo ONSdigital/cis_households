@@ -24,9 +24,9 @@ class SparkValidate:
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
-    def filter(self, selected_errors, return_failed=False):
+    def report(self, selected_errors, all=False):
         min_size = 1
-        if selected_errors == "all":
+        if all:
             min_size = len(selected_errors)
         passed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
@@ -36,16 +36,7 @@ class SparkValidate:
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             < min_size
         )
-        if return_failed:
-            return passed_df, failed_df
-        return passed_df
-
-    def report_errors(self):
-        return (
-            self.dataframe.select(F.explode(F.col(self.error_column)).alias(self.error_column))
-            .groupBy(self.error_column)
-            .count()
-        )
+        return passed_df, failed_df
 
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
@@ -60,19 +51,6 @@ class SparkValidate:
 
     def validate_udl(self, logic, error_message):
         self.execute_check(logic, error_message)
-
-    def validate_unique(self, column_set):
-        for item in column_set:
-            error_message = item["error"]
-            column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
-            self.dataframe = self.dataframe.join(
-                self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
-                on=column_list,
-                how="inner",
-            )
-            check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
-            self.execute_check(check, error_message)
-            self.dataframe = self.dataframe.drop("duplicate_indicator")
 
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
