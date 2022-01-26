@@ -30,8 +30,8 @@ def validation_ETL(**kwargs):
             }
         },
         "visit_id": {"contains": r"^DHV"},
-        "blood_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
-        "swab_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
+        "blood_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
+        "swab_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
     }
 
     dataset_calls = {
