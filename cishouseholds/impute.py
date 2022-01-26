@@ -113,6 +113,25 @@ def impute_think_had_covid(
     return transformed_df
 
 
+def fill_forward_work_columns(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
+    main_job_changed_column: str,
+) -> DataFrame:
+    """ """
+    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
+    for col in fill_forward_columns:
+        df = df.withColumn(
+            col,
+            F.when(
+                F.col(main_job_changed_column) != "Yes", F.first(F.col(col), ignorenulls=True).over(window)
+            ).otherwise(F.col(col)),
+        )
+    return df
+
+
 def impute_by_distribution(
     df: DataFrame,
     column_name_to_assign: str,
