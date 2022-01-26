@@ -1,5 +1,4 @@
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: 'Yes'
+- ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 27
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 25-29
@@ -26,7 +25,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1994-09-20 00:35:00.000000'
-  date_of_birth_string: '1994-09-20'
+  date_of_birth_string: 20sep1994
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -216,8 +215,7 @@
     what you're gonna get.
   work_status_v1_raw: Mama always said life was like a box of chocolates. You never
     know what you're gonna get.
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: 'No'
+- ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -244,7 +242,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '1997-01-25 05:44:00.000000'
-  date_of_birth_string: '1997-01-25'
+  date_of_birth_string: 25jan1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -435,8 +433,7 @@
   work_sectors_other: Do you come here often?
   work_status_v1: The only thing we have to fear is fear itself.
   work_status_v1_raw: The only thing we have to fear is fear itself.
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 24
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
@@ -463,7 +460,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: '1997-03-07'
+  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -651,9 +648,7 @@
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: 'No'
+- ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 1
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -680,7 +675,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: '2020-02-01'
+  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: delage1844@gsnail.ac.uk
@@ -871,9 +866,7 @@
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: 'Yes'
+- ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -900,7 +893,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Avon
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: '1985-10-14'
+  date_of_birth_string: 14oct1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -1086,9 +1079,7 @@
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: 'No'
+- ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 0
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -1115,7 +1106,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: '2021-12-18'
+  date_of_birth_string: 18dec2021
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -1303,9 +1294,7 @@
   work_sectors_other: I don't even care.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: 'No'
+- ability_to_socially_distance_at_work_or_school: 'No'
   age_at_visit: 33
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 30-34
@@ -1332,7 +1321,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: County Armagh
   date_of_birth: '1988-12-04 21:47:00.000000'
-  date_of_birth_string: '1988-12-04'
+  date_of_birth_string: 04dec1988
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: mastiff1901@gsnail.ac.uk
@@ -1518,9 +1507,7 @@
   work_sectors_other: Make me a sandwich.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 39
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1547,7 +1534,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Suffolk
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: '1982-12-15'
+  date_of_birth_string: 15dec1982
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -1739,9 +1726,7 @@
     wrote serious, sombre and religious pieces beginning in the 1930s.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: 'Yes'
+- ability_to_socially_distance_at_work_or_school: 'Yes'
   age_at_visit: 36
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1768,7 +1753,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1985-09-10 20:39:00.000000'
-  date_of_birth_string: '1985-09-10'
+  date_of_birth_string: 10sep1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -1955,9 +1940,7 @@
     a space station with the power to destroy entire planets.
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_school: null
   age_at_visit: 35
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
@@ -1984,7 +1967,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   date_of_birth: '1986-06-28 11:38:00.000000'
-  date_of_birth_string: '1986-06-28'
+  date_of_birth_string: 28jun1986
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk

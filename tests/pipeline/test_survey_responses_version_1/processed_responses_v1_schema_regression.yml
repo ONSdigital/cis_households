@@ -804,13 +804,6 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: ERROR
-  nullable: false
-  type:
-    containsNull: false
-    elementType: string
-    type: array
-- metadata: {}
   name: self_isolating
   nullable: true
   type: string

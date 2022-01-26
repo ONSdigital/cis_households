@@ -32,6 +32,7 @@ def test_assign_column_to_date_string_specify_format(spark_session):
                     """
     data_input_df = [
         ("2020-05-19 13:38:00", "19may2020 13:38:00"),
+        ("2020-05-19 01:38:00", "19may2020 01:38:00"),  # making sure the 24h format works
     ]
     expected_df = spark_session.createDataFrame(data_input_df, schema=schema_input_df)
 
