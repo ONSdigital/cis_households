@@ -262,55 +262,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     #     contact_suspect_covid_date_column='contact_suspect_covid_date',
     # )
 
-    SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
-
-    # calls
-
-    column_calls = {
-        "visit_datetime": {
-            "between": {
-                "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("26/04/2020"), format="dd/MM/yyyy")},
-                "upper_bound": {
-                    "inclusive": True,
-                    "value": F.date_add(
-                        F.to_timestamp(
-                            F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0),
-                            format="yyyyMMdd",
-                        ),
-                        1,
-                    ),
-                },
-            }
-        },
-        "visit_id": {"contains": r"^DHV"},
-    }
-
-    dataset_calls = {
-        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
-        # "valid_vaccination": {
-        #     "visit_type_column": "visit_type",
-        #     "check_columns": [
-        #         "cis_covid_vaccine_type_1",
-        #         "cis_covid_vaccine_type_other_1",
-        #         "cis_covid_vaccine_date_1",
-        #         "cis_covid_vaccine_type_2",
-        #         "cis_covid_vaccine_type_other_2",
-        #         "cis_covid_vaccine_date_2",
-        #         "cis_covid_vaccine_type_3",
-        #         "cis_covid_vaccine_type_other_3",
-        #         "cis_covid_vaccine_date_3",
-        #         "cis_covid_vaccine_type_4",
-        #         "cis_covid_vaccine_type_other_4",
-        #         "cis_covid_vaccine_date_4",
-        #     ],
-        # },
-    }
-
-    SparkVal.validate_column(column_calls)
-    SparkVal.validate(dataset_calls)
-
-    df = SparkVal.dataframe
-
     return df
 
 
