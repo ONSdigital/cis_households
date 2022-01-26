@@ -63,6 +63,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_location",
         "sex",
         "withdrawal_reason",
+        "blood_sample_barcode",
+        "swab_sample_barcode",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
