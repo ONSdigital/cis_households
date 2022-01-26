@@ -532,6 +532,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: blood_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
