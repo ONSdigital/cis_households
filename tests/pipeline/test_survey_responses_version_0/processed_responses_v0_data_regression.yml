@@ -1,5 +1,4 @@
-- ERROR: []
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -170,8 +169,7 @@
     assignment, and dynamic typing.
   work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-- ERROR: []
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -342,9 +340,7 @@
     been restored.
   work_status_v0_raw: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -514,9 +510,7 @@
     assignment, and dynamic typing.
   work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -683,9 +677,7 @@
   work_social_care_raw: 'No'
   work_status_v0: Where are my pants?
   work_status_v0_raw: Where are my pants?
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -854,9 +846,7 @@
   work_social_care_raw: 'No'
   work_status_v0: Where are my pants?
   work_status_v0_raw: Where are my pants?
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1028,9 +1018,7 @@
     language, with non-strict semantics and strong static typing.
   work_status_v0_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1198,9 +1186,7 @@
   work_social_care_raw: null
   work_status_v0: Any element of a tuple can be accessed in constant time.
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1368,9 +1354,7 @@
   work_social_care_raw: null
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
   work_status_v0_raw: Its main implementation is the Glasgow Haskell Compiler.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1537,9 +1521,7 @@
   work_social_care_raw: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
-- ERROR:
-  - visit_id should contain '^DHV'
-  age_at_visit: null
+- age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
