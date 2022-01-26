@@ -23,7 +23,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: '1982-12-15'
+  date_of_birth_string: 15dec1982
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: ladybird1985@gsnail.ac.uk
@@ -195,7 +195,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: '1985-10-14'
+  date_of_birth_string: 14oct1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -368,7 +368,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: '2020-02-01'
+  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: uncontenting1914@gsnail.ac.uk
@@ -540,7 +540,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-01-25 05:44:00.000000'
-  date_of_birth_string: '1997-01-25'
+  date_of_birth_string: 25jan1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: depict1972@gsnail.ac.uk
@@ -709,7 +709,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: '2021-12-18'
+  date_of_birth_string: 18dec2021
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: cortina2016@gsnail.ac.uk
@@ -880,7 +880,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Derbyshire
   date_of_birth: '1985-09-10 20:39:00.000000'
-  date_of_birth_string: '1985-09-10'
+  date_of_birth_string: 10sep1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: gunsmithing1948@gsnail.ac.uk
@@ -1054,7 +1054,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: '1997-03-07'
+  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: elizabethan1976@gsnail.ac.uk
@@ -1224,7 +1224,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1988-12-04 21:47:00.000000'
-  date_of_birth_string: '1988-12-04'
+  date_of_birth_string: 04dec1988
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: saola2016@gsnail.ac.uk
@@ -1394,7 +1394,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:35:00.000000'
-  date_of_birth_string: '1994-09-20'
+  date_of_birth_string: 20sep1994
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: paraflocculus2029@gsnail.ac.uk
@@ -1563,7 +1563,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1986-06-28 11:38:00.000000'
-  date_of_birth_string: '1986-06-28'
+  date_of_birth_string: 28jun1986
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: duckers1863@gsnail.ac.uk

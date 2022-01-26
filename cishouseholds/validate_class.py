@@ -10,11 +10,11 @@ class SparkValidate:
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
 
         self.functions = {
-            "contains": {"function": self.contains, "error_message": "{} should contain '{}'."},
-            "isin": {"function": self.isin, "error_message": "{}, the row is '{}'"},
-            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique."},
-            "between": {"function": self.between, "error_message": "{} should be in between {} and {}."},
-            "null": {"function": self.not_null, "error_message": "{} should not be null."},
+            "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
+            "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
+            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
+            "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
+            "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
         }
 
@@ -39,6 +39,13 @@ class SparkValidate:
         if return_failed:
             return passed_df, failed_df
         return passed_df
+
+    def report_errors(self):
+        return (
+            self.dataframe.select(F.explode(F.col(self.error_column)).alias(self.error_column))
+            .groupBy(self.error_column)
+            .count()
+        )
 
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
