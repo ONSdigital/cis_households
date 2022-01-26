@@ -40,6 +40,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.validate_class import SparkValidate
@@ -529,6 +530,22 @@ def union_dependent_transformations(df):
         id_column="participant_id",
         visit_date_column="visit_datetime",
         visit_id_column="visit_id",
+    )
+    df = fill_forward_work_columns(
+        df=df,
+        fill_forward_work_columns=[
+            "job_title",
+            "main_resp",
+            "work_sector",
+            "work_sector_other_text" "work_healthcare",
+            "work_socialcare",
+            "work_healthcare_v1",
+            "work_care_nursing_home",
+            "work_direct_contact_patients_etc",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        main_job_changed_column="main_job_changed",
     )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
