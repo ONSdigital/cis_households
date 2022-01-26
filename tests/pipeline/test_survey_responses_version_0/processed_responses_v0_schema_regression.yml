@@ -639,11 +639,4 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
-- metadata: {}
-  name: ERROR
-  nullable: false
-  type:
-    containsNull: false
-    elementType: string
-    type: array
 type: struct
