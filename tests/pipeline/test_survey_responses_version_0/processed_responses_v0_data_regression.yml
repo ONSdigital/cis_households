@@ -1,9 +1,9 @@
 - ERROR: []
-  age_at_visit: 39
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -144,7 +144,7 @@
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-01 06:11:57
   visit_date_string: '2022-01-01'
-  visit_datetime: '2022-01-01 06:11:57.000000'
+  visit_datetime: null
   visit_id: DHVF-3442149696
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: null
@@ -171,11 +171,11 @@
   work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
 - ERROR: []
-  age_at_visit: 36
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
@@ -316,7 +316,7 @@
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-04 19:23:52
   visit_date_string: '2022-01-04'
-  visit_datetime: '2022-01-04 19:23:52.000000'
+  visit_datetime: null
   visit_id: DHVF-5198266175
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: null
@@ -344,7 +344,7 @@
     since been restored.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 1
+  age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -491,7 +491,7 @@
   think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_string: '2022-01-06'
-  visit_datetime: '2022-01-06 18:06:58.000000'
+  visit_datetime: null
   visit_id: DVH-0165258086
   visit_type: First Visit
   which_symptoms_last_7_days: 'Yes'
@@ -516,11 +516,11 @@
     assignment, and dynamic typing.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 24
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -661,7 +661,7 @@
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-2564559272-DHR-229883187696-2022-01-03 07:01:12
   visit_date_string: '2022-01-03'
-  visit_datetime: '2022-01-03 07:01:12.000000'
+  visit_datetime: null
   visit_id: DVH-2564559272
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: 'Yes'
@@ -685,7 +685,7 @@
   work_status_v0_raw: Where are my pants?
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 0
+  age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -832,7 +832,7 @@
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-06 17:36:59
   visit_date_string: '2022-01-06'
-  visit_datetime: '2022-01-06 17:36:59.000000'
+  visit_datetime: null
   visit_id: DVH-2948509899
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: 'No'
@@ -856,11 +856,11 @@
   work_status_v0_raw: Where are my pants?
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 36
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1004,7 +1004,7 @@
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-02 01:35:07
   visit_date_string: '2022-01-02'
-  visit_datetime: '2022-01-02 01:35:07.000000'
+  visit_datetime: null
   visit_id: DVH-4804616426
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: 'Yes'
@@ -1030,11 +1030,11 @@
     programming language, with non-strict semantics and strong static typing.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 24
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1176,7 +1176,7 @@
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-08 05:06:21
   visit_date_string: '2022-01-08'
-  visit_datetime: '2022-01-08 05:06:21.000000'
+  visit_datetime: null
   visit_id: DVH-6249804207
   visit_type: First Visit
   which_symptoms_last_7_days: null
@@ -1200,11 +1200,11 @@
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 33
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 30-34
-  age_group_7_intervals: 25-34
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
@@ -1345,7 +1345,7 @@
   think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-7139656872-DHR-422525832950-2022-01-02 21:34:20
   visit_date_string: '2022-01-02'
-  visit_datetime: '2022-01-02 21:34:20.000000'
+  visit_datetime: null
   visit_id: DVH-7139656872
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: 'Yes'
@@ -1370,11 +1370,11 @@
   work_status_v0_raw: Its main implementation is the Glasgow Haskell Compiler.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 27
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 25-29
-  age_group_7_intervals: 25-34
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1514,7 +1514,7 @@
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-07 11:10:34
   visit_date_string: '2022-01-07'
-  visit_datetime: '2022-01-07 11:10:34.000000'
+  visit_datetime: null
   visit_id: DVH-7239645123
   visit_type: First Visit
   which_symptoms_last_7_days: 'No'
@@ -1539,11 +1539,11 @@
   work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - ERROR:
   - visit_id should contain '^DHV'
-  age_at_visit: 35
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1688,7 +1688,7 @@
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-08 11:41:44
   visit_date_string: '2022-01-08'
-  visit_datetime: '2022-01-08 11:41:44.000000'
+  visit_datetime: null
   visit_id: DVH-9888271882
   visit_type: Follow-up Visit
   which_symptoms_last_7_days: null
