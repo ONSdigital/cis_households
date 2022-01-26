@@ -61,8 +61,8 @@
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
   date_of_birth_string: 18dec2021
-  days_since_think_had_covid: 0.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   deferred: N/A
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -357,7 +357,7 @@
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
   date_of_birth_string: 07feb1997
-  days_since_think_had_covid: -1.0
+  days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
   email: coater1966@gsnail.ac.uk
@@ -2149,8 +2149,8 @@
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
   date_of_birth_string: 07oct2003
-  days_since_think_had_covid: 4.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   deferred: Deferred
   email: ladybird1985@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -2451,8 +2451,8 @@
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   date_of_birth_string: 14oct1985
-  days_since_think_had_covid: 1.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   deferred: N/A
   email: null
   ethnic_group: White
@@ -2757,8 +2757,8 @@
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
   date_of_birth_string: 15dec1982
-  days_since_think_had_covid: 6.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   deferred: Deferred
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
