@@ -1,6 +1,7 @@
+from tkinter.messagebox import NO
+
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
-from tkinter.messagebox import NO
 
 from cishouseholds.impute import impute_contact_covid
 
@@ -27,16 +28,16 @@ def test_impute_contact_covid(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (4, None, "2020-10-20", None, 1.0, 4, "No"),
-            (4, "2020-11-09", "2020-11-20", None, 4.0, 3, "Yes"),
-            (4, "2020-11-22", "2021-01-11", "A", 2.0, 2, "Yes"),
-            (4, "2020-11-22", "2021-02-11", "A", 2.0, 2, "Yes"),
-            (4, "2020-11-22", "2021-02-24", "A", 2.0, 2, "Yes"),
-            (1, "2020-03-12", "2020-11-20", "A", 5.0, 5, "Yes"),
-            (1, "2020-03-12", "2020-12-20", "A", 5.0, 5, "Yes"),
-            (0, None, "2020-01-01", "A", None, 1.0, "No"),
-            (0, None, "2020-01-01", None, 1.0, 3, "No"),
-            (3, "2020-05-09", "2020-12-20", "B", 2.0, 5, "Yes"),
+            (4, None, "2020-10-20", None, 1, 4, "No"),
+            (4, "2020-11-09", "2020-11-20", None, 4, 3, "Yes"),
+            (4, "2020-11-22", "2021-01-11", "A", 2, 2, "Yes"),
+            (4, "2020-11-22", "2021-02-11", "A", 2, 2, "Yes"),
+            (4, "2020-11-22", "2021-02-24", "A", 2, 2, "Yes"),
+            (1, "2020-03-12", "2020-11-20", "A", 5, 5, "Yes"),
+            (1, "2020-03-12", "2020-12-20", "A", 5, 5, "Yes"),
+            (0, None, "2020-01-01", "A", None, 1, "No"),
+            (0, None, "2020-01-01", None, 1, 3, "No"),
+            (3, "2020-05-09", "2020-12-20", "B", 2, 5, "Yes"),
             (2, "2020-04-05", "2020-11-20", None, None, 1, "Yes"),
             (2, "2020-04-05", "2020-12-20", None, None, 1, "Yes"),
         ],
