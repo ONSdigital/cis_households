@@ -60,7 +60,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: '2021-12-18'
+  date_of_birth_string: 18dec2021
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
   deferred: N/A
@@ -356,7 +356,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
-  date_of_birth_string: '1997-02-07'
+  date_of_birth_string: 07feb1997
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -650,7 +650,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: '1997-03-07'
+  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -947,7 +947,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2015-04-22 10:53:00.000000'
-  date_of_birth_string: '2015-04-22'
+  date_of_birth_string: 22apr2015
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: Deferred
@@ -1249,7 +1249,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: '2020-02-01'
+  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -1549,7 +1549,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
-  date_of_birth_string: '1997-08-21'
+  date_of_birth_string: 21aug1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: N/A
@@ -2148,7 +2148,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
-  date_of_birth_string: '2003-10-07'
+  date_of_birth_string: 07oct2003
   days_since_think_had_covid: 4.0
   days_since_think_had_covid_group: 0-14
   deferred: Deferred
@@ -2450,7 +2450,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: '1985-10-14'
+  date_of_birth_string: 14oct1985
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
   deferred: N/A
@@ -2756,7 +2756,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: '1982-12-15'
+  date_of_birth_string: 15dec1982
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
   deferred: Deferred
