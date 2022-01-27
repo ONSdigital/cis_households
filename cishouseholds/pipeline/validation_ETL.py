@@ -58,6 +58,10 @@ def validation_ETL(**kwargs):
         [
             {"column_list": "all", "error": "rows should be unique"},
             {"column_list": ["participant_id", "visit_id", "visit_datetime"], "error": "these rows should be unique"},
+            {
+                "column_list": ["participant_id", "visit_datetime", "visit_status"],
+                "error": "these rows should be unique",
+            },
             {"column_list": ["visit_id"], "error": "visit id should be unique"},
         ]
     )
