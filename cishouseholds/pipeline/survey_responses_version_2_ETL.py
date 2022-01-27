@@ -43,6 +43,7 @@ from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
+from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -67,6 +68,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_location",
         "sex",
         "withdrawal_reason",
+        "blood_sample_barcode",
+        "swab_sample_barcode",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
@@ -106,7 +109,20 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-    df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="visit_date_string",
+        reference_column="visit_datetime",
+        time_format="ddMMMyyyy",
+        lower_case=True,
+    )
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="visit_datetime",
+        reference_column="visit_datetime",
+        time_format="ddMMMyyyy HH:mm:ss",
+        lower_case=True,
+    )
     df = assign_column_to_date_string(
         df=df,
         column_name_to_assign="samples_taken_date_string",
@@ -233,6 +249,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
         visit_date_column="visit_datetime",
         visit_id_column="visit_id",
+    )
+    df = impute_visit_datetime(
+        df=df, visit_datetime_column="visit_datetime", sampled_datetime_column="samples_taken_datetime"
     )
 
     # TODO: Add in once dependencies are derived
