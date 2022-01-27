@@ -1,9 +1,8 @@
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 0.0
+  age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -17,6 +16,7 @@
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: null
   blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
@@ -60,9 +60,9 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: '2021-12-18'
-  days_since_think_had_covid: 0.0
-  days_since_think_had_covid_group: 0-14
+  date_of_birth_string: 18dec2021
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   deferred: N/A
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -208,6 +208,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -265,8 +266,8 @@
   title: null
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
-  visit_date_string: '2022-01-08'
-  visit_datetime: '2022-01-08 00:10:59.000000'
+  visit_date_string: 08jan2022
+  visit_datetime: null
   visit_id: DHVF-0988308904
   visit_order: Month 12
   visit_type: First Visit
@@ -294,16 +295,15 @@
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   approached_for_blood_samples: null
@@ -313,6 +313,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -356,8 +357,8 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
-  date_of_birth_string: '1997-02-07'
-  days_since_think_had_covid: -1.0
+  date_of_birth_string: 07feb1997
+  days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
   email: coater1966@gsnail.ac.uk
@@ -502,6 +503,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -559,8 +561,8 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
-  visit_date_string: '2022-01-04'
-  visit_datetime: '2022-01-04 02:59:45.000000'
+  visit_date_string: 04jan2022
+  visit_datetime: null
   visit_id: DHVF-2240364141
   visit_order: Month 8
   visit_type: First Visit
@@ -588,16 +590,15 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -607,6 +608,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
@@ -650,7 +652,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: '1997-03-07'
+  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -797,6 +799,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -854,8 +857,8 @@
   title: Mrs.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
-  visit_date_string: '2022-01-01'
-  visit_datetime: '2022-01-01 21:15:29.000000'
+  visit_date_string: 01jan2022
+  visit_datetime: null
   visit_id: DHVF-4476904382
   visit_order: null
   visit_type: First Visit
@@ -885,15 +888,14 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR: []
-  ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 6.0
-  age_group_5_intervals: 2-11
-  age_group_5_year_intervals: 5-9
-  age_group_7_intervals: 2-11
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
   age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
@@ -904,6 +906,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
@@ -947,7 +950,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2015-04-22 10:53:00.000000'
-  date_of_birth_string: '2015-04-22'
+  date_of_birth_string: 22apr2015
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: Deferred
@@ -1077,7 +1080,7 @@
   samples_taken_date_string: null
   samples_taken_datetime: null
   samples_taken_datetime_string: null
-  school_year_september: 2.0
+  school_year_september: null
   self_isolating: 'No'
   sex: Female
   sex_raw: Female
@@ -1095,6 +1098,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1152,8 +1156,8 @@
   title: Mr.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
-  visit_date_string: '2022-01-02'
-  visit_datetime: '2022-01-02 03:34:03.000000'
+  visit_date_string: 02jan2022
+  visit_datetime: null
   visit_id: DHVF-4869598675
   visit_order: Follow-up 2
   visit_type: First Visit
@@ -1186,13 +1190,11 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: 1.0
+  age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1206,6 +1208,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
@@ -1249,7 +1252,7 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: '2020-02-01'
+  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -1396,6 +1399,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -1454,8 +1458,8 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_date_string: '2022-01-06'
-  visit_datetime: '2022-01-06 18:06:58.000000'
+  visit_date_string: 06jan2022
+  visit_datetime: null
   visit_id: DVH-0165258086
   visit_order: Month 6
   visit_type: First Visit
@@ -1486,17 +1490,15 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -1506,6 +1508,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
@@ -1549,7 +1552,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
-  date_of_birth_string: '1997-08-21'
+  date_of_birth_string: 21aug1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: N/A
@@ -1699,6 +1702,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1756,8 +1760,8 @@
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0739888271-DHR-389263959191-2022-01-04 06:40:18
-  visit_date_string: '2022-01-04'
-  visit_datetime: '2022-01-04 06:40:18.000000'
+  visit_date_string: 04jan2022
+  visit_datetime: null
   visit_id: DVH-0739888271
   visit_order: Month 5
   visit_type: First Visit
@@ -1786,9 +1790,7 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
@@ -1806,6 +1808,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -1850,7 +1853,7 @@
   county: null
   date_of_birth: null
   date_of_birth_string: null
-  days_since_think_had_covid: -3.0
+  days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
   email: dashed1989@gsnail.ac.uk
@@ -1997,6 +2000,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -2054,8 +2058,8 @@
   title: Ms.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
-  visit_date_string: '2022-01-03'
-  visit_datetime: '2022-01-03 05:49:36.000000'
+  visit_date_string: 03jan2022
+  visit_datetime: null
   visit_id: DVH-6338733442
   visit_order: Month 9
   visit_type: Follow-up Visit
@@ -2085,17 +2089,15 @@
     evaluation.
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
-  age_at_visit: 18.0
-  age_group_5_intervals: 12-19
-  age_group_5_year_intervals: 15-19
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2105,6 +2107,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'Yes'
@@ -2148,9 +2151,9 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
-  date_of_birth_string: '2003-10-07'
-  days_since_think_had_covid: 4.0
-  days_since_think_had_covid_group: 0-14
+  date_of_birth_string: 07oct2003
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   deferred: Deferred
   email: ladybird1985@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -2295,6 +2298,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -2352,8 +2356,8 @@
   title: Prof.
   transport_to_work_or_school: null
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
-  visit_date_string: '2022-01-08'
-  visit_datetime: '2022-01-08 03:57:44.000000'
+  visit_date_string: 08jan2022
+  visit_datetime: null
   visit_id: DVH-6911152672
   visit_order: Month 13
   visit_type: First Visit
@@ -2387,17 +2391,15 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: 36.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -2407,6 +2409,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
@@ -2450,9 +2453,9 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: '1985-10-14'
-  days_since_think_had_covid: 1.0
-  days_since_think_had_covid_group: 0-14
+  date_of_birth_string: 14oct1985
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   deferred: N/A
   email: null
   ethnic_group: White
@@ -2600,6 +2603,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -2658,8 +2662,8 @@
   title: Mr.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 18:14:23
-  visit_date_string: '2022-01-06'
-  visit_datetime: '2022-01-06 18:14:23.000000'
+  visit_date_string: 06jan2022
+  visit_datetime: null
   visit_id: DVH-8720322983
   visit_order: Follow-up 3
   visit_type: First Visit
@@ -2693,17 +2697,15 @@
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_status_v2: null
   work_status_v2_raw: null
-- ERROR:
-  - visit_id should contain '^DHV'
-  ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: 39.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2713,6 +2715,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -2756,9 +2759,9 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: '1982-12-15'
-  days_since_think_had_covid: 6.0
-  days_since_think_had_covid_group: 0-14
+  date_of_birth_string: 15dec1982
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   deferred: Deferred
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
@@ -2900,6 +2903,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -2957,8 +2961,8 @@
   title: Prof.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DVH-9557055819-DHR-455927236237-2022-01-07 10:41:50
-  visit_date_string: '2022-01-07'
-  visit_datetime: '2022-01-07 10:41:50.000000'
+  visit_date_string: 07jan2022
+  visit_datetime: null
   visit_id: DVH-9557055819
   visit_order: Month 15
   visit_type: Follow-up Visit

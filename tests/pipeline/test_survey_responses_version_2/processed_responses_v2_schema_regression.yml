@@ -1028,6 +1028,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: blood_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: unique_participant_response_id
   nullable: false
   type: string
@@ -1135,13 +1143,6 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
-- metadata: {}
-  name: ERROR
-  nullable: false
-  type:
-    containsNull: false
-    elementType: string
-    type: array
 - metadata: {}
   name: self_isolating
   nullable: true
