@@ -78,13 +78,9 @@ def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     df = df.withColumn(
         barcode_column,
         F.when(
-            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
-            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
+            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)^[^0-9]{3}\d{8}$"),
+            F.regexp_replace(barcode_column, r"^[^0-9]{3}", "ONS"),
         ).otherwise(F.col(barcode_column)),
-    )
-    df = df.withColumn(
-        barcode_column,
-        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
     )
     return df
 

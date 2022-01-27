@@ -9,13 +9,15 @@ def test_clean_barcode(spark_session):
             ("ons12345678", "ONS12345678"),
             ("ONC12345678", "ONC12345678"),
             ("ran  12345678", "ONS12345678"),
-            ("LO11 12345678", None),
-            ("ONS00000000", None),
+            ("LO11 12345678", "LO1112345678"),
+            ("ONS00000000", "ONS00000000"),
+            ("ON!00000000", "ONS00000000"),
         ],
         schema="barcode string, clean_barcode string",
     )
 
     output_df = clean_barcode(expected_df.drop("clean_barcode"), "barcode")
+
     assert_df_equality(
         output_df,
         expected_df.drop("barcode").withColumnRenamed("clean_barcode", "barcode"),
