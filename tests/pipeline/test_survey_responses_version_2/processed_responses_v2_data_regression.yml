@@ -16,6 +16,7 @@
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: null
   blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
@@ -207,6 +208,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -311,6 +313,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -500,6 +503,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -604,6 +608,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
@@ -794,6 +799,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -900,6 +906,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
@@ -1091,6 +1098,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1200,6 +1208,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
@@ -1390,6 +1399,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -1498,6 +1508,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
@@ -1691,6 +1702,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1796,6 +1808,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -1987,6 +2000,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
@@ -2093,6 +2107,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'Yes'
@@ -2283,6 +2298,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -2393,6 +2409,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: null
@@ -2586,6 +2603,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -2697,6 +2715,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
+  blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
@@ -2884,6 +2903,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
+  swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
