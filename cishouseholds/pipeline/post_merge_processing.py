@@ -24,9 +24,9 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 @register_pipeline_stage("process_post_merge")
 def process_post_merge(**kwargs):
     df = extract_from_table(kwargs["merged_antibody_swab_table"])
-
     if check_table_exists(kwargs["imputed_values_table"]):
-        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"])
+        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"]) 
+        # TODO should this be a non-empty df?
     else:
         imputed_value_lookup_df = None
 
@@ -39,8 +39,12 @@ def process_post_merge(**kwargs):
         df = df.withColumn("white_group", F.lit("white"))
 
     key_columns = ["white_group", "sex", "date_of_birth"]
+
     key_columns_imputed_df = impute_key_columns(
-        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
+        df=df, 
+        imputed_value_lookup_df=imputed_value_lookup_df, 
+        columns_to_fill=key_columns, 
+        log_directory=get_config().get("imputation_log_directory", "./")
     )
 
     imputed_values_df = key_columns_imputed_df.filter(
@@ -56,6 +60,8 @@ def process_post_merge(**kwargs):
         "participant_id",
         *lookup_columns,
     )
+    imputed_values_T = transpose_df_with_string(imputed_values, type_transform='long')
+
     update_table(imputed_values, kwargs["imputed_values_table"])
 
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
@@ -208,3 +214,12 @@ def filter_response_records(df: DataFrame, visit_date: str):
     df = df.where(F.col("filter_response_flag").isNull())
 
     return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")
+
+
+def transpose_df_with_string(df, type_transform='long'):
+    if type_transform == 'long':
+        pass
+
+    elif type_transform == 'wide':
+        pass
+    return df
