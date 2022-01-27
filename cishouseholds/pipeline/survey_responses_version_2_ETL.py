@@ -68,6 +68,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_location",
         "sex",
         "withdrawal_reason",
+        "blood_sample_barcode",
+        "swab_sample_barcode",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
@@ -107,7 +109,20 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-    df = assign_column_to_date_string(df, "visit_date_string", reference_column="visit_datetime")
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="visit_date_string",
+        reference_column="visit_datetime",
+        time_format="ddMMMyyyy",
+        lower_case=True,
+    )
+    df = assign_column_to_date_string(
+        df=df,
+        column_name_to_assign="visit_datetime",
+        reference_column="visit_datetime",
+        time_format="ddMMMyyyy HH:mm:ss",
+        lower_case=True,
+    )
     df = assign_column_to_date_string(
         df=df,
         column_name_to_assign="samples_taken_date_string",
