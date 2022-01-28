@@ -52,6 +52,15 @@ stages:
     unioned_survey_table: unioned_survey_responses
     transformed_survey_table: transformed_survey_responses_v*_data
 
+  - function: union_dependent_transformations
+    run: False
+    unioned_survey_table: unioned_survey_responses
+
+  - function: validate_survey_responses
+    run: False
+    unioned_survey_table: unioned_survey_responses
+    validated_survey_table: validated_survey_responses
+
 
   - function: outer_join_blood_results
     run: False

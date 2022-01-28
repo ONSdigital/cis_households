@@ -1,14 +1,12 @@
 import pyspark.sql.functions as F
+from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.validate_class import SparkValidate
 
 
-@register_pipeline_stage("validation_ETL")
-def validation_ETL(**kwargs):
-    df = extract_from_table(kwargs["unioned_survey_response_table"])
-
+def validation_ETL(df: DataFrame):
     SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
 
     # calls
