@@ -24,9 +24,10 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 @register_pipeline_stage("process_post_merge")
 def process_post_merge(**kwargs):
     df = extract_from_table(kwargs["merged_antibody_swab_table"])
-    if check_table_exists(kwargs["imputed_values_table"]):
-        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"]) 
-        # TODO should this be a non-empty df?
+
+    if check_table_exists(kwargs["imputed_values_table"]):  # TODO should this be a non-empty df ALSO?
+        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"])
+        imputed_values_long = transpose_df_with_string(imputed_value_lookup_df, type_transform="wide")
     else:
         imputed_value_lookup_df = None
 
@@ -41,10 +42,10 @@ def process_post_merge(**kwargs):
     key_columns = ["white_group", "sex", "date_of_birth"]
 
     key_columns_imputed_df = impute_key_columns(
-        df=df, 
-        imputed_value_lookup_df=imputed_value_lookup_df, 
-        columns_to_fill=key_columns, 
-        log_directory=get_config().get("imputation_log_directory", "./")
+        df=df,
+        imputed_value_lookup_df=imputed_value_lookup_df,
+        columns_to_fill=key_columns,
+        log_directory=get_config().get("imputation_log_directory", "./"),
     )
 
     imputed_values_df = key_columns_imputed_df.filter(
@@ -60,9 +61,8 @@ def process_post_merge(**kwargs):
         "participant_id",
         *lookup_columns,
     )
-    imputed_values_T = transpose_df_with_string(imputed_values, type_transform='long')
-
-    update_table(imputed_values, kwargs["imputed_values_table"])
+    imputed_values_long = transpose_df_with_string(imputed_values, type_transform="long")
+    update_table(imputed_values_long, kwargs["imputed_values_table"])
 
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
@@ -216,10 +216,50 @@ def filter_response_records(df: DataFrame, visit_date: str):
     return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")
 
 
-def transpose_df_with_string(df, type_transform='long'):
-    if type_transform == 'long':
-        pass
+def transpose_df_with_string(df: DataFrame, type_transpose="long"):
+    """
+    Parameters
+    ----------
+    df
+    columns
+    pivotCol
+    """
+    for column in df.columns:  # convert all to strings
+        df = df.withColumn(column, F.col(column).cast("string"))
 
-    elif type_transform == 'wide':
-        pass
-    return df
+    columnsValue = list(map(lambda x: str("'") + str(x) + str("',") + str(x), df.columns))
+    stackCols = ",".join(x for x in columnsValue)
+
+    df_1 = df.selectExpr(df.columns[0], "stack(" + str(len(df.columns)) + "," + stackCols + ")").select(
+        df.columns[0], "col0", "col1"
+    )
+
+    df_final = (
+        df_1.groupBy(F.col("col0"))
+        .pivot(df.columns[0])
+        .agg(F.concat_ws("", F.collect_list(F.col("col1"))))
+        .withColumnRenamed("col0", df.columns[0])
+    )
+
+    if type_transpose == "long":
+        for n, column in enumerate(df_final.columns):
+            if n == 0:
+                df_final = df_final.withColumnRenamed(column, "column_name")
+            else:
+                df_final = df_final.withColumnRenamed(column, f"row_{n}")
+
+    elif type_transpose == "wide":
+        df_final = df_final.filter(F.col("column_name") != "column_name")
+        df_final = df_final.drop("column_name")
+
+        for column in df_final.columns:
+            df_final = df_final.withColumn(
+                column,
+                F.when(
+                    F.col(column).rlike(r"(\d+)(\.)"),  # condition: only strings with 0-9 and .
+                    F.col(column).cast("double"),
+                )
+                .when(F.col(column).rlike(r"^\d+$"), F.col(column).cast("integer"))  # condition: only strings with 0-9.
+                .otherwise(F.col(column)),
+            )
+    return df_final
