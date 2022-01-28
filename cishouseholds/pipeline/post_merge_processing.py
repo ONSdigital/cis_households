@@ -261,5 +261,5 @@ def transpose_df_with_string(df: DataFrame, type_transpose="long"):
                 )
                 .when(F.col(column).rlike(r"^\d+$"), F.col(column).cast("integer"))  # condition: only strings with 0-9.
                 .otherwise(F.col(column)),
-            )
+            )  # TODO for some reason, the casting does not work and keeps being string.
     return df_final
