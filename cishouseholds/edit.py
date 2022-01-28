@@ -75,14 +75,29 @@ def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     matching the expected format.
     """
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
+    df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
+
+    df = df.withColumn("SUFFIX", F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0))
+    df = df.withColumn("PREFIX", F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", ""))
+
+    # prefix cleaning
+    df = df.withColumn("PREFIX", F.regexp_replace(F.col("PREFIX"), r"[0Q]", "O"))
     df = df.withColumn(
-        barcode_column,
-        F.when(
-            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)^[^0-9]{3}\d{8}$"),
-            F.regexp_replace(barcode_column, r"^[^0-9]{3}", "ONS"),
-        ).otherwise(F.col(barcode_column)),
+        "PREFIX", F.when(~F.col("PREFIX").isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(F.col("PREFIX"))
     )
-    return df
+
+    # suffix cleaning
+    df = df.withColumn("SUFFIX", F.when(F.length("SUFFIX") >= 4, F.col("SUFFIX")).otherwise(None))
+    df = df.withColumn("SUFFIX", F.when(F.col("SUFFIX").rlike(r"^0{1,}$"), None).otherwise(F.col("SUFFIX")))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"[.O]", "0"))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), "I", "1"))
+    df = df.withColumn("SUFFIX", F.substring(F.concat(F.lit("00000000"), F.col("SUFFIX")), -8, 8))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"^[^027]", "0"))
+
+    df = df.withColumn(
+        barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
+    )
+    return df.drop("PREFIX", "SUFFIX")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
