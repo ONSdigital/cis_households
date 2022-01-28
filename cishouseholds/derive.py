@@ -729,7 +729,7 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "no").otherwise("yes"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "No").otherwise("Yes"))
 
     return df
 
@@ -1075,7 +1075,13 @@ def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_col
     return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
-def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, reference_column: str) -> DataFrame:
+def assign_column_to_date_string(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    time_format: str = "yyyy-MM-dd",
+    lower_case: bool = False,
+) -> DataFrame:
     """
     Assign a column with a TimeStampType to a formatted date string.
     Does not use a DateType object, as this is incompatible with out HIVE tables.
@@ -1087,13 +1093,19 @@ def assign_column_to_date_string(df: DataFrame, column_name_to_assign: str, refe
         Name of column to be assigned
     reference_column
         Name of column of TimeStamp type to be converted
+    time_format
+        as a string and by using the accepted characters of Pyspark, define what time format is required
+        by default, it will be yyyy-MM-dd, e.g. 2021-01-03
 
     Returns
     -------
     pyspark.sql.DataFrame
     """
+    df = df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), time_format))
 
-    return df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), "yyyy-MM-dd"))
+    if lower_case:
+        df = df.withColumn(column_name_to_assign, F.lower(F.col(column_name_to_assign)))
+    return df
 
 
 def assign_single_column_from_split(

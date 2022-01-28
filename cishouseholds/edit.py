@@ -1,14 +1,13 @@
 from itertools import chain
 from typing import List
 from typing import Mapping
+from typing import Optional
 from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-#######################################################################################################
 
 
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
@@ -79,13 +78,9 @@ def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     df = df.withColumn(
         barcode_column,
         F.when(
-            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
-            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
+            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)^[^0-9]{3}\d{8}$"),
+            F.regexp_replace(barcode_column, r"^[^0-9]{3}", "ONS"),
         ).otherwise(F.col(barcode_column)),
-    )
-    df = df.withColumn(
-        barcode_column,
-        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
     )
     return df
 
@@ -174,7 +169,13 @@ def update_social_column(df: DataFrame, social_column: str, health_column: str):
     return df
 
 
-def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_if_value_not_found=False) -> DataFrame:
+def update_column_values_from_map(
+    df: DataFrame,
+    column: str,
+    map: dict,
+    error_if_value_not_found: Optional[bool] = False,
+    default_value: Union[str, bool, int] = None,
+) -> DataFrame:
     """
     Convert column values matching map key to value
     Parameters
@@ -182,7 +183,13 @@ def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_i
     df
     column
     map
+    error_if_value_not_found
+    default_value
     """
+
+    if default_value is None:
+        default_value = F.col(column)
+
     mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
     if error_if_value_not_found:
         temp_df = df.distinct()
@@ -194,7 +201,7 @@ def update_column_values_from_map(df: DataFrame, column: str, map: dict, error_i
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(F.col(column))
+            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
         )
     return df
 
