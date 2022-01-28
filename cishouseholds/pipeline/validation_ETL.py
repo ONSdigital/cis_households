@@ -1,8 +1,6 @@
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pipeline.load import extract_from_table
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.validate_class import SparkValidate
 
 
