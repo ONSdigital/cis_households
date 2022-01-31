@@ -1,3 +1,5 @@
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.functions import DataFrame
@@ -24,9 +26,10 @@ class SparkValidate:
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
-    def filter(self, selected_errors, return_failed=False):
-        min_size = 1
-        if selected_errors == "all":
+    def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
+        if len(selected_errors) == 0 or any:
+            min_size = 1
+        else:
             min_size = len(selected_errors)
         passed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
