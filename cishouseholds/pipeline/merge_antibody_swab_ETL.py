@@ -35,7 +35,7 @@ def union_survey_response_files(**kwargs):
 def execute_union_dependent_transformations(**kwargs):
     unioned_survey_responses = extract_from_table(kwargs["unioned_survey_table"])
     unioned_survey_responses = union_dependent_transformations(unioned_survey_responses)
-    update_table(unioned_survey_responses, kwargs["unioned_survey_table"], mode_overide="overwrite")
+    update_table(unioned_survey_responses, kwargs["transformed_table"], mode_overide="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")

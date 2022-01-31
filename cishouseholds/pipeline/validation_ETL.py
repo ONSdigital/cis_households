@@ -55,7 +55,7 @@ def validation_ETL(df: DataFrame):
             {"column_list": "all", "error": "rows should be unique"},
             {"column_list": ["participant_id", "visit_id", "visit_datetime"], "error": "these rows should be unique"},
             {
-                "column_list": ["participant_id", "visit_datetime", "visit_status"],
+                "column_list": ["participant_id", "visit_datetime", "participant_visit_status"],
                 "error": "these rows should be unique",
             },
             {"column_list": ["visit_id"], "error": "visit id should be unique"},
@@ -64,29 +64,35 @@ def validation_ETL(df: DataFrame):
     SparkVal.validate_column(column_calls)
     SparkVal.validate(dataset_calls)
     SparkVal.validate_udl(
-        F.when(
-            (F.col("covid_vaccine_type") == "Other" & F.col("covid_vaccine_type_other").isNull())
-            | (F.col("covid_vaccine_type") != "Other"),
-            True,
-        ).otherwise(False),
-        "Vaccine type other should be null unless vaccine type is 'Other'",
+        logic=(
+            F.when(
+                (
+                    ((F.col("cis_covid_vaccine_type") == "Other") & F.col("cis_covid_vaccine_type_other").isNull())
+                    | (F.col("cis_covid_vaccine_type") != "Other")
+                ),
+                True,
+            ).otherwise(False)
+        ),
+        error_message="Vaccine type other should be null unless vaccine type is 'Other'",
     )
-
     SparkVal.validate_udl(
         logic=(
-            (F.col("work_socialcare") == "Yes")
-            & ((F.col("work_care_nursing_home") == "Yes") | (F.col("work_direct_contact") == "Yes")),
-        )
-        | (F.col("work_socialcare") == "No"),
+            (
+                (F.col("work_social_care") == "Yes")
+                & (
+                    (F.col("work_nursing_or_residential_care_home") == "Yes")
+                    | (F.col("work_direct_contact_persons") == "Yes")
+                )  # double check work_direct_contact_persons
+            )
+            | (F.col("work_social_care") == "No")
+        ),
         error_message="relationship between socialcare columns",
     )
-
     SparkVal.validate_udl(
         logic=(
-            (F.col("contact_face_covering_other").isNotNull() | F.col("contact_face_covering_workschool").isNotNull())
-            & (F.col("contact_face_covering").isNull())
+            (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
+            & (F.col("face_covering_outside_of_home").isNull())
         ),
         error_message="Validate face covering",
     )
-
     return SparkVal.filter("all", True)

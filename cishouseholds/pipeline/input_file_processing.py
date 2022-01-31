@@ -48,7 +48,7 @@ blood_delta_parameters = {
 
 swab_delta_parameters = {
     "stage_name": "swab_delta_ETL",
-    "validation_schema": swab_validation_schema,
+    "validation_schema": swab_validation_schema_testKit,
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
     "transformation_functions": [transform_swab_delta],
