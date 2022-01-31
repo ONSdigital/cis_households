@@ -89,4 +89,8 @@ def validation_ETL(df: DataFrame):
         error_message="Validate face covering",
     )
 
-    return SparkVal.filter("all", True)
+    return SparkVal.filter(
+        selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
+        any=True,
+        return_failed=True,
+    )
