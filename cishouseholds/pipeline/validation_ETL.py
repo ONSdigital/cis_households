@@ -89,4 +89,4 @@ def validation_ETL(df: DataFrame):
         error_message="Validate face covering",
     )
 
-    valid_survey_responses, erroneous_survey_responses = SparkVal.filter("all", True)
+    return SparkVal.filter("all", True)
