@@ -121,6 +121,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         # comes from improved_visit_date which is converted into a string
         "think_had_covid_date_string": "think_had_covid_date",  # covid_date is stata
     }
+    # 2 loops, one for date and one for datetime of list
     for column_name_to_assign in time_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
