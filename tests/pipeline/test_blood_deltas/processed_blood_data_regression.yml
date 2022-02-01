@@ -10,7 +10,7 @@
   antibody_test_undiluted_result_value: 9012.0
   antibody_test_well_id: O25
   blood_sample_arrayed_date: '2018-11-24 00:00:00.000000'
-  blood_sample_barcode: ONS60227680
+  blood_sample_barcode: ONS00227680
   blood_sample_collected_datetime: '2018-09-07 22:41:44.000000'
   blood_sample_received_date: '2018-01-03 00:00:00.000000'
   blood_sample_type: Venous
@@ -19,27 +19,6 @@
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
   unique_antibody_test_id: ONS60227680-40250-O25
-- antibody_assay_category: Post 2021-03-01
-  antibody_test_bounded_result_value: 32.099998474121094
-  antibody_test_plate_common_id: '56872'
-  antibody_test_plate_id: ONS_568720CN-3
-  antibody_test_result_classification: failed
-  antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
-  antibody_test_result_value: 2066.7238
-  antibody_test_target: N
-  antibody_test_tdi_result_value: null
-  antibody_test_undiluted_result_value: 3070.0
-  antibody_test_well_id: G29
-  blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
-  blood_sample_barcode: ONS66171396
-  blood_sample_collected_datetime: '2022-04-22 10:53:49.000000'
-  blood_sample_received_date: '2019-08-13 00:00:00.000000'
-  blood_sample_type: Venous
-  lims_id: null
-  plate_storage_method: null
-  siemens_antibody_test_result_classification: null
-  siemens_antibody_test_result_value: null
-  unique_antibody_test_id: ONS66171396-56872-G29
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 73.0
   antibody_test_plate_common_id: 00868
@@ -52,7 +31,7 @@
   antibody_test_undiluted_result_value: 3358.0
   antibody_test_well_id: Z35
   blood_sample_arrayed_date: '2018-03-23 00:00:00.000000'
-  blood_sample_barcode: ONS80863193
+  blood_sample_barcode: ONS00863193
   blood_sample_collected_datetime: '2020-10-09 01:46:29.000000'
   blood_sample_received_date: '2019-06-04 00:00:00.000000'
   blood_sample_type: Capillary
@@ -73,7 +52,7 @@
   antibody_test_undiluted_result_value: 869.0
   antibody_test_well_id: N00
   blood_sample_arrayed_date: '2020-02-07 00:00:00.000000'
-  blood_sample_barcode: ONS83639422
+  blood_sample_barcode: ONS03639422
   blood_sample_collected_datetime: '2021-03-09 04:15:47.000000'
   blood_sample_received_date: '2019-11-16 00:00:00.000000'
   blood_sample_type: Venous
@@ -82,6 +61,27 @@
   siemens_antibody_test_result_classification: null
   siemens_antibody_test_result_value: null
   unique_antibody_test_id: ONS83639422-52583-N00
+- antibody_assay_category: Post 2021-03-01
+  antibody_test_bounded_result_value: 32.099998474121094
+  antibody_test_plate_common_id: '56872'
+  antibody_test_plate_id: ONS_568720CN-3
+  antibody_test_result_classification: failed
+  antibody_test_result_recorded_date: '2019-11-09 00:00:00.000000'
+  antibody_test_result_value: 2066.7238
+  antibody_test_target: N
+  antibody_test_tdi_result_value: null
+  antibody_test_undiluted_result_value: 3070.0
+  antibody_test_well_id: G29
+  blood_sample_arrayed_date: '2018-10-21 00:00:00.000000'
+  blood_sample_barcode: ONS06171396
+  blood_sample_collected_datetime: '2022-04-22 10:53:49.000000'
+  blood_sample_received_date: '2019-08-13 00:00:00.000000'
+  blood_sample_type: Venous
+  lims_id: null
+  plate_storage_method: null
+  siemens_antibody_test_result_classification: null
+  siemens_antibody_test_result_value: null
+  unique_antibody_test_id: ONS66171396-56872-G29
 - antibody_assay_category: Post 2021-03-01
   antibody_test_bounded_result_value: 359.0
   antibody_test_plate_common_id: '02126'
@@ -94,7 +94,7 @@
   antibody_test_undiluted_result_value: 2848.0
   antibody_test_well_id: F29
   blood_sample_arrayed_date: '2022-06-19 00:00:00.000000'
-  blood_sample_barcode: ONS86857022
+  blood_sample_barcode: ONS06857022
   blood_sample_collected_datetime: '2020-08-21 11:10:23.000000'
   blood_sample_received_date: '2019-05-03 00:00:00.000000'
   blood_sample_type: Venous

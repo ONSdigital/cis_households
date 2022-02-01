@@ -208,10 +208,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: suffix
-  nullable: true
-  type: string
-- metadata: {}
   name: full_name
   nullable: true
   type: string
