@@ -98,10 +98,9 @@
   sex: Female
   sex_raw: Female
   street: null
-  suffix: U
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -179,9 +178,9 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
@@ -271,7 +270,6 @@
   sex: null
   sex_raw: null
   street: null
-  suffix: C
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
@@ -352,9 +350,9 @@
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -446,7 +444,6 @@
   sex: null
   sex_raw: null
   street: null
-  suffix: C
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
@@ -524,9 +521,9 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Saltash
@@ -616,7 +613,6 @@
   sex: Female
   sex_raw: Female
   street: null
-  suffix: A
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
@@ -693,9 +689,9 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -788,10 +784,9 @@
   sex: Male
   sex_raw: Male
   street: null
-  suffix: B
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -864,9 +859,9 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Hove
@@ -959,7 +954,6 @@
   sex: Male
   sex_raw: Male
   street: Drumagrove
-  suffix: O
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
@@ -1131,10 +1125,9 @@
   sex: null
   sex_raw: null
   street: null
-  suffix: U
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -1208,9 +1201,9 @@
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
@@ -1301,10 +1294,9 @@
   sex: Female
   sex_raw: Female
   street: null
-  suffix: B
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1378,9 +1370,9 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: null
@@ -1469,10 +1461,9 @@
   sex: null
   sex_raw: null
   street: null
-  suffix: M
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1643,10 +1634,9 @@
   sex: Male
   sex_raw: Male
   street: null
-  suffix: L
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_around_cghfevamn_symptom_group: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
