@@ -22,7 +22,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
 @register_pipeline_stage("tables_to_csv")
-def tables_to_csv(table_file_pairs, category_map="default_category_map"):
+def tables_to_csv(table_file_map):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
 
@@ -37,11 +37,14 @@ def tables_to_csv(table_file_pairs, category_map="default_category_map"):
     output_directory = Path(config["output_directory"]) / output_datetime
 
     name_map = output_name_map.copy()
+    category_map = "default_category_map"
     name_map.update(update_output_name_maps[category_maps[category_map]])
 
-    for table_name, output_file_name in table_file_pairs:
+    for table_name, output_file_name, map in table_file_map:
         df = extract_from_table(table_name)
-        df = map_output_values_and_column_names(df, name_map, category_map)
+        if category_map != map:
+            name_map.update(update_output_name_maps[category_maps[map]])
+        df = map_output_values_and_column_names(df, name_map, map)
         write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
 
 

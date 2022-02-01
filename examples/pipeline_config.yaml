@@ -75,10 +75,6 @@ stages:
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
 
-  - function: tables_to_csv
-    run: False
-
-
   - function: outer_join_blood_results
     run: False
     blood_table: transformed_blood_test_data
@@ -164,6 +160,11 @@ stages:
 
   - function: generate_outputs
     run: False
+
+  - function : tables_to_csv
+    run: True
+    table_file_map:
+      - [unioned_survey_responses, unioned_survey_responses]
 
 storage:
     database: covserolink_dev
