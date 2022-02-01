@@ -31,11 +31,11 @@ class SparkValidate:
             min_size = 1
         else:
             min_size = len(selected_errors)
-        passed_df = self.dataframe.filter(
+        failed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             >= min_size
         )
-        failed_df = self.dataframe.filter(
+        passed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             < min_size
         )

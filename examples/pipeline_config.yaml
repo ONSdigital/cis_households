@@ -75,6 +75,9 @@ stages:
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
 
+  - function: tables_to_csv
+    run: False
+
 
   - function: outer_join_blood_results
     run: False
