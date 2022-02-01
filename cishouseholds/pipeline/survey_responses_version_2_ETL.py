@@ -109,42 +109,27 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-    df = assign_column_to_date_string(
-        df=df,
-        column_name_to_assign="visit_date_string",
-        reference_column="visit_datetime",
-        time_format="ddMMMyyyy",
-        lower_case=True,
-    )
-    df = assign_column_to_date_string(
-        df=df,
-        column_name_to_assign="visit_datetime",
-        reference_column="visit_datetime",
-        time_format="ddMMMyyyy HH:mm:ss",
-        lower_case=True,
-    )
-    df = assign_column_to_date_string(
-        df=df,
-        column_name_to_assign="samples_taken_date_string",
-        reference_column="samples_taken_datetime",
-        time_format="ddMMMyyyy",
-        lower_case=True,
-    )
-    df = assign_column_to_date_string(
-        df=df,
-        column_name_to_assign="samples_taken_datetime_string",
-        reference_column="samples_taken_datetime",
-        time_format="ddMMMyyyy HH:mm:ss",
-        lower_case=True,
-    )
 
-    df = assign_column_to_date_string(
-        df=df,
-        column_name_to_assign="date_of_birth_string",
-        reference_column="date_of_birth",
-        time_format="ddMMMyyyy",
-        lower_case=True,
-    )
+    time_format_dict = {
+        "visit_date_string": "visit_datetime",
+        "visit_datetime_string": "visit_datetime",  # TODO
+        "samples_taken_date_string": "samples_taken_datetime",
+        "samples_taken_datetime_string": "samples_taken_datetime",
+        "date_of_birth_string": "date_of_birth",  # TODO
+        "improved_visit_date_string": "improved_visit_date",
+        "actual_visit_date_time_string": "improved_visit_date",  # TODO
+        # comes from improved_visit_date which is converted into a string
+        "think_had_covid_date_string": "think_had_covid_date",  # covid_date is stata
+    }
+    for column_name_to_assign in time_format_dict.keys():
+        df = assign_column_to_date_string(
+            df=df,
+            column_name_to_assign=column_name_to_assign,
+            reference_column=time_format_dict[column_name_to_assign],
+            time_format="ddMMMyyyy",
+            lower_case=True,
+        )
+
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
