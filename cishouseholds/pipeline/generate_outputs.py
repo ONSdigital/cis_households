@@ -13,6 +13,7 @@ from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
+from cishouseholds.hdfs_utils import read_header
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
@@ -52,7 +53,13 @@ def tables_to_csv(
 
         file_path = file_directory / f"{output_file_name}_{output_datetime_str}"
         write_csv_rename(df, file_path)
-        manifest.add_file(relative_file_path=file_path.relative_to(outgoing_directory).as_posix())
+        file_path = file_path.with_suffix(".csv")
+        header_string = read_header(file_path)
+        manifest.add_file(
+            relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
+            column_header=header_string,
+            validate_col_name_length=False,
+        )
 
     manifest.write_manifest()
 
