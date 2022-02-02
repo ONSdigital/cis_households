@@ -101,10 +101,12 @@ stages:
     run: False
 
   - function: tables_to_csv
-    run: False
+    run: True
+    update_name_map: unioned_responses_update_map
+    category_map: iqvia_raw_category_map
     table_file_pairs:
-      - [unioned_survey_responses, unioned_survey_responses]
-    category_map:
+        - [unioned_survey_responses, unioned_survey_responses]
+    outgoing_directory: hdfs:///ons/covserolink/output_data
 
 storage:
     database: covserolink_dev
