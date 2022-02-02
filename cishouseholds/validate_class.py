@@ -66,23 +66,26 @@ class SparkValidate:
 
     def validate(self, operations):
         for method, params in operations.items():
-            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **params)
+            if type(params) != list:
+                params = [params]
+            for p in params:
+                self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
     def validate_udl(self, logic, error_message):
         self.execute_check(logic, error_message)
 
-    def validate_unique(self, column_set):
-        for item in column_set:
-            error_message = item["error"]
-            column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
-            self.dataframe = self.dataframe.join(
-                self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
-                on=column_list,
-                how="inner",
-            )
-            check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
-            self.execute_check(check, error_message)
-            self.dataframe = self.dataframe.drop("duplicate_indicator")
+    # def validate_unique(self, column_set):
+    #     for item in column_set:
+    #         error_message = item["error"]
+    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
+    #         self.dataframe = self.dataframe.join(
+    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
+    #             on=column_list,
+    #             how="inner",
+    #         )
+    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
+    #         self.execute_check(check, error_message)
+    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
 
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
