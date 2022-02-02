@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 
 from cishouseholds.hdfs_utils import delete_file
+from cishouseholds.hdfs_utils import hdfs_stat
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import isfile
 from cishouseholds.hdfs_utils import read_file_to_string
@@ -96,7 +97,7 @@ class Manifest:
         file_manifest = {
             "file": os.path.basename(relative_file_path),
             "subfolder": os.path.dirname(relative_file_path),
-            "sizeBytes": os.stat(absolute_file_path).st_size,
+            "sizeBytes": hdfs_stat(absolute_file_path).st_size,
             "md5sum": self._md5(absolute_file_path),
             "header": column_header,
         }

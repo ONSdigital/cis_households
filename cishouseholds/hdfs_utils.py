@@ -183,3 +183,11 @@ def read_file_to_string(path):
     """
     command = ["hadoop", "fs", "-cat", path]
     return _perform(command, True)
+
+
+def hdfs_stat(path):
+    """
+    Runs stat command on a file.
+    """
+    command = ["hadoop", "fs", "-stat", path]
+    return _perform(command, True)
