@@ -1,0 +1,20 @@
+id,error,explode
+1,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",column_4 the row is 'no'
+1,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",column_3 should be in between lower_bound and upper_bound
+1,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",col_2 and col_3 should_be_within_interval 4 and 10
+2,['larger_than_10'],larger_than_10
+4,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",column_4 the row is 'no'
+4,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",column_3 should be in between lower_bound and upper_bound
+4,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",col_2 and col_3 should_be_within_interval 4 and 10
+4,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']","column_1, column_3 should be unique"
+4,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",larger_than_10
+3,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",column_4 the row is 'no'
+3,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",column_3 should be in between lower_bound and upper_bound
+3,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",col_2 and col_3 should_be_within_interval 4 and 10
+3,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']","column_1, column_3 should be unique"
+3,"[""column_4 the row is 'no'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10', 'column_1, column_3 should be unique', 'larger_than_10']",larger_than_10
+6,"['column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",column_3 should be in between lower_bound and upper_bound
+6,"['column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",col_2 and col_3 should_be_within_interval 4 and 10
+5,"[""column_1 should contain 'a'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",column_1 should contain 'a'
+5,"[""column_1 should contain 'a'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",column_3 should be in between lower_bound and upper_bound
+5,"[""column_1 should contain 'a'"", 'column_3 should be in between lower_bound and upper_bound', 'col_2 and col_3 should_be_within_interval 4 and 10']",col_2 and col_3 should_be_within_interval 4 and 10
