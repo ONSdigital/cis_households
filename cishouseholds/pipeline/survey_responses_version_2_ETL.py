@@ -552,19 +552,19 @@ def union_dependent_transformations(df):
     )
     df = fill_forward_work_columns(
         df=df,
-        fill_forward_work_columns=[
-            "job_title",
-            "main_resp",
-            "work_sector",
-            "work_sector_other_text" "work_healthcare",
-            "work_socialcare",
-            "work_healthcare_v1",
-            "work_care_nursing_home",
-            "work_direct_contact_patients_etc",
+        fill_forward_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_health_care_combined",
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        main_job_changed_column="main_job_changed",
+        main_job_changed_column="work_main_job_changed",
     )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(

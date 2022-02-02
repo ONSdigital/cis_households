@@ -104,6 +104,7 @@ stages:
     run: False
     table_file_pairs:
       - [unioned_survey_responses, unioned_survey_responses]
+    category_map:
 
 storage:
     database: covserolink_dev
