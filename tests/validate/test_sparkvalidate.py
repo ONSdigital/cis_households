@@ -1,11 +1,51 @@
 # import pyspark.sql.functions as F
-# from chispa import assert_df_equality
+from chispa import assert_df_equality
+
+from cishouseholds.validate_class import SparkValidate
+
 # from pyspark.sql.types import ArrayType
 # from pyspark.sql.types import IntegerType
 # from pyspark.sql.types import StringType
 # from pyspark.sql.types import StructField
 # from pyspark.sql.types import StructType
-# from cishouseholds.validate_class import SparkValidate
+
+
+def test_sparkvalidate_duplicated_flag(spark_session):
+    df_expected = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                ('A',       'B',        'C',        2),
+                ('A',       'B',        'E',        1),
+                ('X',       'X',        'X',        1),
+                ('Y',       'Y',        'Y',        1),
+            # fmt: on
+        ],
+        schema="col_1 string, col_2 string, col_3 string, duplicated_validation long",
+    )
+    # TODO: for some reason the duplicated_validation column is generated as long type
+    df_input = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                ('A',       'B',        'C'),
+                ('A',       'B',        'C'),
+                ('A',       'B',        'E'),
+                ('X',       'X',        'X'),
+                ('Y',       'Y',        'Y'),
+            # fmt: on
+        ],
+        schema="col_1 string, col_2 string, col_3 string",
+    )
+    validate_df = SparkValidate(df_input, "error")  # initialise dataframe
+    validate_df.duplicated_flag(column_flag_name="duplicated_validation")
+    assert_df_equality(
+        validate_df.dataframe.drop("error"),
+        df_expected,
+        ignore_row_order=True,
+        ignore_column_order=True,
+        ignore_nullable=True,
+    )
+
+
 # def test_sparkvalidate(spark_session):
 #     df_expected = spark_session.createDataFrame(
 #         data=[
