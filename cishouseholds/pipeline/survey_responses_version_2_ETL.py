@@ -547,7 +547,7 @@ def union_dependent_transformations(df):
     )
     df = fill_forward_work_columns(
         df=df,
-        fill_forward_work_columns=[
+        fill_forward_columns=[
             "job_title",
             "main_resp",
             "work_sector",
