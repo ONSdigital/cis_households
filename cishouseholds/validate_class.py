@@ -79,6 +79,12 @@ class SparkValidate:
             ),
         )
 
+    def duplicated_flag(self, column_flag_name):
+        self.dataframe = (
+            self.dataframe.groupBy(*self.dataframe.columns).count().withColumnRenamed("count", column_flag_name)
+        )
+        return self.dataframe.distinct()
+
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column
         error_message = error_message.format(", ".join(check_columns))

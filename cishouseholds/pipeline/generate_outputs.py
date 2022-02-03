@@ -13,16 +13,20 @@ from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
+from cishouseholds.hdfs_utils import read_header
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
 @register_pipeline_stage("tables_to_csv")
-def tables_to_csv(table_file_pairs, category_map="default_category_map"):
+def tables_to_csv(
+    table_file_pairs, outgoing_directory, update_name_map=None, category_map="default_category_map", dry_run=False
+):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
 
@@ -32,17 +36,32 @@ def tables_to_csv(table_file_pairs, category_map="default_category_map"):
 
     Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
-    config = get_config()
-    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
-    output_directory = Path(config["output_directory"]) / output_datetime
+    output_datetime = datetime.today()
+    output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
 
-    name_map = output_name_map.copy()
-    name_map.update(update_output_name_maps[category_maps[category_map]])
+    file_directory = Path(outgoing_directory) / output_datetime_str
+    manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
+
+    name_map_dictionary = output_name_map.copy()
+    if update_name_map is not None:
+        name_map_dictionary.update(update_output_name_maps[update_name_map])
+    category_map_dictionary = category_maps[category_map]
 
     for table_name, output_file_name in table_file_pairs:
         df = extract_from_table(table_name)
-        df = map_output_values_and_column_names(df, name_map, category_map)
-        write_csv_rename(df, output_directory / f"{output_file_name}_{output_datetime}")
+        df = map_output_values_and_column_names(df, name_map_dictionary, category_map_dictionary)
+
+        file_path = file_directory / f"{output_file_name}_{output_datetime_str}"
+        write_csv_rename(df, file_path)
+        file_path = file_path.with_suffix(".csv")
+        header_string = read_header(file_path)
+        manifest.add_file(
+            relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
+            column_header=header_string,
+            validate_col_name_length=False,
+        )
+
+    manifest.write_manifest()
 
 
 @register_pipeline_stage("generate_outputs")
