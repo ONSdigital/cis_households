@@ -43,6 +43,3 @@ def report(
     )
 
     return duplicated_df, counts_df, valid_df_errors, invalid_df_errors
-
-
-# report =SparkVal.report("unique_participant_response_id",processed_file_log,invalid_files_log)
