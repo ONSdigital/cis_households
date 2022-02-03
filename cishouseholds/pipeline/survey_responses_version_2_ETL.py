@@ -113,10 +113,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     date_format_dict = {
         "visit_date_string": "visit_datetime",
         "samples_taken_date_string": "samples_taken_datetime",
-        "date_of_birth_string": "date_of_birth",  # TODO
+        "date_of_birth_string": "date_of_birth",
         "improved_visit_date_string": "improved_visit_date",
-        # comes from improved_visit_date which is converted into a string
-        "think_had_covid_date_string": "think_had_covid_date",  # covid_date is stata
+        "think_had_covid_date_string": "think_had_covid_date",
     }
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
@@ -127,9 +126,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             lower_case=True,
         )
     datetime_format_dict = {
-        "visit_datetime_string": "visit_datetime",  # TODO
+        "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
-        "actual_visit_date_time_string": "improved_visit_date",  # TODO
+        "actual_visit_date_time_string": "improved_visit_date",
     }
 
     for column_name_to_assign in datetime_format_dict.keys():
@@ -547,7 +546,7 @@ def union_dependent_transformations(df):
     )
     df = fill_forward_work_columns(
         df=df,
-        fill_forward_columns=[
+        fill_forward_work_columns=[
             "job_title",
             "main_resp",
             "work_sector",
