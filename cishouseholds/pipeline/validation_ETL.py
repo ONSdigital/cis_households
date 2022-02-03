@@ -1,17 +1,23 @@
 import pyspark.sql.functions as F
+from pyspark.sql import DataFrame
 
-from cishouseholds.pipeline.load import extract_from_table
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.validate_class import SparkValidate
 
+# from cishouseholds.pipeline.category_map import category_maps
+# from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
-@register_pipeline_stage("validation_ETL")
-def validation_ETL(**kwargs):
-    df = extract_from_table(kwargs["unioned_survey_response_table"])
 
+def validation_ETL(df: DataFrame):
     SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
 
     # calls
+
+    # value_checks = {}
+    # for col in SparkVal.dataframe.columns:
+    #     if col in category_maps["iqvia_raw_category_map"]:
+    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
+
+    # SparkVal.validate_column(value_checks)
 
     column_calls = {
         "visit_datetime": {
@@ -34,8 +40,16 @@ def validation_ETL(**kwargs):
         "swab_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
     }
 
+    SparkVal.validate_column(column_calls)
+
     dataset_calls = {
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
+        "duplicated": [
+            {"check_columns": SparkVal.dataframe.columns},
+            {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
+            {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
+            {"check_columns": ["visit_id"]},
+        ],
         # "valid_vaccination": {
         #     "visit_type_column": "visit_type",
         #     "check_columns": [
@@ -54,43 +68,47 @@ def validation_ETL(**kwargs):
         #     ],
         # },
     }
-    SparkVal.validate_unique(
-        [
-            {"column_list": "all", "error": "rows should be unique"},
-            {"column_list": ["participant_id", "visit_id", "visit_datetime"], "error": "these rows should be unique"},
-            {
-                "column_list": ["participant_id", "visit_datetime", "visit_status"],
-                "error": "these rows should be unique",
-            },
-            {"column_list": ["visit_id"], "error": "visit id should be unique"},
-        ]
-    )
-    SparkVal.validate_column(column_calls)
+
     SparkVal.validate(dataset_calls)
+
     SparkVal.validate_udl(
-        F.when(
-            (F.col("covid_vaccine_type") == "Other" & F.col("covid_vaccine_type_other").isNull())
-            | (F.col("covid_vaccine_type") != "Other"),
-            True,
-        ).otherwise(False),
-        "Vaccine type other should be null unless vaccine type is 'Other'",
+        logic=(
+            F.when(
+                (
+                    ((F.col("cis_covid_vaccine_type") == "Other") & F.col("cis_covid_vaccine_type_other").isNull())
+                    | (F.col("cis_covid_vaccine_type") != "Other")
+                ),
+                True,
+            ).otherwise(False)
+        ),
+        error_message="Vaccine type other should be null unless vaccine type is 'Other'",
     )
 
     SparkVal.validate_udl(
         logic=(
-            (F.col("work_socialcare") == "Yes")
-            & ((F.col("work_care_nursing_home") == "Yes") | (F.col("work_direct_contact") == "Yes")),
-        )
-        | (F.col("work_socialcare") == "No"),
+            (
+                (F.col("work_social_care") == "Yes")
+                & (
+                    (F.col("work_nursing_or_residential_care_home") == "Yes")
+                    | (F.col("work_direct_contact_persons") == "Yes")
+                )  # double check work_direct_contact_persons
+            )
+            | (F.col("work_social_care") == "No")
+        ),
         error_message="relationship between socialcare columns",
     )
 
     SparkVal.validate_udl(
         logic=(
-            (F.col("contact_face_covering_other").isNotNull() | F.col("contact_face_covering_workschool").isNotNull())
-            & (F.col("contact_face_covering").isNull())
+            (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
+            & (F.col("face_covering_outside_of_home").isNull())
         ),
         error_message="Validate face covering",
     )
 
-    valid_survey_responses, erroneous_survey_responses = SparkVal.filter("all", True)
+    passed_df, failed_df = SparkVal.filter(
+        selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
+        any=True,
+        return_failed=True,
+    )
+    return passed_df, failed_df
