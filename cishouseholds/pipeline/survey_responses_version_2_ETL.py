@@ -559,7 +559,6 @@ def union_dependent_transformations(df):
             "work_sectors_other",
             "work_health_care_combined",
             "work_social_care",
-            "work_health_care_v1_v2_raw",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",
         ],

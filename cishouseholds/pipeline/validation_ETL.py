@@ -32,6 +32,12 @@ def validation_ETL(df: DataFrame):
 
     dataset_calls = {
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
+        "duplicated": [
+            {"check_columns": SparkVal.dataframe.columns},
+            {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
+            {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
+            {"check_columns": ["visit_id"]},
+        ],
         # "valid_vaccination": {
         #     "visit_type_column": "visit_type",
         #     "check_columns": [
@@ -50,19 +56,11 @@ def validation_ETL(df: DataFrame):
         #     ],
         # },
     }
-    SparkVal.validate_unique(
-        [
-            {"column_list": "all", "error": "rows should be unique"},
-            {"column_list": ["participant_id", "visit_id", "visit_datetime"], "error": "these rows should be unique"},
-            {
-                "column_list": ["participant_id", "visit_datetime", "participant_visit_status"],
-                "error": "these rows should be unique",
-            },
-            {"column_list": ["visit_id"], "error": "visit id should be unique"},
-        ]
-    )
+
     SparkVal.validate_column(column_calls)
+
     SparkVal.validate(dataset_calls)
+
     SparkVal.validate_udl(
         logic=(
             F.when(
@@ -75,6 +73,7 @@ def validation_ETL(df: DataFrame):
         ),
         error_message="Vaccine type other should be null unless vaccine type is 'Other'",
     )
+
     SparkVal.validate_udl(
         logic=(
             (
@@ -88,6 +87,7 @@ def validation_ETL(df: DataFrame):
         ),
         error_message="relationship between socialcare columns",
     )
+
     SparkVal.validate_udl(
         logic=(
             (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
@@ -96,8 +96,9 @@ def validation_ETL(df: DataFrame):
         error_message="Validate face covering",
     )
 
-    return SparkVal.filter(
+    passed_df, failed_df = SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
         any=True,
         return_failed=True,
     )
+    return passed_df, failed_df
