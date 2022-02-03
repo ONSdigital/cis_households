@@ -13,6 +13,7 @@ class SparkValidate:
 
         self.functions = {
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
+            "match": {"function": self.contains, "error_message": "{} should match '{}'"},
             "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
             "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
