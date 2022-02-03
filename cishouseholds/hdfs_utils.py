@@ -12,7 +12,7 @@ def _perform(command, str_ouput=False):
             raise Exception(stderr.decode("UTF-8").strip("\n"))
         return stdout.decode("UTF-8").strip("\n")
 
-    return process.returncode
+    return process.returncode == 0
 
 
 def isfile(path):
@@ -165,16 +165,16 @@ def read_header(path):
     """
     Reads the first line of a file on HDFS
     """
-    command = ["hadoop", "fs", "-cat", path, "|", "head"]
-    return _perform(command, True)
+    command = ["hadoop", "fs", "-cat", path]
+    return _perform(command, True).split("\n")[0]
 
 
-def write_string_to_file(content: str, path):
+def write_string_to_file(content: bytes, path: str):
     """
     Writes a string into the specified file path
     """
-    command = ["echo", content, "|", "hadoop", "fs", "-put", "-", path]
-    return _perform(command, True)
+    _write_string_to_file = subprocess.Popen(f"hadoop fs -put - {path}", stdin=subprocess.PIPE, shell=True)
+    return _write_string_to_file.communicate(content)
 
 
 def read_file_to_string(path):
@@ -183,3 +183,11 @@ def read_file_to_string(path):
     """
     command = ["hadoop", "fs", "-cat", path]
     return _perform(command, True)
+
+
+def hdfs_stat_size(path):
+    """
+    Runs stat command on a file or directory to get the size in bytes.
+    """
+    command = ["hadoop", "fs", "-du", "-s", path]
+    return _perform(command, True).split(" ")[0]

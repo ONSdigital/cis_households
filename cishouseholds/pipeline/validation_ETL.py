@@ -14,8 +14,8 @@ def validation_ETL(df: DataFrame):
 
     # value_checks = {}
     # for col in SparkVal.dataframe.columns:
-    #     if output_name_map.get(col, col) in category_maps["iqvia_raw_category_map"]:
-    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][output_name_map[col]].keys())}
+    #     if col in category_maps["iqvia_raw_category_map"]:
+    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
     # SparkVal.validate_column(value_checks)
 
