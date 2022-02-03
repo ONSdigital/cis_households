@@ -118,6 +118,12 @@ stages:
     response_records_table: response_level_records
     invalid_response_records_table: invalid_response_records_future
 
+  - function: record_level_interface
+    run: False
+    input_table:
+    csv_editing_file:
+    unique_id_column:
+    unique_id_list: []
 
   - function: sample_file_ETL
     run: False
