@@ -151,6 +151,7 @@ stages:
     pre_calibration_config_path: /home/cdsw/precal_config.yaml
 
 
+<<<<<<< HEAD
   - function: weight_calibration
     run: False
     population_totals_table: population_totals_for_calibration
@@ -165,6 +166,15 @@ stages:
     run: True
     table_file_map:
       - [unioned_survey_responses, unioned_survey_responses]
+=======
+  - function: tables_to_csv
+    run: True
+    update_name_map: unioned_responses_update_map
+    category_map: iqvia_raw_category_map
+    table_file_pairs:
+        - [unioned_survey_responses, unioned_survey_responses]
+    outgoing_directory: hdfs:///ons/covserolink/output_data
+>>>>>>> main
 
 storage:
     database: covserolink_dev
