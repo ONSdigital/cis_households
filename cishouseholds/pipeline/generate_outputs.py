@@ -12,15 +12,28 @@ from pyspark.sql import functions as F
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("record_level_interface")
+def record_level_interface(input_table: str, csv_editing_file: str, unique_id_column: str, unique_id_list: List):
+    if input_table != "" and csv_editing_file != "":
+        input_df = extract_from_table(input_table)
+        input_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+
+    if unique_id_list != [] and unique_id_column != "":
+        input_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
+        update_table(input_df, f"custom_filtered_{input_table}", "overwit+e")
 
 
 @register_pipeline_stage("tables_to_csv")
