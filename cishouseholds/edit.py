@@ -136,13 +136,18 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old", "new").pivot("column").count()
+    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
     cols = csv.columns[3:]
+    df = df.withColumnRenamed(id_column, "id")
     for col in cols:
         copy = csv.filter(F.col(col) == 1)
-        copy = copy.drop(col).withColumnRenamed("old", col)
-        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
-        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
+        copy = copy.drop(col).withColumnRenamed("old_value", col)
+        df = df.join(copy.select("id", "new_value", col), on=["id", col], how="left")
+        df = df.withColumn(col, F.when(~F.col("new_value").isNull(), F.col("new_value")).otherwise(F.col(col))).drop(
+            "new_value"
+        )
+    df = df.withColumnRenamed("id", id_column)
+
     return df
 
 

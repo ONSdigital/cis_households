@@ -3,11 +3,21 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.validate_class import SparkValidate
 
+# from cishouseholds.pipeline.category_map import category_maps
+# from cishouseholds.pipeline.output_variable_name_map import output_name_map
+
 
 def validation_ETL(df: DataFrame):
     SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
 
     # calls
+
+    # value_checks = {}
+    # for col in SparkVal.dataframe.columns:
+    #     if col in category_maps["iqvia_raw_category_map"]:
+    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
+
+    # SparkVal.validate_column(value_checks)
 
     column_calls = {
         "visit_datetime": {
@@ -29,6 +39,8 @@ def validation_ETL(df: DataFrame):
         "blood_sample_barcode": {"match": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
         "swab_sample_barcode": {"match": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
     }
+
+    SparkVal.validate_column(column_calls)
 
     dataset_calls = {
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
@@ -56,8 +68,6 @@ def validation_ETL(df: DataFrame):
         #     ],
         # },
     }
-
-    SparkVal.validate_column(column_calls)
 
     SparkVal.validate(dataset_calls)
 

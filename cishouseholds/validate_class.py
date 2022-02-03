@@ -40,27 +40,14 @@ class SparkValidate:
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             < min_size
         )
+        self.passed_df = passed_df
+        self.failed_df = failed_df
         if return_failed:
             return passed_df, failed_df
         return passed_df
 
-    def report(self, selected_errors, all=False):
-        min_size = 1
-        if all:
-            min_size = len(selected_errors)
-        passed_df = self.dataframe.filter(
-            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
-            >= min_size
-        )
-        failed_df = self.dataframe.filter(
-            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
-            < min_size
-        )
-        return passed_df, failed_df
-
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
-
         for column_name, method in operations.items():
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
@@ -98,6 +85,12 @@ class SparkValidate:
                 F.col(self.error_column)
             ),
         )
+
+    def duplicated_flag(self, column_flag_name):
+        self.dataframe = (
+            self.dataframe.groupBy(*self.dataframe.columns).count().withColumnRenamed("count", column_flag_name)
+        )
+        return self.dataframe.distinct()
 
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column

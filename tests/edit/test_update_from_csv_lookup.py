@@ -14,7 +14,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (5, "A", "something else", "converted"),
             (6, "A", "original", "converted"),
         ],
-        schema="""id integer, column string, old string, new string""",
+        schema="""id integer, target_column_name string, old_value string, new_value string""",
     )
     csv_filepath = pandas_df_to_temporary_csv(map_df.toPandas()).as_posix()
     input_df = spark_session.createDataFrame(
