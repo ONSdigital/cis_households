@@ -25,13 +25,19 @@ def fill_forward_work_columns(
     visit_date_column: str,
     main_job_changed_column: str,
 ) -> DataFrame:
-    """ """
-    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
+    """
+    Where job has not changed, fill forward from previous response that job has changed.
+    """
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(F.col(visit_date_column).asc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
     for col in fill_forward_columns:
         df = df.withColumn(
             col,
             F.when(
-                F.col(main_job_changed_column) != "Yes", F.first(F.col(col), ignorenulls=True).over(window)
+                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
             ).otherwise(F.col(col)),
         )
     return df
@@ -209,7 +215,7 @@ def impute_by_ordered_fill_forward(
     ----------
     df
     column_name_to_assign
-        The colum that will be created with the impute values
+        The column that will be created with the impute values
     column_identity
         Identifies any records that the reference_column is missing forward
         This column is normally intended for user_id, participant_id, etc.
@@ -229,10 +235,16 @@ def impute_by_ordered_fill_forward(
     """
     if order_type == "asc":
         ordering_expression = F.col(order_by_column).asc()
-    else:
+    elif order_type == "desc":
         ordering_expression = F.col(order_by_column).desc()
+    else:
+        raise ValueError("order_type must be 'asc' or 'desc'")
 
-    window = Window.partitionBy(column_identity).orderBy(ordering_expression)
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(ordering_expression)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
