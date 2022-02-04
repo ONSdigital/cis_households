@@ -23,7 +23,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: 15dec1982
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: ladybird1985@gsnail.ac.uk
@@ -91,9 +90,7 @@
   postcode: DD7O 7LP
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
-  samples_taken_date_string: 08jan2022
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
-  samples_taken_datetime_string: 08jan2022 20:30:26
   school_year_september: null
   sex: Female
   sex_raw: Female
@@ -143,7 +140,6 @@
   think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-01 06:11:57
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DHVF-3442149696
   visit_type: Follow-up Visit
@@ -195,7 +191,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: 14oct1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -263,9 +258,7 @@
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
-  samples_taken_datetime_string: 09jan2022 17:18:11
   school_year_september: null
   sex: null
   sex_raw: null
@@ -315,7 +308,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-04 19:23:52
-  visit_date_string: 04jan2022
   visit_datetime: null
   visit_id: DHVF-5198266175
   visit_type: Follow-up Visit
@@ -367,7 +359,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: uncontenting1914@gsnail.ac.uk
@@ -437,9 +428,7 @@
   reason_participants_not_consented: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
   received_shielding_letter: 'No'
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
-  samples_taken_datetime_string: 09jan2022 10:19:02
   school_year_september: null
   sex: null
   sex_raw: null
@@ -489,7 +478,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-0165258086
   visit_type: First Visit
@@ -538,7 +526,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-01-25 05:44:00.000000'
-  date_of_birth_string: 25jan1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: depict1972@gsnail.ac.uk
@@ -606,9 +593,7 @@
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
   received_shielding_letter: null
-  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
-  samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
   sex: Female
   sex_raw: Female
@@ -658,7 +643,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-2564559272-DHR-229883187696-2022-01-03 07:01:12
-  visit_date_string: 03jan2022
   visit_datetime: null
   visit_id: DVH-2564559272
   visit_type: Follow-up Visit
@@ -706,7 +690,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: 18dec2021
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: cortina2016@gsnail.ac.uk
@@ -777,9 +760,7 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   received_shielding_letter: null
-  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
-  samples_taken_datetime_string: 04jan2022 14:19:49
   school_year_september: null
   sex: Male
   sex_raw: Male
@@ -828,7 +809,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-06 17:36:59
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-2948509899
   visit_type: Follow-up Visit
@@ -876,7 +856,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Derbyshire
   date_of_birth: '1985-09-10 20:39:00.000000'
-  date_of_birth_string: 10sep1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: gunsmithing1948@gsnail.ac.uk
@@ -947,9 +926,7 @@
   postcode: NC0C 6UK
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: null
-  samples_taken_date_string: 01jan2022
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
-  samples_taken_datetime_string: 01jan2022 19:43:35
   school_year_september: null
   sex: Male
   sex_raw: Male
@@ -999,7 +976,6 @@
   think_have_covid_cghfevamn_symptom_group: 'No'
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-02 01:35:07
-  visit_date_string: 02jan2022
   visit_datetime: null
   visit_id: DVH-4804616426
   visit_type: Follow-up Visit
@@ -1049,7 +1025,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: elizabethan1976@gsnail.ac.uk
@@ -1118,9 +1093,7 @@
   postcode: null
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
-  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
-  samples_taken_datetime_string: 05jan2022 04:57:22
   school_year_september: null
   sex: null
   sex_raw: null
@@ -1170,7 +1143,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'No'
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-08 05:06:21
-  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DVH-6249804207
   visit_type: First Visit
@@ -1218,7 +1190,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1988-12-04 21:47:00.000000'
-  date_of_birth_string: 04dec1988
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: saola2016@gsnail.ac.uk
@@ -1287,9 +1258,7 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   received_shielding_letter: null
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
-  samples_taken_datetime_string: 09jan2022 08:41:07
   school_year_september: null
   sex: Female
   sex_raw: Female
@@ -1338,7 +1307,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-7139656872-DHR-422525832950-2022-01-02 21:34:20
-  visit_date_string: 02jan2022
   visit_datetime: null
   visit_id: DVH-7139656872
   visit_type: Follow-up Visit
@@ -1387,7 +1355,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:35:00.000000'
-  date_of_birth_string: 20sep1994
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: paraflocculus2029@gsnail.ac.uk
@@ -1454,9 +1421,7 @@
   postcode: null
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
-  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
-  samples_taken_datetime_string: 02jan2022 00:55:57
   school_year_september: null
   sex: null
   sex_raw: null
@@ -1506,7 +1471,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-07 11:10:34
-  visit_date_string: 07jan2022
   visit_datetime: null
   visit_id: DVH-7239645123
   visit_type: First Visit
@@ -1555,7 +1519,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1986-06-28 11:38:00.000000'
-  date_of_birth_string: 28jun1986
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: duckers1863@gsnail.ac.uk
@@ -1627,9 +1590,7 @@
   reason_participants_not_consented: Ask not what your country can do for you; ask
     what you can do for your country.
   received_shielding_letter: 'Yes'
-  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
-  samples_taken_datetime_string: 07jan2022 14:29:59
   school_year_september: null
   sex: Male
   sex_raw: Male
@@ -1679,7 +1640,6 @@
   think_have_covid_cghfevamn_symptom_group: 'Yes'
   think_have_covid_symptoms: null
   unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-08 11:41:44
-  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DVH-9888271882
   visit_type: Follow-up Visit
