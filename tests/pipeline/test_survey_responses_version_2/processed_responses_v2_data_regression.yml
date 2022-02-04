@@ -102,6 +102,7 @@
   infant_7_age: null
   infant_8_age: 0.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes for other reasons related to reducing your risk
     of getting COVID-19 (e.g. going into hospital orshielding)
   last_covid_contact_date: null
@@ -191,7 +192,6 @@
   samples_taken_datetime: null
   samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -397,6 +397,7 @@
   infant_7_age: 2.0
   infant_8_age: 4.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -486,7 +487,6 @@
   samples_taken_datetime: null
   samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'Yes'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -693,6 +693,7 @@
   infant_7_age: null
   infant_8_age: 7.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: null
   is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -782,7 +783,6 @@
   samples_taken_datetime: null
   samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -992,6 +992,7 @@
   infant_7_age: 6.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_location: Outside your home
@@ -1081,7 +1082,6 @@
   samples_taken_datetime: null
   samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1293,6 +1293,7 @@
   infant_7_age: 5.0
   infant_8_age: 1.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1382,7 +1383,6 @@
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
   samples_taken_datetime_string: 03jan2022 12:02:32
   school_year_september: null
-  self_isolating: 'Yes'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1595,6 +1595,7 @@
   infant_7_age: 6.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1685,7 +1686,6 @@
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
   samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1893,6 +1893,7 @@
   infant_7_age: 6.0
   infant_8_age: 2.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -1983,7 +1984,6 @@
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
   samples_taken_datetime_string: 09jan2022 13:56:27
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2192,6 +2192,7 @@
   infant_7_age: 7.0
   infant_8_age: null
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2281,7 +2282,6 @@
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
   samples_taken_datetime_string: 07jan2022 13:21:56
   school_year_september: null
-  self_isolating: 'Yes'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -2494,6 +2494,7 @@
   infant_7_age: 3.0
   infant_8_age: 4.0
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes for other reasons related to reducing your risk
     of getting COVID-19 (e.g. going into hospital orshielding)
   last_covid_contact_date: null
@@ -2586,7 +2587,6 @@
   samples_taken_datetime: null
   samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -2799,6 +2799,7 @@
   infant_7_age: 7.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2886,7 +2887,6 @@
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
   samples_taken_datetime_string: 07jan2022 16:06:21
   school_year_september: null
-  self_isolating: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
