@@ -116,23 +116,23 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "date_of_birth_string": "date_of_birth",
         "improved_visit_date_string": "improved_visit_date",
         "think_had_covid_date_string": "think_had_covid_date",
-        "cis_covid_vaccine_date": "",
-        "cis_covid_vaccine_date_1": "",
-        "cis_covid_vaccine_date_2": "",
-        "cis_covid_vaccine_date_3": "",
-        "cis_covid_vaccine_date_4": "",
-        "last_suspected_covid_contact_date": "",
-        "last_covid_contact_date": "",
-        "other_pcr_test_first_positive_date": "",
-        "other_antibody_test_last_negative_date": "",
-        "other_antibody_test_first_positive_date": "",
-        "other_pcr_test_last_negative_date": "",
-        "been_outside_uk_last_date": "",
+        "cis_covid_vaccine_date_string": "cis_covid_vaccine_date",
+        "cis_covid_vaccine_date_1_string": "cis_covid_vaccine_date_1",
+        "cis_covid_vaccine_date_2_string": "cis_covid_vaccine_date_2",
+        "cis_covid_vaccine_date_3_string": "cis_covid_vaccine_date_3",
+        "cis_covid_vaccine_date_4_string": "cis_covid_vaccine_date_4",
+        "last_suspected_covid_contact_date_string": "last_suspected_covid_contact_date",
+        "last_covid_contact_date_string": "last_covid_contact_date",
+        "other_pcr_test_first_positive_date_string": "other_pcr_test_first_positive_date",
+        "other_antibody_test_last_negative_date_string": "other_antibody_test_last_negative_date",
+        "other_antibody_test_first_positive_date_string": "other_antibody_test_first_positive_date",
+        "other_pcr_test_last_negative_date_string": "other_pcr_test_last_negative_date",
+        "been_outside_uk_last_date_string": "been_outside_uk_last_date",
     }
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
-        "improved_visit_date": "",
+        "improved_visit_datetime_string": "improved_visit_date",
     }
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
@@ -435,7 +435,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
-    df = assign_column_to_date_string(df, "improved_visit_date_string", "improved_visit_date")
+    df = assign_column_to_date_string(
+        df, "improved_visit_date_string", "improved_visit_date"
+    )  # TODO: no longer needed?
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
