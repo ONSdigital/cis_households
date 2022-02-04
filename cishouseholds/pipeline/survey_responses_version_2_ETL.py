@@ -117,11 +117,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
-        "improved_visit_datetime_string": "improved_visit_date",
+        # "improved_visit_datetime_string": "improved_visit_date", # TODO: uncomment when improved_visit_date is generated
     }
     date_format_string_list = [
         "date_of_birth",
-        "improved_visit_date",
+        # "improved_visit_date", # TODO: uncomment when improved_visit_date is generated
         "think_had_covid_date",
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_date_1",
