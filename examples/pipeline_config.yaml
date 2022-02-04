@@ -71,7 +71,7 @@ stages:
 
   - function: validate_survey_responses
     run: True
-    unioned_survey_table: unioned_survey_responses
+    unioned_survey_table: post_union_transformed_survey_responses
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
 
@@ -156,7 +156,6 @@ stages:
     responses_pre_calibration_table: responses_pre_calibration
     pre_calibration_config_path: /home/cdsw/precal_config.yaml
 
-
   - function: weight_calibration
     run: False
     population_totals_table: population_totals_for_calibration
@@ -174,6 +173,17 @@ stages:
     table_file_pairs:
         - [unioned_survey_responses, unioned_survey_responses]
     outgoing_directory: hdfs:///ons/covserolink/output_data
+
+  - function: report
+    run: False
+    unique_id_column: unique_participant_response_id
+    error_column: ERROR
+    duplicate_row_flag_column: duplicated_row_flag
+    processed_file_table:
+    invalid_files_table:
+    valid_survey_table: validated_survey_responses
+    invalid_survey_table: erroneous_survey_responses
+    output_directory: hdfs:///ons/covserolink/output_data
 
 storage:
     database: covserolink_dev

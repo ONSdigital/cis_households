@@ -6,6 +6,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -23,6 +24,60 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("report")
+def report(
+    unique_id_column: str,
+    error_column: str,
+    duplicate_row_flag_column: str,
+    processed_file_table: str,
+    invalid_files_table: str,
+    valid_survey_table: str,
+    invalid_survey_table: str,
+    output_directory: str,
+):
+    valid_df = extract_from_table(valid_survey_table)
+    invalid_df = extract_from_table(invalid_survey_table)
+    processed_file_log = extract_from_table(processed_file_table)
+    invalid_files_log = extract_from_table(invalid_files_table)
+    processed_file_count = processed_file_log.count()
+    invalid_files_count = invalid_files_log.count()
+    num_valid_survey_responses = valid_df.count()
+    num_invalid_survey_responses = invalid_df.count()
+    valid_df_errors = valid_df.select(unique_id_column, error_column)
+    invalid_df_errors = invalid_df.select(unique_id_column, error_column)
+
+    valid_df_errors = valid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    invalid_df_errors = (
+        invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    )
+
+    duplicated_df = valid_df.filter(duplicate_row_flag_column).union(valid_df.filter(duplicate_row_flag_column))
+
+    counts_df = pd.DataFrame(
+        {
+            "dataset": ["processed_file_log", "invalid_file_log", "valid_survey_responses", "invalid_survey_responses"],
+            "count": [
+                processed_file_count,
+                invalid_files_count,
+                num_valid_survey_responses,
+                num_invalid_survey_responses,
+            ],
+        }
+    )
+    with pd.ExcelWriter("report_output.xlsx") as writer:
+        counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
+        valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
+        invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
+        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
+
+    put = subprocess.Popen(
+        ["hadoop", "fs", "-put", "report_output.xlsx", f"{output_directory}/report_output.xlsx"],
+        stdin=subprocess.PIPE,
+        bufsize=-1,
+    )
+    put.communicate()
 
 
 @register_pipeline_stage("record_level_interface")
