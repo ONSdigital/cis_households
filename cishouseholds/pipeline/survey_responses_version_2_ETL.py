@@ -109,13 +109,30 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
+    # dict: key=column_name, value=origin
     date_format_dict = {
         "visit_date_string": "visit_datetime",
         "samples_taken_date_string": "samples_taken_datetime",
         "date_of_birth_string": "date_of_birth",
         "improved_visit_date_string": "improved_visit_date",
         "think_had_covid_date_string": "think_had_covid_date",
+        "cis_covid_vaccine_date": "",
+        "cis_covid_vaccine_date_1": "",
+        "cis_covid_vaccine_date_2": "",
+        "cis_covid_vaccine_date_3": "",
+        "cis_covid_vaccine_date_4": "",
+        "last_suspected_covid_contact_date": "",
+        "last_covid_contact_date": "",
+        "other_pcr_test_first_positive_date": "",
+        "other_antibody_test_last_negative_date": "",
+        "other_antibody_test_first_positive_date": "",
+        "other_pcr_test_last_negative_date": "",
+        "been_outside_uk_last_date": "",
+    }
+    datetime_format_dict = {
+        "visit_datetime_string": "visit_datetime",
+        "samples_taken_datetime_string": "samples_taken_datetime",
+        "improved_visit_date": "",
     }
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
@@ -125,11 +142,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             time_format="ddMMMyyyy",
             lower_case=True,
         )
-    datetime_format_dict = {
-        "visit_datetime_string": "visit_datetime",
-        "samples_taken_datetime_string": "samples_taken_datetime",
-        "actual_visit_date_time_string": "improved_visit_date",
-    }
 
     for column_name_to_assign in datetime_format_dict.keys():
         df = assign_column_to_date_string(
