@@ -8,6 +8,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -139,6 +140,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -227,6 +229,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -359,6 +362,7 @@
   street: Benwee
   study_cohort: Swab Only
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -447,6 +451,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -573,6 +578,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -664,6 +670,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -794,6 +801,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -884,6 +892,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1012,6 +1021,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1099,6 +1109,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1226,6 +1237,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1316,6 +1328,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1443,6 +1456,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1531,6 +1545,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1659,6 +1674,7 @@
   street: null
   study_cohort: Swab Only
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1752,6 +1768,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1880,6 +1897,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1968,6 +1986,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -2098,6 +2117,7 @@
   street: null
   study_cohort: Blood and Swab
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 1.0
