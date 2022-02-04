@@ -81,6 +81,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'No'
   have_mobile_number: 'No'
+  hh_id: '261449825198'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -371,6 +372,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: 'No'
   have_mobile_number: null
+  hh_id: '704542495687'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -662,6 +664,7 @@
   have_landline_number: 'Yes'
   have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
+  hh_id: '352206298026'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -956,6 +959,7 @@
   have_landline_number: 'Yes'
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '248046164260'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -1252,6 +1256,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'No'
   have_mobile_number: null
+  hh_id: '602276804025'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -1549,6 +1554,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
+  hh_id: '217846198988'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -1842,6 +1848,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '352709577630'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -2136,6 +2143,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: null
   have_mobile_number: 'Yes'
+  hh_id: '883187696082'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -2433,6 +2441,7 @@
   have_landline_number: null
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '296617139656'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -2733,6 +2742,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: 'No'
   have_mobile_number: 'Yes'
+  hh_id: '392744995712'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null

@@ -38,6 +38,7 @@
   first_name: Maple
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: '890407714528'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
@@ -253,6 +254,7 @@
   first_name: Belkis
   gender: Female
   have_ever_smoked_regularly: 'No'
+  hh_id: '955705581901'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: null
@@ -469,6 +471,7 @@
   first_name: Jae
   gender: Female
   have_ever_smoked_regularly: 'No'
+  hh_id: '876960826911'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 12.0
   household_members_over_2_years_and_not_present: null
@@ -681,6 +684,7 @@
   first_name: Jenee
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: '602276804025'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 3.0
   household_members_over_2_years_and_not_present: 'No'
@@ -897,6 +901,7 @@
   first_name: Alan
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: 001674039598
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'No'
@@ -1108,6 +1113,7 @@
   first_name: Shaun
   gender: Prefer not to say
   have_ever_smoked_regularly: 'No'
+  hh_id: 044476904382
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'Yes'
@@ -1321,6 +1327,7 @@
   first_name: Janyce
   gender: Female
   have_ever_smoked_regularly: null
+  hh_id: 021263322966
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
@@ -1532,6 +1539,7 @@
   first_name: Tyrone
   gender: Male
   have_ever_smoked_regularly: 'No'
+  hh_id: '919192147365'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: 'No'
@@ -1749,6 +1757,7 @@
   first_name: Ira
   gender: Female
   have_ever_smoked_regularly: null
+  hh_id: '456442497105'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'Yes'
@@ -1961,6 +1970,7 @@
   first_name: Buck
   gender: null
   have_ever_smoked_regularly: null
+  hh_id: '788221784619'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 7.0
   household_members_over_2_years_and_not_present: 'Yes'

@@ -627,4 +627,8 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
+- metadata: {}
+  name: hh_id
+  nullable: true
+  type: string
 type: struct

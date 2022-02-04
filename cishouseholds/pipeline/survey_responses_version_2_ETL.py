@@ -246,6 +246,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     #     contact_suspect_covid_date_column='contact_suspect_covid_date',
     # )
 
+    df = df.withColumn("hh_id", F.col("ons_household_id"))
+
     return df
 
 

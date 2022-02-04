@@ -31,6 +31,7 @@
   ethnicity_white: Non-White
   full_name: Carlos Martin
   gender: Male
+  hh_id: '736535270957'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
@@ -199,6 +200,7 @@
   ethnicity_white: Non-White
   full_name: Argentina Brady
   gender: null
+  hh_id: '167403959807'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -367,6 +369,7 @@
   ethnicity_white: Non-White
   full_name: Annika Reilly
   gender: null
+  hh_id: '602276804025'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -534,6 +537,7 @@
   ethnicity_white: Non-White
   full_name: Jae Cervantes
   gender: Male
+  hh_id: '558190156218'
   hospital_last_28_days_other_household_member: 'Yes'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -698,6 +702,7 @@
   ethnicity_white: White
   full_name: Alan Robbins
   gender: Female
+  hh_id: '769043821442'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
@@ -864,6 +869,7 @@
   ethnicity_white: Non-White
   full_name: Caron Barton
   gender: Male
+  hh_id: '105638762102'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1033,6 +1039,7 @@
   ethnicity_white: Non-White
   full_name: Clemmie Harper
   gender: Female
+  hh_id: '826911152672'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1198,6 +1205,7 @@
   ethnicity_white: Non-White
   full_name: Crystle Osborn
   gender: null
+  hh_id: '212633229661'
   hospital_last_28_days_other_household_member: 'No'
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
@@ -1363,6 +1371,7 @@
   ethnicity_white: White
   full_name: Honey Porter
   gender: Prefer not to say
+  hh_id: '407714528425'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
@@ -1527,6 +1536,7 @@
   ethnicity_white: Non-White
   full_name: Barton Ramos
   gender: Prefer not to say
+  hh_id: '846198988073'
   hospital_last_28_days_other_household_member: null
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
