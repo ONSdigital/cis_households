@@ -1144,6 +1144,10 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
+  name: hh_id
+  nullable: true
+  type: string
+- metadata: {}
   name: is_self_isolating
   nullable: true
   type: string
