@@ -113,32 +113,43 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     date_format_dict = {
         "visit_date_string": "visit_datetime",
         "samples_taken_date_string": "samples_taken_datetime",
-        "date_of_birth_string": "date_of_birth",
-        "improved_visit_date_string": "improved_visit_date",
-        "think_had_covid_date_string": "think_had_covid_date",
-        "cis_covid_vaccine_date_string": "cis_covid_vaccine_date",
-        "cis_covid_vaccine_date_1_string": "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2_string": "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3_string": "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4_string": "cis_covid_vaccine_date_4",
-        "last_suspected_covid_contact_date_string": "last_suspected_covid_contact_date",
-        "last_covid_contact_date_string": "last_covid_contact_date",
-        "other_pcr_test_first_positive_date_string": "other_pcr_test_first_positive_date",
-        "other_antibody_test_last_negative_date_string": "other_antibody_test_last_negative_date",
-        "other_antibody_test_first_positive_date_string": "other_antibody_test_first_positive_date",
-        "other_pcr_test_last_negative_date_string": "other_pcr_test_last_negative_date",
-        "been_outside_uk_last_date_string": "been_outside_uk_last_date",
     }
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
         "improved_visit_datetime_string": "improved_visit_date",
     }
+    date_format_string_list = [
+        "date_of_birth",
+        "improved_visit_date",
+        "think_had_covid_date",
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_date_1",
+        "cis_covid_vaccine_date_2",
+        "cis_covid_vaccine_date_3",
+        "cis_covid_vaccine_date_4",
+        "last_suspected_covid_contact_date",
+        "last_covid_contact_date",
+        "other_pcr_test_first_positive_date",
+        "other_antibody_test_last_negative_date",
+        "other_antibody_test_first_positive_date",
+        "other_pcr_test_last_negative_date",
+        "been_outside_uk_last_date",
+    ]
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
             column_name_to_assign=column_name_to_assign,
             reference_column=date_format_dict[column_name_to_assign],
+            time_format="ddMMMyyyy",
+            lower_case=True,
+        )
+
+    for column_name_to_assign in date_format_string_list:
+        df = assign_column_to_date_string(
+            df=df,
+            column_name_to_assign=column_name_to_assign + "_string",
+            reference_column=column_name_to_assign,
             time_format="ddMMMyyyy",
             lower_case=True,
         )
@@ -151,6 +162,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
+
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
