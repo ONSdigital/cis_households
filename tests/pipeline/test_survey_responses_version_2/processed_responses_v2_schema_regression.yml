@@ -1148,7 +1148,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating
+  name: is_self_isolating
   nullable: true
   type: string
 - metadata: {}

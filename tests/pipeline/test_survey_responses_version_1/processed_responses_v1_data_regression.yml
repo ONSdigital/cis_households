@@ -54,6 +54,7 @@
   infant_6_age: 0.0
   infant_7_age: 2.0
   infant_8_age: 7.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Erlang is known for its designs that are well suited
     for systems.
   last_covid_contact_date: null
@@ -123,7 +124,6 @@
   samples_taken_datetime: '2022-01-08 22:45:03.000000'
   samples_taken_datetime_string: 08jan2022 22:45:03
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -274,6 +274,7 @@
   infant_6_age: 5.0
   infant_7_age: 6.0
   infant_8_age: 2.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
   last_covid_contact_date: null
@@ -343,7 +344,6 @@
   samples_taken_datetime: '2022-01-03 01:57:08.000000'
   samples_taken_datetime_string: 03jan2022 01:57:08
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -495,6 +495,7 @@
   infant_6_age: null
   infant_7_age: 1.0
   infant_8_age: 0.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Ports are created with the built-in function open_port.
   last_covid_contact_date: null
   last_covid_contact_location: Let them eat cake.
@@ -559,7 +560,6 @@
   samples_taken_datetime: '2022-01-04 13:40:38.000000'
   samples_taken_datetime_string: 04jan2022 13:40:38
   school_year_september: null
-  self_isolating: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -712,6 +712,7 @@
   infant_6_age: null
   infant_7_age: 5.0
   infant_8_age: 1.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Atoms are used within a program to denote distinguished
     values.
   last_covid_contact_date: null
@@ -781,7 +782,6 @@
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   samples_taken_datetime_string: 09jan2022 10:19:02
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -933,6 +933,7 @@
   infant_6_age: 7.0
   infant_7_age: 1.0
   infant_8_age: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   last_covid_contact_date: null
@@ -1000,7 +1001,6 @@
   samples_taken_datetime: '2022-01-06 00:02:45.000000'
   samples_taken_datetime_string: 06jan2022 00:02:45
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1149,6 +1149,7 @@
   infant_6_age: 4.0
   infant_7_age: 7.0
   infant_8_age: 0.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: The arguments can be primitive data types or compound
     data types.
   last_covid_contact_date: null
@@ -1216,7 +1217,6 @@
   samples_taken_datetime: '2022-01-03 18:48:19.000000'
   samples_taken_datetime_string: 03jan2022 18:48:19
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1367,6 +1367,7 @@
   infant_6_age: 5.0
   infant_7_age: 3.0
   infant_8_age: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Where are my pants?
   last_covid_contact_date: null
   last_covid_contact_location: Elementary, my dear Watson.
@@ -1433,7 +1434,6 @@
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
   samples_taken_datetime_string: 05jan2022 08:58:26
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1583,6 +1583,7 @@
   infant_6_age: 3.0
   infant_7_age: 8.0
   infant_8_age: 5.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Any element of a tuple can be accessed in constant time.
   last_covid_contact_date: null
   last_covid_contact_location: They call me *Mister* Tibbs!
@@ -1650,7 +1651,6 @@
   samples_taken_datetime: '2022-01-09 11:37:05.000000'
   samples_taken_datetime_string: 09jan2022 11:37:05
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1805,6 +1805,7 @@
   infant_6_age: 8.0
   infant_7_age: 4.0
   infant_8_age: 5.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Atoms are used within a program to denote distinguished
     values.
   last_covid_contact_date: null
@@ -1872,7 +1873,6 @@
   samples_taken_datetime: '2022-01-04 17:37:39.000000'
   samples_taken_datetime_string: 04jan2022 17:37:39
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -2022,6 +2022,7 @@
   infant_6_age: 5.0
   infant_7_age: 0.0
   infant_8_age: 1.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Do you have any idea why this is not working?
   last_covid_contact_date: null
   last_covid_contact_location: The only thing we have to fear is fear itself.
@@ -2091,7 +2092,6 @@
   samples_taken_datetime: '2022-01-05 17:19:17.000000'
   samples_taken_datetime_string: 05jan2022 17:19:17
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null

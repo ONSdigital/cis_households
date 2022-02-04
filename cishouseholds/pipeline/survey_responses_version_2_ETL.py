@@ -306,7 +306,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     )
     df = assign_isin_list(
         df=df,
-        column_name_to_assign="self_isolating",
+        column_name_to_assign="is_self_isolating",
         reference_column="is_self_isolating_detailed",
         values_list=[
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
