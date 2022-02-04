@@ -420,6 +420,6 @@ output_name_map = {
     "not_attended_reason": "not_attended_reason",
     "improved_visit_date_string": "improved_visit_date",
     "deferred": "deferred",
-    "blood_sample_barcode_raw": "blood_barcode_iq",
-    "swab_sample_barcode_raw": "swab_barcode_iq",
+    "blood_sample_barcode_raw": "blood_barcode_IQ",
+    "swab_sample_barcode_raw": "swab_barcode_IQ",
 }

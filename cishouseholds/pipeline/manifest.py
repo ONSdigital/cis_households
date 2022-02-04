@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 
 from cishouseholds.hdfs_utils import delete_file
+from cishouseholds.hdfs_utils import hdfs_stat_size
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import isfile
 from cishouseholds.hdfs_utils import read_file_to_string
@@ -67,19 +68,15 @@ class Manifest:
         if not isfile(absolute_file_path):
             raise ManifestError(f"Cannot add file to manifest, file does not exist: {absolute_file_path}")
 
-        with read_header(absolute_file_path) as f:
-            true_header = f.readline().strip()
-            if isinstance(true_header, bytes):
-                true_header = true_header.decode()
-
-        true_header_list = true_header.split(",")
-        if true_header != column_header:
+        true_header_string = read_header(absolute_file_path)
+        true_header_list = true_header_string.split(",")
+        if true_header_string != column_header:
             column_header_list = column_header.split(",")
 
             self.invalid_headers.append(
                 f"File:{absolute_file_path}\n"
                 f"Expected:     {column_header}\n"
-                f"Got:          {true_header}\n"
+                f"Got:          {true_header_string}\n"
                 f"Missing:      {set(column_header_list) - set(true_header_list)}\n"
                 f"Additional:   {set(true_header_list) - set(column_header_list)}\n"
             )
@@ -96,7 +93,7 @@ class Manifest:
         file_manifest = {
             "file": os.path.basename(relative_file_path),
             "subfolder": os.path.dirname(relative_file_path),
-            "sizeBytes": os.stat(absolute_file_path).st_size,
+            "sizeBytes": hdfs_stat_size(absolute_file_path),
             "md5sum": self._md5(absolute_file_path),
             "header": column_header,
         }
@@ -144,5 +141,5 @@ class Manifest:
         """
         hash_md5 = hashlib.md5()
         content = read_file_to_string(filename)
-        hash_md5.update(content)
+        hash_md5.update(content.encode("utf-8"))
         return hash_md5.hexdigest()
