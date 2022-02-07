@@ -2,8 +2,9 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.category_map import category_maps
-# from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.validate_class import SparkValidate
+
+# from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
 
 def validate_column_categories(SparkVal):
