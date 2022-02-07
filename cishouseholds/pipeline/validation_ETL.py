@@ -1,23 +1,24 @@
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.pipeline.category_map import category_maps
+# from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.validate_class import SparkValidate
 
-# from cishouseholds.pipeline.category_map import category_maps
-# from cishouseholds.pipeline.output_variable_name_map import output_name_map
+
+def validate_column_categories(SparkVal):
+    # calls
+
+    value_checks = {}
+    for col in SparkVal.dataframe.columns[:10]:
+        if col in category_maps["iqvia_raw_category_map"]:
+            value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
+
+    SparkVal.validate_column(value_checks)
 
 
 def validation_ETL(df: DataFrame):
     SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
-
-    # calls
-
-    # value_checks = {}
-    # for col in SparkVal.dataframe.columns:
-    #     if col in category_maps["iqvia_raw_category_map"]:
-    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
-
-    # SparkVal.validate_column(value_checks)
 
     column_calls = {
         "visit_datetime": {
