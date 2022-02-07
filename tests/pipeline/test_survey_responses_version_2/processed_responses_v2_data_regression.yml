@@ -206,7 +206,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
@@ -311,7 +311,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
@@ -499,7 +499,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
@@ -604,7 +604,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
@@ -793,7 +793,7 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
@@ -900,7 +900,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'Yes'
@@ -1200,7 +1200,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
@@ -1498,7 +1498,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: 'No'
@@ -1690,7 +1690,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
@@ -1796,7 +1796,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
@@ -1986,7 +1986,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
@@ -2093,7 +2093,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: null
@@ -2282,7 +2282,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
@@ -2393,7 +2393,7 @@
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
@@ -2585,7 +2585,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'Yes'
@@ -2697,7 +2697,7 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   care_home_last_28_days: Participant Would Not/Could Not Answer
@@ -2883,7 +2883,7 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   symptoms_around_cghfevamn_symptom_group: 'No'
