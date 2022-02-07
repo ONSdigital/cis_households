@@ -1,3 +1,4 @@
+import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -16,6 +17,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
+from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
@@ -53,7 +55,9 @@ def report(
         invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
     )
 
-    duplicated_df = valid_df.filter(duplicate_row_flag_column).union(valid_df.filter(duplicate_row_flag_column))
+    duplicated_df = valid_df.filter(F.col(duplicate_row_flag_column) > 1).union(
+        valid_df.filter(F.col(duplicate_row_flag_column) > 1)
+    )
 
     counts_df = pd.DataFrame(
         {
@@ -72,12 +76,17 @@ def report(
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
 
-    put = subprocess.Popen(
-        ["hadoop", "fs", "-put", "report_output.xlsx", f"{output_directory}/report_output.xlsx"],
-        stdin=subprocess.PIPE,
-        bufsize=-1,
-    )
-    put.communicate()
+    with open("report_output.xlsx", "rb") as f:
+        content = f.read()
+        write_string_to_file(content, f"{output_directory}/report_output.xlsx")
+    os.remove("report_output.xlsx")
+
+    # put = subprocess.Popen(
+    #     ["hadoop", "fs", "-put", "report_output.xlsx", f"{output_directory}/report_output.xlsx"],
+    #     stdin=subprocess.PIPE,
+    #     bufsize=-1,
+    # )
+    # put.communicate()
 
 
 @register_pipeline_stage("record_level_interface")
