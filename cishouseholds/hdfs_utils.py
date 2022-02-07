@@ -191,3 +191,15 @@ def hdfs_stat_size(path):
     """
     command = ["hadoop", "fs", "-du", "-s", path]
     return _perform(command, True).split(" ")[0]
+
+
+def hdfs_md5sum(path):
+    """
+    Get md5sum of a specific file on HDFS.
+    """
+    cat = subprocess.Popen(["hadoop", "fs", "-cat", path], stdout=subprocess.PIPE)
+    md5sum = subprocess.Popen(["md5sum"], stdin=cat.stdout)
+    stdout, stderr = md5sum.communicate()
+    if stderr:
+        raise Exception(stderr.decode("UTF-8").strip("\n"))
+    return stdout.decode("UTF-8").strip("\n").split(" ")[0]
