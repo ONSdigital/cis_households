@@ -104,7 +104,9 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
     df = df.withColumn(
         barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
     )
-    df = df.withColumn(edited_column, F.when(F.col("BARCODE_COPY") != F.col(barcode_column), 1).otherwise(None))
+    df = df.withColumn(
+        edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
+    )
     return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
 
 
