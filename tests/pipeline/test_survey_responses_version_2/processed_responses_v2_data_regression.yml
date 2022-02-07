@@ -60,7 +60,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: 18dec2021
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: N/A
@@ -82,6 +81,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'No'
   have_mobile_number: 'No'
+  hh_id: '261449825198'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -92,7 +92,6 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -102,6 +101,7 @@
   infant_7_age: null
   infant_8_age: 0.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes for other reasons related to reducing your risk
     of getting COVID-19 (e.g. going into hospital orshielding)
   last_covid_contact_date: null
@@ -187,11 +187,8 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: null
   samples_taken_datetime: null
-  samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -266,7 +263,6 @@
   title: null
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
-  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DHVF-0988308904
   visit_order: Month 12
@@ -357,7 +353,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
-  date_of_birth_string: 07feb1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -377,6 +372,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: 'No'
   have_mobile_number: null
+  hh_id: '704542495687'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -387,7 +383,6 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 4.0
   infant_2_age: 7.0
   infant_3_age: 0.0
@@ -397,6 +392,7 @@
   infant_7_age: 2.0
   infant_8_age: 4.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -482,11 +478,8 @@
   postcode: NC0C 6UK
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
-  samples_taken_date_string: null
   samples_taken_datetime: null
-  samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'Yes'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -561,7 +554,6 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
-  visit_date_string: 04jan2022
   visit_datetime: null
   visit_id: DHVF-2240364141
   visit_order: Month 8
@@ -652,7 +644,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -673,6 +664,7 @@
   have_landline_number: 'Yes'
   have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
+  hh_id: '352206298026'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -683,7 +675,6 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 1.0
   infant_3_age: 3.0
@@ -693,6 +684,7 @@
   infant_7_age: null
   infant_8_age: 7.0
   is_regularly_lateral_flow_testing: null
+  is_self_isolating: null
   is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -778,11 +770,8 @@
   postcode: WP8S 5ZJ
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: null
   samples_taken_datetime: null
-  samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -857,7 +846,6 @@
   title: Mrs.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DHVF-4476904382
   visit_order: null
@@ -950,7 +938,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2015-04-22 10:53:00.000000'
-  date_of_birth_string: 22apr2015
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: Deferred
@@ -972,6 +959,7 @@
   have_landline_number: 'Yes'
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '248046164260'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -982,7 +970,6 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: null
   infant_2_age: 5.0
   infant_3_age: null
@@ -992,6 +979,7 @@
   infant_7_age: 6.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_location: Outside your home
@@ -1077,11 +1065,8 @@
   postcode: DD7O 7LP
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: null
   samples_taken_datetime: null
-  samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1156,7 +1141,6 @@
   title: Mr.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
-  visit_date_string: 02jan2022
   visit_datetime: null
   visit_id: DHVF-4869598675
   visit_order: Follow-up 2
@@ -1252,7 +1236,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -1273,6 +1256,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'No'
   have_mobile_number: null
+  hh_id: '602276804025'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -1283,7 +1267,6 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 6.0
   infant_3_age: 0.0
@@ -1293,6 +1276,7 @@
   infant_7_age: 5.0
   infant_8_age: 1.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1378,11 +1362,8 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
-  samples_taken_datetime_string: 03jan2022 12:02:32
   school_year_september: null
-  self_isolating: 'Yes'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1458,7 +1439,6 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-0165258086
   visit_order: Month 6
@@ -1552,7 +1532,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
-  date_of_birth_string: 21aug1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: N/A
@@ -1575,6 +1554,7 @@
   have_landline_number: null
   have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
+  hh_id: '217846198988'
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -1585,7 +1565,6 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 2.0
   infant_2_age: 7.0
   infant_3_age: 2.0
@@ -1595,6 +1574,7 @@
   infant_7_age: 6.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1681,11 +1661,8 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: 02jan2022
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
-  samples_taken_datetime_string: 02jan2022 17:59:52
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1760,7 +1737,6 @@
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0739888271-DHR-389263959191-2022-01-04 06:40:18
-  visit_date_string: 04jan2022
   visit_datetime: null
   visit_id: DVH-0739888271
   visit_order: Month 5
@@ -1852,7 +1828,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: null
-  date_of_birth_string: null
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -1873,6 +1848,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '352709577630'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -1883,7 +1859,6 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 8.0
   infant_3_age: 8.0
@@ -1893,6 +1868,7 @@
   infant_7_age: 6.0
   infant_8_age: 2.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -1979,11 +1955,8 @@
   postcode: UK0X 5SF
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
-  samples_taken_datetime_string: 09jan2022 13:56:27
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2058,7 +2031,6 @@
   title: Ms.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
-  visit_date_string: 03jan2022
   visit_datetime: null
   visit_id: DVH-6338733442
   visit_order: Month 9
@@ -2151,7 +2123,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
-  date_of_birth_string: 07oct2003
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   deferred: Deferred
@@ -2172,6 +2143,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: null
   have_mobile_number: 'Yes'
+  hh_id: '883187696082'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
@@ -2182,7 +2154,6 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 1.0
   infant_2_age: 0.0
   infant_3_age: 7.0
@@ -2192,6 +2163,7 @@
   infant_7_age: 7.0
   infant_8_age: null
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining)
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2277,11 +2249,8 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
-  samples_taken_datetime_string: 07jan2022 13:21:56
   school_year_september: null
-  self_isolating: 'Yes'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -2356,7 +2325,6 @@
   title: Prof.
   transport_to_work_or_school: null
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
-  visit_date_string: 08jan2022
   visit_datetime: null
   visit_id: DVH-6911152672
   visit_order: Month 13
@@ -2453,7 +2421,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: 14oct1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -2474,6 +2441,7 @@
   have_landline_number: null
   have_long_covid_symptoms: null
   have_mobile_number: 'No'
+  hh_id: '296617139656'
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -2484,7 +2452,6 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 7.0
   infant_2_age: 2.0
   infant_3_age: null
@@ -2494,6 +2461,7 @@
   infant_7_age: 3.0
   infant_8_age: 4.0
   is_regularly_lateral_flow_testing: 'Yes'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes for other reasons related to reducing your risk
     of getting COVID-19 (e.g. going into hospital orshielding)
   last_covid_contact_date: null
@@ -2582,11 +2550,8 @@
   postcode: null
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
-  samples_taken_date_string: null
   samples_taken_datetime: null
-  samples_taken_datetime_string: null
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -2662,7 +2627,6 @@
   title: Mr.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 18:14:23
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-8720322983
   visit_order: Follow-up 3
@@ -2759,7 +2723,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: 15dec1982
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -2779,6 +2742,7 @@
   have_landline_number: 'No'
   have_long_covid_symptoms: 'No'
   have_mobile_number: 'Yes'
+  hh_id: '392744995712'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
@@ -2789,7 +2753,6 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  improved_visit_date_string: null
   infant_1_age: 6.0
   infant_2_age: 2.0
   infant_3_age: 0.0
@@ -2799,6 +2762,7 @@
   infant_7_age: 7.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: 'No'
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2882,11 +2846,8 @@
   postcode: null
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
-  samples_taken_date_string: 07jan2022
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
-  samples_taken_datetime_string: 07jan2022 16:06:21
   school_year_september: null
-  self_isolating: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -2961,7 +2922,6 @@
   title: Prof.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DVH-9557055819-DHR-455927236237-2022-01-07 10:41:50
-  visit_date_string: 07jan2022
   visit_datetime: null
   visit_id: DVH-9557055819
   visit_order: Month 15
