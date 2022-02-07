@@ -736,22 +736,6 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_datetime_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: date_of_birth_string
-  nullable: true
-  type: string
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -819,6 +803,10 @@ fields:
   name: school_year_september
   nullable: true
   type: integer
+- metadata: {}
+  name: hh_id
+  nullable: true
+  type: string
 - metadata: {}
   name: is_self_isolating
   nullable: true

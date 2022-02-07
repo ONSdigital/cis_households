@@ -1068,22 +1068,6 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_datetime_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: date_of_birth_string
-  nullable: true
-  type: string
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1152,6 +1136,10 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
+  name: hh_id
+  nullable: true
+  type: string
+- metadata: {}
   name: is_self_isolating
   nullable: true
   type: string
@@ -1159,8 +1147,4 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
-- metadata: {}
-  name: improved_visit_date_string
-  nullable: true
-  type: string
 type: struct
