@@ -425,4 +425,6 @@ output_name_map = {
     "deferred": "deferred",
     "blood_sample_barcode_raw": "blood_barcode_IQ",
     "swab_sample_barcode_raw": "swab_barcode_IQ",
+    "swab_sample_barcode_edited_flag": "flag_barcode_swab",
+    "blood_sample_barcode_edited_flag": "flag_barcode_blood",
 }
