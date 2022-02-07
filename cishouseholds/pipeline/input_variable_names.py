@@ -105,7 +105,6 @@ nims_column_name_map = {
     "pds_conflict": "nims_conflicting_linkage_via_pds",
 }
 
-
 survey_responses_v0_variable_name_map = {
     "ONS Household ID": "ons_household_id",
     "Visit ID": "visit_id",

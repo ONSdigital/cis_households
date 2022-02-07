@@ -83,7 +83,9 @@ def assign_multigeneration(
 def assign_household_participant_count(
     df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
 ):
-    """Assign the count of participants within each household."""
+    """
+    Assign the count of participants within each household.
+    """
     household_window = Window.partitionBy(household_id_column)
     df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
     return df
