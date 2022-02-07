@@ -1,3 +1,5 @@
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.functions import DataFrame
@@ -24,49 +26,53 @@ class SparkValidate:
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
-    def filter(self, selected_errors, return_failed=False):
-        min_size = 1
-        if selected_errors == "all":
+    def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
+        if len(selected_errors) == 0 or any:
+            min_size = 1
+        else:
             min_size = len(selected_errors)
-        passed_df = self.dataframe.filter(
+        failed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             >= min_size
         )
-        failed_df = self.dataframe.filter(
+        passed_df = self.dataframe.filter(
             F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
             < min_size
         )
+        self.passed_df = passed_df
+        self.failed_df = failed_df
         if return_failed:
             return passed_df, failed_df
         return passed_df
 
-    def report(self, selected_errors, all=False):
-        min_size = 1
-        if all:
-            min_size = len(selected_errors)
-        passed_df = self.dataframe.filter(
-            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
-            >= min_size
-        )
-        failed_df = self.dataframe.filter(
-            F.size(F.array_intersect(F.col(self.error_column), F.array([F.lit(error) for error in selected_errors])))
-            < min_size
-        )
-        return passed_df, failed_df
-
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
-
         for column_name, method in operations.items():
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
         for method, params in operations.items():
-            self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **params)
+            if type(params) != list:
+                params = [params]
+            for p in params:
+                self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
     def validate_udl(self, logic, error_message):
         self.execute_check(logic, error_message)
+
+    # def validate_unique(self, column_set):
+    #     for item in column_set:
+    #         error_message = item["error"]
+    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
+    #         self.dataframe = self.dataframe.join(
+    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
+    #             on=column_list,
+    #             how="inner",
+    #         )
+    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
+    #         self.execute_check(check, error_message)
+    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
 
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
@@ -78,6 +84,12 @@ class SparkValidate:
                 F.col(self.error_column)
             ),
         )
+
+    def duplicated_flag(self, column_flag_name):
+        self.dataframe = (
+            self.dataframe.groupBy(*self.dataframe.columns).count().withColumnRenamed("count", column_flag_name)
+        )
+        return self.dataframe.distinct()
 
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column

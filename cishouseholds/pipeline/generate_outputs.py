@@ -1,3 +1,4 @@
+import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -6,21 +7,96 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
+from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
-from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.output_variable_name_map import output_name_map
 from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("report")
+def report(
+    unique_id_column: str,
+    error_column: str,
+    duplicate_row_flag_column: str,
+    processed_file_table: str,
+    invalid_files_table: str,
+    valid_survey_table: str,
+    invalid_survey_table: str,
+    output_directory: str,
+):
+    valid_df = extract_from_table(valid_survey_table)
+    invalid_df = extract_from_table(invalid_survey_table)
+    processed_file_log = extract_from_table(processed_file_table)
+    invalid_files_log = extract_from_table(invalid_files_table)
+    processed_file_count = processed_file_log.count()
+    invalid_files_count = invalid_files_log.count()
+    num_valid_survey_responses = valid_df.count()
+    num_invalid_survey_responses = invalid_df.count()
+    valid_df_errors = valid_df.select(unique_id_column, error_column)
+    invalid_df_errors = invalid_df.select(unique_id_column, error_column)
+
+    valid_df_errors = valid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    invalid_df_errors = (
+        invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    )
+
+    duplicated_df = valid_df.filter(F.col(duplicate_row_flag_column) > 1).union(
+        valid_df.filter(F.col(duplicate_row_flag_column) > 1)
+    )
+
+    counts_df = pd.DataFrame(
+        {
+            "dataset": ["processed_file_log", "invalid_file_log", "valid_survey_responses", "invalid_survey_responses"],
+            "count": [
+                processed_file_count,
+                invalid_files_count,
+                num_valid_survey_responses,
+                num_invalid_survey_responses,
+            ],
+        }
+    )
+    with pd.ExcelWriter("report_output.xlsx") as writer:
+        counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
+        valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
+        invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
+        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
+
+    with open("report_output.xlsx", "rb") as f:
+        content = f.read()
+        write_string_to_file(content, f"{output_directory}/report_output.xlsx")
+    os.remove("report_output.xlsx")
+
+    # put = subprocess.Popen(
+    #     ["hadoop", "fs", "-put", "report_output.xlsx", f"{output_directory}/report_output.xlsx"],
+    #     stdin=subprocess.PIPE,
+    #     bufsize=-1,
+    # )
+    # put.communicate()
+
+
+@register_pipeline_stage("record_level_interface")
+def record_level_interface(input_table: str, csv_editing_file: str, unique_id_column: str, unique_id_list: List):
+    if input_table != "" and csv_editing_file != "":
+        input_df = extract_from_table(input_table)
+        input_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+
+    if unique_id_list != [] and unique_id_column != "":
+        input_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
+        update_table(input_df, f"custom_filtered_{input_table}", "overwit+e")
 
 
 @register_pipeline_stage("tables_to_csv")
@@ -65,13 +141,12 @@ def tables_to_csv(
 
 
 @register_pipeline_stage("generate_outputs")
-def generate_outputs():
-    config = get_config()
+def generate_outputs(output_directory, merged_antibody_swab_table):
     output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
-    output_directory = Path(config["output_directory"]) / output_datetime
+    output_directory = Path(output_directory) / output_datetime
     # TODO: Check that output dir exists
 
-    linked_df = extract_from_table(config["table_names"]["input"]["merged_antibody_swab"])
+    linked_df = extract_from_table(merged_antibody_swab_table)
 
     #    all_visits_df = extract_from_table("response_level_records")
     #    participant_df = extract_from_table("participant_level_with_vaccination_data")

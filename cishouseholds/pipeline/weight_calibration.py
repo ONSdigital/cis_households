@@ -1,3 +1,6 @@
+import contextlib
+import os
+
 import rpy2.robjects as robjects
 import yaml
 from pyspark.sql import functions as F
@@ -15,15 +18,17 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 
-regenesees = importr(
-    "ReGenesees",
-    # Fix conflicting method names in R
-    robject_translations={
-        "dim.GVF.db": "dim_GVF_db_",
-        "print.GVF.db": "print_GVF_db_",
-        "str.GVF.db": "str_GVF_db_",
-    },
-)
+with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
+    # silences import into text
+    regenesees = importr(
+        "ReGenesees",
+        # Fix conflicting method names in R
+        robject_translations={
+            "dim.GVF.db": "dim_GVF_db_",
+            "print.GVF.db": "print_GVF_db_",
+            "str.GVF.db": "str_GVF_db_",
+        },
+    )
 
 
 @register_pipeline_stage("sample_file_ETL")
