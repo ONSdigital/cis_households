@@ -632,3 +632,33 @@ def impute_latest_date_flag(
     )
 
     return df.drop("imputation_flag")
+
+
+def impute_fill_forwards(
+    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
+) -> DataFrame:
+    """
+    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
+    based in fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+    Parameters
+    ----------
+    df
+    participant_id
+    received
+    date
+    column_fillforward_list
+    """
+    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+    df_input = df
+
+    for column_name in column_fillforward_list:
+        df = df.withColumn(
+            column_name,
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)),
+        )
+
+    df_null = df.filter(F.col(fill_if_null).isNull())
+    df_notnull = df_input.filter(F.col(fill_if_null).isNotNull())
+    df = df_null.union(df_notnull)
+    return df
