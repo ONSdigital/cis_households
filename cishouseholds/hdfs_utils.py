@@ -197,9 +197,12 @@ def hdfs_md5sum(path):
     """
     Get md5sum of a specific file on HDFS.
     """
-    cat = subprocess.Popen(["hadoop", "fs", "-cat", path], stdout=subprocess.PIPE)
-    md5sum = subprocess.Popen(["md5sum"], stdin=cat.stdout)
-    stdout, stderr = md5sum.communicate()
+    cat = subprocess.Popen(["hadoop", "fs", "-cat", path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    md5sum = subprocess.Popen(["md5sum"], stdin=cat.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = cat.communicate()
+    stdout2, stderr2 = md5sum.communicate()
     if stderr:
         raise Exception(stderr.decode("UTF-8").strip("\n"))
-    return stdout.decode("UTF-8").strip("\n").split(" ")[0]
+    if stderr2:
+        raise Exception(stderr2.decode("UTF-8").strip("\n"))
+    return stdout2.decode("UTF-8").split(" ")[0]
