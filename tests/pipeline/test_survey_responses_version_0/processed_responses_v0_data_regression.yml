@@ -7,6 +7,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -97,6 +98,7 @@
   sex_raw: Female
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -176,6 +178,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -266,6 +269,7 @@
   sex_raw: null
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -345,6 +349,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -437,6 +442,7 @@
   sex_raw: null
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -513,6 +519,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -603,6 +610,7 @@
   sex_raw: Female
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -678,6 +686,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -771,6 +780,7 @@
   sex_raw: Male
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -845,6 +855,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -938,6 +949,7 @@
   sex_raw: Male
   street: Drumagrove
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1015,6 +1027,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1106,6 +1119,7 @@
   sex_raw: null
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1181,6 +1195,7 @@
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1272,6 +1287,7 @@
   sex_raw: Female
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1347,6 +1363,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1436,6 +1453,7 @@
   sex_raw: null
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1512,6 +1530,7 @@
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1606,6 +1625,7 @@
   sex_raw: Male
   street: null
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'No'
   swabs_taken: 0.0
