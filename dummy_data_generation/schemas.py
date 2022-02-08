@@ -646,23 +646,6 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 "Withdrawn",
             ],
         ),
-        "Visit_Date_type": _(
-            "choice", ["actual_visit_date", "latest_checkin_date", "sample_taken_date", "scheduled_date"]
-        ),
-        "Symptoms_7_Chest_pain": _("choice", yes_no_none_choice),
-        "Symptoms_7_Palpitations": _("choice", yes_no_none_choice),
-        "Symptoms_7_Vertigo_dizziness": _("choice", yes_no_none_choice),
-        "Symptoms_7_Worry_anxiety": _("choice", yes_no_none_choice),
-        "Symptoms_7_Low_mood_not_enjoying_anything": _("choice", yes_no_none_choice),
-        "Symptoms_7_Memory_loss_or_confusion": _("choice", yes_no_none_choice),
-        "Symptoms_7_Difficulty_concentrating": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Chest_pain": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Palpitations": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Vertigo_dizziness": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Worry_anxiety": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Low_mood_not_enjoying_anything": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Memory_loss_or_confusion": _("choice", yes_no_none_choice),
-        "Previous_Symptoms_Difficulty_concentrating": _("choice", yes_no_none_choice),
         "Withdrawn_Type": _(
             "choice",
             items=[
