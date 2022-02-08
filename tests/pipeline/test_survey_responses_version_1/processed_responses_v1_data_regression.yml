@@ -26,7 +26,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1994-09-20 00:35:00.000000'
-  date_of_birth_string: 20sep1994
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -39,6 +38,7 @@
   first_name: Maple
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: '890407714528'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
@@ -53,6 +53,7 @@
   infant_6_age: 0.0
   infant_7_age: 2.0
   infant_8_age: 7.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Erlang is known for its designs that are well suited
     for systems.
   last_covid_contact_date: null
@@ -118,11 +119,8 @@
   physical_contact_under_18_years: 'No'
   postcode: WP8S 5ZJ
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
-  samples_taken_date_string: 08jan2022
   samples_taken_datetime: '2022-01-08 22:45:03.000000'
-  samples_taken_datetime_string: 08jan2022 22:45:03
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -189,7 +187,6 @@
   transport_to_work_or_school: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   unique_participant_response_id: DHVF-1235220629-DHR-802621954781-2022-01-06 06:04:23
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DHVF-1235220629
   visit_type: First Visit
@@ -245,7 +242,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '1997-01-25 05:44:00.000000'
-  date_of_birth_string: 25jan1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -258,6 +254,7 @@
   first_name: Belkis
   gender: Female
   have_ever_smoked_regularly: 'No'
+  hh_id: '955705581901'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: null
@@ -272,6 +269,7 @@
   infant_6_age: 5.0
   infant_7_age: 6.0
   infant_8_age: 2.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
   last_covid_contact_date: null
@@ -337,11 +335,8 @@
   physical_contact_under_18_years: 'Yes'
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
-  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 01:57:08.000000'
-  samples_taken_datetime_string: 03jan2022 01:57:08
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -408,7 +403,6 @@
   title: D.Ed.
   transport_to_work_or_school: Elementary, my dear Watson.
   unique_participant_response_id: DHVF-5927236237-DHR-049902298831-2022-01-05 15:20:15
-  visit_date_string: 05jan2022
   visit_datetime: null
   visit_id: DHVF-5927236237
   visit_type: Follow-up Visit
@@ -465,7 +459,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
-  date_of_birth_string: 07mar1997
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -478,6 +471,7 @@
   first_name: Jae
   gender: Female
   have_ever_smoked_regularly: 'No'
+  hh_id: '876960826911'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 12.0
   household_members_over_2_years_and_not_present: null
@@ -492,6 +486,7 @@
   infant_6_age: null
   infant_7_age: 1.0
   infant_8_age: 0.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Ports are created with the built-in function open_port.
   last_covid_contact_date: null
   last_covid_contact_location: Let them eat cake.
@@ -552,11 +547,8 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 13:40:38.000000'
-  samples_taken_datetime_string: 04jan2022 13:40:38
   school_year_september: null
-  self_isolating: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -622,7 +614,6 @@
   title: Mrs.
   transport_to_work_or_school: Elementary, my dear Watson.
   unique_participant_response_id: DHVF-8042076275-DHR-400895851138-2022-01-02 23:23:42
-  visit_date_string: 02jan2022
   visit_datetime: null
   visit_id: DHVF-8042076275
   visit_type: First Visit
@@ -682,7 +673,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
-  date_of_birth_string: 01feb2020
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: delage1844@gsnail.ac.uk
@@ -694,6 +684,7 @@
   first_name: Jenee
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: '602276804025'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 3.0
   household_members_over_2_years_and_not_present: 'No'
@@ -708,6 +699,7 @@
   infant_6_age: null
   infant_7_age: 5.0
   infant_8_age: 1.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Atoms are used within a program to denote distinguished
     values.
   last_covid_contact_date: null
@@ -773,11 +765,8 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: Here's looking at you, kid.
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
-  samples_taken_datetime_string: 09jan2022 10:19:02
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -843,7 +832,6 @@
   title: Miss
   transport_to_work_or_school: Let them eat cake.
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_date_string: 06jan2022
   visit_datetime: null
   visit_id: DVH-0165258086
   visit_type: First Visit
@@ -902,7 +890,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Avon
   date_of_birth: '1985-10-14 01:01:00.000000'
-  date_of_birth_string: 14oct1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -914,6 +901,7 @@
   first_name: Alan
   gender: Female
   have_ever_smoked_regularly: 'Yes'
+  hh_id: 001674039598
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'No'
@@ -928,6 +916,7 @@
   infant_6_age: 7.0
   infant_7_age: 1.0
   infant_8_age: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   last_covid_contact_date: null
@@ -991,11 +980,8 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
-  samples_taken_date_string: 06jan2022
   samples_taken_datetime: '2022-01-06 00:02:45.000000'
-  samples_taken_datetime_string: 06jan2022 00:02:45
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1061,7 +1047,6 @@
   title: Sir
   transport_to_work_or_school: You're gonna need a bigger boat.
   unique_participant_response_id: DVH-0765261449-DHR-757503098830-2022-01-01 15:20:04
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DVH-0765261449
   visit_type: First Visit
@@ -1117,7 +1102,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
-  date_of_birth_string: 18dec2021
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: null
@@ -1129,6 +1113,7 @@
   first_name: Shaun
   gender: Prefer not to say
   have_ever_smoked_regularly: 'No'
+  hh_id: 044476904382
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'Yes'
@@ -1143,6 +1128,7 @@
   infant_6_age: 4.0
   infant_7_age: 7.0
   infant_8_age: 0.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: The arguments can be primitive data types or compound
     data types.
   last_covid_contact_date: null
@@ -1206,11 +1192,8 @@
   physical_contact_under_18_years: 'No'
   postcode: null
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
-  samples_taken_date_string: 03jan2022
   samples_taken_datetime: '2022-01-03 18:48:19.000000'
-  samples_taken_datetime_string: 03jan2022 18:48:19
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1275,7 +1258,6 @@
   title: B.E.
   transport_to_work_or_school: Here's looking at you, kid.
   unique_participant_response_id: DVH-1442294850-DHR-392744995712-2022-01-01 05:21:13
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DVH-1442294850
   visit_type: First Visit
@@ -1334,7 +1316,6 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: County Armagh
   date_of_birth: '1988-12-04 21:47:00.000000'
-  date_of_birth_string: 04dec1988
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: mastiff1901@gsnail.ac.uk
@@ -1346,6 +1327,7 @@
   first_name: Janyce
   gender: Female
   have_ever_smoked_regularly: null
+  hh_id: 021263322966
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 6.0
   household_members_over_2_years_and_not_present: 'No'
@@ -1360,6 +1342,7 @@
   infant_6_age: 5.0
   infant_7_age: 3.0
   infant_8_age: null
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Where are my pants?
   last_covid_contact_date: null
   last_covid_contact_location: Elementary, my dear Watson.
@@ -1422,11 +1405,8 @@
   postcode: FN0F 6OF
   reason_participants_not_consented: Get your stinking paws off me, you damned dirty
     ape.
-  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
-  samples_taken_datetime_string: 05jan2022 08:58:26
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1493,7 +1473,6 @@
   transport_to_work_or_school: One morning I shot an elephant in my pajamas. How he
     got in my pajamas, I don't know.
   unique_participant_response_id: DVH-1713965687-DHR-942252583295-2022-01-03 09:12:50
-  visit_date_string: 03jan2022
   visit_datetime: null
   visit_id: DVH-1713965687
   visit_type: First Visit
@@ -1549,7 +1528,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Suffolk
   date_of_birth: '1982-12-15 17:07:00.000000'
-  date_of_birth_string: 15dec1982
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -1561,6 +1539,7 @@
   first_name: Tyrone
   gender: Male
   have_ever_smoked_regularly: 'No'
+  hh_id: '919192147365'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 11.0
   household_members_over_2_years_and_not_present: 'No'
@@ -1575,6 +1554,7 @@
   infant_6_age: 3.0
   infant_7_age: 8.0
   infant_8_age: 5.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Any element of a tuple can be accessed in constant time.
   last_covid_contact_date: null
   last_covid_contact_location: They call me *Mister* Tibbs!
@@ -1638,11 +1618,8 @@
   postcode: DD7O 7LP
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
-  samples_taken_date_string: 09jan2022
   samples_taken_datetime: '2022-01-09 11:37:05.000000'
-  samples_taken_datetime_string: 09jan2022 11:37:05
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1709,7 +1686,6 @@
   transport_to_work_or_school: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
   unique_participant_response_id: DVH-3527095776-DHR-421496963502-2022-01-01 16:00:06
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DVH-3527095776
   visit_type: Follow-up Visit
@@ -1770,7 +1746,6 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1985-09-10 20:39:00.000000'
-  date_of_birth_string: 10sep1985
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email: null
@@ -1782,6 +1757,7 @@
   first_name: Ira
   gender: Female
   have_ever_smoked_regularly: null
+  hh_id: '456442497105'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: 10.0
   household_members_over_2_years_and_not_present: 'Yes'
@@ -1796,6 +1772,7 @@
   infant_6_age: 8.0
   infant_7_age: 4.0
   infant_8_age: 5.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Atoms are used within a program to denote distinguished
     values.
   last_covid_contact_date: null
@@ -1859,11 +1836,8 @@
   physical_contact_under_18_years: null
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
-  samples_taken_date_string: 04jan2022
   samples_taken_datetime: '2022-01-04 17:37:39.000000'
-  samples_taken_datetime_string: 04jan2022 17:37:39
   school_year_september: null
-  self_isolating: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -1930,7 +1904,6 @@
   transport_to_work_or_school: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
   unique_participant_response_id: DVH-6387621024-DHR-771419502848-2022-01-01 19:42:30
-  visit_date_string: 01jan2022
   visit_datetime: null
   visit_id: DVH-6387621024
   visit_type: First Visit
@@ -1986,7 +1959,6 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   date_of_birth: '1986-06-28 11:38:00.000000'
-  date_of_birth_string: 28jun1986
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email: balate1925@gsnail.ac.uk
@@ -1998,6 +1970,7 @@
   first_name: Buck
   gender: null
   have_ever_smoked_regularly: null
+  hh_id: '788221784619'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: 7.0
   household_members_over_2_years_and_not_present: 'Yes'
@@ -2012,6 +1985,7 @@
   infant_6_age: 5.0
   infant_7_age: 0.0
   infant_8_age: 1.0
+  is_self_isolating: 'No'
   is_self_isolating_detailed: Do you have any idea why this is not working?
   last_covid_contact_date: null
   last_covid_contact_location: The only thing we have to fear is fear itself.
@@ -2077,11 +2051,8 @@
   postcode: null
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  samples_taken_date_string: 05jan2022
   samples_taken_datetime: '2022-01-05 17:19:17.000000'
-  samples_taken_datetime_string: 05jan2022 17:19:17
   school_year_september: null
-  self_isolating: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -2147,7 +2118,6 @@
   title: Master
   transport_to_work_or_school: They call me *Mister* Tibbs!
   unique_participant_response_id: DVH-8988073988-DHR-720138926395-2022-01-07 14:29:59
-  visit_date_string: 07jan2022
   visit_datetime: null
   visit_id: DVH-8988073988
   visit_type: Follow-up Visit
