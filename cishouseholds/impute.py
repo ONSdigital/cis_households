@@ -632,3 +632,14 @@ def impute_latest_date_flag(
     )
 
     return df.drop("imputation_flag")
+
+
+def fill_forwards_overriding_not_nulls(
+    df_list,
+    column_sex,
+    column_date_of_birth,
+    column_ethnicity,
+):
+
+    # sex, date_of_birth and ethnicity
+    return df_list
