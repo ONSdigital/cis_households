@@ -93,7 +93,6 @@
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
@@ -264,7 +263,6 @@
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   street: null
@@ -437,7 +435,6 @@
     I feel lucky?"" Well, do ya? Punk!"'
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   street: null
@@ -605,7 +602,6 @@
     to repeat it.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
@@ -775,7 +771,6 @@
     You never know what you're gonna get.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   street: null
@@ -944,7 +939,6 @@
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   street: Drumagrove
@@ -1114,7 +1108,6 @@
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   street: null
@@ -1282,7 +1275,6 @@
     You never know what you're gonna get.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   street: null
@@ -1448,7 +1440,6 @@
   reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   street: null
@@ -1620,7 +1611,6 @@
     what you can do for your country.
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   street: null
