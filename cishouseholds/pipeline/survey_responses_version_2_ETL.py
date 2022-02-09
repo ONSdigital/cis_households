@@ -40,6 +40,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.impute import edit_multiple_columns_fill_forward
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
@@ -540,6 +541,19 @@ def union_dependent_transformations(df):
     #     df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
     # )
 
+    df = edit_multiple_columns_fill_forward(
+        df=df,
+        id="participant_id",
+        fill_if_null="cis_covid_vaccine_received",
+        date="visit_date",
+        column_fillforward_list=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_n_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+    )
     return df
 
 
