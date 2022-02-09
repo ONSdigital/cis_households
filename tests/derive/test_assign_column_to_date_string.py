@@ -44,4 +44,7 @@ def test_assign_column_to_date_string_specify_format(spark_session):
         time_format="ddMMMyyyy HH:mm:ss",
         lower_case=True,
     )
+    import pdb
+
+    pdb.set_trace()
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)
