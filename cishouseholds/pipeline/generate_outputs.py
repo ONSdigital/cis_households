@@ -1,6 +1,7 @@
 import os
 import subprocess
 from datetime import datetime
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 from typing import List
@@ -69,7 +70,9 @@ def report(
             ],
         }
     )
-    with pd.ExcelWriter("report_output.xlsx") as writer:
+
+    output = BytesIO
+    with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
@@ -79,13 +82,6 @@ def report(
         content = f.read()
         write_string_to_file(content, f"{output_directory}/report_output.xlsx")
     os.remove("report_output.xlsx")
-
-    # put = subprocess.Popen(
-    #     ["hadoop", "fs", "-put", "report_output.xlsx", f"{output_directory}/report_output.xlsx"],
-    #     stdin=subprocess.PIPE,
-    #     bufsize=-1,
-    # )
-    # put.communicate()
 
 
 @register_pipeline_stage("record_level_interface")
