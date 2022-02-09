@@ -189,7 +189,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -482,7 +481,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -776,7 +774,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -986,7 +983,7 @@
   infant_7_age: 6.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_location: Outside your home
@@ -1073,7 +1070,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: null
-  school_year_september: 2.0
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1372,7 +1368,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1585,7 +1580,7 @@
   infant_7_age: 6.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1673,7 +1668,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1881,7 +1875,7 @@
   infant_7_age: 6.0
   infant_8_age: 2.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -1969,7 +1963,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2265,7 +2258,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -2568,7 +2560,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -2781,7 +2772,7 @@
   infant_7_age: 7.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2866,7 +2857,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
