@@ -634,7 +634,7 @@ def impute_latest_date_flag(
     return df.drop("imputation_flag")
 
 
-def impute_fill_forwards(
+def edit_multiple_columns_fill_forward(
     df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
 ) -> DataFrame:
     """
