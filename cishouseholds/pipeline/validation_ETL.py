@@ -7,7 +7,7 @@ from cishouseholds.validate_class import SparkValidate
 # from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
 
-def validate_column_categories(SparkVal, max_size=50):
+def validate_column_categories(SparkVal):
     # calls
     value_checks = {}
     for col in SparkVal.dataframe.columns:
