@@ -1,4 +1,3 @@
-import os
 import subprocess
 from datetime import datetime
 from io import BytesIO
@@ -71,17 +70,16 @@ def report(
         }
     )
 
-    output = BytesIO
+    output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
 
-    with open("report_output.xlsx", "rb") as f:
-        content = f.read()
-        write_string_to_file(content, f"{output_directory}/report_output.xlsx")
-    os.remove("report_output.xlsx")
+    write_string_to_file(
+        output.read(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    )
 
 
 @register_pipeline_stage("record_level_interface")
