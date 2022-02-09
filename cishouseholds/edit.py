@@ -134,7 +134,26 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+def update_cohort_variable(
+    df: DataFrame, csv_filepath: str, current_cohort: str, study_cohort: str, participant_id: str
+):
+    """
+    Update cohort variable from seprate csv
+    """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(csv_filepath, header=True)
+    df = df.join(csv, on=[participant_id, current_cohort], how="left")
+    df = df.withColumn(
+        study_cohort, F.when(F.col("new_cohort").isNotNull(), F.col("new_cohort")).otherwise(F.col(study_cohort))
+    )
+    return df.drop("new_cohort")
+
+
+def update_from_csv_lookup(
+    df: DataFrame,
+    csv_filepath: str,
+    id_column: str,
+):
     """
     Update specific cell values from a map contained in a csv file
     Parameters
