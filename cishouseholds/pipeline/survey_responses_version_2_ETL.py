@@ -560,7 +560,6 @@ def union_dependent_transformations(df):
         fill_if_null="cis_covid_vaccine_received",
         date="visit_date",
         column_fillforward_list=[
-            "cis_covid_vaccine_received",
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_n_doses",
             "cis_covid_vaccine_type",
