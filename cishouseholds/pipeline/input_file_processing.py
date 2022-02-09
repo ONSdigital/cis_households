@@ -180,13 +180,13 @@ def generate_input_processing_function(
             return
 
         df = extract_validate_transform_input_data(
-            file_path_list,
-            column_name_map,
-            datetime_column_map,
-            validation_schema,
-            transformation_functions,
-            sep,
-            cast_to_double_list,
+            resource_path=file_path_list,
+            variable_name_map=column_name_map,
+            datetime_map=datetime_column_map,
+            validation_schema=validation_schema,
+            transformation_functions=transformation_functions,
+            sep=sep,
+            cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
