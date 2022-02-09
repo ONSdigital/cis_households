@@ -68,9 +68,10 @@ stages:
     run: False
     unioned_survey_table: unioned_survey_responses
     transformed_table: post_union_transformed_survey_responses
+    cohort_corrections_file:
 
   - function: validate_survey_responses
-    run: False
+    run: True
     unioned_survey_table: post_union_transformed_survey_responses
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
@@ -171,7 +172,7 @@ stages:
     calibration_config_path: /home/cdsw/calibration_config.yaml
 
   - function: generate_outputs
-    run: True
+    run: False
     merged_antibody_swab_table: merged_responses_antibody_swab_data
     output_directory: hdfs:///ons/covserolink/output_data
 
@@ -188,8 +189,8 @@ stages:
     unique_id_column: unique_participant_response_id
     error_column: ERROR
     duplicate_row_flag_column: duplicated_row_flag
-    processed_file_table: response_level_records
-    invalid_files_table: invalid_response_records_future
+    processed_file_table: processed_filenames
+    invalid_files_table: error_file_log
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
     output_directory: hdfs:///ons/covserolink/output_data
@@ -197,6 +198,6 @@ stages:
 storage:
     database: covserolink_dev
     table_prefix: USER_
-    write_mode: append
+    write_mode: overwrite
 
-pyspark_session_size: l
+pyspark_session_size: xl
