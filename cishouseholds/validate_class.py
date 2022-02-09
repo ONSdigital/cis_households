@@ -51,6 +51,22 @@ class SparkValidate:
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
+    def validate_categories(self, checks):
+        self.dataframe = self.dataframe.withColumn(
+            self.error_column,
+            F.concat(
+                F.col(self.error_column),
+                F.array(
+                    [
+                        F.when(F.col(col_name).isin(possible_values), None).otherwise(
+                            f"{col_name} contains prohibited value"
+                        )
+                        for col_name, possible_values in checks.items()
+                    ]
+                ),
+            ),
+        )
+
     def validate(self, operations):
         for method, params in operations.items():
             if type(params) != list:
