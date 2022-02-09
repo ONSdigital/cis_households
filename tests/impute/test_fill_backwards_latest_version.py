@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import fill_forwards_overriding_not_nulls
+from cishouseholds.impute import fill_backwards_overriding_not_nulls
 
 
 def test_fill_backwards_lattest_version(spark_session):
@@ -42,7 +42,7 @@ def test_fill_backwards_lattest_version(spark_session):
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
 
-    df = fill_forwards_overriding_not_nulls(
+    df = fill_backwards_overriding_not_nulls(
         df=input_df,
         column_identity="participant_id",
         ordering_column="visit_date",

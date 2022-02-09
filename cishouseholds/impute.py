@@ -634,21 +634,22 @@ def impute_latest_date_flag(
     return df.drop("imputation_flag")
 
 
-def fill_forwards_overriding_not_nulls(
+def fill_backwards_overriding_not_nulls(
     df: DataFrame,
     column_identity,
     ordering_column: str,
     dataset_column: str,
     column_list: List[str],
 ) -> DataFrame:
-    hierarchy = ["Voyager 1 original", "Voyager 1 upgrade", "Voyager 2"]
-
-    df = df.withColumn(
-        "hierarchy_flag",
-        F.when(F.col(dataset_column) == hierarchy[0], 1)
-        .when(F.col(dataset_column) == hierarchy[1], 2)
-        .when(F.col(dataset_column) == hierarchy[2], 3),
-    )
+    """
+    Parameters
+    ----------
+    df,
+    column_identity,
+    ordering_column,
+    dataset_column,
+    column_list,
+    """
     window = (
         Window.partitionBy(column_identity)
         .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
@@ -659,4 +660,4 @@ def fill_forwards_overriding_not_nulls(
             column,
             F.first(F.col(column), ignorenulls=True).over(window),
         )
-    return df.drop("hierarchy_flag")
+    return df
