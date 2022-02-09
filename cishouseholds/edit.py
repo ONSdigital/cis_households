@@ -68,12 +68,19 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
-def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
+    Parameters
+    ---------
+    df
+    barcode_column
+    edited_column
+        signifies if updating was performed on row
     """
+    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
@@ -97,7 +104,10 @@ def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     df = df.withColumn(
         barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
     )
-    return df.drop("PREFIX", "SUFFIX")
+    df = df.withColumn(
+        edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
+    )
+    return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
@@ -124,7 +134,26 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+def update_cohort_variable(
+    df: DataFrame, csv_filepath: str, current_cohort: str, study_cohort: str, participant_id: str
+):
+    """
+    Update cohort variable from seprate csv
+    """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(csv_filepath, header=True)
+    df = df.join(csv, on=[participant_id, current_cohort], how="left")
+    df = df.withColumn(
+        study_cohort, F.when(F.col("new_cohort").isNotNull(), F.col("new_cohort")).otherwise(F.col(study_cohort))
+    )
+    return df.drop("new_cohort")
+
+
+def update_from_csv_lookup(
+    df: DataFrame,
+    csv_filepath: str,
+    id_column: str,
+):
     """
     Update specific cell values from a map contained in a csv file
     Parameters
@@ -136,13 +165,18 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old", "new").pivot("column").count()
+    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
     cols = csv.columns[3:]
+    df = df.withColumnRenamed(id_column, "id")
     for col in cols:
         copy = csv.filter(F.col(col) == 1)
-        copy = copy.drop(col).withColumnRenamed("old", col)
-        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
-        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
+        copy = copy.drop(col).withColumnRenamed("old_value", col)
+        df = df.join(copy.select("id", "new_value", col), on=["id", col], how="left")
+        df = df.withColumn(col, F.when(~F.col("new_value").isNull(), F.col("new_value")).otherwise(F.col(col))).drop(
+            "new_value"
+        )
+    df = df.withColumnRenamed("id", id_column)
+
     return df
 
 
