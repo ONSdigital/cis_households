@@ -68,6 +68,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
   name: pcr_result_recorded_date_string
   nullable: true
   type: string

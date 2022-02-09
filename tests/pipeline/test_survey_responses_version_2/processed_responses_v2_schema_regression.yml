@@ -1052,6 +1052,14 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
   name: ethnicity_group
   nullable: true
   type: string
@@ -1123,10 +1131,6 @@ fields:
   name: age_group_5_year_intervals
   nullable: true
   type: string
-- metadata: {}
-  name: school_year_september
-  nullable: true
-  type: integer
 - metadata: {}
   name: hh_id
   nullable: true
