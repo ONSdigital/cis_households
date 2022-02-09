@@ -40,8 +40,8 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
-from cishouseholds.impute import fill_forwards_overriding_not_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_visit_datetime
@@ -522,7 +522,7 @@ def union_dependent_transformations(df):
         main_job_changed_column="work_main_job_changed",
     )
 
-    df = fill_forwards_overriding_not_nulls(
+    df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
         ordering_column="visit_date_string",
