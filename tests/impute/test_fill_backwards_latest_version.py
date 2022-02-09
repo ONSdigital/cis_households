@@ -1,7 +1,6 @@
 from chispa import assert_df_equality
 
 from cishouseholds.impute import fill_forwards_overriding_not_nulls
-from cishouseholds.impute import impute_by_ordered_fill_forward
 
 
 def test_fill_backwards_lattest_version(spark_session):
