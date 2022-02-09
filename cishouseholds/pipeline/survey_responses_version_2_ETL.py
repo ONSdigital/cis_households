@@ -41,6 +41,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_forward_work_columns
+from cishouseholds.impute import fill_forwards_overriding_not_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_visit_datetime
@@ -532,6 +533,14 @@ def union_dependent_transformations(df):
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
         main_job_changed_column="work_main_job_changed",
+    )
+
+    df = fill_forwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date_string",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth_string", "ethnicity"],
     )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(

@@ -635,12 +635,12 @@ def impute_latest_date_flag(
 
 
 def fill_forwards_overriding_not_nulls(
-    df,
+    df: DataFrame,
     column_identity,
-    ordering_column,
-    dataset_column,
-    column_list,
-):
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
+) -> DataFrame:
     hierarchy = ["Voyager 1 original", "Voyager 1 upgrade", "Voyager 2"]
 
     df = df.withColumn(
