@@ -564,6 +564,7 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_n_doses",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
         ],
     )
     return df

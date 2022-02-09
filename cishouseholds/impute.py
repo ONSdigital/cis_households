@@ -650,24 +650,12 @@ def edit_multiple_columns_fill_forward(
     """
     window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
 
-    df_notnulls = df.filter(F.col(fill_if_null).isNotNull())
-
     for column_name in column_fillforward_list:
         df = df.withColumn(
             column_name,
-            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)),
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
+                F.col(column_name)
+            ),
         )
 
-    df_null = df.filter(F.col(fill_if_null).isNull())
-    df = df_null.union(df_notnulls)
-
-    df_notnulls = df.filter(F.col(fill_if_null).isNotNull())
-
-    df = df.withColumn(
-        fill_if_null,
-        F.when(F.col(fill_if_null).isNull(), F.last(F.col(fill_if_null), ignorenulls=True).over(window)),
-    )
-
-    df = df.filter(F.col(fill_if_null).isNotNull())
-    df = df.union(df_notnulls)
     return df
