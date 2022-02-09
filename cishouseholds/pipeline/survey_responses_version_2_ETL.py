@@ -276,8 +276,8 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         reference_column="is_self_isolating_detailed",
         values_list=[
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
         ],
         true_false_values=["Yes", "No"],
     )
@@ -334,20 +334,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
             90: "90+",
         },
     )
-    df = assign_school_year_september_start(
-        df,
-        dob_column="date_of_birth",
-        visit_date_column="visit_datetime",
-        column_name_to_assign="school_year_september",
-    )
-    # TODO: Enable once country data is linked on after merge
-    # df = split_school_year_by_country(
-    #   df, school_year_column = "school_year_september", country_column = "country_name"
-    # )
-    # df = assign_age_group_school_year(
-    #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
-    #   age_column="age_at_visit", school_year_column="school_year_september"
-    # )
+
     return df
 
 
