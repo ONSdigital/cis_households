@@ -1,3 +1,4 @@
+from typing import Any
 from typing import List
 
 import pyspark.sql.functions as F
@@ -10,6 +11,7 @@ class SparkValidate:
         self.dataframe = dataframe
         self.error_column = error_column_name
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
+        self.error_column_list: List[Any] = []
 
         self.functions = {
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
@@ -26,7 +28,15 @@ class SparkValidate:
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
+    def produce_error_column(self):
+        self.dataframe = self.dataframe.withColumn(
+            self.error_column, F.concat(F.col(self.error_column), F.array([col for col in self.error_column_list]))
+        )
+        self.error_column_list = []
+
     def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
+        if len(self.error_column_list) != 0:
+            self.produce_error_column()
         if len(selected_errors) == 0 or any:
             min_size = 1
         else:
@@ -77,29 +87,17 @@ class SparkValidate:
     def validate_udl(self, logic, error_message):
         self.execute_check(logic, error_message)
 
-    # def validate_unique(self, column_set):
-    #     for item in column_set:
-    #         error_message = item["error"]
-    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
-    #         self.dataframe = self.dataframe.join(
-    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
-    #             on=column_list,
-    #             how="inner",
-    #         )
-    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
-    #         self.execute_check(check, error_message)
-    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
-
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
 
-        self.dataframe = self.dataframe.withColumn(
-            self.error_column,
-            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
-                F.col(self.error_column)
-            ),
-        )
+        # self.dataframe = self.dataframe.withColumn(
+        #     self.error_column,
+        #     F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
+        #         F.col(self.error_column)
+        #     ),
+        # )
+        self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
     def duplicated_flag(self, column_flag_name):
         self.dataframe = (
@@ -152,3 +150,16 @@ class SparkValidate:
         return (F.col(visit_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
+
+    # def validate_unique(self, column_set):
+    #     for item in column_set:
+    #         error_message = item["error"]
+    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
+    #         self.dataframe = self.dataframe.join(
+    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
+    #             on=column_list,
+    #             how="inner",
+    #         )
+    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
+    #         self.execute_check(check, error_message)
+    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
