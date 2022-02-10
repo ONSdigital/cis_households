@@ -68,19 +68,12 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
-def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
+def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
-    Parameters
-    ---------
-    df
-    barcode_column
-    edited_column
-        signifies if updating was performed on row
     """
-    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
@@ -104,10 +97,7 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
     df = df.withColumn(
         barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
     )
-    df = df.withColumn(
-        edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
-    )
-    return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
+    return df.drop("PREFIX", "SUFFIX")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
