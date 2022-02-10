@@ -10,6 +10,57 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_face_covering_outside_of_home(
+    df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
+):
+    """
+    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    covered_enclosed_column
+    covered_work_column
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (
+                (F.col(covered_enclosed_column) == "Never")
+                & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
+            ),
+            "No",
+        )
+        .when(
+            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
+            "Yes, at work/school only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            "Yes, in other situations only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
+            "Yes, usually both Work/school/other",
+        )
+        .when(
+            (F.col(covered_enclosed_column) == "My face is already covered")
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            "My face is already covered",
+        )
+        .when(
+            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (F.col(covered_work_column) == "My face is already covered"),
+            "My face is already covered",
+        )
+        .otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
