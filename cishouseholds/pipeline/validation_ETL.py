@@ -7,16 +7,7 @@ from cishouseholds.validate_class import SparkValidate
 # from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
 
-def validate_column_categories(SparkVal):
-    # calls
-    value_checks = {}
-    for col in SparkVal.dataframe.columns:
-        if col in category_maps["iqvia_raw_category_map"]:
-            value_checks[col] = list(category_maps["iqvia_raw_category_map"][col].keys())
-    SparkVal.validate_categories(value_checks)
-
-
-def additional_validation_calls(SparkVal):
+def validation_calls(SparkVal):
     column_calls = {
         "visit_datetime": {
             "between": {
@@ -37,6 +28,9 @@ def additional_validation_calls(SparkVal):
         "blood_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
         "swab_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
     }
+    for col in SparkVal.dataframe.columns:
+        if col in category_maps["iqvia_raw_category_map"]:
+            column_calls[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
     SparkVal.validate_column(column_calls)
 
@@ -107,8 +101,7 @@ def additional_validation_calls(SparkVal):
 
 def validation_ETL(df: DataFrame):
     SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
-    # passed_df, failed_df = additional_validation_calls(df)
-    validate_column_categories(SparkVal)
+    validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
         any=True,
