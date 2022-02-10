@@ -106,6 +106,8 @@ def validation_ETL(df: DataFrame):
         error_message="Validate face covering",
     )
 
+    SparkVal.flag_duplicates("duplicated_row_flag")
+
     passed_df, failed_df = SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
         any=True,
