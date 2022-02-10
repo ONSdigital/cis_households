@@ -40,6 +40,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.impute import edit_multiple_columns_fill_forward
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
@@ -275,8 +276,8 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         reference_column="is_self_isolating_detailed",
         values_list=[
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
         ],
         true_false_values=["Yes", "No"],
     )
@@ -333,20 +334,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
             90: "90+",
         },
     )
-    df = assign_school_year_september_start(
-        df,
-        dob_column="date_of_birth",
-        visit_date_column="visit_datetime",
-        column_name_to_assign="school_year_september",
-    )
-    # TODO: Enable once country data is linked on after merge
-    # df = split_school_year_by_country(
-    #   df, school_year_column = "school_year_september", country_column = "country_name"
-    # )
-    # df = assign_age_group_school_year(
-    #   df, column_name_to_assign="age_group_school_year", country_column="country_name",
-    #   age_column="age_at_visit", school_year_column="school_year_september"
-    # )
+
     return df
 
 
@@ -553,6 +541,19 @@ def union_dependent_transformations(df):
     #     df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
     # )
 
+    df = edit_multiple_columns_fill_forward(
+        df=df,
+        id="participant_id",
+        fill_if_null="cis_covid_vaccine_received",
+        date="visit_date",
+        column_fillforward_list=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_n_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+    )
     return df
 
 
