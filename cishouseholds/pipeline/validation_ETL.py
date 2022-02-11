@@ -92,8 +92,11 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_udl(
         logic=(
-            (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
-            & (F.col("face_covering_outside_of_home").isNull())
+            (
+                (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
+                & (F.col("face_covering_outside_of_home").isNull())
+            )
+            | (F.col("face_covering_outside_of_home").isNotNull())
         ),
         error_message="face covering is null when face covering at work and other places are null",
     )
