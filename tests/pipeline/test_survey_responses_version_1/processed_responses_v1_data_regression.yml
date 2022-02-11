@@ -121,7 +121,6 @@
   postcode: WP8S 5ZJ
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   samples_taken_datetime: '2022-01-08 22:45:03.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -339,7 +338,6 @@
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
   samples_taken_datetime: '2022-01-03 01:57:08.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -553,7 +551,6 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   samples_taken_datetime: '2022-01-04 13:40:38.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -773,7 +770,6 @@
   postcode: null
   reason_participants_not_consented: Here's looking at you, kid.
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -990,7 +986,6 @@
   postcode: null
   reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   samples_taken_datetime: '2022-01-06 00:02:45.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1204,7 +1199,6 @@
   postcode: null
   reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   samples_taken_datetime: '2022-01-03 18:48:19.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1419,7 +1413,6 @@
   reason_participants_not_consented: Get your stinking paws off me, you damned dirty
     ape.
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1634,7 +1627,6 @@
   reason_participants_not_consented: Those who refuse to learn from history are condemned
     to repeat it.
   samples_taken_datetime: '2022-01-09 11:37:05.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1854,7 +1846,6 @@
   postcode: null
   reason_participants_not_consented: Houston, we have a problem.
   samples_taken_datetime: '2022-01-04 17:37:39.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -2071,7 +2062,6 @@
   reason_participants_not_consented: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   samples_taken_datetime: '2022-01-05 17:19:17.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
