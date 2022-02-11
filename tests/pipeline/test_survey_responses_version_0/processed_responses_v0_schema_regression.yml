@@ -635,4 +635,8 @@ fields:
   name: hh_id
   nullable: true
   type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
 type: struct

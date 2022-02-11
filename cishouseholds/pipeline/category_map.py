@@ -1,6 +1,5 @@
 category_maps = {
     "iqvia_raw_category_map": {
-        "survey_response_dataset_major_version": {"Voyager 1 original": 0, "Voyager 1 upgrade": 1, "Voyager 2": 2},
         "consent_1_visit": {"No": 0, "Yes": 1},
         "consent_5_visits": {"No": 0, "Yes": 1},
         "consent_16_visits": {"No": 0, "Yes": 1},

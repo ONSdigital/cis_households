@@ -41,6 +41,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import edit_multiple_columns_fill_forward
+from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
@@ -383,7 +384,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
@@ -520,6 +521,14 @@ def union_dependent_transformations(df):
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
         main_job_changed_column="work_main_job_changed",
+    )
+
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date_string",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth_string", "ethnicity"],
     )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
