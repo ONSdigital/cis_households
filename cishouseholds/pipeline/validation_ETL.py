@@ -25,8 +25,8 @@ def validation_calls(SparkVal):
             }
         },
         "visit_id": {"contains": r"^DHV"},
-        "blood_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
-        "swab_sample_barcode": {"contains": r"(ON([SWCN]0|S2|S7)[0-9]{7})"},
+        "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
     }
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
