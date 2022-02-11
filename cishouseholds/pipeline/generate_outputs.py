@@ -20,8 +20,6 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
-from cishouseholds.pipeline.output_variable_name_map import output_name_map
-from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
@@ -38,7 +36,6 @@ def record_level_interface(input_table: str, csv_editing_file: str, unique_id_co
 
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
-    table_file_pairs,
     outgoing_directory,
     table_config_file,
     update_name_map=None,
@@ -55,23 +52,20 @@ def tables_to_csv(
 
     Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
+    # TODO: update docstrings
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-
-    name_map_dictionary = output_name_map.copy()
-    if update_name_map is not None:
-        name_map_dictionary.update(update_output_name_maps[update_name_map])
     category_map_dictionary = category_maps[category_map]
 
     if use_table_to_csv_config:
         with open(table_config_file) as file:
-            for n in file:
-                table = file[n]
-                df = extract_from_table(table["table_name"], table["columns_to_show"])
-                df = map_output_values_and_column_names(df, name_map_dictionary, category_map_dictionary)
+            for t in file:
+                table = file[t]
+                df = extract_from_table(table["table_name"]).select(table["select_column_list"])
+                df = map_output_values_and_column_names(df, table["column_map"], category_map_dictionary)
 
                 file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
                 write_csv_rename(df, file_path)
@@ -83,26 +77,11 @@ def tables_to_csv(
                     column_header=header_string,
                     validate_col_name_length=False,
                 )
-    else:
-        for table_name, output_file_name in table_file_pairs:
-            df = extract_from_table(table_name)
-            df = map_output_values_and_column_names(df, name_map_dictionary, category_map_dictionary)
-
-            file_path = file_directory / f"{output_file_name}_{output_datetime_str}"
-            write_csv_rename(df, file_path)
-            file_path = file_path.with_suffix(".csv")
-            header_string = read_header(file_path)
-
-            manifest.add_file(
-                relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
-                column_header=header_string,
-                validate_col_name_length=False,
-            )
     manifest.write_manifest()
 
 
 @register_pipeline_stage("generate_outputs")
-def generate_outputs():
+def generate_outputs(table_to_csv_config_file):
     config = get_config()
     output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
     output_directory = Path(config["output_directory"]) / output_datetime
@@ -122,10 +101,10 @@ def generate_outputs():
             True,
         ).otherwise(False),
     )
-
-    all_visits_output_df = map_output_values_and_column_names(
-        linked_df, output_name_map, category_maps["default_category_map"]
-    )
+    with open(table_to_csv_config_file) as file:
+        all_visits_output_df = map_output_values_and_column_names(
+            df=linked_df, column_name_map=file["column_map"], value_map_by_column=category_maps["default_category_map"]
+        )
 
     complete_visits_output_df = all_visits_output_df.where(F.col("completed_visits_subset"))
 

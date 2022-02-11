@@ -1,7 +1,6 @@
 import functools
 import json
 from datetime import datetime
-from typing import List
 
 import pkg_resources
 import pyspark.sql.functions as F
@@ -22,9 +21,9 @@ def check_table_exists(table_name: str):
     return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
 
 
-def extract_from_table(table_name: str, list_columns: List[str] = ["*"]):
+def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
-    return spark_session.sql(f"SELECT {', '.join(list_columns)} FROM {get_full_table_name(table_name)}")
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
 @register_pipeline_stage("delete_tables")

@@ -164,6 +164,7 @@ stages:
     calibration_config_path: /home/cdsw/calibration_config.yaml
 
   - function: generate_outputs
+    table_to_csv_config_file: examples/table_to_csv.yaml
     run: False
 
   - function: tables_to_csv
