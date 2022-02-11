@@ -1,10 +1,10 @@
+from functools import reduce
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.validate_class import SparkValidate
-
-# from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
 
 def validation_calls(SparkVal):
@@ -42,38 +42,35 @@ def validation_calls(SparkVal):
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
         ],
-        # "valid_vaccination": {
-        #     "visit_type_column": "visit_type",
-        #     "check_columns": [
-        #         "cis_covid_vaccine_type_1",
-        #         "cis_covid_vaccine_type_other_1",
-        #         "cis_covid_vaccine_date_1",
-        #         "cis_covid_vaccine_type_2",
-        #         "cis_covid_vaccine_type_other_2",
-        #         "cis_covid_vaccine_date_2",
-        #         "cis_covid_vaccine_type_3",
-        #         "cis_covid_vaccine_type_other_3",
-        #         "cis_covid_vaccine_date_3",
-        #         "cis_covid_vaccine_type_4",
-        #         "cis_covid_vaccine_type_other_4",
-        #         "cis_covid_vaccine_date_4",
-        #     ],
-        # },
     }
 
     SparkVal.validate(dataset_calls)
 
     SparkVal.validate_udl(
         logic=(
-            F.when(
+            (
                 (
-                    ((F.col("cis_covid_vaccine_type") == "Other") & F.col("cis_covid_vaccine_type_other").isNull())
-                    | (F.col("cis_covid_vaccine_type") != "Other")
-                ),
-                True,
-            ).otherwise(False)
+                    (F.col("cis_covid_vaccine_type") == "Other / specify")
+                    & F.col("cis_covid_vaccine_type_other").isNull()
+                )
+                | (F.col("cis_covid_vaccine_type") != "Other / specify")
+            ),
         ),
-        error_message="cis vaccine type other should be null unless vaccine type is 'Other'",
+        error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
+    )
+
+    _vaccine_n_columns_are_null = [
+        F.col(item).isNull()
+        for number in range(1, 5)
+        for item in (
+            f"cis_covid_vaccine_type_{number}",
+            f"cis_covid_vaccine_type_other_{number}",
+            f"cis_covid_vaccine_date_{number}",
+        )
+    ]
+    SparkVal.validate_udl(
+        logic=(F.col("visit_type") == "First Visit" | (reduce(_vaccine_n_columns_are_null, lambda x, y: x & y))),
+        error_message="vaccine _n fields are all null if not first visit",
     )
 
     SparkVal.validate_udl(
