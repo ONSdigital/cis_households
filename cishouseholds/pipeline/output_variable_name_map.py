@@ -115,7 +115,7 @@ output_name_map = {
     "last_suspected_covid_contact_date_string": "contact_suspect_covid_date",
     "last_suspected_covid_contact_location": "contact_suspect_covid_type",
     "country": "country",
-    "other_antibody_test_last_negative_date": "covid_test_blood_neg_last_date",
+    "other_antibody_test_last_negative_date_string": "covid_test_blood_neg_last_date",
     "other_antibody_test_first_positive_date_string": "covid_test_blood_pos_first_date",
     "other_antibody_test_results": "covid_test_blood_result",
     "other_antibody_test_location": "covid_test_blood_where",
