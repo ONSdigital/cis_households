@@ -24,7 +24,7 @@ def validation_calls(SparkVal):
                 },
             }
         },
-        "visit_id": {"contains": r"^DHV"},
+        "visit_id": {"starts_with": r"DHV"},
         "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
         "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
     }

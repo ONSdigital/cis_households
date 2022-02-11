@@ -19,6 +19,7 @@ class SparkValidate:
 
         self.functions = {
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
+            "starts_with": {"function": self.contains, "error_message": "{} should start with '{}'"},
             "matches": {"function": self.contains, "error_message": "{} should match '{}'"},
             "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
@@ -103,6 +104,11 @@ class SparkValidate:
     def contains(error_message, column_name, contains):
         error_message = error_message.format(column_name, contains)
         return F.col(column_name).rlike(contains), error_message
+
+    @staticmethod
+    def starts_with(error_message, column_name, contains):
+        error_message = error_message.format(column_name, contains)
+        return F.col(column_name).startswith(contains), error_message
 
     @staticmethod
     def isin(error_message, column_name, options):
