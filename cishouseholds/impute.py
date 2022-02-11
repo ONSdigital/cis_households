@@ -663,7 +663,7 @@ def fill_backwards_overriding_not_nulls(
             column,
             F.first(F.col(column), ignorenulls=True).over(window),
         )
-     return df
+    return df
 
 def edit_multiple_columns_fill_forward(
     df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
