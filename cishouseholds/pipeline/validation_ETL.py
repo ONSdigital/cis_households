@@ -73,7 +73,7 @@ def validation_calls(SparkVal):
                 True,
             ).otherwise(False)
         ),
-        error_message="Vaccine type other should be null unless vaccine type is 'Other'",
+        error_message="cis vaccine type other should be null unless vaccine type is 'Other'",
     )
 
     SparkVal.validate_udl(
@@ -83,11 +83,11 @@ def validation_calls(SparkVal):
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
                     | (F.col("work_direct_contact_persons") == "Yes")
-                )  # double check work_direct_contact_persons
+                )
             )
             | (F.col("work_social_care") == "No")
         ),
-        error_message="relationship between socialcare columns",
+        error_message="work social care should be 'No' if not working in care homes or in direct contact",
     )
 
     SparkVal.validate_udl(
@@ -95,7 +95,7 @@ def validation_calls(SparkVal):
             (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
             & (F.col("face_covering_outside_of_home").isNull())
         ),
-        error_message="Validate face covering",
+        error_message="face covering is null when face covering at work and other places are null",
     )
 
 

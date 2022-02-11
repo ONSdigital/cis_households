@@ -21,7 +21,7 @@ class SparkValidate:
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
             "starts_with": {"function": self.contains, "error_message": "{} should start with '{}'"},
             "matches": {"function": self.contains, "error_message": "{} should match '{}'"},
-            "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
+            "isin": {"function": self.isin, "error_message": "{} should be in [{}]"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
             "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
@@ -101,34 +101,40 @@ class SparkValidate:
         )
 
     @staticmethod
-    def contains(error_message, column_name, contains):
-        error_message = error_message.format(column_name, contains)
-        return F.col(column_name).rlike(contains), error_message
+    def contains(error_message, column_name, pattern):
+        error_message = error_message.format(column_name, pattern)
+        return F.col(column_name).rlike(pattern), error_message
 
     @staticmethod
-    def starts_with(error_message, column_name, contains):
-        error_message = error_message.format(column_name, contains)
-        return F.col(column_name).startswith(contains), error_message
+    def starts_with(error_message, column_name, pattern):
+        error_message = error_message.format(column_name, pattern)
+        return F.col(column_name).startswith(pattern), error_message
 
     @staticmethod
     def isin(error_message, column_name, options):
-        error_message = error_message.format(column_name, ", ".join(options))
+        error_message = error_message.format(column_name, "'" + "', '".join(options) + "'")
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
     def between(error_message, column_name, range):
-        lb = (
+        lower_bound = (
             (F.col(column_name) >= range["lower_bound"]["value"])
             if range["lower_bound"]["inclusive"]
             else (F.col(column_name) > range["lower_bound"]["value"])
         )
-        ub = (
+        upper_bound = (
             (F.col(column_name) <= range["upper_bound"]["value"])
             if range["upper_bound"]["inclusive"]
             else (F.col(column_name) < range["upper_bound"]["value"])
         )
-        error_message = error_message.format(column_name, *range)
-        return lb & ub, error_message
+        error_message = error_message.format(
+            column_name,
+            range["lower_bound"]["value"],
+            "(inclusive)" if range["lower_bound"]["inclusive"] else "",
+            range["upper_bound"]["value"],
+            "(inclusive)" if range["upper_bound"]["inclusive"] else "",
+        )
+        return lower_bound & upper_bound, error_message
 
     # Non column wise functions
     @staticmethod
