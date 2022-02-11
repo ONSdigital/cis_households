@@ -89,6 +89,7 @@ def test_sparkvalidate(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
+    validate_df.produce_error_column()
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )
@@ -132,7 +133,7 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
-
+    validate_df.produce_error_column()
     validate_df.dataframe.toPandas().to_csv("out.csv", index=False)
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
