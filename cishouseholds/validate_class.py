@@ -10,6 +10,10 @@ class SparkValidate:
     def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
         self.dataframe = dataframe
         self.error_column = error_column_name
+
+        if error_column_name in dataframe.columns:
+            raise ValueError(f"A column by this name ({error_column_name}) already exists please choose another name")
+
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
         self.error_column_list: List[Any] = []
 
