@@ -99,8 +99,8 @@ def validation_calls(SparkVal):
     )
 
 
-def validation_ETL(df: DataFrame):
-    SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
+def validation_ETL(df: DataFrame, validation_check_failure_column_name: str):
+    SparkVal = SparkValidate(dataframe=df, error_column_name=validation_check_failure_column_name)
     validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
