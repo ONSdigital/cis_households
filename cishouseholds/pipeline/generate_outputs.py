@@ -78,7 +78,7 @@ def report(
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
 
     write_string_to_file(
-        output.read(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+        output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
 
 
