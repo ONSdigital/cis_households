@@ -23,9 +23,9 @@
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
-  cis_covid_vaccine_date_2: 07/01/2022
-  cis_covid_vaccine_date_3: 07/01/2022
-  cis_covid_vaccine_date_4: 09/01/2022
+  cis_covid_vaccine_date_2: '2022-01-07 00:00:00.000000'
+  cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
+  cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: null
@@ -316,7 +316,7 @@
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
-  cis_covid_vaccine_date_1: 03/01/2022
+  cis_covid_vaccine_date_1: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_2: null
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: null
@@ -610,8 +610,8 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: null
-  cis_covid_vaccine_date_3: 09/01/2022
-  cis_covid_vaccine_date_4: 02/01/2022
+  cis_covid_vaccine_date_3: '2022-01-09 00:00:00.000000'
+  cis_covid_vaccine_date_4: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: null
@@ -903,9 +903,9 @@
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
-  cis_covid_vaccine_date_1: 06/01/2022
+  cis_covid_vaccine_date_1: '2022-01-06 00:00:00.000000'
   cis_covid_vaccine_date_2: null
-  cis_covid_vaccine_date_3: 09/01/2022
+  cis_covid_vaccine_date_3: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
@@ -1202,10 +1202,10 @@
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
-  cis_covid_vaccine_date_1: 07/01/2022
-  cis_covid_vaccine_date_2: 02/01/2022
+  cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
+  cis_covid_vaccine_date_2: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_3: null
-  cis_covid_vaccine_date_4: 09/01/2022
+  cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: null
@@ -1499,10 +1499,10 @@
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
-  cis_covid_vaccine_date_1: 02/01/2022
+  cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
   cis_covid_vaccine_date_3: null
-  cis_covid_vaccine_date_4: 01/01/2022
+  cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'No'
@@ -1796,10 +1796,10 @@
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
-  cis_covid_vaccine_date_1: 07/01/2022
+  cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_2: null
   cis_covid_vaccine_date_3: null
-  cis_covid_vaccine_date_4: 05/01/2022
+  cis_covid_vaccine_date_4: '2022-01-05 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'No'
@@ -2094,7 +2094,7 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: null
-  cis_covid_vaccine_date_3: 07/01/2022
+  cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: 'No'
@@ -2392,8 +2392,8 @@
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
-  cis_covid_vaccine_date_2: 02/01/2022
-  cis_covid_vaccine_date_3: 07/01/2022
+  cis_covid_vaccine_date_2: '2022-01-02 00:00:00.000000'
+  cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'Yes'
@@ -2694,10 +2694,10 @@
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
-  cis_covid_vaccine_date_1: 02/01/2022
+  cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
-  cis_covid_vaccine_date_3: 03/01/2022
-  cis_covid_vaccine_date_4: 09/01/2022
+  cis_covid_vaccine_date_3: '2022-01-03 00:00:00.000000'
+  cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: null

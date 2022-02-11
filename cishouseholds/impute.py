@@ -663,4 +663,30 @@ def fill_backwards_overriding_not_nulls(
             column,
             F.first(F.col(column), ignorenulls=True).over(window),
         )
+     return df
+
+def edit_multiple_columns_fill_forward(
+    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
+) -> DataFrame:
+    """
+    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
+    based in fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+    Parameters
+    ----------
+    df
+    participant_id
+    received
+    date
+    column_fillforward_list
+    """
+    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+    for column_name in column_fillforward_list:
+        df = df.withColumn(
+            column_name,
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
+                F.col(column_name)
+            ),
+        )
+
     return df
