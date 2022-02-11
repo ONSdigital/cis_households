@@ -32,6 +32,9 @@ class SparkValidate:
         self.dataframe = self.dataframe.withColumn(
             self.error_column, F.concat(F.col(self.error_column), F.array([col for col in self.error_column_list]))
         )
+        self.dataframe = self.dataframe.withColumn(
+            self.error_column, F.expr(f"filter({self.error_column}, x -> x is not null)")
+        )
         self.error_column_list = []
 
     def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
