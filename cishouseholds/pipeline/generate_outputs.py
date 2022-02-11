@@ -38,21 +38,24 @@ def record_level_interface(input_table: str, csv_editing_file: str, unique_id_co
 def tables_to_csv(
     outgoing_directory,
     table_config_file,
-    update_name_map=None,
     category_map="default_category_map",
     dry_run=False,
     use_table_to_csv_config=True,
 ):
     """
+    Parameters
+    ----------
+    outgoing_directory
+    table_config_file
+    category_map
+    dry_run
+    use_table_to_csv_config
+
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
-
-    Takes a list of 2-item tuples or lists:
-        table_file_pairs:
-            - [HIVE_table_name, output_csv_file_name]
-
+    Takes a yaml file in which Hive table name and csv table name are defined as well as columns to be
+    included in the csv file by a select statement.
     Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
-    # TODO: update docstrings
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
 
@@ -62,10 +65,10 @@ def tables_to_csv(
 
     if use_table_to_csv_config:
         with open(table_config_file) as file:
-            for t in file:
-                table = file[t]
+            for t in file["create_tables"]:
+                table = file["create_tables"][t]
                 df = extract_from_table(table["table_name"]).select(table["select_column_list"])
-                df = map_output_values_and_column_names(df, table["column_map"], category_map_dictionary)
+                df = map_output_values_and_column_names(df, file["column_map"], category_map_dictionary)
 
                 file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
                 write_csv_rename(df, file_path)

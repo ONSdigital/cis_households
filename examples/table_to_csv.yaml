@@ -1,3 +1,4 @@
+create_tables:
 - output_file_name: transformed_unioned_survey_responses
   table_name: unioned_survey_responses
   select_column_list:
@@ -195,7 +196,8 @@
       withdrawal_reason_raw,
       cis_flu_vaccine_received,
   ]
-  column_map:
+
+column_map:
   - [
       ability_to_socially_distance_at_work_or_school: work_social_distancing,
       able_to_take_blood: able_to_take_blood,
