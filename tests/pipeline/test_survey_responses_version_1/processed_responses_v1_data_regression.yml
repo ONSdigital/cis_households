@@ -136,6 +136,7 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -354,6 +355,7 @@
   social_distance_contact_under_18_years: 'No'
   street: Benwee
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -566,6 +568,7 @@
   social_distance_contact_under_18_years: null
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -785,6 +788,7 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -1001,6 +1005,7 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -1213,6 +1218,7 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -1428,6 +1434,7 @@
   social_distance_contact_under_18_years: 'Yes'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -1642,6 +1649,7 @@
   social_distance_contact_under_18_years: null
   street: null
   study_cohort: Swab Only
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -1861,6 +1869,7 @@
   social_distance_contact_under_18_years: 'Yes'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -2077,6 +2086,7 @@
   social_distance_contact_under_18_years: 'No'
   street: null
   study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 1
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
