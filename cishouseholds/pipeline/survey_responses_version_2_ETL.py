@@ -554,7 +554,7 @@ def union_dependent_transformations(df):
         df=df,
         id="participant_id",
         fill_if_null="cis_covid_vaccine_received",
-        date="visit_date",
+        date="visit_datetime",
         column_fillforward_list=[
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_n_doses",
