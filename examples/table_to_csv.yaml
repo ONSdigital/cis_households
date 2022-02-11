@@ -1,8 +1,7 @@
-- table_file_pairs:
-  unioned_survey_responses: unioned_survey_responses,
-  transformed_unioned_survey_responses: transformed_unioned_survey_responses
-
-- columns_to_show:
+1:
+  table_name: unioned_survey_responses
+  output_file_name: transformed_unioned_survey_responses
+  columns_to_show:
   - [
       participant_id,
       survey_response_dataset_major_version,
