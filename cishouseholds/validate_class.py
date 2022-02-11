@@ -64,22 +64,6 @@ class SparkValidate:
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-    def validate_categories(self, checks):
-        self.dataframe = self.dataframe.withColumn(
-            self.error_column,
-            F.concat(
-                F.col(self.error_column),
-                F.array(
-                    [
-                        F.when(F.col(col_name).isin(possible_values), None).otherwise(
-                            f"{col_name} contains prohibited value"
-                        )
-                        for col_name, possible_values in checks.items()
-                    ]
-                ),
-            ),
-        )
-
     def validate(self, operations):
         for method, params in operations.items():
             if type(params) != list:
@@ -94,12 +78,6 @@ class SparkValidate:
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
 
-        # self.dataframe = self.dataframe.withColumn(
-        #     self.error_column,
-        #     F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
-        #         F.col(self.error_column)
-        #     ),
-        # )
         self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
     def duplicated_flag(self, column_flag_name):
@@ -153,16 +131,3 @@ class SparkValidate:
         return (F.col(visit_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
-
-    # def validate_unique(self, column_set):
-    #     for item in column_set:
-    #         error_message = item["error"]
-    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
-    #         self.dataframe = self.dataframe.join(
-    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
-    #             on=column_list,
-    #             how="inner",
-    #         )
-    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
-    #         self.execute_check(check, error_message)
-    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
