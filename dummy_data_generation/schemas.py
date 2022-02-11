@@ -633,6 +633,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Visit Status": _(
             "choice", items=["Completed", "Dispatched", "Household did not attend", "Partially Completed", "Withdrawn"]
         ),
+        "Visit_Date_type": _(
+            "choice", items=["actual_visit_date", "latest_checkin_date", "sample_taken_date", "scheduled_date"]
+        ),
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
@@ -645,9 +648,6 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 "Withdrawn_no_future_linkage",
                 "Withdrawn",
             ],
-        ),
-        "Visit_Date_type": _(
-            "choice", items=["actual_visit_date", "latest_checkin_date", "sample_taken_date", "scheduled_date"]
         ),
         "Withdrawn_Type": _(
             "choice",
