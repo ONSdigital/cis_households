@@ -2,7 +2,7 @@
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: null
+  age_at_visit: 0.0
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -61,8 +61,8 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: Date not given
+  days_since_think_had_covid: 0.0
+  days_since_think_had_covid_group: 0-14
   deferred: N/A
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -189,7 +189,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -265,7 +264,7 @@
   title: null
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
-  visit_datetime: null
+  visit_datetime: '2022-01-08 00:10:59.000000'
   visit_id: DHVF-0988308904
   visit_order: Month 12
   visit_type: First Visit
@@ -297,11 +296,11 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   approached_for_blood_samples: null
@@ -356,7 +355,7 @@
   contact_suspect_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
   deferred: Deferred
   email: coater1966@gsnail.ac.uk
@@ -482,7 +481,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -558,7 +556,7 @@
   title: Mrs.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
-  visit_datetime: null
+  visit_datetime: '2022-01-04 02:59:45.000000'
   visit_id: DHVF-2240364141
   visit_order: Month 8
   visit_type: First Visit
@@ -590,11 +588,11 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -776,7 +774,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -852,7 +849,7 @@
   title: Mrs.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
-  visit_datetime: null
+  visit_datetime: '2022-01-01 21:15:29.000000'
   visit_id: DHVF-4476904382
   visit_order: null
   visit_type: First Visit
@@ -886,10 +883,10 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
+  age_at_visit: 6.0
+  age_group_5_intervals: 2-11
+  age_group_5_year_intervals: 5-9
+  age_group_7_intervals: 2-11
   age_group_over_16: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
@@ -986,7 +983,7 @@
   infant_7_age: 6.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_location: Outside your home
@@ -1073,7 +1070,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: null
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1149,7 +1145,7 @@
   title: Mr.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
-  visit_datetime: null
+  visit_datetime: '2022-01-02 03:34:03.000000'
   visit_id: DHVF-4869598675
   visit_order: Follow-up 2
   visit_type: First Visit
@@ -1186,7 +1182,7 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: null
+  age_at_visit: 1.0
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -1372,7 +1368,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1449,7 +1444,7 @@
   title: Ms.
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
-  visit_datetime: null
+  visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   visit_order: Month 6
   visit_type: First Visit
@@ -1484,11 +1479,11 @@
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -1585,7 +1580,7 @@
   infant_7_age: 6.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, someone you live with had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
@@ -1673,7 +1668,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1749,7 +1743,7 @@
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0739888271-DHR-389263959191-2022-01-04 06:40:18
-  visit_datetime: null
+  visit_datetime: '2022-01-04 06:40:18.000000'
   visit_id: DVH-0739888271
   visit_order: Month 5
   visit_type: First Visit
@@ -1841,7 +1835,7 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: null
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
   deferred: N/A
   email: dashed1989@gsnail.ac.uk
@@ -1881,7 +1875,7 @@
   infant_7_age: 6.0
   infant_8_age: 2.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -1969,7 +1963,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2045,7 +2038,7 @@
   title: Ms.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
-  visit_datetime: null
+  visit_datetime: '2022-01-03 05:49:36.000000'
   visit_id: DVH-6338733442
   visit_order: Month 9
   visit_type: Follow-up Visit
@@ -2079,11 +2072,11 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 18.0
+  age_group_5_intervals: 12-19
+  age_group_5_year_intervals: 15-19
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2138,8 +2131,8 @@
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: Date not given
+  days_since_think_had_covid: 4.0
+  days_since_think_had_covid_group: 0-14
   deferred: Deferred
   email: ladybird1985@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -2265,7 +2258,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
-  school_year_september: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -2341,7 +2333,7 @@
   title: Prof.
   transport_to_work_or_school: null
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
-  visit_datetime: null
+  visit_datetime: '2022-01-08 03:57:44.000000'
   visit_id: DVH-6911152672
   visit_order: Month 13
   visit_type: First Visit
@@ -2379,11 +2371,11 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 36.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 35-39
+  age_group_7_intervals: 35-49
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -2438,8 +2430,8 @@
   contact_suspect_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 1.0
+  days_since_think_had_covid_group: 0-14
   deferred: N/A
   email: null
   ethnic_group: White
@@ -2568,7 +2560,6 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
-  school_year_september: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -2645,7 +2636,7 @@
   title: Mr.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 18:14:23
-  visit_datetime: null
+  visit_datetime: '2022-01-06 18:14:23.000000'
   visit_id: DVH-8720322983
   visit_order: Follow-up 3
   visit_type: First Visit
@@ -2683,11 +2674,11 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
+  age_at_visit: 39.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 35-39
+  age_group_7_intervals: 35-49
+  age_group_over_16: 16-49
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2742,8 +2733,8 @@
   contact_suspect_positive_covid_last_28_days: null
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 6.0
+  days_since_think_had_covid_group: 0-14
   deferred: Deferred
   email: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
@@ -2781,7 +2772,7 @@
   infant_7_age: 7.0
   infant_8_age: 3.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
+  is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
   last_covid_contact_location: Living in your own home
@@ -2866,7 +2857,6 @@
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
-  school_year_september: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -2942,7 +2932,7 @@
   title: Prof.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DVH-9557055819-DHR-455927236237-2022-01-07 10:41:50
-  visit_datetime: null
+  visit_datetime: '2022-01-07 10:41:50.000000'
   visit_id: DVH-9557055819
   visit_order: Month 15
   visit_type: Follow-up Visit
