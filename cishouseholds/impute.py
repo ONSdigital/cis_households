@@ -665,6 +665,7 @@ def fill_backwards_overriding_not_nulls(
         )
     return df
 
+
 def edit_multiple_columns_fill_forward(
     df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
 ) -> DataFrame:
