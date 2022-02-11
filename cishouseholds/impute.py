@@ -637,6 +637,35 @@ def impute_latest_date_flag(
     return df.drop("imputation_flag")
 
 
+def fill_backwards_overriding_not_nulls(
+    df: DataFrame,
+    column_identity,
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df,
+    column_identity,
+    ordering_column,
+    dataset_column,
+    column_list,
+    """
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    for column in column_list:
+        df = df.withColumn(
+            column,
+            F.first(F.col(column), ignorenulls=True).over(window),
+        )
+    return df
+
+
 def edit_multiple_columns_fill_forward(
     df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
 ) -> DataFrame:
