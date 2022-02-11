@@ -135,6 +135,7 @@ category_maps = {
             "Cancelled": 0,
             "Completed": 1,
             "Patient did not attend": 2,
+            "Participant did not attend": 2,
             "Re-scheduled": 3,
             "Scheduled": 4,
             "Partially Completed": 5,

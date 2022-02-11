@@ -1,24 +1,22 @@
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.validate_class import SparkValidate
 
-# from cishouseholds.pipeline.category_map import category_maps
 # from cishouseholds.pipeline.output_variable_name_map import output_name_map
 
 
-def validation_ETL(df: DataFrame):
-    SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
-
+def validate_column_categories(SparkVal):
     # calls
+    value_checks = {}
+    for col in SparkVal.dataframe.columns:
+        if col in category_maps["iqvia_raw_category_map"]:
+            value_checks[col] = list(category_maps["iqvia_raw_category_map"][col].keys())
+    SparkVal.validate_categories(value_checks)
 
-    # value_checks = {}
-    # for col in SparkVal.dataframe.columns:
-    #     if col in category_maps["iqvia_raw_category_map"]:
-    #         value_checks[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
-    # SparkVal.validate_column(value_checks)
-
+def additional_validation_calls(SparkVal):
     column_calls = {
         "visit_datetime": {
             "between": {
@@ -106,9 +104,13 @@ def validation_ETL(df: DataFrame):
         error_message="Validate face covering",
     )
 
-    passed_df, failed_df = SparkVal.filter(
+
+def validation_ETL(df: DataFrame):
+    SparkVal = SparkValidate(dataframe=df, error_column_name="ERROR")
+    # passed_df, failed_df = additional_validation_calls(df)
+    validate_column_categories(SparkVal)
+    return SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
         any=True,
         return_failed=True,
     )
-    return passed_df, failed_df
