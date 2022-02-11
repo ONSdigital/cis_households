@@ -23,7 +23,7 @@ class SparkValidate:
             "matches": {"function": self.contains, "error_message": "{} should match '{}'"},
             "isin": {"function": self.isin, "error_message": "{} should be in [{}]"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
-            "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
+            "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
         }
@@ -130,9 +130,9 @@ class SparkValidate:
         error_message = error_message.format(
             column_name,
             range["lower_bound"]["value"],
-            "(inclusive)" if range["lower_bound"]["inclusive"] else "",
+            " (inclusive)" if range["lower_bound"]["inclusive"] else "",
             range["upper_bound"]["value"],
-            "(inclusive)" if range["upper_bound"]["inclusive"] else "",
+            " (inclusive)" if range["upper_bound"]["inclusive"] else "",
         )
         return lower_bound & upper_bound, error_message
 
