@@ -549,7 +549,7 @@ category_maps = {
             "Accepted": 0,
             "Declined": 1,
             "Invited": 2,
-            "At Least One Person Consented": 3,
+            "At least one person consented": 3,
             "Not invited": 4,
             "No-one Consented": 5,
         },
