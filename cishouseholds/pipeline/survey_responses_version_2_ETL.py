@@ -82,7 +82,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
-        df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+        df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
