@@ -280,11 +280,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_fingerprick
+  name: no_fingerprick_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_venous
+  name: no_venous_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
