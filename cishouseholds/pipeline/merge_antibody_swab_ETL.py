@@ -24,7 +24,7 @@ def union_survey_response_files(**kwargs):
         survey_table = kwargs["transformed_survey_table"].replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    unioned_survey_responses = union_tables_hadoop("unioned_survey_table", survey_df_list)
+    unioned_survey_responses = union_tables_hadoop(kwargs["unioned_survey_table"], survey_df_list)
     unioned_survey_responses = unioned_survey_responses.dropDuplicates(
         subset=[column for column in unioned_survey_responses.columns if column != "survey_response_source_file"]
     )
@@ -41,7 +41,9 @@ def execute_union_dependent_transformations(**kwargs):
 @register_pipeline_stage("validate_survey_responses")
 def validate_survey_responses(**kwargs):
     unioned_survey_responses = extract_from_table(kwargs["unioned_survey_table"])
-    valid_survey_responses, erroneous_survey_responses = validation_ETL(unioned_survey_responses)
+    valid_survey_responses, erroneous_survey_responses = validation_ETL(
+        unioned_survey_responses, **kwargs["error_column"]
+    )
     update_table(valid_survey_responses, kwargs["valid_survey_table"], mode_overide="overwrite")
     update_table(erroneous_survey_responses, kwargs["invalid_survey_table"], mode_overide="overwrite")
 
