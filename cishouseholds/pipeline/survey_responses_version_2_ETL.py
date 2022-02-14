@@ -38,6 +38,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_symptoms_last_7_days_any
@@ -424,6 +425,34 @@ def union_dependent_transformations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = map_column_values_to_null(
+        df=df,
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "sex",
+            "ethnicity",
+            "work_sectors",
+            "work_health_care_v1_v2_raw",
+            "work_status_combined",
+            "work_status_v1",
+            "work_status_v2",
+            "work_location",
+            "visit_type",
+            "household_visit_status",
+            "participant_survey_status",
+            "is_self_isolating_detailed",
+            "illness_reduces_activity_or_ability",
+            "ability_to_socially_distance_at_work_or_school",
+            "transport_to_work_or_school",
+            "face_covering_work",
+            "contact_face_covering_workschool",
+            "face_covering_other_enclosed_places",
+            "other_antibody_test_location",
+            "withdrawal_reason",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_number_of_doses",
+        ],
+    )
     df = create_formatted_datetime_string_columns(df)
     df = impute_by_ordered_fill_forward(
         df=df,
