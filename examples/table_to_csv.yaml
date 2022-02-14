@@ -1,8 +1,8 @@
 create_tables:
-- output_file_name: transformed_unioned_survey_responses
-  table_name: unioned_survey_responses
-  select_column_list:
-  - [
+  - output_file_name: transformed_unioned_survey_responses
+    table_name: unioned_survey_responses
+    select_column_list:
+    - [
       participant_id,
       survey_response_dataset_major_version,
       consent_1_visit,
@@ -195,7 +195,34 @@ create_tables:
       cis_covid_vaccine_datetime,
       withdrawal_reason_raw,
       cis_flu_vaccine_received,
-  ]
+    ]
+
+  - output_file_name: transformed_survey_responses_v0_data
+    table_name: transformed_survey_responses_v0_data
+    select_column_list:
+    - [
+      ons_household_id,
+      participant_id,
+      visit_id,
+    ]
+
+  - output_file_name: transformed_survey_responses_v1_data
+    table_name: transformed_survey_responses_v1_data
+    select_column_list:
+    - [
+      ons_household_id,
+      participant_id,
+      visit_id,
+    ]
+
+  - output_file_name: transformed_survey_responses_v2_data
+    table_name: transformed_survey_responses_v2_data
+    select_column_list:
+    - [
+      ons_household_id,
+      participant_id,
+      visit_id,
+    ]
 
 column_map:
   - [
