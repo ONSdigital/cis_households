@@ -361,6 +361,20 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     return df
 
 
+def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
+    """
+    Map columns from column list with given value to null
+    Parameters
+    ----------
+    df
+    column_list
+    value
+    """
+    for col in column_list:
+        df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
+    return df
+
+
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
