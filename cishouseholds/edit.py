@@ -379,7 +379,6 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
 
 
 def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
-    """ """
     for col, map in column_map_dic.items():
         df = update_column_values_from_map(df, col, map)
     return df
