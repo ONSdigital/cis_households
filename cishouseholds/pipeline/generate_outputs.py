@@ -67,12 +67,10 @@ def tables_to_csv(
     with open(table_to_csv_config_file) as f:
         file = yaml.load(f, Loader=yaml.FullLoader)
         for table in file["create_tables"]:
-            import pdb
-
-            pdb.set_trace()
-            df = extract_from_table(table["table_name"]).select(*table["select_column_list"])
-            df = map_output_values_and_column_names(df, file["column_map"], category_map_dictionary)
-
+            df = extract_from_table(table["table_name"]).select(
+                *[element for element in table["column_name_map"].keys()]
+            )
+            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
             file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
             write_csv_rename(df, file_path)
             file_path = file_path.with_suffix(".csv")
