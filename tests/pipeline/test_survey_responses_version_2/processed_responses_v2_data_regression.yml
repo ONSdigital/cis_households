@@ -7,6 +7,7 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -87,7 +88,6 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Accepted
-  household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   household_visit_status: Withdrawn
   illness_lasting_over_12_months: null
@@ -153,32 +153,32 @@
   participant_survey_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 70.0
   person_1_not_consenting_age: 12.0
+  person_1_not_present_age: '70'
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_2_age: 43.0
   person_2_not_consenting_age: 34.0
+  person_2_not_present_age: '43'
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 24.0
   person_3_not_consenting_age: 23.0
+  person_3_not_present_age: '24'
   person_3_reason_for_not_consenting: Here's looking at you, kid.
-  person_4_age: 38.0
   person_4_not_consenting_age: null
+  person_4_not_present_age: '38'
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 49.0
   person_5_not_consenting_age: null
+  person_5_not_present_age: '49'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 18.0
   person_6_not_consenting_age: 23.0
+  person_6_not_present_age: '18'
   person_6_reason_for_not_consenting: Here's looking at you, kid.
-  person_7_age: 91.0
   person_7_not_consenting_age: 87.0
+  person_7_not_present_age: '91'
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 44.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '44'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Houston, we have a problem.
@@ -301,6 +301,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   approached_for_blood_samples: null
@@ -379,7 +380,6 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Invited
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'Yes'
   household_visit_status: Partially Completed
   illness_lasting_over_12_months: 'No'
@@ -444,32 +444,32 @@
   participant_survey_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 40.0
   person_1_not_consenting_age: 81.0
+  person_1_not_present_age: '40'
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: 24.0
   person_2_not_consenting_age: 89.0
+  person_2_not_present_age: '24'
   person_2_reason_for_not_consenting: Houston, we have a problem.
-  person_3_age: 76.0
   person_3_not_consenting_age: 28.0
+  person_3_not_present_age: '76'
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_4_age: null
   person_4_not_consenting_age: null
+  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 22.0
   person_5_not_consenting_age: 8.0
+  person_5_not_present_age: '22'
   person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_6_age: 56.0
   person_6_not_consenting_age: 49.0
+  person_6_not_present_age: '56'
   person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_7_age: 2.0
   person_7_not_consenting_age: 70.0
+  person_7_not_present_age: '2'
   person_7_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_8_age: 18.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '18'
   person_8_reason_for_not_consenting: Let them eat cake.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: '"You''ve got to ask yourself one question:
@@ -593,6 +593,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'Yes'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -672,7 +673,6 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Not invited
-  household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: null
   household_visit_status: Completed
   illness_lasting_over_12_months: 'No'
@@ -737,32 +737,32 @@
   participant_survey_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: Cancelled
-  person_1_age: 85.0
   person_1_not_consenting_age: 73.0
+  person_1_not_present_age: '85'
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: 15.0
   person_2_not_consenting_age: null
+  person_2_not_present_age: '15'
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 19.0
   person_3_not_consenting_age: null
+  person_3_not_present_age: '19'
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_4_age: 5.0
   person_4_not_consenting_age: 59.0
+  person_4_not_present_age: '5'
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 90.0
   person_5_not_consenting_age: 76.0
+  person_5_not_present_age: '90'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: 72.0
   person_6_not_consenting_age: null
+  person_6_not_present_age: '72'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_7_age: 38.0
   person_7_not_consenting_age: null
+  person_7_not_present_age: '38'
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_8_age: 101.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '101'
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_9_not_consenting_age: 16.0
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
@@ -888,6 +888,7 @@
   age_group_5_year_intervals: 5-9
   age_group_7_intervals: 2-11
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -968,7 +969,6 @@
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Invited
-  household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   household_visit_status: Household did not attend
   illness_lasting_over_12_months: null
@@ -1033,32 +1033,32 @@
   participant_survey_status: Withdrawn
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: null
-  person_1_age: 23.0
   person_1_not_consenting_age: 12.0
+  person_1_not_present_age: '23'
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_age: null
   person_2_not_consenting_age: 57.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_age: null
   person_3_not_consenting_age: null
+  person_3_not_present_age: null
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_4_age: 91.0
   person_4_not_consenting_age: 78.0
+  person_4_not_present_age: '91'
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 59.0
   person_5_not_consenting_age: null
+  person_5_not_present_age: '59'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 59.0
   person_6_not_consenting_age: 76.0
+  person_6_not_present_age: '59'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 87.0
   person_7_not_consenting_age: null
+  person_7_not_present_age: '87'
   person_7_reason_for_not_consenting: Let them eat cake.
-  person_8_age: 2.0
   person_8_not_consenting_age: 98.0
+  person_8_not_present_age: '2'
   person_8_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
   person_9_not_consenting_age: null
@@ -1187,6 +1187,7 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -1266,7 +1267,6 @@
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Invited
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   household_visit_status: Completed
   illness_lasting_over_12_months: 'Yes'
@@ -1331,32 +1331,32 @@
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 74.0
   person_1_not_consenting_age: 74.0
+  person_1_not_present_age: '74'
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: null
   person_2_not_consenting_age: 99.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 64.0
   person_3_not_consenting_age: 56.0
+  person_3_not_present_age: '64'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: 14.0
   person_4_not_consenting_age: 63.0
+  person_4_not_present_age: '14'
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 30.0
   person_5_not_consenting_age: 58.0
+  person_5_not_present_age: '30'
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_age: null
   person_6_not_consenting_age: 4.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_7_age: null
   person_7_not_consenting_age: null
+  person_7_not_present_age: null
   person_7_reason_for_not_consenting: Here's looking at you, kid.
-  person_8_age: 61.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '61'
   person_8_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Those who refuse to learn from history are condemned
@@ -1484,6 +1484,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -1565,7 +1566,6 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: At least one person consented
-  household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'No'
   household_visit_status: Partially Completed
   illness_lasting_over_12_months: null
@@ -1630,33 +1630,33 @@
   participant_survey_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: null
-  person_1_age: 50.0
   person_1_not_consenting_age: 64.0
+  person_1_not_present_age: '50'
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_2_age: null
   person_2_not_consenting_age: 83.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_age: 39.0
   person_3_not_consenting_age: 68.0
+  person_3_not_present_age: '39'
   person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_4_age: 60.0
   person_4_not_consenting_age: null
+  person_4_not_present_age: '60'
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 40.0
   person_5_not_consenting_age: null
+  person_5_not_present_age: '40'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_6_age: 43.0
   person_6_not_consenting_age: null
+  person_6_not_present_age: '43'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_7_age: 73.0
   person_7_not_consenting_age: null
+  person_7_not_present_age: '73'
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_8_age: 8.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '8'
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_9_not_consenting_age: 7.0
@@ -1781,6 +1781,7 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   approached_for_blood_samples: 'No'
@@ -1860,7 +1861,6 @@
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn
   illness_lasting_over_12_months: 'No'
@@ -1925,33 +1925,33 @@
   participant_survey_status: Completed
   participant_testing_group: Swab Only
   participant_visit_status: Re-scheduled
-  person_1_age: 58.0
   person_1_not_consenting_age: null
+  person_1_not_present_age: '58'
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_age: 47.0
   person_2_not_consenting_age: 55.0
+  person_2_not_present_age: '47'
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_age: 25.0
   person_3_not_consenting_age: 21.0
+  person_3_not_present_age: '25'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: null
   person_4_not_consenting_age: 92.0
+  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 24.0
   person_5_not_consenting_age: 70.0
+  person_5_not_present_age: '24'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_age: 49.0
   person_6_not_consenting_age: 78.0
+  person_6_not_present_age: '49'
   person_6_reason_for_not_consenting: Elementary, my dear Watson.
-  person_7_age: 21.0
   person_7_not_consenting_age: null
+  person_7_not_present_age: '21'
   person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_8_age: 72.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '72'
   person_8_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Ask not what your country can do for you; ask
@@ -2077,6 +2077,7 @@
   age_group_5_year_intervals: 15-19
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2156,7 +2157,6 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   household_visit_status: Partially Completed
   illness_lasting_over_12_months: null
@@ -2221,31 +2221,31 @@
   participant_survey_status: Withdrawn
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Patient did not attend
-  person_1_age: 30.0
   person_1_not_consenting_age: 2.0
+  person_1_not_present_age: '30'
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_2_age: 73.0
   person_2_not_consenting_age: null
+  person_2_not_present_age: '73'
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_age: 74.0
   person_3_not_consenting_age: 88.0
+  person_3_not_present_age: '74'
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_4_age: 72.0
   person_4_not_consenting_age: 28.0
+  person_4_not_present_age: '72'
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_5_age: 80.0
   person_5_not_consenting_age: 40.0
+  person_5_not_present_age: '80'
   person_5_reason_for_not_consenting: Let them eat cake.
-  person_6_age: 20.0
   person_6_not_consenting_age: 54.0
+  person_6_not_present_age: '20'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_age: 42.0
   person_7_not_consenting_age: 11.0
+  person_7_not_present_age: '42'
   person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_age: 81.0
   person_8_not_consenting_age: 18.0
+  person_8_not_present_age: '81'
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_9_not_consenting_age: 27.0
@@ -2376,6 +2376,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -2455,7 +2456,6 @@
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Declined
-  household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
   household_visit_status: Dispatched
   illness_lasting_over_12_months: 'Yes'
@@ -2521,34 +2521,34 @@
   participant_survey_status: Active
   participant_testing_group: Swab Only
   participant_visit_status: Re-scheduled
-  person_1_age: 22.0
   person_1_not_consenting_age: 43.0
+  person_1_not_present_age: '22'
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_2_age: 24.0
   person_2_not_consenting_age: null
+  person_2_not_present_age: '24'
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 82.0
   person_3_not_consenting_age: 101.0
+  person_3_not_present_age: '82'
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_4_age: 20.0
   person_4_not_consenting_age: 99.0
+  person_4_not_present_age: '20'
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 46.0
   person_5_not_consenting_age: 1.0
+  person_5_not_present_age: '46'
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_age: null
   person_6_not_consenting_age: 69.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: Let them eat cake.
-  person_7_age: null
   person_7_not_consenting_age: null
+  person_7_not_present_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_age: 63.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '63'
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_9_not_consenting_age: null
@@ -2679,6 +2679,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'Yes'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2757,7 +2758,6 @@
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: At least one person consented
-  household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: null
   household_visit_status: Completed
   illness_lasting_over_12_months: 'Yes'
@@ -2822,30 +2822,30 @@
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_age: 76.0
   person_1_not_consenting_age: 61.0
+  person_1_not_present_age: '76'
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: 56.0
   person_2_not_consenting_age: 20.0
+  person_2_not_present_age: '56'
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 60.0
   person_3_not_consenting_age: 26.0
+  person_3_not_present_age: '60'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: null
   person_4_not_consenting_age: 92.0
+  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_age: 27.0
   person_5_not_consenting_age: 9.0
+  person_5_not_present_age: '27'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: 86.0
   person_6_not_consenting_age: null
+  person_6_not_present_age: '86'
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_7_age: 10.0
   person_7_not_consenting_age: null
+  person_7_not_present_age: '10'
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_age: 56.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '56'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: A census taker once tried to test me. I ate
