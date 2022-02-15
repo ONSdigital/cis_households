@@ -342,7 +342,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = df.withColumn(
-        "work_status", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
+        "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
     )
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
@@ -431,7 +431,7 @@ def union_dependent_transformations(df):
             "ethnicity",
             "work_sectors",
             "work_health_care_v1_v2_raw",
-            "work_status_combined",
+            "work_status_v0",
             "work_status_v1",
             "work_status_v2",
             "work_location",
@@ -442,8 +442,8 @@ def union_dependent_transformations(df):
             "illness_reduces_activity_or_ability",
             "ability_to_socially_distance_at_work_or_school",
             "transport_to_work_or_school",
+            "face_covering_outside_of_home",
             "face_covering_work",
-            "contact_face_covering_workschool",
             "face_covering_other_enclosed_places",
             "other_antibody_test_location",
             "withdrawal_reason",
@@ -473,7 +473,7 @@ def union_dependent_transformations(df):
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
-        "work_status",
+        "work_status_combined",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     df = assign_first_visit(
