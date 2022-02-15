@@ -1,3 +1,4 @@
+import re
 from itertools import chain
 from typing import List
 from typing import Mapping
@@ -7,7 +8,31 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def update_participant_not_consented(
+    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
+):
+    """
+    update the participant consented column following specific logic
+    Parameters
+    ---------
+    df
+    column_name_to_update
+    """
+    r = re.compile(participant_non_consented_column_pattern)
+    non_consent_columns = list(filter(r.match, df.columns))
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_0_NON_CONSENT", non_consent_columns, 0)
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).isNull() & (len(non_consent_columns) != F.col("NUM_0_NON_CONSENT")),
+            F.lit(len(non_consent_columns)) - F.col("NUM_0_NON_CONSENT"),
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df.drop("NUM_0_NON_CONSENT")
 
 
 def update_face_covering_outside_of_home(
