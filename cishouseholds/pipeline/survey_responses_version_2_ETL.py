@@ -624,6 +624,7 @@ def create_formatted_datetime_string_columns(df):
         "other_antibody_test_first_positive_date",
         "other_pcr_test_last_negative_date",
         "been_outside_uk_last_date",
+        "symptoms_last_7_days_onset_date",
     ]
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(

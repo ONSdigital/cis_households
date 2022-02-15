@@ -121,7 +121,7 @@ def record_level_interface(
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
     outgoing_directory,
-    table_to_csv_config_file,
+    tables_to_csv_config_file,
     category_map="default_category_map",
     dry_run=False,
 ):
@@ -129,7 +129,7 @@ def tables_to_csv(
     Parameters
     ----------
     outgoing_directory
-    table_to_csv_config_file
+    tables_to_csv_config_file
     category_map
     dry_run
     use_table_to_csv_config
@@ -146,23 +146,22 @@ def tables_to_csv(
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
     category_map_dictionary = category_maps[category_map]
 
-    with open(table_to_csv_config_file) as f:
-        file = yaml.load(f, Loader=yaml.FullLoader)
-        for table in file["create_tables"]:
-            df = extract_from_table(table["table_name"]).select(
-                *[element for element in table["column_name_map"].keys()]
-            )
-            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
-            file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
-            write_csv_rename(df, file_path)
-            file_path = file_path.with_suffix(".csv")
-            header_string = read_header(file_path)
+    with open(tables_to_csv_config_file) as f:
+        config_file = yaml.load(f, Loader=yaml.FullLoader)
 
-            manifest.add_file(
-                relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
-                column_header=header_string,
-                validate_col_name_length=False,
-            )
+    for table in config_file["create_tables"]:
+        df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
+        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
+        write_csv_rename(df, file_path)
+        file_path = file_path.with_suffix(".csv")
+        header_string = read_header(file_path)
+
+        manifest.add_file(
+            relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
+            column_header=header_string,
+            validate_col_name_length=False,
+        )
     manifest.write_manifest()
 
 
