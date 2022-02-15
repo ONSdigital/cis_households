@@ -17,15 +17,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
-  consent: 5.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 1.0
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1994-09-20 00:35:00.000000'
   days_since_think_had_covid: null
@@ -235,15 +235,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent: 1.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '1997-01-25 05:44:00.000000'
   days_since_think_had_covid: null
@@ -454,15 +454,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Felixstowe
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 0.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 1.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
@@ -671,15 +671,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent: 5.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 1.0
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
@@ -890,15 +890,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 0.0
   consent_5_visits: 1.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Avon
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: null
@@ -1104,15 +1104,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: Marlow
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 0.0
   consent_5_visits: 0.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 0.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: null
@@ -1321,15 +1321,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: Barnet
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 0.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: County Armagh
   date_of_birth: '1988-12-04 21:47:00.000000'
   days_since_think_had_covid: null
@@ -1535,15 +1535,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent: 0.0
   consent_16_visits: 0.0
   consent_1_visit: 0.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Suffolk
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: null
@@ -1755,15 +1755,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1985-09-10 20:39:00.000000'
   days_since_think_had_covid: null
@@ -1970,15 +1970,15 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
-  consent: 0.0
   consent_16_visits: 0.0
   consent_1_visit: 0.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   date_of_birth: '1986-06-28 11:38:00.000000'
   days_since_think_had_covid: null
