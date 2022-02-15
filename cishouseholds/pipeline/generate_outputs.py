@@ -1,11 +1,13 @@
 import subprocess
 from datetime import datetime
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
 
+import pandas as pd
 import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -16,12 +18,67 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
+from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
-from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+
+@register_pipeline_stage("report")
+def report(
+    unique_id_column: str,
+    error_column: str,
+    duplicate_row_flag_column: str,
+    processed_file_table: str,
+    invalid_files_table: str,
+    valid_survey_table: str,
+    invalid_survey_table: str,
+    output_directory: str,
+):
+    valid_df = extract_from_table(valid_survey_table)
+    invalid_df = extract_from_table(invalid_survey_table)
+    processed_file_log = extract_from_table(processed_file_table)
+    invalid_files_log = extract_from_table(invalid_files_table)
+    processed_file_count = processed_file_log.count()
+    invalid_files_count = invalid_files_log.count()
+    num_valid_survey_responses = valid_df.count()
+    num_invalid_survey_responses = invalid_df.count()
+    valid_df_errors = valid_df.select(unique_id_column, error_column)
+    invalid_df_errors = invalid_df.select(unique_id_column, error_column)
+
+    valid_df_errors = valid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    invalid_df_errors = (
+        invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    )
+
+    duplicated_df = valid_df.filter(F.col(duplicate_row_flag_column) > 1).union(
+        valid_df.filter(F.col(duplicate_row_flag_column) > 1)
+    )
+
+    counts_df = pd.DataFrame(
+        {
+            "dataset": ["processed_file_log", "invalid_file_log", "valid_survey_responses", "invalid_survey_responses"],
+            "count": [
+                processed_file_count,
+                invalid_files_count,
+                num_valid_survey_responses,
+                num_invalid_survey_responses,
+            ],
+        }
+    )
+
+    output = BytesIO()
+    with pd.ExcelWriter(output) as writer:
+        counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
+        valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
+        invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
+        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
+
+    write_string_to_file(
+        output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    )
 
 
 @register_pipeline_stage("record_level_interface")
@@ -39,7 +96,6 @@ def record_level_interface(input_table: str, csv_editing_file: str, unique_id_co
 def tables_to_csv(
     outgoing_directory,
     table_to_csv_config_file,
-    update_name_map,  # TODO: why was this not called before?
     category_map="default_category_map",
     dry_run=False,
 ):
@@ -82,44 +138,6 @@ def tables_to_csv(
                 validate_col_name_length=False,
             )
     manifest.write_manifest()
-
-
-@register_pipeline_stage("generate_outputs")
-def generate_outputs(table_to_csv_config_file):
-    config = get_config()
-    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
-    output_directory = Path(config["output_directory"]) / output_datetime
-    # TODO: Check that output dir exists
-
-    linked_df = extract_from_table(config["table_names"]["input"]["merged_antibody_swab"])
-
-    #    all_visits_df = extract_from_table("response_level_records")
-    #    participant_df = extract_from_table("participant_level_with_vaccination_data")
-
-    #    linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
-    linked_df = linked_df.withColumn(
-        "completed_visits_subset",
-        F.when(
-            (F.col("participant_visit_status") == "Completed")
-            | (F.col("blood_sample_barcode").isNotNull() | (F.col("swab_sample_barcode").isNotNull())),
-            True,
-        ).otherwise(False),
-    )
-    with open(table_to_csv_config_file) as file:
-        all_visits_output_df = map_output_values_and_column_names(
-            df=linked_df, column_name_map=file["column_map"], value_map_by_column=category_maps["default_category_map"]
-        )
-
-    complete_visits_output_df = all_visits_output_df.where(F.col("completed_visits_subset"))
-
-    write_csv_rename(
-        all_visits_output_df.drop("completed_visits_subset"),
-        output_directory / f"cishouseholds_all_visits_{output_datetime}",
-    )
-    write_csv_rename(
-        complete_visits_output_df.drop("completed_visits_subset"),
-        output_directory / f"cishouseholds_completed_visits_{output_datetime}",
-    )
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):

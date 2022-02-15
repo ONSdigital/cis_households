@@ -29,7 +29,7 @@ stages:
     include_invalid: True
     include_processed: True
 
-  - function: swab_delta_ETL
+  - function: swab_testKit_delta_ETL
     run: False
     resource_path: "hdfs:///ons/covserolink/landing_zone/swabs/ONS_GL_Report_*.csv"
     include_invalid: True
@@ -68,6 +68,7 @@ stages:
     run: False
     unioned_survey_table: unioned_survey_responses
     transformed_table: post_union_transformed_survey_responses
+    cohort_corrections_file:
 
   - function: validate_survey_responses
     run: False
@@ -79,7 +80,8 @@ stages:
     run: False
     blood_table: transformed_blood_test_data
     antibody_table: joined_blood_test_data
-    failed_blood: failed_blood_test_join
+    failed_blood_table: failed_blood_test_join
+    files_to_exclude_survey: []
 
 
   - function: merge_blood_ETL
@@ -91,17 +93,23 @@ stages:
       "antibody_merge_residuals",
       "antibody_merge_failed_records",
     ]
+    files_to_exclude_survey: []
+    files_to_exclude_blood: []
+
 
 
   - function: merge_swab_ETL
     run: False
     swab_table: transformed_swab_test_data
-    unioned_survey_table: merged_responses_antibody_data
+    merged_survey_table: merged_responses_antibody_data
     swab_output_tables: [
       "merged_responses_antibody_swab_data",
       "swab_merge_residuals",
       "swab_merge_failed_records",
     ]
+    files_to_exclude_survey: []
+    files_to_exclude_swab: []
+
 
   - funciton: join_vaccination_data
     run: False
@@ -111,7 +119,7 @@ stages:
 
 
   - function: process_post_merge
-    run: False
+    run: True
     merged_antibody_swab_table: merged_responses_antibody_swab_data
     imputed_values_table: imputed_value_lookup
     participant_records_table: participant_level_key_records
@@ -166,17 +174,30 @@ stages:
   - function: generate_outputs
     table_to_csv_config_file: examples/table_to_csv.yaml
     run: False
+    merged_antibody_swab_table: merged_responses_antibody_swab_data
+    output_directory: hdfs:///ons/covserolink/output_data
 
   - function: tables_to_csv
-    run: True
+    run: False
     update_name_map: unioned_responses_update_map
     category_map: iqvia_raw_category_map
     table_to_csv_config_file: examples/table_to_csv.yaml
     outgoing_directory: hdfs:///ons/covserolink/output_data
 
+  - function: report
+    run: True
+    unique_id_column: unique_participant_response_id
+    error_column: ERROR
+    duplicate_row_flag_column: duplicated_row_flag
+    processed_file_table: processed_filenames
+    invalid_files_table: error_file_log
+    valid_survey_table: validated_survey_responses
+    invalid_survey_table: erroneous_survey_responses
+    output_directory: hdfs:///ons/covserolink/output_data
+
 storage:
     database: covserolink_dev
     table_prefix: USER_
-    write_mode: append
+    write_mode: overwrite
 
-pyspark_session_size: l
+pyspark_session_size: xl

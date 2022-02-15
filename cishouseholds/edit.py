@@ -10,6 +10,57 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_face_covering_outside_of_home(
+    df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
+):
+    """
+    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    covered_enclosed_column
+    covered_work_column
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (
+                (F.col(covered_enclosed_column) == "Never")
+                & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
+            ),
+            "No",
+        )
+        .when(
+            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
+            "Yes, at work/school only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            "Yes, in other situations only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
+            "Yes, usually both Work/school/other",
+        )
+        .when(
+            (F.col(covered_enclosed_column) == "My face is already covered")
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            "My face is already covered",
+        )
+        .when(
+            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (F.col(covered_work_column) == "My face is already covered"),
+            "My face is already covered",
+        )
+        .otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
@@ -148,17 +199,17 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     csv = spark.read.csv(csv_filepath, header=True)
     csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
     cols = csv.columns[3:]
-    df = df.withColumnRenamed(id_column, "id")
     for col in cols:
-        copy = csv.filter(F.col(col) == 1)
-        copy = copy.drop(col).withColumnRenamed("old_value", col)
-        df = df.join(copy.select("id", "new_value", col), on=["id", col], how="left")
-        df = df.withColumn(col, F.when(~F.col("new_value").isNull(), F.col("new_value")).otherwise(F.col(col))).drop(
-            "new_value"
+        csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
+    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    for col in cols:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col(f"{col}_from_lookup") == 1) & (F.col(col) == F.col("old_value")), F.col("new_value")
+            ).otherwise(F.col(col)),
         )
-    df = df.withColumnRenamed("id", id_column)
-
-    return df
+    return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -307,6 +358,20 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
         ),
     )
 
+    return df
+
+
+def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
+    """
+    Map columns from column list with given value to null
+    Parameters
+    ----------
+    df
+    column_list
+    value
+    """
+    for col in column_list:
+        df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
     return df
 
 

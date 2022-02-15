@@ -37,10 +37,12 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import edit_multiple_columns_fill_forward
+from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
@@ -383,7 +385,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
     df = format_string_upper_and_clean(df, "work_main_job_title")
     df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
@@ -421,6 +423,34 @@ def union_dependent_transformations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = map_column_values_to_null(
+        df=df,
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "sex",
+            "ethnicity",
+            "work_sectors",
+            "work_health_care_v1_v2_raw",
+            "work_status_combined",
+            "work_status_v1",
+            "work_status_v2",
+            "work_location",
+            "visit_type",
+            "household_visit_status",
+            "participant_survey_status",
+            "is_self_isolating_detailed",
+            "illness_reduces_activity_or_ability",
+            "ability_to_socially_distance_at_work_or_school",
+            "transport_to_work_or_school",
+            "face_covering_work",
+            "contact_face_covering_workschool",
+            "face_covering_other_enclosed_places",
+            "other_antibody_test_location",
+            "withdrawal_reason",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_number_of_doses",
+        ],
+    )
     df = create_formatted_datetime_string_columns(df)
     df = impute_by_ordered_fill_forward(
         df=df,
@@ -521,6 +551,14 @@ def union_dependent_transformations(df):
         visit_date_column="visit_datetime",
         main_job_changed_column="work_main_job_changed",
     )
+
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date_string",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth_string", "ethnicity"],
+    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
@@ -545,10 +583,10 @@ def union_dependent_transformations(df):
         df=df,
         id="participant_id",
         fill_if_null="cis_covid_vaccine_received",
-        date="visit_date",
+        date="visit_datetime",
         column_fillforward_list=[
             "cis_covid_vaccine_date",
-            "cis_covid_vaccine_n_doses",
+            "cis_covid_vaccine_number_of_doses",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_type_other",
             "cis_covid_vaccine_received",

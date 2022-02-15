@@ -44,19 +44,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_paticicpants_not_consented
-  nullable: true
-  type: double
-- metadata: {}
-  name: reason_participants_not_consented
+  name: household_participants_not_consented_count
   nullable: true
   type: string
 - metadata: {}
-  name: not_present_household_count
+  name: household_participants_not_consented_reason
   nullable: true
   type: string
 - metadata: {}
-  name: not_present_household_reason
+  name: household_participants_not_present_count
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_participants_not_present_reason
   nullable: true
   type: string
 - metadata: {}
@@ -96,41 +96,41 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: household_members_over_2_years_and_not_present
+  name: any_household_members_over_2_years_and_not_present
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_age
+  name: person_1_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_2_age
+  name: person_2_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_3_age
+  name: person_3_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_4_age
+  name: person_4_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_5_age
+  name: person_5_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_6_age
+  name: person_6_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_7_age
+  name: person_7_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_8_age
+  name: person_8_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
@@ -807,4 +807,8 @@ fields:
   name: is_self_isolating
   nullable: true
   type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
 type: struct

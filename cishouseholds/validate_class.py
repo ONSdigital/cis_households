@@ -1,3 +1,4 @@
+from typing import Any
 from typing import List
 
 import pyspark.sql.functions as F
@@ -9,13 +10,20 @@ class SparkValidate:
     def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
         self.dataframe = dataframe
         self.error_column = error_column_name
+
+        if error_column_name in dataframe.columns:
+            raise ValueError(f"A column by this name ({error_column_name}) already exists please choose another name")
+
         self.dataframe = self.dataframe.withColumn(self.error_column, F.array())
+        self.error_column_list: List[Any] = []
 
         self.functions = {
             "contains": {"function": self.contains, "error_message": "{} should contain '{}'"},
-            "isin": {"function": self.isin, "error_message": "{} the row is '{}'"},
+            "starts_with": {"function": self.contains, "error_message": "{} should start with '{}'"},
+            "matches": {"function": self.contains, "error_message": "{} should match '{}'"},
+            "isin": {"function": self.isin, "error_message": "{} should be in [{}]"},
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
-            "between": {"function": self.between, "error_message": "{} should be in between {} and {}"},
+            "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
         }
@@ -26,7 +34,18 @@ class SparkValidate:
     def set_error_message(self, function_name, new_error_message):
         self.functions[function_name]["error_message"] = new_error_message
 
+    def produce_error_column(self):
+        self.dataframe = self.dataframe.withColumn(
+            self.error_column, F.concat(F.col(self.error_column), F.array([col for col in self.error_column_list]))
+        )
+        self.dataframe = self.dataframe.withColumn(
+            self.error_column, F.expr(f"filter({self.error_column}, x -> x is not null)")
+        )
+        self.error_column_list = []
+
     def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
+        if len(self.error_column_list) != 0:
+            self.produce_error_column()
         if len(selected_errors) == 0 or any:
             min_size = 1
         else:
@@ -51,22 +70,6 @@ class SparkValidate:
             check = self.functions[list(method.keys())[0]]
             self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-    def validate_categories(self, checks):
-        self.dataframe = self.dataframe.withColumn(
-            self.error_column,
-            F.concat(
-                F.col(self.error_column),
-                F.array(
-                    [
-                        F.when(F.col(col_name).isin(possible_values), None).otherwise(
-                            f"{col_name} contains prohibited value"
-                        )
-                        for col_name, possible_values in checks.items()
-                    ]
-                ),
-            ),
-        )
-
     def validate(self, operations):
         for method, params in operations.items():
             if type(params) != list:
@@ -77,31 +80,13 @@ class SparkValidate:
     def validate_udl(self, logic, error_message):
         self.execute_check(logic, error_message)
 
-    # def validate_unique(self, column_set):
-    #     for item in column_set:
-    #         error_message = item["error"]
-    #         column_list = self.dataframe.columns if item["column_list"] == "all" else item["column_list"]
-    #         self.dataframe = self.dataframe.join(
-    #             self.dataframe.groupBy(column_list).agg((F.count("*") > 1).cast("int").alias("duplicate_indicator")),
-    #             on=column_list,
-    #             how="inner",
-    #         )
-    #         check = F.when(F.col("duplicate_indicator") == 0, True).otherwise(False)
-    #         self.execute_check(check, error_message)
-    #         self.dataframe = self.dataframe.drop("duplicate_indicator")
-
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
 
-        self.dataframe = self.dataframe.withColumn(
-            self.error_column,
-            F.when(~check, F.array_union(F.col(self.error_column), F.array(F.lit(error_message)))).otherwise(
-                F.col(self.error_column)
-            ),
-        )
+        self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
-    def duplicated_flag(self, column_flag_name):
+    def flag_duplicates(self, column_flag_name):
         self.dataframe = (
             self.dataframe.groupBy(*self.dataframe.columns).count().withColumnRenamed("count", column_flag_name)
         )
@@ -116,29 +101,40 @@ class SparkValidate:
         )
 
     @staticmethod
-    def contains(error_message, column_name, contains):
-        error_message = error_message.format(column_name, contains)
-        return F.col(column_name).rlike(contains), error_message
+    def contains(error_message, column_name, pattern):
+        error_message = error_message.format(column_name, pattern)
+        return F.col(column_name).rlike(pattern), error_message
+
+    @staticmethod
+    def starts_with(error_message, column_name, pattern):
+        error_message = error_message.format(column_name, pattern)
+        return F.col(column_name).startswith(pattern), error_message
 
     @staticmethod
     def isin(error_message, column_name, options):
-        error_message = error_message.format(column_name, ", ".join(options))
+        error_message = error_message.format(column_name, "'" + "', '".join(options) + "'")
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
     def between(error_message, column_name, range):
-        lb = (
+        lower_bound = (
             (F.col(column_name) >= range["lower_bound"]["value"])
             if range["lower_bound"]["inclusive"]
             else (F.col(column_name) > range["lower_bound"]["value"])
         )
-        ub = (
+        upper_bound = (
             (F.col(column_name) <= range["upper_bound"]["value"])
             if range["upper_bound"]["inclusive"]
             else (F.col(column_name) < range["upper_bound"]["value"])
         )
-        error_message = error_message.format(column_name, *range)
-        return lb & ub, error_message
+        error_message = error_message.format(
+            column_name,
+            range["lower_bound"]["value"],
+            " (inclusive)" if range["lower_bound"]["inclusive"] else "",
+            range["upper_bound"]["value"],
+            " (inclusive)" if range["upper_bound"]["inclusive"] else "",
+        )
+        return lower_bound & upper_bound, error_message
 
     # Non column wise functions
     @staticmethod
