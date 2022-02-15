@@ -19,6 +19,7 @@ from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
@@ -30,42 +31,57 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 @register_pipeline_stage("report")
 def report(
     unique_id_column: str,
-    error_column: str,
+    validation_failure_flag_column: str,
     duplicate_row_flag_column: str,
-    processed_file_table: str,
-    invalid_files_table: str,
-    valid_survey_table: str,
-    invalid_survey_table: str,
+    valid_survey_responses_table: str,
+    invalid_survey_responses_table: str,
+    filtered_survey_responses_table: str,
     output_directory: str,
 ):
-    valid_df = extract_from_table(valid_survey_table)
-    invalid_df = extract_from_table(invalid_survey_table)
-    processed_file_log = extract_from_table(processed_file_table)
-    invalid_files_log = extract_from_table(invalid_files_table)
-    processed_file_count = processed_file_log.count()
-    invalid_files_count = invalid_files_log.count()
-    num_valid_survey_responses = valid_df.count()
-    num_invalid_survey_responses = invalid_df.count()
-    valid_df_errors = valid_df.select(unique_id_column, error_column)
-    invalid_df_errors = invalid_df.select(unique_id_column, error_column)
+    valid_df = extract_from_table(valid_survey_responses_table)
+    invalid_df = extract_from_table(invalid_survey_responses_table)
+    filtered_df = extract_from_table(filtered_survey_responses_table)
+    # processed_file_log = extract_from_table("processed_filenames")
+    invalid_files_count = 0
+    if check_table_exists("error_file_log"):
+        invalid_files_log = extract_from_table("error_file_log")
+        invalid_files_count = invalid_files_log.count()
 
-    valid_df_errors = valid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    valid_survey_responses_count = valid_df.count()
+    invalid_survey_responses_count = invalid_df.count()
+    filtered_survey_responses_count = filtered_df.count()
+
+    valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
+    invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
+
+    valid_df_errors = (
+        valid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
+        .groupBy("Validation check failures")
+        .count()
+    )
     invalid_df_errors = (
-        invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+        invalid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
+        .groupBy("Validation check failures")
+        .count()
     )
 
-    duplicated_df = valid_df.filter(F.col(duplicate_row_flag_column) > 1).union(
-        valid_df.filter(F.col(duplicate_row_flag_column) > 1)
+    duplicated_df = valid_df.select(unique_id_column, duplicate_row_flag_column).filter(
+        F.col(duplicate_row_flag_column) > 1
     )
 
     counts_df = pd.DataFrame(
         {
-            "dataset": ["processed_file_log", "invalid_file_log", "valid_survey_responses", "invalid_survey_responses"],
+            "dataset": [
+                "invalid input files",
+                "valid survey responses",
+                "invalid survey responses",
+                "filtered survey responses",
+            ],
             "count": [
-                processed_file_count,
                 invalid_files_count,
-                num_valid_survey_responses,
-                num_invalid_survey_responses,
+                valid_survey_responses_count,
+                filtered_survey_responses_count,
+                invalid_survey_responses_count,
             ],
         }
     )
@@ -73,9 +89,13 @@ def report(
     output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
-        valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
-        invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
-        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
+        valid_df_errors.toPandas().to_excel(
+            writer, sheet_name="validation check failures in valid dataset", index=False
+        )
+        invalid_df_errors.toPandas().to_excel(
+            writer, sheet_name="validation check failures in invalid dataset", index=False
+        )
+        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
@@ -83,14 +103,20 @@ def report(
 
 
 @register_pipeline_stage("record_level_interface")
-def record_level_interface(input_table: str, csv_editing_file: str, unique_id_column: str, unique_id_list: List):
-    if input_table != "" and csv_editing_file != "":
-        input_df = extract_from_table(input_table)
-        input_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+def record_level_interface(
+    survey_responses_table: str,
+    csv_editing_file: str,
+    unique_id_column: str,
+    unique_id_list: List,
+    edited_survey_responses_table: str,
+    filtered_survey_responses_table: str,
+):
+    input_df = extract_from_table(survey_responses_table)
+    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+    update_table(edited_df, edited_survey_responses_table, "overwrite")
 
-    if unique_id_list != [] and unique_id_column != "":
-        input_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
-        update_table(input_df, f"custom_filtered_{input_table}", "overwit+e")
+    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+    update_table(filtered_df, filtered_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("tables_to_csv")
