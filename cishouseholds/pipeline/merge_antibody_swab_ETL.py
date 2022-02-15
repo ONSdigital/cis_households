@@ -14,17 +14,17 @@ from cishouseholds.pipeline.validation_ETL import validation_ETL
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(**kwargs):
+def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
     """
     survey_df_list = []
 
     for version in ["0", "1", "2"]:
-        survey_table = kwargs["transformed_survey_table"].replace("*", version)
+        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    union_dataframes_to_hive(kwargs["unioned_survey_table"], survey_df_list)
+    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
