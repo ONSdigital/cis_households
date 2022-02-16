@@ -42,7 +42,9 @@ def execute_union_dependent_transformations(**kwargs):
 def validate_survey_responses(**kwargs):
     unioned_survey_responses = extract_from_table(kwargs["unioned_survey_table"])
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
-        unioned_survey_responses, **kwargs["error_column"]
+        df=unioned_survey_responses,
+        validation_check_failure_column_name=kwargs["error_column"],
+        duplicate=kwargs["duplicate_row_flag_column"],
     )
     update_table(valid_survey_responses, kwargs["valid_survey_table"], mode_overide="overwrite")
     update_table(erroneous_survey_responses, kwargs["invalid_survey_table"], mode_overide="overwrite")

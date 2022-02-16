@@ -99,8 +99,9 @@ def validation_calls(SparkVal):
     )
 
 
-def validation_ETL(df: DataFrame, validation_check_failure_column_name: str):
+def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, duplicated_row_flag_column: str):
     SparkVal = SparkValidate(dataframe=df, error_column_name=validation_check_failure_column_name)
+    SparkVal.flag_duplicates(duplicated_row_flag_column)
     validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
