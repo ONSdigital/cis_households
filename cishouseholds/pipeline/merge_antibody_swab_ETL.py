@@ -37,13 +37,16 @@ def execute_union_dependent_transformations(**kwargs):
 @register_pipeline_stage("validate_survey_responses")
 def validate_survey_responses(
     survey_responses_table: str,
+    duplicate_count_column_name: str,
     validation_failure_flag_column: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
 ):
     unioned_survey_responses = extract_from_table(survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
-        unioned_survey_responses, validation_failure_flag_column
+        df=unioned_survey_responses,
+        validation_check_failure_column_name=validation_failure_flag_column,
+        duplicate_count_column_name=duplicate_count_column_name,
     )
     update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
