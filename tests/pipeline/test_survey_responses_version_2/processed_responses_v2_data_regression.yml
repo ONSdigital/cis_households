@@ -43,7 +43,6 @@
   cis_flu_vaccine_received: null
   city: Luton
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -56,10 +55,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Avon
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
@@ -337,7 +337,6 @@
   cis_flu_vaccine_received: 'No'
   city: Hove
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -350,10 +349,11 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
@@ -629,7 +629,6 @@
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -642,10 +641,11 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
@@ -924,7 +924,6 @@
   cis_flu_vaccine_received: 'No'
   city: Sittingbourne
   confirm_received_vouchers: 'true'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -937,10 +936,11 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
@@ -1223,7 +1223,6 @@
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1236,10 +1235,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
@@ -1520,7 +1520,6 @@
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   confirm_received_vouchers: 'true'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1533,10 +1532,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
@@ -1817,7 +1817,6 @@
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1830,10 +1829,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: null
   days_since_think_had_covid: -3.0
@@ -2113,7 +2113,6 @@
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2126,10 +2125,11 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
   days_since_think_had_covid: 4.0
@@ -2412,7 +2412,6 @@
   cis_flu_vaccine_received: 'No'
   city: Barnet
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2425,10 +2424,11 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
@@ -2715,7 +2715,6 @@
   cis_flu_vaccine_received: 'Yes'
   city: Marlow
   confirm_received_vouchers: 'true'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2728,10 +2727,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: Northamptonshire
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
