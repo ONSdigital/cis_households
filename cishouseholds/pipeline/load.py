@@ -177,7 +177,7 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
-    file_lengths = df.groupBy(filename_column).count().collect()[1][0]
+    file_lengths = df.groupBy(filename_column).count().collect()[1]
     schema = """
         run_id integer,
         file_type string,
