@@ -48,13 +48,8 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_udl(
         logic=(
-            (
-                (
-                    (F.col("cis_covid_vaccine_type") == "Other / specify")
-                    & F.col("cis_covid_vaccine_type_other").isNull()
-                )
-                | (F.col("cis_covid_vaccine_type") != "Other / specify")
-            ),
+            ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
+            | (F.col("cis_covid_vaccine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
     )
