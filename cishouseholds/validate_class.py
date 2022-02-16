@@ -86,9 +86,11 @@ class SparkValidate:
 
         self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
-    def flag_duplicates(self, column_flag_name):
+    def count_complete_duplicates(self, duplicate_count_column_name):
         self.dataframe = (
-            self.dataframe.groupBy(*self.dataframe.columns).count().withColumnRenamed("count", column_flag_name)
+            self.dataframe.groupBy(*self.dataframe.columns)
+            .count()
+            .withColumnRenamed("count", duplicate_count_column_name)
         )
 
     @staticmethod
