@@ -1,4 +1,3 @@
-import re
 from itertools import chain
 from typing import List
 from typing import Mapping
@@ -9,36 +8,6 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-def update_household_count(
-    df: DataFrame,
-    column_name_to_update: str,
-    infant_column_pattern: str,
-    infant_column_pattern_with_exceptions: str,
-    participant_column_pattern: str,
-    non_consented_count: str,
-):
-    """ """
-    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
-    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
-    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
-
-    df = df.withColumn("INFANT_ARRAY", F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns]))
-    df = df.withColumn(
-        "INFANT_EXCEPTIONS_ARRAY",
-        F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]),
-    )
-    infant_num = F.when(
-        F.size(F.array_remove(F.col("INFANT_EXCEPTIONS_ARRAY"), 0)) == len(infant_column_pattern_with_exceptions), 0
-    ).otherwise(F.size(F.array_remove(F.col("INFANT_ARRAY"), 0)))
-    df = df.withColumn(
-        "PARTICIPANT_ARRAY", F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
-    )
-    participant_num = F.size(F.array_remove(F.col("PARTICIPANT_ARRAY"), 0))
-
-    df = df.withColumn(column_name_to_update, infant_num + participant_num + F.col(non_consented_count))
-    return df.drop("INFANT_ARRAY", "PARTICIPANT_ARRAY", "INFANT_EXCEPTIONS_ARRAY")
 
 
 def update_face_covering_outside_of_home(
