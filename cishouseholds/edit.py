@@ -7,7 +7,6 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -188,7 +187,9 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
-    Update specific cell values from a map contained in a csv file
+    Update specific cell values from a map contained in a csv file.
+    Allows a match on Null old values.
+
     Parameters
     ----------
     df
@@ -202,14 +203,12 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     cols = csv.columns[3:]
     for col in cols:
         csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
-    csv = csv.withColumnRenamed("id", id_column)
-    # df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    df = null_safe_join(df, csv, [id_column], [])
+    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
     for col in cols:
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup") == 1) & (F.col(col) == F.col("old_value")), F.col("new_value")
+                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
             ).otherwise(F.col(col)),
         )
     return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
