@@ -48,7 +48,6 @@ from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
-from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -219,9 +218,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
         visit_date_column="visit_datetime",
         visit_id_column="visit_id",
-    )
-    df = impute_visit_datetime(
-        df=df, visit_datetime_column="visit_datetime", sampled_datetime_column="samples_taken_datetime"
     )
 
     # TODO: Add in once dependencies are derived
@@ -733,7 +729,6 @@ def create_formatted_datetime_string_columns(df):
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
-        "improved_visit_datetime_string": "improved_visit_date",
     }
     date_format_string_list = [
         "date_of_birth",
@@ -761,7 +756,6 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy",
             lower_case=True,
         )
-
     for column_name_to_assign in date_format_string_list:
         df = assign_column_to_date_string(
             df=df,
@@ -770,7 +764,6 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy",
             lower_case=True,
         )
-
     for column_name_to_assign in datetime_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
@@ -779,4 +772,5 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
+
     return df
