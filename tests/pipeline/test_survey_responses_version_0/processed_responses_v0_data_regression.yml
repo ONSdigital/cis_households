@@ -3,6 +3,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -13,15 +14,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: null
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 0.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 1.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: null
@@ -34,8 +35,13 @@
   gender: Male
   hh_id: '736535270957'
   hospital_last_28_days_other_household_member: 'Yes'
-  household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: I'm gonna make him an offer he can't
+    refuse.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: I'm gonna make him an offer he can't
+    refuse.
   infant_1_age: 0.0
   infant_2_age: 7.0
   infant_3_age: 2.0
@@ -52,36 +58,33 @@
   last_suspected_covid_contact_location: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   no_email_address: 1.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: I'm gonna make him an offer he can't refuse.
   ons_household_id: '736535270957'
   outward_postcode: DD7O
   participant_id: DHR-350245644249
   participant_visit_status: null
-  person_1_age: 8.0
   person_1_not_consenting_age: 49.0
+  person_1_not_present_age: '8'
   person_1_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_2_age: 63.0
   person_2_not_consenting_age: 17.0
+  person_2_not_present_age: '63'
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_3_age: 53.0
   person_3_not_consenting_age: 44.0
+  person_3_not_present_age: '53'
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_4_age: 48.0
   person_4_not_consenting_age: 89.0
+  person_4_not_present_age: '48'
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_5_age: 68.0
   person_5_not_consenting_age: 26.0
+  person_5_not_present_age: '68'
   person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_6_age: 64.0
   person_6_not_consenting_age: 17.0
+  person_6_not_present_age: '64'
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_7_age: 23.0
   person_7_not_consenting_age: 16.0
+  person_7_not_present_age: '23'
   person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_age: 17.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '17'
   person_8_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
   person_9_not_consenting_age: 25.0
@@ -90,7 +93,6 @@
   phase: Mama always said life was like a box of chocolates. You never know what you're
     gonna get.
   postcode: DD7O 7LP
-  reason_participants_not_consented: I'm gonna make him an offer he can't refuse.
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-08 20:30:26.000000'
   sex: Female
@@ -174,6 +176,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: null
@@ -184,15 +187,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
-  consent: 1.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 0.0
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: null
@@ -205,8 +208,11 @@
   gender: null
   hh_id: '167403959807'
   hospital_last_28_days_other_household_member: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Let them eat cake.
   infant_1_age: 0.0
   infant_2_age: 8.0
   infant_3_age: 3.0
@@ -222,46 +228,42 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Here's looking at you, kid.
   no_email_address: 1.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Let them eat cake.
   ons_household_id: '167403959807'
   outward_postcode: null
   participant_id: DHR-750309883089
   participant_visit_status: Scheduled
-  person_1_age: 79.0
   person_1_not_consenting_age: 38.0
+  person_1_not_present_age: '79'
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_age: null
   person_2_not_consenting_age: 67.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 61.0
   person_3_not_consenting_age: 90.0
+  person_3_not_present_age: '61'
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_4_age: 12.0
   person_4_not_consenting_age: null
+  person_4_not_present_age: '12'
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_age: 52.0
   person_5_not_consenting_age: 31.0
+  person_5_not_present_age: '52'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: 72.0
   person_6_not_consenting_age: 22.0
+  person_6_not_present_age: '72'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_7_age: 17.0
   person_7_not_consenting_age: 41.0
+  person_7_not_present_age: '17'
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_8_age: null
   person_8_not_consenting_age: 25.0
+  person_8_not_present_age: null
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_9_not_consenting_age: 84.0
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   phase: Houston, we have a problem.
   postcode: null
-  reason_participants_not_consented: Frankly, my dear, I don't give a damn.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
   sex: null
@@ -345,6 +347,7 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
@@ -355,15 +358,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent: 5.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 1.0
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
@@ -376,8 +379,12 @@
   gender: null
   hh_id: '602276804025'
   hospital_last_28_days_other_household_member: 'No'
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Houston, we have a problem.
   infant_1_age: 0.0
   infant_2_age: 8.0
   infant_3_age: null
@@ -394,47 +401,42 @@
   last_suspected_covid_contact_location: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   no_email_address: 1.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Houston, we have a problem.
   ons_household_id: '602276804025'
   outward_postcode: null
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
-  person_1_age: 74.0
   person_1_not_consenting_age: 67.0
+  person_1_not_present_age: '74'
   person_1_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_2_age: null
   person_2_not_consenting_age: 89.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_age: 64.0
   person_3_not_consenting_age: 50.0
+  person_3_not_present_age: '64'
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_4_age: 14.0
   person_4_not_consenting_age: 56.0
+  person_4_not_present_age: '14'
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_age: 30.0
   person_5_not_consenting_age: 53.0
+  person_5_not_present_age: '30'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_6_age: null
   person_6_not_consenting_age: 4.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_7_age: null
   person_7_not_consenting_age: 26.0
+  person_7_not_present_age: null
   person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_8_age: 55.0
   person_8_not_consenting_age: null
+  person_8_not_present_age: '55'
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_9_not_consenting_age: 9.0
   person_9_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   phase: Here's looking at you, kid.
   postcode: null
-  reason_participants_not_consented: '"You''ve got to ask yourself one question: ""Do
-    I feel lucky?"" Well, do ya? Punk!"'
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   sex: null
@@ -515,6 +517,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -525,15 +528,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Saltash
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 0.0
   consent_5_visits: 1.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 0.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-01-25 05:44:00.000000'
   days_since_think_had_covid: null
@@ -546,8 +549,13 @@
   gender: Male
   hh_id: '558190156218'
   hospital_last_28_days_other_household_member: 'Yes'
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Those who refuse to learn from history
+    are condemned to repeat it.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   infant_1_age: 0.0
   infant_2_age: 6.0
   infant_3_age: 3.0
@@ -563,46 +571,40 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: I'm gonna make him an offer he can't refuse.
   no_email_address: 0.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
-    down this wall!
   ons_household_id: '558190156218'
   outward_postcode: null
   participant_id: DHR-229883187696
   participant_visit_status: Patient did not attend
-  person_1_age: 27.0
   person_1_not_consenting_age: 40.0
+  person_1_not_present_age: '27'
   person_1_reason_for_not_consenting: Elementary, my dear Watson.
-  person_2_age: 38.0
   person_2_not_consenting_age: 43.0
+  person_2_not_present_age: '38'
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_age: 62.0
   person_3_not_consenting_age: 73.0
+  person_3_not_present_age: '62'
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_4_age: 56.0
   person_4_not_consenting_age: 7.0
+  person_4_not_present_age: '56'
   person_4_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_5_age: 50.0
   person_5_not_consenting_age: 58.0
+  person_5_not_present_age: '50'
   person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_6_age: null
   person_6_not_consenting_age: 75.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_7_age: 39.0
   person_7_not_consenting_age: 61.0
+  person_7_not_present_age: '39'
   person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_8_age: 60.0
   person_8_not_consenting_age: 18.0
+  person_8_not_present_age: '60'
   person_8_reason_for_not_consenting: Here's looking at you, kid.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: They call me *Mister* Tibbs!
   phase: Houston, we have a problem.
   postcode: null
-  reason_participants_not_consented: Those who refuse to learn from history are condemned
-    to repeat it.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
   sex: Female
@@ -682,6 +684,7 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: 'Yes'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -692,15 +695,15 @@
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent: 1.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 0.0
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: null
@@ -713,8 +716,12 @@
   gender: Female
   hh_id: '769043821442'
   hospital_last_28_days_other_household_member: 'No'
-  household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'Yes'
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Mama always said life was like a box
+    of chocolates. You never know what you're gonna get.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Frankly, my dear, I don't give a damn.
   infant_1_age: 0.0
   infant_2_age: null
   infant_3_age: null
@@ -730,49 +737,44 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Frankly, my dear, I don't give a damn.
   ons_household_id: '769043821442'
   outward_postcode: null
   participant_id: DHR-449957129557
   participant_visit_status: null
-  person_1_age: 82.0
   person_1_not_consenting_age: 30.0
+  person_1_not_present_age: '82'
   person_1_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_2_age: 22.0
   person_2_not_consenting_age: 73.0
+  person_2_not_present_age: '22'
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_age: 71.0
   person_3_not_consenting_age: 74.0
+  person_3_not_present_age: '71'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_age: 37.0
   person_4_not_consenting_age: 72.0
+  person_4_not_present_age: '37'
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_age: 14.0
   person_5_not_consenting_age: 80.0
+  person_5_not_present_age: '14'
   person_5_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_6_age: 79.0
   person_6_not_consenting_age: 20.0
+  person_6_not_present_age: '79'
   person_6_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_7_age: 74.0
   person_7_not_consenting_age: 42.0
+  person_7_not_present_age: '74'
   person_7_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_8_age: 2.0
   person_8_not_consenting_age: 73.0
+  person_8_not_present_age: '2'
   person_8_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_9_not_consenting_age: 2.0
   person_9_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   phase: Frankly, my dear, I don't give a damn.
   postcode: null
-  reason_participants_not_consented: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-04 14:19:49.000000'
   sex: Male
@@ -851,6 +853,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -861,15 +864,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: Hove
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 1.0
   consent_5_visits: 1.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 0.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Derbyshire
   date_of_birth: '1985-09-10 20:39:00.000000'
   days_since_think_had_covid: null
@@ -882,8 +885,12 @@
   gender: Male
   hh_id: '105638762102'
   hospital_last_28_days_other_household_member: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Let them eat cake.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Ask not what your country can do for
+    you; ask what you can do for your country.
   infant_1_age: 0.0
   infant_2_age: 4.0
   infant_3_age: 7.0
@@ -899,41 +906,37 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Ask not what your country can do for you; ask what
-    you can do for your country.
   ons_household_id: '105638762102'
   outward_postcode: NC0C
   participant_id: DHR-848695986758
   participant_visit_status: null
-  person_1_age: 6.0
   person_1_not_consenting_age: 39.0
+  person_1_not_present_age: '6'
   person_1_reason_for_not_consenting: Let them eat cake.
-  person_2_age: null
   person_2_not_consenting_age: 59.0
+  person_2_not_present_age: null
   person_2_reason_for_not_consenting: Here's looking at you, kid.
-  person_3_age: 54.0
   person_3_not_consenting_age: 76.0
+  person_3_not_present_age: '54'
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_4_age: 21.0
   person_4_not_consenting_age: null
+  person_4_not_present_age: '21'
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_age: 64.0
   person_5_not_consenting_age: 28.0
+  person_5_not_present_age: '64'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_6_age: 63.0
   person_6_not_consenting_age: 52.0
+  person_6_not_present_age: '63'
   person_6_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_7_age: 72.0
   person_7_not_consenting_age: 11.0
+  person_7_not_present_age: '72'
   person_7_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_8_age: 60.0
   person_8_not_consenting_age: 64.0
+  person_8_not_present_age: '60'
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_9_not_consenting_age: 46.0
@@ -941,7 +944,6 @@
     You never know what you're gonna get.
   phase: Elementary, my dear Watson.
   postcode: NC0C 6UK
-  reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-01 19:43:35.000000'
   sex: Male
@@ -1023,6 +1025,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1033,15 +1036,15 @@
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: Felixstowe
-  consent: 1.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 0.0
   consent_contact_extra_research: 0.0
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
@@ -1054,8 +1057,12 @@
   gender: Female
   hh_id: '826911152672'
   hospital_last_28_days_other_household_member: 'No'
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Let them eat cake.
+  household_participants_not_present_count: '4'
+  household_participants_not_present_reason: Ask not what your country can do for
+    you; ask what you can do for your country.
   infant_1_age: 0.0
   infant_2_age: 6.0
   infant_3_age: 7.0
@@ -1071,47 +1078,42 @@
   last_suspected_covid_contact_location: Ask not what your country can do for you;
     ask what you can do for your country.
   no_email_address: 0.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: '4'
-  not_present_household_reason: Ask not what your country can do for you; ask what
-    you can do for your country.
   ons_household_id: '826911152672'
   outward_postcode: null
   participant_id: DHR-851138788221
   participant_visit_status: Re-scheduled
-  person_1_age: 7.0
   person_1_not_consenting_age: 83.0
+  person_1_not_present_age: '7'
   person_1_reason_for_not_consenting: Houston, we have a problem.
-  person_2_age: 24.0
   person_2_not_consenting_age: 63.0
+  person_2_not_present_age: '24'
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 49.0
   person_3_not_consenting_age: 70.0
+  person_3_not_present_age: '49'
   person_3_reason_for_not_consenting: Here's looking at you, kid.
-  person_4_age: 21.0
   person_4_not_consenting_age: 0.0
+  person_4_not_present_age: '21'
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_age: 64.0
   person_5_not_consenting_age: 69.0
+  person_5_not_present_age: '64'
   person_5_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_6_age: null
   person_6_not_consenting_age: 87.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: Here's looking at you, kid.
-  person_7_age: 49.0
   person_7_not_consenting_age: 68.0
+  person_7_not_present_age: '49'
   person_7_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_8_age: 19.0
   person_8_not_consenting_age: 55.0
+  person_8_not_present_age: '19'
   person_8_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
   person_9_not_consenting_age: 20.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
   phase: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   postcode: null
-  reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-05 04:57:22.000000'
   sex: null
@@ -1191,6 +1193,7 @@
   age_group_5_year_intervals: 30-34
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'Yes'
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
   bad_email: false
@@ -1201,15 +1204,15 @@
   bloods_taken: 0.0
   care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent: 16.0
   consent_16_visits: 1.0
   consent_1_visit: 1.0
   consent_5_visits: 0.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 0.0
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1988-12-04 21:47:00.000000'
   days_since_think_had_covid: null
@@ -1222,8 +1225,12 @@
   gender: null
   hh_id: '212633229661'
   hospital_last_28_days_other_household_member: 'No'
-  household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
+  household_participants_not_consented_count: '7'
+  household_participants_not_consented_reason: Mama always said life was like a box
+    of chocolates. You never know what you're gonna get.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Let them eat cake.
   infant_1_age: 0.0
   infant_2_age: 4.0
   infant_3_age: 2.0
@@ -1238,39 +1245,36 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_location: Elementary, my dear Watson.
   no_email_address: 1.0
-  no_paticicpants_not_consented: 7.0
-  not_present_household_count: null
-  not_present_household_reason: Let them eat cake.
   ons_household_id: '212633229661'
   outward_postcode: null
   participant_id: DHR-422525832950
   participant_visit_status: Scheduled
-  person_1_age: null
   person_1_not_consenting_age: 24.0
+  person_1_not_present_age: null
   person_1_reason_for_not_consenting: Houston, we have a problem.
-  person_2_age: 57.0
   person_2_not_consenting_age: 10.0
+  person_2_not_present_age: '57'
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_age: 38.0
   person_3_not_consenting_age: 41.0
+  person_3_not_present_age: '38'
   person_3_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_4_age: null
   person_4_not_consenting_age: 80.0
+  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_age: 91.0
   person_5_not_consenting_age: 46.0
+  person_5_not_present_age: '91'
   person_5_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_6_age: 89.0
   person_6_not_consenting_age: 83.0
+  person_6_not_present_age: '89'
   person_6_reason_for_not_consenting: Houston, we have a problem.
-  person_7_age: 1.0
   person_7_not_consenting_age: 27.0
+  person_7_not_present_age: '1'
   person_7_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_8_age: 62.0
   person_8_not_consenting_age: 56.0
+  person_8_not_present_age: '62'
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_9_not_consenting_age: 70.0
@@ -1278,8 +1282,6 @@
     ape.
   phase: Those who refuse to learn from history are condemned to repeat it.
   postcode: null
-  reason_participants_not_consented: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
   sex: Female
@@ -1359,6 +1361,7 @@
   age_group_5_year_intervals: 25-29
   age_group_7_intervals: 25-34
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1369,15 +1372,15 @@
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: null
   city: null
-  consent: 5.0
   consent_16_visits: 0.0
   consent_1_visit: 1.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 0.0
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: 0.0
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:35:00.000000'
   days_since_think_had_covid: null
@@ -1390,8 +1393,11 @@
   gender: Prefer not to say
   hh_id: '407714528425'
   hospital_last_28_days_other_household_member: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Let them eat cake.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Elementary, my dear Watson.
   infant_1_age: 0.0
   infant_2_age: 6.0
   infant_3_age: null
@@ -1408,44 +1414,40 @@
   last_suspected_covid_contact_location: Get your stinking paws off me, you damned
     dirty ape.
   no_email_address: 1.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Elementary, my dear Watson.
   ons_household_id: '407714528425'
   outward_postcode: null
   participant_id: DHR-621954781044
   participant_visit_status: Scheduled
-  person_1_age: 81.0
   person_1_not_consenting_age: 6.0
+  person_1_not_present_age: '81'
   person_1_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_2_age: 54.0
   person_2_not_consenting_age: 91.0
+  person_2_not_present_age: '54'
   person_2_reason_for_not_consenting: Elementary, my dear Watson.
-  person_3_age: 38.0
   person_3_not_consenting_age: 6.0
+  person_3_not_present_age: '38'
   person_3_reason_for_not_consenting: Elementary, my dear Watson.
-  person_4_age: 48.0
   person_4_not_consenting_age: 24.0
+  person_4_not_present_age: '48'
   person_4_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_5_age: 18.0
   person_5_not_consenting_age: 81.0
+  person_5_not_present_age: '18'
   person_5_reason_for_not_consenting: Houston, we have a problem.
-  person_6_age: 21.0
   person_6_not_consenting_age: 33.0
+  person_6_not_present_age: '21'
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_7_age: 61.0
   person_7_not_consenting_age: 76.0
+  person_7_not_present_age: '61'
   person_7_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_8_age: 29.0
   person_8_not_consenting_age: 56.0
+  person_8_not_present_age: '29'
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_9_not_consenting_age: 60.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
   phase: Houston, we have a problem.
   postcode: null
-  reason_participants_not_consented: Let them eat cake.
   received_shielding_letter: 'No'
   samples_taken_datetime: '2022-01-02 00:55:57.000000'
   sex: null
@@ -1526,6 +1528,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   bad_email: false
@@ -1536,15 +1539,15 @@
   bloods_taken: 1.0
   care_home_last_28_days_other_household_member: 'No'
   city: Inverurie
-  consent: 5.0
   consent_16_visits: 0.0
   consent_1_visit: 0.0
   consent_5_visits: 1.0
   consent_blood_test: 1.0
   consent_contact_extra_research: 0.0
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: 1.0
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspect_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1986-06-28 11:38:00.000000'
   days_since_think_had_covid: null
@@ -1557,8 +1560,12 @@
   gender: Prefer not to say
   hh_id: '846198988073'
   hospital_last_28_days_other_household_member: null
-  household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
+  household_participants_not_consented_count: null
+  household_participants_not_consented_reason: Ask not what your country can do for
+    you; ask what you can do for your country.
+  household_participants_not_present_count: null
+  household_participants_not_present_reason: Here's looking at you, kid.
   infant_1_age: null
   infant_2_age: 8.0
   infant_3_age: 5.0
@@ -1575,40 +1582,37 @@
   last_suspected_covid_contact_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 1.0
-  no_paticicpants_not_consented: null
-  not_present_household_count: null
-  not_present_household_reason: Here's looking at you, kid.
   ons_household_id: '846198988073'
   outward_postcode: null
   participant_id: DHR-263959191921
   participant_visit_status: Scheduled
-  person_1_age: 64.0
   person_1_not_consenting_age: 6.0
+  person_1_not_present_age: '64'
   person_1_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_2_age: 15.0
   person_2_not_consenting_age: 57.0
+  person_2_not_present_age: '15'
   person_2_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_3_age: 68.0
   person_3_not_consenting_age: 71.0
+  person_3_not_present_age: '68'
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_4_age: 75.0
   person_4_not_consenting_age: 55.0
+  person_4_not_present_age: '75'
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_5_age: 9.0
   person_5_not_consenting_age: 90.0
+  person_5_not_present_age: '9'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_age: null
   person_6_not_consenting_age: 31.0
+  person_6_not_present_age: null
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_7_age: 62.0
   person_7_not_consenting_age: 34.0
+  person_7_not_present_age: '62'
   person_7_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_8_age: 36.0
   person_8_not_consenting_age: 31.0
+  person_8_not_present_age: '36'
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   person_9_not_consenting_age: 75.0
@@ -1616,8 +1620,6 @@
     ape.
   phase: You're gonna need a bigger boat.
   postcode: null
-  reason_participants_not_consented: Ask not what your country can do for you; ask
-    what you can do for your country.
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-07 14:29:59.000000'
   sex: Male
