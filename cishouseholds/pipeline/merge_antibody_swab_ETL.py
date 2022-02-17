@@ -11,6 +11,7 @@ from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_transformations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -50,6 +51,45 @@ def validate_survey_responses(
     )
     update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
+):
+    """Edit columns based on mappings from lookup files. Often used to correct data quality issues."""
+    df = extract_from_table(input_table)
+
+    spark = get_or_create_spark_session()
+    cohort_lookup = spark.read.csv(
+        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
+    ).withColumnRenamed("participant_id", "cohort_participant_id")
+    travel_countries_lookup = spark.read.csv(
+        travel_countries_lookup_path,
+        header=True,
+        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    )
+
+    df = df.join(
+        cohort_lookup,
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+
+    df = df.join(
+        travel_countries_lookup,
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_blood_results")
