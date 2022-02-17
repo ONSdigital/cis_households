@@ -776,6 +776,5 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-    df = df.withColumn("improved_visit_datetime_string", F.concat(F.col("improved_visit_date"), F.lit(" 12:00:00")))
 
     return df
