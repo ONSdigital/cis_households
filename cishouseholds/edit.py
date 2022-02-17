@@ -583,3 +583,42 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
     return df
+
+
+def update_column_values_from_map_condition(
+    df: DataFrame,
+    condition_column: str,
+    column: str,
+    map: dict,
+    error_if_value_not_found: Optional[bool] = False,
+    default_value: Union[str, bool, int] = None,
+) -> DataFrame:
+    """
+    Convert column values matching map key to value
+    Parameters
+    ----------
+    df
+    column
+    map
+    error_if_value_not_found
+    default_value
+    """
+
+    if default_value is None:
+        default_value = F.col(column)
+
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+    if error_if_value_not_found:
+        temp_df = df.distinct()
+        values_set = set(temp_df.select(column).toPandas()[column].tolist())
+        map_set = set(map.keys())
+        if map_set != values_set:
+            missing = set(temp_df.select(column).toPandas()[column].tolist()) - set(map.keys())
+            raise LookupError(f"Insufficient mapping values: contents of:{missing} remains unmapped")
+        df = df.withColumn(column, mapping_expr[df[column]])
+    else:
+        df = df.withColumn(
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value),
+        )
+    return df
