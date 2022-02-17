@@ -31,7 +31,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 def report(
     unique_id_column: str,
     validation_failure_flag_column: str,
-    duplicate_row_flag_column: str,
+    duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
     filtered_survey_responses_table: str,
@@ -64,8 +64,8 @@ def report(
         .count()
     )
 
-    duplicated_df = valid_df.select(unique_id_column, duplicate_row_flag_column).filter(
-        F.col(duplicate_row_flag_column) > 1
+    duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
+        F.col(duplicate_count_column_name) > 1
     )
 
     counts_df = pd.DataFrame(
