@@ -8,6 +8,7 @@ from typing import Optional
 from typing import Union
 
 import pandas as pd
+import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -19,53 +20,67 @@ from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.manifest import Manifest
-from cishouseholds.pipeline.output_variable_name_map import output_name_map
-from cishouseholds.pipeline.output_variable_name_map import update_output_name_maps
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
 
 @register_pipeline_stage("report")
 def report(
     unique_id_column: str,
-    error_column: str,
-    duplicate_row_flag_column: str,
-    processed_file_table: str,
-    invalid_files_table: str,
-    valid_survey_table: str,
-    invalid_survey_table: str,
+    validation_failure_flag_column: str,
+    duplicate_count_column_name: str,
+    valid_survey_responses_table: str,
+    invalid_survey_responses_table: str,
+    filtered_survey_responses_table: str,
     output_directory: str,
 ):
-    valid_df = extract_from_table(valid_survey_table)
-    invalid_df = extract_from_table(invalid_survey_table)
-    processed_file_log = extract_from_table(processed_file_table)
-    invalid_files_log = extract_from_table(invalid_files_table)
-    processed_file_count = processed_file_log.count()
-    invalid_files_count = invalid_files_log.count()
-    num_valid_survey_responses = valid_df.count()
-    num_invalid_survey_responses = invalid_df.count()
-    valid_df_errors = valid_df.select(unique_id_column, error_column)
-    invalid_df_errors = invalid_df.select(unique_id_column, error_column)
+    valid_df = extract_from_table(valid_survey_responses_table)
+    invalid_df = extract_from_table(invalid_survey_responses_table)
+    filtered_df = extract_from_table(filtered_survey_responses_table)
+    # processed_file_log = extract_from_table("processed_filenames")
+    invalid_files_count = 0
+    if check_table_exists("error_file_log"):
+        invalid_files_log = extract_from_table("error_file_log")
+        invalid_files_count = invalid_files_log.count()
 
-    valid_df_errors = valid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+    valid_survey_responses_count = valid_df.count()
+    invalid_survey_responses_count = invalid_df.count()
+    filtered_survey_responses_count = filtered_df.count()
+
+    valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
+    invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
+
+    valid_df_errors = (
+        valid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
+        .groupBy("Validation check failures")
+        .count()
+    )
     invalid_df_errors = (
-        invalid_df_errors.withColumn("ERROR LIST", F.explode(error_column)).groupBy("ERROR LIST").count()
+        invalid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
+        .groupBy("Validation check failures")
+        .count()
     )
 
-    duplicated_df = valid_df.filter(F.col(duplicate_row_flag_column) > 1).union(
-        valid_df.filter(F.col(duplicate_row_flag_column) > 1)
+    duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
+        F.col(duplicate_count_column_name) > 1
     )
 
     counts_df = pd.DataFrame(
         {
-            "dataset": ["processed_file_log", "invalid_file_log", "valid_survey_responses", "invalid_survey_responses"],
+            "dataset": [
+                "invalid input files",
+                "valid survey responses",
+                "invalid survey responses",
+                "filtered survey responses",
+            ],
             "count": [
-                processed_file_count,
                 invalid_files_count,
-                num_valid_survey_responses,
-                num_invalid_survey_responses,
+                valid_survey_responses_count,
+                filtered_survey_responses_count,
+                invalid_survey_responses_count,
             ],
         }
     )
@@ -73,9 +88,13 @@ def report(
     output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
-        valid_df_errors.toPandas().to_excel(writer, sheet_name="errors in valid dataset", index=False)
-        invalid_df_errors.toPandas().to_excel(writer, sheet_name="errors in invalid dataset", index=False)
-        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated rows", index=False)
+        valid_df_errors.toPandas().to_excel(
+            writer, sheet_name="validation check failures in valid dataset", index=False
+        )
+        invalid_df_errors.toPandas().to_excel(
+            writer, sheet_name="validation check failures in invalid dataset", index=False
+        )
+        duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
@@ -83,27 +102,41 @@ def report(
 
 
 @register_pipeline_stage("record_level_interface")
-def record_level_interface(input_table: str, csv_editing_file: str, unique_id_column: str, unique_id_list: List):
-    if input_table != "" and csv_editing_file != "":
-        input_df = extract_from_table(input_table)
-        input_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+def record_level_interface(
+    survey_responses_table: str,
+    csv_editing_file: str,
+    unique_id_column: str,
+    unique_id_list: List,
+    edited_survey_responses_table: str,
+    filtered_survey_responses_table: str,
+):
+    input_df = extract_from_table(survey_responses_table)
+    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+    update_table(edited_df, edited_survey_responses_table, "overwrite")
 
-    if unique_id_list != [] and unique_id_column != "":
-        input_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
-        update_table(input_df, f"custom_filtered_{input_table}", "overwit+e")
+    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+    update_table(filtered_df, filtered_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
-    table_file_pairs, outgoing_directory, update_name_map=None, category_map="default_category_map", dry_run=False
+    outgoing_directory,
+    tables_to_csv_config_file,
+    category_map="default_category_map",
+    dry_run=False,
 ):
     """
+    Parameters
+    ----------
+    outgoing_directory
+    tables_to_csv_config_file
+    category_map
+    dry_run
+    use_table_to_csv_config
+
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
-
-    Takes a list of 2-item tuples or lists:
-        table_file_pairs:
-            - [HIVE_table_name, output_csv_file_name]
-
+    Takes a yaml file in which Hive table name and csv table name are defined as well as columns to be
+    included in the csv file by a select statement.
     Optionally also point to an update map to be used for the variable name mapping of these outputs.
     """
     output_datetime = datetime.today()
@@ -111,64 +144,25 @@ def tables_to_csv(
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-
-    name_map_dictionary = output_name_map.copy()
-    if update_name_map is not None:
-        name_map_dictionary.update(update_output_name_maps[update_name_map])
     category_map_dictionary = category_maps[category_map]
 
-    for table_name, output_file_name in table_file_pairs:
-        df = extract_from_table(table_name)
-        df = map_output_values_and_column_names(df, name_map_dictionary, category_map_dictionary)
+    with open(tables_to_csv_config_file) as f:
+        config_file = yaml.load(f, Loader=yaml.FullLoader)
 
-        file_path = file_directory / f"{output_file_name}_{output_datetime_str}"
+    for table in config_file["create_tables"]:
+        df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
+        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path)
         file_path = file_path.with_suffix(".csv")
         header_string = read_header(file_path)
+
         manifest.add_file(
             relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
             column_header=header_string,
             validate_col_name_length=False,
         )
-
     manifest.write_manifest()
-
-
-@register_pipeline_stage("generate_outputs")
-def generate_outputs(output_directory, merged_antibody_swab_table):
-    output_datetime = datetime.today().strftime("%Y%m%d-%H%M%S")
-    output_directory = Path(output_directory) / output_datetime
-    # TODO: Check that output dir exists
-
-    linked_df = extract_from_table(merged_antibody_swab_table)
-
-    #    all_visits_df = extract_from_table("response_level_records")
-    #    participant_df = extract_from_table("participant_level_with_vaccination_data")
-
-    #    linked_df = all_visits_df.join(participant_df, on="participant_id", how="left")
-    linked_df = linked_df.withColumn(
-        "completed_visits_subset",
-        F.when(
-            (F.col("participant_visit_status") == "Completed")
-            | (F.col("blood_sample_barcode").isNotNull() | (F.col("swab_sample_barcode").isNotNull())),
-            True,
-        ).otherwise(False),
-    )
-
-    all_visits_output_df = map_output_values_and_column_names(
-        linked_df, output_name_map, category_maps["default_category_map"]
-    )
-
-    complete_visits_output_df = all_visits_output_df.where(F.col("completed_visits_subset"))
-
-    write_csv_rename(
-        all_visits_output_df.drop("completed_visits_subset"),
-        output_directory / f"cishouseholds_all_visits_{output_datetime}",
-    )
-    write_csv_rename(
-        complete_visits_output_df.drop("completed_visits_subset"),
-        output_directory / f"cishouseholds_completed_visits_{output_datetime}",
-    )
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
