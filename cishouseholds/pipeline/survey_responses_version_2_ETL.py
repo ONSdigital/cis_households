@@ -733,7 +733,6 @@ def create_formatted_datetime_string_columns(df):
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
-        "improved_visit_datetime_string": "improved_visit_date",
     }
     date_format_string_list = [
         "date_of_birth",
@@ -761,7 +760,6 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy",
             lower_case=True,
         )
-
     for column_name_to_assign in date_format_string_list:
         df = assign_column_to_date_string(
             df=df,
@@ -770,7 +768,6 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy",
             lower_case=True,
         )
-
     for column_name_to_assign in datetime_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
@@ -779,4 +776,5 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
+
     return df
