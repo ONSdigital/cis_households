@@ -7,6 +7,7 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -201,7 +202,9 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     cols = csv.columns[3:]
     for col in cols:
         csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    csv = csv.withColumnRenamed("id", id_column)
+    # df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    df = null_safe_join(df, csv, [id_column], [])
     for col in cols:
         df = df.withColumn(
             col,
