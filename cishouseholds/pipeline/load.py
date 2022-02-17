@@ -177,14 +177,19 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+    file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
     schema = """
         run_id integer,
         file_type string,
         processed_filename string,
-        processed_datetime timestamp
+        processed_datetime timestamp,
+        file_row_count integer
     """
     run_id = get_run_id()
-    entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
+    entry = [
+        [run_id, file_type, filename, datetime.now(), row_count]
+        for filename, row_count in zip(newly_processed_files, file_lengths)
+    ]
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
