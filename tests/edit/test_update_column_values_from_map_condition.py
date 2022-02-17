@@ -41,12 +41,16 @@ def test_update_column_values_from_map_condition(spark_session):
         ],
         schema=schema,
     )
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
     output_df = update_column_values_from_map_condition(
         df=input_df,
         condition_column="condition_column",
         column="column_to_map",
         map=dict_map,
     )
-    import pdb;pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
     assert_df_equality(expected_df, output_df, ignore_nullable=True)
