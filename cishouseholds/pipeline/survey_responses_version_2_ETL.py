@@ -627,7 +627,7 @@ def union_dependent_transformations(df):
             "All tests failed": "All Tests failed",
         },
         "ethnicity": {
-            "Roma": "White-Gypsy or Irish Traveller",
+            "African": "Black,Caribbean,African-African",
             "Caribbean": "Black,Caribbean,African-African",
             "Any other Black or African or Caribbean background": "Any other Black background",
             "Any other Mixed/Multiple background": "Any other Mixed background",
@@ -640,6 +640,9 @@ def union_dependent_transformations(df):
             "White and Asian": "Mixed-White & Asian",
             "White and Black African": "Mixed-White & Black African",
             "White and Black Caribbean": "Mixed-White & Black Caribbean",
+            "Roma": "White-Gypsy or Irish Traveller",
+            "White-Roma": "White-Gypsy or Irish Traveller",
+            "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
             "Arab": "Other ethnic group-Arab",
         },
         "illness_reduces_activity_or_ability": {"Yes a little": "Yes, a little", "Yes a lot": "Yes, a lot"},
