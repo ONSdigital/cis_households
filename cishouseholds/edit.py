@@ -512,9 +512,3 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
     return df
-
-
-def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
-    for col, map in column_map_dic.items():
-        df = update_column_values_from_map(df, col, map)
-    return df
