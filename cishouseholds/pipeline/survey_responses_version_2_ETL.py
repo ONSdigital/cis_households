@@ -33,12 +33,14 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import edit_multiple_columns_fill_forward
@@ -84,7 +86,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
     df = assign_consent_code(
-        df, "consent", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+        df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
@@ -342,7 +344,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = df.withColumn(
-        "work_status", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
+        "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
     )
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
@@ -431,7 +433,7 @@ def union_dependent_transformations(df):
             "ethnicity",
             "work_sectors",
             "work_health_care_v1_v2_raw",
-            "work_status_combined",
+            "work_status_v0",
             "work_status_v1",
             "work_status_v2",
             "work_location",
@@ -442,8 +444,8 @@ def union_dependent_transformations(df):
             "illness_reduces_activity_or_ability",
             "ability_to_socially_distance_at_work_or_school",
             "transport_to_work_or_school",
+            "face_covering_outside_of_home",
             "face_covering_work",
-            "contact_face_covering_workschool",
             "face_covering_other_enclosed_places",
             "other_antibody_test_location",
             "withdrawal_reason",
@@ -470,10 +472,16 @@ def union_dependent_transformations(df):
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
+    df = update_face_covering_outside_of_home(
+        df=df,
+        column_name_to_update="face_covering_outside_of_home",
+        covered_enclosed_column="face_covering_other_enclosed_places",
+        covered_work_column="face_covering_work",
+    )
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
-        "work_status",
+        "work_status_combined",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     df = assign_first_visit(
@@ -592,6 +600,125 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_received",
         ],
     )
+    col_val_map = {
+        "face_covering_outside_of_home": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes at work/school only": "Yes, at work/school only",
+            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
+            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+        },
+        "face_covering_other_enclosed_places": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes at work/school only": "Yes, at work/school only",
+            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
+            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+        },
+        "face_covering_work": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
+        },
+        "other_antibody_test_since_last_visit": {
+            "One or more negative tests but none positive": "Any tests negative, but none negative",
+            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "All tests failed": "All Tests failed",
+        },
+        "other_antibody_test_location": {"Private Lab": "Private lab", "Home Test": "Home test"},
+        "other_pcr_test_results": {
+            "One or more negative tests but none positive": "Any tests negative, but none negative",
+            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "All tests failed": "All Tests failed",
+        },
+        "ethnicity": {
+            "Roma": "White-Gypsy or Irish Traveller",
+            "Caribbean": "Black,Caribbean,African-African",
+            "Any other Black or African or Caribbean background": "Any other Black background",
+            "Any other Mixed/Multiple background": "Any other Mixed background",
+            "Bangladeshi": "Asian or Asian British-Bangladeshi",
+            "Chinese": "Asian or Asian British-Chinese",
+            "English, Welsh, Scottish, Northern Irish or British": "White-British",
+            "Indian": "Asian or Asian British-Indian",
+            "Irish": "White-Irish",
+            "Pakistani": "Asian or Asian British-Pakistani",
+            "White and Asian": "Mixed-White & Asian",
+            "White and Black African": "Mixed-White & Black African",
+            "White and Black Caribbean": "Mixed-White & Black Caribbean",
+            "Arab": "Other ethnic group-Arab",
+        },
+        "illness_reduces_activity_or_ability": {"Yes a little": "Yes, a little", "Yes a lot": "Yes, a lot"},
+        "withdrawal_reason": {
+            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
+            "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Do NOT Reinstate": "Do not reinstate",
+        },
+        "is_self_isolating_detailed": {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+        "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
+        "work_health_care_v1_v2_raw": {
+            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+        },
+        "work_location": {
+            "Work from home (in the same grounds or building as your home)": "Working from home",
+            "Working from home (in the same grounds or building as your home)": "Working from home",
+            "From home (in the same grounds or building as your home)": "Working from home",
+            "Working somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Work somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not at your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Both (from home and somewhere else)": "Both (from home and somewhere else)",
+            "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
+            "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
+        },
+        "work_sectors": {
+            "Social Care": "Social care",
+            "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistics)": "Transport (incl. storage, logistic)",
+            "Retail Sector (incl. wholesale)": "Retail sector (incl. wholesale)",
+            "Hospitality (e.g. hotel or restaurant or cafe)": "Hospitality (e.g. hotel, restaurant)",
+            "Food Production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Food production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Personal Services (e.g. hairdressers or tattooists)": "Personal services (e.g. hairdressers)",
+            "Information technology and communication": "Information technology and communication",
+            "Financial services (incl. insurance)": "Financial services incl. insurance",
+            "Financial Services (incl. insurance)": "Financial services incl. insurance",
+            "Civil Service or Local Government": "Civil service or Local Government",
+            "Arts or Entertainment or Recreation": "Arts,Entertainment or Recreation",
+            "Art or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Other employment sector (specify)": "Other occupation sector",
+            "Other occupation sector (specify)": "Other occupation sector",
+        },
+        "transport_to_work_or_school": {
+            "Bus or Minibus or Coach": "Bus, minibus, coach",
+            "Bus or minibus or coach": "Bus, minibus, coach",
+            "Bus": "Bus, minibus, coach",
+            "Motorbike or Scooter or Moped": "Motorbike, scooter or moped",
+            "Motorbike or scooter or moped": "Motorbike, scooter or moped",
+            "Car or Van": "Car or van",
+            "Taxi/Minicab": "Taxi/minicab",
+            "On Foot": "On foot",
+            "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
+            "Other Method": "Other method",
+        },
+    }
+    df = apply_value_map_multiple_columns(df, col_val_map)
+
     return df
 
 
@@ -624,6 +751,7 @@ def create_formatted_datetime_string_columns(df):
         "other_antibody_test_first_positive_date",
         "other_pcr_test_last_negative_date",
         "been_outside_uk_last_date",
+        "symptoms_last_7_days_onset_date",
     ]
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
