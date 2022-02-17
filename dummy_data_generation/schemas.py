@@ -708,6 +708,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
+        "Visit_Date_type": _(
+            "choice", items=["actual_visit_date", "latest_checkin_date", "sample_taken_date", "scheduled_date"]
+        ),
         "actual_visit_date": _(
             "custom_random.random_date",
             start=start_date_list,
@@ -1012,6 +1015,13 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Symptoms_7_Loss_of_taste": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "Symptoms_7_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Palpitations": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
@@ -1197,9 +1207,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "Do_you_think_you_have_had_Covid_19": _("choice", items=yes_no_none_choice),
         "think_had_covid_19_any_symptoms": _("choice", items=yes_no_none_choice),
-        "think_had_covid_19_which_symptoms": _(
-            "choice", items=[None, _("text.answer")]
-        ),  # does this need multiple values concatted?
+        "think_had_covid_19_which_symptoms": _("choice", items=[None, _("text.answer")]),
         "Previous_Symptoms_Fever": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Fatigue_weakness": _("choice", items=yes_no_none_choice),
@@ -1213,6 +1221,13 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Previous_Symptoms_Loss_of_taste": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Palpitations": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
