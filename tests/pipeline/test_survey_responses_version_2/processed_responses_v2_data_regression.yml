@@ -2,11 +2,20 @@
     a problem to stay this far away from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
+<<<<<<< HEAD
   age_at_visit: 39.0
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+=======
+  age_at_visit: 0.0
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: 'No'
+>>>>>>> origin/main
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -40,9 +49,14 @@
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: null
+<<<<<<< HEAD
   city: Marlow
   confirm_received_vouchers: 'true'
   consent: null
+=======
+  city: Luton
+  confirm_received_vouchers: 'false'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -54,6 +68,7 @@
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
+<<<<<<< HEAD
   consent_fingerprick_blood_samples: 'True'
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
@@ -62,6 +77,17 @@
   county: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
+=======
+  consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
+  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samplesyn: 'No'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
+  county: Avon
+  date_of_birth: '2021-12-18 13:14:00.000000'
+  days_since_think_had_covid: 0.0
+>>>>>>> origin/main
   days_since_think_had_covid_group: 0-14
   deferred: Deferred
   email: null
@@ -86,8 +112,12 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Accepted
+<<<<<<< HEAD
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'No'
+=======
+  household_members_under_2_years: null
+>>>>>>> origin/main
   household_visit_status: Withdrawn
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: null
@@ -130,6 +160,7 @@
   long_covid_trouble_sleeping: null
   long_covid_vertigo_dizziness: 'No'
   long_covid_weakness_tiredness: null
+<<<<<<< HEAD
   long_covid_worry_anxiety: 'Yes'
   middle_name: Clarence
   no_blood_reason_fingerprick: null
@@ -137,6 +168,15 @@
   no_email_address: 0.0
   not_attended_reason: Doctor Appointment
   ons_household_id: '392744995712'
+=======
+  long_covid_worry_anxiety: null
+  middle_name: Gale
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Participant time constraints
+  no_venous_blood_taken_reason: Participant dehydrated
+  not_attended_reason: Phone not answered
+  ons_household_id: '261449825198'
+>>>>>>> origin/main
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
@@ -147,6 +187,7 @@
   other_pcr_test_results: One or more negative tests but none positive
   other_pcr_test_since_last_visit: 'Yes'
   outward_postcode: null
+<<<<<<< HEAD
   participant_id: DHR-455927236237
   participant_survey_status: Active
   participant_testing_group: Blood and Swab
@@ -174,7 +215,38 @@
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
   person_8_age: 56.0
+=======
+  participant_id: DHR-077145284257
+  participant_survey_status: Withdrawn
+  participant_testing_group: null
+  participant_visit_status: Scheduled
+  person_1_not_consenting_age: 12.0
+  person_1_not_present_age: '70'
+  person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  person_2_not_consenting_age: 34.0
+  person_2_not_present_age: '43'
+  person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+    ape.
+  person_3_not_consenting_age: 23.0
+  person_3_not_present_age: '24'
+  person_3_reason_for_not_consenting: Here's looking at you, kid.
+  person_4_not_consenting_age: null
+  person_4_not_present_age: '38'
+  person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_5_not_consenting_age: null
+  person_5_not_present_age: '49'
+  person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_6_not_consenting_age: 23.0
+  person_6_not_present_age: '18'
+  person_6_reason_for_not_consenting: Here's looking at you, kid.
+  person_7_not_consenting_age: 87.0
+  person_7_not_present_age: '91'
+  person_7_reason_for_not_consenting: Elementary, my dear Watson.
+>>>>>>> origin/main
   person_8_not_consenting_age: null
+  person_8_not_present_age: '44'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: A census taker once tried to test me. I ate
@@ -200,7 +272,7 @@
   social_distance_contact_under_18_years: '0'
   street: Harford
   study_cohort: Swab Only
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -307,6 +379,7 @@
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
   able_to_take_blood: 'Yes'
+<<<<<<< HEAD
   accepted_fingerprick_invite: 'No'
   age_at_visit: 0.0
   age_group_5_intervals: null
@@ -316,6 +389,18 @@
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
+=======
+  accepted_fingerprick_invite: null
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
+  approached_for_blood_samples: null
+>>>>>>> origin/main
   bad_email: false
   been_outside_uk_last_country: Romania
   been_outside_uk_last_date: 25/01/2021
@@ -346,9 +431,14 @@
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
+<<<<<<< HEAD
   city: null
   confirm_received_vouchers: 'true'
   consent: null
+=======
+  city: Hove
+  confirm_received_vouchers: 'false'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -357,6 +447,7 @@
   consent_blood_samples_if_positiveyn: 'No'
   consent_blood_test: null
   consent_contact_extra_research: null
+<<<<<<< HEAD
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
@@ -365,6 +456,17 @@
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspect_positive_covid_last_28_days: null
+=======
+  consent_contact_extra_researchyn: 'Yes'
+  consent_extend_study_under_16_b1_b3: null
+  consent_finger_prick_a1_a3: null
+  consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
+  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: null
+>>>>>>> origin/main
   county: null
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
@@ -392,11 +494,18 @@
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Invited
+<<<<<<< HEAD
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: null
   household_visit_status: Household did not attend
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Not at all
+=======
+  household_members_under_2_years: 'Yes'
+  household_visit_status: Partially Completed
+  illness_lasting_over_12_months: 'No'
+  illness_reduces_activity_or_ability: Yes, a lot
+>>>>>>> origin/main
   improved_visit_date: null
   infant_1_age: null
   infant_2_age: 0.0
@@ -438,12 +547,21 @@
   long_covid_vertigo_dizziness: 'No'
   long_covid_weakness_tiredness: 'Yes'
   long_covid_worry_anxiety: 'No'
+<<<<<<< HEAD
   middle_name: Gale
   no_blood_reason_fingerprick: Other
   no_blood_reason_venous: null
   no_email_address: 0.0
   not_attended_reason: At School
   ons_household_id: '261449825198'
+=======
+  middle_name: Isaac
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Two attempts made
+  no_venous_blood_taken_reason: Participant time constraints
+  not_attended_reason: Phone not answered
+  ons_household_id: '704542495687'
+>>>>>>> origin/main
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: In the NHS (e.g. GP or hospital)
@@ -458,6 +576,7 @@
   participant_survey_status: Completed
   participant_testing_group: Swab Only
   participant_visit_status: null
+<<<<<<< HEAD
   person_1_age: 70.0
   person_1_not_consenting_age: 12.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
@@ -485,6 +604,35 @@
   person_8_age: 44.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
+=======
+  person_1_not_consenting_age: 81.0
+  person_1_not_present_age: '40'
+  person_1_reason_for_not_consenting: Here's looking at you, kid.
+  person_2_not_consenting_age: 89.0
+  person_2_not_present_age: '24'
+  person_2_reason_for_not_consenting: Houston, we have a problem.
+  person_3_not_consenting_age: 28.0
+  person_3_not_present_age: '76'
+  person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+    ape.
+  person_4_not_consenting_age: null
+  person_4_not_present_age: null
+  person_4_reason_for_not_consenting: Here's looking at you, kid.
+  person_5_not_consenting_age: 8.0
+  person_5_not_present_age: '22'
+  person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
+  person_6_not_consenting_age: 49.0
+  person_6_not_present_age: '56'
+  person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
+    to repeat it.
+  person_7_not_consenting_age: 70.0
+  person_7_not_present_age: '2'
+  person_7_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '18'
+  person_8_reason_for_not_consenting: Let them eat cake.
+>>>>>>> origin/main
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Houston, we have a problem.
   physical_contact_18_to_69_years: 21 or more
@@ -508,7 +656,7 @@
   social_distance_contact_under_18_years: 11-20
   street: null
   study_cohort: Swab Only
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -620,6 +768,7 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
+<<<<<<< HEAD
   age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
@@ -627,6 +776,16 @@
   age_group_over_16: null
   any_symptoms_around_visit: 'Yes'
   any_symptoms_last_7_days_or_now: 'Yes'
+=======
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'Yes'
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
+>>>>>>> origin/main
   approached_for_blood_samples: 'No'
   bad_email: null
   been_outside_uk_last_country: Oman
@@ -657,10 +816,16 @@
   cis_covid_vaccine_type_other_2: null
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
+<<<<<<< HEAD
   cis_flu_vaccine_received: 'No'
   city: Inverurie
   confirm_received_vouchers: 'true'
   consent: null
+=======
+  cis_flu_vaccine_received: 'Yes'
+  city: null
+  confirm_received_vouchers: 'false'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -673,13 +838,23 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
+<<<<<<< HEAD
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: null
   county: Buckinghamshire
   date_of_birth: null
   days_since_think_had_covid: -3.0
+=======
+  consent_use_of_surplus_blood_samplesyn: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
+  county: North Yorkshire
+  date_of_birth: '1997-03-07 10:06:00.000000'
+  days_since_think_had_covid: null
+>>>>>>> origin/main
   days_since_think_had_covid_group: null
   deferred: N/A
   email: null
@@ -704,11 +879,18 @@
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Not invited
+<<<<<<< HEAD
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'No'
   household_visit_status: Withdrawn
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
+=======
+  household_members_under_2_years: null
+  household_visit_status: Completed
+  illness_lasting_over_12_months: 'No'
+  illness_reduces_activity_or_ability: Not at all
+>>>>>>> origin/main
   improved_visit_date: null
   infant_1_age: 7.0
   infant_2_age: 8.0
@@ -749,6 +931,7 @@
   long_covid_vertigo_dizziness: null
   long_covid_weakness_tiredness: 'No'
   long_covid_worry_anxiety: 'No'
+<<<<<<< HEAD
   middle_name: Quinn
   no_blood_reason_fingerprick: null
   no_blood_reason_venous: Participant felt unwell/fainted
@@ -760,6 +943,19 @@
   other_antibody_test_location: Participant Would Not/Could Not Answer
   other_antibody_test_results: All tests failed
   other_antibody_test_since_last_visit: 'No'
+=======
+  middle_name: Jae
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Other
+  no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
+  not_attended_reason: On Holiday
+  ons_household_id: '352206298026'
+  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_last_negative_date: null
+  other_antibody_test_location: null
+  other_antibody_test_results: null
+  other_antibody_test_since_last_visit: 'Yes'
+>>>>>>> origin/main
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-02 00:00:00.000000'
   other_pcr_test_results: One or more negative tests but none were positive
@@ -768,6 +964,7 @@
   participant_id: DHR-456442497105
   participant_survey_status: Withdrawn
   participant_testing_group: null
+<<<<<<< HEAD
   participant_visit_status: Patient did not attend
   person_1_age: 58.0
   person_1_not_consenting_age: null
@@ -793,6 +990,38 @@
   person_7_age: 21.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+=======
+  participant_visit_status: Cancelled
+  person_1_not_consenting_age: 73.0
+  person_1_not_present_age: '85'
+  person_1_reason_for_not_consenting: Here's looking at you, kid.
+  person_2_not_consenting_age: null
+  person_2_not_present_age: '15'
+  person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_3_not_consenting_age: null
+  person_3_not_present_age: '19'
+  person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_4_not_consenting_age: 59.0
+  person_4_not_present_age: '5'
+  person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
+  person_5_not_consenting_age: 76.0
+  person_5_not_present_age: '90'
+  person_5_reason_for_not_consenting: Elementary, my dear Watson.
+  person_6_not_consenting_age: null
+  person_6_not_present_age: '72'
+  person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  person_7_not_consenting_age: null
+  person_7_not_present_age: '38'
+  person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '101'
+  person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
+  person_9_not_consenting_age: 16.0
+  person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+>>>>>>> origin/main
     You never know what you're gonna get.
   person_8_age: 72.0
   person_8_not_consenting_age: null
@@ -814,6 +1043,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_or_vapes: null
   smokes_or_vapes_description: Yes, pipe
+<<<<<<< HEAD
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: '0'
@@ -822,6 +1052,16 @@
   street: Ballynafey
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
+=======
+  smokes_pipe: 'Yes'
+  smokes_vape_e_cigarettes: 'No'
+  social_distance_contact_18_to_69_years: 11-20
+  social_distance_contact_over_70_years: 1-5
+  social_distance_contact_under_18_years: null
+  street: Druminiskill
+  study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 2
+>>>>>>> origin/main
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -933,11 +1173,20 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
+<<<<<<< HEAD
   age_at_visit: 24.0
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+=======
+  age_at_visit: 6.0
+  age_group_5_intervals: 2-11
+  age_group_5_year_intervals: 5-9
+  age_group_7_intervals: 2-11
+  age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: 'No'
+>>>>>>> origin/main
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -971,9 +1220,14 @@
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
+<<<<<<< HEAD
   city: null
   confirm_received_vouchers: 'false'
   consent: null
+=======
+  city: Sittingbourne
+  confirm_received_vouchers: 'true'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -984,12 +1238,22 @@
   consent_contact_extra_research: null
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'No'
+<<<<<<< HEAD
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
+=======
+  consent_finger_prick_a1_a3: 'No'
+  consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
+>>>>>>> origin/main
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
+<<<<<<< HEAD
   contact_suspect_positive_covid_last_28_days: 'No'
+=======
+  contact_suspected_positive_covid_last_28_days: null
+>>>>>>> origin/main
   county: null
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
@@ -1015,11 +1279,18 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: Not invited
   household_members_over_2_years_and_not_present: 'Yes'
   household_members_under_2_years: 'No'
   household_visit_status: Dispatched
   illness_lasting_over_12_months: 'No'
+=======
+  household_fingerprick_status: Invited
+  household_members_under_2_years: null
+  household_visit_status: Household did not attend
+  illness_lasting_over_12_months: null
+>>>>>>> origin/main
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
   infant_1_age: 4.0
@@ -1059,15 +1330,24 @@
   long_covid_symptoms: Shortness of breath
   long_covid_trouble_sleeping: 'No'
   long_covid_vertigo_dizziness: 'Yes'
+<<<<<<< HEAD
   long_covid_weakness_tiredness: 'Yes'
   long_covid_worry_anxiety: 'No'
   middle_name: Isaac
   no_blood_reason_fingerprick: Participant felt unwell/fainted
   no_blood_reason_venous: Participant time constraints
+=======
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: null
+  middle_name: Buck
+>>>>>>> origin/main
   no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
+  no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
   not_attended_reason: Living Away
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
+<<<<<<< HEAD
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Participant Would Not/Could Not Answer
   other_antibody_test_results: One or more positive test(s)
@@ -1108,6 +1388,49 @@
   person_8_age: 18.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: Let them eat cake.
+=======
+  other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_antibody_test_location: Home Test
+  other_antibody_test_results: Waiting for all results
+  other_antibody_test_since_last_visit: 'Yes'
+  other_pcr_test_first_positive_date: null
+  other_pcr_test_last_negative_date: '2022-01-06 00:00:00.000000'
+  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_since_last_visit: 'No'
+  outward_postcode: DD7O
+  participant_id: DHR-858742267562
+  participant_survey_status: Withdrawn
+  participant_testing_group: Fingerprick and Swab
+  participant_visit_status: null
+  person_1_not_consenting_age: 12.0
+  person_1_not_present_age: '23'
+  person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
+  person_2_not_consenting_age: 57.0
+  person_2_not_present_age: null
+  person_2_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_3_not_consenting_age: null
+  person_3_not_present_age: null
+  person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
+    to repeat it.
+  person_4_not_consenting_age: 78.0
+  person_4_not_present_age: '91'
+  person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_5_not_consenting_age: null
+  person_5_not_present_age: '59'
+  person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_6_not_consenting_age: 76.0
+  person_6_not_present_age: '59'
+  person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_7_not_consenting_age: null
+  person_7_not_present_age: '87'
+  person_7_reason_for_not_consenting: Let them eat cake.
+  person_8_not_consenting_age: 98.0
+  person_8_not_present_age: '2'
+  person_8_reason_for_not_consenting: Ask not what your country can do for you; ask
+    what you can do for your country.
+>>>>>>> origin/main
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
@@ -1132,7 +1455,7 @@
   social_distance_contact_under_18_years: null
   street: null
   study_cohort: Blood and Swab
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -1239,11 +1562,20 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'No'
+<<<<<<< HEAD
   age_at_visit: 24.0
   age_group_5_intervals: 20-49
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+=======
+  age_at_visit: 1.0
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
+  any_household_members_over_2_years_and_not_present: null
+>>>>>>> origin/main
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
@@ -1279,7 +1611,6 @@
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1292,12 +1623,21 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
+<<<<<<< HEAD
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: North Yorkshire
   date_of_birth: '1997-03-07 10:06:00.000000'
+=======
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
+  county: null
+  date_of_birth: '2020-02-01 23:17:00.000000'
+>>>>>>> origin/main
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: N/A
@@ -1323,11 +1663,18 @@
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_fingerprick_status: Invited
+<<<<<<< HEAD
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'Yes'
   household_visit_status: Dispatched
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
+=======
+  household_members_under_2_years: null
+  household_visit_status: Completed
+  illness_lasting_over_12_months: 'Yes'
+  illness_reduces_activity_or_ability: null
+>>>>>>> origin/main
   improved_visit_date: null
   infant_1_age: 7.0
   infant_2_age: 1.0
@@ -1367,6 +1714,7 @@
   long_covid_symptoms: 'Yes'
   long_covid_trouble_sleeping: 'No'
   long_covid_vertigo_dizziness: null
+<<<<<<< HEAD
   long_covid_weakness_tiredness: 'No'
   long_covid_worry_anxiety: null
   middle_name: Jae
@@ -1378,6 +1726,19 @@
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Participant Would Not/Could Not Answer
+=======
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: 'Yes'
+  middle_name: Hank
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Participant felt unwell/fainted
+  no_venous_blood_taken_reason: Bruising or pain after first attempt
+  not_attended_reason: At School
+  ons_household_id: '602276804025'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_location: null
+>>>>>>> origin/main
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: null
@@ -1387,6 +1748,7 @@
   outward_postcode: WP8S
   participant_id: DHR-144229485098
   participant_survey_status: Completed
+<<<<<<< HEAD
   participant_testing_group: Swab Only
   participant_visit_status: Patient did not attend
   person_1_age: 85.0
@@ -1428,6 +1790,49 @@
   samples_taken_datetime: null
   sex: null
   sex_raw: null
+=======
+  participant_testing_group: null
+  participant_visit_status: Scheduled
+  person_1_not_consenting_age: 74.0
+  person_1_not_present_age: '74'
+  person_1_reason_for_not_consenting: Here's looking at you, kid.
+  person_2_not_consenting_age: 99.0
+  person_2_not_present_age: null
+  person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
+  person_3_not_consenting_age: 56.0
+  person_3_not_present_age: '64'
+  person_3_reason_for_not_consenting: Houston, we have a problem.
+  person_4_not_consenting_age: 63.0
+  person_4_not_present_age: '14'
+  person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_5_not_consenting_age: 58.0
+  person_5_not_present_age: '30'
+  person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_6_not_consenting_age: 4.0
+  person_6_not_present_age: null
+  person_6_reason_for_not_consenting: They call me *Mister* Tibbs!
+  person_7_not_consenting_age: null
+  person_7_not_present_age: null
+  person_7_reason_for_not_consenting: Here's looking at you, kid.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '61'
+  person_8_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: Those who refuse to learn from history are condemned
+    to repeat it.
+  physical_contact_18_to_69_years: 6-10
+  physical_contact_over_70_years: 6-10
+  physical_contact_under_18_years: 1-5
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'False'
+  samples_taken_datetime: '2022-01-03 12:02:32.000000'
+  sex: Female
+  sex_raw: Female
+>>>>>>> origin/main
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'No'
@@ -1438,9 +1843,15 @@
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_under_18_years: 1-5
+<<<<<<< HEAD
   street: Druminiskill
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
+=======
+  street: null
+  study_cohort: Blood and Swab
+  survey_response_dataset_major_version: 2
+>>>>>>> origin/main
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -1533,6 +1944,7 @@
   work_main_job_changed: null
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
+<<<<<<< HEAD
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS,
     THE FIRST CHARACTER BEING LOWERCASE
   work_main_job_title_raw: They are written as strings of consecutive alphanumeric
@@ -1559,6 +1971,38 @@
   bad_email: false
   been_outside_uk_last_country: Kenya
   been_outside_uk_last_date: 27/04/2020
+=======
+  work_main_job_title: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
+    PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
+  work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
+  work_nursing_or_residential_care_home: 'No'
+  work_sectors: Retail Sector (incl. wholesale)
+  work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
+    assignment, and dynamic typing.
+  work_status_v2: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
+    a problem to stay this far away from other people
+  able_to_take_blood: null
+  accepted_fingerprick_invite: 'No'
+  age_at_visit: 24.0
+  age_group_5_intervals: 20-49
+  age_group_5_year_intervals: 20-24
+  age_group_7_intervals: 17-25
+  age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'No'
+  any_symptoms_around_visit: 'No'
+  any_symptoms_last_7_days_or_now: 'No'
+  approached_for_blood_samples: 'Yes'
+  bad_email: null
+  been_outside_uk_last_country: Iceland
+  been_outside_uk_last_date: null
+>>>>>>> origin/main
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1585,10 +2029,16 @@
   cis_covid_vaccine_type_other_2: null
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
+<<<<<<< HEAD
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'false'
   consent: null
+=======
+  cis_flu_vaccine_received: 'Yes'
+  city: Felixstowe
+  confirm_received_vouchers: 'true'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1601,12 +2051,19 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'Yes'
+<<<<<<< HEAD
   contact_suspect_positive_covid_last_28_days: 'No'
   county: Suffolk
   date_of_birth: '2015-04-22 10:53:00.000000'
+=======
+  contact_suspected_positive_covid_last_28_days: 'No'
+  county: null
+  date_of_birth: '1997-08-21 11:10:00.000000'
+>>>>>>> origin/main
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: Deferred
@@ -1631,8 +2088,12 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: Declined
   household_members_over_2_years_and_not_present: 'No'
+=======
+  household_fingerprick_status: At least one person consented
+>>>>>>> origin/main
   household_members_under_2_years: 'No'
   household_visit_status: Partially Completed
   illness_lasting_over_12_months: 'No'
@@ -1678,6 +2139,7 @@
   long_covid_vertigo_dizziness: 'No'
   long_covid_weakness_tiredness: 'No'
   long_covid_worry_anxiety: 'Yes'
+<<<<<<< HEAD
   middle_name: Buck
   no_blood_reason_fingerprick: Participant refused to give blood on this visit
   no_blood_reason_venous: null
@@ -1688,6 +2150,18 @@
   other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_location: Private Lab
   other_antibody_test_results: null
+=======
+  middle_name: Jessika
+  no_email_address: 1.0
+  no_fingerprick_blood_taken_reason: Two attempts made
+  no_venous_blood_taken_reason: Poor venous access
+  not_attended_reason: Living Away
+  ons_household_id: '217846198988'
+  other_antibody_test_first_positive_date: '2022-01-07 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  other_antibody_test_location: In the NHS (e.g. GP or hospital)
+  other_antibody_test_results: One or more positive test(s)
+>>>>>>> origin/main
   other_antibody_test_since_last_visit: null
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-06 00:00:00.000000'
@@ -1698,6 +2172,7 @@
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: null
+<<<<<<< HEAD
   person_1_age: 23.0
   person_1_not_consenting_age: 12.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
@@ -1735,6 +2210,46 @@
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: null
+=======
+  person_1_not_consenting_age: 64.0
+  person_1_not_present_age: '50'
+  person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
+  person_2_not_consenting_age: 83.0
+  person_2_not_present_age: null
+  person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+    ape.
+  person_3_not_consenting_age: 68.0
+  person_3_not_present_age: '39'
+  person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_4_not_consenting_age: null
+  person_4_not_present_age: '60'
+  person_4_reason_for_not_consenting: Houston, we have a problem.
+  person_5_not_consenting_age: null
+  person_5_not_present_age: '40'
+  person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_6_not_consenting_age: null
+  person_6_not_present_age: '43'
+  person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  person_7_not_consenting_age: null
+  person_7_not_present_age: '73'
+  person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+    ape.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '8'
+  person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  person_9_not_consenting_age: 7.0
+  person_9_reason_for_not_consenting: The only thing we have to fear is fear itself.
+  physical_contact_18_to_69_years: null
+  physical_contact_over_70_years: 6-10
+  physical_contact_under_18_years: '0'
+  postcode: null
+  prefer_receive_vouchers: Paper(Post)
+  reconsented_blood: 'False'
+  samples_taken_datetime: '2022-01-02 17:59:52.000000'
+>>>>>>> origin/main
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1748,8 +2263,13 @@
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_under_18_years: 1-5
   street: null
+<<<<<<< HEAD
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+=======
+  study_cohort: Swab Only
+  survey_response_dataset_major_version: 2
+>>>>>>> origin/main
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -1865,9 +2385,16 @@
   age_group_5_year_intervals: null
   age_group_7_intervals: null
   age_group_over_16: null
+<<<<<<< HEAD
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: null
+=======
+  any_household_members_over_2_years_and_not_present: null
+  any_symptoms_around_visit: 'Yes'
+  any_symptoms_last_7_days_or_now: 'Yes'
+  approached_for_blood_samples: 'No'
+>>>>>>> origin/main
   bad_email: false
   been_outside_uk_last_country: Uganda
   been_outside_uk_last_date: 04/12/2020
@@ -1899,8 +2426,12 @@
   cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
   city: null
+<<<<<<< HEAD
   confirm_received_vouchers: 'true'
   consent: null
+=======
+  confirm_received_vouchers: 'false'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -1913,10 +2444,11 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
-  contact_suspect_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
@@ -1942,11 +2474,18 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: Accepted
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'No'
   household_visit_status: Completed
   illness_lasting_over_12_months: 'Yes'
+=======
+  household_fingerprick_status: null
+  household_members_under_2_years: 'Yes'
+  household_visit_status: Withdrawn
+  illness_lasting_over_12_months: 'No'
+>>>>>>> origin/main
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
   infant_1_age: 2.0
@@ -1981,6 +2520,7 @@
   long_covid_nausea_vomiting: 'No'
   long_covid_palpitations: 'No'
   long_covid_reduce_activities: Yes a little
+<<<<<<< HEAD
   long_covid_shortness_of_breath: null
   long_covid_sore_throat: null
   long_covid_symptoms: Worry/anxiety
@@ -1997,11 +2537,30 @@
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_location: Participant Would Not/Could Not Answer
+=======
+  long_covid_shortness_of_breath: 'No'
+  long_covid_sore_throat: 'No'
+  long_covid_symptoms: Chest pain
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: 'No'
+  long_covid_weakness_tiredness: 'Yes'
+  long_covid_worry_anxiety: null
+  middle_name: Quinn
+  no_email_address: 1.0
+  no_fingerprick_blood_taken_reason: Couldn't get enough blood
+  no_venous_blood_taken_reason: Participant time constraints
+  not_attended_reason: Living Away
+  ons_household_id: '352709577630'
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  other_antibody_test_location: Home Test
+>>>>>>> origin/main
   other_antibody_test_results: null
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: One or more positive test(s)
+<<<<<<< HEAD
   other_pcr_test_since_last_visit: 'Yes'
   outward_postcode: null
   participant_id: DHR-593586857022
@@ -2035,6 +2594,42 @@
   person_8_age: 61.0
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+=======
+  other_pcr_test_since_last_visit: null
+  outward_postcode: UK0X
+  participant_id: DHR-456442497105
+  participant_survey_status: Completed
+  participant_testing_group: Swab Only
+  participant_visit_status: Re-scheduled
+  person_1_not_consenting_age: null
+  person_1_not_present_age: '58'
+  person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
+  person_2_not_consenting_age: 55.0
+  person_2_not_present_age: '47'
+  person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_3_not_consenting_age: 21.0
+  person_3_not_present_age: '25'
+  person_3_reason_for_not_consenting: Houston, we have a problem.
+  person_4_not_consenting_age: 92.0
+  person_4_not_present_age: null
+  person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
+    to repeat it.
+  person_5_not_consenting_age: 70.0
+  person_5_not_present_age: '24'
+  person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_6_not_consenting_age: 78.0
+  person_6_not_present_age: '49'
+  person_6_reason_for_not_consenting: Elementary, my dear Watson.
+  person_7_not_consenting_age: null
+  person_7_not_present_age: '21'
+  person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '72'
+  person_8_reason_for_not_consenting: They call me *Mister* Tibbs!
+>>>>>>> origin/main
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
@@ -2059,7 +2654,7 @@
   social_distance_contact_under_18_years: 1-5
   street: null
   study_cohort: Swab Only
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
@@ -2176,6 +2771,7 @@
   age_group_5_year_intervals: 20-24
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: null
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -2211,7 +2807,6 @@
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
-  consent: null
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2223,6 +2818,7 @@
   consent_contact_extra_researchyn: null
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
+<<<<<<< HEAD
   consent_fingerprick_blood_samples: 'True'
   consent_use_of_surplus_blood_samples: null
   consent_use_of_surplus_blood_samplesyn: 'Yes'
@@ -2232,6 +2828,18 @@
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
+=======
+  consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
+  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
+  county: Humberside
+  date_of_birth: '2003-10-07 22:04:00.000000'
+  days_since_think_had_covid: 4.0
+  days_since_think_had_covid_group: 0-14
+>>>>>>> origin/main
   deferred: Deferred
   email: artiste1919@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
@@ -2254,6 +2862,7 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: Invited
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'No'
@@ -2270,6 +2879,23 @@
   infant_7_age: 6.0
   infant_8_age: 5.0
   is_regularly_lateral_flow_testing: 'No'
+=======
+  household_fingerprick_status: null
+  household_members_under_2_years: null
+  household_visit_status: Partially Completed
+  illness_lasting_over_12_months: null
+  illness_reduces_activity_or_ability: Yes, a lot
+  improved_visit_date: null
+  infant_1_age: 1.0
+  infant_2_age: 0.0
+  infant_3_age: 7.0
+  infant_4_age: 5.0
+  infant_5_age: 8.0
+  infant_6_age: 8.0
+  infant_7_age: 7.0
+  infant_8_age: null
+  is_regularly_lateral_flow_testing: 'Yes'
+>>>>>>> origin/main
   is_self_isolating: 'Yes'
   is_self_isolating_detailed: Yes, you have/have had symptoms
   last_covid_contact_date: null
@@ -2298,6 +2924,7 @@
   long_covid_symptoms: Trouble sleeping
   long_covid_trouble_sleeping: 'Yes'
   long_covid_vertigo_dizziness: 'Yes'
+<<<<<<< HEAD
   long_covid_weakness_tiredness: 'Yes'
   long_covid_worry_anxiety: 'Yes'
   middle_name: Jessika
@@ -2314,10 +2941,29 @@
   other_pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_pcr_test_last_negative_date: '2022-01-07 00:00:00.000000'
   other_pcr_test_results: Waiting for all results
+=======
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: 'No'
+  middle_name: My
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Participant felt unwell/fainted
+  no_venous_blood_taken_reason: Participant time constraints
+  not_attended_reason: null
+  ons_household_id: '883187696082'
+  other_antibody_test_first_positive_date: null
+  other_antibody_test_last_negative_date: null
+  other_antibody_test_location: null
+  other_antibody_test_results: One or more negative tests but none positive
+  other_antibody_test_since_last_visit: 'No'
+  other_pcr_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_pcr_test_results: One or more negative tests but none positive
+>>>>>>> origin/main
   other_pcr_test_since_last_visit: null
   outward_postcode: SE3Z
   participant_id: DHR-389263959191
   participant_survey_status: Withdrawn
+<<<<<<< HEAD
   participant_testing_group: Blood and Swab
   participant_visit_status: Completed
   person_1_age: 50.0
@@ -2344,6 +2990,39 @@
   person_7_age: 73.0
   person_7_not_consenting_age: null
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+=======
+  participant_testing_group: Fingerprick and Swab
+  participant_visit_status: Patient did not attend
+  person_1_not_consenting_age: 2.0
+  person_1_not_present_age: '30'
+  person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_2_not_consenting_age: null
+  person_2_not_present_age: '73'
+  person_2_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_3_not_consenting_age: 88.0
+  person_3_not_present_age: '74'
+  person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_4_not_consenting_age: 28.0
+  person_4_not_present_age: '72'
+  person_4_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_5_not_consenting_age: 40.0
+  person_5_not_present_age: '80'
+  person_5_reason_for_not_consenting: Let them eat cake.
+  person_6_not_consenting_age: 54.0
+  person_6_not_present_age: '20'
+  person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_7_not_consenting_age: 11.0
+  person_7_not_present_age: '42'
+  person_7_reason_for_not_consenting: Houston, we have a problem.
+  person_8_not_consenting_age: 18.0
+  person_8_not_present_age: '81'
+  person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_9_not_consenting_age: 27.0
+  person_9_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
+>>>>>>> origin/main
     ape.
   person_8_age: 8.0
   person_8_not_consenting_age: null
@@ -2372,7 +3051,7 @@
   social_distance_contact_under_18_years: '0'
   street: Ballywatermoy
   study_cohort: Swab Only
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -2484,6 +3163,7 @@
   age_group_5_year_intervals: 15-19
   age_group_7_intervals: 17-25
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'No'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'Yes'
@@ -2516,10 +3196,16 @@
   cis_covid_vaccine_type_other_2: null
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
+<<<<<<< HEAD
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'true'
   consent: null
+=======
+  cis_flu_vaccine_received: 'No'
+  city: Barnet
+  confirm_received_vouchers: 'false'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2532,13 +3218,23 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: null
+<<<<<<< HEAD
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspect_positive_covid_last_28_days: 'Yes'
   county: Humberside
   date_of_birth: '2003-10-07 22:04:00.000000'
   days_since_think_had_covid: 4.0
+=======
+  consent_use_of_surplus_blood_samplesyn: 'No'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
+  county: null
+  date_of_birth: '1985-10-14 01:01:00.000000'
+  days_since_think_had_covid: 1.0
+>>>>>>> origin/main
   days_since_think_had_covid_group: 0-14
   deferred: Deferred
   email: null
@@ -2562,10 +3258,16 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: At least one person consented
   household_members_over_2_years_and_not_present: null
   household_members_under_2_years: 'No'
   household_visit_status: Partially Completed
+=======
+  household_fingerprick_status: Declined
+  household_members_under_2_years: null
+  household_visit_status: Dispatched
+>>>>>>> origin/main
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
@@ -2603,6 +3305,7 @@
   long_covid_palpitations: null
   long_covid_reduce_activities: Not at all
   long_covid_shortness_of_breath: null
+<<<<<<< HEAD
   long_covid_sore_throat: 'No'
   long_covid_symptoms: Difficulty concentrating
   long_covid_trouble_sleeping: 'Yes'
@@ -2616,6 +3319,21 @@
   not_attended_reason: At School
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
+=======
+  long_covid_sore_throat: null
+  long_covid_symptoms: Memory loss or confusion
+  long_covid_trouble_sleeping: 'No'
+  long_covid_vertigo_dizziness: null
+  long_covid_weakness_tiredness: 'No'
+  long_covid_worry_anxiety: 'Yes'
+  middle_name: Argentina
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Participant refused to give blood on this visit
+  no_venous_blood_taken_reason: Bruising or pain after first attempt
+  not_attended_reason: Phone not answered
+  ons_household_id: '296617139656'
+  other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
+>>>>>>> origin/main
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Home Test
   other_antibody_test_results: One or more negative tests but none positive
@@ -2628,6 +3346,7 @@
   participant_id: DHR-627540089585
   participant_survey_status: Completed
   participant_testing_group: Swab Only
+<<<<<<< HEAD
   participant_visit_status: Patient did not attend
   person_1_age: 30.0
   person_1_not_consenting_age: 2.0
@@ -2660,6 +3379,42 @@
   person_9_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   physical_contact_18_to_69_years: null
+=======
+  participant_visit_status: Re-scheduled
+  person_1_not_consenting_age: 43.0
+  person_1_not_present_age: '22'
+  person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
+    what you can do for your country.
+  person_2_not_consenting_age: null
+  person_2_not_present_age: '24'
+  person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
+  person_3_not_consenting_age: 101.0
+  person_3_not_present_age: '82'
+  person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  person_4_not_consenting_age: 99.0
+  person_4_not_present_age: '20'
+  person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
+    to repeat it.
+  person_5_not_consenting_age: 1.0
+  person_5_not_present_age: '46'
+  person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  person_6_not_consenting_age: 69.0
+  person_6_not_present_age: null
+  person_6_reason_for_not_consenting: Let them eat cake.
+  person_7_not_consenting_age: null
+  person_7_not_present_age: null
+  person_7_reason_for_not_consenting: Houston, we have a problem.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '63'
+  person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
+  person_9_not_consenting_age: null
+  person_9_reason_for_not_consenting: You're gonna need a bigger boat.
+  physical_contact_18_to_69_years: 11-20
+>>>>>>> origin/main
   physical_contact_over_70_years: Participant Would Not/Could Not Answer
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
@@ -2680,7 +3435,7 @@
   social_distance_contact_under_18_years: 6-10
   street: Benwee
   study_cohort: Swab Only
-  survey_response_dataset_major_version: 1
+  survey_response_dataset_major_version: 2
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
@@ -2795,6 +3550,7 @@
   age_group_5_year_intervals: 35-39
   age_group_7_intervals: 35-49
   age_group_over_16: 16-49
+  any_household_members_over_2_years_and_not_present: 'Yes'
   any_symptoms_around_visit: 'No'
   any_symptoms_last_7_days_or_now: 'No'
   approached_for_blood_samples: 'No'
@@ -2827,10 +3583,16 @@
   cis_covid_vaccine_type_other_2: null
   cis_covid_vaccine_type_other_3: null
   cis_covid_vaccine_type_other_4: null
+<<<<<<< HEAD
   cis_flu_vaccine_received: 'No'
   city: Barnet
   confirm_received_vouchers: 'false'
   consent: null
+=======
+  cis_flu_vaccine_received: 'Yes'
+  city: Marlow
+  confirm_received_vouchers: 'true'
+>>>>>>> origin/main
   consent_16_visits: null
   consent_1_visit: null
   consent_5_visits: null
@@ -2841,6 +3603,7 @@
   consent_contact_extra_research: null
   consent_contact_extra_researchyn: null
   consent_extend_study_under_16_b1_b3: 'Yes'
+<<<<<<< HEAD
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_use_of_surplus_blood_samples: null
@@ -2850,6 +3613,18 @@
   county: null
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
+=======
+  consent_finger_prick_a1_a3: 'No'
+  consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
+  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samplesyn: 'No'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: null
+  county: Northamptonshire
+  date_of_birth: '1982-12-15 17:07:00.000000'
+  days_since_think_had_covid: 6.0
+>>>>>>> origin/main
   days_since_think_had_covid_group: 0-14
   deferred: N/A
   email: fortes2058@gsnail.ac.uk
@@ -2872,10 +3647,16 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+<<<<<<< HEAD
   household_fingerprick_status: null
   household_members_over_2_years_and_not_present: 'No'
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn
+=======
+  household_fingerprick_status: At least one person consented
+  household_members_under_2_years: null
+  household_visit_status: Completed
+>>>>>>> origin/main
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
@@ -2918,6 +3699,7 @@
   long_covid_symptoms: Nausea/vomiting
   long_covid_trouble_sleeping: 'No'
   long_covid_vertigo_dizziness: 'Yes'
+<<<<<<< HEAD
   long_covid_weakness_tiredness: 'Yes'
   long_covid_worry_anxiety: null
   middle_name: Argentina
@@ -2927,6 +3709,17 @@
   not_attended_reason: Living Away
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
+=======
+  long_covid_weakness_tiredness: null
+  long_covid_worry_anxiety: 'No'
+  middle_name: Clarence
+  no_email_address: 0.0
+  no_fingerprick_blood_taken_reason: Participant time constraints
+  no_venous_blood_taken_reason: Two attempts made
+  not_attended_reason: At Work
+  ons_household_id: '392744995712'
+  other_antibody_test_first_positive_date: null
+>>>>>>> origin/main
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
   other_antibody_test_results: All tests failed
@@ -2940,6 +3733,7 @@
   participant_survey_status: Completed
   participant_testing_group: Blood and Swab
   participant_visit_status: Scheduled
+<<<<<<< HEAD
   person_1_age: 22.0
   person_1_not_consenting_age: 43.0
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
@@ -2970,6 +3764,33 @@
   person_8_not_consenting_age: null
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
+=======
+  person_1_not_consenting_age: 61.0
+  person_1_not_present_age: '76'
+  person_1_reason_for_not_consenting: Here's looking at you, kid.
+  person_2_not_consenting_age: 20.0
+  person_2_not_present_age: '56'
+  person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
+  person_3_not_consenting_age: 26.0
+  person_3_not_present_age: '60'
+  person_3_reason_for_not_consenting: Houston, we have a problem.
+  person_4_not_consenting_age: 92.0
+  person_4_not_present_age: null
+  person_4_reason_for_not_consenting: Let them eat cake.
+  person_5_not_consenting_age: 9.0
+  person_5_not_present_age: '27'
+  person_5_reason_for_not_consenting: Elementary, my dear Watson.
+  person_6_not_consenting_age: null
+  person_6_not_present_age: '86'
+  person_6_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_7_not_consenting_age: null
+  person_7_not_present_age: '10'
+  person_7_reason_for_not_consenting: Elementary, my dear Watson.
+  person_8_not_consenting_age: null
+  person_8_not_present_age: '56'
+  person_8_reason_for_not_consenting: Elementary, my dear Watson.
+>>>>>>> origin/main
   person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
   physical_contact_18_to_69_years: null
@@ -2992,8 +3813,13 @@
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_under_18_years: '0'
   street: null
+<<<<<<< HEAD
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+=======
+  study_cohort: Swab Only
+  survey_response_dataset_major_version: 2
+>>>>>>> origin/main
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000

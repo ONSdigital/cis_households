@@ -14,23 +14,23 @@ def test_sparkvalidate(spark_session):
         data=[
             # fmt: off
                 (1,'a',   1,  4,  'yes', [
-                    "column_4 the row is 'no'",
-                    'column_3 should be in between lower_bound and upper_bound',
+                    "column_4 should be in ['no']",
+                    'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10'
                     ]
                 ),
                 (2,'aa',  12, 9,  'no', ['larger_than_10']),
                 (3,'ab',	3,  10, 'yes', [
-                    "column_4 the row is 'no'",
-                    'column_3 should be in between lower_bound and upper_bound',
+                    "column_4 should be in ['no']",
+                    'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10',
                     'column_1, column_3 should be unique',
                     'larger_than_10'
                     ]
                 ),
                 (4,'ab',	8,  10, 'yes', [
-                    "column_4 the row is 'no'",
-                    'column_3 should be in between lower_bound and upper_bound',
+                    "column_4 should be in ['no']",
+                    'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10',
                     'column_1, column_3 should be unique',
                     'larger_than_10'
@@ -38,12 +38,12 @@ def test_sparkvalidate(spark_session):
                 ),
                 (5,'b',   2,  7,  'no', [
                     "column_1 should contain 'a'",
-                    'column_3 should be in between lower_bound and upper_bound',
+                    'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10'
                     ]
                 ),
                 (6,None,   2,  7,  'no',   [
-                    'column_3 should be in between lower_bound and upper_bound',
+                    'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10'
                     ]
                 ),
@@ -89,6 +89,7 @@ def test_sparkvalidate(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
+    validate_df.produce_error_column()
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )
@@ -132,8 +133,7 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
-
-    validate_df.dataframe.toPandas().to_csv("out.csv", index=False)
+    validate_df.produce_error_column()
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )

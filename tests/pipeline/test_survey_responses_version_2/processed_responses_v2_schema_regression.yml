@@ -120,41 +120,41 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: household_members_over_2_years_and_not_present
+  name: any_household_members_over_2_years_and_not_present
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_age
+  name: person_1_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_2_age
+  name: person_2_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_3_age
+  name: person_3_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_4_age
+  name: person_4_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_5_age
+  name: person_5_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_6_age
+  name: person_6_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_7_age
+  name: person_7_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_8_age
+  name: person_8_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
@@ -284,11 +284,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_fingerprick
+  name: no_fingerprick_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_venous
+  name: no_venous_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
@@ -612,7 +612,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: contact_suspect_positive_covid_last_28_days
+  name: contact_suspected_positive_covid_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -1108,7 +1108,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent
+  name: consent_summary
   nullable: true
   type: double
 - metadata: {}

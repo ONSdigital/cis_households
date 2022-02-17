@@ -11,16 +11,6 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 
-def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
-    df = df.withColumn(
-        visit_datetime_column,
-        F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
-            F.col(visit_datetime_column)
-        ),
-    )
-    return df
-
-
 def fill_forward_work_columns(
     df: DataFrame,
     fill_forward_columns: List[str],
@@ -635,6 +625,35 @@ def impute_latest_date_flag(
     )
 
     return df.drop("imputation_flag")
+
+
+def fill_backwards_overriding_not_nulls(
+    df: DataFrame,
+    column_identity,
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df,
+    column_identity,
+    ordering_column,
+    dataset_column,
+    column_list,
+    """
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    for column in column_list:
+        df = df.withColumn(
+            column,
+            F.first(F.col(column), ignorenulls=True).over(window),
+        )
+    return df
 
 
 def edit_multiple_columns_fill_forward(
