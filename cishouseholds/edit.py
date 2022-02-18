@@ -29,10 +29,11 @@ def update_participant_not_consented(
     df = df.withColumn(
         column_name_to_update,
         F.when(
-            F.col(column_name_to_update).isNull() & non_consent_count > 0,
+            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
             non_consent_count,
         ).otherwise(F.col(column_name_to_update)),
     )
+    return df
 
 
 def update_face_covering_outside_of_home(
