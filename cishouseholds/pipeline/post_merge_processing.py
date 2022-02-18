@@ -1,5 +1,6 @@
 from functools import reduce
 from itertools import chain
+from typing import List
 
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
@@ -15,50 +16,21 @@ from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
-from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 
+# from cishouseholds.pipeline.load import check_table_exists
+
 
 @register_pipeline_stage("process_post_merge")
-def process_post_merge(**kwargs):
-    df = extract_from_table(kwargs["merged_antibody_swab_table"])
-
-    if check_table_exists(kwargs["imputed_values_table"]):
-        imputed_value_lookup_df = extract_from_table(kwargs["imputed_values_table"])
-    else:
-        imputed_value_lookup_df = None
-
-    # TODO: Need to join geographies from household level table before imputing
-    for col in ["gor9d", "work_status_group", "dvhsize", "cis_area"]:
-        if col not in df.columns:
-            df = df.withColumn(col, F.lit("A"))
-    # TODO: Remove once white group derived on survey responses
-    if "white_group" not in df.columns:
-        df = df.withColumn("white_group", F.lit("white"))
-
-    key_columns = ["white_group", "sex", "date_of_birth"]
-    key_columns_imputed_df = impute_key_columns(
-        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
-    )
-
-    imputed_values_df = key_columns_imputed_df.filter(
-        reduce(
-            lambda col_1, col_2: col_1 | col_2,
-            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-        )
-    )
-    update_table(key_columns_imputed_df, kwargs["participant_records_table"], mode_overide="overwrite")
-
-    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    imputed_values = imputed_values_df.select(
-        "participant_id",
-        *lookup_columns,
-    )
-    update_table(imputed_values, kwargs["imputed_values_table"])
-
-    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+def process_post_merge(
+    imputed_antibody_swab_table: str,
+    response_records_table: str,
+    invalid_response_records_table: str,
+    key_columns: List[str],
+):
+    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
     imputation_columns = chain(
@@ -77,11 +49,44 @@ def process_post_merge(**kwargs):
         household_id_column="ons_household_id",
         visit_date_column="visit_date_string",
         date_of_birth_column="date_of_birth",
+        country_column="country_name",
     )
 
     update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
-    update_table(response_level_records_df, kwargs["response_records_table"], mode_overide="overwrite")
-    update_table(response_level_records_filtered_df, kwargs["invalid_response_records_table"], mode_overide=None)
+    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
+    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
+
+
+@register_pipeline_stage("impute_demographic_columns")
+def impute_key_columns_stage(
+    survey_responses_table: str,
+    imputed_values_table: str,
+    survey_responses_imputed_table: str,
+    key_columns: List[str],
+):
+
+    imputed_value_lookup_df = extract_from_table(imputed_values_table)
+    df = extract_from_table(survey_responses_table)
+
+    key_columns_imputed_df = impute_key_columns(
+        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
+    )
+    imputed_values_df = key_columns_imputed_df.filter(
+        reduce(
+            lambda col_1, col_2: col_1 | col_2,
+            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+        )
+    )
+
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    imputed_values = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+
+    update_table(imputed_values, imputed_values_table)
+    update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
