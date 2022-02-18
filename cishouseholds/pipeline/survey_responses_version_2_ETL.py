@@ -386,7 +386,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
         },
-        "work_status": {
+        "work_status_v0": {
             "Employed and currently working": "Employed",  # noqa: E501
             "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
             "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
@@ -405,10 +405,10 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df=df, condition_column="work_status_v2", column="work_status_v1", map=work_status_dict["work_status_v1"]
     )
     # STEP 2
-    df = update_column_values_from_map(df=df, column="column_to_map", map=work_status_dict["work_status_v2"])
+    df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
     # STEP 3
     df = update_column_values_from_map(
-        df=df, condition_column="work_status_v1", column="work_status", map=work_status_dict["work_status"]
+        df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status"]
     )
 
     df = df.withColumn(

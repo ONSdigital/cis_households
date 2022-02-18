@@ -181,15 +181,6 @@ stages:
     run: False
     update_name_map: unioned_responses_update_map
     category_map: iqvia_raw_category_map
-<<<<<<< HEAD
-    table_file_pairs:
-        - [
-          unioned_survey_responses,
-          transformed_unioned_survey_responses
-        ]
-    use_table_to_csv_config: True
-=======
->>>>>>> origin/main
     table_to_csv_config_file: examples/table_to_csv.yaml
     outgoing_directory: hdfs:///ons/covserolink/output_data
 
