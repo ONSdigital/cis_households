@@ -4,7 +4,7 @@ from msilib import schema
 from cishouseholds.derive import derive_household_been_last_XX_days
 
 
-def test_function_placeholder(spark_session):
+def test_derive_household_been_last_XX_days(spark_session):
     schema = """
             last_XX_days string,
             last_XX_days_other_household_member string,
