@@ -11,34 +11,28 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def update_household_count(
-    df: DataFrame,
-    column_name_to_update: str,
-    infant_column_pattern: str,
-    infant_column_pattern_with_exceptions: str,
-    participant_column_pattern: str,
-    non_consented_count: str,
+def update_participant_not_consented(
+    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
 ):
     """
-    Update household count column by correcting value using null participants
+    update the participant consented column following specific logic
+    Parameters
+    ---------
+    df
+    column_name_to_update
     """
-    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
-    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
-    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
-
-    infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
-    infant_exceptions_array = F.array(
-        [F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]
+    r = re.compile(participant_non_consented_column_pattern)
+    non_consent_columns = list(filter(r.match, df.columns))
+    non_consent_count = F.size(
+        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
     )
-    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
-
-    infant_num = F.when(
-        F.size(F.array_remove(infant_exceptions_array, 0)) == len(infant_column_pattern_with_exceptions), 0
-    ).otherwise(F.size(F.array_remove(infant_array, 0)))
-
-    participant_num = F.size(F.array_remove(participant_array, 0))
-
-    df = df.withColumn(column_name_to_update, infant_num + participant_num + F.col(non_consented_count))
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
+            non_consent_count,
+        ).otherwise(F.col(column_name_to_update)),
+    )
     return df
 
 

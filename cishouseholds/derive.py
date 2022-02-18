@@ -89,25 +89,35 @@ def assign_household_participant_count(
     return df
 
 
-def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
+def assign_people_in_household_count(
+    df: DataFrame,
+    column_name_to_update: str,
+    infant_column_pattern: str,
+    infant_column_pattern_with_exceptions: str,
+    participant_column_pattern: str,
+    non_consented_count: str,
+):
     """
-    Assign number of people within household, including those not participating. Assumes each row contains counts of
-    participants for the household.
+    Update household count column by correcting value using null participants
+    """
+    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
+    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
+    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
 
-    Uses specific column name patterns to count non-participating members.
-    """
-    infant_pattern = "infant_[1-8]_age"
-    not_present_pattern = "person_[1-8]_age"
-    not_consenting_pattern = "person_[1-9]_not_consenting_age"
-    matched_columns = []
-    for col in df.columns:
-        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
-            if re.match(pattern, col):
-                matched_columns.append(col)
-    df = df.withColumn("TEMP", F.array(matched_columns))
-    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
-    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
-    return df.drop("TEMP")
+    infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
+    infant_exceptions_array = F.array(
+        [F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]
+    )
+    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
+
+    infant_num = F.when(
+        F.size(F.array_remove(infant_exceptions_array, 0)) == len(infant_column_pattern_with_exceptions), 0
+    ).otherwise(F.size(F.array_remove(infant_array, 0)))
+
+    participant_num = F.size(F.array_remove(participant_array, 0))
+
+    df = df.withColumn(column_name_to_update, infant_num + participant_num + F.col(non_consented_count))
+    return df
 
 
 def assign_ever_had_long_term_health_condition_or_disabled(
