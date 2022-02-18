@@ -97,7 +97,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
@@ -213,7 +213,9 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
-    Update specific cell values from a map contained in a csv file
+    Update specific cell values from a map contained in a csv file.
+    Allows a match on Null old values.
+
     Parameters
     ----------
     df
@@ -232,7 +234,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup") == 1) & (F.col(col) == F.col("old_value")), F.col("new_value")
+                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
             ).otherwise(F.col(col)),
         )
     return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
@@ -280,6 +282,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
+    condition_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
@@ -293,6 +296,8 @@ def update_column_values_from_map(
     error_if_value_not_found
     default_value
     """
+    if condition_column is None:
+        condition_column = column
 
     if default_value is None:
         default_value = F.col(column)
@@ -308,7 +313,10 @@ def update_column_values_from_map(
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
+                default_value
+            ),
         )
     return df
 
@@ -415,6 +423,12 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
 
+    return df
+
+
+def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
+    for col, map in column_map_dic.items():
+        df = update_column_values_from_map(df, col, map)
     return df
 
 

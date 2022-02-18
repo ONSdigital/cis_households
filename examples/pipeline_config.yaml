@@ -61,8 +61,8 @@ stages:
 
   - function: union_survey_response_files
     run: False
-    unioned_survey_table: unioned_survey_responses
     transformed_survey_table: transformed_survey_responses_v*_data
+    unioned_survey_table: unioned_survey_responses
 
   - function: union_dependent_transformations
     run: False
@@ -71,8 +71,8 @@ stages:
     cohort_corrections_file:
 
   - function: validate_survey_responses
-    run: True
-    unioned_survey_table: post_union_transformed_survey_responses
+    run: False
+    unioned_survey_table: unioned_survey_responses
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
 
@@ -87,7 +87,7 @@ stages:
   - function: merge_blood_ETL
     run: False
     antibody_table: joined_blood_test_data
-    unioned_survey_table: post_union_transformed_survey_responses
+    unioned_survey_table: validated_survey_responses
     antibody_output_tables: [
       "merged_responses_antibody_data",
       "antibody_merge_residuals",
@@ -172,6 +172,7 @@ stages:
     calibration_config_path: /home/cdsw/calibration_config.yaml
 
   - function: generate_outputs
+    table_to_csv_config_file: examples/table_to_csv.yaml
     run: False
     merged_antibody_swab_table: merged_responses_antibody_swab_data
     output_directory: hdfs:///ons/covserolink/output_data
@@ -180,8 +181,7 @@ stages:
     run: False
     update_name_map: unioned_responses_update_map
     category_map: iqvia_raw_category_map
-    table_file_pairs:
-        - [unioned_survey_responses, unioned_survey_responses]
+    table_to_csv_config_file: examples/table_to_csv.yaml
     outgoing_directory: hdfs:///ons/covserolink/output_data
 
   - function: report

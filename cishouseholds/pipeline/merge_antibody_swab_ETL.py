@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 
 from cishouseholds.filter import file_exclude
 from cishouseholds.merge import join_assayed_bloods
-from cishouseholds.merge import union_tables_hadoop
+from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
@@ -11,24 +11,21 @@ from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_transformations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(**kwargs):
+def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
     """
     survey_df_list = []
 
     for version in ["0", "1", "2"]:
-        survey_table = kwargs["transformed_survey_table"].replace("*", version)
+        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    unioned_survey_responses = union_tables_hadoop(kwargs["unioned_survey_table"], survey_df_list)
-    unioned_survey_responses = unioned_survey_responses.dropDuplicates(
-        subset=[column for column in unioned_survey_responses.columns if column != "survey_response_source_file"]
-    )
-    update_table(unioned_survey_responses, kwargs["unioned_survey_table"], mode_overide="overwrite")
+    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -39,13 +36,60 @@ def execute_union_dependent_transformations(**kwargs):
 
 
 @register_pipeline_stage("validate_survey_responses")
-def validate_survey_responses(**kwargs):
-    unioned_survey_responses = extract_from_table(kwargs["unioned_survey_table"])
+def validate_survey_responses(
+    survey_responses_table: str,
+    duplicate_count_column_name: str,
+    validation_failure_flag_column: str,
+    valid_survey_responses_table: str,
+    invalid_survey_responses_table: str,
+):
+    unioned_survey_responses = extract_from_table(survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
-        unioned_survey_responses, **kwargs["error_column"]
+        df=unioned_survey_responses,
+        validation_check_failure_column_name=validation_failure_flag_column,
+        duplicate_count_column_name=duplicate_count_column_name,
     )
-    update_table(valid_survey_responses, kwargs["valid_survey_table"], mode_overide="overwrite")
-    update_table(erroneous_survey_responses, kwargs["invalid_survey_table"], mode_overide="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
+    update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
+):
+    """Edit columns based on mappings from lookup files. Often used to correct data quality issues."""
+    df = extract_from_table(input_table)
+
+    spark = get_or_create_spark_session()
+    cohort_lookup = spark.read.csv(
+        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
+    ).withColumnRenamed("participant_id", "cohort_participant_id")
+    travel_countries_lookup = spark.read.csv(
+        travel_countries_lookup_path,
+        header=True,
+        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    )
+
+    df = df.join(
+        cohort_lookup,
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+
+    df = df.join(
+        travel_countries_lookup,
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_blood_results")

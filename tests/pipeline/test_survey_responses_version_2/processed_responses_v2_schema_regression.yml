@@ -48,6 +48,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: visit_date_type
+  nullable: true
+  type: string
+- metadata: {}
   name: improved_visit_date
   nullable: true
   type: timestamp
@@ -116,41 +120,41 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: household_members_over_2_years_and_not_present
+  name: any_household_members_over_2_years_and_not_present
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_age
+  name: person_1_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_2_age
+  name: person_2_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_3_age
+  name: person_3_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_4_age
+  name: person_4_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_5_age
+  name: person_5_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_6_age
+  name: person_6_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_7_age
+  name: person_7_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_8_age
+  name: person_8_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
@@ -560,6 +564,34 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: symptoms_last_7_days_chest_pain
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_palpitations
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_vertigo_dizziness
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_worry_anxiety
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_low_mood_not_enjoying_anything
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_memory_loss_or_confusion
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_difficulty_concentrating
+  nullable: true
+  type: string
+- metadata: {}
   name: is_self_isolating_detailed
   nullable: true
   type: string
@@ -580,7 +612,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: contact_suspect_positive_covid_last_28_days
+  name: contact_suspected_positive_covid_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -745,6 +777,34 @@ fields:
   type: string
 - metadata: {}
   name: symptoms_since_last_visit_loss_of_appetite
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_chest_pain
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_palpitations
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_vertigo_dizziness
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_worry_anxiety
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_low_mood_or_not_enjoying_anything
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_memory_loss_or_confusion
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
@@ -1048,7 +1108,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent
+  name: consent_summary
   nullable: true
   type: double
 - metadata: {}
@@ -1073,34 +1133,6 @@ fields:
   type: string
 - metadata: {}
   name: blood_taken
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: any_symptoms_last_7_days_or_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: any_symptoms_around_visit
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
   nullable: false
   type: string
 - metadata: {}
