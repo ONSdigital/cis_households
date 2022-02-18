@@ -157,9 +157,18 @@ class SparkValidate:
     @staticmethod
     def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
         error_message = error_message.format(", ".join(null_columns), str(condition))
-        return F.when(
-            condition
-            & F.size(F.array_remove(F.array([F.when(F.col(col).isNull(), 1).otherwise(0) for col in null_columns]), 0))
-            == len(null_columns),
-            True,
-        ).otherwise(False)
+        return (
+            F.when(
+                condition
+                & (
+                    F.size(
+                        F.array_remove(
+                            F.array([F.when(F.col(col).isNull(), 1).otherwise(0) for col in null_columns]), 0
+                        )
+                    )
+                    == len(null_columns)
+                ),
+                True,
+            ).otherwise(False),
+            error_message,
+        )
