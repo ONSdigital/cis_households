@@ -57,6 +57,7 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
+
 @register_pipeline_stage("calculate_individual_level_population_totals")
 def population_projection(
     population_projection_previous: str,

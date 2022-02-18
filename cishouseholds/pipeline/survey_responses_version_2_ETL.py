@@ -41,6 +41,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
+from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import edit_multiple_columns_fill_forward
@@ -676,8 +677,19 @@ def union_dependent_transformations(df):
         household_id_column="ons_household_id",
         participant_id_column="participant_id",
     )
+    df = update_participant_not_consented(
+        df,
+        column_name_to_update="household_participants_not_consented_count",
+        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
+    )
     df = assign_people_in_household_count(
-        df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
+        df,
+        column_name_to_assign="people_in_household_count",
+        infant_column_pattern=r"infant_[1-8]_age",
+        infant_column_pattern_with_exceptions=r"infant_6_age",
+        participant_column_pattern=r"person_[1-8]_not_present_age",
+        household_participant_count_column="household_participant_count",
+        non_consented_count_column="household_participants_not_consented_count",
     )
 
     df = edit_multiple_columns_fill_forward(
