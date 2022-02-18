@@ -59,15 +59,14 @@ def process_post_merge(
 
 @register_pipeline_stage("impute_demographic_columns")
 def impute_key_columns_stage(
-    merged_antibody_swab_table: str,
-    participant_records_table: str,
+    survey_responses_table: str,
     imputed_values_table: str,
-    imputed_antibody_swab_table: str,
+    survey_responses_imputed_table: str,
     key_columns: List[str],
 ):
 
     imputed_value_lookup_df = extract_from_table(imputed_values_table)
-    df = extract_from_table(merged_antibody_swab_table)
+    df = extract_from_table(survey_responses_table)
 
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
@@ -87,8 +86,7 @@ def impute_key_columns_stage(
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
     update_table(imputed_values, imputed_values_table)
-    update_table(key_columns_imputed_df, participant_records_table, mode_overide="overwrite")
-    update_table(df_with_imputed_values, imputed_antibody_swab_table, "overwrite")
+    update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
