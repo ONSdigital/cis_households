@@ -84,6 +84,8 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_last_28_days: null
   household_fingerprick_status: Declined
   household_members_under_2_years: null
   household_visit_status: Withdrawn
@@ -383,6 +385,9 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
+    has
+  household_been_hospital_last_last_28_days: null
   household_fingerprick_status: Declined
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -688,6 +693,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_last_28_days: No I haven’t, but someone else in my
+    household has
   household_fingerprick_status: null
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn
@@ -992,6 +1000,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_last_28_days: null
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'Yes'
   household_visit_status: Dispatched
@@ -1292,6 +1302,10 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
+    has
+  household_been_hospital_last_last_28_days: No I haven’t, but someone else in my
+    household has
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'No'
   household_visit_status: Dispatched
@@ -1595,6 +1609,8 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Partially Completed
@@ -1899,6 +1915,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Completed
@@ -2204,6 +2222,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_last_28_days: No I haven’t, but someone else in my
+    household has
   household_fingerprick_status: Not invited
   household_members_under_2_years: 'No'
   household_visit_status: Completed
@@ -2505,6 +2526,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_last_28_days: No I haven’t, but someone else in my
+    household has
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'No'
   household_visit_status: Partially Completed
@@ -2808,6 +2832,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_last_28_days: No I haven’t, but someone else in my
+    household has
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn
