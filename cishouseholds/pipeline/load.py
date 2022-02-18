@@ -39,10 +39,14 @@ def delete_tables(**kwargs):
 
     if "table_names" in kwargs:
         if kwargs["table_names"] is not None:
+            if type(kwargs["table_names"]) != list:
+                kwargs["table_names"] = [kwargs["table_names"]]
             for table_name in kwargs["table_names"]:
-                print(f"dropping table: {table_name}")  # functional
+                print(
+                    f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+                )  # functional
                 spark_session.sql(
-                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['prefix']}_{table_name}"
+                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
                 )
     if "pattern" in kwargs:
         if kwargs["pattern"] is not None:
