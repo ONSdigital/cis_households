@@ -26,6 +26,10 @@ class SparkValidate:
             "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
+            "check_all_null_given_condition": {
+                "function": self.check_all_null_given_condition,
+                "error_message": "{} should all be null given condition {}",
+            },
         }
 
     def new_function(self, function_name, function_method, error_message="default error"):
@@ -149,3 +153,22 @@ class SparkValidate:
         return (F.col(visit_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
+
+    @staticmethod
+    def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
+        error_message = error_message.format(", ".join(null_columns), str(condition))
+        return (
+            F.when(
+                condition
+                & (
+                    F.size(
+                        F.array_remove(
+                            F.array([F.when(F.col(col).isNull(), 1).otherwise(0) for col in null_columns]), 0
+                        )
+                    )
+                    == len(null_columns)
+                ),
+                True,
+            ).otherwise(False),
+            error_message,
+        )
