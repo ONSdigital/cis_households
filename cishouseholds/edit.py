@@ -187,7 +187,9 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
-    Update specific cell values from a map contained in a csv file
+    Update specific cell values from a map contained in a csv file.
+    Allows a match on Null old values.
+
     Parameters
     ----------
     df
@@ -206,7 +208,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup") == 1) & (F.col(col) == F.col("old_value")), F.col("new_value")
+                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
             ).otherwise(F.col(col)),
         )
     return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
@@ -254,6 +256,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
+    condition_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
@@ -267,6 +270,8 @@ def update_column_values_from_map(
     error_if_value_not_found
     default_value
     """
+    if condition_column is None:
+        condition_column = column
 
     if default_value is None:
         default_value = F.col(column)
@@ -282,7 +287,10 @@ def update_column_values_from_map(
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
+                default_value
+            ),
         )
     return df
 
