@@ -1,6 +1,8 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import update_column_values_from_map_condition
+from cishouseholds.edit import update_column_values_from_map
+
+# from cishouseholds.edit import update_column_values_from_map_condition
 
 
 def test_update_column_values_from_map_condition(spark_session):
@@ -33,7 +35,7 @@ def test_update_column_values_from_map_condition(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            (1,     'condition_not_met',        None),
+            (1,     'condition_not_met',        'something_else'),
             (2,     'condition_met_1',          'result_1'),
             (3,     'condition_met_2',          'result_2'),
             (4,     'condition_not_met',        None),
@@ -41,16 +43,9 @@ def test_update_column_values_from_map_condition(spark_session):
         ],
         schema=schema,
     )
-    import pdb
 
-    pdb.set_trace()
-    output_df = update_column_values_from_map_condition(
-        df=input_df,
-        condition_column="condition_column",
-        column="column_to_map",
-        map=dict_map,
+    output_df = update_column_values_from_map(
+        df=input_df, condition_column="condition_column", column="column_to_map", map=dict_map["column_to_map"]
     )
-    import pdb
 
-    pdb.set_trace()
-    assert_df_equality(expected_df, output_df, ignore_nullable=True)
+    assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)

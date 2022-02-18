@@ -343,7 +343,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
-    work_status_dict_conditional = {
+    work_status_dict = {
         "work_status_v1": {
             "Child under 5y attending child care": "Child under 5y attending child care",  # noqa: E501
             "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
@@ -366,21 +366,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "5y and older in full-time education": "5y and older in full-time education",  # noqa: E501
         },
-        "work_status": {
-            "Employed and currently working": "Employed",  # noqa: E501
-            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Child under 5y not attending child care": "Student",  # noqa: E501
-            "Child under 5y attending child care": "Student",  # noqa: E501
-            "5y and older in full-time education": "Student",  # noqa: E501
-            "Self-employed and currently working": "Self-employed",  # noqa: E501
-        },
-    }
-
-    work_status_dict = {
         "work_status_v2": {
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
             "Retired": "Retired",  # noqa: E501
@@ -401,15 +386,31 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
         },
+        "work_status": {
+            "Employed and currently working": "Employed",  # noqa: E501
+            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Child under 5y not attending child care": "Student",  # noqa: E501
+            "Child under 5y attending child care": "Student",  # noqa: E501
+            "5y and older in full-time education": "Student",  # noqa: E501
+            "Self-employed and currently working": "Self-employed",  # noqa: E501
+        },
     }
+
     # STEP 1
-
+    df = update_column_values_from_map(
+        df=df, condition_column="work_status_v2", column="work_status_v1", map=work_status_dict["work_status_v1"]
+    )
     # STEP 2
-    df = apply_value_map_multiple_columns(df=df, column_map_dic=work_status_dict)
-
+    df = update_column_values_from_map(df=df, column="column_to_map", map=work_status_dict["work_status_v2"])
     # STEP 3
+    df = update_column_values_from_map(
+        df=df, condition_column="work_status_v1", column="work_status", map=work_status_dict["work_status"]
+    )
 
-    # TODO should this be "work_status_combined"
     df = df.withColumn(
         "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
     )
