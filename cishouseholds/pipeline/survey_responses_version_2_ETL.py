@@ -150,19 +150,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
-
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
-    )
     return df
 
 
@@ -395,6 +382,18 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Self-employed and currently working": "Self-employed",
             "Participant Would Not/Could Not Answer": None,
         },
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
     )
     return df
 
