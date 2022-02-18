@@ -72,7 +72,7 @@ stages:
 
   - function: validate_survey_responses
     run: False
-    unioned_survey_table: post_union_transformed_survey_responses
+    unioned_survey_table: unioned_survey_responses
     valid_survey_table: validated_survey_responses
     invalid_survey_table: erroneous_survey_responses
 
