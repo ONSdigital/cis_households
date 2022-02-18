@@ -552,6 +552,18 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: symptoms_last_7_days_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_noisy_breathing_wheezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_loss_of_appetite
+  nullable: true
+  type: string
+- metadata: {}
   name: symptoms_last_7_days_chest_pain
   nullable: true
   type: string
@@ -577,18 +589,6 @@ fields:
   type: string
 - metadata: {}
   name: symptoms_last_7_days_difficulty_concentrating
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_runny_nose_sneezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_noisy_breathing_wheezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
@@ -768,6 +768,18 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: symptoms_since_last_visit_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_noisy_breathing_wheezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_loss_of_appetite
+  nullable: true
+  type: string
+- metadata: {}
   name: symptoms_since_last_visit_chest_pain
   nullable: true
   type: string
@@ -793,18 +805,6 @@ fields:
   type: string
 - metadata: {}
   name: symptoms_since_last_visit_difficulty_concentrating
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_since_last_visit_runny_nose_sneezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_since_last_visit_noisy_breathing_wheezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_since_last_visit_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
