@@ -670,15 +670,15 @@ def union_dependent_transformations(df):
     #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
     # )
 
-    # df = assign_household_participant_count(
-    #     df,
-    #     column_name_to_assign="household_participant_count",
-    #     household_id_column="ons_household_id",
-    #     participant_id_column="participant_id",
-    # )
-    # df = assign_people_in_household_count(
-    #     df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
-    # )
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = assign_people_in_household_count(
+        df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
+    )
 
     df = edit_multiple_columns_fill_forward(
         df=df,
