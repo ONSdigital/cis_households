@@ -684,11 +684,12 @@ def union_dependent_transformations(df):
     )
     df = assign_people_in_household_count(
         df,
-        column_name_to_update="people_in_household_count",
+        column_name_to_assign="people_in_household_count",
         infant_column_pattern=r"infant_[1-8]_age",
         infant_column_pattern_with_exceptions=r"infant_6_age",
         participant_column_pattern=r"person_[1-8]_not_present_age",
-        non_consented_count="household_participants_not_consented_count",
+        household_participant_count_column="household_participant_count",
+        non_consented_count_column="household_participants_not_consented_count",
     )
 
     df = edit_multiple_columns_fill_forward(

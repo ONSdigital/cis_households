@@ -91,11 +91,12 @@ def assign_household_participant_count(
 
 def assign_people_in_household_count(
     df: DataFrame,
-    column_name_to_update: str,
+    column_name_to_assign: str,
     infant_column_pattern: str,
     infant_column_pattern_with_exceptions: str,
     participant_column_pattern: str,
-    non_consented_count: str,
+    household_participant_count_column: str,
+    non_consented_count_column: str,
 ):
     """
     Update household count column by correcting value using null participants
@@ -116,7 +117,10 @@ def assign_people_in_household_count(
 
     participant_num = F.size(F.array_remove(participant_array, 0))
 
-    df = df.withColumn(column_name_to_update, infant_num + participant_num + F.col(non_consented_count))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.col(household_participant_count_column) + infant_num + participant_num + F.col(non_consented_count_column),
+    )
     return df
 
 
