@@ -71,7 +71,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
