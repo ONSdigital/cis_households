@@ -40,7 +40,8 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
     filtered_df = extract_from_table(filtered_survey_responses_table)
-    # processed_file_log = extract_from_table("processed_filenames")
+    processed_file_log = extract_from_table("processed_filenames")
+
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
@@ -75,12 +76,14 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
+                *list(processed_file_log.select("filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 filtered_survey_responses_count,
                 invalid_survey_responses_count,
+                *list(processed_file_log.select("file_row_count").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
         }
     )
