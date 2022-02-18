@@ -32,47 +32,65 @@ with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
 
 
 @register_pipeline_stage("sample_file_ETL")
-def sample_file_ETL(**kwargs):
-    list_paths = [
-        "address_lookup",
-        "cis_lookup",
-        "country_lookup",
-        "postcode_lookup",
-        "new_sample_file",
-        "tranche",
-    ]
-    dfs = extract_df_list(list_paths, "old_sample_file", **kwargs)
+def sample_file_ETL(
+    address_lookup,
+    cis_lookup,
+    country_lookup,
+    postcode_lookup,
+    new_sample_file,
+    tranche,
+    table_or_path,
+    old_sample_file,
+    design_weight_table,
+):
+    files = {
+        "address_lookup": address_lookup,
+        "cis_lookup": cis_lookup,
+        "country_lookup": country_lookup,
+        "postcode_lookup": postcode_lookup,
+        "new_sample_file": new_sample_file,
+        "tranche": tranche,
+    }
+    dfs = extract_df_list(files, old_sample_file, table_or_path)
     dfs = prepare_auxillary_data(dfs)
     design_weights = generate_weights(dfs)
-    # design_weights.toPandas().to_csv("full_out.csv",index=False)
-    update_table(design_weights, kwargs["design_weight_table"], mode_overide="overwrite")
+    update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
-def population_projection(population_totals_table, population_projections_table, **kwargs):
-    list_paths = ["population_projection_current", "aps_lookup"]
-    dfs = extract_df_list(list_paths, "population_projection_previous", **kwargs)
-    (populations_for_calibration, population_projections) = proccess_population_projection_df(
-        dfs=dfs, month=kwargs["month"]
+def population_projection(
+    population_projection_previous: str,
+    population_projection_current: str,
+    month: int,
+    year: int,
+    aps_lookup: str,
+    table_or_path: str,
+    population_totals_table: str,
+    population_projections_table: str,
+):
+    files = {
+        "population_projection_current": population_projection_current,
+        "aps_lookup": aps_lookup,
+        "population_projection_previous": population_projection_previous,
+    }
+    dfs = extract_df_list(files, population_projection_previous, table_or_path)
+    populations_for_calibration, population_projections = proccess_population_projection_df(
+        dfs=dfs, month=month, year=year
     )
     update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
     update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
 
-def extract_df_list(list_paths, previous, **kwargs):
-    check_table_or_path = kwargs["table_or_path"]
-    if check_table_or_path == "path":
-        list_paths.append(previous)
-
-    elif check_table_or_path == "table":
-        population_projection_previous = extract_from_table(kwargs[previous])
-
+def extract_df_list(files, previous, check_table_or_path):
     dfs = {}
-    for key in list_paths:
-        dfs[key] = extract_input_data(file_paths=kwargs[key], validation_schema=None, sep=",")
+    for key, file in files.items():
+        if file == previous and check_table_or_path == "table":
+            continue
+        else:
+            dfs[key] = extract_input_data(file_paths=file, validation_schema=None, sep=",")
 
     if check_table_or_path == "table":
-        dfs[previous] = population_projection_previous
+        dfs[previous] = extract_from_table(previous)
 
     return dfs
 
