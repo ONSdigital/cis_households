@@ -1168,14 +1168,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: household_been_care_home_last_28_days
-  nullable: true
-  type: string
-- metadata: {}
-  name: household_been_hospital_last_last_28_days
-  nullable: true
-  type: string
-- metadata: {}
   name: is_self_isolating
   nullable: true
   type: string
