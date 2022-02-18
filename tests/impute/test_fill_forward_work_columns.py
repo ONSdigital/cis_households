@@ -21,8 +21,12 @@ def test_fill_forward_work_columns(spark_session):
                 (4, "2020/08/15",   "No",       None,   None,   None),
                 (4, "2020/08/16",   None,       6,      7,      8),
 
-                (5, "2020/08/15",   "No",       5,      5,      None),
+                (5, "2020/08/15",   "No",       None,   5,      None),
                 (5, "2020/08/16",   None,       None,   None,   None),
+
+                (6, "2020/08/14",   "No",       None,   None,   None),
+                (6, "2020/08/15",   "No",       None,   1,      None),
+                (6, "2020/08/16",   None,       None,   None,   None),
             # fmt: on
         ],
         schema="id integer, date string, changed string, work_1 integer, work_2 integer, work_3 integer",
@@ -45,8 +49,12 @@ def test_fill_forward_work_columns(spark_session):
                 (4, "2020/08/15",   "No",       3,      2,      1),
                 (4, "2020/08/16",   None,       6,      7,      8),
 
-                (5, "2020/08/15",   "No",       5,      5,      None),
-                (5, "2020/08/16",   None,       5,      5,      None),
+                (5, "2020/08/15",   "No",       None,   5,      None),
+                (5, "2020/08/16",   None,       None,   5,      None),
+
+                (6, "2020/08/14",   "No",       None,   None,   None),
+                (6, "2020/08/15",   "No",       None,   None,   None),
+                (6, "2020/08/16",   None,       None,   None,   None),
             # fmt: on
         ],
         schema="id integer, date string, changed string, work_1 integer, work_2 integer, work_3 integer",
