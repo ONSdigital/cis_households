@@ -6,28 +6,51 @@ from cishouseholds.impute import fill_forward_work_columns
 def test_fill_forward_work_columns(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
-            (1, "2020/11/11", "Yes", 1, 1, 1),
-            (2, "2020/10/15", "No", None, None, None),
-            (3, "2020/05/21", "Yes", 1, 2, 3),
-            (3, "2020/05/27", "No", None, None, None),
-            (3, "2020/07/20", "Yes", 3, 2, 1),
-            (3, "2020/08/13", "No", None, None, None),
+            # fmt: off
+                (1, "2020/11/11",   "Yes",      1,      1,      1),
+
+                (2, "2020/10/15",   "No",       None,   None,   None),
+
+                (3, "2020/05/21",   "Yes",      1,      2,      3),
+                (3, "2020/05/27",   "No",       None,   None,   None),
+                (3, "2020/07/20",   "Yes",      3,      2,      None),
+                (3, "2020/08/13",   None,       None,   None,   None),
+                (3, "2020/08/14",   None,       None,   None,   None),
+
+                (4, "2020/08/14",   None,       3,      2,      1),
+                (4, "2020/08/15",   "No",       None,   None,   None),
+                (4, "2020/08/16",   None,       6,      7,      8),
+
+                (5, "2020/08/15",   "No",       5,      5,      None),
+                (5, "2020/08/16",   None,       None,   None,   None),
+            # fmt: on
         ],
         schema="id integer, date string, changed string, work_1 integer, work_2 integer, work_3 integer",
     )
 
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2020/11/11", "Yes", 1, 1, 1),
-            (2, "2020/10/15", "No", None, None, None),
-            (3, "2020/05/21", "Yes", 1, 2, 3),
-            (3, "2020/05/27", "No", 1, 2, 3),
-            (3, "2020/07/20", "Yes", 3, 2, 1),
-            (3, "2020/08/13", "No", 3, 2, 1),
+            # fmt: off
+                (1, "2020/11/11",   "Yes",      1,      1,      1),
+
+                (2, "2020/10/15",   "No",       None,   None,   None),
+
+                (3, "2020/05/21",   "Yes",      1,      2,      3),
+                (3, "2020/05/27",   "No",       1,      2,      3),
+                (3, "2020/07/20",   "Yes",      3,      2,      None),
+                (3, "2020/08/13",   None,       3,      2,      None),
+                (3, "2020/08/14",   None,       3,      2,      None),
+
+                (4, "2020/08/14",   None,       3,      2,      1),
+                (4, "2020/08/15",   "No",       3,      2,      1),
+                (4, "2020/08/16",   None,       6,      7,      8),
+
+                (5, "2020/08/15",   "No",       5,      5,      None),
+                (5, "2020/08/16",   None,       5,      5,      None),
+            # fmt: on
         ],
         schema="id integer, date string, changed string, work_1 integer, work_2 integer, work_3 integer",
     )
-
     actual_df = fill_forward_work_columns(
         input_df,
         fill_forward_columns=["work_1", "work_2", "work_3"],
@@ -35,4 +58,9 @@ def test_fill_forward_work_columns(spark_session):
         visit_date_column="date",
         main_job_changed_column="changed",
     )
+    # input_df.orderBy("id", "date").show()
+    # expected_df.orderBy("id", "date").show()
+    # actual_df.orderBy("id", "date").show()
+
+    # import pdb;pdb.set_trace()
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
