@@ -754,6 +754,7 @@ def union_dependent_transformations(df):
         "withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
         "is_self_isolating_detailed": {
