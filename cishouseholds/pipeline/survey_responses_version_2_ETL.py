@@ -33,6 +33,7 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.derive import derive_household_been_last_XX_days
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
@@ -149,7 +150,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     # )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
-
     return df
 
 
@@ -835,7 +835,18 @@ def union_dependent_transformations(df):
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
-
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
     return df
 
 

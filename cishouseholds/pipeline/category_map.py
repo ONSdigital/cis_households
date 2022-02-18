@@ -285,12 +285,12 @@ category_maps = {
         },
         "last_covid_contact_location": {"Living in your own home": 1, "Outside your home": 2},
         "last_suspected_covid_contact_location": {"Living in your own home": 1, "Outside your home": 2},
-        "household_been_hospital_last_2_weeks": {
+        "household_been_hospital_last_28_days": {
             "No, no one in my household has": 0,
             "Yes, I have": 1,
             "No I haven’t, but someone else in my household has": 2,
         },
-        "household_been_care_home_last_2_weeks": {
+        "household_been_care_home_last_28_days": {
             "No, no one in my household has": 0,
             "Yes, I have": 1,
             "No I haven’t, but someone else in my household has": 2,
