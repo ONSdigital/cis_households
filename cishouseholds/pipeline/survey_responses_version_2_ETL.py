@@ -48,6 +48,8 @@ from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
+from cishouseholds.impute import impute_outside_uk_columns
+from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -691,6 +693,14 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_received",
         ],
     )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
+    )
     col_val_map = {
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
@@ -744,6 +754,7 @@ def union_dependent_transformations(df):
         "withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
         "is_self_isolating_detailed": {

@@ -340,7 +340,7 @@ category_maps = {
         "long_covid_reduce_activities": {"Not at all": 4, "Yes a little": 5, "Yes a lot": 6},
         "withdrawal_type": {
             "Withdrawn": 1,
-            "Withdrawn - no future linkage or use of samples": 2,
+            "Withdrawn_no_future_linkage_or_use of samples": 2,
             "Withdrawn_no_future_linkage": 3,
         },
         "cis_covid_vaccine_type_other": {
@@ -572,6 +572,7 @@ category_maps = {
             "Do not reinstate": 10,
             "SWCAP": 11,
         },
+        "withdrawal_reason_raw": {},
         "cis_covid_vaccine_type": {
             "Don't know type": 1,
             "From a research study/trial": 2,
