@@ -44,11 +44,10 @@ def sample_file_ETL(**kwargs):
     dfs = extract_df_list(list_paths, "old_sample_file", **kwargs)
     dfs = prepare_auxillary_data(dfs)
     design_weights = generate_weights(dfs)
-    # design_weights.toPandas().to_csv("full_out.csv",index=False)
     update_table(design_weights, kwargs["design_weight_table"], mode_overide="overwrite")
 
 
-@register_pipeline_stage("population_projection")
+@register_pipeline_stage("calculate_individual_level_population_totals")
 def population_projection(population_totals_table, population_projections_table, **kwargs):
     list_paths = ["population_projection_current", "aps_lookup"]
     dfs = extract_df_list(list_paths, "population_projection_previous", **kwargs)
