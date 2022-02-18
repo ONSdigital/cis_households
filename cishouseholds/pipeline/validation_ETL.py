@@ -1,5 +1,4 @@
-from functools import reduce
-
+# from functools import reduce
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -48,30 +47,25 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_udl(
         logic=(
-            (
-                (
-                    (F.col("cis_covid_vaccine_type") == "Other / specify")
-                    & F.col("cis_covid_vaccine_type_other").isNull()
-                )
-                | (F.col("cis_covid_vaccine_type") != "Other / specify")
-            ),
+            ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
+            | (F.col("cis_covid_vaccine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
     )
 
-    _vaccine_n_columns_are_null = [
-        F.col(item).isNull()
-        for number in range(1, 5)
-        for item in (
-            f"cis_covid_vaccine_type_{number}",
-            f"cis_covid_vaccine_type_other_{number}",
-            f"cis_covid_vaccine_date_{number}",
-        )
-    ]
-    SparkVal.validate_udl(
-        logic=(F.col("visit_type") == "First Visit" | (reduce(_vaccine_n_columns_are_null, lambda x, y: x & y))),
-        error_message="vaccine _n fields are all null if not first visit",
-    )
+    # _vaccine_n_columns_are_null = [
+    #     F.col(item).isNull()
+    #     for number in range(1, 5)
+    #     for item in (
+    #         f"cis_covid_vaccine_type_{number}",
+    #         f"cis_covid_vaccine_type_other_{number}",
+    #         f"cis_covid_vaccine_date_{number}",
+    #     )
+    # ]
+    # SparkVal.validate_udl(
+    #     logic=(F.col("visit_type") == "First Visit" | (reduce(lambda x, y: x & y, _vaccine_n_columns_are_null))),
+    #     error_message="vaccine _n fields are all null if not first visit",
+    # )
 
     SparkVal.validate_udl(
         logic=(
@@ -99,8 +93,9 @@ def validation_calls(SparkVal):
     )
 
 
-def validation_ETL(df: DataFrame, validation_check_failure_column_name: str):
+def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, duplicate_count_column_name: str):
     SparkVal = SparkValidate(dataframe=df, error_column_name=validation_check_failure_column_name)
+    SparkVal.count_complete_duplicates(duplicate_count_column_name)
     validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
