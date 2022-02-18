@@ -1,5 +1,6 @@
-from chispa import assert_df_equality
 from msilib import schema
+
+from chispa import assert_df_equality
 
 from cishouseholds.derive import derive_household_been_last_XX_days
 
