@@ -48,6 +48,8 @@ from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
+from cishouseholds.impute import impute_outside_uk_columns
+from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -237,6 +239,74 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
+    work_status_dict = {
+        "work_status_v1": {
+            "Child under 5y attending child care": "Child under 5y attending child care",  # noqa: E501
+            "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
+            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
+            "Child under 5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
+            "Child under 5y not attending child care": "Child under 5y not attending child care",  # noqa: E501
+            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
+            "Not working and not looking for work": "Not working and not looking for work",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
+            "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
+            "Retired": "Retired",  # noqa: E501
+            "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
+            "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
+            "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
+            "5y and older in full-time education": "5y and older in full-time education",  # noqa: E501
+        },
+        "work_status_v2": {
+            "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
+            "Retired": "Retired",  # noqa: E501
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
+            "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",  # noqa: E501
+            "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
+            "Child under 5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",  # noqa: E501
+            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",  # noqa: E501
+            "Child under 5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",  # noqa: E501
+            "Child under 5y not attending child care": "Child under 4-5y not attending child care",  # noqa: E501
+            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",  # noqa: E501
+            "4-5y and older at school/home-school (including if temporarily absent)": "4-5y and older at school/home-school",  # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
+            "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
+        },
+        "work_status_v0": {
+            "Employed and currently working": "Employed",  # noqa: E501
+            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Child under 5y not attending child care": "Student",  # noqa: E501
+            "Child under 5y attending child care": "Student",  # noqa: E501
+            "5y and older in full-time education": "Student",  # noqa: E501
+            "Self-employed and currently working": "Self-employed",  # noqa: E501
+        },
+    }
+
+    # STEP 1
+    df = update_column_values_from_map(
+        df=df, condition_column="work_status_v2", column="work_status_v1", map=work_status_dict["work_status_v1"]
+    )
+    # STEP 2
+    df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
+    # STEP 3
+    df = update_column_values_from_map(
+        df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
+    )
+
     df = df.withColumn(
         "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
     )
@@ -622,6 +692,14 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_type_other",
             "cis_covid_vaccine_received",
         ],
+    )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
     )
     col_val_map = {
         "face_covering_outside_of_home": {
