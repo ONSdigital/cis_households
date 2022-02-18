@@ -174,6 +174,19 @@ def join_vaccination_data(**kwargs):
     update_table(participant_df, kwargs["vaccination_data_table"], mode_overide="overwrite")
 
 
+@register_pipeline_stage("join_geographic_data")
+def join_geographic_data(
+    geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
+):
+    """
+    Join weights file onto survey data by household id.
+    """
+    weights_df = extract_from_table(geographic_table)
+    survey_responses_df = extract_from_table(survey_responses_table)
+    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left")
+    update_table(geographic_survey_df, geographic_responses_table)
+
+
 def nims_transformations(df: DataFrame) -> DataFrame:
     """Clean and transform NIMS data after reading from table."""
     df = rename_column_names(df, nims_column_name_map)
