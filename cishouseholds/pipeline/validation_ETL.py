@@ -41,6 +41,16 @@ def validation_calls(SparkVal):
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
         ],
+        "check_all_null_given_condition": {
+            "condition": F.col("work_main_job_changed") != "Yes",
+            "null_columns": [
+                "work_main_job_title",
+                "work_main_job_role",
+                "work_sectors",
+                "work_sectors_other",
+                "work_location",
+            ],
+        },
     }
 
     SparkVal.validate(dataset_calls)

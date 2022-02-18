@@ -71,7 +71,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
@@ -256,6 +256,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
+    condition_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
@@ -269,6 +270,8 @@ def update_column_values_from_map(
     error_if_value_not_found
     default_value
     """
+    if condition_column is None:
+        condition_column = column
 
     if default_value is None:
         default_value = F.col(column)
@@ -284,7 +287,10 @@ def update_column_values_from_map(
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
+                default_value
+            ),
         )
     return df
 
