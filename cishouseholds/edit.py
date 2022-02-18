@@ -8,7 +8,6 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -24,15 +23,16 @@ def update_participant_not_consented(
     """
     r = re.compile(participant_non_consented_column_pattern)
     non_consent_columns = list(filter(r.match, df.columns))
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_0_NON_CONSENT", non_consent_columns, 0)
+    non_consent_count = F.size(
+        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
+    )
     df = df.withColumn(
         column_name_to_update,
         F.when(
-            F.col(column_name_to_update).isNull() & (len(non_consent_columns) != F.col("NUM_0_NON_CONSENT")),
-            F.lit(len(non_consent_columns)) - F.col("NUM_0_NON_CONSENT"),
+            F.col(column_name_to_update).isNull() & non_consent_count > 0,
+            non_consent_count,
         ).otherwise(F.col(column_name_to_update)),
     )
-    return df.drop("NUM_0_NON_CONSENT")
 
 
 def update_face_covering_outside_of_home(
