@@ -26,12 +26,13 @@ def fill_forward_work_columns(
         .orderBy(F.col(visit_date_column).asc())
         .rowsBetween(Window.unboundedPreceding, Window.currentRow)
     )
+    import pdb; pdb.set_trace()
+    df = df.withColumn("TEMP", F.when(F.col(main_job_changed_column) != 'Yes', 1))
     for col in fill_forward_columns:
         df = df.withColumn(
             col,
             F.when(
-                (F.col(main_job_changed_column).isNull()) | (F.col(main_job_changed_column) != "Yes"),
-                F.last(F.col(col), ignorenulls=True).over(window),
+                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
             ).otherwise(F.col(col)),
         )
     return df
