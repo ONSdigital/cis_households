@@ -69,14 +69,6 @@ def impute_key_columns_stage(
     imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(merged_antibody_swab_table)
 
-    # TODO: Need to join geographies from household level table before imputing
-    for col in ["gor9d", "work_status_group", "dvhsize", "cis_area"]:
-        if col not in df.columns:
-            df = df.withColumn(col, F.lit("A"))
-    # TODO: Remove once white group derived on survey responses
-    if "white_group" not in df.columns:
-        df = df.withColumn("white_group", F.lit("white"))
-
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
