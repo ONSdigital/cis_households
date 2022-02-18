@@ -302,7 +302,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
     # STEP 3
     df = update_column_values_from_map(
-        df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status"]
+        df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
     )
 
     df = df.withColumn(
