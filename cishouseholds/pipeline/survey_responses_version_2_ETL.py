@@ -42,6 +42,7 @@ from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
+from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import edit_multiple_columns_fill_forward
@@ -49,6 +50,8 @@ from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_work_columns
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
+from cishouseholds.impute import impute_outside_uk_columns
+from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -681,15 +684,26 @@ def union_dependent_transformations(df):
     #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
     # )
 
-    # df = assign_household_participant_count(
-    #     df,
-    #     column_name_to_assign="household_participant_count",
-    #     household_id_column="ons_household_id",
-    #     participant_id_column="participant_id",
-    # )
-    # df = assign_people_in_household_count(
-    #     df, column_name_to_assign="people_in_household_count", participant_count_column="household_participant_count"
-    # )
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = update_participant_not_consented(
+        df,
+        column_name_to_update="household_participants_not_consented_count",
+        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
+    )
+    df = assign_people_in_household_count(
+        df,
+        column_name_to_assign="people_in_household_count",
+        infant_column_pattern=r"infant_[1-8]_age",
+        infant_column_pattern_with_exceptions=r"infant_6_age",
+        participant_column_pattern=r"person_[1-8]_not_present_age",
+        household_participant_count_column="household_participant_count",
+        non_consented_count_column="household_participants_not_consented_count",
+    )
 
     df = edit_multiple_columns_fill_forward(
         df=df,
@@ -703,6 +717,14 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_type_other",
             "cis_covid_vaccine_received",
         ],
+    )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
     )
     col_val_map = {
         "face_covering_outside_of_home": {
@@ -757,6 +779,7 @@ def union_dependent_transformations(df):
         "withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
         "is_self_isolating_detailed": {

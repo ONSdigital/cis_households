@@ -125,7 +125,7 @@ def record_level_interface(
 def tables_to_csv(
     outgoing_directory,
     tables_to_csv_config_file,
-    category_map="default_category_map",
+    category_map,
     dry_run=False,
 ):
     """

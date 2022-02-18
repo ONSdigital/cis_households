@@ -1,3 +1,4 @@
+import re
 from itertools import chain
 from typing import List
 from typing import Mapping
@@ -8,6 +9,31 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def update_participant_not_consented(
+    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
+):
+    """
+    update the participant consented column following specific logic
+    Parameters
+    ---------
+    df
+    column_name_to_update
+    """
+    r = re.compile(participant_non_consented_column_pattern)
+    non_consent_columns = list(filter(r.match, df.columns))
+    non_consent_count = F.size(
+        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
+    )
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
+            non_consent_count,
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
 
 
 def update_face_covering_outside_of_home(
@@ -71,7 +97,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
