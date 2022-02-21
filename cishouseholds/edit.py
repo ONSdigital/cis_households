@@ -519,8 +519,10 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     """
     key_types = set([type(key) for key in mapper.keys()])
     value_types = set([type(values) for values in mapper.values()])
-    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types}"
-    assert len(value_types) == 1, f"all map values must be the same type, they are {value_types}"
+    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types} for {column_name_to_assign}"
+    assert (
+        len(value_types) == 1
+    ), f"all map values must be the same type, they are {value_types} for {column_name_to_assign}"
 
     mapping_expr = F.create_map([F.lit(x) for x in chain(*mapper.items())])
 
