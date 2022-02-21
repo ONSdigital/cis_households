@@ -37,6 +37,7 @@ from cishouseholds.derive import derive_household_been_last_XX_days
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
+from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
@@ -182,6 +183,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         ],
         true_false_values=["Yes", "No"],
     )
+    df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
 
     return df
 
