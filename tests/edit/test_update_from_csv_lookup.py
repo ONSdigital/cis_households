@@ -36,7 +36,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "converted"),
             (4, "original", "converted"),
             (5, "original", "original"),
-            (6, "converted from null", "converted from null"),
+            (6, "converted A from null", "converted B from null"),
         ],
         schema="""id integer, A string, B string""",
     )
