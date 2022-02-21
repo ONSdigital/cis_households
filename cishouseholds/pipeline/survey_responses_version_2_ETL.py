@@ -355,8 +355,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = format_string_upper_and_clean(df, "work_main_job_title")
-    df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
     df = update_column_values_from_map(
         df=df,
