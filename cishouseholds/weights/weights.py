@@ -24,12 +24,7 @@ def generate_weights(auxillary_dfs):
     auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
     # initialise lookup dataframes
-    household_info_df = household_dweights(
-        auxillary_dfs["address_lookup"],
-        auxillary_dfs["postcode_lookup"],
-        auxillary_dfs["cis_lookup"],
-        auxillary_dfs["country_lookup"],
-    )
+    household_info_df = auxillary_dfs["household_level_populations"]
 
     # 1164
 
