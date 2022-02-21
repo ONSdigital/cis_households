@@ -11,6 +11,25 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
+    """
+    convert values outside range to null
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    range
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update) >= range[0]) & (F.col(column_name_to_update) <= range[1]),
+            F.col(column_name_to_update),
+        ).otherwise(None),
+    )
+    return df
+
+
 def update_participant_not_consented(
     df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
 ):
