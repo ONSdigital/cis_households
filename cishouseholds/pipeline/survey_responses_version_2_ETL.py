@@ -41,6 +41,7 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
@@ -841,6 +842,9 @@ def union_dependent_derivations(df):
         household_last_XX_days="household_been_hospital_last_28_days",
         last_XX_days="hospital_last_28_days",
         last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = update_column_values_from_column_reference(
+        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
     )
     return df
 
