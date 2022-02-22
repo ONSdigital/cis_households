@@ -603,6 +603,16 @@ def union_dependent_cleaning(df):
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
         },
+        "ability_to_socially_distance_at_work_or_school": {
+            "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Easy to maintain 2 meters - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Easy to maintain 2m - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Relatively easy to maintain 2 meters - most of the time I can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Relatively easy to maintain 2m - most of the time you can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+        },
         "transport_to_work_or_school": {
             "Bus or Minibus or Coach": "Bus, minibus, coach",
             "Bus or minibus or coach": "Bus, minibus, coach",
