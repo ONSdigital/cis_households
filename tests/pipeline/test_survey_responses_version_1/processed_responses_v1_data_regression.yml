@@ -1,6 +1,9 @@
 - ability_to_socially_distance_at_work_or_school: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
+  been_outside_uk_last_country: null
+  been_outside_uk_last_date: 'Yes'
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -70,9 +73,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'Yes'
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: null
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: WP8S
   participant_id: DHR-802621954781
   participant_visit_status: Patient did not attend
@@ -205,6 +205,9 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: null
   bad_email: null
+  been_outside_uk_last_country: null
+  been_outside_uk_last_date: 'No'
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -275,9 +278,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'No'
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: null
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: null
   participant_id: DHR-049902298831
   participant_visit_status: null
@@ -410,6 +410,9 @@
 - ability_to_socially_distance_at_work_or_school: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: null
+  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_date: null
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
@@ -479,9 +482,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'No'
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: 'No'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: null
   participant_id: DHR-400895851138
   participant_visit_status: null
@@ -613,6 +613,9 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
+  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_date: null
+  been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -682,9 +685,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: null
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: 'Yes'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: 'No'
   outward_postcode: null
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
@@ -818,6 +818,9 @@
 - ability_to_socially_distance_at_work_or_school: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
+  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_date: null
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -886,9 +889,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'No'
   other_pcr_test_since_last_visit: 'Yes'
-  outside_uk_last_country: 'Yes'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: null
   participant_id: DHR-757503098830
   participant_visit_status: Scheduled
@@ -1018,6 +1018,9 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
+  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_date: 'Yes'
+  been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -1086,9 +1089,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: null
   other_pcr_test_since_last_visit: 'Yes'
-  outside_uk_last_country: 'Yes'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: 'No'
   outward_postcode: null
   participant_id: DHR-392744995712
   participant_visit_status: null
@@ -1221,6 +1221,9 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
+  been_outside_uk_last_country: null
+  been_outside_uk_last_date: null
+  been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -1288,9 +1291,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'No'
   other_pcr_test_since_last_visit: 'Yes'
-  outside_uk_last_country: null
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: 'Yes'
   outward_postcode: FN0F
   participant_id: DHR-942252583295
   participant_visit_status: Re-scheduled
@@ -1421,6 +1421,9 @@
 - ability_to_socially_distance_at_work_or_school: null
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
+  been_outside_uk_last_country: null
+  been_outside_uk_last_date: 'Yes'
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
@@ -1489,9 +1492,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'No'
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: null
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: DD7O
   participant_id: DHR-421496963502
   participant_visit_status: Scheduled
@@ -1627,6 +1627,9 @@
 - ability_to_socially_distance_at_work_or_school: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
+  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_date: null
+  been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -1695,9 +1698,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: null
   other_pcr_test_since_last_visit: null
-  outside_uk_last_country: 'No'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: 'No'
   outward_postcode: null
   participant_id: DHR-771419502848
   participant_visit_status: Scheduled
@@ -1828,6 +1828,9 @@
 - ability_to_socially_distance_at_work_or_school: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
+  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_date: 'Yes'
+  been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
@@ -1896,9 +1899,6 @@
   other_pcr_test_last_negative_date: null
   other_pcr_test_results: 'Yes'
   other_pcr_test_since_last_visit: 'No'
-  outside_uk_last_country: 'Yes'
-  outside_uk_last_date: null
-  outside_uk_since_april_2020: null
   outward_postcode: null
   participant_id: DHR-720138926395
   participant_visit_status: Re-scheduled
