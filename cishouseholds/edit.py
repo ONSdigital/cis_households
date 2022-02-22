@@ -11,6 +11,25 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_column_values_from_column_reference(
+    df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
+):
+    """
+    Map column values depending on values of reference columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    reference_column
+    map
+    """
+    for key, val in map.items():
+        df = df.withColumn(
+            column_name_to_update, F.when(F.col(reference_column) == key, val).otherwise(F.col(column_name_to_update))
+        )
+    return df
+
+
 def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
     """
     convert values outside range to null
