@@ -642,7 +642,7 @@ fields:
 - metadata: {}
   name: been_outside_uk_last_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_received
   nullable: true
