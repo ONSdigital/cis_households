@@ -507,6 +507,7 @@ category_maps = {
             "On Holiday": 5,
             "Other": 6,
             "Phone not answered": 7,
+            "Planning to withdraw": 8,
         },
         "deferred": {"NA": 0, "Deferred": 1},
         "times_hour_or_longer_another_home_last_7_days": _times_in_last_7_day_categories,
