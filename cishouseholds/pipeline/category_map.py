@@ -271,7 +271,6 @@ category_maps = {
             "Both (from home and somewhere else)": 3,
             "Not applicable, not currently working": 4,
         },
-        "work_not_from_home_days_per_week": {"NA": 99},
         "ability_to_socially_distance_at_work_or_school": {
             "Easy to maintain 2m": 1,
             "Relatively easy to maintain 2m": 2,
