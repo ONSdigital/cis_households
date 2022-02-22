@@ -26,13 +26,55 @@ def fill_forward_work_columns(
         .orderBy(F.col(visit_date_column).asc())
         .rowsBetween(Window.unboundedPreceding, Window.currentRow)
     )
-    import pdb; pdb.set_trace()
-    df = df.withColumn("TEMP", F.when(F.col(main_job_changed_column) != 'Yes', 1))
+    # TODO: find if theres a yes in main_job_changed_column
+    df = df.withColumn("FLAG_not-yes", F.when(F.col(main_job_changed_column) == "Yes", 1).otherwise(0)).withColumn(
+        "FLAG_not-yes", F.sum("FLAG_not-yes").over(window)
+    )
+    df = df.withColumn("FLAG_fillforwards_yes", F.when((F.col(main_job_changed_column) == "Yes"), 1))
+    df = df.withColumn(
+        "FLAG_fillforwards_no",
+        F.when(
+            (F.col(main_job_changed_column) != "Yes") | (F.col(main_job_changed_column).isNull()),
+            F.dense_rank().over(window),
+        ),
+    )
+    df = df.withColumn(
+        "FLAG_fillforwards_no",
+        F.when(F.col("FLAG_fillforwards_no") != 1, None).otherwise(F.col("FLAG_fillforwards_no")),
+    )
+    df = df.withColumn("FILL_forward", F.coalesce(F.col("FLAG_fillforwards_yes"), F.col("FLAG_fillforwards_no")))
+
+    for col in fill_forward_columns:
+        df = df.withColumn(
+            col,
+            F.when(F.col("FILL_forward").isNull(), F.first(F.col(col), ignorenulls=False).over(window)).otherwise(
+                F.col(col)
+            ),
+        )
+    return df.drop("FLAG_not-yes", "FLAG_fillforwards_yes", "FLAG_fillforwards_no")
+
+
+def fill_forward_work_columns_PLACEHOLDER(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
+    main_job_changed_column: str,
+) -> DataFrame:
+    """
+    Where job has not changed, fill forward from previous response that job has changed.
+    """
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(F.col(visit_date_column).asc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
     for col in fill_forward_columns:
         df = df.withColumn(
             col,
             F.when(
-                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
+                ((F.col(main_job_changed_column) != "Yes") | F.col(main_job_changed_column).isNull()),
+                F.last(F.col(col), ignorenulls=True).over(window),
             ).otherwise(F.col(col)),
         )
     return df
