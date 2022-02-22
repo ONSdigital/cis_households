@@ -1,7 +1,6 @@
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
-from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 
 
@@ -36,8 +35,5 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Participant Would Not/Could Not Answer": None,
         },
-    )
-    df = update_column_values_from_column_reference(
-        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
     )
     return df
