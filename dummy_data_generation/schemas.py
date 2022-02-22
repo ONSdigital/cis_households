@@ -213,7 +213,7 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
         "Full Name": _("person.full_name"),
         "DoB": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
@@ -421,7 +421,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Last_Name": _("person.last_name"),
         "DoB": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            population=[_("datetime.formatted_datetime", fmt="%Y-%m-%d", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
