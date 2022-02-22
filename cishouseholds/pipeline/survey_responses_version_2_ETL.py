@@ -41,6 +41,7 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
@@ -94,42 +95,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-    df = assign_column_from_mapped_list_key(
-        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
-    )
-    df = assign_ethnicity_white(
-        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    )
-
-    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
-    # TODO: Add in once dependencies are derived
-    # df = assign_date_difference(
-    #     df,
-    #     "contact_known_or_suspected_covid_days_since",
-    #     "contact_known_or_suspected_covid_latest_date",
-    #     "visit_datetime",
-    # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
@@ -137,18 +105,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
-
-    df = derive_age_columns(df)
-
-    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
-    # df = contact_known_or_suspected_covid_type(
-    #     df=df,
-    #     contact_known_covid_type_column='contact_known_covid_type',
-    #     contact_any_covid_type_column='contact_any_covid_type',
-    #     contact_any_covid_date_column='contact_any_covid_date',
-    #     contact_known_covid_date_column='contact_known_covid_date',
-    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
-    # )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
     return df
@@ -355,8 +311,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = format_string_upper_and_clean(df, "work_main_job_title")
-    df = format_string_upper_and_clean(df, "work_main_job_role")
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
     df = update_column_values_from_map(
         df=df,
@@ -516,15 +470,11 @@ def symptom_column_transformations(df):
     return df
 
 
-def union_dependent_transformations(df):
-    """
-    Transformations that must be carried out after the union of the different survey response schemas.
-    """
+def union_dependent_cleaning(df):
     df = map_column_values_to_null(
         df=df,
         value="Participant Would Not/Could Not Answer",
         column_list=[
-            "sex",
             "ethnicity",
             "work_sectors",
             "work_health_care_v1_v2_raw",
@@ -547,173 +497,6 @@ def union_dependent_transformations(df):
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
         ],
-    )
-    df = symptom_column_transformations(df)
-    df = create_formatted_datetime_string_columns(df)
-    df = impute_by_ordered_fill_forward(
-        df=df,
-        column_name_to_assign="date_of_birth",
-        column_identity="participant_id",
-        reference_column="date_of_birth",
-        order_by_column="visit_datetime",
-    )
-    df = derive_work_status_columns(df)
-    df = assign_work_health_care(
-        df,
-        "work_health_care_combined",
-        direct_contact_column="work_direct_contact_patients_clients",
-        reference_health_care_column="work_health_care_v0",
-        other_health_care_column="work_health_care_v1_v2",
-    )
-    df = assign_work_patient_facing_now(
-        df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
-    )
-    df = update_face_covering_outside_of_home(
-        df=df,
-        column_name_to_update="face_covering_outside_of_home",
-        covered_enclosed_column="face_covering_other_enclosed_places",
-        covered_work_column="face_covering_work",
-    )
-    df = update_work_facing_now_column(
-        df,
-        "work_patient_facing_now",
-        "work_status_combined",
-        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    )
-    df = assign_first_visit(
-        df=df,
-        column_name_to_assign="household_first_visit_datetime",
-        id_column="participant_id",
-        visit_date_column="visit_datetime",
-    )
-    df = assign_last_visit(
-        df=df,
-        column_name_to_assign="last_attended_visit_datetime",
-        id_column="participant_id",
-        visit_status_column="participant_visit_status",
-        visit_date_column="visit_datetime",
-    )
-
-    df = assign_date_difference(
-        df=df,
-        column_name_to_assign="days_since_enrolment",
-        start_reference_column="household_first_visit_datetime",
-        end_reference_column="last_attended_visit_datetime",
-    )
-    df = assign_date_difference(
-        df=df,
-        column_name_to_assign="household_weeks_since_survey_enrolment",
-        start_reference_column="survey start",
-        end_reference_column="visit_datetime",
-        format="weeks",
-    )
-
-    df = assign_named_buckets(
-        df,
-        reference_column="days_since_enrolment",
-        column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
-    )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
-        id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    df = fill_forward_work_columns(
-        df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
-            "work_health_care_combined",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        main_job_changed_column="work_main_job_changed",
-    )
-
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_date_string",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth_string", "ethnicity"],
-    )
-    # TODO: Add in once dependencies are derived
-    # df = impute_latest_date_flag(
-    #     df=df,
-    #     participant_id_column="participant_id",
-    #     visit_date_column="visit_date",
-    #     visit_id_column="visit_id",
-    #     contact_any_covid_column="contact_known_or_suspected_covid",
-    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-    # )
-
-    df = assign_household_participant_count(
-        df,
-        column_name_to_assign="household_participant_count",
-        household_id_column="ons_household_id",
-        participant_id_column="participant_id",
-    )
-    df = update_participant_not_consented(
-        df,
-        column_name_to_update="household_participants_not_consented_count",
-        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
-    )
-    df = assign_people_in_household_count(
-        df,
-        column_name_to_assign="people_in_household_count",
-        infant_column_pattern=r"infant_[1-8]_age",
-        infant_column_pattern_with_exceptions=r"infant_6_age",
-        participant_column_pattern=r"person_[1-8]_not_present_age",
-        household_participant_count_column="household_participant_count",
-        non_consented_count_column="household_participants_not_consented_count",
-    )
-
-    df = edit_multiple_columns_fill_forward(
-        df=df,
-        id="participant_id",
-        fill_if_null="cis_covid_vaccine_received",
-        date="visit_datetime",
-        column_fillforward_list=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
     )
     col_val_map = {
         "face_covering_outside_of_home": {
@@ -837,6 +620,217 @@ def union_dependent_transformations(df):
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
+    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_datetime",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth", "ethnicity"],
+    )
+    df = edit_multiple_columns_fill_forward(
+        df=df,
+        id="participant_id",
+        fill_if_null="cis_covid_vaccine_received",
+        date="visit_datetime",
+        column_fillforward_list=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+    )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
+    )
+    # TODO: Add in once dependencies are derived
+    # df = impute_latest_date_flag(
+    #     df=df,
+    #     participant_id_column="participant_id",
+    #     visit_date_column="visit_date",
+    #     visit_id_column="visit_id",
+    #     contact_any_covid_column="contact_known_or_suspected_covid",
+    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
+
+    # TODO: Add in once dependencies are derived
+    # df = assign_date_difference(
+    #     df,
+    #     "contact_known_or_suspected_covid_days_since",
+    #     "contact_known_or_suspected_covid_latest_date",
+    #     "visit_datetime",
+    # )
+
+    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
+    # df = contact_known_or_suspected_covid_type(
+    #     df=df,
+    #     contact_known_covid_type_column='contact_known_covid_type',
+    #     contact_any_covid_type_column='contact_any_covid_type',
+    #     contact_any_covid_date_column='contact_any_covid_date',
+    #     contact_known_covid_date_column='contact_known_covid_date',
+    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
+    # )
+
+    df = update_face_covering_outside_of_home(
+        df=df,
+        column_name_to_update="face_covering_outside_of_home",
+        covered_enclosed_column="face_covering_other_enclosed_places",
+        covered_work_column="face_covering_work",
+    )
+
+    return df
+
+
+def union_dependent_derivations(df):
+    """
+    Transformations that must be carried out after the union of the different survey response schemas.
+    """
+    df = symptom_column_transformations(df)
+    df = create_formatted_datetime_string_columns(df)
+    df = derive_age_columns(df)
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
+
+    df = derive_work_status_columns(df)
+    df = assign_work_health_care(
+        df,
+        "work_health_care_combined",
+        direct_contact_column="work_direct_contact_patients_clients",
+        reference_health_care_column="work_health_care_v0",
+        other_health_care_column="work_health_care_v1_v2",
+    )
+    df = fill_forward_work_columns(
+        df=df,
+        fill_forward_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_health_care_combined",
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        main_job_changed_column="work_main_job_changed",
+    )
+    df = assign_work_patient_facing_now(
+        df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
+    )
+    df = update_work_facing_now_column(
+        df,
+        "work_patient_facing_now",
+        "work_status_combined",
+        ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    )
+    df = assign_first_visit(
+        df=df,
+        column_name_to_assign="household_first_visit_datetime",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
+    )
+    df = assign_last_visit(
+        df=df,
+        column_name_to_assign="last_attended_visit_datetime",
+        id_column="participant_id",
+        visit_status_column="participant_visit_status",
+        visit_date_column="visit_datetime",
+    )
+
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="days_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="last_attended_visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="household_weeks_since_survey_enrolment",
+        start_reference_column="survey start",
+        end_reference_column="visit_datetime",
+        format="weeks",
+    )
+
+    df = assign_named_buckets(
+        df,
+        reference_column="days_since_enrolment",
+        column_name_to_assign="visit_number",
+        map={
+            0: 0,
+            4: 1,
+            11: 2,
+            18: 3,
+            25: 4,
+            43: 5,
+            71: 6,
+            99: 7,
+            127: 8,
+            155: 9,
+            183: 10,
+            211: 11,
+            239: 12,
+            267: 13,
+            295: 14,
+            323: 15,
+        },
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = update_participant_not_consented(
+        df,
+        column_name_to_update="household_participants_not_consented_count",
+        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
+    )
+    df = assign_people_in_household_count(
+        df,
+        column_name_to_assign="people_in_household_count",
+        infant_column_pattern=r"infant_[1-8]_age",
+        infant_column_pattern_with_exceptions=r"infant_6_age",
+        participant_column_pattern=r"person_[1-8]_not_present_age",
+        household_participant_count_column="household_participant_count",
+        non_consented_count_column="household_participants_not_consented_count",
+    )
     df = derive_household_been_last_XX_days(
         df=df,
         household_last_XX_days="household_been_care_home_last_28_days",
@@ -848,6 +842,9 @@ def union_dependent_transformations(df):
         household_last_XX_days="household_been_hospital_last_28_days",
         last_XX_days="hospital_last_28_days",
         last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = update_column_values_from_column_reference(
+        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
     )
     return df
 
