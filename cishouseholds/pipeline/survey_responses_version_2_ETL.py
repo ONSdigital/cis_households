@@ -97,13 +97,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
-    # TODO: Add in once dependencies are derived
-    # df = assign_date_difference(
-    #     df,
-    #     "contact_known_or_suspected_covid_days_since",
-    #     "contact_known_or_suspected_covid_latest_date",
-    #     "visit_datetime",
-    # )
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
@@ -111,16 +104,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
-
-    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
-    # df = contact_known_or_suspected_covid_type(
-    #     df=df,
-    #     contact_known_covid_type_column='contact_known_covid_type',
-    #     contact_any_covid_type_column='contact_any_covid_type',
-    #     contact_any_covid_date_column='contact_any_covid_date',
-    #     contact_known_covid_date_column='contact_known_covid_date',
-    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
-    # )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
     return df
@@ -644,23 +627,6 @@ def union_dependent_cleaning(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
-
-    df = fill_forward_work_columns(
-        df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
-            "work_health_care_combined",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        main_job_changed_column="work_main_job_changed",
-    )
     df = edit_multiple_columns_fill_forward(
         df=df,
         id="participant_id",
@@ -690,6 +656,24 @@ def union_dependent_cleaning(df):
     #     visit_id_column="visit_id",
     #     contact_any_covid_column="contact_known_or_suspected_covid",
     #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
+
+    # TODO: Add in once dependencies are derived
+    # df = assign_date_difference(
+    #     df,
+    #     "contact_known_or_suspected_covid_days_since",
+    #     "contact_known_or_suspected_covid_latest_date",
+    #     "visit_datetime",
+    # )
+
+    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
+    # df = contact_known_or_suspected_covid_type(
+    #     df=df,
+    #     contact_known_covid_type_column='contact_known_covid_type',
+    #     contact_any_covid_type_column='contact_any_covid_type',
+    #     contact_any_covid_date_column='contact_any_covid_date',
+    #     contact_known_covid_date_column='contact_known_covid_date',
+    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
     # )
 
     df = update_face_covering_outside_of_home(
@@ -741,6 +725,22 @@ def union_dependent_derivations(df):
         direct_contact_column="work_direct_contact_patients_clients",
         reference_health_care_column="work_health_care_v0",
         other_health_care_column="work_health_care_v1_v2",
+    )
+    df = fill_forward_work_columns(
+        df=df,
+        fill_forward_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_health_care_combined",
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        main_job_changed_column="work_main_job_changed",
     )
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
