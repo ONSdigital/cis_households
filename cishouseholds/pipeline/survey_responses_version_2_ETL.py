@@ -266,9 +266,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
     )
 
-    df = df.withColumn(
-        "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
-    )
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -749,7 +746,7 @@ def union_dependent_derivations(df):
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
-        "work_status_combined",
+        "work_status_v0",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     df = assign_first_visit(
