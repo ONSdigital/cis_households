@@ -232,7 +232,7 @@ category_maps = {
             "Yes, care/residential home, non-resident-facing": 3,
             "Yes, other social care, non-resident-facing": 4,
         },
-        "work_status_combined": {
+        "work_status_v0": {
             "Employed": 1,
             "Self-employed": 2,
             "Furloughed (temporarily not working)": 3,
