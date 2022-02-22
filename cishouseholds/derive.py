@@ -85,29 +85,43 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    df = df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column)).over(household_window))
     return df
 
 
-def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
+def assign_people_in_household_count(
+    df: DataFrame,
+    column_name_to_assign: str,
+    infant_column_pattern: str,
+    infant_column_pattern_with_exceptions: str,
+    participant_column_pattern: str,
+    household_participant_count_column: str,
+    non_consented_count_column: str,
+):
     """
-    Assign number of people within household, including those not participating. Assumes each row contains counts of
-    participants for the household.
+    Update household count column by correcting value using null participants
+    """
+    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
+    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
+    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
 
-    Uses specific column name patterns to count non-participating members.
-    """
-    infant_pattern = "infant_[1-8]_age"
-    not_present_pattern = "person_[1-8]_age"
-    not_consenting_pattern = "person_[1-9]_not_consenting_age"
-    matched_columns = []
-    for col in df.columns:
-        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
-            if re.match(pattern, col):
-                matched_columns.append(col)
-    df = df.withColumn("TEMP", F.array(matched_columns))
-    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
-    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
-    return df.drop("TEMP")
+    infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
+    infant_exceptions_array = F.array(
+        [F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]
+    )
+    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
+
+    infant_num = F.when(
+        F.size(F.array_remove(infant_exceptions_array, 0)) == len(infant_column_pattern_with_exceptions), 0
+    ).otherwise(F.size(F.array_remove(infant_array, 0)))
+
+    participant_num = F.size(F.array_remove(participant_array, 0))
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.col(household_participant_count_column) + infant_num + participant_num + F.col(non_consented_count_column),
+    )
+    return df
 
 
 def assign_ever_had_long_term_health_condition_or_disabled(
@@ -1385,6 +1399,49 @@ def contact_known_or_suspected_covid_type(
             F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
             F.col(contact_known_covid_type_column),
         )
+        .otherwise(None),
+    )
+    return df
+
+
+def derive_household_been_last_XX_days(
+    df: DataFrame,
+    household_last_XX_days: str,
+    last_XX_days: str,
+    last_XX_days_other_household_member: str,
+    negative_value: str = "No, no one in my household has",
+    positive_value: str = "Yes, I have",
+    some_positive_value: str = "No I haven’t, but someone else in my household has",
+    # TODO: should this be "have not" to avoid issues
+) -> DataFrame:
+    """
+    This function can be used to work out the following variables which follow the same logic:
+    - household_been_care_home_last_28_days
+    - household_been_hospital_last_last_28_days
+
+    Parameters
+    ----------
+    df
+    household_last_XX_days
+    last_XX_days
+    last_XX_days_other_household_member
+
+    Notes
+    -----
+    null is not understood as != "Yes"
+    """
+    df = df.withColumn(
+        household_last_XX_days,
+        F.when((F.col(last_XX_days) == "No") & (F.col(last_XX_days_other_household_member) == "No"), negative_value)
+        .when(
+            (F.col(last_XX_days) == "Yes")
+            & (
+                (F.col(last_XX_days_other_household_member) != "Yes")
+                | (F.col(last_XX_days_other_household_member).isNull())
+            ),
+            some_positive_value,
+        )
+        .when((F.col(last_XX_days) == "Yes") & (F.col(last_XX_days_other_household_member) == "Yes"), positive_value)
         .otherwise(None),
     )
     return df

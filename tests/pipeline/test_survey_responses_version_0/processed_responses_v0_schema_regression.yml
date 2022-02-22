@@ -248,10 +248,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: gender
-  nullable: true
-  type: string
-- metadata: {}
   name: ethnicity
   nullable: true
   type: string
@@ -560,14 +556,6 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: ethnicity_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_white
-  nullable: false
-  type: string
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -576,59 +564,11 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: any_symptoms_last_7_days_or_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: any_symptoms_around_visit
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
-  nullable: false
-  type: string
-- metadata: {}
   name: days_since_think_had_covid
   nullable: true
   type: integer
 - metadata: {}
   name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_at_visit
-  nullable: true
-  type: long
-- metadata: {}
-  name: age_group_5_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_over_16
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_7_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_5_year_intervals
   nullable: true
   type: string
 - metadata: {}
