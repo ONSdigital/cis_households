@@ -632,17 +632,17 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: outside_uk_since_april_2020
+  name: been_outside_uk_since_april_2020
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_country
+  name: been_outside_uk_last_country
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_date
+  name: been_outside_uk_last_date
   nullable: true
-  type: timestamp
+  type: string
 - metadata: {}
   name: cis_covid_vaccine_received
   nullable: true
@@ -728,14 +728,6 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: ethnicity_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_white
-  nullable: false
-  type: string
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -749,26 +741,6 @@ fields:
   type: integer
 - metadata: {}
   name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_at_visit
-  nullable: true
-  type: long
-- metadata: {}
-  name: age_group_5_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_over_16
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_7_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_5_year_intervals
   nullable: true
   type: string
 - metadata: {}
