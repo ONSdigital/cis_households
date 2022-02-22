@@ -11,11 +11,11 @@ def test_fill_forward_work_columns(spark_session):
 
                 (2, "2020-10-15",   "No",       None,   None,   None),
 
-                (3, "2020-05-21",   "Yes",      1,      2,      3), # id 3 should have 2 fill forwards
-                (3, "2020-05-27",   "No",       None,   None,   None),
-                (3, "2020-07-20",   "Yes",      3,      2,      None),
-                (3, "2020-08-13",   None,       None,   None,   None),
-                (3, "2020-08-14",   None,       None,   None,   None),
+                (3, "2020-01-01",   "Yes",      1,      2,      3), # id 3 should have 2 fill forwards
+                (3, "2020-01-02",   "No",       None,   None,   None),
+                (3, "2020-01-03",   "Yes",      3,      2,      None),
+                (3, "2020-01-04",   None,       None,   None,   None),
+                (3, "2020-01-05",   None,       None,   None,   None),
 
                 (4, "2020-08-14",   None,       3,      2,      1), # id 4 should have one fill forward only when ALL nulls
                 (4, "2020-08-15",   "No",       None,   None,   None),
@@ -43,11 +43,11 @@ def test_fill_forward_work_columns(spark_session):
 
                 (2, "2020-10-15",   "No",       None,   None,   None),
 
-                (3, "2020-05-21",   "Yes",      1,      2,      3),
-                (3, "2020-05-27",   "No",       1,      2,      3),
-                (3, "2020-07-20",   "Yes",      3,      2,      None),
-                (3, "2020-08-13",   None,       3,      2,      None),
-                (3, "2020-08-14",   None,       3,      2,      None),
+                (3, "2020-01-01",   "Yes",      1,      2,      3),
+                (3, "2020-01-02",   "No",       1,      2,      3),
+                (3, "2020-01-03",   "Yes",      3,      2,      None),
+                (3, "2020-01-04",   None,       3,      2,      None),
+                (3, "2020-01-05",   None,       3,      2,      None),
 
                 (4, "2020-08-14",   None,       3,      2,      1),
                 (4, "2020-08-15",   "No",       3,      2,      1),
@@ -74,9 +74,4 @@ def test_fill_forward_work_columns(spark_session):
         visit_date_column="date",
         main_job_changed_column="changed",
     )
-    # input_df.orderBy("id", "date").show()
-    # expected_df.orderBy("id", "date").show()
-    # actual_df.orderBy("id", "date").show()
-
-    import pdb;pdb.set_trace()
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

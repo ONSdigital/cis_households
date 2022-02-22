@@ -42,41 +42,36 @@ def fill_forward_work_columns(
         "FLAG_fillforwards_no",
         F.when(F.col("FLAG_fillforwards_no") != 1, None).otherwise(F.col("FLAG_fillforwards_no")),
     )
-    df = df.withColumn("FILL_forward", F.coalesce(F.col("FLAG_fillforwards_yes"), F.col("FLAG_fillforwards_no")))
-
-    for col in fill_forward_columns:
-        df = df.withColumn(
-            col,
-            F.when(F.col("FILL_forward").isNull(), F.first(F.col(col), ignorenulls=False).over(window)).otherwise(
-                F.col(col)
-            ),
-        )
-    return df.drop("FLAG_not-yes", "FLAG_fillforwards_yes", "FLAG_fillforwards_no")
-
-
-def fill_forward_work_columns_PLACEHOLDER(
-    df: DataFrame,
-    fill_forward_columns: List[str],
-    participant_id_column: str,
-    visit_date_column: str,
-    main_job_changed_column: str,
-) -> DataFrame:
-    """
-    Where job has not changed, fill forward from previous response that job has changed.
-    """
-    window = (
-        Window.partitionBy(participant_id_column)
-        .orderBy(F.col(visit_date_column).asc())
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    df = df.withColumn("FILL_forward", F.coalesce(F.col("FLAG_fillforwards_yes"), F.col("FLAG_fillforwards_no"))).drop(
+        "FLAG_fillforwards_yes", "FLAG_fillforwards_no"
     )
-    for col in fill_forward_columns:
-        df = df.withColumn(
-            col,
-            F.when(
-                ((F.col(main_job_changed_column) != "Yes") | F.col(main_job_changed_column).isNull()),
-                F.last(F.col(col), ignorenulls=True).over(window),
-            ).otherwise(F.col(col)),
-        )
+
+    df_fill_forwards_from = (
+        df.where(F.col("FILL_forward") == 1)
+        .select(participant_id_column, visit_date_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+    )
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumn("start_datetime", F.col(visit_date_column))
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_date_column, f"{visit_date_column}_right")
+    window_lag = Window.partitionBy("id_right").orderBy(F.col(f"{visit_date_column}_right").asc())
+    df_fill_forwards_from = df_fill_forwards_from.withColumn(
+        "end_datetime", F.lead(F.col(f"{visit_date_column}_right"), 1).over(window_lag)
+    )
+    df = df.drop(*fill_forward_columns)
+
+    df = df.join(
+        df_fill_forwards_from,
+        how="left",
+        on=(
+            (df[participant_id_column] == df_fill_forwards_from["id_right"])
+            & (df[visit_date_column] >= df_fill_forwards_from.start_datetime)
+            & (
+                (df[visit_date_column] < df_fill_forwards_from.end_datetime)
+                | (df_fill_forwards_from.end_datetime.isNull())
+            )
+        ),
+    ).drop("id_right", "start_datetime", "end_datetime", f"{visit_date_column}_right", "FLAG_not-yes", "FILL_forward")
     return df
 
 
