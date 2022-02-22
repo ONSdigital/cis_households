@@ -6,7 +6,7 @@
   approached_for_blood_samples: 'No'
   bad_email: null
   been_outside_uk_last_country: Venezuela
-  been_outside_uk_last_date: 10/09/2020
+  been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -298,7 +298,7 @@
   approached_for_blood_samples: 'Yes'
   bad_email: null
   been_outside_uk_last_country: Romania
-  been_outside_uk_last_date: 25/01/2021
+  been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -1186,7 +1186,7 @@
   approached_for_blood_samples: null
   bad_email: false
   been_outside_uk_last_country: Uganda
-  been_outside_uk_last_date: 28/06/2020
+  been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1482,7 +1482,7 @@
   approached_for_blood_samples: null
   bad_email: null
   been_outside_uk_last_country: Kenya
-  been_outside_uk_last_date: 27/04/2020
+  been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1779,7 +1779,7 @@
   approached_for_blood_samples: 'Yes'
   bad_email: null
   been_outside_uk_last_country: Uganda
-  been_outside_uk_last_date: 04/12/2020
+  been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -2668,7 +2668,7 @@
   approached_for_blood_samples: 'No'
   bad_email: false
   been_outside_uk_last_country: Cambodia
-  been_outside_uk_last_date: 20/09/2020
+  been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
