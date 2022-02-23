@@ -20,6 +20,7 @@ from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pipeline.category_map import category_maps
+from cishouseholds.pipeline.config import get_filter_config
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -109,7 +110,7 @@ def record_level_interface(
     survey_responses_table: str,
     csv_editing_file: str,
     unique_id_column: str,
-    unique_id_list: List,
+    unique_id_filter_config_location: str,
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
 ):
@@ -117,7 +118,9 @@ def record_level_interface(
     edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
-    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+    unique_id_list_to_filter = get_filter_config(unique_id_filter_config_location)
+
+    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list_to_filter))
     update_table(filtered_df, filtered_survey_responses_table, "overwrite")
 
 
