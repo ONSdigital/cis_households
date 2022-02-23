@@ -80,7 +80,7 @@ def register_pipeline_stage(key):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables(**kwargs):
+def delete_tables(prefix, table_names, pattern):
     """
     All key word args are optional:
     Specify table_names as a list containing absolute table names to remove.
@@ -90,39 +90,36 @@ def delete_tables(**kwargs):
     spark_session = get_or_create_spark_session()
     storage_config = get_config()["storage"]
 
-    if "table_names" in kwargs:
-        if kwargs["table_names"] is not None:
-            if type(kwargs["table_names"]) != list:
-                kwargs["table_names"] = [kwargs["table_names"]]
-            for table_name in kwargs["table_names"]:
-                print(
-                    f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )  # functional
-                spark_session.sql(
-                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )
-    if "pattern" in kwargs:
-        if kwargs["pattern"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['pattern']}'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
+    if table_names is not None:
+        if type(table_names) != list:
+            table_names = [table_names]
+        for table_name in table_names:
+            print(
+                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+            )  # functional
+            spark_session.sql(
+                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
             )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if "prefix" in kwargs:
-        if kwargs["prefix"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['prefix']}*'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    if pattern is not None:
+        tables = (
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
+            .select("tableName")
+            .toPandas()["tableName"]
+            .tolist()
+        )
+        for table_name in tables:
+            print(f"dropping table: {table_name}")  # functional
+            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    if prefix is not None:
+        tables = (
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
+            .select("tableName")
+            .toPandas()["tableName"]
+            .tolist()
+        )
+        for table_name in tables:
+            print(f"dropping table: {table_name}")  # functional
+            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
 
 def generate_input_processing_function(
@@ -154,17 +151,19 @@ def generate_input_processing_function(
     """
 
     @register_pipeline_stage(stage_name)
-    def _inner_function(**kwargs):
-        file_path_list = [kwargs["resource_path"]]
+    def _inner_function(resource_path, latest_only, start_date, end_date, include_processed, include_invalid):
+        file_path_list = [resource_path]
         if include_hadoop_read_write:
-            file_path_list = get_files_to_be_processed(**kwargs)
+            file_path_list = get_files_to_be_processed(
+                resource_path, latest_only, start_date, end_date, include_processed, include_invalid
+            )
         if not file_path_list:
-            print(f"        - No files selected in {kwargs['resource_path']}")  # functional
+            print(f"        - No files selected in {resource_path}")  # functional
             return
 
         valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
-            print(f"        - No valid files found in: {kwargs['resource_path']}.")  # functional
+            print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
         df = extract_validate_transform_input_data(
@@ -268,11 +267,11 @@ def lookup_based_editing(
 
 
 @register_pipeline_stage("outer_join_blood_results")
-def outer_join_blood_results(**kwargs):
+def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
     """
     Outer join of data for two blood test targets.
     """
-    blood_df = extract_from_table(kwargs["blood_table"])
+    blood_df = extract_from_table(blood_table)
     blood_df = blood_df.dropDuplicates(
         subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
     )
@@ -292,34 +291,32 @@ def outer_join_blood_results(**kwargs):
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, kwargs["antibody_table"], mode_overide="overwrite")
-    update_table(failed_blood_join_df, kwargs["failed_blood_table"], mode_overide="overwrite")
+    update_table(blood_df, antibody_table, mode_overide="overwrite")
+    update_table(failed_blood_join_df, failed_blood_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
-def merge_blood_ETL(**kwargs):
+def merge_blood_ETL(
+    unioned_survey_table, antibody_table, files_to_exclude_survey, files_to_exclude_blood, antibody_output_tables
+):
     """
     High level function call for running merging process for blood sample data.
     """
-    survey_table = kwargs["unioned_survey_table"]
-    antibody_table = kwargs["antibody_table"]
-    survey_file_exclude_list = kwargs["files_to_exclude_survey"]
-    blood_file_exclude_list = kwargs["files_to_exclude_blood"]
 
-    survey_df = extract_from_table(survey_table).where(
+    survey_df = extract_from_table(unioned_survey_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", survey_file_exclude_list)
+    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
 
     antibody_df = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_file_exclude_list)
+    antibody_df = file_exclude(antibody_df, "blood_test_source_file", files_to_exclude_blood)
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
-    output_antibody_table_list = kwargs["antibody_output_tables"]
+    output_antibody_table_list = antibody_output_tables
 
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
@@ -327,31 +324,25 @@ def merge_blood_ETL(**kwargs):
 
 
 @register_pipeline_stage("merge_swab_ETL")
-def merge_swab_ETL(**kwargs):
+def merge_swab_ETL(merged_survey_table, swab_table, files_to_exclude_survey, files_to_exclude_swab, swab_output_tables):
     """
     High level function call for running merging process for swab sample data.
     """
-    survey_table = kwargs["merged_survey_table"]
-    swab_table = kwargs["swab_table"]
-    survey_file_exclude_list = kwargs["files_to_exclude_survey"]
-    swab_file_exclude_list = kwargs["files_to_exclude_swab"]
-
-    survey_df = extract_from_table(survey_table).where(
+    survey_df = extract_from_table(merged_survey_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", survey_file_exclude_list)
+    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
 
     swab_df = extract_from_table(swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_file_exclude_list)
+    swab_df = file_exclude(swab_df, "swab_test_source_file", files_to_exclude_swab)
 
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
-    output_swab_table_list = kwargs["swab_output_tables"]
-    load_to_data_warehouse_tables(output_swab_df_list, output_swab_table_list)
+    load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
 
     return survey_antibody_swab_df
 
@@ -391,18 +382,18 @@ def process_post_merge(
 
 
 @register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data(**kwargs):
+def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
     """
-    participant_df = extract_from_table(kwargs["participant_records_table"])
-    nims_df = extract_from_table(kwargs["nims_table"])
+    participant_df = extract_from_table(participant_records_table)
+    nims_df = extract_from_table(nims_table)
     nims_df = nims_transformations(nims_df)
 
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
-    update_table(participant_df, kwargs["vaccination_data_table"], mode_overide="overwrite")
+    update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
