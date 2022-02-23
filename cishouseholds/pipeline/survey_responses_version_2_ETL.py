@@ -108,6 +108,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
+    df = update_column_values_from_map(
+        df,
+        "work_not_from_home_days_per_week",
+        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
     return df
 
 
