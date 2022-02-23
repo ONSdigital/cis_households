@@ -197,6 +197,12 @@ def generate_input_processing_function(
 def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
+    Parameters
+    ----------
+    transformed_survey_responses_table_pattern
+        input table pattern for extracting each of the transformed survey responses tables
+    unioned_survey_responses_table
+        output table name for the combine file of 3 unioned survey responses
     """
     survey_df_list = []
 
@@ -212,6 +218,12 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     """
     Transformations that require the union of the different input survey response files.
     Includes combining data from different files and filling forwards or backwards over time.
+    Parameters
+    ----------
+    unioned_survey_table
+        input table name for table containing the combined survey responses tables
+    transformed_table
+        output table name for table with applied transformations dependent on complete survey dataset
     """
     unioned_survey_responses = extract_from_table(unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
@@ -227,6 +239,22 @@ def validate_survey_responses(
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
 ):
+    """
+    Populate error column with outcomes of specific validation checks against fully
+    transformed survey dataset.
+    Parameters
+    ----------
+    survey_responses_table
+        input table name for fully transformed survey table
+    duplicate_count_column_name
+        column name in which to count duplicates of rows within the dataframe
+    validation_failure_flag_column
+        name for error column wherein each of the validation checks results are appended
+    valid_survey_responses_table
+        table containing results that passed the error checking process
+    invalid_survey_responses_table
+        table containing results that failed the error checking process
+    """
     unioned_survey_responses = extract_from_table(survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
@@ -241,7 +269,18 @@ def validate_survey_responses(
 def lookup_based_editing(
     input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
 ):
-    """Edit columns based on mappings from lookup files. Often used to correct data quality issues."""
+    """
+    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Parameters
+    ----------
+    input_table
+        input table name for reference table
+    cohort_lookup_path
+        input file path name for cohort corrections lookup file
+    travel_countries_lookup_path
+        input file path name for travel_countries corrections lookup file
+    edited_table
+    """
     df = extract_from_table(input_table)
 
     spark = get_or_create_spark_session()
@@ -395,6 +434,14 @@ def process_post_merge(
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+    Parameters
+    ----------
+    participant_records_table
+        input table containing participant level records to join
+    nims_table
+        nims table containing records to be joined to participant table
+    vaccination_data_table
+        output table name for the joined nims and participant table
     """
     participant_df = extract_from_table(participant_records_table)
     nims_df = extract_from_table(nims_table)
@@ -412,6 +459,16 @@ def join_geographic_data(
 ):
     """
     Join weights file onto survey data by household id.
+    Parameters
+    ----------
+    geographic_table
+        input table name for household data with geographic data
+    survey_responses_table
+        input table for individual participant responses
+    geographic_responses_table
+        output table name for joined survey responses and household geographic data
+    id_column
+        column containing id to join the 2 input tables
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
@@ -426,6 +483,7 @@ def impute_key_columns_stage(
     survey_responses_imputed_table: str,
     key_columns: List[str],
 ):
+    """ """
 
     imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(survey_responses_table)
