@@ -1,20 +1,12 @@
 import traceback
 from datetime import datetime
 
-import cishouseholds.pipeline.generate_outputs  # noqa: F401
-import cishouseholds.pipeline.historical_blood_ETL  # noqa: F401
 import cishouseholds.pipeline.input_file_processing  # noqa: F401
-import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
-import cishouseholds.pipeline.post_merge_processing  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_1_ETL  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
-import cishouseholds.pipeline.weight_calibration  # noqa: F401
+import cishouseholds.pipeline.pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.load import delete_tables  # noqa: F401
-from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pipeline.pipeline_stages import pipeline_stages as stages
 
 
 def run_from_config():
@@ -59,7 +51,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
-            pipeline_stages[stage_name](**stage_config)
+            stages[stage_name](**stage_config)
         except Exception:
             pipeline_error_count += 1
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
