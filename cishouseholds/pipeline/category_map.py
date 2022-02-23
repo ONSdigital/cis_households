@@ -59,7 +59,7 @@ category_maps = {
         "is_self_isolating": _yes_no_categories,
         "received_shielding_letter": _yes_no_categories,
         "contact_known_positive_covid_last_28_days": _yes_no_categories,
-        "contact_suspect_positive_covid_last_28_days": _yes_no_categories,
+        "contact_suspected_positive_covid_last_28_days": _yes_no_categories,
         "hospital_last_28_days": _yes_no_categories,
         "hospital_last_28_days_other_household_member": _yes_no_categories,
         "care_home_last_28_days": _yes_no_categories,
