@@ -226,8 +226,8 @@ survey_responses_v0_variable_name_map = {
     "Previous Symptoms-Loss of smell": "symptoms_since_last_visit_loss_of_smell",
     "If Yes; Date of first symptoms": "think_had_covid_date",
     "Did you contact NHS?": "think_had_covid_contacted_nhs",
-    "If Yes; Were you tested": "think_had_covid_tested",
-    "If Yes;Test Result": "think_had_covid_test_result",
+    "If Yes; Were you tested": "other_pcr_test_since_last_visit",
+    "If Yes;Test Result": "other_pcr_test_results",
     "Were you admitted to hospital?": "think_had_covid_admitted_to_hospital",
 }
 
