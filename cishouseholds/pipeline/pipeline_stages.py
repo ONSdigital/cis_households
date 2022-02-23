@@ -1,5 +1,3 @@
-import contextlib
-import os
 from datetime import datetime
 from functools import reduce
 from io import BytesIO
@@ -9,12 +7,8 @@ from typing import List
 from typing import Union
 
 import pandas as pd
-import rpy2.robjects as robjects
 import yaml
 from pyspark.sql import functions as F
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
-from rpy2.robjects.packages import importr
 
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_csv_lookup
@@ -45,9 +39,11 @@ from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
-from cishouseholds.pipeline.weight_calibration import assign_calibration_factors
-from cishouseholds.pipeline.weight_calibration import assign_calibration_weight
+from cishouseholds.pipeline.weight_calibration import calibrate_weights
 from cishouseholds.pipeline.weight_calibration import extract_df_list
+from cishouseholds.pipeline.weight_calibration import prepare_population_totals_vector
+from cishouseholds.pipeline.weight_calibration import prepare_sample_design
+from cishouseholds.pipeline.weight_calibration import subset_for_calibration
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.population_projections import proccess_population_projection_df
@@ -55,17 +51,6 @@ from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import prepare_auxillary_data
 
-with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
-    # silences import into text
-    regenesees = importr(
-        "ReGenesees",
-        # Fix conflicting method names in R
-        robject_translations={
-            "dim.GVF.db": "dim_GVF_db_",
-            "print.GVF.db": "print_GVF_db_",
-            "str.GVF.db": "str_GVF_db_",
-        },
-    )
 
 pipeline_stages = {}
 
@@ -926,61 +911,27 @@ def weight_calibration(
     full_response_level_df = extract_from_table(responses_pre_calibration_table)
 
     for dataset_options in calibration_config:
-        population_totals_subset = (
-            population_totals_df.where(F.col("dataset_name") == dataset_options["dataset_name"])
-            .drop("dataset_name")
-            .toPandas()
-            .transpose()
+        population_totals_vector = prepare_population_totals_vector(
+            population_totals_df, dataset_options["dataset_name"]
         )
-        population_totals_subset = population_totals_subset.rename(columns=population_totals_subset.iloc[0]).drop(
-            population_totals_subset.index[0]
+        responses_subset_df_r_df = subset_for_calibration(
+            full_response_level_df,
+            dataset_options["design_weight_column"],
+            dataset_options["calibration_model_components"],
+            dataset_options["subset_flag_column"],
+            dataset_options["country"],
         )
-        assert population_totals_subset.shape[0] != 0, "Population totals subset is empty."
-        population_totals_vector = robjects.vectors.FloatVector(population_totals_subset.iloc[0].tolist())
+        sample_design = prepare_sample_design(responses_subset_df_r_df, dataset_options["design_weight_column"])
 
-        columns_to_select = (
-            ["participant_id", "country_name_12"]
-            + [dataset_options["design_weight_column"]]
-            + dataset_options["calibration_model_components"]
-        )
-        responses_subset_df = (
-            full_response_level_df.select(columns_to_select)
-            .where(
-                (F.col(dataset_options["subset_flag_column"]) == 1)
-                & (F.col("country_name_12") == dataset_options["country"])
-            )
-            .toPandas()
-        )
-        assert responses_subset_df.shape[0] != 0, "Responses subset is empty."
-
-        with localconverter(robjects.default_converter + pandas2ri.converter):
-            # population_totals_subset_r_df = robjects.conversion.py2rpy(population_totals_subset)
-            responses_subset_df_r_df = robjects.conversion.py2rpy(responses_subset_df)
-
-        sample_design = regenesees.e_svydesign(
-            dat=responses_subset_df_r_df,
-            ids=robjects.Formula("~participant_id"),
-            weights=robjects.Formula(f"~{dataset_options['design_weight_column']}"),
-        )
         for bounds in dataset_options["bounds"]:
-            responses_subset_df_r_df = assign_calibration_weight(
+            calibrated_pandas_df = calibrate_weights(
                 responses_subset_df_r_df,
-                "calibration_weight",
                 population_totals_vector,
                 sample_design,
                 dataset_options["calibration_model_components"],
+                dataset_options["design_weight_column"],
                 bounds,
             )
-            responses_subset_df_r_df = assign_calibration_factors(
-                responses_subset_df_r_df,
-                "calibration_factors",
-                "calibration_weight",
-                dataset_options["design_weight_column"],
-            )
-
-            with localconverter(robjects.default_converter + pandas2ri.converter):
-                calibrated_pandas_df = robjects.conversion.rpy2rp(responses_subset_df_r_df)
-
             calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
             update_table(
                 calibrated_df,
