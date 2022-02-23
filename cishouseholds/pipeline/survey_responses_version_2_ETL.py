@@ -108,6 +108,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
+    df = update_column_values_from_map(
+        df,
+        "work_not_from_home_days_per_week",
+        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
     return df
 
 
@@ -515,12 +520,16 @@ def union_dependent_cleaning(df):
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
-        "other_antibody_test_since_last_visit": {
+        "other_antibody_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
             "All tests failed": "All Tests failed",
         },
-        "other_antibody_test_location": {"Private Lab": "Private lab", "Home Test": "Home test"},
+        "other_antibody_test_location": {
+            "Private Lab": "Private lab",
+            "Home Test": "Home test",
+            "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
+        },
         "other_pcr_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
