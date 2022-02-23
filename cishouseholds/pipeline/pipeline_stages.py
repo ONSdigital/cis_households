@@ -311,6 +311,22 @@ def merge_blood_ETL(
 ):
     """
     High level function call for running merging process for blood sample data.
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        unioned_survey_table,
+            Input data of union survey tables versions V0, V1 and V2
+        antibody_table,
+            Input data from Antibodies
+        files_to_exclude_survey,
+            List of survey files that should not be included in processing
+        files_to_exclude_blood,
+            List of blood files that should not be included in processing
+        antibody_output_tables
+            List of antibody output tables
+
     """
 
     survey_df = extract_from_table(unioned_survey_table).where(
@@ -337,6 +353,22 @@ def merge_blood_ETL(
 def merge_swab_ETL(merged_survey_table, swab_table, files_to_exclude_survey, files_to_exclude_swab, swab_output_tables):
     """
     High level function call for running merging process for swab sample data.
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        merged_survey_table,
+            Input data of merged survey and blood tables
+        swab_table,
+            Input data from swabs
+        files_to_exclude_survey,
+            List of survey files that should not be included in processing
+        files_to_exclude_swab,
+            List of swab files that should not be included in processing
+        swab_output_tables
+            List of swab output tables
+
     """
     survey_df = extract_from_table(merged_survey_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
@@ -364,6 +396,24 @@ def process_post_merge(
     invalid_response_records_table: str,
     key_columns: List[str],
 ):
+    """
+    Transformation stage after merging. Applies filtering to inputed columns and generates
+    multigenerational data output
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        imputed_antibody_swab_table,
+            Input table of merged antibody and swab data
+        response_records_table,
+            Name of the output of response level records
+        invalid_response_records_table,
+            Name of the output of invalid response level records
+        key_columns
+            List of imputed columns
+
+    """
     df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
@@ -395,6 +445,18 @@ def process_post_merge(
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        participant_records_table,
+            Input table of partipants records
+        nims_table,
+            Input table of NIMS data
+        vaccination_data_table,
+            Ouput table of merged participant and NIMS data
+
     """
     participant_df = extract_from_table(participant_records_table)
     nims_df = extract_from_table(nims_table)
@@ -412,6 +474,19 @@ def join_geographic_data(
 ):
     """
     Join weights file onto survey data by household id.
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        geographic_table,
+            Input table of geographic data
+        survey_responses_table,
+            Input from survey response data
+        geographic_responses_table,
+            Ouput table of merged survey response and geographic tables
+        id_column,
+            Column used for joining survey response and geographic tables
+
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
