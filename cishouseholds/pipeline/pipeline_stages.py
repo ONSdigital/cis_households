@@ -307,21 +307,38 @@ def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
 
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
-    unioned_survey_table, antibody_table, files_to_exclude_survey, files_to_exclude_blood, antibody_output_tables
+    survey_responses_table: str,
+    antibody_table: str,
+    blood_files_to_exclude: List[str],
+    antibody_output_tables: List[str],
 ):
     """
-    High level function call for running merging process for blood sample data.
+    High level function for joining antibody/blood test result data to survey responses.
+    Should be run before the PCR/swab result merge.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey response records
+    antibody_table
+        name of HIVE table containing antibody/blood result records
+    swab_files_to_exclude
+        antibody/blood result files that should be excluded from the merge.
+        Used to remove files that are found to contain invalid data.
+    swab_output_tables
+        names of the three output tables:
+            1. survey responses and successfully joined results
+            2. residual antibody/blood result records, where there was no barcode match to join on
+            3. antibody/blood result records that failed to meet the criteria for joining
     """
 
-    survey_df = extract_from_table(unioned_survey_table).where(
+    survey_df = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
-
     antibody_df = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    antibody_df = file_exclude(antibody_df, "blood_test_source_file", files_to_exclude_blood)
+    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
@@ -334,19 +351,37 @@ def merge_blood_ETL(
 
 
 @register_pipeline_stage("merge_swab_ETL")
-def merge_swab_ETL(merged_survey_table, swab_table, files_to_exclude_survey, files_to_exclude_swab, swab_output_tables):
+def merge_swab_ETL(
+    survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
+):
     """
-    High level function call for running merging process for swab sample data.
+    High level function for joining PCR test result data to survey responses.
+    Should be run following the antibody/blood result merge.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey response records
+    swab_table
+        name of HIVE table containing PCR/swab result records
+    swab_files_to_exclude
+        PCR/swab result files that should be excluded from the merge.
+        Used to remove files that are found to contain invalid data.
+    swab_output_tables
+        names of the three output tables:
+            1. survey responses and successfully joined results
+            2. residual PCR/swab result records, where there was no barcode match to join on
+            3. PCR/swab result records that failed to meet the criteria for joining
+
     """
-    survey_df = extract_from_table(merged_survey_table).where(
+    survey_df = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
 
     swab_df = extract_from_table(swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    swab_df = file_exclude(swab_df, "swab_test_source_file", files_to_exclude_swab)
+    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
 
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
