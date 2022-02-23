@@ -1,9 +1,21 @@
+exclusion_files:
+  survey_responses: [
+
+  ]
+  blood: [
+
+  ]
+  swab: [
+
+  ]
+
+
 stages:
   - function: delete_tables
     run: False
+    prefix: USER_
     table_names:
     pattern:
-    prefix:
 
   - function: historical_blood_ETL
     run: False
@@ -17,7 +29,7 @@ stages:
     include_invalid: True
     include_processed: True
 
-  - function: swab_delta_ETL
+  - function: swab_testKit_delta_ETL
     run: False
     resource_path: "hdfs:///ons/covserolink/landing_zone/swabs/ONS_GL_Report_*.csv"
     include_invalid: True
@@ -49,37 +61,55 @@ stages:
 
   - function: union_survey_response_files
     run: False
-    unioned_survey_table: unioned_survey_responses
     transformed_survey_table: transformed_survey_responses_v*_data
+    unioned_survey_table: unioned_survey_responses
 
+  - function: union_dependent_transformations
+    run: False
+    unioned_survey_table: unioned_survey_responses
+    transformed_table: post_union_transformed_survey_responses
+    cohort_corrections_file:
+
+  - function: validate_survey_responses
+    run: False
+    unioned_survey_table: unioned_survey_responses
+    valid_survey_table: validated_survey_responses
+    invalid_survey_table: erroneous_survey_responses
 
   - function: outer_join_blood_results
     run: False
     blood_table: transformed_blood_test_data
     antibody_table: joined_blood_test_data
-    failed_blood: failed_blood_test_join
+    failed_blood_table: failed_blood_test_join
+    files_to_exclude_survey: []
 
 
   - function: merge_blood_ETL
     run: False
     antibody_table: joined_blood_test_data
-    unioned_survey_table: unioned_survey_responses
+    unioned_survey_table: validated_survey_responses
     antibody_output_tables: [
       "merged_responses_antibody_data",
       "antibody_merge_residuals",
       "antibody_merge_failed_records",
     ]
+    files_to_exclude_survey: []
+    files_to_exclude_blood: []
+
 
 
   - function: merge_swab_ETL
     run: False
     swab_table: transformed_swab_test_data
-    unioned_survey_table: unioned_survey_responses
+    merged_survey_table: merged_responses_antibody_data
     swab_output_tables: [
       "merged_responses_antibody_swab_data",
       "swab_merge_residuals",
       "swab_merge_failed_records",
     ]
+    files_to_exclude_survey: []
+    files_to_exclude_swab: []
+
 
   - funciton: join_vaccination_data
     run: False
@@ -89,25 +119,85 @@ stages:
 
 
   - function: process_post_merge
-    run: False
-    merged_antibody_swab: merged_responses_antibody_swab_data
+    run: True
+    merged_antibody_swab_table: merged_responses_antibody_swab_data
     imputed_values_table: imputed_value_lookup
     participant_records_table: participant_level_key_records
     response_records_table: response_level_records
     invalid_response_records_table: invalid_response_records_future
 
+  - function: record_level_interface
+    run: False
+    input_table:
+    csv_editing_file:
+    unique_id_column:
+    unique_id_list: []
+
+  - function: sample_file_ETL
+    run: False
+    address_lookup: "hdfs:///ons/covserolink/landing_zone/weights_input/Address_lookup.csv"
+    cis_lookup: "hdfs:///ons/covserolink/landing_zone/weights_input/cis_lookup.csv"
+    country_lookup: "hdfs:///ons/covserolink/landing_zone/weights_input/country_lookup.csv"
+    postcode_lookup: "hdfs:///ons/covserolink/landing_zone/weights_input/lookup.csv"
+    new_sample_file: "hdfs:///ons/covserolink/landing_zone/weights_input/new_sample_file.csv"
+    tranche: "hdfs:///ons/covserolink/landing_zone/weights_input/tranche.csv"
+    table_or_path: path
+    old_sample_file: "hdfs:///ons/covserolink/landing_zone/weights_input/old_sample_file.csv"
+    design_weight_table: participant_geographies_design_weights
+
+  - function: population_projection
+    run: False
+    population_projection_previous: "hdfs:///ons/covserolink/landing_zone/weights_input/population_projection_p.csv"
+    population_projection_current: "hdfs:///ons/covserolink/landing_zone/weights_input/population_projection_c.csv"
+    tranche: "hdfs:///ons/covserolink/landing_zone/weights_input/tranche.csv"
+    month: 1
+    aps_lookup: "hdfs:///ons/covserolink/landing_zone/weights_input/aps_lookup.csv"
+    table_or_path: path
+    population_totals_table: population_totals_for_calibration
+    population_projections_table: population_projections
+
+  - function: pre_calibration
+    run: False
+    design_weight_table: participant_geographies_design_weights
+    survey_response_table: merged_responses_antibody_swab_data
+    population_projections_table: population_projections
+    responses_pre_calibration_table: responses_pre_calibration
+    pre_calibration_config_path: /home/cdsw/precal_config.yaml
+
+  - function: weight_calibration
+    run: False
+    population_totals_table: population_totals_for_calibration
+    responses_pre_calibration_table: responses_pre_calibration
+    base_output_table_name: calibrated_weights
+    calibration_config_path: /home/cdsw/calibration_config.yaml
 
   - function: generate_outputs
+    table_to_csv_config_file: examples/table_to_csv.yaml
     run: False
+    merged_antibody_swab_table: merged_responses_antibody_swab_data
+    output_directory: hdfs:///ons/covserolink/output_data
 
   - function: tables_to_csv
     run: False
-    table_file_pairs:
-      - [unioned_survey_responses, unioned_survey_responses]
+    update_name_map: unioned_responses_update_map
+    category_map: iqvia_raw_category_map
+    table_to_csv_config_file: examples/table_to_csv.yaml
+    outgoing_directory: hdfs:///ons/covserolink/output_data
+
+  - function: report
+    run: True
+    unique_id_column: unique_participant_response_id
+    error_column: ERROR
+    duplicate_row_flag_column: duplicated_row_flag
+    processed_file_table: processed_filenames
+    invalid_files_table: error_file_log
+    valid_survey_table: validated_survey_responses
+    invalid_survey_table: erroneous_survey_responses
+    output_directory: hdfs:///ons/covserolink/output_data
 
 storage:
     database: covserolink_dev
-    table_prefix: USERNAME_
-    write_mode: append
+    table_prefix: USER_
+    write_mode: overwrite
 
-pyspark_session_size: m
+pyspark_session_size: xl

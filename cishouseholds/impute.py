@@ -11,6 +11,88 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 
+def impute_outside_uk_columns(
+    df: DataFrame,
+    outside_uk_date_column: str,
+    outside_country_column: str,
+    outside_uk_since_column: str,
+    visit_datetime_column: str,
+    id_column: str,
+):
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), "No").otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_country_column)),
+    )
+
+    window = (
+        Window.partitionBy(id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_since_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_date_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_country_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_country_column)),
+    )
+    return df
+
+
+def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
+    df = df.withColumn(
+        visit_datetime_column,
+        F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
+            F.col(visit_datetime_column)
+        ),
+    )
+    return df
+
+
+def fill_forward_work_columns(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
+    main_job_changed_column: str,
+) -> DataFrame:
+    """
+    Where job has not changed, fill forward from previous response that job has changed.
+    """
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(F.col(visit_date_column).asc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    for col in fill_forward_columns:
+        df = df.withColumn(
+            col,
+            F.when(
+                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
+            ).otherwise(F.col(col)),
+        )
+    return df
+
+
 def impute_by_distribution(
     df: DataFrame,
     column_name_to_assign: str,
@@ -183,7 +265,7 @@ def impute_by_ordered_fill_forward(
     ----------
     df
     column_name_to_assign
-        The colum that will be created with the impute values
+        The column that will be created with the impute values
     column_identity
         Identifies any records that the reference_column is missing forward
         This column is normally intended for user_id, participant_id, etc.
@@ -203,10 +285,16 @@ def impute_by_ordered_fill_forward(
     """
     if order_type == "asc":
         ordering_expression = F.col(order_by_column).asc()
-    else:
+    elif order_type == "desc":
         ordering_expression = F.col(order_by_column).desc()
+    else:
+        raise ValueError("order_type must be 'asc' or 'desc'")
 
-    window = Window.partitionBy(column_identity).orderBy(ordering_expression)
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(ordering_expression)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
@@ -594,3 +682,59 @@ def impute_latest_date_flag(
     )
 
     return df.drop("imputation_flag")
+
+
+def fill_backwards_overriding_not_nulls(
+    df: DataFrame,
+    column_identity,
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df,
+    column_identity,
+    ordering_column,
+    dataset_column,
+    column_list,
+    """
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    for column in column_list:
+        df = df.withColumn(
+            column,
+            F.first(F.col(column), ignorenulls=True).over(window),
+        )
+    return df
+
+
+def edit_multiple_columns_fill_forward(
+    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
+) -> DataFrame:
+    """
+    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
+    based in fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+    Parameters
+    ----------
+    df
+    participant_id
+    received
+    date
+    column_fillforward_list
+    """
+    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+    for column_name in column_fillforward_list:
+        df = df.withColumn(
+            column_name,
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
+                F.col(column_name)
+            ),
+        )
+
+    return df

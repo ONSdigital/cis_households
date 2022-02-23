@@ -2,17 +2,17 @@
 import subprocess
 
 
-def _perform(command, str_ouput=False):
+def _perform(command, shell=False, str_output=False, ignore_error=False):
     """Run shell command in subprocess returning exit code or full string output."""
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(command, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
-    if str_ouput:
-        if stderr:
+    if str_output:
+        if stderr and not ignore_error:
             raise Exception(stderr.decode("UTF-8").strip("\n"))
         return stdout.decode("UTF-8").strip("\n")
 
-    return process.returncode
+    return process.returncode == 0
 
 
 def isfile(path):
@@ -158,23 +158,22 @@ def dir_size(path):
         Hadoop replicates data for resilience, disk space consumed is size x replication.
     """
     command = ["hadoop", "fs", "-du", "-s", "-h", path]
-    return _perform(command, True)
+    return _perform(command, str_output=True)
 
 
 def read_header(path):
     """
     Reads the first line of a file on HDFS
     """
-    command = ["hadoop", "fs", "-cat", path, "|", "head"]
-    return _perform(command, True)
+    return _perform(f"hadoop fs -cat {path} | head -1", shell=True, str_output=True, ignore_error=True)
 
 
-def write_string_to_file(content: str, path):
+def write_string_to_file(content: bytes, path: str):
     """
     Writes a string into the specified file path
     """
-    command = ["echo", content, "|", "hadoop", "fs", "-put", "-", path]
-    return _perform(command, True)
+    _write_string_to_file = subprocess.Popen(f"hadoop fs -put - {path}", stdin=subprocess.PIPE, shell=True)
+    return _write_string_to_file.communicate(content)
 
 
 def read_file_to_string(path):
@@ -182,4 +181,19 @@ def read_file_to_string(path):
     Reads file into a string
     """
     command = ["hadoop", "fs", "-cat", path]
-    return _perform(command, True)
+    return _perform(command, str_output=True)
+
+
+def hdfs_stat_size(path):
+    """
+    Runs stat command on a file or directory to get the size in bytes.
+    """
+    command = ["hadoop", "fs", "-du", "-s", path]
+    return _perform(command, str_output=True).split(" ")[0]
+
+
+def hdfs_md5sum(path):
+    """
+    Get md5sum of a specific file on HDFS.
+    """
+    return _perform(f"hadoop fs -cat {path} | md5sum", shell=True, str_output=True, ignore_error=True).split(" ")[0]

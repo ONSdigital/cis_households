@@ -12,9 +12,9 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "B", "original", "converted"),
             (4, "B", "original", "converted"),
             (5, "A", "something else", "converted"),
-            (6, "A", "original", "converted"),
+            (6, "A", None, "converted from null"),
         ],
-        schema="""id integer, column string, old string, new string""",
+        schema="""id integer, target_column_name string, old_value string, new_value string""",
     )
     csv_filepath = pandas_df_to_temporary_csv(map_df.toPandas()).as_posix()
     input_df = spark_session.createDataFrame(
@@ -24,6 +24,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "original"),
             (4, "original", "original"),
             (5, "original", "original"),
+            (6, None, "original"),
         ],
         schema="""id integer, A string, B string""",
     )
@@ -34,6 +35,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "converted"),
             (4, "original", "converted"),
             (5, "original", "original"),
+            (6, "converted from null", "original"),
         ],
         schema="""id integer, A string, B string""",
     )

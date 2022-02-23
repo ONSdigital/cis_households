@@ -1,74 +1,16 @@
 import csv
-from datetime import datetime
 from io import StringIO
 from operator import add
 from typing import List
 from typing import Union
 
-from cerberus import TypeDefinition
-from cerberus import Validator
 from pyspark import RDD
-from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql import Row
 from pyspark.sql import Window
 
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-# from typing import List
-
-# from typing import List
-
-
-class PySparkValidator(Validator):
-    """
-    A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
-    This allows reuse of validation schema as PySpark schema.
-    """
-
-    types_mapping = Validator.types_mapping.copy()
-    types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
-    types_mapping["double"] = TypeDefinition("double", (float,), ())
-
-
-def filter_and_accumulate_validation_errors(
-    row: Row, accumulator: AddingAccumulatorParam, cerberus_validator: Validator
-) -> bool:
-    """
-    Validate rows of data using a Cerberus validator object, filtering invalid rows out of the returned dataframe.
-    Field errors are recorded in the given accumulator, as a list of dictionaries.
-    Examples
-    --------
-    >>> validator = cerberus.Validator({"id": {"type": "string"}})
-    >>> error_accumulator = spark_session.sparkContext.accumulator(
-            value=[], accum_param=AddingAccumulatorParam(zero_value=[])
-            )
-    >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator))
-    """
-    row_dict = row.asDict()
-    result = cerberus_validator.validate(row_dict)
-    if not result:
-        accumulator += [(row, cerberus_validator.errors)]
-    return result
-
-
-def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accumulator: AddingAccumulatorParam):
-    """
-    High level function to validate a PySpark DataFrame using Cerberus.
-    Filters invalid records out and accumulates errors.
-
-    Notes
-    -----
-    As a side effect, errors are added to the ``error_accumulator``.
-    """
-    return df
-    validator = PySparkValidator(validation_schema)
-    filtered_df = df.rdd.filter(
-        lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
-    ).toDF(schema=df.schema)
-    return filtered_df
 
 
 def validate_csv_fields(text_file: RDD, delimiter: str = ","):

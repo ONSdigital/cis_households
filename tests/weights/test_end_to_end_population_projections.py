@@ -99,7 +99,7 @@ def test_end_to_end_population_projection(spark_session):
         expected_df_path, header=True, schema=None, ignoreLeadingWhiteSpace=True, ignoreTrailingWhiteSpace=True, sep=","
     )
 
-    output_df, complete_df = proccess_population_projection_df(dfs=auxillary_dfs, month=7)
+    output_df, complete_df = proccess_population_projection_df(dfs=auxillary_dfs, month=7, year=1)
 
     for col, type in output_df.dtypes:
         expected_df = expected_df.withColumn(col, F.col(col).cast(type))

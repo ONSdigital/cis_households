@@ -1,3 +1,4 @@
+import re
 from itertools import chain
 from typing import List
 from typing import Mapping
@@ -10,6 +11,120 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_column_values_from_column_reference(
+    df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
+):
+    """
+    Map column values depending on values of reference columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    reference_column
+    map
+    """
+    for key, val in map.items():
+        df = df.withColumn(
+            column_name_to_update, F.when(F.col(reference_column) == key, val).otherwise(F.col(column_name_to_update))
+        )
+    return df
+
+
+def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
+    """
+    convert values outside range to null
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    range
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update) >= range[0]) & (F.col(column_name_to_update) <= range[1]),
+            F.col(column_name_to_update),
+        ).otherwise(None),
+    )
+    return df
+
+
+def update_participant_not_consented(
+    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
+):
+    """
+    update the participant consented column following specific logic
+    Parameters
+    ---------
+    df
+    column_name_to_update
+    """
+    r = re.compile(participant_non_consented_column_pattern)
+    non_consent_columns = list(filter(r.match, df.columns))
+    non_consent_count = F.size(
+        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
+    )
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
+            non_consent_count,
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
+def update_face_covering_outside_of_home(
+    df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
+):
+    """
+    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    covered_enclosed_column
+    covered_work_column
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (
+                (F.col(covered_enclosed_column) == "Never")
+                & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
+            ),
+            "No",
+        )
+        .when(
+            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
+            "Yes, at work/school only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            "Yes, in other situations only",
+        )
+        .when(
+            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
+            "Yes, usually both Work/school/other",
+        )
+        .when(
+            (F.col(covered_enclosed_column) == "My face is already covered")
+            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            "My face is already covered",
+        )
+        .when(
+            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (F.col(covered_work_column) == "My face is already covered"),
+            "My face is already covered",
+        )
+        .otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
@@ -20,7 +135,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
@@ -68,25 +183,46 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
-def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
+    Parameters
+    ---------
+    df
+    barcode_column
+    edited_column
+        signifies if updating was performed on row
     """
+    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
+    df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
+
+    df = df.withColumn("SUFFIX", F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0))
+    df = df.withColumn("PREFIX", F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", ""))
+
+    # prefix cleaning
+    df = df.withColumn("PREFIX", F.regexp_replace(F.col("PREFIX"), r"[0Q]", "O"))
     df = df.withColumn(
-        barcode_column,
-        F.when(
-            F.col(barcode_column).rlike(r"^(?!ONS|ONW|ONC|ONN)\w{3}\d{8}$"),
-            F.regexp_replace(barcode_column, r"^\w{3}", "ONS"),
-        ).otherwise(F.col(barcode_column)),
+        "PREFIX", F.when(~F.col("PREFIX").isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(F.col("PREFIX"))
+    )
+
+    # suffix cleaning
+    df = df.withColumn("SUFFIX", F.when(F.length("SUFFIX") >= 4, F.col("SUFFIX")).otherwise(None))
+    df = df.withColumn("SUFFIX", F.when(F.col("SUFFIX").rlike(r"^0{1,}$"), None).otherwise(F.col("SUFFIX")))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"[.O]", "0"))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), "I", "1"))
+    df = df.withColumn("SUFFIX", F.substring(F.concat(F.lit("00000000"), F.col("SUFFIX")), -8, 8))
+    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"^[^027]", "0"))
+
+    df = df.withColumn(
+        barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
     )
     df = df.withColumn(
-        barcode_column,
-        F.when(F.col(barcode_column).rlike(r"^\w{3}(?!0{8})\d{8}$"), F.col(barcode_column)).cast("string"),
+        edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
     )
-    return df
+    return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
@@ -115,7 +251,9 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
-    Update specific cell values from a map contained in a csv file
+    Update specific cell values from a map contained in a csv file.
+    Allows a match on Null old values.
+
     Parameters
     ----------
     df
@@ -125,14 +263,19 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old", "new").pivot("column").count()
+    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
     cols = csv.columns[3:]
     for col in cols:
-        copy = csv.filter(F.col(col) == 1)
-        copy = copy.drop(col).withColumnRenamed("old", col)
-        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
-        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
-    return df
+        csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
+    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    for col in cols:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
+            ).otherwise(F.col(col)),
+        )
+    return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -177,6 +320,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
+    condition_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
@@ -190,6 +334,8 @@ def update_column_values_from_map(
     error_if_value_not_found
     default_value
     """
+    if condition_column is None:
+        condition_column = column
 
     if default_value is None:
         default_value = F.col(column)
@@ -205,7 +351,10 @@ def update_column_values_from_map(
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
+                default_value
+            ),
         )
     return df
 
@@ -284,6 +433,20 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     return df
 
 
+def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
+    """
+    Map columns from column list with given value to null
+    Parameters
+    ----------
+    df
+    column_list
+    value
+    """
+    for col in column_list:
+        df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
+    return df
+
+
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
@@ -298,6 +461,12 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
 
+    return df
+
+
+def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
+    for col, map in column_map_dic.items():
+        df = update_column_values_from_map(df, col, map)
     return df
 
 
@@ -388,8 +557,10 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     """
     key_types = set([type(key) for key in mapper.keys()])
     value_types = set([type(values) for values in mapper.values()])
-    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types}"
-    assert len(value_types) == 1, f"all map values must be the same type, they are {value_types}"
+    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types} for {column_name_to_assign}"
+    assert (
+        len(value_types) == 1
+    ), f"all map values must be the same type, they are {value_types} for {column_name_to_assign}"
 
     mapping_expr = F.create_map([F.lit(x) for x in chain(*mapper.items())])
 
