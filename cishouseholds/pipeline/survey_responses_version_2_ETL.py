@@ -635,6 +635,14 @@ def union_dependent_cleaning(df):
             "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
             "Other Method": "Other method",
         },
+        "last_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "last_suspected_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
