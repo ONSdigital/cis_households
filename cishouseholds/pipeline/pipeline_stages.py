@@ -146,11 +146,18 @@ def generate_input_processing_function(
     """
 
     @register_pipeline_stage(stage_name)
-    def _inner_function(resource_path, latest_only, start_date, end_date, include_processed, include_invalid):
+    def _inner_function(
+        resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False, include_invalid=False
+    ):
         file_path_list = [resource_path]
         if include_hadoop_read_write:
             file_path_list = get_files_to_be_processed(
-                resource_path, latest_only, start_date, end_date, include_processed, include_invalid
+                resource_path,
+                latest_only=latest_only,
+                start_date=start_date,
+                end_date=end_date,
+                include_processed=include_processed,
+                include_invalid=include_invalid,
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
