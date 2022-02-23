@@ -276,12 +276,25 @@ def lookup_based_editing(
     update_table(df, edited_table, mode_overide="overwrite")
 
 
-@register_pipeline_stage("outer_join_blood_results")
-def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
+@register_pipeline_stage("outer_join_antibody_results")
+def outer_join_antibody_results(
+    antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
+):
     """
-    Outer join of data for two blood test targets.
+    Outer join of data for two antibody/blood test targets (S and N protein antibodies).
+    Creates a single record per blood sample.
+
+    Parameters
+    ----------
+    antibody_test_result_table
+        name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record
+    joined_antibody_test_result_table
+        name of HIVE table to write successfully joined records, where each blood sample has one record
+    failed_join_table
+        name of HIVE table to write antibody/blood test results that failed to merge.
+        Specifically, those with more than two records in the unjoined data.
     """
-    blood_df = extract_from_table(blood_table)
+    blood_df = extract_from_table(antibody_test_result_table)
     blood_df = blood_df.dropDuplicates(
         subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
     )
@@ -301,8 +314,8 @@ def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, antibody_table, mode_overide="overwrite")
-    update_table(failed_blood_join_df, failed_blood_table, mode_overide="overwrite")
+    update_table(blood_df, joined_antibody_test_result_table, mode_overide="overwrite")
+    update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
