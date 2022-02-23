@@ -62,8 +62,8 @@
     his liver with some fava beans and a nice Chianti.
   no_email_address: 0.0
   ons_household_id: 021263322966
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: I'm gonna make him an offer he can't refuse.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: 'Yes'
@@ -263,8 +263,8 @@
     condemned to repeat it.
   no_email_address: 1.0
   ons_household_id: '919192147365'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: You're gonna need a bigger boat.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: 'No'
@@ -471,8 +471,8 @@
     You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '955705581901'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
   other_antibody_test_location: Frankly, my dear, I don't give a damn.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: 'Yes'
@@ -674,8 +674,8 @@
   last_suspected_covid_contact_location: Here's looking at you, kid.
   no_email_address: 0.0
   ons_household_id: '876960826911'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   other_antibody_test_results: Negative
@@ -877,8 +877,8 @@
   last_suspected_covid_contact_location: You're gonna need a bigger boat.
   no_email_address: 1.0
   ons_household_id: '602276804025'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
@@ -1082,8 +1082,8 @@
     You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: 001674039598
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_location: Get your stinking paws off me, you damned dirty ape.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: 'Yes'
@@ -1281,8 +1281,8 @@
   last_suspected_covid_contact_location: Let them eat cake.
   no_email_address: 1.0
   ons_household_id: 044476904382
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
   other_antibody_test_location: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
   other_antibody_test_results: Negative
@@ -1486,8 +1486,8 @@
     ask what you can do for your country.
   no_email_address: 0.0
   ons_household_id: '890407714528'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: The only thing we have to fear is fear itself.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: null
@@ -1688,8 +1688,8 @@
     How he got in my pajamas, I don't know.
   no_email_address: 1.0
   ons_household_id: '456442497105'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
@@ -1890,8 +1890,8 @@
     You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '788221784619'
-  other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: null
+  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: The only thing we have to fear is fear itself.
   other_antibody_test_results: Negative
   other_antibody_test_since_last_visit: 'Yes'
