@@ -234,8 +234,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
         csv = csv.withColumn(col, F.last(F.col(col), ignorenulls=True).over(window))
         csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
 
-    csv = csv.withColumn("row", F.row_number().over(window))
-    csv = csv.filter(F.col("row") == 1).drop("row")
+    csv = csv.drop("new_value").distinct()
 
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
     for col in cols:
