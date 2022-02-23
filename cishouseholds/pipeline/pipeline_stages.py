@@ -676,6 +676,7 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
+# Ohi ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("calculate_individual_level_population_totals")
 def population_projection(
     population_projection_previous: str,
@@ -687,6 +688,19 @@ def population_projection(
     population_totals_table: str,
     population_projections_table: str,
 ):
+    """
+
+    Parameters
+    ----------
+    population_projection_previous
+    population_projection_current
+    month
+    year
+    aps_lookup
+    table_or_path
+    population_totals_table
+    population_projections_table
+    """
     files = {
         "population_projection_current": population_projection_current,
         "aps_lookup": aps_lookup,
@@ -708,6 +722,22 @@ def pre_calibration(
     responses_pre_calibration_table,
     pre_calibration_config_path,
 ):
+    """
+    Survey data broken down in different datasets is merged with household_samples_dataset
+    Non-response adjustment is calculated and the design weights
+    are adjusted by the non-response rates producing desgin weights adjusted.
+    Calibration variabes are calculated and  all the files(dataframes) are outputed
+    for the calibration in R (Regenesses)
+    At the end of this processing stage 24 datasets (files will be produced): 6 datasets for each country
+
+    Parameters
+    ----------
+    design_weight_table
+    population_projections_table
+    survey_response_table
+    responses_pre_calibration_table
+    pre_calibration_config_path
+    """
     with open(pre_calibration_config_path, "r") as config_file:
         pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
     household_level_with_design_weights = extract_from_table(design_weight_table)
@@ -757,6 +787,12 @@ def weight_calibration(
             design_weight_column: string column name
             calibration_model_components: list of string column names
 
+    Parameters
+    ----------
+    population_totals_table
+    responses_pre_calibration_table
+    base_output_table_name
+    calibration_config_path
     """
     spark_session = get_or_create_spark_session()
 
