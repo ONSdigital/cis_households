@@ -9,7 +9,8 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_transformations
+from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
+from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -29,10 +30,15 @@ def union_survey_response_files(transformed_survey_responses_table_pattern: str,
 
 
 @register_pipeline_stage("union_dependent_transformations")
-def execute_union_dependent_transformations(**kwargs):
-    unioned_survey_responses = extract_from_table(kwargs["unioned_survey_table"])
-    unioned_survey_responses = union_dependent_transformations(unioned_survey_responses)
-    update_table(unioned_survey_responses, kwargs["transformed_table"], mode_overide="overwrite")
+def execute_union_dependent_transformations(unioned_survey_table: str, transformed_table: str):
+    """
+    Transformations that require the union of the different input survey response files.
+    Includes combining data from different files and filling forwards or backwards over time.
+    """
+    unioned_survey_responses = extract_from_table(unioned_survey_table)
+    unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
+    unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
+    update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")

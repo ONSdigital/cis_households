@@ -392,9 +392,9 @@ survey_responses_v1_variable_name_map = {
     "Where_was_the_test_done": "other_antibody_test_location",
     "If_ve_Blood_Date_of_1st_ve_test": "other_antibody_test_first_positive_date",
     "If_all_ve_blood_Date_last_ve_test": "other_antibody_test_last_negative_date",
-    "Have_you_been_outside_UK_since_April": "outside_uk_since_april_2020",
-    "been_outside_uk_last_country": "outside_uk_last_country",
-    "been_outside_uk_last_date": "outside_uk_last_date",
+    "Have_you_been_outside_UK_since_April": "been_outside_uk_since_april_2020",
+    "been_outside_uk_last_country": "been_outside_uk_last_country",
+    "been_outside_uk_last_date": "been_outside_uk_last_date",
     "Vaccinated_Against_Covid": "cis_covid_vaccine_received",
     "Date_Of_Vaccination": "cis_covid_vaccine_date",
 }
