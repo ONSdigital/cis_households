@@ -731,6 +731,30 @@ def record_level_interface(
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
 ):
+    """
+    This stage does two type of edits in a given table from HIVE given an unique_id column.
+    Either value level editing or filtering editing.
+
+    Parameters
+    ----------
+    survey_responses_table
+        table in which editing happens
+    csv_editing_file
+        defines the editing from old values to new values in the HIVE tables
+        Columns expected
+            - unique id
+            - column name to edit
+            - old value
+            - new value
+    unique_id_column
+        unique id that will be edited
+    unique_id_list
+        list of ids to be filtered
+    edited_survey_responses_table
+        Hive table
+    filtered_survey_responses_table
+        Hive table when they have been filtered out from survey responses
+    """
     input_df = extract_from_table(survey_responses_table)
     edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
