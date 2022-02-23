@@ -365,23 +365,43 @@ def merge_blood_ETL(
     antibody_output_tables: List[str],
 ):
     """
-    High level function for joining antibody/blood test result data to survey responses.
-    Should be run before the PCR/swab result merge.
+    <<<<<<< HEAD
+        High level function call for running merging process for blood sample data.
 
-    Parameters
-    ----------
-    survey_responses_table
-        name of HIVE table containing survey response records
-    antibody_table
-        name of HIVE table containing antibody/blood result records
-    swab_files_to_exclude
-        antibody/blood result files that should be excluded from the merge.
-        Used to remove files that are found to contain invalid data.
-    swab_output_tables
-        names of the three output tables:
-            1. survey responses and successfully joined results
-            2. residual antibody/blood result records, where there was no barcode match to join on
-            3. antibody/blood result records that failed to meet the criteria for joining
+        Use one or more of the optional parameters.
+
+        Parameters
+        ----------
+            unioned_survey_table,
+                Input data of union survey tables versions V0, V1 and V2
+            antibody_table,
+                Input data from Antibodies
+            files_to_exclude_survey,
+                List of survey files that should not be included in processing
+            files_to_exclude_blood,
+                List of blood files that should not be included in processing
+            antibody_output_tables
+                List of antibody output tables
+
+    =======
+        High level function for joining antibody/blood test result data to survey responses.
+        Should be run before the PCR/swab result merge.
+
+        Parameters
+        ----------
+        survey_responses_table
+            name of HIVE table containing survey response records
+        antibody_table
+            name of HIVE table containing antibody/blood result records
+        swab_files_to_exclude
+            antibody/blood result files that should be excluded from the merge.
+            Used to remove files that are found to contain invalid data.
+        swab_output_tables
+            names of the three output tables:
+                1. survey responses and successfully joined results
+                2. residual antibody/blood result records, where there was no barcode match to join on
+                3. antibody/blood result records that failed to meet the criteria for joining
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
 
     survey_df = extract_from_table(survey_responses_table).where(
@@ -407,23 +427,42 @@ def merge_swab_ETL(
     survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
 ):
     """
-    High level function for joining PCR test result data to survey responses.
-    Should be run following the antibody/blood result merge.
+    <<<<<<< HEAD
+        High level function call for running merging process for swab sample data.
 
-    Parameters
-    ----------
-    survey_responses_table
-        name of HIVE table containing survey response records
-    swab_table
-        name of HIVE table containing PCR/swab result records
-    swab_files_to_exclude
-        PCR/swab result files that should be excluded from the merge.
-        Used to remove files that are found to contain invalid data.
-    swab_output_tables
-        names of the three output tables:
-            1. survey responses and successfully joined results
-            2. residual PCR/swab result records, where there was no barcode match to join on
-            3. PCR/swab result records that failed to meet the criteria for joining
+        Use one or more of the optional parameters.
+
+        Parameters
+        ----------
+            merged_survey_table,
+                Input data of merged survey and blood tables
+            swab_table,
+                Input data from swabs
+            files_to_exclude_survey,
+                List of survey files that should not be included in processing
+            files_to_exclude_swab,
+                List of swab files that should not be included in processing
+            swab_output_tables
+                List of swab output tables
+    =======
+        High level function for joining PCR test result data to survey responses.
+        Should be run following the antibody/blood result merge.
+
+        Parameters
+        ----------
+        survey_responses_table
+            name of HIVE table containing survey response records
+        swab_table
+            name of HIVE table containing PCR/swab result records
+        swab_files_to_exclude
+            PCR/swab result files that should be excluded from the merge.
+            Used to remove files that are found to contain invalid data.
+        swab_output_tables
+            names of the three output tables:
+                1. survey responses and successfully joined results
+                2. residual PCR/swab result records, where there was no barcode match to join on
+                3. PCR/swab result records that failed to meet the criteria for joining
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
 
     """
     survey_df = extract_from_table(survey_responses_table).where(
@@ -451,6 +490,24 @@ def process_post_merge(
     invalid_response_records_table: str,
     key_columns: List[str],
 ):
+    """
+    Transformation stage after merging. Applies filtering to inputed columns and generates
+    multigenerational data output
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+        imputed_antibody_swab_table,
+            Input table of merged antibody and swab data
+        response_records_table,
+            Name of the output of response level records
+        invalid_response_records_table,
+            Name of the output of invalid response level records
+        key_columns
+            List of imputed columns
+
+    """
     df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
@@ -481,15 +538,30 @@ def process_post_merge(
 @register_pipeline_stage("join_vaccination_data")
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
-    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
-    Parameters
-    ----------
-    participant_records_table
-        input table containing participant level records to join
-    nims_table
-        nims table containing records to be joined to participant table
-    vaccination_data_table
-        output table name for the joined nims and participant table
+        Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+    <<<<<<< HEAD
+
+        Use one or more of the optional parameters.
+
+        Parameters
+        ----------
+            participant_records_table,
+                Input table of partipants records
+            nims_table,
+                Input table of NIMS data
+            vaccination_data_table,
+                Ouput table of merged participant and NIMS data
+
+    =======
+        Parameters
+        ----------
+        participant_records_table
+            input table containing participant level records to join
+        nims_table
+            nims table containing records to be joined to participant table
+        vaccination_data_table
+            output table name for the joined nims and participant table
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
     participant_df = extract_from_table(participant_records_table)
     nims_df = extract_from_table(nims_table)
@@ -506,17 +578,33 @@ def join_geographic_data(
     geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
 ):
     """
-    Join weights file onto survey data by household id.
-    Parameters
-    ----------
-    geographic_table
-        input table name for household data with geographic data
-    survey_responses_table
-        input table for individual participant responses
-    geographic_responses_table
-        output table name for joined survey responses and household geographic data
-    id_column
-        column containing id to join the 2 input tables
+        Join weights file onto survey data by household id.
+    <<<<<<< HEAD
+        Use one or more of the optional parameters.
+
+        Parameters
+        ----------
+            geographic_table,
+                Input table of geographic data
+            survey_responses_table,
+                Input from survey response data
+            geographic_responses_table,
+                Ouput table of merged survey response and geographic tables
+            id_column,
+                Column used for joining survey response and geographic tables
+
+    =======
+        Parameters
+        ----------
+        geographic_table
+            input table name for household data with geographic data
+        survey_responses_table
+            input table for individual participant responses
+        geographic_responses_table
+            output table name for joined survey responses and household geographic data
+        id_column
+            column containing id to join the 2 input tables
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
