@@ -724,30 +724,35 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
-# Ohi ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("calculate_individual_level_population_totals")
-def population_projection(
+def calculate_individual_level_population_totals(
     population_projection_previous: str,
     population_projection_current: str,
     month: int,
     year: int,
     aps_lookup: str,
     table_or_path: str,
-    population_totals_table: str,
-    population_projections_table: str,
+    individual_level_populations_for_non_response_adjustment: str,
+    individual_level_populations_for_calibration: str,
 ):
     """
+    Calculate individual level population totals for use in non-response adjustment and weight calibration.
 
     Parameters
     ----------
     population_projection_previous
+        path to CSV containing previous population projections
     population_projection_current
+        path to CSV containing current population projections
     month
     year
     aps_lookup
+        path to CSV containing APS lookup, for use in deriving ethnicity groups
     table_or_path
-    population_totals_table
-    population_projections_table
+    individual_level_populations_for_calibration
+        name of HIVE table to write populations for calibration
+    individual_level_populations_for_non_response_adjustment
+        name of HIVE table to write populations for non-response adjustment
     """
     files = {
         "population_projection_current": population_projection_current,
@@ -758,8 +763,10 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+    update_table(
+        population_projections, individual_level_populations_for_non_response_adjustment, mode_overide="overwrite"
+    )
+    update_table(populations_for_calibration, individual_level_populations_for_calibration, mode_overide="overwrite")
 
 
 @register_pipeline_stage("pre_calibration")
