@@ -601,6 +601,27 @@ def report(
     filtered_survey_responses_table: str,
     output_directory: str,
 ):
+    """
+    Create a excel spreadsheet with multiple sheets to summarise key data from various
+    tables regarding the running of the pipeline; using overall and most recent statistics.
+    Parameters
+    ----------
+    unique_id_column
+        column that should hold unique id for each row in responses file
+    validation_failure_flag_column
+        name of the column containing the previously created to containt validation error messages
+        name should match that created in validate_survey_responses stage
+    duplicate_count_column_name
+        name of the column containing the previously created to containt count of rows that repeat
+        on the responses table. name should match that created in validate_survey_responses stage
+    valid_survey_responses_table
+        table name of hdfs table of survey responses passing validation checks
+    invalid_survey_responses_table
+        table name of hdfs table of survey responses failing validation checks
+    filtered_survey_responses_table
+    output_directory
+        output folder location to store the report
+    """
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
     filtered_df = extract_from_table(filtered_survey_responses_table)
