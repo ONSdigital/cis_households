@@ -659,18 +659,21 @@ def tables_to_csv(
     dry_run=False,
 ):
     """
+    Writes data from an existing HIVE table to csv output, including mapping of column names and values.
+    Takes a yaml file in which HIVE table name and csv table name are defined as well as columns to be
+    included in the csv file by a select statement.
+    Optionally also point to an update map to be used for the variable name mapping of these outputs.
+
     Parameters
     ----------
     outgoing_directory
+        path to write output CSV files on HDFS
     tables_to_csv_config_file
+        path to YAML config file to define input tables and output CSV names
     category_map
+        name of the category map for converting category strings to integers
     dry_run
-    use_table_to_csv_config
-
-    Writes data from an existing HIVE table to csv output, including mapping of column names and values.
-    Takes a yaml file in which Hive table name and csv table name are defined as well as columns to be
-    included in the csv file by a select statement.
-    Optionally also point to an update map to be used for the variable name mapping of these outputs.
+        when set to True, will delete files after they are written (for testing). Default is False.
     """
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
@@ -732,8 +735,8 @@ def calculate_individual_level_population_totals(
     year: int,
     aps_lookup: str,
     table_or_path: str,
-    individual_level_populations_for_non_response_adjustment: str,
-    individual_level_populations_for_calibration: str,
+    individual_level_populations_for_non_response_adjustment_table: str,
+    individual_level_populations_for_calibration_table: str,
 ):
     """
     Calculate individual level population totals for use in non-response adjustment and weight calibration.
@@ -764,15 +767,17 @@ def calculate_individual_level_population_totals(
         dfs=dfs, month=month, year=year
     )
     update_table(
-        population_projections, individual_level_populations_for_non_response_adjustment, mode_overide="overwrite"
+        population_projections, individual_level_populations_for_non_response_adjustment_table, mode_overide="overwrite"
     )
-    update_table(populations_for_calibration, individual_level_populations_for_calibration, mode_overide="overwrite")
+    update_table(
+        populations_for_calibration, individual_level_populations_for_calibration_table, mode_overide="overwrite"
+    )
 
 
 @register_pipeline_stage("pre_calibration")
 def pre_calibration(
     design_weight_table,
-    population_projections_table,
+    individual_level_populations_for_non_response_adjustment_table,
     survey_response_table,
     responses_pre_calibration_table,
     pre_calibration_config_path,
@@ -781,22 +786,27 @@ def pre_calibration(
     Survey data broken down in different datasets is merged with household_samples_dataset
     Non-response adjustment is calculated and the design weights
     are adjusted by the non-response rates producing desgin weights adjusted.
-    Calibration variabes are calculated and  all the files(dataframes) are outputed
-    for the calibration in R (Regenesses)
+    Calibration variables are calculated and all the files(dataframes) are written to HIVE
+    for the weight calibration
     At the end of this processing stage 24 datasets (files will be produced): 6 datasets for each country
 
     Parameters
     ----------
     design_weight_table
-    population_projections_table
+        name of HIVE table containing household level design weights
+    individual_level_populations_for_non_response_adjustment_table
+        name of HIVE table containing populations for non-response adjustment
     survey_response_table
+        name of HIVE table containing survey responses
     responses_pre_calibration_table
+        name of HIVE table to write data for weight calibration
     pre_calibration_config_path
+        path to YAML pre-calibration config file
     """
     with open(pre_calibration_config_path, "r") as config_file:
         pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
     household_level_with_design_weights = extract_from_table(design_weight_table)
-    population_by_country = extract_from_table(population_projections_table)
+    population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
 
     survey_response = extract_from_table(survey_response_table)
 
@@ -826,7 +836,7 @@ def pre_calibration(
 
 @register_pipeline_stage("weight_calibration")
 def weight_calibration(
-    population_totals_table: str,
+    individual_level_populations_for_calibration_table: str,
     responses_pre_calibration_table: str,
     base_output_table_name: str,
     calibration_config_path: str,
@@ -844,16 +854,20 @@ def weight_calibration(
 
     Parameters
     ----------
-    population_totals_table
+    individual_level_populations_for_calibration_table
+        name of HIVE table containing populations for calibration
     responses_pre_calibration_table
+        name of HIVE table containing responses from pre-calibration
     base_output_table_name
+        base name to use for output tables, will be suffixed with dataset and country names to identify outputs
     calibration_config_path
+        path to YAML calibration config file
     """
     spark_session = get_or_create_spark_session()
 
     with open(calibration_config_path, "r") as config_file:
         calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
-    population_totals_df = extract_from_table(population_totals_table)
+    population_totals_df = extract_from_table(individual_level_populations_for_calibration_table)
     full_response_level_df = extract_from_table(responses_pre_calibration_table)
 
     for dataset_options in calibration_config:
