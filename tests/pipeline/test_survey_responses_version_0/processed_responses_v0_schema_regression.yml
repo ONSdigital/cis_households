@@ -468,11 +468,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_tested
+  name: other_pcr_test_since_last_visit
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_test_result
+  name: other_pcr_test_results
   nullable: true
   type: string
 - metadata: {}
