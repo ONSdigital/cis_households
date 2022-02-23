@@ -197,6 +197,12 @@ def generate_input_processing_function(
 def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
+    Parameters
+    ----------
+    transformed_survey_responses_table_pattern
+        input table pattern for extracting each of the transformed survey responses tables
+    unioned_survey_responses_table
+        output table name for the combine file of 3 unioned survey responses
     """
     survey_df_list = []
 
@@ -212,6 +218,12 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     """
     Transformations that require the union of the different input survey response files.
     Includes combining data from different files and filling forwards or backwards over time.
+    Parameters
+    ----------
+    unioned_survey_table
+        input table name for table containing the combined survey responses tables
+    transformed_table
+        output table name for table with applied transformations dependent on complete survey dataset
     """
     unioned_survey_responses = extract_from_table(unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
@@ -227,6 +239,22 @@ def validate_survey_responses(
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
 ):
+    """
+    Populate error column with outcomes of specific validation checks against fully
+    transformed survey dataset.
+    Parameters
+    ----------
+    survey_responses_table
+        input table name for fully transformed survey table
+    duplicate_count_column_name
+        column name in which to count duplicates of rows within the dataframe
+    validation_failure_flag_column
+        name for error column wherein each of the validation checks results are appended
+    valid_survey_responses_table
+        table containing results that passed the error checking process
+    invalid_survey_responses_table
+        table containing results that failed the error checking process
+    """
     unioned_survey_responses = extract_from_table(survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
@@ -241,7 +269,18 @@ def validate_survey_responses(
 def lookup_based_editing(
     input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
 ):
-    """Edit columns based on mappings from lookup files. Often used to correct data quality issues."""
+    """
+    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Parameters
+    ----------
+    input_table
+        input table name for reference table
+    cohort_lookup_path
+        input file path name for cohort corrections lookup file
+    travel_countries_lookup_path
+        input file path name for travel_countries corrections lookup file
+    edited_table
+    """
     df = extract_from_table(input_table)
 
     spark = get_or_create_spark_session()
@@ -276,12 +315,25 @@ def lookup_based_editing(
     update_table(df, edited_table, mode_overide="overwrite")
 
 
-@register_pipeline_stage("outer_join_blood_results")
-def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
+@register_pipeline_stage("outer_join_antibody_results")
+def outer_join_antibody_results(
+    antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
+):
     """
-    Outer join of data for two blood test targets.
+    Outer join of data for two antibody/blood test targets (S and N protein antibodies).
+    Creates a single record per blood sample.
+
+    Parameters
+    ----------
+    antibody_test_result_table
+        name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record
+    joined_antibody_test_result_table
+        name of HIVE table to write successfully joined records, where each blood sample has one record
+    failed_join_table
+        name of HIVE table to write antibody/blood test results that failed to merge.
+        Specifically, those with more than two records in the unjoined data.
     """
-    blood_df = extract_from_table(blood_table)
+    blood_df = extract_from_table(antibody_test_result_table)
     blood_df = blood_df.dropDuplicates(
         subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
     )
@@ -301,43 +353,64 @@ def outer_join_blood_results(blood_table, antibody_table, failed_blood_table):
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, antibody_table, mode_overide="overwrite")
-    update_table(failed_blood_join_df, failed_blood_table, mode_overide="overwrite")
+    update_table(blood_df, joined_antibody_test_result_table, mode_overide="overwrite")
+    update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
-    unioned_survey_table, antibody_table, files_to_exclude_survey, files_to_exclude_blood, antibody_output_tables
+    survey_responses_table: str,
+    antibody_table: str,
+    blood_files_to_exclude: List[str],
+    antibody_output_tables: List[str],
 ):
     """
-    High level function call for running merging process for blood sample data.
+    <<<<<<< HEAD
+        High level function call for running merging process for blood sample data.
 
-    Use one or more of the optional parameters.
+        Use one or more of the optional parameters.
 
-    Parameters
-    ----------
-        unioned_survey_table,
-            Input data of union survey tables versions V0, V1 and V2
-        antibody_table,
-            Input data from Antibodies
-        files_to_exclude_survey,
-            List of survey files that should not be included in processing
-        files_to_exclude_blood,
-            List of blood files that should not be included in processing
-        antibody_output_tables
-            List of antibody output tables
+        Parameters
+        ----------
+            unioned_survey_table,
+                Input data of union survey tables versions V0, V1 and V2
+            antibody_table,
+                Input data from Antibodies
+            files_to_exclude_survey,
+                List of survey files that should not be included in processing
+            files_to_exclude_blood,
+                List of blood files that should not be included in processing
+            antibody_output_tables
+                List of antibody output tables
 
+    =======
+        High level function for joining antibody/blood test result data to survey responses.
+        Should be run before the PCR/swab result merge.
+
+        Parameters
+        ----------
+        survey_responses_table
+            name of HIVE table containing survey response records
+        antibody_table
+            name of HIVE table containing antibody/blood result records
+        swab_files_to_exclude
+            antibody/blood result files that should be excluded from the merge.
+            Used to remove files that are found to contain invalid data.
+        swab_output_tables
+            names of the three output tables:
+                1. survey responses and successfully joined results
+                2. residual antibody/blood result records, where there was no barcode match to join on
+                3. antibody/blood result records that failed to meet the criteria for joining
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
 
-    survey_df = extract_from_table(unioned_survey_table).where(
+    survey_df = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
-
     antibody_df = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    antibody_df = file_exclude(antibody_df, "blood_test_source_file", files_to_exclude_blood)
+    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
 
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
@@ -350,35 +423,56 @@ def merge_blood_ETL(
 
 
 @register_pipeline_stage("merge_swab_ETL")
-def merge_swab_ETL(merged_survey_table, swab_table, files_to_exclude_survey, files_to_exclude_swab, swab_output_tables):
+def merge_swab_ETL(
+    survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
+):
     """
-    High level function call for running merging process for swab sample data.
+    <<<<<<< HEAD
+        High level function call for running merging process for swab sample data.
 
-    Use one or more of the optional parameters.
+        Use one or more of the optional parameters.
 
-    Parameters
-    ----------
-        merged_survey_table,
-            Input data of merged survey and blood tables
-        swab_table,
-            Input data from swabs
-        files_to_exclude_survey,
-            List of survey files that should not be included in processing
-        files_to_exclude_swab,
-            List of swab files that should not be included in processing
+        Parameters
+        ----------
+            merged_survey_table,
+                Input data of merged survey and blood tables
+            swab_table,
+                Input data from swabs
+            files_to_exclude_survey,
+                List of survey files that should not be included in processing
+            files_to_exclude_swab,
+                List of swab files that should not be included in processing
+            swab_output_tables
+                List of swab output tables
+    =======
+        High level function for joining PCR test result data to survey responses.
+        Should be run following the antibody/blood result merge.
+
+        Parameters
+        ----------
+        survey_responses_table
+            name of HIVE table containing survey response records
+        swab_table
+            name of HIVE table containing PCR/swab result records
+        swab_files_to_exclude
+            PCR/swab result files that should be excluded from the merge.
+            Used to remove files that are found to contain invalid data.
         swab_output_tables
-            List of swab output tables
+            names of the three output tables:
+                1. survey responses and successfully joined results
+                2. residual PCR/swab result records, where there was no barcode match to join on
+                3. PCR/swab result records that failed to meet the criteria for joining
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
 
     """
-    survey_df = extract_from_table(merged_survey_table).where(
+    survey_df = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    survey_df = file_exclude(survey_df, "survey_response_source_file", files_to_exclude_survey)
 
     swab_df = extract_from_table(swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    swab_df = file_exclude(swab_df, "swab_test_source_file", files_to_exclude_swab)
+    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
 
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
 
@@ -444,19 +538,30 @@ def process_post_merge(
 @register_pipeline_stage("join_vaccination_data")
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
-    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+        Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+    <<<<<<< HEAD
 
-    Use one or more of the optional parameters.
+        Use one or more of the optional parameters.
 
-    Parameters
-    ----------
-        participant_records_table,
-            Input table of partipants records
-        nims_table,
-            Input table of NIMS data
-        vaccination_data_table,
-            Ouput table of merged participant and NIMS data
+        Parameters
+        ----------
+            participant_records_table,
+                Input table of partipants records
+            nims_table,
+                Input table of NIMS data
+            vaccination_data_table,
+                Ouput table of merged participant and NIMS data
 
+    =======
+        Parameters
+        ----------
+        participant_records_table
+            input table containing participant level records to join
+        nims_table
+            nims table containing records to be joined to participant table
+        vaccination_data_table
+            output table name for the joined nims and participant table
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
     participant_df = extract_from_table(participant_records_table)
     nims_df = extract_from_table(nims_table)
@@ -473,20 +578,33 @@ def join_geographic_data(
     geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
 ):
     """
-    Join weights file onto survey data by household id.
-    Use one or more of the optional parameters.
+        Join weights file onto survey data by household id.
+    <<<<<<< HEAD
+        Use one or more of the optional parameters.
 
-    Parameters
-    ----------
-        geographic_table,
-            Input table of geographic data
-        survey_responses_table,
-            Input from survey response data
-        geographic_responses_table,
-            Ouput table of merged survey response and geographic tables
-        id_column,
-            Column used for joining survey response and geographic tables
+        Parameters
+        ----------
+            geographic_table,
+                Input table of geographic data
+            survey_responses_table,
+                Input from survey response data
+            geographic_responses_table,
+                Ouput table of merged survey response and geographic tables
+            id_column,
+                Column used for joining survey response and geographic tables
 
+    =======
+        Parameters
+        ----------
+        geographic_table
+            input table name for household data with geographic data
+        survey_responses_table
+            input table for individual participant responses
+        geographic_responses_table
+            output table name for joined survey responses and household geographic data
+        id_column
+            column containing id to join the 2 input tables
+    >>>>>>> 79470b5eb154804345ea7e31e3b93f75c49277f0
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
@@ -501,6 +619,7 @@ def impute_key_columns_stage(
     survey_responses_imputed_table: str,
     key_columns: List[str],
 ):
+    """ """
 
     imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(survey_responses_table)
@@ -693,30 +812,35 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
-# Ohi ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("calculate_individual_level_population_totals")
-def population_projection(
+def calculate_individual_level_population_totals(
     population_projection_previous: str,
     population_projection_current: str,
     month: int,
     year: int,
     aps_lookup: str,
     table_or_path: str,
-    population_totals_table: str,
-    population_projections_table: str,
+    individual_level_populations_for_non_response_adjustment: str,
+    individual_level_populations_for_calibration: str,
 ):
     """
+    Calculate individual level population totals for use in non-response adjustment and weight calibration.
 
     Parameters
     ----------
     population_projection_previous
+        path to CSV containing previous population projections
     population_projection_current
+        path to CSV containing current population projections
     month
     year
     aps_lookup
+        path to CSV containing APS lookup, for use in deriving ethnicity groups
     table_or_path
-    population_totals_table
-    population_projections_table
+    individual_level_populations_for_calibration
+        name of HIVE table to write populations for calibration
+    individual_level_populations_for_non_response_adjustment
+        name of HIVE table to write populations for non-response adjustment
     """
     files = {
         "population_projection_current": population_projection_current,
@@ -727,8 +851,10 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+    update_table(
+        population_projections, individual_level_populations_for_non_response_adjustment, mode_overide="overwrite"
+    )
+    update_table(populations_for_calibration, individual_level_populations_for_calibration, mode_overide="overwrite")
 
 
 @register_pipeline_stage("pre_calibration")
