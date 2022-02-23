@@ -2,16 +2,11 @@
     a problem to stay this far away from other people
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 39.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
   been_outside_uk_last_country: Venezuela
-  been_outside_uk_last_date: 10/09/2020
+  been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -66,9 +61,7 @@
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Black,Caribbean,African-African
-  ethnicity_group: Black
   ethnicity_other: I don't even care.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: 'No'
@@ -284,10 +277,10 @@
   work_location: null
   work_location_raw: null
   work_main_job_changed: 'No'
-  work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
+  work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
-  work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_title: Atoms are used within a program to denote distinguished values.
   work_main_job_title_raw: Atoms are used within a program to denote distinguished
     values.
   work_not_from_home_days_per_week: null
@@ -301,16 +294,11 @@
     a problem to stay this far away from other people
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 0.0
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
   been_outside_uk_last_country: Romania
-  been_outside_uk_last_date: 25/01/2021
+  been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -365,10 +353,8 @@
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Bangladeshi
-  ethnicity_group: Asian
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: 'No'
   face_covering_work: Participant Would Not/Could Not Answer
@@ -587,10 +573,10 @@
   work_location_raw: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
   work_main_job_changed: null
-  work_main_job_role: MAKE ME A SANDWICH
+  work_main_job_role: Make me a sandwich.
   work_main_job_role_raw: Make me a sandwich.
-  work_main_job_title: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
-    EVALUATION
+  work_main_job_title: Haskell features a type system with type inference and lazy
+    evaluation.
   work_main_job_title_raw: Haskell features a type system with type inference and
     lazy evaluation.
   work_not_from_home_days_per_week: null
@@ -606,11 +592,6 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
-  age_at_visit: null
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -670,9 +651,7 @@
   email: dashed1989@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Any other ethnic group
-  ethnicity_group: Other
   ethnicity_other: Ports are used to communicate with the external world.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
@@ -891,11 +870,11 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
-  work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
-    SINCE BEEN RESTORED
+  work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
+    since been restored.
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
-  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title: Type classes first appeared in the Haskell programming language.
   work_main_job_title_raw: Type classes first appeared in the Haskell programming
     language.
   work_not_from_home_days_per_week: '4'
@@ -911,11 +890,6 @@
     meter away as my work means I am in close contact with others on a regular basis
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -975,9 +949,7 @@
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Any other Mixed background
-  ethnicity_group: Mixed
   ethnicity_other: Make me a sandwich.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Yes always
@@ -1194,10 +1166,10 @@
   work_location: Both (work from home and work somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'Yes'
-  work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
+  work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
-  work_main_job_title: MAKE ME A SANDWICH
+  work_main_job_title: Make me a sandwich.
   work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
@@ -1210,16 +1182,11 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
   been_outside_uk_last_country: Uganda
-  been_outside_uk_last_date: 28/06/2020
+  been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1274,10 +1241,8 @@
   email: depict1972@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: Any other Black background
-  ethnicity_group: Black
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: null
   face_covering_work: Never
@@ -1495,10 +1460,10 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
-  work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS,
-    THE FIRST CHARACTER BEING LOWERCASE
+  work_main_job_title: They are written as strings of consecutive alphanumeric characters,
+    the first character being lowercase.
   work_main_job_title_raw: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   work_not_from_home_days_per_week: '1'
@@ -1513,16 +1478,11 @@
     a problem to stay this far away from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: 6.0
-  age_group_5_intervals: 2-11
-  age_group_5_year_intervals: 5-9
-  age_group_7_intervals: 2-11
-  age_group_over_16: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
   bad_email: null
   been_outside_uk_last_country: Kenya
-  been_outside_uk_last_date: 27/04/2020
+  been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1577,10 +1537,8 @@
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Asian
-  ethnicity_group: Mixed
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
   face_covering_work: Never
@@ -1797,12 +1755,12 @@
   work_location: null
   work_location_raw: null
   work_main_job_changed: 'No'
-  work_main_job_role: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_role: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
-  work_main_job_title: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR,
-    A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
+  work_main_job_title: The Galactic Empire is nearing completion of the Death Star,
+    a space station with the power to destroy entire planets.
   work_main_job_title_raw: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   work_not_from_home_days_per_week: null
@@ -1817,16 +1775,11 @@
     a problem to stay this far away from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: 1.0
-  age_group_5_intervals: null
-  age_group_5_year_intervals: null
-  age_group_7_intervals: null
-  age_group_over_16: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
   been_outside_uk_last_country: Uganda
-  been_outside_uk_last_date: 04/12/2020
+  been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -1881,9 +1834,7 @@
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
-  ethnicity_group: Black
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: 'No'
@@ -2104,10 +2055,10 @@
   work_location_raw: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
   work_main_job_changed: 'No'
-  work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: HASKELL IS A STANDARDIZED, GENERAL-PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE, WITH NON-STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title: Haskell is a standardized, general-purpose purely functional
+    programming language, with non-strict semantics and strong static typing.
   work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '2'
@@ -2122,11 +2073,6 @@
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
-  age_at_visit: 24.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -2186,10 +2132,8 @@
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Pakistani
-  ethnicity_group: Asian
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
   face_covering_work: Not going to place of work or education
@@ -2407,9 +2351,9 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
-  work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
+  work_main_job_role: Any element of a tuple can be accessed in constant time.
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
-  work_main_job_title: WHERE ARE MY PANTS?
+  work_main_job_title: Where are my pants?
   work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
@@ -2423,11 +2367,6 @@
     but I can usually be at least 1m from other people
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
-  age_at_visit: 18.0
-  age_group_5_intervals: 12-19
-  age_group_5_year_intervals: 15-19
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
@@ -2487,10 +2426,8 @@
   email: null
   ethnic_group: Other Ethnic Group
   ethnicity: Any other Black background
-  ethnicity_group: Black
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
-  ethnicity_white: Non-White
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: null
@@ -2708,12 +2645,12 @@
   work_location: Both (work from home and work somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: null
-  work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
-    SINCE BEEN RESTORED
+  work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
+    since been restored.
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
-  work_main_job_title: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE, BUT IT HAS
-    SINCE BEEN RESTORED
+  work_main_job_title: In 1989 the building was heavily damaged by fire, but it has
+    since been restored.
   work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
   work_not_from_home_days_per_week: '5'
@@ -2727,16 +2664,11 @@
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
   accepted_fingerprick_invite: null
-  age_at_visit: 36.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
   been_outside_uk_last_country: Cambodia
-  been_outside_uk_last_date: 20/09/2020
+  been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -2791,9 +2723,7 @@
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: White-Irish
-  ethnicity_group: White
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
-  ethnicity_white: White
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
@@ -3014,14 +2944,14 @@
   work_location: null
   work_location_raw: null
   work_main_job_changed: 'No'
-  work_main_job_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
-    SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
-    USED WITHIN AN ATOM
+  work_main_job_role: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
   work_main_job_role_raw: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
-  work_main_job_title: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA
-    TYPES
+  work_main_job_title: The arguments can be primitive data types or compound data
+    types.
   work_main_job_title_raw: The arguments can be primitive data types or compound data
     types.
   work_not_from_home_days_per_week: null
