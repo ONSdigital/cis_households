@@ -41,6 +41,7 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
@@ -107,6 +108,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
+    df = update_column_values_from_map(
+        df,
+        "work_not_from_home_days_per_week",
+        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
     return df
 
 
@@ -514,12 +520,16 @@ def union_dependent_cleaning(df):
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
-        "other_antibody_test_since_last_visit": {
+        "other_antibody_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
             "All tests failed": "All Tests failed",
         },
-        "other_antibody_test_location": {"Private Lab": "Private lab", "Home Test": "Home test"},
+        "other_antibody_test_location": {
+            "Private Lab": "Private lab",
+            "Home Test": "Home test",
+            "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
+        },
         "other_pcr_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
@@ -750,6 +760,18 @@ def union_dependent_derivations(df):
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
         main_job_changed_column="work_main_job_changed",
+    )
+    df = update_column_if_ref_in_list(
+        df=df,
+        column_name_to_update="work_location",
+        old_value=None,
+        new_value="Not applicable, not currently working",
+        reference_column="work_status_v0",
+        check_list=[
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        ],
     )
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
