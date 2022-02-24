@@ -37,6 +37,7 @@ from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import convert_null_if_not_in_list
+from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
@@ -150,6 +151,16 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
 
+    # 1885
+    df = count_activities_last_XX_days(
+        df=df,
+        activity_combo_last_XX_days="times_outside_shopping_or_socialising_last_7_days",
+        list_activities_last_XX_days=[
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
+        ],
+        max_value=7,
+    )
     return df
 
 
