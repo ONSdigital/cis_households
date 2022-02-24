@@ -653,6 +653,14 @@ def union_dependent_cleaning(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
+    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -664,14 +672,6 @@ def union_dependent_cleaning(df):
         visit_date_column="visit_datetime",
         record_changed_column="been_outside_uk_since_april_2020",
         record_changed_value="Yes",
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
     )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
