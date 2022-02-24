@@ -313,33 +313,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
-    df = update_column_values_from_map(
-        df=df,
-        column="work_status_v2",
-        map={
-            "Child under 5y attending child care": "Child under 5y attending child care",  # noqa: E501
-            "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
-            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
-            "Child under 5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
-            "Child under 5y not attending child care": "Child under 5y not attending child care",  # noqa: E501
-            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
-            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
-            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
-            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
-            "Not working and not looking for work": "Not working and not looking for work",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
-            "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
-            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
-            "Self-employed and currently working": "Self-employed",
-            "Participant Would Not/Could Not Answer": None,
-        },
-    )
     return df
 
 
@@ -958,3 +931,7 @@ def create_formatted_datetime_string_columns(df):
         )
 
     return df
+
+
+def fill_forwards_transformations():
+    pass
