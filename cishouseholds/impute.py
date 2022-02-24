@@ -68,26 +68,22 @@ def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_dat
     return df
 
 
-def fill_forward_work_columns(
+def fill_forward_from_last_change(
     df: DataFrame,
     fill_forward_columns: List[str],
     participant_id_column: str,
     visit_date_column: str,
-    main_job_changed_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
 ) -> DataFrame:
     """
     Where job has not changed, fill forward from previous response that job has changed.
     """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_date_column).asc())
-    df = df.withColumn(
-        "FLAG_rank_no",
-        F.when(
-            (F.col(main_job_changed_column) != "Yes") | F.col(main_job_changed_column).isNull(), F.rank().over(window)
-        ),
-    )
+    df = df.withColumn("FLAG_row_number", F.row_number().over(window))
 
     df_fill_forwards_from = (
-        df.where((F.col(main_job_changed_column) == "Yes") | (F.col("FLAG_rank_no") == 1))
+        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("FLAG_row_number") == 1))
         .select(participant_id_column, visit_date_column, *fill_forward_columns)
         .withColumnRenamed(participant_id_column, "id_right")
     )
@@ -114,7 +110,7 @@ def fill_forward_work_columns(
             )
         ),
     )
-    return df.drop("id_right", "start_datetime", "end_datetime", f"{visit_date_column}_right", "FLAG_rank_no")
+    return df.drop("id_right", "start_datetime", "end_datetime", f"{visit_date_column}_right", "FLAG_row_number")
 
 
 def impute_by_distribution(

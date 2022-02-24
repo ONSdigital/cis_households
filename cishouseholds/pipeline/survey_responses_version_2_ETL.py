@@ -47,9 +47,8 @@ from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_work_facing_now_column
-from cishouseholds.impute import edit_multiple_columns_fill_forward
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
-from cishouseholds.impute import fill_forward_work_columns
+from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -640,18 +639,31 @@ def union_dependent_cleaning(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
-    df = edit_multiple_columns_fill_forward(
+    df = fill_forward_from_last_change(
         df=df,
-        id="participant_id",
-        fill_if_null="cis_covid_vaccine_received",
-        date="visit_datetime",
-        column_fillforward_list=[
+        fill_forward_columns=[
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_number_of_doses",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_type_other",
             "cis_covid_vaccine_received",
         ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "been_outside_uk_last_country",
+            "been_outside_uk_last_date",
+            "been_outside_uk_since_april_2020",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="been_outside_uk_since_april_2020",
+        record_changed_value="Yes",
     )
     df = impute_outside_uk_columns(
         df=df,
@@ -739,7 +751,7 @@ def union_dependent_derivations(df):
         reference_health_care_column="work_health_care_v0",
         other_health_care_column="work_health_care_v1_v2",
     )
-    df = fill_forward_work_columns(
+    df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
             "work_main_job_title",
@@ -754,7 +766,8 @@ def union_dependent_derivations(df):
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        main_job_changed_column="work_main_job_changed",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
     )
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
