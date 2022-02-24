@@ -47,8 +47,6 @@ def report(
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
         invalid_files_count = invalid_files_log.count()
-    else:
-        invalid_files_count = 0
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
