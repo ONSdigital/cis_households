@@ -11,6 +11,35 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_column_if_ref_in_list(
+    df: DataFrame,
+    column_name_to_update: str,
+    old_value,
+    new_value,
+    reference_column: str,
+    check_list: List[Union[str, int]],
+):
+    """
+    Update column value with new_value if the current value is equal to old_value
+    and reference column is in list
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    old_value
+    new_value
+    reference_column:str
+    check_list
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).eqNullSafe(old_value) & F.col(reference_column).isin(check_list), new_value
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 def update_column_values_from_column_reference(
     df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
 ):

@@ -1038,7 +1038,7 @@ fields:
 - metadata: {}
   name: been_outside_uk_last_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: been_outside_uk_since_last_visit
   nullable: true

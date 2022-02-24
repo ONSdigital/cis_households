@@ -632,15 +632,15 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: outside_uk_since_april_2020
+  name: been_outside_uk_since_april_2020
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_country
+  name: been_outside_uk_last_country
   nullable: true
   type: string
 - metadata: {}
-  name: outside_uk_last_date
+  name: been_outside_uk_last_date
   nullable: true
   type: timestamp
 - metadata: {}
