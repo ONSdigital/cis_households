@@ -146,7 +146,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         true_false_values=["Yes", "No"],
     )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
-
     return df
 
 
@@ -539,6 +538,7 @@ def union_dependent_cleaning(df):
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
             "All tests failed": "All Tests failed",
+            "One or more positive test(s)": "Positive",
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
