@@ -59,7 +59,7 @@ category_maps = {
         "is_self_isolating": _yes_no_categories,
         "received_shielding_letter": _yes_no_categories,
         "contact_known_positive_covid_last_28_days": _yes_no_categories,
-        "contact_suspect_positive_covid_last_28_days": _yes_no_categories,
+        "contact_suspected_positive_covid_last_28_days": _yes_no_categories,
         "hospital_last_28_days": _yes_no_categories,
         "hospital_last_28_days_other_household_member": _yes_no_categories,
         "care_home_last_28_days": _yes_no_categories,
@@ -669,5 +669,11 @@ category_maps = {
         "consent_fingerprick_blood_samples": {"false": 0, "true": 1},
         "reconsented_blood": {"false": 0, "true": 1},
         "consent_extend_study_under_16_b1_b3": _yes_no_categories,
+    },
+    "visit_date_type": {
+        "actual_visit_date": 0,
+        "latest_checkin_date": 1,
+        "sample_taken_date": 2,
+        "scheduled_date": 3,
     },
 }
