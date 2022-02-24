@@ -1172,7 +1172,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_outside_shopping_or_socialising_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: '4.0'
   times_shopping_last_7_days: '4'
   times_socialise_last_7_days: '0'
   title: Mrs.
