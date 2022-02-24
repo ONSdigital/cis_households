@@ -226,8 +226,8 @@ survey_responses_v0_variable_name_map = {
     "Previous Symptoms-Loss of smell": "symptoms_since_last_visit_loss_of_smell",
     "If Yes; Date of first symptoms": "think_had_covid_date",
     "Did you contact NHS?": "think_had_covid_contacted_nhs",
-    "If Yes; Were you tested": "think_had_covid_tested",
-    "If Yes;Test Result": "think_had_covid_test_result",
+    "If Yes; Were you tested": "other_pcr_test_since_last_visit",
+    "If Yes;Test Result": "other_pcr_test_results",
     "Were you admitted to hospital?": "think_had_covid_admitted_to_hospital",
 }
 
@@ -392,9 +392,9 @@ survey_responses_v1_variable_name_map = {
     "Where_was_the_test_done": "other_antibody_test_location",
     "If_ve_Blood_Date_of_1st_ve_test": "other_antibody_test_first_positive_date",
     "If_all_ve_blood_Date_last_ve_test": "other_antibody_test_last_negative_date",
-    "Have_you_been_outside_UK_since_April": "outside_uk_since_april_2020",
-    "been_outside_uk_last_country": "outside_uk_last_country",
-    "been_outside_uk_last_date": "outside_uk_last_date",
+    "Have_you_been_outside_UK_since_April": "been_outside_uk_since_april_2020",
+    "been_outside_uk_last_country": "been_outside_uk_last_country",
+    "been_outside_uk_last_date": "been_outside_uk_last_date",
     "Vaccinated_Against_Covid": "cis_covid_vaccine_received",
     "Date_Of_Vaccination": "cis_covid_vaccine_date",
 }
