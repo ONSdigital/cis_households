@@ -85,7 +85,7 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    df = df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column)).over(household_window))
     return df
 
 
@@ -1399,6 +1399,49 @@ def contact_known_or_suspected_covid_type(
             F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
             F.col(contact_known_covid_type_column),
         )
+        .otherwise(None),
+    )
+    return df
+
+
+def derive_household_been_last_XX_days(
+    df: DataFrame,
+    household_last_XX_days: str,
+    last_XX_days: str,
+    last_XX_days_other_household_member: str,
+    negative_value: str = "No, no one in my household has",
+    positive_value: str = "Yes, I have",
+    some_positive_value: str = "No I haven’t, but someone else in my household has",
+    # TODO: should this be "have not" to avoid issues
+) -> DataFrame:
+    """
+    This function can be used to work out the following variables which follow the same logic:
+    - household_been_care_home_last_28_days
+    - household_been_hospital_last_last_28_days
+
+    Parameters
+    ----------
+    df
+    household_last_XX_days
+    last_XX_days
+    last_XX_days_other_household_member
+
+    Notes
+    -----
+    null is not understood as != "Yes"
+    """
+    df = df.withColumn(
+        household_last_XX_days,
+        F.when((F.col(last_XX_days) == "No") & (F.col(last_XX_days_other_household_member) == "No"), negative_value)
+        .when(
+            (F.col(last_XX_days) == "Yes")
+            & (
+                (F.col(last_XX_days_other_household_member) != "Yes")
+                | (F.col(last_XX_days_other_household_member).isNull())
+            ),
+            some_positive_value,
+        )
+        .when((F.col(last_XX_days) == "Yes") & (F.col(last_XX_days_other_household_member) == "Yes"), positive_value)
         .otherwise(None),
     )
     return df

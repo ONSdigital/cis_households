@@ -23,7 +23,7 @@ from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 # from cishouseholds.pipeline.load import check_table_exists
 
 
-@register_pipeline_stage("process_post_merge")
+@register_pipeline_stage("geography_and_imputation_logic")
 def process_post_merge(
     imputed_antibody_swab_table: str,
     response_records_table: str,
