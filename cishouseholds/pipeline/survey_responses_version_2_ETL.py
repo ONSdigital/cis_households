@@ -499,6 +499,7 @@ def union_dependent_cleaning(df):
             "withdrawal_reason",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
+            "work_not_from_home_days_per_week",
         ],
     )
     col_val_map = {
@@ -508,12 +509,16 @@ def union_dependent_cleaning(df):
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
             "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
         },
         "face_covering_other_enclosed_places": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
         },
         "face_covering_work": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
