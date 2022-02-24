@@ -670,11 +670,11 @@ category_maps = {
         "consent_fingerprick_blood_samples": {"false": 0, "true": 1},
         "reconsented_blood": {"false": 0, "true": 1},
         "consent_extend_study_under_16_b1_b3": _yes_no_categories,
-    },
-    "visit_date_type": {
-        "actual_visit_date": 0,
-        "latest_checkin_date": 1,
-        "sample_taken_date": 2,
-        "scheduled_date": 3,
+        "visit_date_type": {
+            "actual_visit_date": 0,
+            "latest_checkin_date": 1,
+            "sample_taken_date": 2,
+            "scheduled_date": 3,
+        },
     },
 }
