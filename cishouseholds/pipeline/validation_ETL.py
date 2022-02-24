@@ -33,6 +33,11 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_column(column_calls)
 
+    vaccine_columns = []
+    for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
+        for number in range(1, 5):
+            vaccine_columns.append(template.format(number))
+
     dataset_calls = {
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
         "duplicated": [
@@ -41,16 +46,22 @@ def validation_calls(SparkVal):
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
         ],
-        "check_all_null_given_condition": {
-            "condition": F.col("work_main_job_changed") != "Yes",
-            "null_columns": [
-                "work_main_job_title",
-                "work_main_job_role",
-                "work_sectors",
-                "work_sectors_other",
-                "work_location",
-            ],
-        },
+        "check_all_null_given_condition": [
+            {
+                "condition": F.col("work_main_job_changed") != "Yes",
+                "null_columns": [
+                    "work_main_job_title",
+                    "work_main_job_role",
+                    "work_sectors",
+                    "work_sectors_other",
+                    "work_location",
+                ],
+            },
+            {
+                "condition": F.col("visit_type") != "First Visit",
+                "null_columns": vaccine_columns,
+            },
+        ],
     }
 
     SparkVal.validate(dataset_calls)
