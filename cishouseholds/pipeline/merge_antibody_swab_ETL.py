@@ -9,10 +9,18 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
 from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+@register_pipeline_stage("fill_forwards_stage")
+def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
+    df = extract_from_table(unioned_survey_table)
+    df = fill_forwards_transformations(df)
+    update_table(df, filled_forwards_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")

@@ -80,23 +80,21 @@ def fill_forward_from_last_change(
     Where job has not changed, fill forward from previous response that job has changed.
     """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_date_column).asc())
-    df = df.withColumn("FLAG_row_number", F.row_number().over(window))
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
 
     df_fill_forwards_from = (
-        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("FLAG_row_number") == 1))
+        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1))
         .select(participant_id_column, visit_date_column, *fill_forward_columns)
         .withColumnRenamed(participant_id_column, "id_right")
-    )
+    ).drop("ROW_NUMBER")
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_date_column, "start_datetime")
+    window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
 
     df_fill_forwards_from = df_fill_forwards_from.withColumn(
-        "start_datetime", F.col(visit_date_column)
-    ).withColumnRenamed(visit_date_column, f"{visit_date_column}_right")
-    window_lag = Window.partitionBy("id_right").orderBy(F.col(f"{visit_date_column}_right").asc())
-
-    df_fill_forwards_from = df_fill_forwards_from.withColumn(
-        "end_datetime", F.lead(F.col(f"{visit_date_column}_right"), 1).over(window_lag)
+        "end_datetime", F.lead(F.col("start_datetime"), 1).over(window_lag)
     )
-    df = df.drop(*fill_forward_columns)
+    df = df.drop(*fill_forward_columns, "ROW_NUMBER")
 
     df = df.join(
         df_fill_forwards_from,
@@ -110,7 +108,7 @@ def fill_forward_from_last_change(
             )
         ),
     )
-    return df.drop("id_right", "start_datetime", "end_datetime", f"{visit_date_column}_right", "FLAG_row_number")
+    return df.drop("id_right", "start_datetime", "end_datetime")
 
 
 def impute_by_distribution(

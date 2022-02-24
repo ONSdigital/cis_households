@@ -269,7 +269,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(
         df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
     )
-
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -629,40 +628,6 @@ def union_dependent_cleaning(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "been_outside_uk_last_country",
-            "been_outside_uk_last_date",
-            "been_outside_uk_since_april_2020",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk_since_april_2020",
-        record_changed_value="Yes",
-    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
@@ -740,36 +705,6 @@ def union_dependent_derivations(df):
         direct_contact_column="work_direct_contact_patients_clients",
         reference_health_care_column="work_health_care_v0",
         other_health_care_column="work_health_care_v1_v2",
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
-            "work_health_care_v1_v2",
-            "work_health_care_combined",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
-    )
-    df = update_column_if_ref_in_list(
-        df=df,
-        column_name_to_update="work_location",
-        old_value=None,
-        new_value="Not applicable, not currently working",
-        reference_column="work_status_v0",
-        check_list=[
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        ],
     )
     # df = assign_work_patient_facing_now(
     #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
@@ -933,5 +868,69 @@ def create_formatted_datetime_string_columns(df):
     return df
 
 
-def fill_forwards_transformations():
-    pass
+def fill_forwards_transformations(df):
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_health_care_v1_v2",
+            "work_health_care_combined",
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
+    )
+    df = update_column_if_ref_in_list(
+        df=df,
+        column_name_to_update="work_location",
+        old_value=None,
+        new_value="Not applicable, not currently working",
+        reference_column="work_status_v0",
+        check_list=[
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        ],
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
+    df = impute_outside_uk_columns(
+        df=df,
+        outside_uk_since_column="been_outside_uk_since_april_2020",
+        outside_uk_date_column="been_outside_uk_last_date",
+        outside_country_column="been_outside_uk_last_country",
+        visit_datetime_column="visit_datetime",
+        id_column="participant_id",
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "been_outside_uk_last_country",
+            "been_outside_uk_last_date",
+            "been_outside_uk_since_april_2020",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="been_outside_uk_since_april_2020",
+        record_changed_value="Yes",
+    )
+    return df
