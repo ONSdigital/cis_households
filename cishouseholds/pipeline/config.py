@@ -26,6 +26,5 @@ def get_filter_config(hdfs_location) -> list:
     if hdfs_location is None:
         return []
     yaml_string = read_file_to_string(hdfs_location)
-    with open(yaml_string) as fh:
-        config = yaml.load(fh, Loader=yaml.FullLoader)
+    config = yaml.load(yaml_string, Loader=yaml.FullLoader)
     return config

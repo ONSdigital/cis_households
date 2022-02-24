@@ -115,8 +115,11 @@ def record_level_interface(
     filtered_survey_responses_table: str,
 ):
     input_df = extract_from_table(survey_responses_table)
-    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
-    update_table(edited_df, edited_survey_responses_table, "overwrite")
+    if csv_editing_file is not None and csv_editing_file != "":
+        edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+        update_table(edited_df, edited_survey_responses_table, "overwrite")
+    else:
+        edited_df = input_df
 
     unique_id_list_to_filter = get_filter_config(unique_id_filter_config_location)
 
