@@ -41,6 +41,7 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
@@ -107,6 +108,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn("hh_id", F.col("ons_household_id"))
+    df = update_column_values_from_map(
+        df,
+        "work_not_from_home_days_per_week",
+        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
     return df
 
 
@@ -140,7 +146,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         true_false_values=["Yes", "No"],
     )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
-
     return df
 
 
@@ -266,9 +271,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
     )
 
-    df = df.withColumn(
-        "work_status_combined", F.coalesce(F.col("work_status_v0"), F.col("work_status_v1"), F.col("work_status_v2"))
-    )
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -496,6 +498,7 @@ def union_dependent_cleaning(df):
             "withdrawal_reason",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
+            "work_not_from_home_days_per_week",
         ],
     )
     col_val_map = {
@@ -505,28 +508,37 @@ def union_dependent_cleaning(df):
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
             "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
         },
         "face_covering_other_enclosed_places": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
         },
         "face_covering_work": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
-        "other_antibody_test_since_last_visit": {
+        "other_antibody_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
             "All tests failed": "All Tests failed",
         },
-        "other_antibody_test_location": {"Private Lab": "Private lab", "Home Test": "Home test"},
+        "other_antibody_test_location": {
+            "Private Lab": "Private lab",
+            "Home Test": "Home test",
+            "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
+        },
         "other_pcr_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none negative",
             "One or more negative tests but none were positive": "Any tests negative, but none negative",
             "All tests failed": "All Tests failed",
+            "One or more positive test(s)": "Positive",
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
@@ -606,6 +618,16 @@ def union_dependent_cleaning(df):
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
         },
+        "ability_to_socially_distance_at_work_or_school": {
+            "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Easy to maintain 2 meters - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Easy to maintain 2m - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Relatively easy to maintain 2 meters - most of the time I can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Relatively easy to maintain 2m - most of the time you can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+        },
         "transport_to_work_or_school": {
             "Bus or Minibus or Coach": "Bus, minibus, coach",
             "Bus or minibus or coach": "Bus, minibus, coach",
@@ -617,6 +639,14 @@ def union_dependent_cleaning(df):
             "On Foot": "On foot",
             "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
             "Other Method": "Other method",
+        },
+        "last_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "last_suspected_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -734,6 +764,7 @@ def union_dependent_derivations(df):
             "work_main_job_role",
             "work_sectors",
             "work_sectors_other",
+            "work_health_care_v1_v2",
             "work_health_care_combined",
             "work_social_care",
             "work_nursing_or_residential_care_home",
@@ -743,13 +774,25 @@ def union_dependent_derivations(df):
         visit_date_column="visit_datetime",
         main_job_changed_column="work_main_job_changed",
     )
+    df = update_column_if_ref_in_list(
+        df=df,
+        column_name_to_update="work_location",
+        old_value=None,
+        new_value="Not applicable, not currently working",
+        reference_column="work_status_v0",
+        check_list=[
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        ],
+    )
     df = assign_work_patient_facing_now(
         df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
     )
     df = update_work_facing_now_column(
         df,
         "work_patient_facing_now",
-        "work_status_combined",
+        "work_status_v0",
         ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     )
     df = assign_first_visit(
