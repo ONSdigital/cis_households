@@ -12,7 +12,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "B", "original", "converted"),
             (4, "B", "original", "converted"),
             (5, "A", "something else", "converted"),
-            (6, "A", None, "converted A from null"),
+            (6, "A", "value", "converted A from null"),
             (6, "B", None, "converted B from null"),
         ],
         schema="""id integer, target_column_name string, old_value string, new_value string""",
@@ -25,7 +25,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "original"),
             (4, "original", "original"),
             (5, "original", "original"),
-            (6, None, None),
+            (6, "value", None),
         ],
         schema="""id integer, A string, B string""",
     )

@@ -7,7 +7,6 @@ from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
-from pyspark.sql import Window
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -264,26 +263,27 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
-    cols = csv.columns[3:]
-    window = Window.partitionBy("id").orderBy("id")
-    for col in cols:
-        csv = csv.withColumn(col, F.when(F.col(col) == 1, F.col("new_value")).otherwise(F.col(col)))
-        csv = csv.withColumn(col, F.last(F.col(col), ignorenulls=True).over(window))
-        csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
-
-    csv = csv.drop("new_value").distinct()
+    csv = (
+        csv.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
 
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
+    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup").isNotNull()) & (F.col(col).eqNullSafe(F.col("old_value"))),
-                F.col(f"{col}_from_lookup"),
+                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
+                F.col(f"{col}_new_value"),
             ).otherwise(F.col(col)),
         )
-    return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
+
+    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
+    return df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
