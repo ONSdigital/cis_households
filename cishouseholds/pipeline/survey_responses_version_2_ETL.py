@@ -43,7 +43,6 @@ from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
-from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
