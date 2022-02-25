@@ -28,12 +28,14 @@ survey_responses_v1_datetime_map = {
         "think_had_covid_date",
         "other_pcr_test_first_positive_date",
         "other_pcr_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
         "cis_covid_vaccine_date",
         "been_outside_uk_last_date",
     ],
-    "yyyy-MM-dd": ["date_of_birth"],
+    "yyyy-MM-dd": [
+        "date_of_birth",
+        "other_antibody_test_first_positive_date",
+        "other_antibody_test_last_negative_date",
+    ],
     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": ["visit_datetime", "samples_taken_datetime"],
 }
 
