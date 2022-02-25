@@ -62,6 +62,10 @@
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Black,Caribbean,African-African
   ethnicity_other: I don't even care.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: 'No'
@@ -288,8 +292,12 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Health care
   work_sectors_other: I don't even care.
+  work_social_care: 'No'
+  work_status_v0: Student
+  work_status_v1: 5y and older in full-time education
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -357,6 +365,10 @@
   ethnicity: Asian or Asian British-Bangladeshi
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: 'No'
   face_covering_work: Participant Would Not/Could Not Answer
@@ -587,8 +599,14 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Other occupation sector
   work_sectors_other: Any element of a tuple can be accessed in constant time.
+  work_social_care: 'No'
+  work_status_v0: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v1: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
@@ -657,6 +675,10 @@
   ethnic_group: Asian or Asian British
   ethnicity: Any other ethnic group
   ethnicity_other: Ports are used to communicate with the external world.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
@@ -888,11 +910,14 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
@@ -959,6 +984,10 @@
   ethnic_group: Other Ethnic Group
   ethnicity: Any other Mixed background
   ethnicity_other: Make me a sandwich.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Yes always
@@ -1185,8 +1214,12 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: null
   work_sectors: null
   work_sectors_other: Ports are created with the built-in function open_port.
+  work_social_care: null
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
@@ -1254,6 +1287,10 @@
   ethnicity: Any other Black background
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: null
   face_covering_work: Never
@@ -1484,9 +1521,13 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Other occupation sector (specify)
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -1554,6 +1595,10 @@
   ethnicity: Mixed-White & Asian
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
   face_covering_work: Never
@@ -1783,10 +1828,13 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Social care
   work_sectors_other: I don't even care.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -1853,6 +1901,10 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: 'No'
@@ -2084,11 +2136,14 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
@@ -2155,6 +2210,10 @@
   ethnicity: Asian or Asian British-Pakistani
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
   face_covering_work: Not going to place of work or education
@@ -2382,9 +2441,13 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: null
+  work_person_facing_now: 'No'
   work_sectors: Civil Service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
@@ -2452,6 +2515,10 @@
   ethnicity: Any other Black background
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: null
@@ -2683,9 +2750,13 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
+  work_social_care: 'No'
+  work_status_v0: Student
+  work_status_v1: 5y and older in full-time education
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: null
@@ -2751,6 +2822,10 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: White-Irish
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
@@ -2987,7 +3062,11 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Art or entertainment or recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_social_care: 'No'
+  work_status_v0: Student
+  work_status_v1: 5y and older in full-time education
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
