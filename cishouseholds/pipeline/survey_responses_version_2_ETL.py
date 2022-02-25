@@ -887,7 +887,7 @@ def fill_forwards_transformations(df):
             "work_sectors",
             "work_sectors_other",
             "work_health_care_v1_v2",
-            "work_health_care_combined",
+            "work_health_care_v0",
             "work_social_care",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",
