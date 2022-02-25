@@ -68,29 +68,47 @@ def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_dat
     return df
 
 
-def fill_forward_work_columns(
+def fill_forward_from_last_change(
     df: DataFrame,
     fill_forward_columns: List[str],
     participant_id_column: str,
     visit_date_column: str,
-    main_job_changed_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
 ) -> DataFrame:
     """
     Where job has not changed, fill forward from previous response that job has changed.
     """
-    window = (
-        Window.partitionBy(participant_id_column)
-        .orderBy(F.col(visit_date_column).asc())
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_date_column).asc())
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+
+    df_fill_forwards_from = (
+        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1))
+        .select(participant_id_column, visit_date_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+    ).drop("ROW_NUMBER")
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_date_column, "start_datetime")
+    window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumn(
+        "end_datetime", F.lead(F.col("start_datetime"), 1).over(window_lag)
     )
-    for col in fill_forward_columns:
-        df = df.withColumn(
-            col,
-            F.when(
-                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
-            ).otherwise(F.col(col)),
-        )
-    return df
+    df = df.drop(*fill_forward_columns, "ROW_NUMBER")
+
+    df = df.join(
+        df_fill_forwards_from,
+        how="left",
+        on=(
+            (df[participant_id_column] == df_fill_forwards_from["id_right"])
+            & (df[visit_date_column] >= df_fill_forwards_from.start_datetime)
+            & (
+                (df[visit_date_column] < df_fill_forwards_from.end_datetime)
+                | (df_fill_forwards_from.end_datetime.isNull())
+            )
+        ),
+    )
+    return df.drop("id_right", "start_datetime", "end_datetime")
 
 
 def impute_by_distribution(
