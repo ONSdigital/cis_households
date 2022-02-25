@@ -5,6 +5,7 @@ from chispa import assert_df_equality
 
 from cishouseholds.weights.extract import read_csv_to_pyspark_df
 from cishouseholds.weights.weights import generate_weights
+from cishouseholds.weights.weights import household_level_populations
 
 # fmt: off
 def test_end_to_end_weights(spark_session):
@@ -174,6 +175,8 @@ def test_end_to_end_weights(spark_session):
         ]
     )
 
+    household_level_populations_df = household_level_populations(address_lookup=address_lookup,postcode_lookup=nspl_lookup,cis_phase_lookup=cis_20_lookup,country_lookup=country_lookup)
+
     auxillary_dfs = {
         "old_sample_file": old_sample_df,
         "new_sample_file": new_sample_df,
@@ -182,6 +185,7 @@ def test_end_to_end_weights(spark_session):
         "country_lookup": country_lookup,
         "cis_phase_lookup": cis_20_lookup,
         "tranche": tranche_df,
+        "household_level_populations":household_level_populations_df
     }
 
     # header = "cis_area_code_20,ons_household_id,postcode,lower_super_output_area_code_11,country_code_12,country_name_12,tranche_number_indicator,sample_source,sample_addressbase_indicator,date_sample_created,batch_number,file_name,household_level_designweight_swab,household_level_designweight_antibodies,region_code,local_authority_unity_authority_code,output_area_code_11/census_output_area_classification_11,middle_super_output_area_code_11,rural_urban_classification_11,index_multiple_deprivation,LSOA11NM,RGN19CD,sample_new_previous,enrolement_date,lsoa_11,cis20cd,ctry12,ctry_name12,tranche,tranche_eligible_households,number_eligible_households_tranche_bystrata_enrolment,number_sampled_households_tranche_bystrata_enrolment,tranche_factor,number_of_households_population_by_cis,number_of_households_population_by_country,number_eligible_household_sample,raw_design_weights_swab,sum_raw_design_weight_swab_cis,standard_deviation_raw_design_weight_swab,mean_raw_design_weight_swab,coefficient_variation_design_weight_swab,design_effect_weight_swab,effective_sample_size_design_weight_swab,sum_effective_sample_size_design_weight_swab,combining_factor_design_weight_swab,combined_design_weight_swab,sum_combined_design_weight_swab,scaling_factor_combined_design_weight_swab,scaled_design_weight_swab_nonadjusted,raw_design_weight_antibodies_ab,raw_design_weight_antibodies_c,sum_raw_design_weight_antibody_cis,standard_deviation_raw_design_weight_antibody,mean_raw_design_weight_antibody,coefficient_variation_design_weight_antibody,design_effect_weight_antibody,effective_sample_size_design_weight_antibody,sum_effective_sample_size_design_weight_antibody,combining_factor_design_weight_antibody,combined_design_weight_antibody,validated_design_weights,carryforward_design_weight_antibodies,sum_carryforward_design_weight_antibodies,scaling_factor_carryforward_design_weight_antibodies,scaled_design_weight_antibodies_nonadjusted"
@@ -192,7 +196,6 @@ def test_end_to_end_weights(spark_session):
     )
 
     output_df = generate_weights(auxillary_dfs=auxillary_dfs)
-    # output_df.toPandas().to_csv("output1.csv", index=False)
     for col, type in output_df.dtypes:
         expected_df = expected_df.withColumn(col.replace("`",""), F.col(col).cast(type))
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
