@@ -686,3 +686,40 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
     return df
+
+
+def count_activities_last_XX_days(
+    df: DataFrame,
+    activity_combo_last_XX_days: str,
+    list_activities_last_XX_days: List[str],
+    max_value: int,
+):
+    """
+    Searches for null values in the activities_combo_last_XX_days and when that happens
+    gets
+
+    Parameters
+    ----------
+    df
+    activity_combo_last_XX_days
+    list_activities_last_XX_days
+    max_value
+    """
+    df = df.withColumn("FLAG_count", F.lit(0).cast("integer"))
+    df = df.withColumn("FLAG_all-null", F.coalesce(*[F.col(column) for column in list_activities_last_XX_days]))
+    for activity_column in list_activities_last_XX_days:
+        df = df.withColumn(
+            "FLAG_count",
+            F.when(
+                (F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull()),
+                (F.col("FLAG_count") + F.when(F.col(activity_column).isNull(), 0).otherwise(F.col(activity_column))),
+            ),
+        )
+    df = df.withColumn(
+        activity_combo_last_XX_days,
+        F.when(
+            F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull(),
+            F.when(F.col("FLAG_count") < max_value, F.col("FLAG_count")).otherwise(max_value),
+        ).otherwise(F.col(activity_combo_last_XX_days)),
+    )
+    return df.drop("FLAG_count", "FLAG_all-null")
