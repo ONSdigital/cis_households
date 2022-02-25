@@ -21,7 +21,9 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_surv
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
 from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
-from cishouseholds.pipeline.timestamp_map import survey_responses_datetime_map
+from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
+from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
+from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.timestamp_map import swab_datetime_map
 from cishouseholds.pipeline.unassayed_blood_ETL import transform_unassayed_blood
 from cishouseholds.pipeline.validation_schema import blood_validation_schema
@@ -72,7 +74,7 @@ survey_responses_v2_parameters = {
     "stage_name": "survey_responses_version_2_ETL",
     "validation_schema": survey_responses_v2_validation_schema,
     "column_name_map": survey_responses_v2_variable_name_map,
-    "datetime_column_map": survey_responses_datetime_map,
+    "datetime_column_map": survey_responses_v2_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
         derive_additional_v1_2_columns,
@@ -88,7 +90,7 @@ survey_responses_v1_parameters = {
     "stage_name": "survey_responses_version_1_ETL",
     "validation_schema": survey_responses_v1_validation_schema,
     "column_name_map": survey_responses_v1_variable_name_map,
-    "datetime_column_map": survey_responses_datetime_map,
+    "datetime_column_map": survey_responses_v1_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
         derive_additional_v1_2_columns,
@@ -104,7 +106,7 @@ survey_responses_v0_parameters = {
     "stage_name": "survey_responses_version_0_ETL",
     "validation_schema": survey_responses_v0_validation_schema,
     "column_name_map": survey_responses_v0_variable_name_map,
-    "datetime_column_map": survey_responses_datetime_map,
+    "datetime_column_map": survey_responses_v0_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
         transform_survey_responses_version_0_delta,

@@ -1038,7 +1038,7 @@ fields:
 - metadata: {}
   name: been_outside_uk_last_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: been_outside_uk_since_last_visit
   nullable: true
@@ -1120,14 +1120,6 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: ethnicity_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_white
-  nullable: false
-  type: string
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1141,26 +1133,6 @@ fields:
   type: integer
 - metadata: {}
   name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_at_visit
-  nullable: true
-  type: long
-- metadata: {}
-  name: age_group_5_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_over_16
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_7_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: age_group_5_year_intervals
   nullable: true
   type: string
 - metadata: {}
