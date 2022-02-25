@@ -1147,4 +1147,12 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: household_been_care_home_last_28_days
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_been_hospital_last_28_days
+  nullable: true
+  type: string
 type: struct

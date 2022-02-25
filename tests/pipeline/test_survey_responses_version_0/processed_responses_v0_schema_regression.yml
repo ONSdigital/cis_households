@@ -396,11 +396,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: household_been_hospital_last_28_days
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_28_days_other_household_member
+  name: household_been_care_home_last_28_days
   nullable: true
   type: string
 - metadata: {}

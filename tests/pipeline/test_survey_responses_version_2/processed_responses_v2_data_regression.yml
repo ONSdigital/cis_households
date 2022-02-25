@@ -77,6 +77,8 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Declined
   household_members_under_2_years: null
   household_visit_status: Withdrawn
@@ -369,6 +371,9 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
+    has
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Declined
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -667,6 +672,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: null
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn
@@ -883,7 +891,8 @@
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
@@ -964,6 +973,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'Yes'
   household_visit_status: Dispatched
@@ -1144,7 +1155,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_outside_shopping_or_socialising_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: '4.0'
   times_shopping_last_7_days: '4'
   times_socialise_last_7_days: '0'
   title: Mrs.
@@ -1257,6 +1268,10 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
+    has
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'No'
   household_visit_status: Dispatched
@@ -1553,6 +1568,8 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Partially Completed
@@ -1768,7 +1785,8 @@
   work_nursing_or_residential_care_home: 'No'
   work_sectors: Social care
   work_sectors_other: I don't even care.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -1850,6 +1868,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Completed
@@ -2067,7 +2087,8 @@
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
@@ -2148,6 +2169,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: Not invited
   household_members_under_2_years: 'No'
   household_visit_status: Completed
@@ -2442,6 +2466,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'No'
   household_visit_status: Partially Completed
@@ -2738,6 +2765,9 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Withdrawn

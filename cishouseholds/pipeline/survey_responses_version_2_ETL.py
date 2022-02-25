@@ -39,6 +39,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
+from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
@@ -104,7 +105,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
-
     df = df.withColumn("hh_id", F.col("ons_household_id"))
     df = update_column_values_from_map(
         df,
@@ -322,6 +322,28 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
     df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
+
+    df = count_activities_last_XX_days(
+        df=df,
+        activity_combo_last_XX_days="times_outside_shopping_or_socialising_last_7_days",
+        list_activities_last_XX_days=[
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
+        ],
+        max_value=7,
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
     return df
 
 
@@ -802,18 +824,6 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
-    )
     df = update_column_values_from_column_reference(
         df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
     )
@@ -887,7 +897,7 @@ def fill_forwards_transformations(df):
             "work_sectors",
             "work_sectors_other",
             "work_health_care_v1_v2",
-            "work_health_care_combined",
+            "work_health_care_v0",
             "work_social_care",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",

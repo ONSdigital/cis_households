@@ -292,19 +292,27 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
-    cols = csv.columns[3:]
-    for col in cols:
-        csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
+    csv = (
+        csv.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
+
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
+    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
+                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
+                F.col(f"{col}_new_value"),
             ).otherwise(F.col(col)),
         )
-    return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
+
+    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
+    return df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -686,3 +694,40 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
     return df
+
+
+def count_activities_last_XX_days(
+    df: DataFrame,
+    activity_combo_last_XX_days: str,
+    list_activities_last_XX_days: List[str],
+    max_value: int,
+):
+    """
+    Searches for null values in the activities_combo_last_XX_days and when that happens
+    gets
+
+    Parameters
+    ----------
+    df
+    activity_combo_last_XX_days
+    list_activities_last_XX_days
+    max_value
+    """
+    df = df.withColumn("FLAG_count", F.lit(0).cast("integer"))
+    df = df.withColumn("FLAG_all-null", F.coalesce(*[F.col(column) for column in list_activities_last_XX_days]))
+    for activity_column in list_activities_last_XX_days:
+        df = df.withColumn(
+            "FLAG_count",
+            F.when(
+                (F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull()),
+                (F.col("FLAG_count") + F.when(F.col(activity_column).isNull(), 0).otherwise(F.col(activity_column))),
+            ),
+        )
+    df = df.withColumn(
+        activity_combo_last_XX_days,
+        F.when(
+            F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull(),
+            F.when(F.col("FLAG_count") < max_value, F.col("FLAG_count")).otherwise(max_value),
+        ).otherwise(F.col(activity_combo_last_XX_days)),
+    )
+    return df.drop("FLAG_count", "FLAG_all-null")
