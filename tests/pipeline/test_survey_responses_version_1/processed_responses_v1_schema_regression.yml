@@ -755,4 +755,8 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
 type: struct

@@ -201,6 +201,7 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
+
     work_status_dict = {
         "work_status_v0": {
             "5y and older in full-time education": "Student",
@@ -266,17 +267,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         },
     }
 
-    # STEP 1 - Update v0 from v2
-    df = update_column_values_from_map(
-        df=df, condition_column="work_status_v2", column="work_status_v0", map=work_status_dict["work_status_v0"]
-    )
+    column_list = ["work_status_v0", "work_status_v1"]
+    for column in column_list:
+        df = df.withColumn(column, F.col("work_status_v2"))
+        df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
 
-    # STEP 2 - Update v2 from v1
-    df = update_column_values_from_map(
-        df=df, condition_column="work_status_v2", column="work_status_v1", map=work_status_dict["work_status_v1"]
-    )
-
-    # STEP 3 - Update v2 from v2
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     df = assign_work_social_column(
@@ -344,6 +339,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         last_XX_days="hospital_last_28_days",
         last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
     )
+    df = derive_work_status_columns(df)
     return df
 
 
@@ -730,7 +726,6 @@ def union_dependent_derivations(df):
     #     df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     # )
 
-    df = derive_work_status_columns(df)
     df = assign_work_health_care(
         df,
         "work_health_care_combined",
