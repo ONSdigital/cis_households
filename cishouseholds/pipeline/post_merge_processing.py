@@ -1,7 +1,11 @@
+from itertools import chain
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
@@ -10,6 +14,45 @@ from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+
+# from cishouseholds.pipeline.load import check_table_exists
+
+
+@register_pipeline_stage("geography_and_imputation_logic")
+def process_post_merge(
+    imputed_antibody_swab_table: str,
+    response_records_table: str,
+    invalid_response_records_table: str,
+    key_columns: List[str],
+):
+    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
+    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
+
+    imputation_columns = chain(
+        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
+    )
+    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
+
+    response_level_records_df, response_level_records_filtered_df = filter_response_records(
+        response_level_records_df, "visit_datetime"
+    )
+
+    multigeneration_df = assign_multigeneration(
+        df=response_level_records_df,
+        column_name_to_assign="multigen",
+        participant_id_column="participant_id",
+        household_id_column="ons_household_id",
+        visit_date_column="visit_date_string",
+        date_of_birth_column="date_of_birth",
+        country_column="country_name",
+    )
+
+    update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
+    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
+    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
 
 
 # from cishouseholds.pipeline.load import check_table_exists
