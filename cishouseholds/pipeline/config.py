@@ -3,6 +3,8 @@ import os
 
 import yaml
 
+from cishouseholds.hdfs_utils import read_file_to_string
+
 
 @functools.lru_cache(maxsize=1)
 def get_config() -> dict:
@@ -17,4 +19,13 @@ def get_config() -> dict:
     else:
         with open(config_location) as fh:
             config = yaml.load(fh, Loader=yaml.FullLoader)
+    return config
+
+
+def get_filter_config(hdfs_location) -> list:
+    if hdfs_location is None:
+        return []
+    yaml_string = read_file_to_string(hdfs_location)
+    with open(yaml_string) as fh:
+        config = yaml.load(fh, Loader=yaml.FullLoader)
     return config
