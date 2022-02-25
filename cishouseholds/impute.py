@@ -7,6 +7,7 @@ from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql.types import ArrayType
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
@@ -447,6 +448,17 @@ def weighted_distance(df, group_id, donor_group_columns, donor_group_column_weig
     return df
 
 
+def sample_proportional_to_size(imputation_variables, expected_frequencies, number):
+    """UDF for sampling proportional to size."""
+    import numpy as np
+
+    results = np.random.choice(a=imputation_variables, p=expected_frequencies, replace=False, size=number).tolist()
+    return results
+
+
+udf_sample_proportional_to_size = F.udf(sample_proportional_to_size, ArrayType(DoubleType()))
+
+
 def impute_by_k_nearest_neighbours(
     df: DataFrame,
     column_name_to_assign: str,
@@ -593,15 +605,23 @@ def impute_by_k_nearest_neighbours(
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
     )
+
     frequencies = frequencies.withColumn("expected_frequency", F.col("probability") * F.col("imputation_group_size"))
     frequencies = frequencies.withColumn("expected_frequency_integer_part", F.floor(F.col("expected_frequency")))
     frequencies = frequencies.withColumn(
         "expected_frequency_decimal_part", F.col("expected_frequency") - F.col("expected_frequency_integer_part")
     )
 
+    total_integer_part_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
-        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("expected_frequency_integer_part")
+        "total_expected_frequency_integer_part",
+        F.sum(F.col("expected_frequency_integer_part")).over(total_integer_part_window),
     )
+
+    frequencies = frequencies.withColumn(
+        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("total_expected_frequency_integer_part")
+    )
+
     integer_part_donors = frequencies.select(
         "expected_frequency_integer_part", "unique_imputation_group", "don_" + reference_column
     )
@@ -612,14 +632,40 @@ def impute_by_k_nearest_neighbours(
     )
 
     decimal_part_donors = frequencies.filter(F.col("expected_frequency_decimal_part") > 0).select(
-        "probability", "unique_imputation_group", "don_" + reference_column, "required_decimal_donor_count"
+        "expected_frequency_decimal_part",
+        "unique_imputation_group",
+        "don_" + reference_column,
+        "required_decimal_donor_count",
     )
 
-    random_uniques_window = Window.partitionBy("unique_imputation_group").orderBy(
-        (F.rand() * F.col("probability")).desc()
+    rescale_window = Window.partitionBy("unique_imputation_group")
+
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part_total", F.sum(F.col("expected_frequency_decimal_part")).over(rescale_window)
     )
-    decimal_part_donors = decimal_part_donors.withColumn("donor_row_id", F.row_number().over(random_uniques_window))
-    decimal_part_donors = decimal_part_donors.filter(F.col("donor_row_id") <= F.col("required_decimal_donor_count"))
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part",
+        F.col("expected_frequency_decimal_part") / F.col("expected_frequency_decimal_part_total"),
+    )
+
+    df = decimal_part_donors.groupby("unique_imputation_group").agg(
+        F.collect_list("don_" + reference_column).alias("don_" + reference_column),
+        F.collect_list("expected_frequency_decimal_part").alias("expected_frequency_decimal_part"),
+        F.first("required_decimal_donor_count").alias("required_decimal_donor_count"),
+    )
+
+    decimals_to_impute = df.withColumn(
+        "don_" + reference_column,
+        udf_sample_proportional_to_size(
+            "don_" + reference_column, "expected_frequency_decimal_part", "required_decimal_donor_count"
+        ),
+    )
+
+    decimals_to_impute = decimals_to_impute.select("unique_imputation_group", "don_" + reference_column)
+
+    decimal_part_donors = decimals_to_impute.withColumn(
+        "don_" + reference_column, F.explode(F.col("don_" + reference_column))
+    )
 
     to_impute_df = integer_part_donors.select("unique_imputation_group", "don_" + reference_column).unionByName(
         decimal_part_donors.select("unique_imputation_group", "don_" + reference_column)
