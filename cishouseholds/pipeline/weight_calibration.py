@@ -17,7 +17,7 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
-from cishouseholds.weights.weights import household_dweights
+from cishouseholds.weights.weights import household_level_populations
 
 
 with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
@@ -34,22 +34,22 @@ with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
 
 
 @register_pipeline_stage("calculate_household_level_populations")
-def household_weights_ETL(
-    address_lookup, cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
+def calculate_household_level_populations(
+    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
-        "cis_lookup": {"file": cis_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
         "country_lookup": {"file": country_lookup, "type": "path"},
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
 
-    household_info_df = household_dweights(
+    household_info_df = household_level_populations(
         dfs["address_lookup"],
         dfs["postcode_lookup"],
-        dfs["cis_lookup"],
+        dfs["cis_phase_lookup"],
         dfs["country_lookup"],
     )
     update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
@@ -60,7 +60,7 @@ def sample_file_ETL(
     household_level_populations_table,
     new_sample_file,
     tranche,
-    cis_lookup,
+    cis_phase_lookup,
     postcode_lookup,
     table_or_path,
     old_sample_file,
@@ -68,7 +68,7 @@ def sample_file_ETL(
 ):
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-        "cis_lookup": {"file": cis_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
         "new_sample_file": {"file": new_sample_file, "type": "path"},
         "old_sample_file": {"file": old_sample_file, "type": table_or_path},
         "tranche": {"file": tranche, "type": "path"},

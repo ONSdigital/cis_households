@@ -86,8 +86,8 @@ def generate_weights(auxillary_dfs):
 # - country_code_12
 # - cis_area_code_20
 # - unique_property_reference_code
-def household_dweights(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_lookup: DataFrame, country_lookup: DataFrame
+def household_level_populations(
+    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
     Steps:
@@ -106,7 +106,7 @@ def household_dweights(
     df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
-    df = df.join(cis_lookup, on="lower_super_output_area_code_11", how="left")
+    df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")
     df = df.join(country_lookup, on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
