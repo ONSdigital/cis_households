@@ -883,7 +883,8 @@
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
@@ -1144,7 +1145,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_outside_shopping_or_socialising_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: '4.0'
   times_shopping_last_7_days: '4'
   times_socialise_last_7_days: '0'
   title: Mrs.
@@ -1768,7 +1769,8 @@
   work_nursing_or_residential_care_home: 'No'
   work_sectors: Social care
   work_sectors_other: I don't even care.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -2067,7 +2069,8 @@
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  work_status_v2: Employed and currently working
+  work_status_v2: Employed and currently working (including if on leave or sick leave
+    for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
