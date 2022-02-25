@@ -13,12 +13,13 @@ _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
     "iqvia_raw_category_map": {
-        "consent_1_visit": _yes_no_categories,
-        "consent_5_visits": _yes_no_categories,
-        "consent_16_visits": _yes_no_categories,
-        "consent_blood_test": _yes_no_categories,
-        "consent_use_of_surplus_blood_samples": _yes_no_categories,
         "consent_blood_samples_if_positiveyn": _yes_no_categories,
+        "consent_contact_extra_researchyn": _yes_no_categories,
+        "consent_finger_prick_a1_a3": _yes_no_categories,
+        "consent_blood_samples_if_positiveyn": _yes_no_categories,
+        "consent_fingerprick_blood_samples": {"false": 0, "true": 1},
+        "reconsented_blood": {"false": 0, "true": 1},
+        "consent_extend_study_under_16_b1_b3": _yes_no_categories,
         "swab_taken": _yes_no_categories,
         "blood_taken": _yes_no_categories,
         "illness_lasting_over_12_months": _yes_no_categories,
@@ -663,13 +664,6 @@ category_maps = {
             "Sputnik": 13,
         },
         "cis_covid_vaccine_number_of_doses": {"1": 1, "2": 2, "3 or more": 3},
-        "consent_contact_extra_researchyn": _yes_no_categories,
-        "consent_to_finger_prick_a1_a3": _yes_no_categories,
-        "consent_use_of_surplus_blood_samples": _yes_no_categories,
-        "consent_to_blood_samples_if_positiveyn": _yes_no_categories,
-        "consent_fingerprick_blood_samples": {"false": 0, "true": 1},
-        "reconsented_blood": {"false": 0, "true": 1},
-        "consent_extend_study_under_16_b1_b3": _yes_no_categories,
         "visit_date_type": {
             "actual_visit_date": 0,
             "latest_checkin_date": 1,
