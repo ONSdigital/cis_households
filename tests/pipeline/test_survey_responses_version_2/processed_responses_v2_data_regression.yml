@@ -77,6 +77,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Declined
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -679,6 +681,7 @@
   household_visit_status: Household did not attend
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
+
   improved_visit_date: null
   infant_1_age: null
   infant_2_age: 5.0
@@ -1572,6 +1575,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Completed
@@ -1873,6 +1878,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
