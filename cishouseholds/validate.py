@@ -78,10 +78,12 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
         valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not valid_csv_header:
-            error += (
-                f"\nInvalid file: Header of {file_path}:\n{text_file.first()})\n "
-                f"does not match expected header:\n{expected_header_row}\n"
+            file_header_set = set(text_file.first().split(sep))
+            expected_header_set = set(validation_schema.keys())
+            missmatches = ", ".join(file_header_set.difference(expected_header_set)) + ", ".join(
+                expected_header_set.difference(file_header_set)
             )
+            error += f"\nInvalid file: Header of {file_path}:\ninconsistent values: {missmatches})\n "
 
         if not valid_csv_fields:
             error += (
