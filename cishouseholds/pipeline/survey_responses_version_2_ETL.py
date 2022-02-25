@@ -814,8 +814,11 @@ def union_dependent_derivations(df):
         last_XX_days="hospital_last_28_days",
         last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
     )
-    df = update_column_values_from_column_reference(
-        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
+    df = update_column_values_from_map(
+        df=df,
+        column="smokes_nothing_now",
+        map={"Yes": "No", "No": "Yes"},
+        condition_column="smokes_or_vapes",
     )
     return df
 

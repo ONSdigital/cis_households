@@ -326,23 +326,24 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
     return df
 
 
-def update_social_column(df: DataFrame, social_column: str, health_column: str):
-    """
-    Update the value of the social column to that of the health column
-    provided that the social column is null and health column is not
-    Parameters
-    ----------
-    df
-    social_column
-    health_column
-    """
-    df = df.withColumn(
-        social_column,
-        F.when((F.col(social_column).isNull()) & (~F.col(health_column).isNull()), F.col(health_column)).otherwise(
-            F.col(social_column)
-        ),
-    )
-    return df
+# SUBSTITUTED BY update_column_values_from_map()
+# def update_social_column(df: DataFrame, social_column: str, health_column: str):
+#     """
+#     Update the value of the social column to that of the health column
+#     provided that the social column is null and health column is not
+#     Parameters
+#     ----------
+#     df
+#     social_column
+#     health_column
+#     """
+#     df = df.withColumn(
+#         social_column,
+#         F.when((F.col(social_column).isNull()) & (~F.col(health_column).isNull()), F.col(health_column)).otherwise(
+#             F.col(social_column)
+#         ),
+#     )
+#     return df
 
 
 def update_column_values_from_map(
