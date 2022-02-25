@@ -4,7 +4,7 @@ Generate fake data for households survey raw input data.
 # mypy: ignore-errors
 from datetime import datetime
 from datetime import timedelta
-from io import BytesIO
+from io import StringIO
 from pathlib import Path
 
 import pandas as pd
@@ -32,9 +32,11 @@ _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
 
 
 def write_output(pd_df: pd.DataFrame, filepath: str, sep: str = ","):
-    output = BytesIO()
+    output = StringIO()
     pd_df.to_csv(output, index=False, sep=sep)
-    write_string_to_file(output.getbuffer(), filepath)
+    write_string_to_file(output.getvalue().encode(), filepath)
+    print("created dummy data in path: ", filepath)  # functional
+    output.close()
 
 
 def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_barcodes):
@@ -83,6 +85,7 @@ def generate_ons_gl_report_data(directory, file_date, records):
     survey_ons_gl_report = pd.DataFrame(schema.create(iterations=records))
 
     write_output(survey_ons_gl_report, directory / f"ONS_GL_Report_{file_date}_0000.csv")
+    return survey_ons_gl_report
 
 
 def generate_unioxf_medtest_data(directory, file_date, records):
@@ -109,6 +112,7 @@ def generate_unioxf_medtest_data(directory, file_date, records):
 
     write_output(survey_unioxf_medtest_s, directory / f"Unioxf_medtestS_{file_date}.csv")
     write_output(survey_unioxf_medtest_n, directory / f"Unioxf_medtestN_{file_date}.csv")
+    return survey_unioxf_medtest_s, survey_unioxf_medtest_n
 
 
 def generate_historic_bloods_data(directory, file_date, records, target):
@@ -119,6 +123,7 @@ def generate_historic_bloods_data(directory, file_date, records, target):
     historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
     write_output(historic_bloods_data, directory / f"historical_bloods_{target}_{file_date}.csv")
+    return historic_bloods_data
 
 
 def generate_unassayed_bloods_data(directory, file_date, records):
@@ -129,6 +134,7 @@ def generate_unassayed_bloods_data(directory, file_date, records):
     unassayed_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
     write_output(unassayed_bloods_data, directory / f"Unioxf_medtest_unassayed_{file_date}.csv")
+    return unassayed_bloods_data
 
 
 def generate_northern_ireland_data(directory, file_date, records):
@@ -155,6 +161,7 @@ def generate_northern_ireland_data(directory, file_date, records):
     northern_ireland_data = pd.DataFrame(schema.create(iterations=records))
 
     write_output(northern_ireland_data, directory / f"CIS_Direct_NI_{file_date}.csv")
+    return northern_ireland_data
 
 
 def generate_sample_direct_data(directory, file_date, records):
@@ -221,6 +228,7 @@ def generate_sample_direct_data(directory, file_date, records):
     sample_direct_data = pd.DataFrame(schema.create(iterations=records))
 
     write_output(sample_direct_data, directory / f"sample_direct_eng_wc{file_date}.csv")
+    return sample_direct_data
 
 
 def generate_nims_table(table_name, participant_ids, records=10):
