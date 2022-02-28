@@ -71,7 +71,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_main_job_role",
         "work_health_care_v0",
         "work_health_care_v1_v2",
-        "work_status_v0",
         "work_status_v1",
         "work_status_v2",
         "work_social_care",
@@ -202,7 +201,28 @@ def derive_age_columns(df: DataFrame) -> DataFrame:
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
+
     work_status_dict = {
+        "work_status_v0": {
+            "5y and older in full-time education": "Student",
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Student",  # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
+            "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Child under 4-5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
+            "Child under 5y attending nursery or pre-school or childminder": "Student",  # noqa: E501
+            "Child under 4-5y attending nursery or pre-school or childminder": "Student",  # noqa: E501
+            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Attending university (including if temporarily absent)": "Student",  # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Child under 5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
+        },
         "work_status_v1": {
             "Child under 5y attending child care": "Child under 5y attending child care",  # noqa: E501
             "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
@@ -245,30 +265,15 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
         },
-        "work_status_v0": {
-            "Employed and currently working": "Employed",  # noqa: E501
-            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Child under 5y not attending child care": "Student",  # noqa: E501
-            "Child under 5y attending child care": "Student",  # noqa: E501
-            "5y and older in full-time education": "Student",  # noqa: E501
-            "Self-employed and currently working": "Self-employed",  # noqa: E501
-        },
     }
 
-    # STEP 1
-    df = update_column_values_from_map(
-        df=df, condition_column="work_status_v2", column="work_status_v1", map=work_status_dict["work_status_v1"]
-    )
-    # STEP 2
+    column_list = ["work_status_v0", "work_status_v1"]
+    for column in column_list:
+        df = df.withColumn(column, F.col("work_status_v2"))
+        df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
+
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
-    # STEP 3
-    df = update_column_values_from_map(
-        df=df, condition_column="work_status_v1", column="work_status_v0", map=work_status_dict["work_status_v0"]
-    )
+
     df = assign_work_social_column(
         df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
     )
@@ -322,6 +327,19 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = derive_work_status_columns(df)
     return df
 
 
@@ -708,7 +726,6 @@ def union_dependent_derivations(df):
     #     df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     # )
 
-    df = derive_work_status_columns(df)
     df = assign_work_health_care(
         df,
         "work_health_care_combined",
@@ -801,18 +818,6 @@ def union_dependent_derivations(df):
         participant_column_pattern=r"person_[1-8]_not_present_age",
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
     )
     df = update_column_values_from_column_reference(
         df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
