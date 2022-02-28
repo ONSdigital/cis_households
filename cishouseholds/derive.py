@@ -85,7 +85,9 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df = df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column)).over(household_window))
+    df = df.withColumn(
+        column_name_to_assign, F.size(F.collect_set(F.col(participant_id_column)).over(household_window))
+    )
     return df
 
 

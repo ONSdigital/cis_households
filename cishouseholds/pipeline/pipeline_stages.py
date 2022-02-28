@@ -36,6 +36,7 @@ from cishouseholds.pipeline.post_merge_processing import filter_response_records
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
@@ -221,6 +222,13 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
     unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
     update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("fill_forwards_stage")
+def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
+    df = extract_from_table(unioned_survey_table)
+    df = fill_forwards_transformations(df)
+    update_table(df, filled_forwards_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -581,6 +589,40 @@ def impute_demographic_columns(
 
     update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+
+
+@register_pipeline_stage("geography_and_imputation_logic")
+def process_post_merge(
+    imputed_antibody_swab_table: str,
+    response_records_table: str,
+    invalid_response_records_table: str,
+    key_columns: List[str],
+):
+    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
+    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
+
+    imputation_columns = chain(
+        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
+    )
+    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
+
+    response_level_records_df, response_level_records_filtered_df = filter_response_records(
+        response_level_records_df, "visit_datetime"
+    )
+
+    multigeneration_df = assign_multigeneration(
+        df=response_level_records_df,
+        column_name_to_assign="multigen",
+        participant_id_column="participant_id",
+        household_id_column="ons_household_id",
+        visit_date_column="visit_date_string",
+        date_of_birth_column="date_of_birth",
+        country_column="country_name",
+    )
+
+    update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
+    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
+    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
 
 
 @register_pipeline_stage("report")
