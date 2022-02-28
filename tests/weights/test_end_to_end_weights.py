@@ -28,7 +28,7 @@ def test_end_to_end_weights(spark_session):
             ew string,
             address_type string,
             council_tax string,
-            udprn integer,
+            unique_property_reference_code integer,
             address_base_postal string
             """,
     )
@@ -43,9 +43,9 @@ def test_end_to_end_weights(spark_session):
             ("S7", "My house", "J7", "E12000005"),
         ],
         schema="""
-            LSOA11CD string,
+            lower_super_output_area_code_11 string,
             LSOA11NM string,
-            CIS20CD string,
+            cis_area_code_20 string,
             RGN19CD string
             """,
     )
@@ -61,9 +61,9 @@ def test_end_to_end_weights(spark_session):
             ("H", "E", "S3"),
         ],
         schema="""
-            pcd string,
-            ctry string,
-            lsoa11 string
+            postcode string,
+            country_code_12 string,
+            lower_super_output_area_code_11 string
             """,
     )
     country_lookup = spark_session.createDataFrame(
@@ -76,7 +76,7 @@ def test_end_to_end_weights(spark_session):
         schema="""
             LAD20CD string,
         	LAD20NM string,
-            CTRY20CD string,
+            country_code_12 string,
             CTRY20NM string
             """,
     )
@@ -87,7 +87,7 @@ def test_end_to_end_weights(spark_session):
             UAC integer,
             postcode string,
             lsoa_11 string,
-            cis20cd string,
+            cis_area_code_20 string,
             ctry12 string,
             ctry_name12 string,
             tranche integer,
@@ -122,7 +122,7 @@ def test_end_to_end_weights(spark_session):
             UAC integer,
             postcode string,
             lsoa_11 string,
-            cis20cd string,
+            cis_area_code_20 string,
             ctry12 string,
             ctry_name12 string,
             sample string,
@@ -157,7 +157,7 @@ def test_end_to_end_weights(spark_session):
             enrolment_date string,
             UAC integer,
             lsoa_11 string,
-            cis20cd string,
+            cis_area_code_20 string,
             ctry12 string,
             ctry_name12 string,
             tranche integer
