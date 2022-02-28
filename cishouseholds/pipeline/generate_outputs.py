@@ -11,6 +11,7 @@ import pandas as pd
 import yaml
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
@@ -69,6 +70,9 @@ def report(
     duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
         F.col(duplicate_count_column_name) > 1
     )
+    window = Window.partitionBy("run_id")
+    processed_file_log = processed_file_log.withColumn("max", F.max("run_id").over(window))
+    processed_file_log = processed_file_log.filter(F.col("run_id") == F.col("max")).drop("max")
 
     counts_df = pd.DataFrame(
         {
@@ -77,14 +81,14 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *list(processed_file_log.select("filename").distinct().rdd.flatMap(lambda x: x).collect()),
+                *list(processed_file_log.select("processed_filename").rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 filtered_survey_responses_count,
                 invalid_survey_responses_count,
-                *list(processed_file_log.select("file_row_count").distinct().rdd.flatMap(lambda x: x).collect()),
+                *list(processed_file_log.select("file_row_count").rdd.flatMap(lambda x: x).collect()),
             ],
         }
     )
@@ -99,6 +103,9 @@ def report(
             writer, sheet_name="validation check failures in invalid dataset", index=False
         )
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
+        invalid_files_log.select("file_path", "error").toPandas().to_excel(
+            writer, sheet_name="invalid files summary", index=False
+        )
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
