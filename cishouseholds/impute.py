@@ -648,13 +648,13 @@ def impute_by_k_nearest_neighbours(
         F.col("expected_frequency_decimal_part") / F.col("expected_frequency_decimal_part_total"),
     )
 
-    df = decimal_part_donors.groupby("unique_imputation_group").agg(
+    decimal_parts_grouped = decimal_part_donors.groupby("unique_imputation_group").agg(
         F.collect_list("don_" + reference_column).alias("don_" + reference_column),
         F.collect_list("expected_frequency_decimal_part").alias("expected_frequency_decimal_part"),
         F.first("required_decimal_donor_count").alias("required_decimal_donor_count"),
     )
 
-    decimals_to_impute = df.withColumn(
+    decimals_to_impute = decimal_parts_grouped.withColumn(
         "don_" + reference_column,
         udf_sample_proportional_to_size(
             "don_" + reference_column, "expected_frequency_decimal_part", "required_decimal_donor_count"
