@@ -144,6 +144,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         true_false_values=["Yes", "No"],
     )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
+    df = df.withColumn("been_outside_uk_last_country", F.upper(F.col("been_outside_uk_last_country")))
     return df
 
 
