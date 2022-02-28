@@ -5,15 +5,9 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
-<<<<<<< HEAD
-  been_outside_uk_last_country: VENEZUELA
-  been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
-  been_outside_uk_since_april_2020: 'No'
-=======
   been_outside_uk_last_country: Romania
   been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -65,23 +59,11 @@
   days_since_think_had_covid_group: 0-14
   deferred: N/A
   email: null
-<<<<<<< HEAD
-  ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Black,Caribbean,African-African
-  ethnicity_other: I don't even care.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
-    using public transport
-=======
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Bangladeshi
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   face_covering_outside_of_home: 'No'
   face_covering_work: Participant Would Not/Could Not Answer
   first_name: Honey
@@ -312,26 +294,6 @@
     lazy evaluation.
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
-<<<<<<< HEAD
-  work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
-  work_sectors: Health care
-  work_sectors_other: I don't even care.
-  work_social_care: 'No'
-  work_status_v0: Student
-  work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
-  work_status_v2_raw: 5y and older in full-time education
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
-    a problem to stay this far away from other people
-  able_to_take_blood: 'No'
-  accepted_fingerprick_invite: 'Yes'
-  any_household_members_over_2_years_and_not_present: null
-  approached_for_blood_samples: 'Yes'
-  bad_email: null
-  been_outside_uk_last_country: ROMANIA
-  been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
-=======
   work_nursing_or_residential_care_home: 'No'
   work_sectors: Other occupation sector
   work_sectors_other: Any element of a tuple can be accessed in constant time.
@@ -348,7 +310,6 @@
   bad_email: false
   been_outside_uk_last_country: null
   been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
@@ -392,25 +353,6 @@
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: null
-<<<<<<< HEAD
-  consent_use_of_surplus_blood_samplesyn: null
-  contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: null
-  county: null
-  date_of_birth: '2021-12-18 13:14:00.000000'
-  days_since_think_had_covid: 0.0
-  days_since_think_had_covid_group: 0-14
-  deferred: N/A
-  email: null
-  ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Asian or Asian British-Bangladeshi
-  ethnicity_other: Initially composing light-hearted and irreverent works, he also
-    wrote serious, sombre and religious pieces beginning in the 1930s.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-=======
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -424,7 +366,6 @@
   ethnicity: Any other Black background
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: null
   face_covering_work: Never
@@ -648,39 +589,6 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
-<<<<<<< HEAD
-  work_main_job_role: Make me a sandwich.
-  work_main_job_role_raw: Make me a sandwich.
-  work_main_job_title: Haskell features a type system with type inference and lazy
-    evaluation.
-  work_main_job_title_raw: Haskell features a type system with type inference and
-    lazy evaluation.
-  work_not_from_home_days_per_week: null
-  work_not_from_home_days_per_week_raw: null
-  work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
-  work_sectors: Other occupation sector
-  work_sectors_other: Any element of a tuple can be accessed in constant time.
-  work_social_care: 'No'
-  work_status_v0: Attending university (including if temporarily absent)Self-employed
-    and currently working (include if on leave or sick leave for less than 4 weeks)
-  work_status_v1: Attending university (including if temporarily absent)Self-employed
-    and currently working (include if on leave or sick leave for less than 4 weeks)
-  work_status_v2: Attending university (including if temporarily absent)Self-employed
-    and currently working (include if on leave or sick leave for less than 4 weeks)
-  work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
-    and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
-    meter away as my work means I am in close contact with others on a regular basis
-  able_to_take_blood: null
-  accepted_fingerprick_invite: 'No'
-  any_household_members_over_2_years_and_not_present: 'Yes'
-  approached_for_blood_samples: 'No'
-  bad_email: false
-  been_outside_uk_last_country: OMAN
-  been_outside_uk_last_date: null
-  been_outside_uk_since_april_2020: null
-=======
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: They are written as strings of consecutive alphanumeric characters,
@@ -704,7 +612,6 @@
   been_outside_uk_last_country: Iceland
   been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -757,22 +664,6 @@
   deferred: N/A
   email: null
   ethnic_group: Asian or Asian British
-<<<<<<< HEAD
-  ethnicity: Any other ethnic group
-  ethnicity_other: Ports are used to communicate with the external world.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
-    using public transport
-  face_covering_outside_of_home: Participant Would Not/Could Not Answer
-  face_covering_work: Not going to place of work or education
-  first_name: Myung
-  gender: null
-  have_email_address: 'No'
-  have_ever_smoked_regularly: 'No'
-=======
   ethnicity: Any other white background
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
@@ -783,7 +674,6 @@
   gender: Male
   have_email_address: null
   have_ever_smoked_regularly: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   have_landline_number: 'Yes'
   have_long_covid_symptoms: null
   have_mobile_number: 'Yes'
@@ -1011,28 +901,6 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'No'
-<<<<<<< HEAD
-  work_person_facing_now: 'No'
-  work_sectors: Teaching and education
-  work_sectors_other: Haskell features a type system with type inference and lazy
-    evaluation.
-  work_social_care: 'No'
-  work_status_v0: Employed
-  work_status_v1: Employed and currently working
-  work_status_v2: Employed and currently working
-  work_status_v2_raw: Employed and currently working (including if on leave or sick
-    leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
-    meter away as my work means I am in close contact with others on a regular basis
-  able_to_take_blood: 'Yes'
-  accepted_fingerprick_invite: 'Yes'
-  any_household_members_over_2_years_and_not_present: null
-  approached_for_blood_samples: 'No'
-  bad_email: null
-  been_outside_uk_last_country: UGANDA
-  been_outside_uk_last_date: null
-  been_outside_uk_since_april_2020: 'No'
-=======
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_status_v2: null
@@ -1046,7 +914,6 @@
   been_outside_uk_last_country: Cambodia
   been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -1097,23 +964,11 @@
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
   deferred: Deferred
-<<<<<<< HEAD
-  email: null
-  ethnic_group: Other Ethnic Group
-  ethnicity: Any other Mixed background
-  ethnicity_other: Make me a sandwich.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes always
-=======
   email: fortes2058@gsnail.ac.uk
   ethnic_group: White
   ethnicity: White-British
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   face_covering_other_enclosed_places: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
   first_name: Reiko
@@ -1335,25 +1190,6 @@
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'No'
-<<<<<<< HEAD
-  work_location: Both (work from home and work somewhere else)
-  work_location_raw: Both (work from home and work somewhere else)
-  work_main_job_changed: 'Yes'
-  work_main_job_role: Atoms are used within a program to denote distinguished values.
-  work_main_job_role_raw: Atoms are used within a program to denote distinguished
-    values.
-  work_main_job_title: Make me a sandwich.
-  work_main_job_title_raw: Make me a sandwich.
-  work_not_from_home_days_per_week: '7'
-  work_not_from_home_days_per_week_raw: '7'
-  work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: null
-  work_sectors: null
-  work_sectors_other: Ports are created with the built-in function open_port.
-  work_social_care: null
-  work_status_v0: null
-  work_status_v1: null
-=======
   work_location: null
   work_location_raw: null
   work_main_job_changed: null
@@ -1372,7 +1208,6 @@
   work_nursing_or_residential_care_home: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Atoms are used within a program to denote distinguished values.
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
@@ -1381,13 +1216,8 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: false
-<<<<<<< HEAD
-  been_outside_uk_last_country: UGANDA
-  been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
-=======
   been_outside_uk_last_country: Madagascar
   been_outside_uk_last_date: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
@@ -1437,30 +1267,6 @@
   county: Worcestershire
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
-<<<<<<< HEAD
-  days_since_think_had_covid_group: null
-  deferred: Deferred
-  email: depict1972@gsnail.ac.uk
-  ethnic_group: Other Ethnic Group
-  ethnicity: Any other Black background
-  ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
-    been restored.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
-  face_covering_outside_of_home: null
-  face_covering_work: Never
-  first_name: Remedios
-  gender: null
-  have_email_address: 'No'
-  have_ever_smoked_regularly: null
-  have_landline_number: 'Yes'
-  have_long_covid_symptoms: null
-  have_mobile_number: 'Yes'
-  hh_id: '352206298026'
-=======
   days_since_think_had_covid_group: Date not given
   deferred: N/A
   email: artiste1919@gsnail.ac.uk
@@ -1479,7 +1285,6 @@
   have_long_covid_symptoms: 'Yes'
   have_mobile_number: null
   hh_id: '217846198988'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
@@ -1690,25 +1495,6 @@
   work_in_additional_paid_employment: 'Yes'
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
-<<<<<<< HEAD
-  work_main_job_changed: null
-  work_main_job_role: Type classes first appeared in the Haskell programming language.
-  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: They are written as strings of consecutive alphanumeric characters,
-    the first character being lowercase.
-  work_main_job_title_raw: They are written as strings of consecutive alphanumeric
-    characters, the first character being lowercase.
-  work_not_from_home_days_per_week: '1'
-  work_not_from_home_days_per_week_raw: '1'
-  work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
-  work_sectors: Other occupation sector (specify)
-  work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
-    a space station with the power to destroy entire planets.
-  work_social_care: 'No'
-  work_status_v0: null
-  work_status_v1: null
-=======
   work_main_job_changed: 'Yes'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
@@ -1720,7 +1506,6 @@
   work_sectors: Civil Service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -1730,13 +1515,8 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
-<<<<<<< HEAD
-  been_outside_uk_last_country: KENYA
-  been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
-=======
   been_outside_uk_last_country: null
   been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
@@ -1789,20 +1569,6 @@
   days_since_think_had_covid_group: Date not given
   deferred: N/A
   email: null
-<<<<<<< HEAD
-  ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Mixed-White & Asian
-  ethnicity_other: '"Messages can be sent to and received from ports, but these messages
-    must obey the so-called ""port protocol."""'
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'Yes'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Never
-  face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
-  face_covering_work: Never
-  first_name: Forest
-=======
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
@@ -1811,7 +1577,6 @@
   face_covering_outside_of_home: 'No'
   face_covering_work: Participant Would Not/Could Not Answer
   first_name: Annika
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   gender: Male
   have_email_address: null
   have_ever_smoked_regularly: 'No'
@@ -2037,22 +1802,6 @@
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
-<<<<<<< HEAD
-  work_main_job_title: The Galactic Empire is nearing completion of the Death Star,
-    a space station with the power to destroy entire planets.
-  work_main_job_title_raw: The Galactic Empire is nearing completion of the Death
-    Star, a space station with the power to destroy entire planets.
-  work_not_from_home_days_per_week: null
-  work_not_from_home_days_per_week_raw: null
-  work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
-  work_sectors: Social care
-  work_sectors_other: I don't even care.
-  work_social_care: 'No'
-  work_status_v0: Employed
-  work_status_v1: Employed and currently working
-  work_status_v2: Employed and currently working
-=======
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'Yes'
@@ -2061,24 +1810,16 @@
     assignment, and dynamic typing.
   work_status_v2: Employed and currently working (including if on leave or sick leave
     for less than 4 weeks)
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
-<<<<<<< HEAD
-  approached_for_blood_samples: 'Yes'
-  bad_email: null
-  been_outside_uk_last_country: UGANDA
-  been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
-=======
   approached_for_blood_samples: 'No'
   bad_email: false
   been_outside_uk_last_country: Oman
   been_outside_uk_last_date: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: null
@@ -2130,37 +1871,6 @@
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
   deferred: N/A
-<<<<<<< HEAD
-  email: null
-  ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Black,Caribbean,Afro-Caribbean
-  ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Not going to other enclosed public spaces or
-    using public transport
-  face_covering_outside_of_home: 'No'
-  face_covering_work: Participant Would Not/Could Not Answer
-  first_name: Annika
-=======
-  email: coater1966@gsnail.ac.uk
-  ethnic_group: Other Ethnic Group
-  ethnicity: Mixed-White & Asian
-  ethnicity_other: Make me a sandwich.
-  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
-  face_covering_outside_of_home: My face is already covered for other reasons (e.g.
-    religious or cultural reasons)
-  face_covering_work: Yes sometimes
-  first_name: Shawnee
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
-  gender: Male
-  have_email_address: 'Yes'
-  have_ever_smoked_regularly: 'No'
-  have_landline_number: 'No'
-  have_long_covid_symptoms: null
-  have_mobile_number: 'Yes'
   hh_id: '704542495687'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
@@ -2170,7 +1880,6 @@
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
-  illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
   infant_1_age: 4.0
@@ -2372,34 +2081,6 @@
   work_location: Both (work from home and work somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
-<<<<<<< HEAD
-  work_main_job_role: Type classes first appeared in the Haskell programming language.
-  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
-  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
-  work_not_from_home_days_per_week: '2'
-  work_not_from_home_days_per_week_raw: '2'
-  work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
-  work_sectors: Retail sector (incl. wholesale)
-  work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
-  work_social_care: 'No'
-  work_status_v0: Employed
-  work_status_v1: Employed and currently working
-  work_status_v2: Employed and currently working
-  work_status_v2_raw: Employed and currently working (including if on leave or sick
-    leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: null
-  able_to_take_blood: 'No'
-  accepted_fingerprick_invite: 'Yes'
-  any_household_members_over_2_years_and_not_present: null
-  approached_for_blood_samples: 'No'
-  bad_email: null
-  been_outside_uk_last_country: QATAR
-=======
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
@@ -2422,7 +2103,6 @@
   approached_for_blood_samples: 'No'
   bad_email: false
   been_outside_uk_last_country: null
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
@@ -2475,19 +2155,6 @@
   days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
   deferred: Deferred
-<<<<<<< HEAD
-  email: null
-  ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Asian or Asian British-Pakistani
-  ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
-    D2, ... Dn.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes always
-  face_covering_outside_of_home: 'No'
-=======
   email: dashed1989@gsnail.ac.uk
   ethnic_group: Asian or Asian British
   ethnicity: Any other ethnic group
@@ -2495,7 +2162,6 @@
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   face_covering_work: Not going to place of work or education
   first_name: Myung
   gender: null
@@ -2716,26 +2382,6 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
-<<<<<<< HEAD
-  work_main_job_role: Any element of a tuple can be accessed in constant time.
-  work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
-  work_main_job_title: Where are my pants?
-  work_main_job_title_raw: Where are my pants?
-  work_not_from_home_days_per_week: '7'
-  work_not_from_home_days_per_week_raw: '7'
-  work_nursing_or_residential_care_home: null
-  work_person_facing_now: 'No'
-  work_sectors: Civil Service or Local Government
-  work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
-    language.
-  work_social_care: 'No'
-  work_status_v0: null
-  work_status_v1: null
-  work_status_v2: null
-  work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
-    but I can usually be at least 1m from other people
-=======
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
@@ -2755,17 +2401,12 @@
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
-<<<<<<< HEAD
-  been_outside_uk_last_country: PAKISTAN
-=======
   been_outside_uk_last_country: Gabon
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
@@ -2823,19 +2464,9 @@
   ethnicity: White-British
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
-<<<<<<< HEAD
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
-  face_covering_outside_of_home: Yes usually both at work/school and in other situations
-  face_covering_work: null
-=======
   face_covering_other_enclosed_places: Yes sometimes
   face_covering_outside_of_home: 'No'
   face_covering_work: Not going to place of work or education
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   first_name: Shaun
   gender: Prefer not to say
   have_email_address: null
@@ -3061,18 +2692,10 @@
     since been restored.
   work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
-<<<<<<< HEAD
-  work_not_from_home_days_per_week: '5'
-  work_not_from_home_days_per_week_raw: '5'
-  work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
-  work_sectors: Arts or Entertainment or Recreation
-=======
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: null
   work_sectors: Personal Services (e.g. hairdressers or tattooists)
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
@@ -3081,17 +2704,6 @@
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: null
-<<<<<<< HEAD
-  able_to_take_blood: null
-  accepted_fingerprick_invite: null
-  any_household_members_over_2_years_and_not_present: null
-  approached_for_blood_samples: 'No'
-  bad_email: false
-  been_outside_uk_last_country: CAMBODIA
-  been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
-  been_outside_uk_since_april_2020: 'Yes'
-  been_outside_uk_since_last_visit: null
-=======
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
@@ -3101,7 +2713,6 @@
   been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
@@ -3153,17 +2764,8 @@
   deferred: N/A
   email: null
   ethnic_group: Black or African or Caribbean or Black British
-<<<<<<< HEAD
-  ethnicity: White-Irish
-  ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-=======
   ethnicity: Any other ethnic group
   ethnicity_other: I don't even care.
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Never
@@ -3383,29 +2985,6 @@
   work_location: Somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'No'
-<<<<<<< HEAD
-  work_main_job_role: Atoms can contain any character if they are enclosed within
-    single quotes and an escape convention exists which allows any character to be
-    used within an atom.
-  work_main_job_role_raw: Atoms can contain any character if they are enclosed within
-    single quotes and an escape convention exists which allows any character to be
-    used within an atom.
-  work_main_job_title: The arguments can be primitive data types or compound data
-    types.
-  work_main_job_title_raw: The arguments can be primitive data types or compound data
-    types.
-  work_not_from_home_days_per_week: null
-  work_not_from_home_days_per_week_raw: null
-  work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
-  work_sectors: Art or entertainment or recreation
-  work_sectors_other: Atoms are used within a program to denote distinguished values.
-  work_social_care: 'No'
-  work_status_v0: Student
-  work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
-  work_status_v2_raw: 5y and older in full-time education
-=======
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -3421,4 +3000,3 @@
     for less than 4 weeks)
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
->>>>>>> c88e6141d4284db2ccc4d65f68bbf4503737607b
