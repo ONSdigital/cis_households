@@ -196,6 +196,7 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Haskell features a type system with type inference and lazy evaluation.
   work_sectors_other: Make me a sandwich.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: 'No'
@@ -402,6 +403,7 @@
     an atom.
   work_sectors_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: null
@@ -607,6 +609,7 @@
   work_sectors: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sectors_other: Do you come here often?
+  work_status_v0: The only thing we have to fear is fear itself.
   work_status_v1: The only thing we have to fear is fear itself.
   work_status_v1_raw: The only thing we have to fear is fear itself.
 - ability_to_socially_distance_at_work_or_school: 'No'
@@ -808,6 +811,8 @@
     assignment, and dynamic typing.
   work_sectors_other: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
+  work_status_v0: A census taker once tried to test me. I ate his liver with some
+    fava beans and a nice Chianti.
   work_status_v1: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
@@ -1013,6 +1018,8 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Ports are created with the built-in function open_port.
   work_sectors_other: Do you come here often?
+  work_status_v0: A census taker once tried to test me. I ate his liver with some
+    fava beans and a nice Chianti.
   work_status_v1: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
@@ -1215,6 +1222,7 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: I don't even care.
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_status_v0: I'm gonna make him an offer he can't refuse.
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
 - ability_to_socially_distance_at_work_or_school: 'No'
@@ -1418,6 +1426,7 @@
   work_sectors: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sectors_other: I don't even care.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: 'Yes'
@@ -1620,6 +1629,8 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Erlang is a general-purpose, concurrent, functional programming language.
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_status_v0: Mama always said life was like a box of chocolates. You never know
+    what you're gonna get.
   work_status_v1: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
   work_status_v1_raw: Mama always said life was like a box of chocolates. You never
@@ -1823,6 +1834,7 @@
     assignment, and dynamic typing.
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_status_v0: Frankly, my dear, I don't give a damn.
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
 - ability_to_socially_distance_at_work_or_school: 'No'
@@ -2029,5 +2041,6 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Type classes first appeared in the Haskell programming language.
   work_sectors_other: Ports are created with the built-in function open_port.
+  work_status_v0: Houston, we have a problem.
   work_status_v1: Houston, we have a problem.
   work_status_v1_raw: Houston, we have a problem.
