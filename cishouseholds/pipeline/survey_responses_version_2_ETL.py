@@ -534,10 +534,12 @@ def union_dependent_cleaning(df):
             "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
         },
         "other_pcr_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
-            "One or more positive test(s)": "Positive",
+            "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
+            "Void": "All Tests failed",
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
