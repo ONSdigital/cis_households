@@ -5,7 +5,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
-  been_outside_uk_last_country: Venezuela
+  been_outside_uk_last_country: VENEZUELA
   been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
@@ -307,7 +307,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: Romania
+  been_outside_uk_last_country: ROMANIA
   been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
@@ -618,7 +618,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: false
-  been_outside_uk_last_country: Oman
+  been_outside_uk_last_country: OMAN
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
@@ -927,7 +927,7 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: null
-  been_outside_uk_last_country: Uganda
+  been_outside_uk_last_country: UGANDA
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
@@ -1229,7 +1229,7 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
-  been_outside_uk_last_country: Uganda
+  been_outside_uk_last_country: UGANDA
   been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
@@ -1537,7 +1537,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
   bad_email: null
-  been_outside_uk_last_country: Kenya
+  been_outside_uk_last_country: KENYA
   been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
@@ -1844,7 +1844,7 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: Uganda
+  been_outside_uk_last_country: UGANDA
   been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
@@ -2152,7 +2152,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
-  been_outside_uk_last_country: Qatar
+  been_outside_uk_last_country: QATAR
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: 'No'
@@ -2457,7 +2457,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: Pakistan
+  been_outside_uk_last_country: PAKISTAN
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: 'No'
@@ -2765,7 +2765,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
-  been_outside_uk_last_country: Cambodia
+  been_outside_uk_last_country: CAMBODIA
   been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
