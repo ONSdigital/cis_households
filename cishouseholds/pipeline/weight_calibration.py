@@ -17,6 +17,8 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
+from cishouseholds.weights.weights import household_level_populations
+
 
 with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
     # silences import into text
@@ -31,28 +33,49 @@ with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
     )
 
 
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(
+    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+):
+    files = {
+        "address_lookup": {"file": address_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "country_lookup": {"file": country_lookup, "type": "path"},
+        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+    }
+    dfs = extract_df_list(files)
+    dfs = prepare_auxillary_data(dfs)
+
+    household_info_df = household_level_populations(
+        dfs["address_lookup"],
+        dfs["postcode_lookup"],
+        dfs["cis_phase_lookup"],
+        dfs["country_lookup"],
+    )
+    update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
+
+
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
-    address_lookup,
-    cis_lookup,
-    country_lookup,
-    postcode_lookup,
+    household_level_populations_table,
     new_sample_file,
     tranche,
+    cis_phase_lookup,
+    postcode_lookup,
     table_or_path,
     old_sample_file,
     design_weight_table,
 ):
     files = {
-        "address_lookup": address_lookup,
-        "cis_lookup": cis_lookup,
-        "country_lookup": country_lookup,
-        "postcode_lookup": postcode_lookup,
-        "new_sample_file": new_sample_file,
-        "tranche": tranche,
+        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "new_sample_file": {"file": new_sample_file, "type": "path"},
+        "old_sample_file": {"file": old_sample_file, "type": table_or_path},
+        "tranche": {"file": tranche, "type": "path"},
     }
-    dfs = extract_df_list(files, old_sample_file, table_or_path)
+    dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
+    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(dfs)
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
@@ -69,11 +92,11 @@ def population_projection(
     population_projections_table: str,
 ):
     files = {
-        "population_projection_current": population_projection_current,
-        "aps_lookup": aps_lookup,
-        "population_projection_previous": population_projection_previous,
+        "population_projection_current": {"file": population_projection_current, "type": "path"},
+        "aps_lookup": {"file": aps_lookup, "type": "path"},
+        "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
     }
-    dfs = extract_df_list(files, population_projection_previous, table_or_path)
+    dfs = extract_df_list(files)
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
@@ -81,16 +104,13 @@ def population_projection(
     update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
 
-def extract_df_list(files, previous, check_table_or_path):
+def extract_df_list(files):
     dfs = {}
     for key, file in files.items():
-        if file == previous and check_table_or_path == "table":
-            continue
+        if file["type"] == "table":
+            dfs[key] = extract_from_table(file["file"])
         else:
-            dfs[key] = extract_input_data(file_paths=file, validation_schema=None, sep=",")
-
-    if check_table_or_path == "table":
-        dfs[previous] = extract_from_table(previous)
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
 
     return dfs
 
