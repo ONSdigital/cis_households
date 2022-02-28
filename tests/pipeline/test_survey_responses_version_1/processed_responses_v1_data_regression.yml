@@ -1,7 +1,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -202,7 +202,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
@@ -409,7 +409,7 @@
 - ability_to_socially_distance_at_work_or_school: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -615,7 +615,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -820,7 +820,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -1027,7 +1027,7 @@
 - ability_to_socially_distance_at_work_or_school: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
@@ -1840,7 +1840,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
