@@ -2714,6 +2714,9 @@
   work_sectors: Personal Services (e.g. hairdressers or tattooists)
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
+  work_social_care: 'No'
+  work_status_v0: Student
+  work_status_v1: 5y and older in full-time education
   work_status_v2: 5y and older in full-time education
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: null

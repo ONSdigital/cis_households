@@ -500,10 +500,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_status_v0_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: work_social_care_raw
   nullable: true
   type: string

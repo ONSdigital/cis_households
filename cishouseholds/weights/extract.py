@@ -17,7 +17,7 @@ spark_session = get_or_create_spark_session()
 lookup_variable_name_maps = {
     "address_lookup": {"uprn": "unique_property_reference_code", "postcode": "postcode"},
     "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
-    "cis_lookup": {"LSOA11CD": "lower_super_output_area_code_11", "CIS20CD": "cis_area_code_20"},
+    "cis_phase_lookup": {"LSOA11CD": "lower_super_output_area_code_11", "CIS20CD": "cis_area_code_20"},
     "country_lookup": {"CTRY20CD": "country_code_12", "CTRY20NM": "country_name_12"},
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
