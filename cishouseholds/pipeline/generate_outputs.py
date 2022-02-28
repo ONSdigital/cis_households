@@ -122,11 +122,13 @@ def record_level_interface(
 ):
     input_df = extract_from_table(survey_responses_table)
     edited_df = input_df
-    if csv_editing_file != "":
-        edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
 
     if unique_id_list != [] and unique_id_list != "":
-        filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+        filtered_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
+        input_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
+
+    if csv_editing_file != "":
+        edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
 
     update_table(edited_df, edited_survey_responses_table, "overwrite")
     update_table(filtered_df, filtered_survey_responses_table, "overwrite")
