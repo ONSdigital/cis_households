@@ -22,10 +22,12 @@ def get_config() -> dict:
     return config
 
 
-def get_filter_config(hdfs_location) -> list:
-    if hdfs_location is None:
-        return []
-    yaml_string = read_file_to_string(hdfs_location)
-    with open(yaml_string) as fh:
+def get_secondary_config(location) -> dict:
+    if location is None:
+        return {}
+    if location[:8] == "hdfs:///":
+        location = read_file_to_string(location)
+
+    with open(location) as fh:
         config = yaml.load(fh, Loader=yaml.FullLoader)
     return config

@@ -7,7 +7,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.ETL_scripts import extract_input_data
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -24,52 +24,6 @@ def check_table_exists(table_name: str):
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
-
-
-@register_pipeline_stage("delete_tables")
-def delete_tables(**kwargs):
-    """
-    All key word args are optional:
-    Specify table_names as a list containing absolute table names to remove.
-    Specify pattern as a string in SQL format to set a specific SQL pattern to remove.
-    Specify prefix to remove all tables with a given prefix.
-    """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if "table_names" in kwargs:
-        if kwargs["table_names"] is not None:
-            if type(kwargs["table_names"]) != list:
-                kwargs["table_names"] = [kwargs["table_names"]]
-            for table_name in kwargs["table_names"]:
-                print(
-                    f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )  # functional
-                spark_session.sql(
-                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )
-    if "pattern" in kwargs:
-        if kwargs["pattern"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['pattern']}'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if "prefix" in kwargs:
-        if kwargs["prefix"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['prefix']}*'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -197,3 +151,14 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
+
+
+def extract_df_list(files):
+    dfs = {}
+    for key, file in files.items():
+        if file["type"] == "table":
+            dfs[key] = extract_from_table(file["file"])
+        else:
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
+
+    return dfs
