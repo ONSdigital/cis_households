@@ -7,9 +7,13 @@ from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql.types import ArrayType
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
+
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.udfs import generate_sample_proportional_to_size_udf
+
+sample_proportional_to_size_udf = generate_sample_proportional_to_size_udf(get_or_create_spark_session())
 
 
 def impute_outside_uk_columns(
@@ -448,17 +452,6 @@ def weighted_distance(df, group_id, donor_group_columns, donor_group_column_weig
     return df
 
 
-def sample_proportional_to_size(imputation_variables, expected_frequencies, number):
-    """UDF for sampling proportional to size."""
-    import numpy as np
-
-    results = np.random.choice(a=imputation_variables, p=expected_frequencies, replace=False, size=number).tolist()
-    return results
-
-
-udf_sample_proportional_to_size = F.udf(sample_proportional_to_size, ArrayType(DoubleType()))
-
-
 def impute_by_k_nearest_neighbours(
     df: DataFrame,
     column_name_to_assign: str,
@@ -656,7 +649,7 @@ def impute_by_k_nearest_neighbours(
 
     decimals_to_impute = decimal_parts_grouped.withColumn(
         "don_" + reference_column,
-        udf_sample_proportional_to_size(
+        sample_proportional_to_size_udf(
             "don_" + reference_column, "expected_frequency_decimal_part", "required_decimal_donor_count"
         ),
     )
