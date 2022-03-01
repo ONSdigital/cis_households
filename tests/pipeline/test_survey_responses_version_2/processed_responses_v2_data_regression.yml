@@ -5,7 +5,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: Romania
+  been_outside_uk_last_country: ROMANIA
   been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
@@ -36,14 +36,14 @@
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'false'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'Yes'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
@@ -63,6 +63,10 @@
   ethnicity: Asian or Asian British-Bangladeshi
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: 'No'
   face_covering_work: Participant Would Not/Could Not Answer
@@ -295,8 +299,14 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Other occupation sector
   work_sectors_other: Any element of a tuple can be accessed in constant time.
+  work_social_care: 'No'
+  work_status_v0: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v1: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
@@ -339,20 +349,20 @@
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'false'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: 'No'
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -366,6 +376,10 @@
   ethnicity: Any other Black background
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
   face_covering_outside_of_home: null
   face_covering_work: Never
@@ -598,9 +612,13 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Other occupation sector (specify)
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
@@ -609,7 +627,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
   bad_email: null
-  been_outside_uk_last_country: Iceland
+  been_outside_uk_last_country: ICELAND
   been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
@@ -640,20 +658,20 @@
   cis_flu_vaccine_received: null
   city: Sittingbourne
   confirm_received_vouchers: 'false'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'No'
+  consent_5_visits: 'Yes'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: 'No'
+  consent_blood_test: 'Yes'
   consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -667,6 +685,10 @@
   ethnicity: Any other white background
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: Yes in other situations only (including public transport/shops)
   face_covering_work: Never
@@ -901,8 +923,12 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Arts or Entertainment or Recreation
   work_sectors_other: I don't even care.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
@@ -911,7 +937,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
-  been_outside_uk_last_country: Cambodia
+  been_outside_uk_last_country: CAMBODIA
   been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
@@ -948,14 +974,14 @@
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -968,6 +994,10 @@
   ethnic_group: White
   ethnicity: White-British
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
   face_covering_work: Not going to place of work or education
@@ -1206,8 +1236,12 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage and logistics)
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: null
@@ -1216,7 +1250,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: false
-  been_outside_uk_last_country: Madagascar
+  been_outside_uk_last_country: MADAGASCAR
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
@@ -1247,20 +1281,20 @@
   cis_flu_vaccine_received: 'No'
   city: Felixstowe
   confirm_received_vouchers: 'true'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: null
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
@@ -1274,6 +1308,10 @@
   ethnicity: Asian or Asian British-Pakistani
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: 'No'
   face_covering_work: Not going to place of work or education
@@ -1503,9 +1541,13 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: null
+  work_person_facing_now: 'No'
   work_sectors: Civil Service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
+  work_social_care: 'No'
+  work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -1546,20 +1588,20 @@
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'false'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -1572,6 +1614,10 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: 'No'
@@ -1805,11 +1851,14 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'Yes'
+  work_person_facing_now: 'No'
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: null
@@ -1818,7 +1867,7 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: false
-  been_outside_uk_last_country: Oman
+  been_outside_uk_last_country: OMAN
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
@@ -1849,20 +1898,20 @@
   cis_flu_vaccine_received: null
   city: Hove
   confirm_received_vouchers: 'true'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'No'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'Yes'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -1871,6 +1920,25 @@
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
   deferred: N/A
+  email: coater1966@gsnail.ac.uk
+  ethnic_group: Other Ethnic Group
+  ethnicity: Mixed-White & Asian
+  ethnicity_other: Make me a sandwich.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
+  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
+  face_covering_outside_of_home: My face is already covered for other reasons (e.g.
+    religious or cultural reasons)
+  face_covering_work: Yes sometimes
+  first_name: Shawnee
+  gender: Male
+  have_email_address: 'Yes'
+  have_ever_smoked_regularly: 'No'
+  have_landline_number: 'No'
+  have_long_covid_symptoms: null
+  have_mobile_number: 'Yes'
   hh_id: '704542495687'
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
@@ -1880,6 +1948,7 @@
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
+  illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
   infant_1_age: 4.0
@@ -2089,8 +2158,14 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Art or entertainment or recreation
   work_sectors_other: Ports are created with the built-in function open_port.
+  work_social_care: 'No'
+  work_status_v0: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
+  work_status_v1: Attending university (including if temporarily absent)Self-employed
+    and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
@@ -2133,20 +2208,20 @@
   cis_flu_vaccine_received: null
   city: Inverurie
   confirm_received_vouchers: 'true'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samplesyn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
@@ -2159,6 +2234,10 @@
   ethnic_group: Asian or Asian British
   ethnicity: Any other ethnic group
   ethnicity_other: Ports are used to communicate with the external world.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: Participant Would Not/Could Not Answer
@@ -2392,11 +2471,14 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_person_facing_now: 'No'
   work_sectors: Teaching and education
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
@@ -2406,7 +2488,7 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: null
-  been_outside_uk_last_country: Gabon
+  been_outside_uk_last_country: GABON
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'Yes'
@@ -2437,20 +2519,20 @@
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'Yes'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
   consent_blood_test: 'No'
-  consent_contact_extra_research: 'Yes'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -2464,6 +2546,10 @@
   ethnicity: White-British
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes sometimes
   face_covering_outside_of_home: 'No'
   face_covering_work: Not going to place of work or education
@@ -2695,6 +2781,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: null
+  work_person_facing_now: 'No'
   work_sectors: Personal Services (e.g. hairdressers or tattooists)
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -2709,7 +2796,7 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: Zimbabwe
+  been_outside_uk_last_country: ZIMBABWE
   been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'Yes'
@@ -2740,20 +2827,20 @@
   cis_flu_vaccine_received: 'No'
   city: Marlow
   confirm_received_vouchers: 'true'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: 'Yes'
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'Yes'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samplesyn: 'Yes'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
@@ -2766,6 +2853,10 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other ethnic group
   ethnicity_other: I don't even care.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: Yes usually both at work/school and in other situations
   face_covering_work: Never
@@ -2994,9 +3085,12 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: null
+  work_person_facing_now: 'No'
   work_sectors: Armed forces
   work_sectors_other: I don't even care.
-  work_status_v2: Employed and currently working (including if on leave or sick leave
-    for less than 4 weeks)
+  work_social_care: 'No'
+  work_status_v0: Employed
+  work_status_v1: Employed and currently working
+  work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
