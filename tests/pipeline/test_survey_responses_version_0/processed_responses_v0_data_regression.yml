@@ -5,15 +5,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -24,7 +23,8 @@
   ethnicity: Any other ethnic group
   full_name: Crystle Osborn
   hh_id: '212633229661'
-  hospital_last_28_days_other_household_member: 'Yes'
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: 'Yes'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
@@ -150,7 +150,6 @@
   work_social_care: 'No'
   work_social_care_raw: 'No'
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
-  work_status_v0_raw: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
@@ -158,15 +157,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days_other_household_member: 'Yes'
   city: Saltash
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '1'
   consent_summary: 1.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -177,7 +175,8 @@
   ethnicity: Any other Mixed background
   full_name: Jae Cervantes
   hh_id: '558190156218'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Those who refuse to learn from history
@@ -302,7 +301,6 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
-  work_status_v0_raw: Where are my pants?
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   blood_sample_barcode: null
@@ -310,15 +308,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days_other_household_member: 'Yes'
   city: Luton
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 1.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -329,7 +326,8 @@
   ethnicity: Mixed-White & Black African
   full_name: Argentina Brady
   hh_id: '167403959807'
-  hospital_last_28_days_other_household_member: null
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: 'Yes'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
@@ -457,8 +455,6 @@
   work_social_care_raw: 'Yes'
   work_status_v0: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-  work_status_v0_raw: In 1989 the building was heavily damaged by fire, but it has
-    since been restored.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
@@ -466,15 +462,14 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Buckinghamshire
@@ -485,7 +480,8 @@
   ethnicity: Asian or Asian British-Chinese
   full_name: Barton Ramos
   hh_id: '846198988073'
-  hospital_last_28_days_other_household_member: null
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: 'Yes'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Ask not what your country can do for
@@ -614,7 +610,6 @@
   work_social_care: 'No'
   work_social_care_raw: 'No'
   work_status_v0: Ports are used to communicate with the external world.
-  work_status_v0_raw: Ports are used to communicate with the external world.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
@@ -622,15 +617,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -641,7 +635,8 @@
   ethnicity: Any other Black background
   full_name: Annika Reilly
   hh_id: '602276804025'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: '"You''ve got to ask yourself one question:
@@ -768,8 +763,6 @@
   work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
@@ -777,15 +770,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -796,7 +788,8 @@
   ethnicity: Any other Black background
   full_name: Alan Robbins
   hh_id: '769043821442'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
@@ -923,7 +916,6 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
-  work_status_v0_raw: Where are my pants?
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
   blood_sample_barcode: null
@@ -931,15 +923,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days_other_household_member: null
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -950,7 +941,8 @@
   ethnicity: Mixed-White & Black African
   full_name: Caron Barton
   hh_id: '105638762102'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Let them eat cake.
@@ -1079,8 +1071,6 @@
   work_social_care_raw: 'Yes'
   work_status_v0: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
-  work_status_v0_raw: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   blood_sample_barcode: null
@@ -1088,15 +1078,14 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days_other_household_member: null
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Worcestershire
@@ -1107,7 +1096,8 @@
   ethnicity: Mixed-White & Black Caribbean
   full_name: Clemmie Harper
   hh_id: '826911152672'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Let them eat cake.
@@ -1233,7 +1223,6 @@
   work_social_care: null
   work_social_care_raw: null
   work_status_v0: Any element of a tuple can be accessed in constant time.
-  work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
@@ -1241,15 +1230,14 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days_other_household_member: null
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: North Yorkshire
@@ -1260,7 +1248,8 @@
   ethnicity: White-British
   full_name: Honey Porter
   hh_id: '407714528425'
-  hospital_last_28_days_other_household_member: null
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Let them eat cake.
@@ -1385,7 +1374,6 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
-  work_status_v0_raw: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
   blood_sample_barcode: null
@@ -1393,15 +1381,14 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days_other_household_member: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -1412,7 +1399,8 @@
   ethnicity: Asian or Asian British-Indian
   full_name: Carlos Martin
   hh_id: '736535270957'
-  hospital_last_28_days_other_household_member: 'No'
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: I'm gonna make him an offer he can't
@@ -1541,6 +1529,4 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
-  work_status_v0_raw: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.

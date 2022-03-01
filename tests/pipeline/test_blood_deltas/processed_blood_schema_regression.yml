@@ -52,7 +52,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: blood_sample_barcode_edited_flag
+  name: blood_sample_barcode_edited_in_bloods_dataset_flag
   nullable: true
   type: integer
 - metadata: {}

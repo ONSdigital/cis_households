@@ -1,7 +1,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -9,17 +9,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
@@ -34,8 +33,9 @@
   gender: Prefer not to say
   have_ever_smoked_regularly: 'Yes'
   hh_id: 021263322966
-  hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 6.0
+  hours_a_day_with_someone_else_at_home: '6'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Get your stinking paws off me, you
@@ -196,12 +196,13 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Haskell features a type system with type inference and lazy evaluation.
   work_sectors_other: Make me a sandwich.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
@@ -209,17 +210,16 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Sittingbourne
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -234,8 +234,9 @@
   gender: null
   have_ever_smoked_regularly: null
   hh_id: '919192147365'
-  hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Those who refuse to learn from history
@@ -402,12 +403,13 @@
     an atom.
   work_sectors_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -415,17 +417,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Saltash
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
@@ -441,8 +442,9 @@
   gender: null
   have_ever_smoked_regularly: 'Yes'
   hh_id: '955705581901'
-  hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 12.0
+  hours_a_day_with_someone_else_at_home: '12'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Houston, we have a problem.
@@ -607,12 +609,13 @@
   work_sectors: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sectors_other: Do you come here often?
+  work_status_v0: The only thing we have to fear is fear itself.
   work_status_v1: The only thing we have to fear is fear itself.
   work_status_v1_raw: The only thing we have to fear is fear itself.
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -620,17 +623,16 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -646,8 +648,9 @@
   gender: null
   have_ever_smoked_regularly: 'Yes'
   hh_id: '876960826911'
-  hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 1.0
+  hours_a_day_with_someone_else_at_home: '1'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
@@ -808,6 +811,8 @@
     assignment, and dynamic typing.
   work_sectors_other: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
+  work_status_v0: A census taker once tried to test me. I ate his liver with some
+    fava beans and a nice Chianti.
   work_status_v1: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
@@ -815,7 +820,7 @@
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'Yes'
+  been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
@@ -823,17 +828,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -848,8 +852,9 @@
   gender: Female
   have_ever_smoked_regularly: 'Yes'
   hh_id: '602276804025'
-  hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 3.0
+  hours_a_day_with_someone_else_at_home: '3'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Here's looking at you, kid.
@@ -1013,6 +1018,8 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Ports are created with the built-in function open_port.
   work_sectors_other: Do you come here often?
+  work_status_v0: A census taker once tried to test me. I ate his liver with some
+    fava beans and a nice Chianti.
   work_status_v1: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
   work_status_v1_raw: A census taker once tried to test me. I ate his liver with some
@@ -1020,7 +1027,7 @@
 - ability_to_socially_distance_at_work_or_school: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
@@ -1028,17 +1035,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Luton
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -1053,8 +1059,9 @@
   gender: Prefer not to say
   have_ever_smoked_regularly: 'Yes'
   hh_id: 001674039598
-  hospital_last_28_days_other_household_member: null
-  hours_a_day_with_someone_else_at_home: 1.0
+  hours_a_day_with_someone_else_at_home: '1'
+  household_been_care_home_last_28_days: 'No'
+  household_been_hospital_last_28_days: null
   household_members_under_2_years: 'Yes'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
@@ -1215,6 +1222,7 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: I don't even care.
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_status_v0: I'm gonna make him an offer he can't refuse.
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
 - ability_to_socially_distance_at_work_or_school: 'No'
@@ -1228,17 +1236,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Northamptonshire
@@ -1253,8 +1260,9 @@
   gender: Female
   have_ever_smoked_regularly: 'No'
   hh_id: 044476904382
-  hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 3.0
+  hours_a_day_with_someone_else_at_home: '3'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: I'm gonna make him an offer he can't
@@ -1418,6 +1426,7 @@
   work_sectors: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sectors_other: I don't even care.
+  work_status_v0: Here's looking at you, kid.
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_school: 'Yes'
@@ -1431,17 +1440,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 0.0
-  care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -1457,8 +1465,9 @@
   gender: Female
   have_ever_smoked_regularly: 'Yes'
   hh_id: '890407714528'
-  hospital_last_28_days_other_household_member: 'No'
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: 'No'
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
@@ -1620,6 +1629,8 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Erlang is a general-purpose, concurrent, functional programming language.
   work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_status_v0: Mama always said life was like a box of chocolates. You never know
+    what you're gonna get.
   work_status_v1: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
   work_status_v1_raw: Mama always said life was like a box of chocolates. You never
@@ -1635,17 +1646,16 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -1660,8 +1670,9 @@
   gender: null
   have_ever_smoked_regularly: 'No'
   hh_id: '456442497105'
-  hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: 0.0
+  hours_a_day_with_someone_else_at_home: '0'
+  household_been_care_home_last_28_days: null
+  household_been_hospital_last_28_days: 'Yes'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Houston, we have a problem.
@@ -1823,12 +1834,13 @@
     assignment, and dynamic typing.
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_status_v0: Frankly, my dear, I don't give a damn.
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
 - ability_to_socially_distance_at_work_or_school: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
-  been_outside_uk_last_country: 'No'
+  been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
@@ -1836,17 +1848,16 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: Inverurie
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
@@ -1861,8 +1872,9 @@
   gender: Male
   have_ever_smoked_regularly: 'No'
   hh_id: '788221784619'
-  hospital_last_28_days_other_household_member: 'Yes'
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
+  household_been_care_home_last_28_days: 'Yes'
+  household_been_hospital_last_28_days: 'Yes'
   household_members_under_2_years: null
   household_participants_not_consented_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
@@ -2029,5 +2041,6 @@
   work_nursing_or_residential_care_home: 'Yes'
   work_sectors: Type classes first appeared in the Haskell programming language.
   work_sectors_other: Ports are created with the built-in function open_port.
+  work_status_v0: Houston, we have a problem.
   work_status_v1: Houston, we have a problem.
   work_status_v1_raw: Houston, we have a problem.

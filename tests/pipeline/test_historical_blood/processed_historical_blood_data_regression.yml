@@ -11,7 +11,7 @@
   antibody_test_well_id: F58
   blood_sample_arrayed_date: '2018-09-07 00:00:00.000000'
   blood_sample_barcode: ONS00227680
-  blood_sample_barcode_edited_flag: 1
+  blood_sample_barcode_edited_in_bloods_dataset_flag: 1
   blood_sample_collected_datetime: '2018-01-03 06:14:32.000000'
   blood_sample_received_date: '2018-01-24 00:00:00.000000'
   blood_sample_type: Venous
@@ -33,7 +33,7 @@
   antibody_test_well_id: W83
   blood_sample_arrayed_date: '2021-03-09 00:00:00.000000'
   blood_sample_barcode: ONS01982661
-  blood_sample_barcode_edited_flag: 1
+  blood_sample_barcode_edited_in_bloods_dataset_flag: 1
   blood_sample_collected_datetime: '2019-11-16 12:56:58.000000'
   blood_sample_received_date: '2018-04-27 00:00:00.000000'
   blood_sample_type: Venous
@@ -55,7 +55,7 @@
   antibody_test_well_id: A76
   blood_sample_arrayed_date: '2022-04-22 00:00:00.000000'
   blood_sample_barcode: ONS02950016
-  blood_sample_barcode_edited_flag: 1
+  blood_sample_barcode_edited_in_bloods_dataset_flag: 1
   blood_sample_collected_datetime: '2019-08-13 08:59:40.000000'
   blood_sample_received_date: '2019-11-09 00:00:00.000000'
   blood_sample_type: Venous
@@ -77,7 +77,7 @@
   antibody_test_well_id: C21
   blood_sample_arrayed_date: '2020-10-09 00:00:00.000000'
   blood_sample_barcode: ONS06875935
-  blood_sample_barcode_edited_flag: 1
+  blood_sample_barcode_edited_in_bloods_dataset_flag: 1
   blood_sample_collected_datetime: '2019-06-04 02:24:06.000000'
   blood_sample_received_date: '2021-04-15 00:00:00.000000'
   blood_sample_type: Capillary
@@ -99,7 +99,7 @@
   antibody_test_well_id: W36
   blood_sample_arrayed_date: '2020-08-21 00:00:00.000000'
   blood_sample_barcode: ONS07139656
-  blood_sample_barcode_edited_flag: 1
+  blood_sample_barcode_edited_in_bloods_dataset_flag: 1
   blood_sample_collected_datetime: '2019-05-03 07:55:06.000000'
   blood_sample_received_date: '2018-07-03 00:00:00.000000'
   blood_sample_type: Venous

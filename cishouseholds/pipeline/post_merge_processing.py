@@ -12,9 +12,6 @@ from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
 
 
-# from cishouseholds.pipeline.load import check_table_exists
-
-
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
@@ -48,14 +45,14 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         imputation_function=impute_by_mode,
-        reference_column="white_group",
+        reference_column="ethnicity_white",
         group_by_column="ons_household_id",
     )
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         impute_by_k_nearest_neighbours,
-        reference_column="white_group",
+        reference_column="ethnicity_white",
         donor_group_columns=["cis_area"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
@@ -65,7 +62,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
-        group_by_columns=["white_group", "gor9d"],
+        group_by_columns=["ethnicity_white", "gor9d"],
         first_imputation_value="Female",
         second_imputation_value="Male",
     )

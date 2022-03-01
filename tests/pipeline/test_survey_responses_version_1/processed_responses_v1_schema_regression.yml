@@ -270,27 +270,27 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: work_main_job_title
   nullable: true
@@ -472,17 +472,17 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: household_been_hospital_last_28_days
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_28_days
+  name: household_been_care_home_last_28_days
   nullable: true
   type: string
 - metadata: {}
   name: hours_a_day_with_someone_else_at_home
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: physical_contact_under_18_years
   nullable: true
@@ -755,4 +755,8 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
 type: struct
