@@ -12,13 +12,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
@@ -33,7 +33,7 @@
   gender: Prefer not to say
   have_ever_smoked_regularly: 'Yes'
   hh_id: 021263322966
-  hours_a_day_with_someone_else_at_home: 6.0
+  hours_a_day_with_someone_else_at_home: '6'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
@@ -213,13 +213,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Sittingbourne
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -234,7 +234,7 @@
   gender: null
   have_ever_smoked_regularly: null
   hh_id: '919192147365'
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: null
   household_members_under_2_years: 'No'
@@ -420,13 +420,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Saltash
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
@@ -442,7 +442,7 @@
   gender: null
   have_ever_smoked_regularly: 'Yes'
   hh_id: '955705581901'
-  hours_a_day_with_someone_else_at_home: 12.0
+  hours_a_day_with_someone_else_at_home: '12'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: null
   household_members_under_2_years: 'No'
@@ -626,13 +626,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -648,7 +648,7 @@
   gender: null
   have_ever_smoked_regularly: 'Yes'
   hh_id: '876960826911'
-  hours_a_day_with_someone_else_at_home: 1.0
+  hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: null
   household_members_under_2_years: null
@@ -831,13 +831,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -852,7 +852,7 @@
   gender: Female
   have_ever_smoked_regularly: 'Yes'
   hh_id: '602276804025'
-  hours_a_day_with_someone_else_at_home: 3.0
+  hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
@@ -1038,13 +1038,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: Luton
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -1059,7 +1059,7 @@
   gender: Prefer not to say
   have_ever_smoked_regularly: 'Yes'
   hh_id: 001674039598
-  hours_a_day_with_someone_else_at_home: 1.0
+  hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: null
   household_members_under_2_years: 'Yes'
@@ -1239,13 +1239,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Northamptonshire
@@ -1260,7 +1260,7 @@
   gender: Female
   have_ever_smoked_regularly: 'No'
   hh_id: 044476904382
-  hours_a_day_with_someone_else_at_home: 3.0
+  hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: null
@@ -1443,13 +1443,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -1465,7 +1465,7 @@
   gender: Female
   have_ever_smoked_regularly: 'Yes'
   hh_id: '890407714528'
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
   household_members_under_2_years: 'No'
@@ -1649,13 +1649,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -1670,7 +1670,7 @@
   gender: null
   have_ever_smoked_regularly: 'No'
   hh_id: '456442497105'
-  hours_a_day_with_someone_else_at_home: 0.0
+  hours_a_day_with_someone_else_at_home: '0'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'Yes'
   household_members_under_2_years: null
@@ -1851,13 +1851,13 @@
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
   city: Inverurie
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
@@ -1872,7 +1872,7 @@
   gender: Male
   have_ever_smoked_regularly: 'No'
   hh_id: '788221784619'
-  hours_a_day_with_someone_else_at_home: 2.0
+  hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'Yes'
   household_members_under_2_years: null
