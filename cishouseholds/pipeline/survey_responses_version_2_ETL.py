@@ -43,7 +43,6 @@ from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
-from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
@@ -144,6 +143,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         true_false_values=["Yes", "No"],
     )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
+    df = df.withColumn("been_outside_uk_last_country", F.upper(F.col("been_outside_uk_last_country")))
     return df
 
 
@@ -533,10 +533,12 @@ def union_dependent_cleaning(df):
             "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
         },
         "other_pcr_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
-            "One or more positive test(s)": "Positive",
+            "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
+            "Void": "All Tests failed",
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
@@ -819,8 +821,23 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = update_column_values_from_column_reference(
-        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = update_column_values_from_map(
+        df=df,
+        column="smokes_nothing_now",
+        map={"Yes": "No", "No": "Yes"},
+        condition_column="smokes_or_vapes",
     )
     return df
 
@@ -927,14 +944,6 @@ def fill_forwards_transformations(df):
         visit_date_column="visit_datetime",
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
     )
     df = fill_forward_from_last_change(
         df=df,

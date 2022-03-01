@@ -15,6 +15,7 @@ from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.load import delete_tables  # noqa: F401
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from dummy_data_generation.generate_data import generate_dummy_data  # noqa: F401
 
 
 def run_from_config():
