@@ -25,6 +25,7 @@ from cishouseholds.pipeline.generate_outputs import map_output_values_and_column
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
@@ -50,8 +51,9 @@ from cishouseholds.validate import validate_files
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
+from cishouseholds.weights.weights import household_level_populations
 from cishouseholds.weights.weights import prepare_auxillary_data
-
+from dummy_data_generation.generate_data import *
 
 pipeline_stages = {}
 
@@ -116,6 +118,93 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
         for table_name in tables:
             print(f"dropping table: {table_name}")  # functional
             spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+
+
+@register_pipeline_stage("generate_dummy_data")
+def generate_dummy_data(output_directory):
+    raw_dir = Path(output_directory) / "generated_data"
+    swab_dir = raw_dir / "swab"
+    blood_dir = raw_dir / "blood"
+    survey_dir = raw_dir / "survey"
+    northern_ireland_dir = raw_dir / "northern_ireland_sample"
+    sample_direct_dir = raw_dir / "england_wales_sample"
+    unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
+    historic_bloods_dir = raw_dir / "historic_blood"
+    historic_swabs_dir = raw_dir / "historic_swab"
+    historic_survey_dir = raw_dir / "historic_survey"
+    for directory in [
+        swab_dir,
+        blood_dir,
+        survey_dir,
+        northern_ireland_dir,
+        sample_direct_dir,
+        unprocessed_bloods_dir,
+        historic_bloods_dir,
+        historic_swabs_dir,
+        historic_survey_dir,
+    ]:
+        directory.mkdir(parents=True, exist_ok=True)
+
+    file_datetime = datetime.now()
+    lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
+    lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
+    file_date = datetime.strftime(file_datetime, format="%Y%m%d")
+
+    # Historic files
+    # historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
+    # historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
+
+    # historic_v2 = generate_survey_v2_data(
+    #     directory=historic_survey_dir,
+    #     file_date=file_date,
+    #     records=100,
+    #     swab_barcodes=historic_swabs["Sample"].unique().tolist(),
+    #     blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
+    # )
+
+    # Delta files
+    lab_swabs_1 = generate_ons_gl_report_data(swab_dir, file_date, 10)
+    lab_swabs_2 = generate_ons_gl_report_data(swab_dir, lab_date_1, 10)
+    lab_swabs_3 = generate_ons_gl_report_data(swab_dir, lab_date_2, 10)
+    lab_swabs = pd.concat([lab_swabs_1, lab_swabs_2, lab_swabs_3])
+
+    lab_bloods_s_1, lab_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
+    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, lab_date_1, 10)
+    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, lab_date_2, 10)
+
+    lab_bloods = pd.concat(
+        [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
+    )
+
+    historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
+    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "S")
+
+    # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
+    # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
+    # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
+
+    # swab/blood barcode lists
+    swab_barcode = lab_swabs["Sample"].unique().tolist()
+    blood_barcode = lab_bloods["Serum Source ID"].unique().tolist()
+    blood_barcode += historic_blood_n["blood_barcode_OX"].unique().tolist()
+    blood_barcode += historic_blood_s["blood_barcode_OX"].unique().tolist()
+
+    swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
+    blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
+
+    generate_survey_v0_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
+    generate_survey_v1_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
+    v2 = generate_survey_v2_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
+
+    participant_ids = v2["Participant_id"].unique().tolist()
+
+    generate_nims_table(get_full_table_name("cis_nims_20210101"), participant_ids)
 
 
 def generate_input_processing_function(
@@ -444,58 +533,6 @@ def merge_swab_ETL(
     return survey_antibody_swab_df
 
 
-@register_pipeline_stage("process_post_merge")
-def process_post_merge(
-    imputed_antibody_swab_table: str,
-    response_records_table: str,
-    invalid_response_records_table: str,
-    key_columns: List[str],
-):
-    """
-    Transformation stage after merging. Applies filtering to inputed columns and generates
-    multigenerational data output
-
-    Use one or more of the optional parameters.
-
-    Parameters
-    ----------
-        imputed_antibody_swab_table,
-            Input table of merged antibody and swab data
-        response_records_table,
-            Name of the output of response level records
-        invalid_response_records_table,
-            Name of the output of invalid response level records
-        key_columns
-            List of imputed columns
-
-    """
-    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
-    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
-
-    imputation_columns = chain(
-        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
-    )
-    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
-
-    response_level_records_df, response_level_records_filtered_df = filter_response_records(
-        response_level_records_df, "visit_datetime"
-    )
-
-    multigeneration_df = assign_multigeneration(
-        df=response_level_records_df,
-        column_name_to_assign="multigen",
-        participant_id_column="participant_id",
-        household_id_column="ons_household_id",
-        visit_date_column="visit_date_string",
-        date_of_birth_column="date_of_birth",
-        country_column="country_name",
-    )
-
-    update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
-    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
-    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
-
-
 @register_pipeline_stage("join_vaccination_data")
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
@@ -520,30 +557,6 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
 
 
-@register_pipeline_stage("join_geographic_data")
-def join_geographic_data(
-    geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
-):
-    """
-    Join weights file onto survey data by household id.
-
-    Parameters
-    ----------
-    geographic_table
-        input table name for household data with geographic data
-    survey_responses_table
-        input table for individual participant responses
-    geographic_responses_table
-        output table name for joined survey responses and household geographic data
-    id_column
-        column containing id to join the 2 input tables
-    """
-    weights_df = extract_from_table(geographic_table)
-    survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left")
-    update_table(geographic_survey_df, geographic_responses_table)
-
-
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(
     survey_responses_table: str,
@@ -566,8 +579,9 @@ def impute_demographic_columns(
     key_columns
         names of key demographic columns to be filled forwards
     """
-
-    imputed_value_lookup_df = extract_from_table(imputed_values_table)
+    imputed_value_lookup_df = None
+    if check_table_exists(imputed_values_table):
+        imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(survey_responses_table)
 
     key_columns_imputed_df = impute_key_columns(
@@ -589,6 +603,52 @@ def impute_demographic_columns(
 
     update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+
+
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(
+    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+):
+    files = {
+        "address_lookup": {"file": address_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "country_lookup": {"file": country_lookup, "type": "path"},
+        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+    }
+    dfs = extract_df_list(files)
+    dfs = prepare_auxillary_data(dfs)
+
+    household_info_df = household_level_populations(
+        dfs["address_lookup"],
+        dfs["postcode_lookup"],
+        dfs["cis_phase_lookup"],
+        dfs["country_lookup"],
+    )
+    update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("join_geographic_data")
+def join_geographic_data(
+    geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
+):
+    """
+    Join weights file onto survey data by household id.
+
+    Parameters
+    ----------
+    geographic_table
+        input table name for household data with geographic data
+    survey_responses_table
+        input table for individual participant responses
+    geographic_responses_table
+        output table name for joined survey responses and household geographic data
+    id_column
+        column containing id to join the 2 input tables
+    """
+    weights_df = extract_from_table(geographic_table)
+    survey_responses_df = extract_from_table(survey_responses_table)
+    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left")
+    update_table(geographic_survey_df, geographic_responses_table)
 
 
 @register_pipeline_stage("geography_and_imputation_logic")
@@ -816,75 +876,51 @@ def tables_to_csv(
 
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
-    address_lookup,
-    cis_lookup,
-    country_lookup,
-    postcode_lookup,
+    household_level_populations_table,
     new_sample_file,
     tranche,
+    cis_phase_lookup,
+    postcode_lookup,
     table_or_path,
     old_sample_file,
     design_weight_table,
 ):
     files = {
-        "address_lookup": address_lookup,
-        "cis_lookup": cis_lookup,
-        "country_lookup": country_lookup,
-        "postcode_lookup": postcode_lookup,
-        "new_sample_file": new_sample_file,
-        "tranche": tranche,
+        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "new_sample_file": {"file": new_sample_file, "type": "path"},
+        "old_sample_file": {"file": old_sample_file, "type": table_or_path},
+        "tranche": {"file": tranche, "type": "path"},
     }
-    dfs = extract_df_list(files, old_sample_file, table_or_path)
+    dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
+    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(dfs)
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
-def calculate_individual_level_population_totals(
+def population_projection(
     population_projection_previous: str,
     population_projection_current: str,
     month: int,
     year: int,
     aps_lookup: str,
     table_or_path: str,
-    individual_level_populations_for_non_response_adjustment_table: str,
-    individual_level_populations_for_calibration_table: str,
+    population_totals_table: str,
+    population_projections_table: str,
 ):
-    """
-    Calculate individual level population totals for use in non-response adjustment and weight calibration.
-
-    Parameters
-    ----------
-    population_projection_previous
-        path to CSV containing previous population projections
-    population_projection_current
-        path to CSV containing current population projections
-    month
-    year
-    aps_lookup
-        path to CSV containing APS lookup, for use in deriving ethnicity groups
-    table_or_path
-    individual_level_populations_for_calibration
-        name of HIVE table to write populations for calibration
-    individual_level_populations_for_non_response_adjustment
-        name of HIVE table to write populations for non-response adjustment
-    """
     files = {
-        "population_projection_current": population_projection_current,
-        "aps_lookup": aps_lookup,
-        "population_projection_previous": population_projection_previous,
+        "population_projection_current": {"file": population_projection_current, "type": "path"},
+        "aps_lookup": {"file": aps_lookup, "type": "path"},
+        "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
     }
-    dfs = extract_df_list(files, population_projection_previous, table_or_path)
+    dfs = extract_df_list(files)
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
-    update_table(
-        population_projections, individual_level_populations_for_non_response_adjustment_table, mode_overide="overwrite"
-    )
-    update_table(
-        populations_for_calibration, individual_level_populations_for_calibration_table, mode_overide="overwrite"
-    )
+    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
+    update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("pre_calibration")
@@ -916,8 +952,15 @@ def pre_calibration(
     pre_calibration_config_path
         path to YAML pre-calibration config file
     """
-    with open(pre_calibration_config_path, "r") as config_file:
-        pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
+    spark_session = get_or_create_spark_session()
+    if pre_calibration_config_path[:8] == "hdfs:///":
+        lines = spark_session.sparkContext.wholeTextFiles(pre_calibration_config_path)
+        rdd = lines.map(lambda x: x[1])
+        l = rdd.collect()[0]
+        pre_calibration_config = yaml.safe_load(l)
+    else:
+        with open(pre_calibration_config_path, "r") as config_file:
+            pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
     household_level_with_design_weights = extract_from_table(design_weight_table)
     population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
 

@@ -6,7 +6,7 @@ import cishouseholds.pipeline.pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.pipeline_stages import pipeline_stages as stages
+from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 
 
 def run_from_config():
@@ -51,7 +51,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
             stage_name = stage_config.pop("function")
             stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
             print(stage_text)  # functional
-            stages[stage_name](**stage_config)
+            pipeline_stages[stage_name](**stage_config)
         except Exception:
             pipeline_error_count += 1
             add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))

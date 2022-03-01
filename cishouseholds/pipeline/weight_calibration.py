@@ -11,6 +11,7 @@ from rpy2.robjects.packages import importr
 from cishouseholds.pipeline.ETL_scripts import extract_input_data
 from cishouseholds.pipeline.load import extract_from_table
 
+
 with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
     # silences import into text
     regenesees = importr(
@@ -24,16 +25,13 @@ with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
     )
 
 
-def extract_df_list(files, previous, check_table_or_path):
+def extract_df_list(files):
     dfs = {}
     for key, file in files.items():
-        if file == previous and check_table_or_path == "table":
-            continue
+        if file["type"] == "table":
+            dfs[key] = extract_from_table(file["file"])
         else:
-            dfs[key] = extract_input_data(file_paths=file, validation_schema=None, sep=",")
-
-    if check_table_or_path == "table":
-        dfs[previous] = extract_from_table(previous)
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
 
     return dfs
 

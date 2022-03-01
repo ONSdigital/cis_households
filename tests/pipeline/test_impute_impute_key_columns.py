@@ -19,13 +19,13 @@ def test_impute_key_columns(spark_session):
     input_df = spark_session.createDataFrame(
         input_data,
         schema="""ons_household_id string, participant_id string, cis_area string, gor9d string, work_status_group string, dvhsize integer,
-                white_group string, sex string, date_of_birth string, visit_datetime string""",
+                ethnicity_white string, sex string, date_of_birth string, visit_datetime string""",
     )
 
     lookup_data = [("B-A", None, None, None, None, "1990-01-02", "method")]
     lookup_df = spark_session.createDataFrame(
         lookup_data,
-        schema="""participant_id string, white_group string, white_group_imputation_method string,
+        schema="""participant_id string, ethnicity_white string, ethnicity_white_imputation_method string,
         sex string, sex_imputation_method string, date_of_birth string, date_of_birth_imputation_method string""",
     )
 
@@ -37,24 +37,24 @@ def test_impute_key_columns(spark_session):
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
-        schema="""participant_id string, white_group string, sex string, date_of_birth string,
-                white_group_imputation_method string, sex_imputation_method string,
+        schema="""participant_id string, ethnicity_white string, sex string, date_of_birth string,
+                ethnicity_white_imputation_method string, sex_imputation_method string,
                 date_of_birth_imputation_method string""",
     )
 
     value_columns = [
         "participant_id",
-        "white_group",
+        "ethnicity_white",
         "sex",
         "date_of_birth",
     ]
     method_columns = [
         "participant_id",
-        "white_group_imputation_method",
+        "ethnicity_white_imputation_method",
         "sex_imputation_method",
         "date_of_birth_imputation_method",
     ]
-    output_df = impute_key_columns(input_df, lookup_df, ["white_group", "sex", "date_of_birth"], log_directory="./")
+    output_df = impute_key_columns(input_df, lookup_df, ["ethnicity_white", "sex", "date_of_birth"], log_directory="./")
     for columns in [value_columns, method_columns]:
         assert_df_equality(
             output_df.select(*columns),
@@ -62,5 +62,5 @@ def test_impute_key_columns(spark_session):
             ignore_row_order=True,
         )
 
-    for demographic_variable in ["white_group", "sex", "date_of_birth"]:
+    for demographic_variable in ["ethnicity_white", "sex", "date_of_birth"]:
         assert output_df.where(F.col(demographic_variable).isNull()).count() == 0

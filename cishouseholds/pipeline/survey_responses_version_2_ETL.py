@@ -43,7 +43,6 @@ from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
-from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
@@ -93,8 +92,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_consent_code(
         df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    # df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    # df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -704,30 +703,30 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df)
-    # ethnicity_map = {
-    #     "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-    #     "Asian": [
-    #         "Asian or Asian British-Indian",
-    #         "Asian or Asian British-Pakistani",
-    #         "Asian or Asian British-Bangladeshi",
-    #         "Asian or Asian British-Chinese",
-    #         "Any other Asian background",
-    #     ],
-    #     "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-    #     "Mixed": [
-    #         "Mixed-White & Black Caribbean",
-    #         "Mixed-White & Black African",
-    #         "Mixed-White & Asian",
-    #         "Any other Mixed background",
-    #     ],
-    #     "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    # }
-    # df = assign_column_from_mapped_list_key(
-    #     df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
-    # )
-    # df = assign_ethnicity_white(
-    #     df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    # )
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
 
     df = assign_work_health_care(
         df,
@@ -822,8 +821,23 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = update_column_values_from_column_reference(
-        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = update_column_values_from_map(
+        df=df,
+        column="smokes_nothing_now",
+        map={"Yes": "No", "No": "Yes"},
+        condition_column="smokes_or_vapes",
     )
     return df
 
