@@ -7,7 +7,6 @@ from typing import List
 from typing import Union
 
 import pandas as pd
-import yaml
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_multigeneration
@@ -20,6 +19,7 @@ from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
@@ -863,8 +863,7 @@ def tables_to_csv(
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
     category_map_dictionary = category_maps[category_map]
 
-    with open(tables_to_csv_config_file) as f:
-        config_file = yaml.load(f, Loader=yaml.FullLoader)
+    config_file = get_secondary_config(tables_to_csv_config_file)
 
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
@@ -960,15 +959,7 @@ def pre_calibration(
     pre_calibration_config_path
         path to YAML pre-calibration config file
     """
-    spark_session = get_or_create_spark_session()
-    if pre_calibration_config_path[:8] == "hdfs:///":
-        lines = spark_session.sparkContext.wholeTextFiles(pre_calibration_config_path)
-        rdd = lines.map(lambda x: x[1])
-        file = rdd.collect()[0]
-        pre_calibration_config = yaml.safe_load(file)
-    else:
-        with open(pre_calibration_config_path, "r") as config_file:
-            pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
+    pre_calibration_config = get_secondary_config(pre_calibration_config_path)
     household_level_with_design_weights = extract_from_table(design_weight_table)
     population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
 
@@ -1029,8 +1020,7 @@ def weight_calibration(
     """
     spark_session = get_or_create_spark_session()
 
-    with open(calibration_config_path, "r") as config_file:
-        calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
+    calibration_config = get_secondary_config(calibration_config_path)
     population_totals_df = extract_from_table(individual_level_populations_for_calibration_table)
     full_response_level_df = extract_from_table(responses_pre_calibration_table)
 
