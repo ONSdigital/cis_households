@@ -53,7 +53,15 @@ from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
 from cishouseholds.weights.weights import prepare_auxillary_data
-from dummy_data_generation.generate_data import *
+from dummy_data_generation.generate_data import generate_historic_bloods_data
+from dummy_data_generation.generate_data import generate_nims_table
+from dummy_data_generation.generate_data import generate_ons_gl_report_data
+from dummy_data_generation.generate_data import generate_survey_v0_data
+from dummy_data_generation.generate_data import generate_survey_v1_data
+from dummy_data_generation.generate_data import generate_survey_v2_data
+from dummy_data_generation.generate_data import generate_unioxf_medtest_data
+from dummy_data_generation.generate_data import timedelta
+
 
 pipeline_stages = {}
 
@@ -755,7 +763,7 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *list(processed_file_log.select("filename").distinct().rdd.flatMap(lambda x: x).collect()),
+                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
@@ -956,8 +964,8 @@ def pre_calibration(
     if pre_calibration_config_path[:8] == "hdfs:///":
         lines = spark_session.sparkContext.wholeTextFiles(pre_calibration_config_path)
         rdd = lines.map(lambda x: x[1])
-        l = rdd.collect()[0]
-        pre_calibration_config = yaml.safe_load(l)
+        file = rdd.collect()[0]
+        pre_calibration_config = yaml.safe_load(file)
     else:
         with open(pre_calibration_config_path, "r") as config_file:
             pre_calibration_config = yaml.load(config_file, Loader=yaml.FullLoader)
