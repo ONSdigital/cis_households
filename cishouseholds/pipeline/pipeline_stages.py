@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 from functools import reduce
 from io import BytesIO
 from itertools import chain
@@ -60,7 +61,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-from dummy_data_generation.generate_data import timedelta
 
 
 pipeline_stages = {}
