@@ -497,6 +497,8 @@ def union_dependent_cleaning(df):
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
         ],
     )
     col_val_map = {
