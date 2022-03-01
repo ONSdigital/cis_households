@@ -3,6 +3,7 @@ from datetime import datetime
 
 import cishouseholds.pipeline.input_file_processing  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
+import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status

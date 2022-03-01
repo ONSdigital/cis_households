@@ -8,9 +8,6 @@ from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 
-from cishouseholds.pipeline.ETL_scripts import extract_input_data
-from cishouseholds.pipeline.load import extract_from_table
-
 
 with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
     # silences import into text
@@ -23,17 +20,6 @@ with open(os.devnull, "w") as devnull, contextlib.redirect_stdout(devnull):
             "str.GVF.db": "str_GVF_db_",
         },
     )
-
-
-def extract_df_list(files):
-    dfs = {}
-    for key, file in files.items():
-        if file["type"] == "table":
-            dfs[key] = extract_from_table(file["file"])
-        else:
-            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
-    return dfs
 
 
 def convert_columns_to_r_factors(df: robjects.DataFrame, columns_to_covert: list) -> robjects.DataFrame:

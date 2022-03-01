@@ -2,10 +2,7 @@
 Generate fake data for households survey raw input data.
 """
 # mypy: ignore-errors
-from datetime import datetime
-from datetime import timedelta
 from io import StringIO
-from pathlib import Path
 
 import pandas as pd
 from mimesis.schema import Field
@@ -248,7 +245,3 @@ def generate_nims_table(table_name, participant_ids, records=10):
     )
     nims_df.write.saveAsTable(table_name, mode="overwrite")
     return nims_df
-
-
-if __name__ == "__main__":
-    generate_dummy_data()

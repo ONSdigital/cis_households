@@ -68,7 +68,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: swab_sample_barcode_edited_flag
+  name: swab_sample_barcode_edited_in_swab_dataset_flag
   nullable: true
   type: integer
 - metadata: {}

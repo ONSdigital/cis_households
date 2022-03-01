@@ -497,6 +497,8 @@ def union_dependent_cleaning(df):
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
         ],
     )
     col_val_map = {
@@ -944,14 +946,6 @@ def fill_forwards_transformations(df):
         visit_date_column="visit_datetime",
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
     )
     df = fill_forward_from_last_change(
         df=df,
