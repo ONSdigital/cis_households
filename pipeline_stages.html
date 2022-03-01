@@ -41,12 +41,13 @@
 <dd><p>Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
 Should not be used in production, as all tables may be deleted.</p>
 <p>Use one or more of the optional parameters.</p>
-<dl class="simple">
-<dt>prefix</dt><dd><p>remove all tables with a given table name prefix (see config for current prefix)</p>
-</dd>
-<dt>table_names</dt><dd><p>one or more absolute table names to delete (including prefix)</p>
-</dd>
-<dt>pattern</dt><dd><p>drop tables where table name matches pattern in SQL format (e.g. “%_responses_%”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – remove all tables with a given table name prefix (see config for current prefix)</p></li>
+<li><p><strong>table_names</strong> – one or more absolute table names to delete (including prefix)</p></li>
+<li><p><strong>pattern</strong> – drop tables where table name matches pattern in SQL format (e.g. “%_responses_%”)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -56,16 +57,8 @@ Should not be used in production, as all tables may be deleted.</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">execute_union_dependent_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unioned_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformed_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.execute_union_dependent_transformations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformations that require the union of the different input survey response files.
 Includes combining data from different files and filling forwards or backwards over time.
-Parameters
-———-
-unioned_survey_table</p>
-<blockquote>
-<div><p>input table name for table containing the combined survey responses tables</p>
-</div></blockquote>
-<dl class="simple">
-<dt>transformed_table</dt><dd><p>output table name for table with applied transformations dependent on complete survey dataset</p>
-</dd>
-</dl>
+:param unioned_survey_table: input table name for table containing the combined survey responses tables
+:param transformed_table: output table name for table with applied transformations dependent on complete survey dataset</p>
 </dd></dl>
 
 <dl class="py function">
@@ -73,10 +66,12 @@ unioned_survey_table</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">generate_input_processing_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_column_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformation_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'overwrite'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_to_double_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_hadoop_read_write</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.generate_input_processing_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an input file processing stage function and register it.</p>
 <p>Returns dataframe for use in testing.</p>
-<dl class="simple">
-<dt>include_hadoop_read_write</dt><dd><p>set to False for use in testing on non-hadoop environments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>include_hadoop_read_write</strong> – set to False for use in testing on non-hadoop environments</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
 <p>See underlying functions for other parameter documentation.</p>
 </dd></dl>
 
@@ -85,14 +80,14 @@ unioned_survey_table</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">impute_demographic_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_values_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_responses_imputed_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.impute_demographic_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imputes values for key demographic columns.
 Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.</p>
-<dl class="simple">
-<dt>survey_responses_table</dt><dd><p>name of HIVE table containing survey responses for imputation, containing <cite>key_columns</cite></p>
-</dd>
-<dt>imputed_values_table</dt><dd><p>name of HIVE table containing previously imputed values</p>
-</dd>
-<dt>survey_responses_imputed_table</dt><dd><p>name of HIVE table to write survey responses following imputation</p>
-</dd>
-<dt>key_columns</dt><dd><p>names of key demographic columns to be filled forwards</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey responses for imputation, containing <cite>key_columns</cite></p></li>
+<li><p><strong>imputed_values_table</strong> – name of HIVE table containing previously imputed values</p></li>
+<li><p><strong>survey_responses_imputed_table</strong> – name of HIVE table to write survey responses following imputation</p></li>
+<li><p><strong>key_columns</strong> – names of key demographic columns to be filled forwards</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -101,14 +96,14 @@ Applies filling forward for listed columns. Specific imputations are then used f
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_geographic_data">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_geographic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geographic_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geographic_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_geographic_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Join weights file onto survey data by household id.</p>
-<dl class="simple">
-<dt>geographic_table</dt><dd><p>input table name for household data with geographic data</p>
-</dd>
-<dt>survey_responses_table</dt><dd><p>input table for individual participant responses</p>
-</dd>
-<dt>geographic_responses_table</dt><dd><p>output table name for joined survey responses and household geographic data</p>
-</dd>
-<dt>id_column</dt><dd><p>column containing id to join the 2 input tables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geographic_table</strong> – input table name for household data with geographic data</p></li>
+<li><p><strong>survey_responses_table</strong> – input table for individual participant responses</p></li>
+<li><p><strong>geographic_responses_table</strong> – output table name for joined survey responses and household geographic data</p></li>
+<li><p><strong>id_column</strong> – column containing id to join the 2 input tables</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -117,12 +112,13 @@ Applies filling forward for listed columns. Specific imputations are then used f
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_vaccination_data">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_vaccination_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">participant_records_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nims_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vaccination_data_table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_vaccination_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.</p>
-<dl class="simple">
-<dt>participant_records_table</dt><dd><p>input table containing participant level records to join</p>
-</dd>
-<dt>nims_table</dt><dd><p>nims table containing records to be joined to participant table</p>
-</dd>
-<dt>vaccination_data_table</dt><dd><p>output table name for the joined nims and participant table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>participant_records_table</strong> – input table containing participant level records to join</p></li>
+<li><p><strong>nims_table</strong> – nims table containing records to be joined to participant table</p></li>
+<li><p><strong>vaccination_data_table</strong> – output table name for the joined nims and participant table</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -131,19 +127,10 @@ Applies filling forward for listed columns. Specific imputations are then used f
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lookup_based_editing">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lookup_based_editing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_countries_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edited_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lookup_based_editing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit columns based on mappings from lookup files. Often used to correct data quality issues.
-Parameters
-———-
-input_table</p>
-<blockquote>
-<div><p>input table name for reference table</p>
-</div></blockquote>
-<dl class="simple">
-<dt>cohort_lookup_path</dt><dd><p>input file path name for cohort corrections lookup file</p>
-</dd>
-<dt>travel_countries_lookup_path</dt><dd><p>input file path name for travel_countries corrections lookup file</p>
-</dd>
-</dl>
-<p>edited_table</p>
+:param input_table: input table name for reference table
+:param cohort_lookup_path: input file path name for cohort corrections lookup file
+:param travel_countries_lookup_path: input file path name for travel_countries corrections lookup file
+:param edited_table:</p>
 </dd></dl>
 
 <dl class="py function">
@@ -151,15 +138,14 @@ input_table</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">merge_blood_ETL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antibody_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blood_files_to_exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antibody_output_tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.merge_blood_ETL" title="Permalink to this definition">¶</a></dt>
 <dd><p>High level function for joining antibody/blood test result data to survey responses.
 Should be run before the PCR/swab result merge.</p>
-<dl class="simple">
-<dt>survey_responses_table</dt><dd><p>name of HIVE table containing survey response records</p>
-</dd>
-<dt>antibody_table</dt><dd><p>name of HIVE table containing antibody/blood result records</p>
-</dd>
-<dt>swab_files_to_exclude</dt><dd><p>antibody/blood result files that should be excluded from the merge.
-Used to remove files that are found to contain invalid data.</p>
-</dd>
-<dt>swab_output_tables</dt><dd><dl class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey response records</p></li>
+<li><p><strong>antibody_table</strong> – name of HIVE table containing antibody/blood result records</p></li>
+<li><p><strong>swab_files_to_exclude</strong> – antibody/blood result files that should be excluded from the merge.
+Used to remove files that are found to contain invalid data.</p></li>
+<li><p><strong>swab_output_tables</strong> – <dl class="simple">
 <dt>names of the three output tables:</dt><dd><ol class="arabic simple">
 <li><p>survey responses and successfully joined results</p></li>
 <li><p>residual antibody/blood result records, where there was no barcode match to join on</p></li>
@@ -167,6 +153,8 @@ Used to remove files that are found to contain invalid data.</p>
 </ol>
 </dd>
 </dl>
+</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -176,15 +164,14 @@ Used to remove files that are found to contain invalid data.</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">merge_swab_ETL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_files_to_exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_output_tables</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.merge_swab_ETL" title="Permalink to this definition">¶</a></dt>
 <dd><p>High level function for joining PCR test result data to survey responses.
 Should be run following the antibody/blood result merge.</p>
-<dl class="simple">
-<dt>survey_responses_table</dt><dd><p>name of HIVE table containing survey response records</p>
-</dd>
-<dt>swab_table</dt><dd><p>name of HIVE table containing PCR/swab result records</p>
-</dd>
-<dt>swab_files_to_exclude</dt><dd><p>PCR/swab result files that should be excluded from the merge.
-Used to remove files that are found to contain invalid data.</p>
-</dd>
-<dt>swab_output_tables</dt><dd><dl class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey response records</p></li>
+<li><p><strong>swab_table</strong> – name of HIVE table containing PCR/swab result records</p></li>
+<li><p><strong>swab_files_to_exclude</strong> – PCR/swab result files that should be excluded from the merge.
+Used to remove files that are found to contain invalid data.</p></li>
+<li><p><strong>swab_output_tables</strong> – <dl class="simple">
 <dt>names of the three output tables:</dt><dd><ol class="arabic simple">
 <li><p>survey responses and successfully joined results</p></li>
 <li><p>residual PCR/swab result records, where there was no barcode match to join on</p></li>
@@ -192,6 +179,8 @@ Used to remove files that are found to contain invalid data.</p>
 </ol>
 </dd>
 </dl>
+</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -201,13 +190,14 @@ Used to remove files that are found to contain invalid data.</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">outer_join_antibody_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">antibody_test_result_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joined_antibody_test_result_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failed_join_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.outer_join_antibody_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outer join of data for two antibody/blood test targets (S and N protein antibodies).
 Creates a single record per blood sample.</p>
-<dl class="simple">
-<dt>antibody_test_result_table</dt><dd><p>name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record</p>
-</dd>
-<dt>joined_antibody_test_result_table</dt><dd><p>name of HIVE table to write successfully joined records, where each blood sample has one record</p>
-</dd>
-<dt>failed_join_table</dt><dd><p>name of HIVE table to write antibody/blood test results that failed to merge.
-Specifically, those with more than two records in the unjoined data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>antibody_test_result_table</strong> – name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record</p></li>
+<li><p><strong>joined_antibody_test_result_table</strong> – name of HIVE table to write successfully joined records, where each blood sample has one record</p></li>
+<li><p><strong>failed_join_table</strong> – name of HIVE table to write antibody/blood test results that failed to merge.
+Specifically, those with more than two records in the unjoined data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -221,16 +211,15 @@ are adjusted by the non-response rates producing desgin weights adjusted.
 Calibration variables are calculated and all the files(dataframes) are written to HIVE
 for the weight calibration
 At the end of this processing stage 24 datasets (files will be produced): 6 datasets for each country</p>
-<dl class="simple">
-<dt>design_weight_table</dt><dd><p>name of HIVE table containing household level design weights</p>
-</dd>
-<dt>individual_level_populations_for_non_response_adjustment_table</dt><dd><p>name of HIVE table containing populations for non-response adjustment</p>
-</dd>
-<dt>survey_response_table</dt><dd><p>name of HIVE table containing survey responses</p>
-</dd>
-<dt>responses_pre_calibration_table</dt><dd><p>name of HIVE table to write data for weight calibration</p>
-</dd>
-<dt>pre_calibration_config_path</dt><dd><p>path to YAML pre-calibration config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>design_weight_table</strong> – name of HIVE table containing household level design weights</p></li>
+<li><p><strong>individual_level_populations_for_non_response_adjustment_table</strong> – name of HIVE table containing populations for non-response adjustment</p></li>
+<li><p><strong>survey_response_table</strong> – name of HIVE table containing survey responses</p></li>
+<li><p><strong>responses_pre_calibration_table</strong> – name of HIVE table to write data for weight calibration</p></li>
+<li><p><strong>pre_calibration_config_path</strong> – path to YAML pre-calibration config file</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -240,27 +229,26 @@ At the end of this processing stage 24 datasets (files will be produced): 6 data
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">record_level_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_editing_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edited_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtered_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.record_level_interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>This stage does two type of edits in a given table from HIVE given an unique_id column.
 Either value level editing or filtering editing.</p>
-<dl>
-<dt>survey_responses_table</dt><dd><p>table in which editing happens</p>
-</dd>
-<dt>csv_editing_file</dt><dd><p>defines the editing from old values to new values in the HIVE tables
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>survey_responses_table</strong> – table in which editing happens</p></li>
+<li><p><strong>csv_editing_file</strong> – <p>defines the editing from old values to new values in the HIVE tables
 Columns expected</p>
 <blockquote>
-<div><ul class="simple">
+<div><ul>
 <li><p>unique id</p></li>
 <li><p>column name to edit</p></li>
 <li><p>old value</p></li>
 <li><p>new value</p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>unique_id_column</dt><dd><p>unique id that will be edited</p>
-</dd>
-<dt>unique_id_list</dt><dd><p>list of ids to be filtered</p>
-</dd>
-<dt>edited_survey_responses_table</dt><dd><p>Hive table</p>
-</dd>
-<dt>filtered_survey_responses_table</dt><dd><p>Hive table when they have been filtered out from survey responses</p>
+</p></li>
+<li><p><strong>unique_id_column</strong> – unique id that will be edited</p></li>
+<li><p><strong>unique_id_list</strong> – list of ids to be filtered</p></li>
+<li><p><strong>edited_survey_responses_table</strong> – Hive table</p></li>
+<li><p><strong>filtered_survey_responses_table</strong> – Hive table when they have been filtered out from survey responses</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -276,29 +264,23 @@ Columns expected</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unique_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_failure_flag_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_count_column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invalid_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtered_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a excel spreadsheet with multiple sheets to summarise key data from various
 tables regarding the running of the pipeline; using overall and most recent statistics.
-Parameters
-———-
-unique_id_column</p>
+:param unique_id_column: column that should hold unique id for each row in responses file
+:param validation_failure_flag_column: name of the column containing the previously created to containt validation error messages</p>
 <blockquote>
-<div><p>column that should hold unique id for each row in responses file</p>
+<div><p>name should match that created in validate_survey_responses stage</p>
 </div></blockquote>
-<dl class="simple">
-<dt>validation_failure_flag_column</dt><dd><p>name of the column containing the previously created to containt validation error messages
-name should match that created in validate_survey_responses stage</p>
-</dd>
-<dt>duplicate_count_column_name</dt><dd><p>name of the column containing the previously created to containt count of rows that repeat
-on the responses table. name should match that created in validate_survey_responses stage</p>
-</dd>
-<dt>valid_survey_responses_table</dt><dd><p>table name of hdfs table of survey responses passing validation checks</p>
-</dd>
-<dt>invalid_survey_responses_table</dt><dd><p>table name of hdfs table of survey responses failing validation checks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>duplicate_count_column_name</strong> – name of the column containing the previously created to containt count of rows that repeat
+on the responses table. name should match that created in validate_survey_responses stage</p></li>
+<li><p><strong>valid_survey_responses_table</strong> – table name of hdfs table of survey responses passing validation checks</p></li>
+<li><p><strong>invalid_survey_responses_table</strong> – table name of hdfs table of survey responses failing validation checks</p></li>
+<li><p><strong>filtered_survey_responses_table</strong> – </p></li>
+<li><p><strong>output_directory</strong> – output folder location to store the report</p></li>
+</ul>
 </dd>
 </dl>
-<p>filtered_survey_responses_table
-output_directory</p>
-<blockquote>
-<div><p>output folder location to store the report</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
@@ -308,14 +290,14 @@ output_directory</p>
 Takes a yaml file in which HIVE table name and csv table name are defined as well as columns to be
 included in the csv file by a select statement.
 Optionally also point to an update map to be used for the variable name mapping of these outputs.</p>
-<dl class="simple">
-<dt>outgoing_directory</dt><dd><p>path to write output CSV files on HDFS</p>
-</dd>
-<dt>tables_to_csv_config_file</dt><dd><p>path to YAML config file to define input tables and output CSV names</p>
-</dd>
-<dt>category_map</dt><dd><p>name of the category map for converting category strings to integers</p>
-</dd>
-<dt>dry_run</dt><dd><p>when set to True, will delete files after they are written (for testing). Default is False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outgoing_directory</strong> – path to write output CSV files on HDFS</p></li>
+<li><p><strong>tables_to_csv_config_file</strong> – path to YAML config file to define input tables and output CSV names</p></li>
+<li><p><strong>category_map</strong> – name of the category map for converting category strings to integers</p></li>
+<li><p><strong>dry_run</strong> – when set to True, will delete files after they are written (for testing). Default is False.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -324,16 +306,8 @@ Optionally also point to an update map to be used for the variable name mapping 
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.union_survey_response_files">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">union_survey_response_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformed_survey_responses_table_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unioned_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.union_survey_response_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Union survey response for v0, v1 and v2, and write to table.
-Parameters
-———-
-transformed_survey_responses_table_pattern</p>
-<blockquote>
-<div><p>input table pattern for extracting each of the transformed survey responses tables</p>
-</div></blockquote>
-<dl class="simple">
-<dt>unioned_survey_responses_table</dt><dd><p>output table name for the combine file of 3 unioned survey responses</p>
-</dd>
-</dl>
+:param transformed_survey_responses_table_pattern: input table pattern for extracting each of the transformed survey responses tables
+:param unioned_survey_responses_table: output table name for the combine file of 3 unioned survey responses</p>
 </dd></dl>
 
 <dl class="py function">
@@ -341,16 +315,15 @@ transformed_survey_responses_table_pattern</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">validate_survey_responses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_count_column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_failure_flag_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invalid_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.validate_survey_responses" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate error column with outcomes of specific validation checks against fully
 transformed survey dataset.</p>
-<dl class="simple">
-<dt>survey_responses_table</dt><dd><p>input table name for fully transformed survey table</p>
-</dd>
-<dt>duplicate_count_column_name</dt><dd><p>column name in which to count duplicates of rows within the dataframe</p>
-</dd>
-<dt>validation_failure_flag_column</dt><dd><p>name for error column wherein each of the validation checks results are appended</p>
-</dd>
-<dt>valid_survey_responses_table</dt><dd><p>table containing results that passed the error checking process</p>
-</dd>
-<dt>invalid_survey_responses_table</dt><dd><p>table containing results that failed the error checking process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>survey_responses_table</strong> – input table name for fully transformed survey table</p></li>
+<li><p><strong>duplicate_count_column_name</strong> – column name in which to count duplicates of rows within the dataframe</p></li>
+<li><p><strong>validation_failure_flag_column</strong> – name for error column wherein each of the validation checks results are appended</p></li>
+<li><p><strong>valid_survey_responses_table</strong> – table containing results that passed the error checking process</p></li>
+<li><p><strong>invalid_survey_responses_table</strong> – table containing results that failed the error checking process</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
