@@ -49,7 +49,7 @@
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
-  consent_use_of_surplus_blood_samples: null
+  consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samplesyn: null
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
@@ -646,8 +646,8 @@
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'No'
   consent_contact_extra_researchyn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
@@ -942,9 +942,9 @@
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'true'
-  consent_16_visits: null
-  consent_1_visit: null
-  consent_5_visits: null
+  consent_16_visits: 'Yes'
+  consent_1_visit: 'Yes'
+  consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
@@ -2443,8 +2443,8 @@
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'False'
   consent_blood_samples_if_positiveyn: null
-  consent_blood_test: null
-  consent_contact_extra_research: null
+  consent_blood_test: 'No'
+  consent_contact_extra_research: 'Yes'
   consent_contact_extra_researchyn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
