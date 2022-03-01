@@ -25,6 +25,7 @@ jobs:
     - name: Build the book
       run: |
         (cd docs && make html)
+        touch docs/build/html/.nojekyll
     - name: Deploy docs
       uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
