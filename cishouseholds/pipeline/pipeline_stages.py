@@ -10,6 +10,8 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import assign_column_from_mapped_list_key
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import get_files_to_be_processed
@@ -38,6 +40,7 @@ from cishouseholds.pipeline.post_merge_processing import filter_response_records
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_age_columns
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
@@ -61,7 +64,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-
 
 pipeline_stages = {}
 
@@ -659,14 +661,27 @@ def join_geographic_data(
     update_table(geographic_survey_df, geographic_responses_table)
 
 
-@register_pipeline_stage("geography_and_imputation_logic")
+@register_pipeline_stage("geography_and_post_imputation_logic")
 def process_post_merge(
-    imputed_antibody_swab_table: str,
+    imputed_responses_table: str,
     response_records_table: str,
     invalid_response_records_table: str,
     key_columns: List[str],
 ):
-    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
+    """
+    Apply transformations on individual responses that depends upon imputed values stage
+    Parameters
+    ----------
+    imputed_responses_table
+        input table with imputed survey responses values
+    response_records_table
+        output table with individual response level records that are valid
+    invalid_response_records_table
+        output table with individual response level records that are invalid
+    key_columns
+        columns to impute
+    """
+    df_with_imputed_values = extract_from_table(imputed_responses_table)
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
     imputation_columns = chain(
@@ -686,6 +701,39 @@ def process_post_merge(
         visit_date_column="visit_date_string",
         date_of_birth_column="date_of_birth",
         country_column="country_name",
+    )
+
+    response_level_records_df = derive_age_columns(response_level_records_df)
+
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+
+    response_level_records_df = assign_column_from_mapped_list_key(
+        df=response_level_records_df,
+        column_name_to_assign="ethnicity_group",
+        reference_column="ethnicity",
+        map=ethnicity_map,
+    )
+    response_level_records_df = assign_ethnicity_white(
+        response_level_records_df,
+        column_name_to_assign="ethnicity_white",
+        ethnicity_group_column_name="ethnicity_group",
     )
 
     update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
