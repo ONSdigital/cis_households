@@ -497,6 +497,8 @@ def union_dependent_cleaning(df):
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
         ],
     )
     col_val_map = {
@@ -703,30 +705,30 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df)
-    # ethnicity_map = {
-    #     "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-    #     "Asian": [
-    #         "Asian or Asian British-Indian",
-    #         "Asian or Asian British-Pakistani",
-    #         "Asian or Asian British-Bangladeshi",
-    #         "Asian or Asian British-Chinese",
-    #         "Any other Asian background",
-    #     ],
-    #     "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-    #     "Mixed": [
-    #         "Mixed-White & Black Caribbean",
-    #         "Mixed-White & Black African",
-    #         "Mixed-White & Asian",
-    #         "Any other Mixed background",
-    #     ],
-    #     "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    # }
-    # df = assign_column_from_mapped_list_key(
-    #     df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
-    # )
-    # df = assign_ethnicity_white(
-    #     df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    # )
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
 
     df = assign_work_health_care(
         df,
