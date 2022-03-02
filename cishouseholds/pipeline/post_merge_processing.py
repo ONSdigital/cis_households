@@ -13,7 +13,7 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
-from cishouseholds.impute import knn_imputation_for_date
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
@@ -152,8 +152,10 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     #     donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
     #     log_file_path=log_directory,
     # )
-    deduplicated_df = knn_imputation_for_date(
-        df=deduplicated_df,
+
+    df = impute_and_flag(
+        df=df,
+        imputation_function=impute_date_by_k_nearest_neighbours,
         column_name_to_assign="date_of_birth",
         reference_column="date_of_birth",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
