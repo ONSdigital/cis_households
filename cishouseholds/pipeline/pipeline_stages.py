@@ -10,8 +10,6 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
-from cishouseholds.derive import assign_column_from_mapped_list_key
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import get_files_to_be_processed
@@ -27,6 +25,7 @@ from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import extract_df_list
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -40,16 +39,10 @@ from cishouseholds.pipeline.post_merge_processing import filter_response_records
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
-from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_age_columns
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
-from cishouseholds.pipeline.weight_calibration import calibrate_weights
-from cishouseholds.pipeline.weight_calibration import extract_df_list
-from cishouseholds.pipeline.weight_calibration import prepare_population_totals_vector
-from cishouseholds.pipeline.weight_calibration import prepare_sample_design
-from cishouseholds.pipeline.weight_calibration import subset_for_calibration
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.population_projections import proccess_population_projection_df
@@ -661,27 +654,14 @@ def join_geographic_data(
     update_table(geographic_survey_df, geographic_responses_table)
 
 
-@register_pipeline_stage("geography_and_post_imputation_logic")
+@register_pipeline_stage("geography_and_imputation_logic")
 def process_post_merge(
-    imputed_responses_table: str,
+    imputed_antibody_swab_table: str,
     response_records_table: str,
     invalid_response_records_table: str,
     key_columns: List[str],
 ):
-    """
-    Apply transformations on individual responses that depends upon imputed values stage
-    Parameters
-    ----------
-    imputed_responses_table
-        input table with imputed survey responses values
-    response_records_table
-        output table with individual response level records that are valid
-    invalid_response_records_table
-        output table with individual response level records that are invalid
-    key_columns
-        columns to impute
-    """
-    df_with_imputed_values = extract_from_table(imputed_responses_table)
+    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
     df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
     imputation_columns = chain(
@@ -701,39 +681,6 @@ def process_post_merge(
         visit_date_column="visit_date_string",
         date_of_birth_column="date_of_birth",
         country_column="country_name",
-    )
-
-    response_level_records_df = derive_age_columns(response_level_records_df)
-
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-
-    response_level_records_df = assign_column_from_mapped_list_key(
-        df=response_level_records_df,
-        column_name_to_assign="ethnicity_group",
-        reference_column="ethnicity",
-        map=ethnicity_map,
-    )
-    response_level_records_df = assign_ethnicity_white(
-        response_level_records_df,
-        column_name_to_assign="ethnicity_white",
-        ethnicity_group_column_name="ethnicity_group",
     )
 
     update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
@@ -1035,76 +982,3 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
-
-
-@register_pipeline_stage("weight_calibration")
-def weight_calibration(
-    individual_level_populations_for_calibration_table: str,
-    responses_pre_calibration_table: str,
-    base_output_table_name: str,
-    calibration_config_path: str,
-):
-    """
-    Run weight calibration for multiple datasets, as specified by the stage configuration.
-
-    calibration_config_path
-        path to YAML file containing a list of dictionaries with keys:
-            dataset_name: swab_evernever
-            country: string country name in lower case
-            bounds: list of lists containing lower and upper bounds
-            design_weight_column: string column name
-            calibration_model_components: list of string column names
-
-    Parameters
-    ----------
-    individual_level_populations_for_calibration_table
-        name of HIVE table containing populations for calibration
-    responses_pre_calibration_table
-        name of HIVE table containing responses from pre-calibration
-    base_output_table_name
-        base name to use for output tables, will be suffixed with dataset and country names to identify outputs
-    calibration_config_path
-        path to YAML calibration config file
-    """
-    spark_session = get_or_create_spark_session()
-
-    calibration_config = get_secondary_config(calibration_config_path)
-    population_totals_df = extract_from_table(individual_level_populations_for_calibration_table)
-    full_response_level_df = extract_from_table(responses_pre_calibration_table)
-
-    for dataset_options in calibration_config:
-        population_totals_vector = prepare_population_totals_vector(
-            population_totals_df, dataset_options["dataset_name"]
-        )
-        responses_subset_df_r_df = subset_for_calibration(
-            full_response_level_df,
-            dataset_options["design_weight_column"],
-            dataset_options["calibration_model_components"],
-            dataset_options["subset_flag_column"],
-            dataset_options["country"],
-        )
-        sample_design = prepare_sample_design(responses_subset_df_r_df, dataset_options["design_weight_column"])
-
-        for bounds in dataset_options["bounds"]:
-            calibrated_pandas_df = calibrate_weights(
-                responses_subset_df_r_df,
-                population_totals_vector,
-                sample_design,
-                dataset_options["calibration_model_components"],
-                dataset_options["design_weight_column"],
-                bounds,
-            )
-            calibrated_df = spark_session.createDataFrame(calibrated_pandas_df)
-            update_table(
-                calibrated_df,
-                base_output_table_name
-                + "_"
-                + dataset_options["dataset_name"]
-                + "_"
-                + dataset_options["country_name_12"]
-                + "_"
-                + bounds[0]
-                + "-"
-                + bounds[1],
-                mode_overide="overwrite",
-            )

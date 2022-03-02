@@ -7,6 +7,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.ETL_scripts import extract_input_data
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -150,3 +151,14 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
+
+
+def extract_df_list(files):
+    dfs = {}
+    for key, file in files.items():
+        if file["type"] == "table":
+            dfs[key] = extract_from_table(file["file"])
+        else:
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
+
+    return dfs

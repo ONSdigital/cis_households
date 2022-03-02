@@ -16,7 +16,9 @@ def transform_swab_delta(df: DataFrame) -> DataFrame:
     """
     spark_session = get_or_create_spark_session()
     df = assign_filename_column(df, "swab_test_source_file")
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    df = clean_barcode(
+        df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_in_swab_dataset_flag"
+    )
     df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
     df = derive_cq_pattern(
         df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session

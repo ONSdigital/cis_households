@@ -11,11 +11,6 @@ from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
 
-# from cishouseholds.pipeline.load import check_table_exists
-
-
-# from cishouseholds.pipeline.load import check_table_exists
-
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
