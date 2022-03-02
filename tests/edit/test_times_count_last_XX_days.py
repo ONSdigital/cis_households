@@ -46,4 +46,4 @@ def test_count_activities_last_XX_days(spark_session):
         ],
         max_value=10,
     )
-    assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)
+    assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
