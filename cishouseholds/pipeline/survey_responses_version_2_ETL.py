@@ -208,7 +208,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Student",  # noqa: E501
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
@@ -233,6 +233,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
             "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",
             "Not working and not looking for work": "Not working and not looking for work",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
@@ -260,6 +261,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
