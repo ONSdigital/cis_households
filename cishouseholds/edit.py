@@ -697,6 +697,11 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
     return df
 
 
+"times_outside_shopping_or_socialising_last_7_days",
+"times_shopping_last_7_days",
+"times_socialise_last_7_days",
+
+
 def count_activities_last_XX_days(
     df: DataFrame,
     activity_combo_last_XX_days: str,
@@ -714,21 +719,12 @@ def count_activities_last_XX_days(
     list_activities_last_XX_days
     max_value
     """
-    df = df.withColumn("FLAG_count", F.lit(0).cast("integer"))
-    df = df.withColumn("FLAG_all-null", F.coalesce(*[F.col(column) for column in list_activities_last_XX_days]))
-    for activity_column in list_activities_last_XX_days:
-        df = df.withColumn(
-            "FLAG_count",
-            F.when(
-                (F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull()),
-                (F.col("FLAG_count") + F.when(F.col(activity_column).isNull(), 0).otherwise(F.col(activity_column))),
-            ),
-        )
+    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = update_column_values_from_map(df, col, value_map)
+        df = df.withColumn(col, F.col(col).cast("integer"))
+
     df = df.withColumn(
-        activity_combo_last_XX_days,
-        F.when(
-            F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull(),
-            F.when(F.col("FLAG_count") < max_value, F.col("FLAG_count")).otherwise(max_value),
-        ).otherwise(F.col(activity_combo_last_XX_days)),
+        F.when(F.col(activity_combo_last_XX_days).isNull(), F.least(F.lit(7), F.sum(*list_activities_last_XX_days)))
     )
-    return df.drop("FLAG_count", "FLAG_all-null")
+    return df
