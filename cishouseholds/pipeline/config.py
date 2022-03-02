@@ -1,7 +1,5 @@
 import functools
 import os
-import re
-from typing import Union
 
 import yaml
 
@@ -24,14 +22,12 @@ def get_config() -> dict:
     return config
 
 
-def get_hdfs_config(location) -> Union[list, dict]:
+def get_secondary_config(location) -> dict:
     if location is None:
-        return []
-    if re.match(r"^hdfs:///(.*)", location):
-        yaml_string = read_file_to_string(location)
-        config = yaml.load(yaml_string, Loader=yaml.FullLoader)
-    else:
-        with open(location) as fh:
-            config = yaml.load(fh, Loader=yaml.FullLoader)
+        return {}
+    if location[:8] == "hdfs:///":
+        location = read_file_to_string(location)
 
+    with open(location) as fh:
+        config = yaml.load(fh, Loader=yaml.FullLoader)
     return config

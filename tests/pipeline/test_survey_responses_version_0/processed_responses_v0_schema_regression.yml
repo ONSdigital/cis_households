@@ -254,27 +254,27 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: work_status_v0
   nullable: true

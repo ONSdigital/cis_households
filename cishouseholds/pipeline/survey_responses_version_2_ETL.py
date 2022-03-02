@@ -43,7 +43,6 @@ from cishouseholds.edit import count_activities_last_XX_days
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
-from cishouseholds.edit import update_column_values_from_column_reference
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
@@ -498,6 +497,8 @@ def union_dependent_cleaning(df):
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
         ],
     )
     col_val_map = {
@@ -704,30 +705,30 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df)
-    # ethnicity_map = {
-    #     "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-    #     "Asian": [
-    #         "Asian or Asian British-Indian",
-    #         "Asian or Asian British-Pakistani",
-    #         "Asian or Asian British-Bangladeshi",
-    #         "Asian or Asian British-Chinese",
-    #         "Any other Asian background",
-    #     ],
-    #     "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-    #     "Mixed": [
-    #         "Mixed-White & Black Caribbean",
-    #         "Mixed-White & Black African",
-    #         "Mixed-White & Asian",
-    #         "Any other Mixed background",
-    #     ],
-    #     "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    # }
-    # df = assign_column_from_mapped_list_key(
-    #     df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
-    # )
-    # df = assign_ethnicity_white(
-    #     df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    # )
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
 
     df = assign_work_health_care(
         df,
@@ -822,8 +823,23 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = update_column_values_from_column_reference(
-        df, "smokes_nothing_now", "smokes_or_vapes", {"Yes": "No", "No": "Yes"}
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_care_home_last_28_days",
+        last_XX_days="care_home_last_28_days",
+        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+    )
+    df = derive_household_been_last_XX_days(
+        df=df,
+        household_last_XX_days="household_been_hospital_last_28_days",
+        last_XX_days="hospital_last_28_days",
+        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+    )
+    df = update_column_values_from_map(
+        df=df,
+        column="smokes_nothing_now",
+        map={"Yes": "No", "No": "Yes"},
+        condition_column="smokes_or_vapes",
     )
     return df
 
@@ -930,14 +946,6 @@ def fill_forwards_transformations(df):
         visit_date_column="visit_datetime",
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
-    )
-    df = impute_outside_uk_columns(
-        df=df,
-        outside_uk_since_column="been_outside_uk_since_april_2020",
-        outside_uk_date_column="been_outside_uk_last_date",
-        outside_country_column="been_outside_uk_last_country",
-        visit_datetime_column="visit_datetime",
-        id_column="participant_id",
     )
     df = fill_forward_from_last_change(
         df=df,

@@ -2,15 +2,13 @@
 Generate fake data for households survey raw input data.
 """
 # mypy: ignore-errors
-from datetime import datetime
-from datetime import timedelta
-from pathlib import Path
+from io import StringIO
 
 import pandas as pd
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from dummy_data_generation.helpers import code_mask
 from dummy_data_generation.helpers import CustomRandom
@@ -24,7 +22,16 @@ from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
 
+
 _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
+
+
+def write_output(pd_df: pd.DataFrame, filepath: str, sep: str = ","):
+    output = StringIO()
+    pd_df.to_csv(output, index=False, sep=sep)
+    write_string_to_file(output.getvalue().encode(), filepath)
+    print("created dummy data in path: ", filepath)  # functional
+    output.close()
 
 
 def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_barcodes):
@@ -35,7 +42,7 @@ def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_
         schema=get_voyager_0_data_description(_, blood_barcodes=blood_barcodes, swab_barcodes=swab_barcodes)
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
-    survey_responses.to_csv(directory / f"ONS_Datafile_{file_date}.csv", index=False, sep="|")
+    write_output(survey_responses, directory / f"ONS_Datafile_{file_date}.csv", "|")
     return survey_responses
 
 
@@ -48,7 +55,7 @@ def generate_survey_v1_data(directory, file_date, records, swab_barcodes, blood_
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
 
-    survey_responses.to_csv(directory / f"ONSECRF4_Datafile_{file_date}.csv", index=False, sep="|")
+    write_output(survey_responses, directory / f"ONSECRF4_Datafile_{file_date}.csv", "|")
     return survey_responses
 
 
@@ -60,8 +67,7 @@ def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_
         schema=get_voyager_2_data_description(_, blood_barcodes=blood_barcodes, swab_barcodes=swab_barcodes)
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
-
-    survey_responses.to_csv(directory / f"ONSECRF5_Datafile_{file_date}.csv", index=False, sep="|")
+    write_output(survey_responses, directory / f"ONSECRF5_Datafile_{file_date}.csv", "|")
     return survey_responses
 
 
@@ -73,7 +79,7 @@ def generate_ons_gl_report_data(directory, file_date, records):
     schema = Schema(schema=get_swab_data_description(_))
     survey_ons_gl_report = pd.DataFrame(schema.create(iterations=records))
 
-    survey_ons_gl_report.to_csv(directory / f"ONS_GL_Report_{file_date}_0000.csv", index=False)
+    write_output(survey_ons_gl_report, directory / f"ONS_GL_Report_{file_date}_0000.csv")
     return survey_ons_gl_report
 
 
@@ -99,8 +105,8 @@ def generate_unioxf_medtest_data(directory, file_date, records):
                 + survey_unioxf_medtest_s.at[row, "Plate Barcode"][-2:]
             )
 
-    survey_unioxf_medtest_s.to_csv(directory / f"Unioxf_medtestS_{file_date}.csv", index=False)
-    survey_unioxf_medtest_n.to_csv(directory / f"Unioxf_medtestN_{file_date}.csv", index=False)
+    write_output(survey_unioxf_medtest_s, directory / f"Unioxf_medtestS_{file_date}.csv")
+    write_output(survey_unioxf_medtest_n, directory / f"Unioxf_medtestN_{file_date}.csv")
     return survey_unioxf_medtest_s, survey_unioxf_medtest_n
 
 
@@ -111,7 +117,7 @@ def generate_historic_bloods_data(directory, file_date, records, target):
     schema = Schema(schema=get_historical_blood_data_description(_))
     historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
-    historic_bloods_data.to_csv(directory / f"historical_bloods_{target}_{file_date}.csv", index=False)
+    write_output(historic_bloods_data, directory / f"historical_bloods_{target}_{file_date}.csv")
     return historic_bloods_data
 
 
@@ -122,7 +128,7 @@ def generate_unassayed_bloods_data(directory, file_date, records):
     schema = Schema(schema=get_unassayed_blood_data_description(_))
     unassayed_bloods_data = pd.DataFrame(schema.create(iterations=records))
 
-    unassayed_bloods_data.to_csv(directory / f"Unioxf_medtest_unassayed_{file_date}.csv", index=False)
+    write_output(unassayed_bloods_data, directory / f"Unioxf_medtest_unassayed_{file_date}.csv")
     return unassayed_bloods_data
 
 
@@ -149,7 +155,7 @@ def generate_northern_ireland_data(directory, file_date, records):
     schema = Schema(schema=northern_ireland_data_description)
     northern_ireland_data = pd.DataFrame(schema.create(iterations=records))
 
-    northern_ireland_data.to_csv(directory / f"CIS_Direct_NI_{file_date}.csv", index=False)
+    write_output(northern_ireland_data, directory / f"CIS_Direct_NI_{file_date}.csv")
     return northern_ireland_data
 
 
@@ -216,7 +222,7 @@ def generate_sample_direct_data(directory, file_date, records):
     schema = Schema(schema=sample_direct_eng_description)
     sample_direct_data = pd.DataFrame(schema.create(iterations=records))
 
-    sample_direct_data.to_csv(directory / f"sample_direct_eng_wc{file_date}.csv", index=False)
+    write_output(sample_direct_data, directory / f"sample_direct_eng_wc{file_date}.csv")
     return sample_direct_data
 
 
@@ -239,89 +245,3 @@ def generate_nims_table(table_name, participant_ids, records=10):
     )
     nims_df.write.saveAsTable(table_name, mode="overwrite")
     return nims_df
-
-
-if __name__ == "__main__":
-    raw_dir = Path(__file__).parent.parent / "generated_data"
-    swab_dir = raw_dir / "swab"
-    blood_dir = raw_dir / "blood"
-    survey_dir = raw_dir / "survey"
-    northern_ireland_dir = raw_dir / "northern_ireland_sample"
-    sample_direct_dir = raw_dir / "england_wales_sample"
-    unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
-    historic_bloods_dir = raw_dir / "historic_blood"
-    historic_swabs_dir = raw_dir / "historic_swab"
-    historic_survey_dir = raw_dir / "historic_survey"
-    for directory in [
-        swab_dir,
-        blood_dir,
-        survey_dir,
-        northern_ireland_dir,
-        sample_direct_dir,
-        unprocessed_bloods_dir,
-        historic_bloods_dir,
-        historic_swabs_dir,
-        historic_survey_dir,
-    ]:
-        directory.mkdir(parents=True, exist_ok=True)
-
-    file_datetime = datetime.now()
-    lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
-    lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
-    file_date = datetime.strftime(file_datetime, format="%Y%m%d")
-
-    # Historic files
-    # historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
-    # historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
-
-    # historic_v2 = generate_survey_v2_data(
-    #     directory=historic_survey_dir,
-    #     file_date=file_date,
-    #     records=100,
-    #     swab_barcodes=historic_swabs["Sample"].unique().tolist(),
-    #     blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
-    # )
-
-    # Delta files
-    lab_swabs_1 = generate_ons_gl_report_data(swab_dir, file_date, 10)
-    lab_swabs_2 = generate_ons_gl_report_data(swab_dir, lab_date_1, 10)
-    lab_swabs_3 = generate_ons_gl_report_data(swab_dir, lab_date_2, 10)
-    lab_swabs = pd.concat([lab_swabs_1, lab_swabs_2, lab_swabs_3])
-
-    lab_bloods_s_1, lab_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
-    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, lab_date_1, 10)
-    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, lab_date_2, 10)
-
-    lab_bloods = pd.concat(
-        [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
-    )
-
-    historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
-    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "S")
-
-    # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
-    # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
-    # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
-
-    # swab/blood barcode lists
-    swab_barcode = lab_swabs["Sample"].unique().tolist()
-    blood_barcode = lab_bloods["Serum Source ID"].unique().tolist()
-    blood_barcode += historic_blood_n["blood_barcode_OX"].unique().tolist()
-    blood_barcode += historic_blood_s["blood_barcode_OX"].unique().tolist()
-
-    swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
-    blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
-
-    v0 = generate_survey_v0_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-    v1 = generate_survey_v1_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-    v2 = generate_survey_v2_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-
-    participant_ids = v2["Participant_id"].unique().tolist()
-
-    generate_nims_table(get_full_table_name("cis_nims_20210101"), participant_ids)
