@@ -727,4 +727,6 @@ def count_activities_last_XX_days(
             F.least(F.lit(max_value), reduce(add, [F.col(x) for x in list_activities_last_XX_days])),
         ).otherwise(activity_combo_last_XX_days),
     )
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = df.withColumn(col, F.col(col).cast("integer"))
     return df

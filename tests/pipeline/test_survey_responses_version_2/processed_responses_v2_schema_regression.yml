@@ -677,16 +677,16 @@ fields:
   type: string
 - metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: times_shopping_last_7_days
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: times_socialise_last_7_days
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: is_regularly_lateral_flow_testing
   nullable: true
