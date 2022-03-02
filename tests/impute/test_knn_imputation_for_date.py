@@ -30,5 +30,7 @@ def test_knn_imputation_for_date(spark_session):
         group_columns=["group", "group_2"],
         log_file_path="/",
     )
-    import pdb;pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)

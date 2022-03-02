@@ -807,4 +807,4 @@ def knn_imputation_for_date(
         imputation_function=assign_random_day_in_month,
         reference_column="date_of_birth",
     )
-    return df#.drop("_month", "_year")
+    return df  # .drop("_month", "_year")
