@@ -57,6 +57,8 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
+# from functools import reduce
+
 
 pipeline_stages = {}
 
