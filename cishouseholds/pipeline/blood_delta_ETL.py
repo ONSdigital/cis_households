@@ -27,7 +27,9 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
         column_name_to_assign="unique_antibody_test_id",
         concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
     )
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    df = clean_barcode(
+        df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_in_bloods_dataset_flag"
+    )
     return df
 
 
