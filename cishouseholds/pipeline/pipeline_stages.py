@@ -241,9 +241,16 @@ def generate_input_processing_function(
 
     @register_pipeline_stage(stage_name)
     def _inner_function(
-        resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False, include_invalid=False
+        resource_path,
+        raw_table_name,
+        latest_only=False,
+        start_date=None,
+        end_date=None,
+        include_processed=False,
+        include_invalid=False,
     ):
         file_path_list = [resource_path]
+
         if include_hadoop_read_write:
             file_path_list = get_files_to_be_processed(
                 resource_path,
@@ -264,6 +271,7 @@ def generate_input_processing_function(
 
         df = extract_validate_transform_input_data(
             resource_path=file_path_list,
+            raw_table_name=raw_table_name,
             variable_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
