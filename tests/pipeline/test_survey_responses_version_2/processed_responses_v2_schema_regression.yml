@@ -677,8 +677,8 @@ fields:
   type: string
 - metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: times_shopping_last_7_days
   nullable: true
