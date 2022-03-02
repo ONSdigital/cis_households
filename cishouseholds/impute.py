@@ -10,6 +10,8 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_random_day_in_month
+
 
 def impute_outside_uk_columns(
     df: DataFrame,
@@ -756,3 +758,53 @@ def edit_multiple_columns_fill_forward(
         )
 
     return df
+
+
+def knn_imputation_for_date(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    group_columns: List[str],
+    log_file_path: str,
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    date_column
+    """
+    # extract month, year
+    df = df.withColumn("_month", F.month(reference_column))
+    df = df.withColumn("_year", F.year(reference_column))
+
+    # TODO: what happens with column_name_to_assign='_month',
+    import pdb
+
+    pdb.set_trace()
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_month_2",
+        reference_column="_month",
+        donor_group_columns=group_columns,
+        log_file_path=log_file_path,
+    )
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_year_2",
+        reference_column="_year",
+        donor_group_columns=group_columns,
+        log_file_path=log_file_path,
+    )
+    # calculate random day on the imputation wrapper
+    df = assign_random_day_in_month(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        month_column="_month",
+        year_column="_year",
+    )
+    df = impute_and_flag(
+        df=df,
+        imputation_function=assign_random_day_in_month,
+        reference_column="date_of_birth",
+    )
+    return df#.drop("_month", "_year")

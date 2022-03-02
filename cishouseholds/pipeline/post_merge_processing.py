@@ -7,13 +7,13 @@ from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_multigeneration
-from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
+from cishouseholds.impute import knn_imputation_for_date
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
@@ -145,9 +145,16 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         second_imputation_value="Male",
     )
     # TODO: replace by new function
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
+    #     log_file_path=log_directory,
+    # )
+    deduplicated_df = knn_imputation_for_date(
+        df=deduplicated_df,
+        column_name_to_assign="date_of_birth",
         reference_column="date_of_birth",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
         log_file_path=log_directory,
@@ -227,45 +234,3 @@ def filter_response_records(df: DataFrame, visit_date: str):
     df = df.where(F.col("filter_response_flag").isNull())
 
     return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")
-
-
-def random_date_and_imputation(
-    df: DataFrame,
-    log_directory: str,
-    date_column: str,
-) -> DataFrame:
-    """
-    Parameters
-    ----------
-    df
-    date_column
-    """
-    df = df.withColumn("TEMP_month", F.month(date_column))
-    df = df.withColumn("TEMP_year", F.year(date_column))
-
-    # extract month, year
-    df = impute_and_flag(
-        df=df,
-        imputation_function=impute_by_k_nearest_neighbours,
-        reference_column="age_at_visit",
-        # KNN needs a list of variables in which calculate
-        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path=log_directory,
-    )
-
-    df = impute_and_flag(
-        df=df,
-        imputation_function=impute_by_k_nearest_neighbours,
-        reference_column="age_at_visit",
-        # KNN needs a list of variables in which calculate
-        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path=log_directory,
-    )
-    # calculate random day
-    df = assign_random_day_in_month(
-        df=df,
-        column_name_to_assign="TEMP_day",
-        month_column="TEMP_month",
-        year_column="TEMP_year",
-    )
-    return df.drop("TEMP_month", "TEMP_year")
