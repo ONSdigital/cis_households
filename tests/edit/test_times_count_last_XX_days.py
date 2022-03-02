@@ -27,11 +27,11 @@ def test_count_activities_last_XX_days(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     3,      2,      1,      0),
+                (1,     None,      2,      1,      0),
                 (2,     4,      2,      1,      1),
                 (3,     10,     5,      6,      1),
-                (4,     1,      1,      None,   None),
-                (5,     None,   None,   None,   None),
+                (4,     10,      1,      None,   None),
+                (5,     10,   None,   None,   None),
             # fmt: on
         ],
         schema=schema,
@@ -46,4 +46,4 @@ def test_count_activities_last_XX_days(spark_session):
         ],
         max_value=10,
     )
-    assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)
+    assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
