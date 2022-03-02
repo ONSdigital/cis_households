@@ -53,7 +53,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
-        donor_group_columns=["cis_area"],
+        donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     )
@@ -62,18 +62,18 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
-        group_by_columns=["ethnicity_white", "gor9d"],
+        group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
 
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
-        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path=log_directory,
-    )
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["region_code", "other_survey_household_size_group"], # "work_status_group",
+    #     log_file_path=log_directory,
+    # )
 
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]

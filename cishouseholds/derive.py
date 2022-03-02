@@ -42,7 +42,13 @@ def assign_multigeneration(
             ("Scotland", "08", "15", "03", "01"),
             ("NI", "09", "01", "07", "02"),
         ],
-        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+        schema=[
+            country_column,
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+        ],
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(

@@ -29,7 +29,7 @@ lookup_variable_name_maps = {
         "sample_direct": "sample_addressbase_indicator",
         "hh_dweight_swab": "household_level_designweight_swab",
         "hh_dweight_atb": "household_level_designweight_antibodies",
-        "rgngor9d": "region_code",
+        "rgn/gor9d": "region_code",
         "laua": "local_authority_unity_authority_code",
         "oa11oac11": "output_area_code_11_census_output_area_classification_11",
         "msoa11": "middle_super_output_area_code_11",
