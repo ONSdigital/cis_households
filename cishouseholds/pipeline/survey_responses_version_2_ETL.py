@@ -3,8 +3,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_any_symptoms_around_visit
-from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
@@ -704,31 +702,6 @@ def union_dependent_derivations(df):
     """
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
-    df = derive_age_columns(df)
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-    df = assign_column_from_mapped_list_key(
-        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
-    )
-    df = assign_ethnicity_white(
-        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    )
 
     df = assign_work_health_care(
         df,

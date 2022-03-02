@@ -654,7 +654,7 @@ def join_geographic_data(
     update_table(geographic_survey_df, geographic_responses_table)
 
 
-@register_pipeline_stage("geography_and_imputation_logic")
+@register_pipeline_stage("geography_and_imputation_dependent_logic")
 def process_post_merge(
     imputed_antibody_swab_table: str,
     response_records_table: str,

@@ -1,7 +1,9 @@
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
+from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
@@ -10,6 +12,7 @@ from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.input_variable_names import nims_column_name_map
+from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_age_columns
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
@@ -84,6 +87,33 @@ def merge_dependent_transform(df: DataFrame):
     """
     Transformations depending on the merged dataset or imputed columns.
     """
+    df = derive_age_columns(df)
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
+    )
+    df = assign_ethnicity_white(
+        df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
+    )
+
     return df
 
 
