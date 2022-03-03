@@ -80,13 +80,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     )
 
 
-def merge_dependent_transform(df: DataFrame):
-    """
-    Transformations depending on the merged dataset or imputed columns.
-    """
-    return df
-
-
 def nims_transformations(df: DataFrame) -> DataFrame:
     """Clean and transform NIMS data after reading from table."""
     df = rename_column_names(df, nims_column_name_map)

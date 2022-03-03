@@ -1,7 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
 from io import BytesIO
-from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -34,9 +33,7 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehous
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
-from cishouseholds.pipeline.post_merge_processing import filter_response_records
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
-from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
@@ -659,10 +656,7 @@ def join_geographic_data(
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
 def geography_and_imputation_dependent_processing(
     imputed_responses_table: str,
-    response_records_table: str,
-    invalid_response_records_table: str,
     output_imputed_responses_table: str,
-    key_columns: List[str],
 ):
     """
     Apply processing that depends on the imputation and geographic columns being created
@@ -675,9 +669,8 @@ def geography_and_imputation_dependent_processing(
     key_columns
     """
     df_with_imputed_values = extract_from_table(imputed_responses_table)
-    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
 
-    multigeneration_df = assign_multigeneration(
+    df_with_imputed_values = assign_multigeneration(
         df=df_with_imputed_values,
         column_name_to_assign="multigen",
         participant_id_column="participant_id",
@@ -686,17 +679,14 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-    imputation_columns = chain(
-        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
-    )
-    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
+    # response_level_records_df, response_level_records_filtered_df = filter_response_records(
+    #     response_level_records_df, "visit_datetime"
+    # ) # TODO: move it to validation.
 
-    response_level_records_df, response_level_records_filtered_df = filter_response_records(
-        response_level_records_df, "visit_datetime"
-    )
-    update_table(multigeneration_df, output_imputed_responses_table, mode_overide="overwrite")
-    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
-    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
+    update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
+
+    # update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
+    # update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
 
 
 @register_pipeline_stage("report")
