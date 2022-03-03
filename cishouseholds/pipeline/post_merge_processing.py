@@ -1,10 +1,7 @@
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_to_date_string
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.edit import rename_column_names
 from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
@@ -56,7 +53,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
-        donor_group_columns=["cis_area"],
+        donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     )
@@ -65,57 +62,22 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
-        group_by_columns=["ethnicity_white", "gor9d"],
+        group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
 
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
-        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path=log_directory,
-    )
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["region_code", "other_survey_household_size_group"], # "work_status_group",
+    #     log_file_path=log_directory,
+    # )
 
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]
     )
-
-
-def merge_dependent_transform(df: DataFrame):
-    """
-    Transformations depending on the merged dataset or imputed columns.
-    """
-    df = assign_age_at_date(df, "age_at_visit_corrected", base_date="visit_datetime", date_of_birth="date_of_birth")
-
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-
-    df = assign_column_from_mapped_list_key(
-        df=df, column_name_to_assign="ethnicity_group_corrected", reference_column="ethnicity", map=ethnicity_map
-    )
-    df = assign_ethnicity_white(
-        df, column_name_to_assign="ethnicity_white_corrected", ethnicity_group_column_name="ethnicity_group"
-    )
-
-    return df
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:
