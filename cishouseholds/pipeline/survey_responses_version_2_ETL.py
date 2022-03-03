@@ -825,18 +825,6 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
-    )
     df = update_column_values_from_map(
         df=df,
         column="smokes_nothing_now",
