@@ -77,7 +77,7 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("age_at_visit", "school_year", "count")
+    return transformed_df.drop("count")
 
 
 def assign_household_participant_count(
