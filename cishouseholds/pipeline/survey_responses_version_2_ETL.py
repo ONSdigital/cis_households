@@ -33,7 +33,7 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import derive_household_been_last_XX_days
+from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
@@ -329,17 +329,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
-    df = derive_household_been_last_XX_days(
+    df = derive_household_been_columns(
         df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+        column_name_to_assign="household_been_care_home_last_28_days",
+        individual_response_column="care_home_last_28_days",
+        household_response_column="care_home_last_28_days_other_household_member",
     )
-    df = derive_household_been_last_XX_days(
+    df = derive_household_been_columns(
         df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+        column_name_to_assign="household_been_hospital_last_28_days",
+        individual_response_column="hospital_last_28_days",
+        household_response_column="hospital_last_28_days_other_household_member",
     )
     df = derive_work_status_columns(df)
     return df
@@ -824,18 +824,6 @@ def union_dependent_derivations(df):
         participant_column_pattern=r"person_[1-8]_not_present_age",
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
     )
     df = update_column_values_from_map(
         df=df,
