@@ -9,10 +9,9 @@
   been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -199,10 +198,9 @@
   street: Harford
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'No'
@@ -313,7 +311,6 @@
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   care_home_last_28_days: 'Yes'
@@ -503,10 +500,9 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
   symptoms_last_7_days_any_raw: 'Yes'
@@ -622,10 +618,9 @@
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
@@ -814,10 +809,9 @@
   street: Ballynafey
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: null
   symptoms_last_7_days_any_raw: null
@@ -930,10 +924,9 @@
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
@@ -1122,10 +1115,9 @@
   street: Drumagrove
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
   symptoms_last_7_days_any_raw: 'Yes'
@@ -1234,10 +1226,9 @@
   been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   been_outside_uk_since_last_visit: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: null
@@ -1426,10 +1417,9 @@
   street: Druminiskill
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
   symptoms_last_7_days_any_raw: 'Yes'
@@ -1540,10 +1530,9 @@
   been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'No'
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
@@ -1732,7 +1721,6 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_last_7_days_abdominal_pain: 'Yes'
@@ -1847,10 +1835,9 @@
   been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   been_outside_uk_since_last_visit: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
   care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
@@ -2040,7 +2027,6 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   symptoms_last_7_days_abdominal_pain: 'No'
@@ -2155,10 +2141,9 @@
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -2347,10 +2332,9 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'No'
   symptoms_last_7_days_any_raw: 'No'
@@ -2459,10 +2443,9 @@
   been_outside_uk_last_date: null
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: null
   care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
@@ -2651,10 +2634,9 @@
   street: Benwee
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'Yes'
   symptoms_last_7_days_any_raw: 'Yes'
@@ -2766,10 +2748,9 @@
   been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   been_outside_uk_since_last_visit: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   care_home_last_28_days: 'Yes'
   care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
@@ -2960,10 +2941,9 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
   symptoms_last_7_days_any_raw: 'Yes'
