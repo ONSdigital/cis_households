@@ -802,12 +802,8 @@ def report(
     output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
-        valid_df_errors.toPandas().to_excel(
-            writer, sheet_name="validation check failures in valid dataset", index=False
-        )
-        invalid_df_errors.toPandas().to_excel(
-            writer, sheet_name="validation check failures in invalid dataset", index=False
-        )
+        valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
+        invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
     write_string_to_file(
