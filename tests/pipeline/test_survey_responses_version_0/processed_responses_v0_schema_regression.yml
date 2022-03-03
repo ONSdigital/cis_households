@@ -254,27 +254,27 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: work_status_v0
   nullable: true
@@ -396,11 +396,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: household_been_hospital_last_28_days
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_28_days_other_household_member
+  name: household_been_care_home_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -497,10 +497,6 @@ fields:
   type: string
 - metadata: {}
   name: work_health_care_v0_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_status_v0_raw
   nullable: true
   type: string
 - metadata: {}

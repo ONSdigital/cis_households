@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.weights import household_dweights
+from cishouseholds.weights.weights import household_level_populations
 
 # necessary columns:
 # - postcode
@@ -10,7 +10,7 @@ from cishouseholds.weights.weights import household_dweights
 # - unique_property_reference_code
 
 
-def test_household_dweights(spark_session):
+def test_household_level_populations(spark_session):
     # address base file ---------------
     schema_address_base = """
             unique_property_reference_code integer,
@@ -91,5 +91,5 @@ def test_household_dweights(spark_session):
         ("C2", "E2", "CE", 3, "J3", 73, "name2", 1, 2),
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected)
-    df_output = household_dweights(df_input_address_base, df_input_nspl, df_input_lsoa, df_input_country)
+    df_output = household_level_populations(df_input_address_base, df_input_nspl, df_input_lsoa, df_input_country)
     assert_df_equality(df_output, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)

@@ -21,11 +21,13 @@ dev_requires = [
     "mimesis==4.1.3",
     "pytest-regressions==2.2.0",
     "pandas>=1.0.0",
+    "sphinx==4.4.0",
+    "pydata-sphinx-theme==0.7.2",
 ] + requires
 
 setuptools.setup(
     name="cishouseholds",
-    version="1.2.0-beta.30",
+    version="1.2.0-beta.34",
     author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
     description="Data engineering pipeline for the Office for National Statistics COVID-19 Infection Survey (CIS)",

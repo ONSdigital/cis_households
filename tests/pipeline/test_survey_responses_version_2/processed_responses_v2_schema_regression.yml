@@ -326,11 +326,11 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_april_22
   nullable: true
@@ -338,11 +338,11 @@ fields:
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_finger_prick_a1_a3
   nullable: true
@@ -354,7 +354,7 @@ fields:
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_researchyn
   nullable: true
@@ -362,7 +362,7 @@ fields:
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samplesyn
   nullable: true
@@ -642,7 +642,7 @@ fields:
 - metadata: {}
   name: hours_a_day_with_someone_else_at_home
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: physical_contact_under_18_years
   nullable: true
@@ -1147,4 +1147,44 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: household_been_care_home_last_28_days
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_been_hospital_last_28_days
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_social_care
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_person_facing_now
+  nullable: true
+  type: string
+- metadata: {}
+  name: ever_work_person_facing_or_social_care
+  nullable: false
+  type: string
+- metadata: {}
+  name: ever_care_home_worker
+  nullable: false
+  type: string
+- metadata: {}
+  name: ever_had_long_term_health_condition
+  nullable: false
+  type: string
+- metadata: {}
+  name: ever_had_long_term_health_condition_or_disabled
+  nullable: false
+  type: string
 type: struct
