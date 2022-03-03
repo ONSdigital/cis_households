@@ -92,8 +92,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_consent_code(
         df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
-    # df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    # df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -147,32 +147,32 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame) -> DataFrame:
+def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, "age_at_visit", base_date="visit_datetime", date_of_birth="date_of_birth")
+    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_intervals",
         map={2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_over_16",
         map={16: "16-49", 50: "50-70", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_7_intervals",
         map={2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_year_intervals",
         map={
             2: "2-4",
@@ -706,7 +706,7 @@ def union_dependent_derivations(df):
     """
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
-    df = derive_age_columns(df)
+    df = derive_age_columns(df, "age_at_visit")
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
