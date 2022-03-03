@@ -762,9 +762,14 @@ def edit_multiple_columns_fill_forward(
 
 def impute_date_by_k_nearest_neighbours(
     df: DataFrame,
+    column_name_to_assign: str,
     reference_column: str,
     donor_group_columns: List[str],
     log_file_path: str,
+    minimum_donors: int = 1,
+    donor_group_column_weights: list = None,
+    donor_group_column_conditions: dict = None,
+    maximum_distance: int = 4999,
 ) -> DataFrame:
     """
     Parameters
@@ -774,10 +779,8 @@ def impute_date_by_k_nearest_neighbours(
     donor_group_columns
     log_file_path
     """
-    column_name_to_assign = reference_column
-
-    df = df.withColumn("_month", F.month(column_name_to_assign))
-    df = df.withColumn("_year", F.year(column_name_to_assign))
+    df = df.withColumn("_month", F.month(reference_column))
+    df = df.withColumn("_year", F.year(reference_column))
 
     df = impute_by_k_nearest_neighbours(
         df=df,
@@ -785,6 +788,10 @@ def impute_date_by_k_nearest_neighbours(
         reference_column="_month",
         donor_group_columns=donor_group_columns,
         log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
     )
     df = impute_by_k_nearest_neighbours(
         df=df,
@@ -792,6 +799,10 @@ def impute_date_by_k_nearest_neighbours(
         reference_column="_year",
         donor_group_columns=donor_group_columns,
         log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
     )
     df = df.drop("_month", "_year")
 
