@@ -242,7 +242,8 @@ def generate_input_processing_function(
     @register_pipeline_stage(stage_name)
     def _inner_function(
         resource_path,
-        raw_table_name,
+        dataset_name,
+        id_column,
         latest_only=False,
         start_date=None,
         end_date=None,
@@ -271,7 +272,8 @@ def generate_input_processing_function(
 
         df = extract_validate_transform_input_data(
             resource_path=file_path_list,
-            raw_table_name=raw_table_name,
+            dataset_name=dataset_name,
+            id_column=id_column,
             variable_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
@@ -829,7 +831,9 @@ def record_level_interface(
         Hive table when they have been filtered out from survey responses
     """
     input_df = extract_from_table(survey_responses_table)
-    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+    edited_df = update_from_csv_lookup(
+        df=input_df, dataset_name="NONE", csv_filepath=csv_editing_file, id_column=unique_id_column
+    )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
     filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
