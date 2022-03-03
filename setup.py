@@ -22,6 +22,7 @@ dev_requires = [
     "pytest-regressions==2.2.0",
     "pandas>=1.0.0",
     "sphinx==4.4.0",
+    "pydata-sphinx-theme==0.7.2",
 ] + requires
 
 setuptools.setup(
