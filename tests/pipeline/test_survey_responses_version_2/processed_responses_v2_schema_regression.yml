@@ -1112,14 +1112,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
-  name: blood_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1149,11 +1141,11 @@ fields:
   type: integer
 - metadata: {}
   name: household_been_care_home_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: household_been_hospital_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: work_status_v0
