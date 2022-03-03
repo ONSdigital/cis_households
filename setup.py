@@ -18,7 +18,6 @@ dev_requires = [
     "pytest>=3.6,<4",
     "bump2version==1.0.1",
     "chispa==0.8.2",
-    "mimesis==4.1.3",
     "pytest-regressions==2.2.0",
     "pandas>=1.0.0",
     "sphinx==4.4.0",
