@@ -1,9 +1,8 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '1'
@@ -89,11 +88,11 @@
   sex: Female
   sex_raw: Female
   street: Ballydoonan
+  suffix: B
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -152,10 +151,9 @@
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
   consent_16_visits: '0'
@@ -240,9 +238,9 @@
   sex: Female
   sex_raw: Female
   street: Benwee
+  suffix: A
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -303,10 +301,9 @@
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: Luton
   consent_16_visits: '0'
@@ -391,9 +388,9 @@
   sex: null
   sex_raw: null
   street: Invergourie
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -458,7 +455,6 @@
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -549,11 +545,11 @@
   sex: Male
   sex_raw: Male
   street: null
+  suffix: L
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -612,10 +608,9 @@
   work_status_v0: Ports are used to communicate with the external world.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '0'
@@ -702,9 +697,9 @@
   sex: null
   sex_raw: null
   street: null
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -765,10 +760,9 @@
     assignment, and dynamic typing.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -856,11 +850,11 @@
   sex: Female
   sex_raw: Female
   street: null
+  suffix: B
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: null
@@ -918,10 +912,9 @@
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -1009,9 +1002,9 @@
   sex: Male
   sex_raw: Male
   street: Drumagrove
+  suffix: O
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1074,7 +1067,6 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1162,11 +1154,11 @@
   sex: Female
   sex_raw: null
   street: null
+  suffix: U
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: null
@@ -1225,10 +1217,9 @@
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '1'
@@ -1312,11 +1303,11 @@
   sex: Prefer not to say
   sex_raw: null
   street: null
+  suffix: M
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1377,7 +1368,6 @@
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1466,11 +1456,11 @@
   sex: Male
   sex_raw: null
   street: Glendon
+  suffix: U
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
