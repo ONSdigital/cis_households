@@ -59,7 +59,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: Union[str, List[str]]):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the
