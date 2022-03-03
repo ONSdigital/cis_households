@@ -651,13 +651,6 @@ def union_dependent_cleaning(df):
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    # df = fill_backwards_overriding_not_nulls(
-    #     df=df,
-    #     column_identity="participant_id",
-    #     ordering_column="visit_datetime",
-    #     dataset_column="survey_response_dataset_major_version",
-    #     column_list=["sex", "date_of_birth", "ethnicity"],
-    # )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
