@@ -3,8 +3,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_any_symptoms_around_visit
-from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
@@ -655,13 +653,6 @@ def union_dependent_cleaning(df):
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
