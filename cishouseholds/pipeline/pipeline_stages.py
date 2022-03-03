@@ -643,7 +643,11 @@ def calculate_household_level_populations(
 
 @register_pipeline_stage("join_geographic_data")
 def join_geographic_data(
-    geographic_table: str, survey_responses_table: str, geographic_responses_table: str, id_column: str
+    geographic_table: str,
+    survey_responses_table: str,
+    geographic_responses_table: str,
+    id_column: str,
+    region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
@@ -661,7 +665,9 @@ def join_geographic_data(
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left")
+    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left").filter(
+        F.col(region_column).isNotNull()
+    )
     update_table(geographic_survey_df, geographic_responses_table)
 
 
@@ -784,12 +790,8 @@ def report(
     output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
-        valid_df_errors.toPandas().to_excel(
-            writer, sheet_name="validation check failures in valid dataset", index=False
-        )
-        invalid_df_errors.toPandas().to_excel(
-            writer, sheet_name="validation check failures in invalid dataset", index=False
-        )
+        valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
+        invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
     write_string_to_file(
