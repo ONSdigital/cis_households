@@ -23,7 +23,7 @@ def test_knn_imputation_for_date(spark_session):
     )
     output_df = impute_date_by_k_nearest_neighbours(
         df=expected_df,
-        column_name_to_assign="date",
+        reference_column="date",
         donor_group_columns=["group", "group_2"],
         log_file_path="/",
     )

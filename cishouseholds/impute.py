@@ -762,7 +762,7 @@ def edit_multiple_columns_fill_forward(
 
 def impute_date_by_k_nearest_neighbours(
     df: DataFrame,
-    column_name_to_assign: str,
+    reference_column: str,
     donor_group_columns: List[str],
     log_file_path: str,
 ) -> DataFrame:
@@ -770,8 +770,12 @@ def impute_date_by_k_nearest_neighbours(
     Parameters
     ----------
     df
-    date_column
+    column_name_to_assign
+    donor_group_columns
+    log_file_path
     """
+    column_name_to_assign = reference_column
+
     df = df.withColumn("_month", F.month(column_name_to_assign))
     df = df.withColumn("_year", F.year(column_name_to_assign))
 
@@ -792,6 +796,9 @@ def impute_date_by_k_nearest_neighbours(
     df = df.drop("_month", "_year")
 
     df = assign_random_day_in_month(
-        df, column_name_to_assign=column_name_to_assign, month_column="_IMPUTED_month", year_column="_IMPUTED_year"
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        month_column="_IMPUTED_month",
+        year_column="_IMPUTED_year",
     )
     return df.drop("_IMPUTED_month", "_IMPUTED_year")

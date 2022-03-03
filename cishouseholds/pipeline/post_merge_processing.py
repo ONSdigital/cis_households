@@ -126,7 +126,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         reference_column="white_group",
         group_by_column="ons_household_id",
     )
-
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         impute_by_k_nearest_neighbours,
@@ -135,7 +134,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     )
-
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         imputation_function=impute_by_distribution,
@@ -144,19 +142,9 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
-    # TODO: replace by new function
-    # deduplicated_df = impute_and_flag(
-    #     deduplicated_df,
-    #     impute_by_k_nearest_neighbours,
-    #     reference_column="date_of_birth",
-    #     donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-    #     log_file_path=log_directory,
-    # )
-
     df = impute_and_flag(
         df=df,
         imputation_function=impute_date_by_k_nearest_neighbours,
-        column_name_to_assign="date_of_birth",
         reference_column="date_of_birth",
         donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
         log_file_path=log_directory,
