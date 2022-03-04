@@ -720,14 +720,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
-  name: blood_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string

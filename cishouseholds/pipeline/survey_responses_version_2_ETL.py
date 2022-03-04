@@ -92,8 +92,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_consent_code(
         df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    # df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    # df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -524,7 +524,7 @@ def union_dependent_cleaning(df):
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },

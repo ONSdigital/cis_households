@@ -4,10 +4,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
@@ -124,10 +123,9 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -207,7 +205,6 @@
   been_outside_uk_last_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -327,10 +324,9 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -414,10 +410,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -540,7 +535,6 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -622,7 +616,6 @@
   been_outside_uk_last_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -741,10 +734,9 @@
   street: Ballywatermoy
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -827,10 +819,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
@@ -951,7 +942,6 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -1035,10 +1025,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -1157,7 +1146,6 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1237,10 +1225,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
@@ -1358,10 +1345,9 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'Yes'
@@ -1442,10 +1428,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -1566,10 +1551,9 @@
   street: Druminiskill
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -1649,10 +1633,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
@@ -1771,7 +1754,6 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1853,7 +1835,6 @@
   been_outside_uk_last_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -1976,10 +1957,9 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
