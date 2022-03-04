@@ -666,10 +666,7 @@ def geography_and_imputation_dependent_processing(
     Parameters
     -----------
     imputed_responses_table
-    response_records_table
-    invalid_response_records_table
     output_imputed_responses_table
-    key_columns
     """
     df_with_imputed_values = extract_from_table(imputed_responses_table)
 
@@ -943,6 +940,8 @@ def population_projection(
         "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
     }
     dfs = extract_df_list(files)
+    dfs = prepare_auxillary_data(dfs)
+
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )

@@ -26,8 +26,9 @@ def get_secondary_config(location) -> dict:
     if location is None:
         return {}
     if location[:8] == "hdfs:///":
-        location = read_file_to_string(location)
-
-    with open(location) as fh:
-        config = yaml.load(fh, Loader=yaml.FullLoader)
+        config = read_file_to_string(location)
+        config = yaml.safe_load(config)
+    else:
+        with open(location) as fh:
+            config = yaml.load(fh, Loader=yaml.FullLoader)
     return config

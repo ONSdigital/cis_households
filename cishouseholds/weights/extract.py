@@ -45,9 +45,11 @@ lookup_variable_name_maps = {
     },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
+        "gor9d": "region_code",
         "rgn": "region_code",
+        "ctry12": "country_code_12",
         "ctry": "country_code_12",
-        "ctry_name": "country_name_12",
+        "ctry_name12": "country_name_12",
     },
     "aps_lookup": {
         "caseno": "person_id_aps",
