@@ -46,6 +46,12 @@ def validation_calls(SparkVal):
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
         ],
+        "valid_file_date": {
+            "visit_date_column": "visit_datetime",
+            "filename_column": "survey_response_source_file",
+            "swab_barcode_column": "swab_sample_barcode_column",
+            "blood_barcode_column": "blood_sample_barcode_column",
+        },
         "check_all_null_given_condition": [
             {
                 "condition": F.col("work_main_job_changed") != "Yes",

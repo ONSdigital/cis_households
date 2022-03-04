@@ -35,7 +35,6 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehous
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
-from cishouseholds.pipeline.post_merge_processing import filter_response_records
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
@@ -676,10 +675,6 @@ def process_post_merge(
     )
     response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
 
-    response_level_records_df, response_level_records_filtered_df = filter_response_records(
-        response_level_records_df, "visit_datetime"
-    )
-
     multigeneration_df = assign_multigeneration(
         df=response_level_records_df,
         column_name_to_assign="multigen",
@@ -692,7 +687,6 @@ def process_post_merge(
 
     update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
     update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
-    update_table(response_level_records_filtered_df, invalid_response_records_table, mode_overide=None)
 
 
 @register_pipeline_stage("report")
