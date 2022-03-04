@@ -509,7 +509,7 @@ def union_dependent_cleaning(df):
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
