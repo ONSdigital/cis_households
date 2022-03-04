@@ -571,4 +571,8 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: work_main_job_changed
+  nullable: false
+  type: string
 type: struct

@@ -137,6 +137,7 @@
   work_health_care_v0_raw: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_changed: 'Yes'
   work_main_job_role: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
@@ -288,6 +289,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: I don't even care.
   work_location_raw: I don't even care.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
@@ -440,6 +442,7 @@
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: They are written as strings of consecutive alphanumeric characters,
@@ -595,6 +598,7 @@
   work_health_care_v0_raw: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title: Haskell is a standardized, general-purpose purely functional
@@ -747,6 +751,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
+  work_main_job_changed: 'Yes'
   work_main_job_role: Ports are created with the built-in function open_port.
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: Erlang is known for its designs that are well suited for systems.
@@ -899,6 +904,7 @@
   work_health_care_v0_raw: 'No'
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
@@ -1052,6 +1058,7 @@
   work_health_care_v0_raw: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -1204,6 +1211,7 @@
   work_health_care_v0_raw: null
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Make me a sandwich.
   work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: Haskell is a standardized, general-purpose purely functional
@@ -1353,6 +1361,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
@@ -1506,6 +1515,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
