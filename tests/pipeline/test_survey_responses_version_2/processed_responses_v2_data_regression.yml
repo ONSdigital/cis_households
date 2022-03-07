@@ -357,7 +357,7 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Bangladeshi
@@ -890,7 +890,7 @@
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: null
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
@@ -1196,7 +1196,7 @@
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
-  work_location: Both (work from home and work somewhere else)
+  work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
@@ -1498,7 +1498,7 @@
   work_health_care_v1_v2: Other healthcare (e.g. mental health)
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: Type classes first appeared in the Haskell programming language.
@@ -1577,7 +1577,7 @@
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Asian
@@ -1882,7 +1882,7 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
@@ -2413,7 +2413,7 @@
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
@@ -2715,7 +2715,7 @@
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'No'
-  work_location: Both (work from home and work somewhere else)
+  work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: null
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
@@ -2795,7 +2795,7 @@
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
-  deferred: N/A
+  deferred: NA
   email: fortes2058@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: White-Irish
