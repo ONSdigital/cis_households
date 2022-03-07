@@ -6,9 +6,11 @@ from cishouseholds.derive import assign_people_in_household_count
 def test_assign_people_in_household_count(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            (3, 1, None, None, 1, 0, 1, 7),
-            (3, 1, 1, 1, 1, 0, 1, 9),
-            (3, 0, 0, 0, 1, 0, 1, 9),
+            (3, 1, None, None, 1, 0, 1, 6),
+            (2, 0, 1, 0, 0, 0, 0, 2),
+            (3, 1, 1, 1, 1, 0, 1, 8),
+            (4, 0, 0, 0, 1, 0, 1, 6),
+            (3, None, None, None, 1, 0, 0, 4),
         ],
         schema="count integer, i1 integer, i2 integer, i3 integer, p1 integer, p2 integer, non_consent integer, total_count integer",
     )
