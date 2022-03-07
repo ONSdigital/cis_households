@@ -637,7 +637,6 @@ def join_geographic_data(
     survey_responses_table: str,
     geographic_responses_table: str,
     id_column: str,
-    region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
@@ -655,9 +654,7 @@ def join_geographic_data(
     """
     weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left").filter(
-        F.col(region_column).isNotNull()
-    )
+    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left")
     update_table(geographic_survey_df, geographic_responses_table)
 
 

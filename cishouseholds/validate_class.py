@@ -71,8 +71,12 @@ class SparkValidate:
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
-            check = self.functions[list(method.keys())[0]]
-            self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
+            if type(method) == str:
+                check = self.functions[method]
+                self.execute_check(check["function"], check["error_message"], column_name)
+            else:
+                check = self.functions[list(method.keys())[0]]
+                self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
         for method, params in operations.items():
@@ -100,6 +104,8 @@ class SparkValidate:
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column
         error_message = error_message.format(", ".join(check_columns))
+        if type(check_columns) == str:
+            check_columns = [check_columns]
         return (
             F.when(sum([F.isnull(F.col(col)).cast("integer") for col in check_columns]) > 0, False).otherwise(True),
             error_message,
