@@ -1267,7 +1267,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25).cast("integer")
     )
 
     return df.drop("date_diff")
