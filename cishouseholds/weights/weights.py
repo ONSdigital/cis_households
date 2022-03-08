@@ -36,19 +36,21 @@ def generate_weights(auxillary_dfs):
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
-    tranche_df = auxillary_dfs["tranche"].withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
+    tranche_df = auxillary_dfs["tranche"]
+    if tranche_df is not None:
+        tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
-    # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
-    df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
+        # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
+        df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
 
-    df = assign_tranche_factor(
-        df=df,
-        column_name_to_assign="tranche_factor",
-        barcode_column="ons_household_id",
-        barcode_ref_column="TRANCHE_BARCODE_REF",
-        tranche_column="tranche",
-        group_by_columns=["cis_area_code_20", "enrolment_date"],
-    )
+        df = assign_tranche_factor(
+            df=df,
+            column_name_to_assign="tranche_factor",
+            barcode_column="ons_household_id",
+            barcode_ref_column="TRANCHE_BARCODE_REF",
+            tranche_column="tranche",
+            group_by_columns=["cis_area_code_20", "enrolment_date"],
+        )
 
     cis_window = Window.partitionBy("cis_area_code_20")
     df = swab_weight_wrapper(df=df, household_info_df=household_info_df, cis_window=cis_window)
