@@ -960,6 +960,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: long_covid_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: long_covid_noisy_breathing
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_offered
   nullable: true
   type: string

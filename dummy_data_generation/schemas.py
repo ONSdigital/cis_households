@@ -1354,6 +1354,8 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Long_Covid_Palpitations": _("choice", items=yes_no_none_choice),
         "Long_Covid_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
         "Long_Covid_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Noisy_breathing": _("choice", items=yes_no_none_choice),
         "Have_you_been_offered_a_vaccination": _("choice", items=yes_no_none_choice),
         "Vaccinated_Against_Covid": _("choice", items=yes_no_none_choice),
         "Type_Of_Vaccination": _(
