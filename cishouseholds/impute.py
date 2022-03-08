@@ -497,6 +497,7 @@ def impute_by_k_nearest_neighbours(
         raise ValueError(message)
 
     if not all(column in df.columns for column in donor_group_columns):
+        print("--->", donor_group_columns, df.columns)
         message = f"Imputation columns ({donor_group_columns}) are not all found in input dataset."
         raise ValueError(message)
 

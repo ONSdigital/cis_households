@@ -1,4 +1,3 @@
-import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
@@ -93,24 +92,3 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
-
-
-def filter_response_records(df: DataFrame, visit_date: str):
-    """Creating column for file datetime and filter out dates after file date"""
-    df = df.withColumn("file_date", F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0))
-    df = df.withColumn("file_date", F.to_timestamp(F.col("file_date"), format="yyyyMMdd"))
-    df = df.withColumn(
-        "filter_response_flag",
-        F.when(
-            (
-                (F.col("file_date") < F.col(visit_date))
-                & F.col("swab_sample_barcode").isNull()
-                & F.col("blood_sample_barcode").isNull()
-            ),
-            1,
-        ).otherwise(None),
-    )
-    df_flagged = df.where(F.col("filter_response_flag") == 1)
-    df = df.where(F.col("filter_response_flag").isNull())
-
-    return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")
