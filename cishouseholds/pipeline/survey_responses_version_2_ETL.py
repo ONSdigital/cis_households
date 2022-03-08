@@ -317,7 +317,22 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
+
+    column_editing_map = {
+        "deferred": {"Deferred 1": "Deferred"},
+        "work_location": {
+            "Work from home (in the same grounds or building as your home)": "Working from home",
+            "Working from home (in the same grounds or building as your home)": "Working from home",
+            "From home (in the same grounds or building as your home)": "Working from home",
+            "Work somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not at your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
+            "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
+        },
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+    df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
 
     df = count_activities_last_XX_days(
         df=df,
@@ -508,7 +523,7 @@ def union_dependent_cleaning(df):
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
@@ -588,18 +603,6 @@ def union_dependent_cleaning(df):
             "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
             "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
             "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
-        "work_location": {
-            "Work from home (in the same grounds or building as your home)": "Working from home",
-            "Working from home (in the same grounds or building as your home)": "Working from home",
-            "From home (in the same grounds or building as your home)": "Working from home",
-            "Working somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Work somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Somewhere else (not at your home)": "Working somewhere else (not your home)",
-            "Somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Both (from home and somewhere else)": "Both (from home and somewhere else)",
-            "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
-            "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
         },
         "work_sectors": {
             "Social Care": "Social care",

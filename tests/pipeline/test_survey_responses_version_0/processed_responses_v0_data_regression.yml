@@ -1,8 +1,9 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '1'
@@ -88,11 +89,11 @@
   sex: Female
   sex_raw: Female
   street: Ballydoonan
-  suffix: B
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -137,6 +138,7 @@
   work_health_care_v0_raw: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_changed: 'Yes'
   work_main_job_role: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
@@ -151,9 +153,10 @@
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   city: Saltash
   consent_16_visits: '0'
@@ -238,9 +241,9 @@
   sex: Female
   sex_raw: Female
   street: Benwee
-  suffix: A
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -288,6 +291,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: I don't even care.
   work_location_raw: I don't even care.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
@@ -301,9 +305,10 @@
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   city: Luton
   consent_16_visits: '0'
@@ -388,9 +393,9 @@
   sex: null
   sex_raw: null
   street: Invergourie
-  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -440,6 +445,7 @@
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: They are written as strings of consecutive alphanumeric characters,
@@ -455,6 +461,7 @@
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
@@ -545,11 +552,11 @@
   sex: Male
   sex_raw: Male
   street: null
-  suffix: L
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -595,6 +602,7 @@
   work_health_care_v0_raw: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title: Haskell is a standardized, general-purpose purely functional
@@ -608,9 +616,10 @@
   work_status_v0: Ports are used to communicate with the external world.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '0'
@@ -697,9 +706,9 @@
   sex: null
   sex_raw: null
   street: null
-  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
@@ -747,6 +756,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
+  work_main_job_changed: 'Yes'
   work_main_job_role: Ports are created with the built-in function open_port.
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: Erlang is known for its designs that are well suited for systems.
@@ -760,9 +770,10 @@
     assignment, and dynamic typing.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -850,11 +861,11 @@
   sex: Female
   sex_raw: Female
   street: null
-  suffix: B
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: null
@@ -899,6 +910,7 @@
   work_health_care_v0_raw: 'No'
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
@@ -912,9 +924,10 @@
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -1002,9 +1015,9 @@
   sex: Male
   sex_raw: Male
   street: Drumagrove
-  suffix: O
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
@@ -1052,6 +1065,7 @@
   work_health_care_v0_raw: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -1067,6 +1081,7 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1154,11 +1169,11 @@
   sex: Female
   sex_raw: null
   street: null
-  suffix: U
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: null
@@ -1204,6 +1219,7 @@
   work_health_care_v0_raw: null
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Make me a sandwich.
   work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: Haskell is a standardized, general-purpose purely functional
@@ -1217,9 +1233,10 @@
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
+  blood_taken: 'No'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '1'
@@ -1303,11 +1320,11 @@
   sex: Prefer not to say
   sex_raw: null
   street: null
-  suffix: M
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1353,6 +1370,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
@@ -1368,6 +1386,7 @@
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
   blood_sample_barcode: null
+  blood_sample_barcode_edited_flag: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 0.0
@@ -1456,11 +1475,11 @@
   sex: Male
   sex_raw: null
   street: Glendon
-  suffix: U
   survey_response_dataset_major_version: 0
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: null
+  swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1506,6 +1525,7 @@
   work_health_care_v0_raw: 'Yes'
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
