@@ -10,6 +10,8 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_random_day_in_month
+
 
 def impute_outside_uk_columns(
     df: DataFrame,
@@ -68,29 +70,47 @@ def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_dat
     return df
 
 
-def fill_forward_work_columns(
+def fill_forward_from_last_change(
     df: DataFrame,
     fill_forward_columns: List[str],
     participant_id_column: str,
     visit_date_column: str,
-    main_job_changed_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
 ) -> DataFrame:
     """
     Where job has not changed, fill forward from previous response that job has changed.
     """
-    window = (
-        Window.partitionBy(participant_id_column)
-        .orderBy(F.col(visit_date_column).asc())
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_date_column).asc())
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+
+    df_fill_forwards_from = (
+        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1))
+        .select(participant_id_column, visit_date_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+    ).drop("ROW_NUMBER")
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_date_column, "start_datetime")
+    window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumn(
+        "end_datetime", F.lead(F.col("start_datetime"), 1).over(window_lag)
     )
-    for col in fill_forward_columns:
-        df = df.withColumn(
-            col,
-            F.when(
-                F.col(main_job_changed_column) != "Yes", F.last(F.col(col), ignorenulls=True).over(window)
-            ).otherwise(F.col(col)),
-        )
-    return df
+    df = df.drop(*fill_forward_columns, "ROW_NUMBER")
+
+    df = df.join(
+        df_fill_forwards_from,
+        how="left",
+        on=(
+            (df[participant_id_column] == df_fill_forwards_from["id_right"])
+            & (df[visit_date_column] >= df_fill_forwards_from.start_datetime)
+            & (
+                (df[visit_date_column] < df_fill_forwards_from.end_datetime)
+                | (df_fill_forwards_from.end_datetime.isNull())
+            )
+        ),
+    )
+    return df.drop("id_right", "start_datetime", "end_datetime")
 
 
 def impute_by_distribution(
@@ -738,3 +758,58 @@ def edit_multiple_columns_fill_forward(
         )
 
     return df
+
+
+def impute_date_by_k_nearest_neighbours(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    donor_group_columns: List[str],
+    log_file_path: str,
+    minimum_donors: int = 1,
+    donor_group_column_weights: list = None,
+    donor_group_column_conditions: dict = None,
+    maximum_distance: int = 4999,
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    donor_group_columns
+    log_file_path
+    """
+    df = df.withColumn("_month", F.month(reference_column))
+    df = df.withColumn("_year", F.year(reference_column))
+
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_month",
+        reference_column="_month",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    )
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_year",
+        reference_column="_year",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    )
+    df = df.drop("_month", "_year")
+
+    df = assign_random_day_in_month(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        month_column="_IMPUTED_month",
+        year_column="_IMPUTED_year",
+    )
+    return df.drop("_IMPUTED_month", "_IMPUTED_year")

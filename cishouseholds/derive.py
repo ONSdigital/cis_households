@@ -85,7 +85,9 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df = df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column)).over(household_window))
+    df = df.withColumn(
+        column_name_to_assign, F.size(F.collect_set(F.col(participant_id_column)).over(household_window))
+    )
     return df
 
 
@@ -1404,44 +1406,24 @@ def contact_known_or_suspected_covid_type(
     return df
 
 
-def derive_household_been_last_XX_days(
+def derive_household_been_columns(
     df: DataFrame,
-    household_last_XX_days: str,
-    last_XX_days: str,
-    last_XX_days_other_household_member: str,
-    negative_value: str = "No, no one in my household has",
-    positive_value: str = "Yes, I have",
-    some_positive_value: str = "No I haven’t, but someone else in my household has",
-    # TODO: should this be "have not" to avoid issues
+    column_name_to_assign: str,
+    individual_response_column: str,
+    household_response_column: str,
 ) -> DataFrame:
     """
-    This function can be used to work out the following variables which follow the same logic:
-    - household_been_care_home_last_28_days
-    - household_been_hospital_last_last_28_days
-
-    Parameters
-    ----------
-    df
-    household_last_XX_days
-    last_XX_days
-    last_XX_days_other_household_member
-
-    Notes
-    -----
-    null is not understood as != "Yes"
+    Combines a household and individual level response, to an overall household response.
+    Assumes input responses are 'Yes'/'no'.
     """
     df = df.withColumn(
-        household_last_XX_days,
-        F.when((F.col(last_XX_days) == "No") & (F.col(last_XX_days_other_household_member) == "No"), negative_value)
+        column_name_to_assign,
+        F.when((F.col(individual_response_column) == "Yes"), "Yes, I have")
         .when(
-            (F.col(last_XX_days) == "Yes")
-            & (
-                (F.col(last_XX_days_other_household_member) != "Yes")
-                | (F.col(last_XX_days_other_household_member).isNull())
-            ),
-            some_positive_value,
+            ((F.col(individual_response_column) != "Yes") | F.col(individual_response_column).isNull())
+            & (F.col(household_response_column) == "Yes"),
+            "No I haven’t, but someone else in my household has",
         )
-        .when((F.col(last_XX_days) == "Yes") & (F.col(last_XX_days_other_household_member) == "Yes"), positive_value)
-        .otherwise(None),
+        .otherwise("No, no one in my household has"),
     )
     return df

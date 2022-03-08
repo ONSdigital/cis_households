@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -11,23 +13,53 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def update_column_values_from_column_reference(
-    df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
+def update_column_if_ref_in_list(
+    df: DataFrame,
+    column_name_to_update: str,
+    old_value,
+    new_value,
+    reference_column: str,
+    check_list: List[Union[str, int]],
 ):
     """
-    Map column values depending on values of reference columns
+    Update column value with new_value if the current value is equal to old_value
+    and reference column is in list
     Parameters
     ----------
     df
     column_name_to_update
-    reference_column
-    map
+    old_value
+    new_value
+    reference_column:str
+    check_list
     """
-    for key, val in map.items():
-        df = df.withColumn(
-            column_name_to_update, F.when(F.col(reference_column) == key, val).otherwise(F.col(column_name_to_update))
-        )
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).eqNullSafe(old_value) & F.col(reference_column).isin(check_list), new_value
+        ).otherwise(F.col(column_name_to_update)),
+    )
     return df
+
+
+# SUBSTITUTED by update_column_values_from_map()
+# def update_column_values_from_column_reference(
+#     df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
+# ):
+#     """
+#     Map column values depending on values of reference columns
+#     Parameters
+#     ----------
+#     df
+#     column_name_to_update
+#     reference_column
+#     map
+#     """
+#     for key, val in map.items():
+#         df = df.withColumn(
+#             column_name_to_update, F.when(F.col(reference_column) == key, val).otherwise(F.col(column_name_to_update))
+#         )
+#     return df
 
 
 def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
@@ -263,19 +295,27 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     """
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old_value", "new_value").pivot("target_column_name").count()
-    cols = csv.columns[3:]
-    for col in cols:
-        csv = csv.withColumnRenamed(col, f"{col}_from_lookup")
+    csv = (
+        csv.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
+
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
+    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,
             F.when(
-                (F.col(f"{col}_from_lookup") == 1) & (F.col(col).eqNullSafe(F.col("old_value"))), F.col("new_value")
+                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
+                F.col(f"{col}_new_value"),
             ).otherwise(F.col(col)),
         )
-    return df.drop(*[f"{col}_from_lookup" for col in cols], "old_value", "new_value")
+
+    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
+    return df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -656,4 +696,37 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
         if column_name in df.columns:
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
+    return df
+
+
+def count_activities_last_XX_days(
+    df: DataFrame,
+    activity_combo_last_XX_days: str,
+    list_activities_last_XX_days: List[str],
+    max_value: int,
+):
+    """
+    Searches for null values in the activities_combo_last_XX_days and when that happens
+    gets
+
+    Parameters
+    ----------
+    df
+    activity_combo_last_XX_days
+    list_activities_last_XX_days
+    max_value
+    """
+    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = update_column_values_from_map(df, col, value_map)
+        df = df.withColumn(col, F.col(col).cast("integer"))
+    df = df.withColumn(
+        activity_combo_last_XX_days,
+        F.when(
+            F.col(activity_combo_last_XX_days).isNull(),
+            F.least(F.lit(max_value), reduce(add, [F.col(x) for x in list_activities_last_XX_days])),
+        ).otherwise(activity_combo_last_XX_days),
+    )
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = df.withColumn(col, F.col(col).cast("integer"))
     return df
