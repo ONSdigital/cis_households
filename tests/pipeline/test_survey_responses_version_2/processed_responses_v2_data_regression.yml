@@ -57,7 +57,7 @@
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Bangladeshi
@@ -81,9 +81,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
-    has
-  household_been_hospital_last_28_days: null
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No, no one in my household has
   household_fingerprick_status: Declined
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -266,9 +265,9 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: None
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: '2'
-  times_shopping_last_7_days: '5'
-  times_socialise_last_7_days: Participant Would Not/Could Not Answer
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 5.0
+  times_socialise_last_7_days: null
   title: Mr.
   transport_to_work_or_school: null
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
@@ -394,10 +393,8 @@
   hospital_last_28_days: 'Yes'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
-    has
-  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
-    has
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: Yes, I have
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: 'No'
   household_visit_status: Dispatched
@@ -581,9 +578,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '1'
-  times_shopping_last_7_days: '3'
-  times_socialise_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 3.0
+  times_socialise_last_7_days: 0.0
   title: Dr.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
@@ -600,7 +597,7 @@
   work_health_care_v1_v2: Other healthcare (e.g. mental health)
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: Type classes first appeared in the Haskell programming language.
@@ -679,7 +676,7 @@
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Asian or Asian British
   ethnicity: Any other white background
@@ -704,7 +701,7 @@
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
-  household_been_hospital_last_28_days: null
+  household_been_hospital_last_28_days: No, no one in my household has
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: null
   household_visit_status: Household did not attend
@@ -888,9 +885,9 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
-  times_outside_shopping_or_socialising_last_7_days: '0'
-  times_shopping_last_7_days: '4'
-  times_socialise_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 4.0
+  times_socialise_last_7_days: 0.0
   title: Miss.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
@@ -1013,8 +1010,7 @@
   hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: Yes, I have
-  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
-    has
+  household_been_hospital_last_28_days: Yes, I have
   household_fingerprick_status: Not invited
   household_members_under_2_years: null
   household_visit_status: Partially Completed
@@ -1201,9 +1197,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: '0'
-  times_shopping_last_7_days: None
-  times_socialise_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 0.0
+  times_socialise_last_7_days: 0.0
   title: Miss.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
@@ -1302,7 +1298,7 @@
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: N/A
+  deferred: NA
   email: artiste1919@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Pakistani
@@ -1327,8 +1323,7 @@
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: Yes, I have
-  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
-    has
+  household_been_hospital_last_28_days: Yes, I have
   household_fingerprick_status: null
   household_members_under_2_years: null
   household_visit_status: Household did not attend
@@ -1512,9 +1507,9 @@
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
-  times_outside_shopping_or_socialising_last_7_days: '4'
-  times_shopping_last_7_days: Participant Would Not/Could Not Answer
-  times_socialise_last_7_days: 7 times or more
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: null
+  times_socialise_last_7_days: 7.0
   title: Mr.
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-04 06:40:18
@@ -1531,7 +1526,7 @@
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
@@ -1609,7 +1604,7 @@
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
@@ -1633,8 +1628,8 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: null
-  household_been_hospital_last_28_days: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No, no one in my household has
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Completed
@@ -1818,9 +1813,9 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
-  times_outside_shopping_or_socialising_last_7_days: None
-  times_shopping_last_7_days: '5'
-  times_socialise_last_7_days: '4'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 5.0
+  times_socialise_last_7_days: 4.0
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
@@ -1919,7 +1914,7 @@
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
-  deferred: N/A
+  deferred: NA
   email: coater1966@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
   ethnicity: Mixed-White & Asian
@@ -1943,8 +1938,9 @@
   hospital_last_28_days: null
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: null
-  household_been_hospital_last_28_days: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_fingerprick_status: Invited
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -2128,9 +2124,9 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '4'
-  times_shopping_last_7_days: '2'
-  times_socialise_last_7_days: Participant Would Not/Could Not Answer
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 2.0
+  times_socialise_last_7_days: null
   title: null
   transport_to_work_or_school: null
   unique_participant_response_id: DVH-3037894756-DHR-603506140323-2022-01-04 02:59:45
@@ -2147,7 +2143,7 @@
   work_health_care_v1_v2: Other healthcare (e.g. mental health)
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Both (work from home and work somewhere else)
+  work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
   work_main_job_changed: 'No'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
@@ -2254,8 +2250,7 @@
   hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
-  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
-    has
+  household_been_hospital_last_28_days: Yes, I have
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: null
   household_visit_status: Partially Completed
@@ -2439,8 +2434,8 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '1'
-  times_shopping_last_7_days: Participant Would Not/Could Not Answer
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: null
   times_socialise_last_7_days: null
   title: Dr.
   transport_to_work_or_school: Other method
@@ -2458,7 +2453,7 @@
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: null
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
@@ -2564,8 +2559,8 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: null
-  household_been_hospital_last_28_days: null
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No, no one in my household has
   household_fingerprick_status: Declined
   household_members_under_2_years: 'Yes'
   household_visit_status: Household did not attend
@@ -2748,8 +2743,8 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: 7 times or more
-  times_shopping_last_7_days: '6'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: 6.0
   times_socialise_last_7_days: null
   title: Ms.
   transport_to_work_or_school: Bicycle
@@ -2767,7 +2762,7 @@
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'No'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
@@ -2848,7 +2843,7 @@
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
-  deferred: N/A
+  deferred: NA
   email: null
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other ethnic group
@@ -2871,9 +2866,9 @@
   hospital_last_28_days: 'No'
   hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
-  household_been_care_home_last_28_days: No I haven’t, but someone else in my household
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
     has
-  household_been_hospital_last_28_days: null
   household_fingerprick_status: At least one person consented
   household_members_under_2_years: null
   household_visit_status: Withdrawn
@@ -3054,9 +3049,9 @@
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: None
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '1'
+  times_outside_shopping_or_socialising_last_7_days: null
   times_shopping_last_7_days: null
-  times_socialise_last_7_days: '5'
+  times_socialise_last_7_days: 5.0
   title: Mr.
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-9557055819-DHR-455927236237-2022-01-07 10:41:50
@@ -3073,7 +3068,7 @@
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
-  work_location: Somewhere else (not your home)
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
   work_main_job_changed: 'No'
   work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.

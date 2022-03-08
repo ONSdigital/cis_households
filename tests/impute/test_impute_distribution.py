@@ -16,7 +16,7 @@ def test_impute_distribution(spark_session):
     ]
 
     expected_df = spark_session.createDataFrame(
-        data=expected_data, schema="GOR9D string, white_group string, dvsex string, impute_value string"
+        data=expected_data, schema="GOR9D string, ethnicity_white string, dvsex string, impute_value string"
     )
     df_input = expected_df.drop("impute_value")
 
@@ -24,7 +24,7 @@ def test_impute_distribution(spark_session):
         df_input,
         column_name_to_assign="impute_value",
         reference_column="dvsex",
-        group_by_columns=["GOR9D", "white_group"],
+        group_by_columns=["GOR9D", "ethnicity_white"],
         first_imputation_value="male",
         second_imputation_value="female",
         # seed not used directly for test at present
