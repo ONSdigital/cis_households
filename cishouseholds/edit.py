@@ -133,22 +133,31 @@ def update_face_covering_outside_of_home(
             "Yes, at work/school only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
         .when(
             (F.col(covered_enclosed_column) == "My face is already covered")
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "My face is already covered",
         )
         .when(
-            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            (
+                (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_enclosed_column).isNull())
+            )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
         )
