@@ -113,7 +113,7 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     return SparkVal.filter(
         selected_errors=[
             "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
-            "the date in visit_datetime should be before the date expressed in survey_response_source_file and both swab_sample_barcode_column and blood_sample_barcode_column should be null",  # noqa:E501
+            "the date in visit_datetime should be before the date expressed in survey_response_source_file when both swab_sample_barcode_column and blood_sample_barcode_column are null",  # noqa:E501
         ],
         any=True,
         return_failed=True,
