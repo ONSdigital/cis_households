@@ -26,6 +26,10 @@ class SparkValidate:
             "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
+            "valid_file_date": {
+                "function": self.check_valid_file_date,
+                "error_message": "the date in {} should be before the date expressed in {} when both {} and {} are null",  # noqa:E501
+            },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
                 "error_message": "{} should all be null given condition {}",
@@ -170,5 +174,31 @@ class SparkValidate:
                 ),
                 True,
             ).otherwise(False),
+            error_message,
+        )
+
+    @staticmethod
+    def check_valid_file_date(
+        error_message: str,
+        visit_date_column: str,
+        filename_column: str,
+        swab_barcode_column: str,
+        blood_barcode_column: str,
+    ):
+        error_message = error_message.format(
+            visit_date_column, filename_column, swab_barcode_column, blood_barcode_column
+        )
+        return (
+            F.when(
+                (
+                    (
+                        F.to_timestamp(F.regexp_extract(F.col(filename_column), r"\d{8}(?=.csv)", 0), format="yyyyMMdd")
+                        < F.col(visit_date_column)
+                    )
+                    & F.col(swab_barcode_column).isNull()
+                    & F.col(blood_barcode_column).isNull()
+                ),
+                False,
+            ).otherwise(True),
             error_message,
         )
