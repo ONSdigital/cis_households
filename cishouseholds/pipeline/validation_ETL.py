@@ -111,7 +111,10 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     SparkVal.count_complete_duplicates(duplicate_count_column_name)
     validation_calls(SparkVal)
     return SparkVal.filter(
-        selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
+        selected_errors=[
+            "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
+            "the date in visit_datetime should be before the date expressed in survey_response_source_file and both swab_sample_barcode_column and blood_sample_barcode_column should be null",  # noqa:E501
+        ],
         any=True,
         return_failed=True,
     )
