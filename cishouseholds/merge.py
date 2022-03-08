@@ -515,7 +515,7 @@ def many_to_one_antibody_flag(
     )
     return df
 
-
+# TODO: iterative column object record_processed
 def many_to_many_flag(
     df: DataFrame,
     drop_flag_column_name_to_assign: str,
@@ -524,6 +524,7 @@ def many_to_many_flag(
     ordering_columns: list,
     process_type: str,
     failure_column_name: str,
+    unique_participant_response_id: str='unique_participant_response_id'
 ):
     """
     Many (Voyager) to Many (antibody) matching process.
@@ -553,19 +554,18 @@ def many_to_many_flag(
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
 
-    df = df.withColumn(
-        "classification_different_to_first",
+    classification_different_to_first = (
         F.sum(
             F.when(F.col(column_to_validate) == F.first(column_to_validate).over(window), None)
             .otherwise(1)
             .cast("integer")
-        ).over(window),
+        ).over(window)
     )
 
     df = df.withColumn(
         failure_column_name,
         F.when(
-            F.last("classification_different_to_first").over(window).isNotNull(),
+            F.last(classification_different_to_first).over(window).isNotNull(),
             1,
         )
         .otherwise(None)
@@ -578,18 +578,18 @@ def many_to_many_flag(
 
     for _ in range(2):
         window = Window.partitionBy(group_by_column, "record_processed").orderBy(*ordering_columns)
-        df = df.withColumn("row_number", F.row_number().over(window))
+        row_number = F.row_number().over(window)
         df = df.withColumn(
             "record_processed",
             F.when(
                 (
                     (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
                     | (
-                        F.col("unique_participant_response_id")
-                        == (F.first("unique_participant_response_id").over(window))
+                        F.col(unique_participant_response_id)
+                        == (F.first(unique_participant_response_id).over(window))
                     )
                 )
-                & (F.col("row_number") != 1),
+                & (row_number != 1),
                 1,
             ).otherwise(F.col("record_processed")),
         )
@@ -601,11 +601,15 @@ def many_to_many_flag(
 
         df = df.withColumn(
             "record_processed",
-            F.when((F.col("row_number") == 1) & (F.col(drop_flag_column_name_to_assign).isNull()), 0).otherwise(
+            F.when((row_number == 1) & (F.col(drop_flag_column_name_to_assign).isNull()), 0).otherwise(
                 F.col("record_processed")
             ),
         )
-    return df.drop("classification_different_to_first", "record_processed", "row_number")
+    return df.drop(
+        # "classification_different_to_first", 
+        "record_processed", 
+        # "row_number"
+    )
 
 
 def one_to_many_antibody_flag(
