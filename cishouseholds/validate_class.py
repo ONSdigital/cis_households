@@ -28,7 +28,7 @@ class SparkValidate:
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
             "valid_file_date": {
                 "function": self.check_valid_file_date,
-                "error_message": "the value of {} should be after the value of {} and both {} and {} should be null",
+                "error_message": "the date in {} should be before the date expressed in {} and both {} and {} should be null",  # noqa:E501
             },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
@@ -186,7 +186,7 @@ class SparkValidate:
         blood_barcode_column: str,
     ):
         error_message = error_message.format(
-            filename_column, visit_date_column, swab_barcode_column, blood_barcode_column
+            visit_date_column, filename_column, swab_barcode_column, blood_barcode_column
         )
         return (
             F.when(
