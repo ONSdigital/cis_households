@@ -4,7 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.merge import one_to_many_antibody_flag
 
 
-@pytest.mark.xfail(reason="units do not function correctly")
+# @pytest.mark.xfail(reason="units do not function correctly")
 def test_one_to_many_antibody_flag(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
