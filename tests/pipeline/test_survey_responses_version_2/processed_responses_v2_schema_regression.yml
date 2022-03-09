@@ -952,6 +952,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: long_covid_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: long_covid_noisy_breathing
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_offered
   nullable: true
   type: string
@@ -1111,6 +1119,14 @@ fields:
   name: consent_summary
   nullable: true
   type: double
+- metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
+  type: integer
 - metadata: {}
   name: swab_taken
   nullable: false
