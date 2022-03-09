@@ -515,6 +515,7 @@ def many_to_one_antibody_flag(
     )
     return df
 
+
 # TODO: iterative column object record_processed
 def many_to_many_flag(
     df: DataFrame,
@@ -524,7 +525,7 @@ def many_to_many_flag(
     ordering_columns: list,
     process_type: str,
     failure_column_name: str,
-    unique_participant_response_id: str='unique_participant_response_id'
+    unique_participant_response_id: str = "unique_participant_response_id",
 ):
     """
     Many (Voyager) to Many (antibody) matching process.
@@ -554,13 +555,9 @@ def many_to_many_flag(
     elif process_type == "swab":
         column_to_validate = "pcr_result_classification"
 
-    classification_different_to_first = (
-        F.sum(
-            F.when(F.col(column_to_validate) == F.first(column_to_validate).over(window), None)
-            .otherwise(1)
-            .cast("integer")
-        ).over(window)
-    )
+    classification_different_to_first = F.sum(
+        F.when(F.col(column_to_validate) == F.first(column_to_validate).over(window), None).otherwise(1).cast("integer")
+    ).over(window)
 
     df = df.withColumn(
         failure_column_name,
@@ -584,10 +581,7 @@ def many_to_many_flag(
             F.when(
                 (
                     (F.col(unique_id_lab_str) == (F.first(unique_id_lab_str).over(window)))
-                    | (
-                        F.col(unique_participant_response_id)
-                        == (F.first(unique_participant_response_id).over(window))
-                    )
+                    | (F.col(unique_participant_response_id) == (F.first(unique_participant_response_id).over(window)))
                 )
                 & (row_number != 1),
                 1,
@@ -606,12 +600,13 @@ def many_to_many_flag(
             ),
         )
     return df.drop(
-        # "classification_different_to_first", 
-        "record_processed", 
+        # "classification_different_to_first",
+        "record_processed",
         # "row_number"
     )
 
 
+# TODO: pytest.mark.xfail test not passing
 def one_to_many_antibody_flag(
     df: DataFrame,
     column_name_to_assign: str,
@@ -732,22 +727,18 @@ def one_to_many_swabs(
     df = df.withColumn(
         "time_order_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
     )
-
     df = df.withColumn(
         "time_difference_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
     )
-
     df = df.withColumn(
         flag_column_name, F.when(F.col("pcr_flag") == 1, 1).otherwise(F.col(flag_column_name)).cast("integer")
     )
-
     # column: time_difference_flag
     common_condition = F.col("time_difference_flag").isNull()
 
     w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
         F.col("time_difference_flag")
     )
-
     df = df.withColumn(
         "time_difference_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
     ).withColumn("time_difference_flag", F.when(F.col("time_difference_flag") == 1, None).otherwise(1))
@@ -758,7 +749,6 @@ def one_to_many_swabs(
     w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
         F.col("time_order_flag")
     )
-
     df = df.withColumn(
         "time_order_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
     ).withColumn("time_order_flag", F.when(F.col("time_order_flag") == 1, None).otherwise(1))
@@ -771,18 +761,12 @@ def one_to_many_swabs(
         .otherwise(F.col(flag_column_name)),
     )
     # Solve case for both time diff negative and positive within barcode
-    df = df.withColumn(
-        "aux_neg", F.count(F.when(F.col("diff_vs_visit_hr_swab") < 0, 1)).over(Window.partitionBy(group_by_column))
-    )
-    df = df.withColumn(
-        "aux_pos", F.count(F.when(F.col("diff_vs_visit_hr_swab") >= 0, 1)).over(Window.partitionBy(group_by_column))
-    )
-
+    aux_neg = F.count(F.when(F.col("diff_vs_visit_hr_swab") < 0, 1)).over(Window.partitionBy(group_by_column))
+    aux_pos = F.count(F.when(F.col("diff_vs_visit_hr_swab") >= 0, 1)).over(Window.partitionBy(group_by_column))
     df = df.withColumn(
         flag_column_name,
-        F.when((F.col("aux_neg") > 0) & (F.col("aux_pos") > 0), F.lit(None)).otherwise(F.col(flag_column_name)),
-    ).drop("aux_neg", "aux_pos")
-
+        F.when((aux_neg > 0) & (aux_pos > 0), F.lit(None)).otherwise(F.col(flag_column_name)),
+    )
     return df
 
 
