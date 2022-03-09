@@ -208,10 +208,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: suffix
-  nullable: true
-  type: string
-- metadata: {}
   name: full_name
   nullable: true
   type: string
@@ -548,6 +544,14 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -571,4 +575,8 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: work_main_job_changed
+  nullable: false
+  type: string
 type: struct
