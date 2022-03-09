@@ -358,56 +358,6 @@ def validate_survey_responses(
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
 
 
-@register_pipeline_stage("lookup_based_editing")
-def lookup_based_editing(
-    input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
-):
-    """
-    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
-    Parameters
-    ----------
-    input_table
-        input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
-    edited_table
-    """
-    df = extract_from_table(input_table)
-
-    spark = get_or_create_spark_session()
-    cohort_lookup = spark.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
-    travel_countries_lookup = spark.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    df = df.join(
-        cohort_lookup,
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-
-    df = df.join(
-        travel_countries_lookup,
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
-
-    update_table(df, edited_table, mode_overide="overwrite")
-
-
 @register_pipeline_stage("outer_join_antibody_results")
 def outer_join_antibody_results(
     antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
@@ -636,7 +586,7 @@ def join_geographic_data(
     survey_responses_table: str,
     geographic_responses_table: str,
     id_column: str,
-    region_column: str,
+    # region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
@@ -652,12 +602,85 @@ def join_geographic_data(
     id_column
         column containing id to join the 2 input tables
     """
-    weights_df = extract_from_table(geographic_table)
+    # TODO: poscode is present in both weights_df and survey_responses_df,
+    # I deleted postcode in right side in weights_df
+    weights_df = extract_from_table(geographic_table).drop("postcode")
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left").filter(
-        F.col(region_column).isNotNull()
+    geographic_survey_df = (
+        survey_responses_df.join(weights_df, on=id_column, how="left")
+        # .filter(F.col(region_column).isNotNull()) # TODO: region_column cannot be found.
     )
     update_table(geographic_survey_df, geographic_responses_table)
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_table: str,
+    cohort_lookup_path: str,
+    # travel_countries_lookup_path: str,  TODO: commented out temporarily ONLY until the lookup table is created.
+    rural_urban_lookup_path: str,
+    edited_table: str,
+):
+    """
+    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Parameters
+    ----------
+    input_table
+        input table name for reference table
+    cohort_lookup_path
+        input file path name for cohort corrections lookup file
+    travel_countries_lookup_path
+        input file path name for travel_countries corrections lookup file
+    edited_table
+    """
+    df = extract_from_table(input_table)
+    spark = get_or_create_spark_session()
+
+    cohort_lookup = spark.read.csv(
+        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
+    ).withColumnRenamed("participant_id", "cohort_participant_id")
+
+    # travel_countries_lookup = spark.read.csv(
+    #     travel_countries_lookup_path,
+    #     header=True,
+    #     schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    # )
+    rural_urban_lookup_df = spark.read.csv(
+        rural_urban_lookup_path,
+        header=True,
+        schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+    )
+    df = df.join(
+        cohort_lookup,
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    # df = df.join(
+    #     travel_countries_lookup,
+    #     how="left",
+    #     on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    # )
+    # TODO cannot resolve been_outside_uk_last_country_new
+    # df = df.withColumn(
+    #     "been_outside_uk_last_country",
+    #     F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    # ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    # TODO: duplicated column in join of df and rural_urban_lookup_df rural_urban_classification_11
+    df = df.drop("rural_urban_classification_11")
+    df = df.join(
+        rural_urban_lookup_df,
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("geography_and_imputation_logic")
