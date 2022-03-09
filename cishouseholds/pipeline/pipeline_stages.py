@@ -243,8 +243,8 @@ def generate_input_processing_function(
     @register_pipeline_stage(stage_name)
     def _inner_function(
         resource_path,
-        dataset_name,
-        id_column,
+        dataset_name=dataset_name,
+        id_column=id_column,
         latest_only=False,
         start_date=None,
         end_date=None,
