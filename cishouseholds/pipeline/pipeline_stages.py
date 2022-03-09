@@ -212,6 +212,8 @@ def generate_dummy_data(output_directory):
 
 def generate_input_processing_function(
     stage_name,
+    dataset_name,
+    id_column,
     validation_schema,
     column_name_map,
     datetime_column_map,
