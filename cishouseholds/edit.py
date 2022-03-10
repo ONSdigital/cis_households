@@ -307,7 +307,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, 
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
     csv = (
-        csv.filter(F.col("dataset") == dataset_name)
+        csv.filter(F.col("dataset_name") == dataset_name)
         .groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
