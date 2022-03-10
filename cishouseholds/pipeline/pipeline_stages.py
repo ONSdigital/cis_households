@@ -21,12 +21,12 @@ from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_df_list
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -212,6 +212,8 @@ def generate_dummy_data(output_directory):
 
 def generate_input_processing_function(
     stage_name,
+    dataset_name,
+    id_column,
     validation_schema,
     column_name_map,
     datetime_column_map,
@@ -240,9 +242,17 @@ def generate_input_processing_function(
 
     @register_pipeline_stage(stage_name)
     def _inner_function(
-        resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False, include_invalid=False
+        resource_path,
+        dataset_name=dataset_name,
+        id_column=id_column,
+        latest_only=False,
+        start_date=None,
+        end_date=None,
+        include_processed=False,
+        include_invalid=False,
     ):
         file_path_list = [resource_path]
+
         if include_hadoop_read_write:
             file_path_list = get_files_to_be_processed(
                 resource_path,
@@ -262,7 +272,10 @@ def generate_input_processing_function(
             return
 
         df = extract_validate_transform_input_data(
+            include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
+            dataset_name=dataset_name,
+            id_column=id_column,
             variable_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
@@ -356,56 +369,6 @@ def validate_survey_responses(
     )
     update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
-
-
-@register_pipeline_stage("lookup_based_editing")
-def lookup_based_editing(
-    input_table: str, cohort_lookup_path: str, travel_countries_lookup_path: str, edited_table: str
-):
-    """
-    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
-    Parameters
-    ----------
-    input_table
-        input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
-    edited_table
-    """
-    df = extract_from_table(input_table)
-
-    spark = get_or_create_spark_session()
-    cohort_lookup = spark.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
-    travel_countries_lookup = spark.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    df = df.join(
-        cohort_lookup,
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-
-    df = df.join(
-        travel_countries_lookup,
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
-
-    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -636,7 +599,7 @@ def join_geographic_data(
     survey_responses_table: str,
     geographic_responses_table: str,
     id_column: str,
-    region_column: str,
+    # region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
@@ -652,12 +615,85 @@ def join_geographic_data(
     id_column
         column containing id to join the 2 input tables
     """
-    weights_df = extract_from_table(geographic_table)
+    # TODO: poscode is present in both weights_df and survey_responses_df,
+    # I deleted postcode in right side in weights_df
+    weights_df = extract_from_table(geographic_table).drop("postcode")
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.join(weights_df, on=id_column, how="left").filter(
-        F.col(region_column).isNotNull()
+    geographic_survey_df = (
+        survey_responses_df.join(weights_df, on=id_column, how="left")
+        # .filter(F.col(region_column).isNotNull()) # TODO: region_column cannot be found.
     )
     update_table(geographic_survey_df, geographic_responses_table)
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_table: str,
+    cohort_lookup_path: str,
+    # travel_countries_lookup_path: str,  TODO: commented out temporarily ONLY until the lookup table is created.
+    rural_urban_lookup_path: str,
+    edited_table: str,
+):
+    """
+    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Parameters
+    ----------
+    input_table
+        input table name for reference table
+    cohort_lookup_path
+        input file path name for cohort corrections lookup file
+    travel_countries_lookup_path
+        input file path name for travel_countries corrections lookup file
+    edited_table
+    """
+    df = extract_from_table(input_table)
+    spark = get_or_create_spark_session()
+
+    cohort_lookup = spark.read.csv(
+        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
+    ).withColumnRenamed("participant_id", "cohort_participant_id")
+
+    # travel_countries_lookup = spark.read.csv(
+    #     travel_countries_lookup_path,
+    #     header=True,
+    #     schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    # )
+    rural_urban_lookup_df = spark.read.csv(
+        rural_urban_lookup_path,
+        header=True,
+        schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+    )
+    df = df.join(
+        cohort_lookup,
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    # df = df.join(
+    #     travel_countries_lookup,
+    #     how="left",
+    #     on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    # )
+    # TODO cannot resolve been_outside_uk_last_country_new
+    # df = df.withColumn(
+    #     "been_outside_uk_last_country",
+    #     F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    # ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    # TODO: duplicated column in join of df and rural_urban_lookup_df rural_urban_classification_11
+    df = df.drop("rural_urban_classification_11")
+    df = df.join(
+        rural_urban_lookup_df,
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("geography_and_imputation_logic")
@@ -817,10 +853,13 @@ def record_level_interface(
         Hive table when they have been filtered out from survey responses
     """
     input_df = extract_from_table(survey_responses_table)
-    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+    edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
+    edited_df = update_from_csv_lookup(
+        df=input_df, dataset_name="NONE", csv_filepath=csv_editing_file, id_column=unique_id_column
+    )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
-    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+    filtered_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_df, filtered_survey_responses_table, "overwrite")
 
 
