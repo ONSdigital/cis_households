@@ -21,7 +21,7 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 
 
 def generate_weights(auxillary_dfs):
-    #auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
+    # auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
     # initialise lookup dataframes
     household_info_df = auxillary_dfs["household_level_populations"]
@@ -54,8 +54,8 @@ def generate_weights(auxillary_dfs):
         )
     else:
         print("NO TRANCHE")
-        #df = df.withColumn("tranche_eligible_households",F.lit("No"))
-        #df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment",F.lit(None).cast("integer"))
+        # df = df.withColumn("tranche_eligible_households",F.lit("No"))
+        # df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment",F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
     df = swab_weight_wrapper(df=df, household_info_df=household_info_df, cis_window=cis_window)
@@ -163,9 +163,9 @@ def swab_weight_wrapper(df: DataFrame, household_info_df: DataFrame, cis_window:
 
 
 # Wrapper
-def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario:str):
+def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str):
     # Antibody weights
-    print("SCENARIO: ",scenario)
+    print("SCENARIO: ", scenario)
     if scenario in "AB":
         design_weight_column = "raw_design_weight_antibodies_ab"
         df = calculate_scenario_ab_antibody_dweights(
@@ -175,7 +175,7 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario:str):
             sample_new_previous_column="sample_new_previous",
             scaled_dweight_swab_nonadjusted_column="scaled_design_weight_swab_nonadjusted",
         )
-    elif scenario=="C":
+    elif scenario == "C":
         design_weight_column = "raw_design_weight_antibodies_c"
         df = calculate_scenario_c_antibody_dweights(
             df=df,

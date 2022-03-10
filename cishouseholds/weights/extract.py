@@ -16,32 +16,28 @@ spark_session = get_or_create_spark_session()
 
 lookup_variable_name_maps = {
     "address_lookup": {
-        "uprn": "unique_property_reference_code", 
+        "uprn": "unique_property_reference_code",
         "postcode": "postcode",
-        "town_name":"town_name",
-        "ctry18nm":"crtry18nm",
-        "la_code":"la_code",
-        "ew":"ew",
-        "address_type":"address_type",
-        "council_tax":"council_tax",
-        "address_base_postal":"address_base_postal"
+        "town_name": "town_name",
+        "ctry18nm": "crtry18nm",
+        "la_code": "la_code",
+        "ew": "ew",
+        "address_type": "address_type",
+        "council_tax": "council_tax",
+        "address_base_postal": "address_base_postal",
     },
-    "postcode_lookup": {
-        "pcd": "postcode", 
-        "lsoa11": "lower_super_output_area_code_11", 
-        "ctry": "country_code_12"
-    },
+    "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
     "cis_phase_lookup": {
-        "LSOA11CD": "lower_super_output_area_code_11", 
+        "LSOA11CD": "lower_super_output_area_code_11",
         "CIS20CD": "cis_area_code_20",
-        "LSOA11NM":"LSOA11NM",
-        "RGN19CD":"RGN19CD"
+        "LSOA11NM": "LSOA11NM",
+        "RGN19CD": "RGN19CD",
     },
     "country_lookup": {
-        "CTRY20CD": "country_code_12", 
+        "CTRY20CD": "country_code_12",
         "CTRY20NM": "country_name_12",
         "LAD20CD": "LAD20CD",
-        "LAD20NM": "LAD20NM"
+        "LAD20NM": "LAD20NM",
     },
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
@@ -229,7 +225,13 @@ def rename_and_remove_columns(auxillary_dfs: dict):
         if auxillary_dfs[name] is not None:
             for name_list_str in lookup_variable_name_maps.keys():
                 if name in name_list_str:
-                    auxillary_dfs[name] = auxillary_dfs[name].drop(*[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name_list_str].keys()])
+                    auxillary_dfs[name] = auxillary_dfs[name].drop(
+                        *[
+                            col
+                            for col in auxillary_dfs[name].columns
+                            if col not in lookup_variable_name_maps[name_list_str].keys()
+                        ]
+                    )
                     for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
                         auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
                     break
