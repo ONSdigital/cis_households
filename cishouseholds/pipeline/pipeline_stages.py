@@ -272,6 +272,7 @@ def generate_input_processing_function(
             return
 
         df = extract_validate_transform_input_data(
+            include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
             id_column=id_column,

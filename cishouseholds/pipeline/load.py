@@ -28,19 +28,17 @@ def extract_validate_transform_input_data(
     transformation_functions: List[Callable],
     sep: str = ",",
     cast_to_double_columns_list: list = [],
+    include_hadoop_read_write: bool = False,
 ):
-    config = get_config()
-    storage_config = None
-    filter_config = None
-    if "storage" in config:
-        storage_config = config["storage"]
+    if include_hadoop_read_write:
+        storage_config = get_config()["storage"]
         csv_location = storage_config["csv_editing_file"]
         filter_config = get_secondary_config(storage_config["filter_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
     df = rename_column_names(df, variable_name_map)
 
-    if storage_config is not None and filter_config is not None:
+    if include_hadoop_read_write:
         update_table(df, f"raw_{dataset_name}")
         update_table(df.filter(F.col(id_column).isin(filter_config[dataset_name])), f"{dataset_name}_rows_extracted")
         df = df.filter(~F.col(id_column).isin(filter_config[dataset_name]))
