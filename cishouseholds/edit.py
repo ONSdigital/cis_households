@@ -133,8 +133,11 @@ def update_face_covering_outside_of_home(
             "Yes, at work/school only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "Yes, in other situations only",
         )
         .when(
@@ -144,11 +147,17 @@ def update_face_covering_outside_of_home(
         )
         .when(
             (F.col(covered_enclosed_column) == "My face is already covered")
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "My face is already covered",
         )
         .when(
-            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            (
+                (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_enclosed_column).isNull())
+            )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
         )
@@ -281,7 +290,7 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
     Allows a match on Null old values.
@@ -293,10 +302,13 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     id_column
         column in dataframe containing unique identifier
     """
+    if csv_filepath == "" or csv_filepath is None:
+        return df
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
     csv = (
-        csv.groupBy("id")
+        csv.filter(F.col("dataset_name") == dataset_name)
+        .groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")

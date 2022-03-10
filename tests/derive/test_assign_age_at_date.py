@@ -9,7 +9,7 @@ from cishouseholds.derive import assign_age_at_date
 def expected_df(spark_session):
     return spark_session.createDataFrame(
         data=[("2021-07-21", "1995-02-05", 26), ("2021-07-21", None, None)],
-        schema=["base_date", "date_of_birth", "age_at_date"],
+        schema="base_date string, date_of_birth string, age_at_date integer",
     )
 
 
