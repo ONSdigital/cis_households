@@ -21,12 +21,12 @@ from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_df_list
 from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -210,6 +210,8 @@ def generate_dummy_data(output_directory):
 
 def generate_input_processing_function(
     stage_name,
+    dataset_name,
+    id_column,
     validation_schema,
     column_name_map,
     datetime_column_map,
@@ -238,9 +240,17 @@ def generate_input_processing_function(
 
     @register_pipeline_stage(stage_name)
     def _inner_function(
-        resource_path, latest_only=False, start_date=None, end_date=None, include_processed=False, include_invalid=False
+        resource_path,
+        dataset_name=dataset_name,
+        id_column=id_column,
+        latest_only=False,
+        start_date=None,
+        end_date=None,
+        include_processed=False,
+        include_invalid=False,
     ):
         file_path_list = [resource_path]
+
         if include_hadoop_read_write:
             file_path_list = get_files_to_be_processed(
                 resource_path,
@@ -260,7 +270,10 @@ def generate_input_processing_function(
             return
 
         df = extract_validate_transform_input_data(
+            include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
+            dataset_name=dataset_name,
+            id_column=id_column,
             variable_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
@@ -795,10 +808,13 @@ def record_level_interface(
         Hive table when they have been filtered out from survey responses
     """
     input_df = extract_from_table(survey_responses_table)
-    edited_df = update_from_csv_lookup(df=input_df, csv_filepath=csv_editing_file, id_column=unique_id_column)
+    edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
+    edited_df = update_from_csv_lookup(
+        df=input_df, dataset_name="NONE", csv_filepath=csv_editing_file, id_column=unique_id_column
+    )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
-    filtered_df = edited_df.filter(F.col(unique_id_column).isin(unique_id_list))
+    filtered_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_df, filtered_survey_responses_table, "overwrite")
 
 
