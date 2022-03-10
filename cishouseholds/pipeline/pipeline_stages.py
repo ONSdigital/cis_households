@@ -823,6 +823,8 @@ def tables_to_csv(
     outgoing_directory,
     tables_to_csv_config_file,
     category_map,
+    sep="|",
+    extension=".txt",
     dry_run=False,
 ):
     """
@@ -855,14 +857,15 @@ def tables_to_csv(
         df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
         df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
-        write_csv_rename(df, file_path)
-        file_path = file_path.with_suffix(".csv")
+        write_csv_rename(df, file_path, sep, extension)
+        file_path = file_path.with_suffix(extension)
         header_string = read_header(file_path)
 
         manifest.add_file(
             relative_file_path=file_path.relative_to(outgoing_directory).as_posix(),
             column_header=header_string,
             validate_col_name_length=False,
+            sep=sep,
         )
     manifest.write_manifest()
 
