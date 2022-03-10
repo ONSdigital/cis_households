@@ -52,7 +52,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
-        donor_group_columns=["cis_area_code_20"],
+        donor_group_columns=["cis_area"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     )
