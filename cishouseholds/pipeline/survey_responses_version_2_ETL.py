@@ -211,6 +211,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working (unemployed, retired, long-term sick etc.)",
             "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Child under 4-5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
