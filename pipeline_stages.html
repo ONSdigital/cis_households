@@ -189,6 +189,17 @@ Includes combining data from different files and filling forwards or backwards o
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">geography_and_imputation_dependent_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imputed_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_imputed_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply processing that depends on the imputation and geographic columns being created
+:param imputed_responses_table:
+:param response_records_table:
+:param invalid_response_records_table:
+:param output_imputed_responses_table:
+:param key_columns:</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.impute_demographic_columns">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">impute_demographic_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_values_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_responses_imputed_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.impute_demographic_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imputes values for key demographic columns.
@@ -234,16 +245,6 @@ Applies filling forward for listed columns. Specific imputations are then used f
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lookup_based_editing">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lookup_based_editing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rural_urban_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edited_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lookup_based_editing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Edit columns based on mappings from lookup files. Often used to correct data quality issues.
-:param input_table: input table name for reference table
-:param cohort_lookup_path: input file path name for cohort corrections lookup file
-:param travel_countries_lookup_path: input file path name for travel_countries corrections lookup file
-:param edited_table:</p>
 </dd></dl>
 
 <dl class="py function">
