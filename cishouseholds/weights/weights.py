@@ -1,3 +1,4 @@
+import re
 from typing import List
 from typing import Union
 
@@ -8,11 +9,10 @@ from pyspark.sql.window import Window
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
-from cishouseholds.weights.edit import update_data
-from cishouseholds.weights.extract import prepare_auxillary_data
+
+# from cishouseholds.weights.edit import clean_df
 
 # from cishouseholds.weights.derive import get_matches
 
@@ -27,18 +27,13 @@ def generate_weights(auxillary_dfs):
     household_info_df = auxillary_dfs["household_level_populations"]
 
     # 1164
-
-    df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
-
-    # update and clean sample df's
-    df = update_data(df, auxillary_dfs)
-    df = clean_df(df)
+    old_df = recode_columns(auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"], household_info_df)
+    df = union_multiple_tables([old_df, auxillary_dfs["new_sample_file"]])  # step 15: dweights
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
     tranche_df = auxillary_dfs["tranche"]
     if tranche_df is not None:
-        print("TRANCHE")
         tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
         # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
@@ -52,8 +47,6 @@ def generate_weights(auxillary_dfs):
             tranche_column="tranche",
             group_by_columns=["cis_area_code_20", "enrolment_date"],
         )
-    else:
-        print("NO TRANCHE")
         # df = df.withColumn("tranche_eligible_households",F.lit("No"))
         # df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment",F.lit(None).cast("integer"))
 
@@ -84,6 +77,32 @@ def generate_weights(auxillary_dfs):
     )
 
     return df
+
+
+def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
+    """
+    Recode and rename old column values in sample data if change detected in new sample data
+    Paramaters
+    """
+    old_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, old_df.columns))[0]
+    new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
+    info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
+    info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
+    new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
+    old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
+    if old_lsoa != new_lsoa:
+        old_df = old_df.join(
+            hh_info_df.select(info_lsoa, info_cis, "postcode")
+            .withColumnRenamed(info_lsoa, "lsoa_from_lookup")
+            .withColumnRenamed(info_cis, "cis_from_lookup"),
+            on="postcode",
+            how="left",
+        )
+        old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
+        old_df = (
+            old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
+        )
+    return old_df
 
 
 # 1163
@@ -165,7 +184,6 @@ def swab_weight_wrapper(df: DataFrame, household_info_df: DataFrame, cis_window:
 # Wrapper
 def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str):
     # Antibody weights
-    print("SCENARIO: ", scenario)
     if scenario in "AB":
         design_weight_column = "raw_design_weight_antibodies_ab"
         df = calculate_scenario_ab_antibody_dweights(

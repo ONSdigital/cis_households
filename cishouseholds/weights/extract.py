@@ -42,7 +42,9 @@ lookup_variable_name_maps = {
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
+        "lsoa11": "lower_super_output_area_code_11",
         "cis20cd": "cis_area_code_20",
+        "CIS20CD": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
         "sample": "sample_source",
@@ -55,6 +57,8 @@ lookup_variable_name_maps = {
         "msoa11": "middle_super_output_area_code_11",
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
+        "date_sample_created": "date_sample_created",
+        "batch_number": "batch_number",
     },
     "tranche": {
         "UAC": "ons_household_id",
@@ -235,11 +239,6 @@ def rename_and_remove_columns(auxillary_dfs: dict):
                     for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
                         auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
                     break
-    print("*-----------------------------------------------------------*")
-    for name, df in auxillary_dfs.items():
-        if df is not None:
-            print(name)
-            df.show()
     return auxillary_dfs
 
 
