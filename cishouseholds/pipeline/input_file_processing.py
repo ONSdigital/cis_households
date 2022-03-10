@@ -35,6 +35,8 @@ from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_
 
 blood_delta_parameters = {
     "stage_name": "blood_delta_ETL",
+    "dataset_name": "blood_delta",
+    "id_column": "blood_sample_barcode",
     "validation_schema": blood_validation_schema,
     "column_name_map": blood_variable_name_map,
     "datetime_column_map": blood_datetime_map,
@@ -46,6 +48,8 @@ blood_delta_parameters = {
 
 swab_delta_parameters = {
     "stage_name": "swab_delta_ETL",
+    "dataset_name": "swab_delta",
+    "id_column": "swab_sample_barcode",
     "validation_schema": swab_validation_schema,
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
@@ -57,6 +61,8 @@ swab_delta_parameters = {
 
 swab_delta_parameters_testKit = {
     "stage_name": "swab_testKit_delta_ETL",
+    "dataset_name": "swab_testkit_delta",
+    "id_column": "swab_sample_barcode",
     "validation_schema": swab_validation_schema_testKit,
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
@@ -68,6 +74,8 @@ swab_delta_parameters_testKit = {
 
 survey_responses_v2_parameters = {
     "stage_name": "survey_responses_version_2_ETL",
+    "dataset_name": "survey_responses_v2",
+    "id_column": "unique_participant_response_id",
     "validation_schema": survey_responses_v2_validation_schema,
     "column_name_map": survey_responses_v2_variable_name_map,
     "datetime_column_map": survey_responses_v2_datetime_map,
@@ -84,6 +92,8 @@ survey_responses_v2_parameters = {
 
 survey_responses_v1_parameters = {
     "stage_name": "survey_responses_version_1_ETL",
+    "dataset_name": "survey_responses_v1",
+    "id_column": "unique_participant_response_id",
     "validation_schema": survey_responses_v1_validation_schema,
     "column_name_map": survey_responses_v1_variable_name_map,
     "datetime_column_map": survey_responses_v1_datetime_map,
@@ -100,6 +110,8 @@ survey_responses_v1_parameters = {
 
 survey_responses_v0_parameters = {
     "stage_name": "survey_responses_version_0_ETL",
+    "dataset_name": "survey_responses_v0",
+    "id_column": "unique_participant_response_id",
     "validation_schema": survey_responses_v0_validation_schema,
     "column_name_map": survey_responses_v0_variable_name_map,
     "datetime_column_map": survey_responses_v0_datetime_map,
@@ -115,6 +127,8 @@ survey_responses_v0_parameters = {
 
 unassayed_blood_delta_parameters = {
     "stage_name": "unassayed_blood_ETL",
+    "dataset_name": "unassayed_blood_delta",
+    "id_column": "blood_sample_barcode",
     "validation_schema": unassayed_blood_validation_schema,
     "column_name_map": unassayed_bloods_variable_name_map,
     "datetime_column_map": blood_datetime_map,
@@ -126,6 +140,8 @@ unassayed_blood_delta_parameters = {
 
 historical_blood_parameters = {
     "stage_name": "historical_blood_ETL",
+    "dataset_name": "historical_blood_delta",
+    "id_column": "blood_sample_barcode",
     "validation_schema": historical_blood_validation_schema,
     "column_name_map": historical_blood_variable_name_map,
     "datetime_column_map": blood_datetime_map,
