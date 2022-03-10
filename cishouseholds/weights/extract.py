@@ -1,4 +1,5 @@
 import csv
+import re
 from io import StringIO
 from operator import add
 from typing import Union
@@ -66,6 +67,7 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
+        "enrolment_date":"enrolment_date"
     },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
@@ -80,6 +82,11 @@ lookup_variable_name_maps = {
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
     },
+}
+
+numeric_column_pattern_map = {
+    "^losa_\d{1,}": "lower_super_output_area_code_11",
+    "^lsoa\d{1,}": "lower_super_output_area_code_11",
 }
 
 
@@ -220,6 +227,16 @@ def prepare_auxillary_data(auxillary_dfs: dict):
     return auxillary_dfs
 
 
+def recode_column_patterns(df: DataFrame):
+    for curent_pattern, new_prefix in numeric_column_pattern_map.items():
+        col = list(filter(re.compile(curent_pattern).match, df.columns))
+        if len(col) > 0:
+            col = col[0]
+            new_col = new_prefix + re.findall(r"\d+$", col)[0]
+            df = df.withColumnRenamed(col, new_col)
+    return df
+
+
 def rename_and_remove_columns(auxillary_dfs: dict):
     """
     iterate over keys in name map dictionary and use name map if name of df is in key.
@@ -227,6 +244,7 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     """
     for name in auxillary_dfs.keys():
         if auxillary_dfs[name] is not None:
+            auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
             for name_list_str in lookup_variable_name_maps.keys():
                 if name in name_list_str:
                     auxillary_dfs[name] = auxillary_dfs[name].drop(
