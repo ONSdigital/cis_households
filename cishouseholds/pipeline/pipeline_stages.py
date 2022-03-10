@@ -1,8 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
-from functools import reduce
 from io import BytesIO
-from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -10,6 +8,8 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import assign_column_from_mapped_list_key
+from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.extract import get_files_to_be_processed
@@ -36,7 +36,6 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
-from cishouseholds.pipeline.post_merge_processing import merge_dependent_transform
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
@@ -56,7 +55,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-
 
 pipeline_stages = {}
 
@@ -553,21 +551,21 @@ def impute_demographic_columns(
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
-    imputed_values_df = key_columns_imputed_df.filter(
-        reduce(
-            lambda col_1, col_2: col_1 | col_2,
-            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-        )
-    )
+    # imputed_values_df = key_columns_imputed_df.filter(
+    #    reduce(
+    #        lambda col_1, col_2: col_1 | col_2,
+    #        (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+    #    )
+    # )
 
-    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    imputed_values = imputed_values_df.select(
-        "participant_id",
-        *lookup_columns,
-    )
+    # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    # imputed_values = imputed_values_df.select(
+    #     "participant_id",
+    #     *lookup_columns,
+    # )
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
-    update_table(imputed_values, imputed_values_table)
+    # update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
@@ -615,114 +613,71 @@ def join_geographic_data(
     id_column
         column containing id to join the 2 input tables
     """
-    # TODO: poscode is present in both weights_df and survey_responses_df,
-    # I deleted postcode in right side in weights_df
-    weights_df = extract_from_table(geographic_table).drop("postcode")
+    design_weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = (
-        survey_responses_df.join(weights_df, on=id_column, how="left")
-        # .filter(F.col(region_column).isNotNull()) # TODO: region_column cannot be found.
-    )
+    geographic_survey_df = survey_responses_df.drop("postcode").join(design_weights_df, on=id_column, how="left")
     update_table(geographic_survey_df, geographic_responses_table)
 
 
-@register_pipeline_stage("lookup_based_editing")
-def lookup_based_editing(
-    input_table: str,
-    cohort_lookup_path: str,
-    # travel_countries_lookup_path: str,  TODO: commented out temporarily ONLY until the lookup table is created.
-    rural_urban_lookup_path: str,
-    edited_table: str,
+@register_pipeline_stage("geography_and_imputation_dependent_logic")
+def geography_and_imputation_dependent_processing(
+    imputed_responses_table: str,
+    output_imputed_responses_table: str,
 ):
     """
-    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Apply processing that depends on the imputation and geographic columns being created
     Parameters
-    ----------
-    input_table
-        input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
-    edited_table
+    -----------
+    imputed_responses_table
+    response_records_table
+    invalid_response_records_table
+    output_imputed_responses_table
+    key_columns
     """
-    df = extract_from_table(input_table)
-    spark = get_or_create_spark_session()
+    df_with_imputed_values = extract_from_table(imputed_responses_table)
 
-    cohort_lookup = spark.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
 
-    # travel_countries_lookup = spark.read.csv(
-    #     travel_countries_lookup_path,
-    #     header=True,
-    #     schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    # )
-    rural_urban_lookup_df = spark.read.csv(
-        rural_urban_lookup_path,
-        header=True,
-        schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
+    df_with_imputed_values = assign_column_from_mapped_list_key(
+        df=df_with_imputed_values,
+        column_name_to_assign="ethnicity_group_corrected",
+        reference_column="ethnicity",
+        map=ethnicity_map,
     )
-    df = df.join(
-        cohort_lookup,
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    df_with_imputed_values = assign_ethnicity_white(
+        df_with_imputed_values,
+        column_name_to_assign="ethnicity_white_corrected",
+        ethnicity_group_column_name="ethnicity_group",
     )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-    # df = df.join(
-    #     travel_countries_lookup,
-    #     how="left",
-    #     on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    # )
-    # TODO cannot resolve been_outside_uk_last_country_new
-    # df = df.withColumn(
-    #     "been_outside_uk_last_country",
-    #     F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    # ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
-    # TODO: duplicated column in join of df and rural_urban_lookup_df rural_urban_classification_11
-    df = df.drop("rural_urban_classification_11")
-    df = df.join(
-        rural_urban_lookup_df,
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    update_table(df, edited_table, mode_overide="overwrite")
-
-
-@register_pipeline_stage("geography_and_imputation_logic")
-def process_post_merge(
-    imputed_antibody_swab_table: str,
-    response_records_table: str,
-    invalid_response_records_table: str,
-    key_columns: List[str],
-):
-    df_with_imputed_values = extract_from_table(imputed_antibody_swab_table)
-    df_with_imputed_values = merge_dependent_transform(df_with_imputed_values)
-
-    imputation_columns = chain(
-        *[(column, f"{column}_imputation_method", f"{column}_is_imputed") for column in key_columns]
-    )
-    response_level_records_df = df_with_imputed_values.drop(*imputation_columns)
-
-    multigeneration_df = assign_multigeneration(
-        df=response_level_records_df,
+    df_with_imputed_values = assign_multigeneration(
+        df=df_with_imputed_values,
         column_name_to_assign="multigen",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
         visit_date_column="visit_date_string",
         date_of_birth_column="date_of_birth",
-        country_column="country_name",
+        country_column="country_name_12",
     )
 
-    update_table(multigeneration_df, "multigeneration_table", mode_overide="overwrite")
-    update_table(response_level_records_df, response_records_table, mode_overide="overwrite")
+    update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("report")
