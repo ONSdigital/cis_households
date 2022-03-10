@@ -66,6 +66,8 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
+        "enrolment_date": "enrolment_date",
+        "tranche": "tranche",
     },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",

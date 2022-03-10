@@ -38,7 +38,6 @@ def generate_weights(auxillary_dfs):
 
         # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
-
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",

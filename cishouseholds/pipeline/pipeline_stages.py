@@ -44,11 +44,11 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependen
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
+from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
-from cishouseholds.weights.weights import prepare_auxillary_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
