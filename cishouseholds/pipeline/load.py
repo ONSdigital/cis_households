@@ -30,7 +30,9 @@ def extract_validate_transform_input_data(
     cast_to_double_columns_list: list = [],
 ):
     config = get_config()
-    if config != []:
+    storage_config = None
+    filter_config = None
+    if "storage" in config:
         storage_config = config["storage"]
         csv_location = storage_config["csv_editing_file"]
         filter_config = get_secondary_config(storage_config["filter_config_file"])
@@ -40,7 +42,7 @@ def extract_validate_transform_input_data(
 
     update_table(df, f"raw_{dataset_name}")
 
-    if config != []:
+    if storage_config is not None and filter_config is not None:
         update_table(df.filter(F.col(id_column).isin(filter_config[dataset_name])), f"{dataset_name}_rows_extracted")
         df = df.filter(~F.col(id_column).isin(filter_config[dataset_name]))
         df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
