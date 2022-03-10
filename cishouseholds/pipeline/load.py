@@ -156,7 +156,8 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
 def extract_df_list(files):
     dfs = {}
     for key, file in files.items():
-        if file == "" or file is None:
+        print("FILE",file)
+        if file["file"] == "" or file["file"] is None:
             dfs[key] = None
         elif file["type"] == "table":
             dfs[key] = extract_from_table(file["file"])

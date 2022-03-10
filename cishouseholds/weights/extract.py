@@ -15,10 +15,34 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 spark_session = get_or_create_spark_session()
 
 lookup_variable_name_maps = {
-    "address_lookup": {"uprn": "unique_property_reference_code", "postcode": "postcode"},
-    "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
-    "cis_phase_lookup": {"LSOA11CD": "lower_super_output_area_code_11", "CIS20CD": "cis_area_code_20"},
-    "country_lookup": {"CTRY20CD": "country_code_12", "CTRY20NM": "country_name_12"},
+    "address_lookup": {
+        "uprn": "unique_property_reference_code", 
+        "postcode": "postcode",
+        "town_name":"town_name",
+        "ctry18nm":"crtry18nm",
+        "la_code":"la_code",
+        "ew":"ew",
+        "address_type":"address_type",
+        "council_tax":"council_tax",
+        "address_base_postal":"address_base_postal"
+    },
+    "postcode_lookup": {
+        "pcd": "postcode", 
+        "lsoa11": "lower_super_output_area_code_11", 
+        "ctry": "country_code_12"
+    },
+    "cis_phase_lookup": {
+        "LSOA11CD": "lower_super_output_area_code_11", 
+        "CIS20CD": "cis_area_code_20",
+        "LSOA11NM":"LSOA11NM",
+        "RGN19CD":"RGN19CD"
+    },
+    "country_lookup": {
+        "CTRY20CD": "country_code_12", 
+        "CTRY20NM": "country_name_12",
+        "LAD20CD": "LAD20CD",
+        "LAD20NM": "LAD20NM"
+    },
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
@@ -27,8 +51,8 @@ lookup_variable_name_maps = {
         "ctry_name12": "country_name_12",
         "sample": "sample_source",
         "sample_direct": "sample_addressbase_indicator",
-        "hh_dweight_swab": "household_level_designweight_swab",
-        "hh_dweight_atb": "household_level_designweight_antibodies",
+        "dweight_hh": "household_level_designweight_swab",
+        "dweight_hh_atb": "household_level_designweight_antibodies",
         "rgngor9d": "region_code",
         "laua": "local_authority_unity_authority_code",
         "oa11oac11": "output_area_code_11_census_output_area_classification_11",
@@ -190,23 +214,30 @@ def read_csv_to_pyspark_df(
 
 
 def prepare_auxillary_data(auxillary_dfs: dict):
-    auxillary_dfs = rename_columns(auxillary_dfs)
+    auxillary_dfs = rename_and_remove_columns(auxillary_dfs)
     if "aps_lookup" in auxillary_dfs:
         auxillary_dfs["aps_lookup"] = recode_column_values(auxillary_dfs["aps_lookup"], aps_value_map)
     return auxillary_dfs
 
 
-def rename_columns(auxillary_dfs: dict):
+def rename_and_remove_columns(auxillary_dfs: dict):
     """
     iterate over keys in name map dictionary and use name map if name of df is in key.
     break out of name checking loop once a compatible name map has been found.
     """
     for name in auxillary_dfs.keys():
-        for name_list_str in lookup_variable_name_maps.keys():
-            if name in name_list_str:
-                for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
-                    auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
-                break
+        if auxillary_dfs[name] is not None:
+            for name_list_str in lookup_variable_name_maps.keys():
+                if name in name_list_str:
+                    auxillary_dfs[name] = auxillary_dfs[name].drop(*[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name_list_str].keys()])
+                    for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
+                        auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+                    break
+    print("*-----------------------------------------------------------*")
+    for name, df in auxillary_dfs.items():
+        if df is not None:
+            print(name)
+            df.show()
     return auxillary_dfs
 
 
