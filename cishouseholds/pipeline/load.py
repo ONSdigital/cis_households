@@ -29,18 +29,22 @@ def extract_validate_transform_input_data(
     sep: str = ",",
     cast_to_double_columns_list: list = [],
 ):
-    storage_config = get_config()["storage"]
-    csv_location = storage_config["csv_editing_file"]
-    filter_config = get_secondary_config(storage_config["filter_config_file"])
+    config = get_config()
+    if config != []:
+        storage_config = config["storage"]
+        csv_location = storage_config["csv_editing_file"]
+        filter_config = get_secondary_config(storage_config["filter_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
     df = rename_column_names(df, variable_name_map)
 
     update_table(df, f"raw_{dataset_name}")
-    update_table(df.filter(F.col(id_column).isin(filter_config[dataset_name])), f"{dataset_name}_rows_extracted")
 
-    df = df.filter(~F.col(id_column).isin(filter_config[dataset_name]))
-    df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
+    if config != []:
+        update_table(df.filter(F.col(id_column).isin(filter_config[dataset_name])), f"{dataset_name}_rows_extracted")
+        df = df.filter(~F.col(id_column).isin(filter_config[dataset_name]))
+        df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
+
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
 
