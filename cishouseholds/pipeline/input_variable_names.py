@@ -638,8 +638,6 @@ survey_responses_v2_variable_name_map = {
     "Long_Covid_Palpitations": "long_covid_palpitations",
     "Long_Covid_Low_mood_not_enjoying_anything": "long_covid_low_mood",
     "Long_Covid_Difficulty_concentrating": "long_covid_difficulty_concentrating",
-    "Long_Covid_Runny_nose_sneezing": "long_covid_runny_nose_sneezing",
-    "Long_Covid_Noisy_breathing": "long_covid_noisy_breathing",
     "Have_you_been_offered_a_vaccination": "cis_covid_vaccine_offered",
     "Vaccinated_Against_Covid": "cis_covid_vaccine_received",
     "Type_Of_Vaccination": "cis_covid_vaccine_type",
