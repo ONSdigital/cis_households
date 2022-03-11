@@ -278,6 +278,7 @@ def generate_input_processing_function(
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
             transformation_functions=transformation_functions,
+            source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
         )
