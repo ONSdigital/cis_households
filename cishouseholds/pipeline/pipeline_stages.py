@@ -412,7 +412,7 @@ def lookup_based_editing(
         """,
     )
     df = df.join(
-        cohort_lookup,
+        F.broadcast(cohort_lookup),
         how="left",
         on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
     )
@@ -420,20 +420,19 @@ def lookup_based_editing(
         "new_cohort", "old_cohort"
     )
     df = df.join(
-        travel_countries_lookup,
+        F.broadcast(travel_countries_lookup),
         how="left",
         on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
     )
-    # TODO cannot resolve been_outside_uk_last_country_new
     df = df.withColumn(
         "been_outside_uk_last_country",
         F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
-    # TODO: duplicated column in join of df and rural_urban_lookup_df rural_urban_classification_11
-    df = df.drop("rural_urban_classification_11")
+    if "rural_urban_classification_11" in df.columns:
+        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
     df = df.join(
-        rural_urban_lookup_df,
+        F.broadcast(rural_urban_lookup_df),
         how="left",
         on="lower_super_output_area_code_11",
     )
