@@ -115,19 +115,24 @@ def assign_people_in_household_count(
 
     infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
     infant_exceptions_array = F.array(
-        [F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
     )
-    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
+    participant_array = F.array(
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
+    )
 
-    infant_num = F.when(
-        F.size(F.array_remove(infant_exceptions_array, 0)) == len(infant_column_pattern_with_exceptions), 0
-    ).otherwise(F.size(F.array_remove(infant_array, 0)))
+    infant_num = F.when(F.size(F.array_remove(infant_exceptions_array, 0)) == 0, 0).otherwise(
+        F.size(F.array_remove(infant_array, 0))
+    )
 
     participant_num = F.size(F.array_remove(participant_array, 0))
 
     df = df.withColumn(
         column_name_to_assign,
-        F.col(household_participant_count_column) + infant_num + participant_num + F.col(non_consented_count_column),
+        F.col(household_participant_count_column)
+        + infant_num
+        + participant_num
+        + F.when(F.col(non_consented_count_column).isNull(), 0).otherwise(F.col(non_consented_count_column)),
     )
     return df
 
