@@ -86,8 +86,10 @@ lookup_variable_name_maps = {
 }
 
 numeric_column_pattern_map = {
-    "^losa_\d{1,}": "lower_super_output_area_code_11",  # noqa:W605
-    "^lsoa\d{1,}": "lower_super_output_area_code_11",  # noqa:W605
+    "^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
+    "^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
 }
 
 
@@ -233,7 +235,7 @@ def recode_column_patterns(df: DataFrame):
         col = list(filter(re.compile(curent_pattern).match, df.columns))
         if len(col) > 0:
             col = col[0]
-            new_col = new_prefix + re.findall(r"\d+$", col)[0]  # type: ignore
+            new_col = new_prefix.format(re.findall(r"\d+$", col)[0])  # type: ignore
             df = df.withColumnRenamed(col, new_col)
     return df
 
