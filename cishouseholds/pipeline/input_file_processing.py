@@ -75,7 +75,7 @@ swab_delta_parameters_testKit = {
 survey_responses_v2_parameters = {
     "stage_name": "survey_responses_version_2_ETL",
     "dataset_name": "survey_responses_v2",
-    "id_column": "unique_participant_response_id",
+    "id_column": "visit_id",
     "validation_schema": survey_responses_v2_validation_schema,
     "column_name_map": survey_responses_v2_variable_name_map,
     "datetime_column_map": survey_responses_v2_datetime_map,
@@ -93,7 +93,7 @@ survey_responses_v2_parameters = {
 survey_responses_v1_parameters = {
     "stage_name": "survey_responses_version_1_ETL",
     "dataset_name": "survey_responses_v1",
-    "id_column": "unique_participant_response_id",
+    "id_column": "visit_id",
     "validation_schema": survey_responses_v1_validation_schema,
     "column_name_map": survey_responses_v1_variable_name_map,
     "datetime_column_map": survey_responses_v1_datetime_map,
@@ -111,7 +111,7 @@ survey_responses_v1_parameters = {
 survey_responses_v0_parameters = {
     "stage_name": "survey_responses_version_0_ETL",
     "dataset_name": "survey_responses_v0",
-    "id_column": "unique_participant_response_id",
+    "id_column": "visit_id",
     "validation_schema": survey_responses_v0_validation_schema,
     "column_name_map": survey_responses_v0_variable_name_map,
     "datetime_column_map": survey_responses_v0_datetime_map,
