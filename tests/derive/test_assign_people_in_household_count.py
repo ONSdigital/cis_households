@@ -24,7 +24,7 @@ def test_assign_people_in_household_count(spark_session):
     input_df = expected_df.drop("total_count")
 
     output_df = assign_people_in_household_count(
-        input_df, "total_count", r"i[1-3]", r"i3", r"p[1-2]", "count", "non_consent"
+        input_df, "total_count", r"i[1-3]", r"i[1,2]", r"p[1-2]", "count", "non_consent"
     )
     assert_df_equality(
         output_df,
