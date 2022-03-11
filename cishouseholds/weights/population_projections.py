@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_ethnicity_white
 from cishouseholds.weights.derive import assign_population_projections
 from cishouseholds.weights.derive import assign_white_proportion
@@ -244,7 +245,7 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         "England",
     ]
 
-    output_df = None
+    calibrated_dfs = []
     for dataset_name, country, min_age, groupby_columns, additional_columns in zip(
         data_set_names, countries, min_ages, groupby_columns_set, additional_columns_set
     ):
@@ -259,9 +260,7 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         )
         if calibrated_df is not None:
             calibrated_df = calibrated_df.withColumn("dataset_name", F.lit(dataset_name))
-            if output_df is None:
-                output_df = calibrated_df
-            else:
-                output_df = output_df.union(calibrated_df)
+            calibrated_dfs.append(calibrated_df)
 
+    output_df = union_multiple_tables(calibrated_dfs)
     return output_df

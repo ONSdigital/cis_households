@@ -915,6 +915,7 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
+
     update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
     update_table(population_projections, population_projections_table, mode_overide="overwrite")
 
