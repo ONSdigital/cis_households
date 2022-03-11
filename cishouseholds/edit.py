@@ -720,7 +720,7 @@ def edit_to_sum_or_max_value(
 ):
     """
     Imputes column_name_to_assign based a sum of the columns_to_sum.
-    If exceeds max, uses max_value.
+    If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
     column_name_to_assign must already exist on the df.
     """
