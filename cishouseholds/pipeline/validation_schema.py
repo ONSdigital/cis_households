@@ -651,8 +651,6 @@ survey_responses_v2_validation_schema = {
     "Long_Covid_Palpitations": {"type": "string"},
     "Long_Covid_Low_mood_not_enjoying_anything": {"type": "string"},
     "Long_Covid_Difficulty_concentrating": {"type": "string"},
-    "Long_Covid_Runny_nose_sneezing": {"type": "string"},
-    "Long_Covid_Noisy_breathing": {"type": "string"},
     "Have_you_been_offered_a_vaccination": {"type": "string"},
     "Vaccinated_Against_Covid": {"type": "string"},
     "Type_Of_Vaccination": {"type": "string"},

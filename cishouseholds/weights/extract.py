@@ -1,8 +1,9 @@
+import re
+
 from pyspark.sql import DataFrame
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
 
 spark_session = get_or_create_spark_session()
 
@@ -34,7 +35,9 @@ lookup_variable_name_maps = {
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
+        "lsoa11": "lower_super_output_area_code_11",
         "cis20cd": "cis_area_code_20",
+        "CIS20CD": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
         "sample": "sample_source",
@@ -47,6 +50,8 @@ lookup_variable_name_maps = {
         "msoa11": "middle_super_output_area_code_11",
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
+        "date_sample_created": "date_sample_created",
+        "batch_number": "batch_number",
     },
     "tranche": {
         "UAC": "ons_household_id",
@@ -54,6 +59,8 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
+        "enrolment_date": "enrolment_date",
+        "tranche": "tranche",
     },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
@@ -68,6 +75,13 @@ lookup_variable_name_maps = {
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
     },
+}
+
+numeric_column_pattern_map = {
+    "^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
+    "^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
 }
 
 
@@ -113,6 +127,16 @@ def prepare_auxillary_data(auxillary_dfs: dict):
     return auxillary_dfs
 
 
+def recode_column_patterns(df: DataFrame):
+    for curent_pattern, new_prefix in numeric_column_pattern_map.items():
+        col = list(filter(re.compile(curent_pattern).match, df.columns))
+        if len(col) > 0:
+            col = col[0]
+            new_col = new_prefix.format(re.findall(r"\d+$", col)[0])  # type: ignore
+            df = df.withColumnRenamed(col, new_col)
+    return df
+
+
 def rename_and_remove_columns(auxillary_dfs: dict):
     """
     iterate over keys in name map dictionary and use name map if name of df is in key.
@@ -120,18 +144,20 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     """
     validate_columns(auxillary_dfs)
     for name in auxillary_dfs.keys():
-        for name_list_str in lookup_variable_name_maps.keys():
-            if name in name_list_str:
-                auxillary_dfs[name] = auxillary_dfs[name].drop(
-                    *[
-                        col
-                        for col in auxillary_dfs[name].columns
-                        if col not in lookup_variable_name_maps[name_list_str].keys()
-                    ]
-                )
-                for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
-                    auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
-                break
+        if auxillary_dfs[name] is not None:
+            auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
+            for name_list_str in lookup_variable_name_maps.keys():
+                if name in name_list_str:
+                    auxillary_dfs[name] = auxillary_dfs[name].drop(
+                        *[
+                            col
+                            for col in auxillary_dfs[name].columns
+                            if col not in lookup_variable_name_maps[name_list_str].keys()
+                        ]
+                    )
+                    for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
+                        auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+                    break
     return auxillary_dfs
 
 

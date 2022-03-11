@@ -101,7 +101,7 @@ def configure_outputs(
     return df
 
 
-def write_csv_rename(df: DataFrame, file_path: Path):
+def write_csv_rename(df: DataFrame, file_path: Path, sep: str = "|", extension: str = ".txt"):
     """
     Writes a df to file_path as a single partition and moves to a single CSV with the same name.
 
@@ -115,14 +115,14 @@ def write_csv_rename(df: DataFrame, file_path: Path):
         path to outgoing file, without filename extension
     """
     temp_path = file_path / "_tmp"
-    (df.coalesce(1).write.mode("overwrite").csv(temp_path.as_posix(), header=True))
+    (df.coalesce(1).write.mode("overwrite").csv(temp_path.as_posix(), header=True, sep=sep))
 
     partitions = list_contents(temp_path.as_posix())["filename"].dropna().tolist()
 
-    partitions = [part for part in partitions if part.endswith(".csv")]
+    partitions = [part for part in partitions if part.endswith(".csv")]  # spark writes them as .csv regardless of sep
 
     # move temp file to target location and rename
-    subprocess.check_call(["hadoop", "fs", "-mv", (temp_path / partitions[0]), file_path.as_posix() + ".csv"])
+    subprocess.check_call(["hadoop", "fs", "-mv", (temp_path / partitions[0]), file_path.as_posix() + extension])
 
     # remove original subfolder inc tmp
     subprocess.call(["hadoop", "fs", "-rm", "-r", file_path], stdout=subprocess.DEVNULL)

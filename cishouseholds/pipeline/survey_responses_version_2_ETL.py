@@ -12,7 +12,6 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
-from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -60,8 +59,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     Generic transformation steps to be applied to all survey response records.
     """
-
-    df = assign_filename_column(df, "survey_response_source_file")
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "symptoms_last_7_days_any",
@@ -318,6 +315,21 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
+
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
 
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
@@ -816,7 +828,7 @@ def union_dependent_derivations(df):
         df,
         column_name_to_assign="people_in_household_count",
         infant_column_pattern=r"infant_[1-8]_age",
-        infant_column_pattern_with_exceptions=r"infant_6_age",
+        infant_column_pattern_with_exceptions=r"infant_[1-5,7,8]_age",
         participant_column_pattern=r"person_[1-8]_not_present_age",
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
@@ -918,20 +930,6 @@ def fill_forwards_transformations(df):
             "Not working (unemployed, retired, long-term sick etc.)",
             "Student",
         ],
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
     )
     df = fill_forward_from_last_change(
         df=df,

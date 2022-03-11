@@ -952,37 +952,9 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_runny_nose_sneezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: long_covid_noisy_breathing
-  nullable: true
-  type: string
-- metadata: {}
   name: cis_covid_vaccine_offered
   nullable: true
   type: string
-- metadata: {}
-  name: cis_covid_vaccine_received
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_number_of_doses
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date
-  nullable: true
-  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_1
   nullable: true
@@ -1155,6 +1127,26 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: cis_covid_vaccine_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_received
+  nullable: true
+  type: string
 - metadata: {}
   name: household_been_care_home_last_28_days
   nullable: false
