@@ -51,6 +51,8 @@ lookup_variable_name_maps = {
         "sample": "sample_source",
         "sample_direct": "sample_addressbase_indicator",
         "hh_dweight_swab": "household_level_designweight_swab",
+        "dweight_hh": "household_level_designweight_swab",
+        "dweight_hh_atb": "household_level_designweight_antibodies",
         "hh_dweight_atb": "household_level_designweight_antibodies",
         "rgn/gor9d": "region_code",
         "laua": "local_authority_unity_authority_code",
@@ -75,6 +77,13 @@ lookup_variable_name_maps = {
         "rgn": "region_code",
         "ctry": "country_code_12",
         "ctry_name": "country_name_12",
+        # TODO: check these names are correctly mapped
+        "laname_21": "local_authority_unitary_authority_name",
+        "ladcode_21": "local_authority_unitary_authority_code",
+        "region9charcode": "region_code",
+        "regionname": "region_name",
+        "country9charcode_09": "country_code_12",
+        "countryname_09": "country_name_12",
     },
     "aps_lookup": {
         "caseno": "person_id_aps",
@@ -82,6 +91,7 @@ lookup_variable_name_maps = {
         "ethgbeul": "ethnicity_aps_engl_wales_scot",
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
+        "age": "age",
     },
 }
 
@@ -235,7 +245,7 @@ def recode_column_patterns(df: DataFrame):
         col = list(filter(re.compile(curent_pattern).match, df.columns))
         if len(col) > 0:
             col = col[0]
-            new_col = new_prefix.format(re.findall(r"\d+$", col)[0])  # type: ignore
+            new_col = new_prefix.format(re.findall(r"\d{1,}", col)[0])  # type: ignore
             df = df.withColumnRenamed(col, new_col)
     return df
 
@@ -247,16 +257,17 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     """
     for name in auxillary_dfs.keys():
         if auxillary_dfs[name] is not None:
-            auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
+            # auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
             for name_list_str in lookup_variable_name_maps.keys():
                 if name in name_list_str:
-                    auxillary_dfs[name] = auxillary_dfs[name].drop(
-                        *[
-                            col
-                            for col in auxillary_dfs[name].columns
-                            if col not in lookup_variable_name_maps[name_list_str].keys()
-                        ]
-                    )
+                    if name not in ["population_projection_current", "population_projection_previous"]:
+                        auxillary_dfs[name] = auxillary_dfs[name].drop(
+                            *[
+                                col
+                                for col in auxillary_dfs[name].columns
+                                if col not in lookup_variable_name_maps[name_list_str].keys()
+                            ]
+                        )
                     for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
                         auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
                     break

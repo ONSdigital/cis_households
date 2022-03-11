@@ -912,6 +912,7 @@ def population_projection(
         "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
     }
     dfs = extract_df_list(files)
+
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
