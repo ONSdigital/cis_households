@@ -374,7 +374,7 @@ def validate_survey_responses(
 def lookup_based_editing(
     input_table: str,
     cohort_lookup_path: str,
-    travel_countries_lookup_path: str,  # TODO: commented out temporarily ONLY until the lookup table is created.
+    travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
     edited_table: str,
 ):
