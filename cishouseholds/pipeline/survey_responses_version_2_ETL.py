@@ -12,7 +12,6 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
-from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -60,8 +59,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     Generic transformation steps to be applied to all survey response records.
     """
-
-    df = assign_filename_column(df, "survey_response_source_file")
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "symptoms_last_7_days_any",
