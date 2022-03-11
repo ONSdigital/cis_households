@@ -374,7 +374,7 @@ def validate_survey_responses(
 def lookup_based_editing(
     input_table: str,
     cohort_lookup_path: str,
-    # travel_countries_lookup_path: str,  TODO: commented out temporarily ONLY until the lookup table is created.
+    travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
     edited_table: str,
 ):
@@ -397,11 +397,11 @@ def lookup_based_editing(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
     ).withColumnRenamed("participant_id", "cohort_participant_id")
 
-    # travel_countries_lookup = spark.read.csv(
-    #     travel_countries_lookup_path,
-    #     header=True,
-    #     schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    # )
+    travel_countries_lookup = spark.read.csv(
+        travel_countries_lookup_path,
+        header=True,
+        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    )
     rural_urban_lookup_df = spark.read.csv(
         rural_urban_lookup_path,
         header=True,
@@ -412,28 +412,27 @@ def lookup_based_editing(
         """,
     )
     df = df.join(
-        cohort_lookup,
+        F.broadcast(cohort_lookup),
         how="left",
         on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
     )
     df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
         "new_cohort", "old_cohort"
     )
-    # df = df.join(
-    #     travel_countries_lookup,
-    #     how="left",
-    #     on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    # )
-    # TODO cannot resolve been_outside_uk_last_country_new
-    # df = df.withColumn(
-    #     "been_outside_uk_last_country",
-    #     F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    # ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
-
-    # TODO: duplicated column in join of df and rural_urban_lookup_df rural_urban_classification_11
-    df = df.drop("rural_urban_classification_11")
     df = df.join(
-        rural_urban_lookup_df,
+        F.broadcast(travel_countries_lookup),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    if "rural_urban_classification_11" in df.columns:
+        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
         how="left",
         on="lower_super_output_area_code_11",
     )
