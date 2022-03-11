@@ -42,7 +42,13 @@ def assign_multigeneration(
             ("Scotland", "08", "15", "03", "01"),
             ("NI", "09", "01", "07", "02"),
         ],
-        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+        schema=[
+            country_column,
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+        ],
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(
@@ -77,7 +83,7 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("age_at_visit", "school_year", "count")
+    return transformed_df.drop("count")
 
 
 def assign_household_participant_count(
@@ -1266,7 +1272,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25).cast("integer")
     )
 
     return df.drop("date_diff")
@@ -1411,44 +1417,24 @@ def contact_known_or_suspected_covid_type(
     return df
 
 
-def derive_household_been_last_XX_days(
+def derive_household_been_columns(
     df: DataFrame,
-    household_last_XX_days: str,
-    last_XX_days: str,
-    last_XX_days_other_household_member: str,
-    negative_value: str = "No, no one in my household has",
-    positive_value: str = "Yes, I have",
-    some_positive_value: str = "No I haven’t, but someone else in my household has",
-    # TODO: should this be "have not" to avoid issues
+    column_name_to_assign: str,
+    individual_response_column: str,
+    household_response_column: str,
 ) -> DataFrame:
     """
-    This function can be used to work out the following variables which follow the same logic:
-    - household_been_care_home_last_28_days
-    - household_been_hospital_last_last_28_days
-
-    Parameters
-    ----------
-    df
-    household_last_XX_days
-    last_XX_days
-    last_XX_days_other_household_member
-
-    Notes
-    -----
-    null is not understood as != "Yes"
+    Combines a household and individual level response, to an overall household response.
+    Assumes input responses are 'Yes'/'no'.
     """
     df = df.withColumn(
-        household_last_XX_days,
-        F.when((F.col(last_XX_days) == "No") & (F.col(last_XX_days_other_household_member) == "No"), negative_value)
+        column_name_to_assign,
+        F.when((F.col(individual_response_column) == "Yes"), "Yes, I have")
         .when(
-            (F.col(last_XX_days) == "Yes")
-            & (
-                (F.col(last_XX_days_other_household_member) != "Yes")
-                | (F.col(last_XX_days_other_household_member).isNull())
-            ),
-            some_positive_value,
+            ((F.col(individual_response_column) != "Yes") | F.col(individual_response_column).isNull())
+            & (F.col(household_response_column) == "Yes"),
+            "No I haven’t, but someone else in my household has",
         )
-        .when((F.col(last_XX_days) == "Yes") & (F.col(last_XX_days_other_household_member) == "Yes"), positive_value)
-        .otherwise(None),
+        .otherwise("No, no one in my household has"),
     )
     return df

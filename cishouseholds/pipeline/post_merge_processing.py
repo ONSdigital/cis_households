@@ -1,4 +1,3 @@
-import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
@@ -62,29 +61,22 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         imputation_function=impute_by_distribution,
         reference_column="sex",
-        group_by_columns=["ethnicity_white", "gor9d"],
+        group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
 
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
-        donor_group_columns=["gor9d", "work_status_group", "dvhsize"],
-        log_file_path=log_directory,
-    )
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["region_code", "other_survey_household_size_group"], # "work_status_group",
+    #     log_file_path=log_directory,
+    # )
 
     return deduplicated_df.select(
         unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]
     )
-
-
-def merge_dependent_transform(df: DataFrame):
-    """
-    Transformations depending on the merged dataset or imputed columns.
-    """
-    return df
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:
@@ -100,24 +92,3 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
-
-
-def filter_response_records(df: DataFrame, visit_date: str):
-    """Creating column for file datetime and filter out dates after file date"""
-    df = df.withColumn("file_date", F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0))
-    df = df.withColumn("file_date", F.to_timestamp(F.col("file_date"), format="yyyyMMdd"))
-    df = df.withColumn(
-        "filter_response_flag",
-        F.when(
-            (
-                (F.col("file_date") < F.col(visit_date))
-                & F.col("swab_sample_barcode").isNull()
-                & F.col("blood_sample_barcode").isNull()
-            ),
-            1,
-        ).otherwise(None),
-    )
-    df_flagged = df.where(F.col("filter_response_flag") == 1)
-    df = df.where(F.col("filter_response_flag").isNull())
-
-    return df.drop("filter_response_flag"), df_flagged.drop("filter_response_flag")

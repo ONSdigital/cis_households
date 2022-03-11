@@ -3,7 +3,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -33,7 +32,7 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import derive_household_been_last_XX_days
+from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
@@ -147,32 +146,32 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame) -> DataFrame:
+def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, "age_at_visit", base_date="visit_datetime", date_of_birth="date_of_birth")
+    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_intervals",
         map={2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_over_16",
         map={16: "16-49", 50: "50-70", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_7_intervals",
         map={2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_year_intervals",
         map={
             2: "2-4",
@@ -208,10 +207,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Student",  # noqa: E501
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working (unemployed, retired, long-term sick etc.)",
             "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Child under 4-5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
@@ -233,6 +233,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
             "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",
             "Not working and not looking for work": "Not working and not looking for work",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
@@ -260,6 +261,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
@@ -316,7 +318,37 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = update_column_values_from_map(df=df, column="deferred", map={"Deferred 1": "Deferred"}, default_value="N/A")
+
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
+
+    column_editing_map = {
+        "deferred": {"Deferred 1": "Deferred"},
+        "work_location": {
+            "Work from home (in the same grounds or building as your home)": "Working from home",
+            "Working from home (in the same grounds or building as your home)": "Working from home",
+            "From home (in the same grounds or building as your home)": "Working from home",
+            "Work somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not at your home)": "Working somewhere else (not your home)",
+            "Somewhere else (not your home)": "Working somewhere else (not your home)",
+            "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
+            "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
+        },
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+    df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
 
     df = count_activities_last_XX_days(
         df=df,
@@ -327,17 +359,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
-    df = derive_household_been_last_XX_days(
+    df = derive_household_been_columns(
         df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
+        column_name_to_assign="household_been_care_home_last_28_days",
+        individual_response_column="care_home_last_28_days",
+        household_response_column="care_home_last_28_days_other_household_member",
     )
-    df = derive_household_been_last_XX_days(
+    df = derive_household_been_columns(
         df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
+        column_name_to_assign="household_been_hospital_last_28_days",
+        individual_response_column="hospital_last_28_days",
+        household_response_column="hospital_last_28_days_other_household_member",
     )
     df = derive_work_status_columns(df)
     return df
@@ -507,7 +539,7 @@ def union_dependent_cleaning(df):
             "Yes at work/school only": "Yes, at work/school only",
             "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
             "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes in other situations only (including public transport or shops)": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
@@ -588,18 +620,6 @@ def union_dependent_cleaning(df):
             "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
             "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
         },
-        "work_location": {
-            "Work from home (in the same grounds or building as your home)": "Working from home",
-            "Working from home (in the same grounds or building as your home)": "Working from home",
-            "From home (in the same grounds or building as your home)": "Working from home",
-            "Working somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Work somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Somewhere else (not at your home)": "Working somewhere else (not your home)",
-            "Somewhere else (not your home)": "Working somewhere else (not your home)",
-            "Both (from home and somewhere else)": "Both (from home and somewhere else)",
-            "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
-            "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
-        },
         "work_sectors": {
             "Social Care": "Social care",
             "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
@@ -653,13 +673,6 @@ def union_dependent_cleaning(df):
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
@@ -704,7 +717,7 @@ def union_dependent_derivations(df):
     """
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
-    df = derive_age_columns(df)
+    df = derive_age_columns(df, "age_at_visit")
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
@@ -823,18 +836,6 @@ def union_dependent_derivations(df):
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
     )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_care_home_last_28_days",
-        last_XX_days="care_home_last_28_days",
-        last_XX_days_other_household_member="care_home_last_28_days_other_household_member",
-    )
-    df = derive_household_been_last_XX_days(
-        df=df,
-        household_last_XX_days="household_been_hospital_last_28_days",
-        last_XX_days="hospital_last_28_days",
-        last_XX_days_other_household_member="hospital_last_28_days_other_household_member",
-    )
     df = update_column_values_from_map(
         df=df,
         column="smokes_nothing_now",
@@ -932,20 +933,6 @@ def fill_forwards_transformations(df):
             "Not working (unemployed, retired, long-term sick etc.)",
             "Student",
         ],
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
     )
     df = fill_forward_from_last_change(
         df=df,

@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -131,8 +133,11 @@ def update_face_covering_outside_of_home(
             "Yes, at work/school only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "Yes, in other situations only",
         )
         .when(
@@ -142,11 +147,17 @@ def update_face_covering_outside_of_home(
         )
         .when(
             (F.col(covered_enclosed_column) == "My face is already covered")
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_work_column).isNull())
+            ),
             "My face is already covered",
         )
         .when(
-            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            (
+                (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+                | (F.col(covered_enclosed_column).isNull())
+            )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
         )
@@ -279,7 +290,7 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
     Allows a match on Null old values.
@@ -291,10 +302,13 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
     id_column
         column in dataframe containing unique identifier
     """
+    if csv_filepath == "" or csv_filepath is None:
+        return df
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
     csv = (
-        csv.groupBy("id")
+        csv.filter(F.col("dataset_name") == dataset_name)
+        .groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
@@ -714,21 +728,17 @@ def count_activities_last_XX_days(
     list_activities_last_XX_days
     max_value
     """
-    df = df.withColumn("FLAG_count", F.lit(0).cast("integer"))
-    df = df.withColumn("FLAG_all-null", F.coalesce(*[F.col(column) for column in list_activities_last_XX_days]))
-    for activity_column in list_activities_last_XX_days:
-        df = df.withColumn(
-            "FLAG_count",
-            F.when(
-                (F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull()),
-                (F.col("FLAG_count") + F.when(F.col(activity_column).isNull(), 0).otherwise(F.col(activity_column))),
-            ),
-        )
+    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = update_column_values_from_map(df, col, value_map)
+        df = df.withColumn(col, F.col(col).cast("integer"))
     df = df.withColumn(
         activity_combo_last_XX_days,
         F.when(
-            F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull(),
-            F.when(F.col("FLAG_count") < max_value, F.col("FLAG_count")).otherwise(max_value),
-        ).otherwise(F.col(activity_combo_last_XX_days)),
+            F.col(activity_combo_last_XX_days).isNull(),
+            F.least(F.lit(max_value), reduce(add, [F.col(x) for x in list_activities_last_XX_days])),
+        ).otherwise(activity_combo_last_XX_days),
     )
-    return df.drop("FLAG_count", "FLAG_all-null")
+    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+        df = df.withColumn(col, F.col(col).cast("integer"))
+    return df

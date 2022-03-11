@@ -121,6 +121,8 @@ category_maps = {
         "long_covid_palpitations": _yes_no_categories,
         "long_covid_low_mood": _yes_no_categories,
         "long_covid_difficulty_concentrating": _yes_no_categories,
+        "long_covid_runny_nose_sneezing": _yes_no_categories,
+        "long_covid_noisy_breathing": _yes_no_categories,
         "confirm_received_vouchers": _yes_no_categories,
         "have_landline_number": _yes_no_categories,
         "have_mobile_number": _yes_no_categories,
@@ -529,9 +531,6 @@ category_maps = {
         "deferred": {"NA": 0, "Deferred": 1},
         "times_hour_or_longer_another_home_last_7_days": _times_in_last_7_day_categories,
         "times_hour_or_longer_another_person_your_home_last_7_days": _times_in_last_7_day_categories,
-        "times_outside_shopping_or_socialising_last_7_days": _times_in_last_7_day_categories,
-        "times_shopping_last_7_days": _times_in_last_7_day_categories,
-        "times_socialise_last_7_days": _times_in_last_7_day_categories,
         "prefer_receive_vouchers": {"Email": 1, "Paper": 2},
         "participant_testing_group": {"Swab Only": 0, "Blood and Swab": 1, "Fingerprick and Swab": 2},
         "household_fingerprick_status": {
