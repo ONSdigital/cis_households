@@ -10,10 +10,22 @@ from pyspark.sql import DataFrame
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 class InvalidFileError(Exception):
     pass
+
+
+def extract_lookup_csv(path: str, validation_schema: dict):
+    """
+    extract and validate a csv lookup file from path with validation_schema
+    """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(path, header=True)
+    if not all(item in csv.columns for item in validation_schema.keys()):
+        raise ImportError("input dataframe is missing columns")
+    return csv
 
 
 def list_contents(

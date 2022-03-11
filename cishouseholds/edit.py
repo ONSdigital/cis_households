@@ -10,7 +10,8 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.extract import extract_lookup_csv
+from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 
 
 def update_column_if_ref_in_list(
@@ -304,8 +305,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, 
     """
     if csv_filepath == "" or csv_filepath is None:
         return df
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
+    csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
     csv = (
         csv.filter(F.col("dataset_name") == dataset_name)
         .groupBy("id")
