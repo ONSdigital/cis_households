@@ -8,6 +8,7 @@ import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
+from cishouseholds.derive import assign_filename_column
 from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
@@ -26,6 +27,7 @@ def extract_validate_transform_input_data(
     datetime_map: dict,
     validation_schema: dict,
     transformation_functions: List[Callable],
+    source_file_column: str,
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
@@ -37,6 +39,7 @@ def extract_validate_transform_input_data(
 
     df = extract_input_data(resource_path, validation_schema, sep)
     df = rename_column_names(df, variable_name_map)
+    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
 
     if include_hadoop_read_write:
         update_table(df, f"raw_{dataset_name}")
