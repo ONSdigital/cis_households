@@ -646,9 +646,7 @@ def one_to_many_antibody_flag(
     df = flag_rows_different_to_reference_row(
         df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_num_column, 1
     )
-    df = check_consistency_in_retained_rows(
-        df, [siemens_column, tdi_column], group_num_column, inconsistent_rows
-    )
+    df = check_consistency_in_retained_rows(df, [siemens_column, tdi_column], group_num_column, inconsistent_rows)
     df = df.withColumn(
         column_name_to_assign,
         F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
@@ -723,11 +721,9 @@ def one_to_many_swabs(
         time_difference_logic_flag_column_name="time_difference_flag",
     )
 
-    
     time_order_flag = F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
-    
-    time_difference_flag = F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
 
+    time_difference_flag = F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
 
     df = df.withColumn(
         flag_column_name, F.when(F.col("pcr_flag") == 1, 1).otherwise(F.col(flag_column_name)).cast("integer")
@@ -740,8 +736,7 @@ def one_to_many_swabs(
         time_difference_flag
     )
 
-
-    time_difference_flag = F.when(common_condition | (F.rank().over(w_rank)==1), None).otherwise(1)
+    time_difference_flag = F.when(common_condition | (F.rank().over(w_rank) == 1), None).otherwise(1)
 
     # column: time_order_flag
     common_condition = time_order_flag.isNull()
@@ -750,7 +745,7 @@ def one_to_many_swabs(
         time_order_flag
     )
 
-    time_order_flag = F.when(common_condition | (F.rank().over(w_rank)==1), None).otherwise(1)
+    time_order_flag = F.when(common_condition | (F.rank().over(w_rank) == 1), None).otherwise(1)
 
     df = df.withColumn(
         flag_column_name,
