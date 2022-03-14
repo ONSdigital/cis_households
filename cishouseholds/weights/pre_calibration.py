@@ -5,7 +5,6 @@ from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
@@ -30,23 +29,23 @@ def pre_calibration_high_level(
         on=df_survey.ons_household_id == df_dweights.unique_property_reference_code,
         how="left",
     )
-    df = assign_ethnicity_white(
-        df=df,
-        column_name_to_assign="ethnicity_white",
-        ethnicity_group_column_name="ethnicity_group",
-    )
-    df = dataset_generation(
-        df=df,
-        cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
-        cutoff_date_antibodies=pre_calibration_config["cut_off_dates"]["cutoff_date_antibodies"],
-        cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
-        column_test_result_swab="pcr_result_classification",
-        column_test_result_antibodies="antibody_test_result_classification",
-        column_test_result_longcovid="have_long_covid_symptoms",
-        patient_id_column="participant_id",
-        visit_date_column="visit_date_string",
-        age_column="age_at_visit",
-    )
+    # df = assign_ethnicity_white(
+    #    df=df,
+    #    column_name_to_assign="ethnicity_white",
+    #    ethnicity_group_column_name="ethnicity_group",
+    # )
+    # df = dataset_generation(
+    #     df=df,
+    #     cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
+    #     cutoff_date_antibodies=pre_calibration_config["cut_off_dates"]["cutoff_date_antibodies"],
+    #     cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
+    #     column_test_result_swab="pcr_result_classification",
+    #     column_test_result_antibodies="antibody_test_result_classification",
+    #     column_test_result_longcovid="have_long_covid_symptoms",
+    #     patient_id_column="participant_id",
+    #     visit_date_column="visit_date_string",
+    #     age_column="age_at_visit",
+    # )
     df = survey_extraction_household_data_response_factor(
         df=df,
         df_extract_by_country=df_country,
