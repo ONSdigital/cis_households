@@ -37,7 +37,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
-from cishouseholds.edit import count_activities_last_XX_days
+from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
@@ -347,10 +347,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
 
-    df = count_activities_last_XX_days(
+    df = edit_to_sum_or_max_value(
         df=df,
-        activity_combo_last_XX_days="times_outside_shopping_or_socialising_last_7_days",
-        list_activities_last_XX_days=[
+        column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
+        columns_to_sum=[
             "times_shopping_last_7_days",
             "times_socialise_last_7_days",
         ],
