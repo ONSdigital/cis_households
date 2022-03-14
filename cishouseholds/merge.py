@@ -73,10 +73,10 @@ def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns:
         list of column names to join on, where first name is the unique ID
     """
     window = Window.partitionBy(join_on_columns)
-    sum = F.count("blood_sample_barcode").over(window)
+    df = df.withColumn("sum", F.count("blood_sample_barcode").over(window))
 
-    failed_df = df.filter(sum > 2)
-    df = df.filter(sum < 3)
+    failed_df = df.filter(F.col("sum") > 2).drop("sum")
+    df = df.filter(F.col("sum") < 3).drop("sum")
 
     split_dataframes = {}
     for blood_group in ["S", "N"]:
@@ -181,9 +181,10 @@ def assign_group_and_row_number_columns(
     """
     df = df.withColumn(row_num_column, F.row_number().over(window))
     dft = df.withColumnRenamed(group_by_column, "b").groupBy("b").count()
-    mini_window = Window.partitionBy(F.lit(1).cast("integer")).orderBy("b")
+    dft = dft.withColumn("dummy", F.lit(1).cast("integer"))
+    mini_window = Window.partitionBy("dummy").orderBy("b")
     dft = dft.withColumn(group_column, F.row_number().over(mini_window))
-    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b")
+    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")
     return df
 
 
@@ -223,7 +224,7 @@ def flag_rows_different_to_reference_row(
 
 
 def check_consistency_in_retained_rows(
-    df: DataFrame, check_columns: List[str], group_column: str, column_name_to_assign: str
+    df: DataFrame, check_columns: List[str], selection_column: str, group_column: str, column_name_to_assign: str
 ):
     """
     check consistency of multiply columns and create separate joined dataframe of chosen columns
@@ -646,7 +647,9 @@ def one_to_many_antibody_flag(
     df = flag_rows_different_to_reference_row(
         df, rows_diff_to_ref, diff_interval_hours, row_num_column, group_num_column, 1
     )
-    df = check_consistency_in_retained_rows(df, [siemens_column, tdi_column], group_num_column, inconsistent_rows)
+    df = check_consistency_in_retained_rows(
+        df, [siemens_column, tdi_column], rows_diff_to_ref, group_num_column, inconsistent_rows
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.when((F.col(rows_diff_to_ref) == 1), 1).otherwise(None),
@@ -721,37 +724,45 @@ def one_to_many_swabs(
         time_difference_logic_flag_column_name="time_difference_flag",
     )
 
-    time_order_flag = F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
+    df = df.withColumn(
+        "time_order_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_order_flag"))
+    )
 
-    time_difference_flag = F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
+    df = df.withColumn(
+        "time_difference_flag", F.when(F.col("pcr_flag") == 1, F.lit(None)).otherwise(F.col("time_difference_flag"))
+    )
 
     df = df.withColumn(
         flag_column_name, F.when(F.col("pcr_flag") == 1, 1).otherwise(F.col(flag_column_name)).cast("integer")
     )
 
     # column: time_difference_flag
-    common_condition = time_difference_flag.isNull()
+    common_condition = F.col("time_difference_flag").isNull()
 
     w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
-        time_difference_flag
+        F.col("time_difference_flag")
     )
 
-    time_difference_flag = F.when(common_condition | (F.rank().over(w_rank) == 1), None).otherwise(1)
+    df = df.withColumn(
+        "time_difference_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_difference_flag", F.when(F.col("time_difference_flag") == 1, None).otherwise(1))
 
     # column: time_order_flag
-    common_condition = time_order_flag.isNull()
+    common_condition = F.col("time_order_flag").isNull()
 
     w_rank = Window.partitionBy(F.col(group_by_column), F.when(common_condition, 1).otherwise(0)).orderBy(
-        time_order_flag
+        F.col("time_order_flag")
     )
 
-    time_order_flag = F.when(common_condition | (F.rank().over(w_rank) == 1), None).otherwise(1)
+    df = df.withColumn(
+        "time_order_flag", F.when(common_condition, F.lit(None)).otherwise(F.rank().over(w_rank))
+    ).withColumn("time_order_flag", F.when(F.col("time_order_flag") == 1, None).otherwise(1))
 
     df = df.withColumn(
         flag_column_name,
-        F.when((time_order_flag == 1) & (time_difference_flag == 1), 1)
-        .when((time_order_flag == 1) & (time_difference_flag.isNull()), None)
-        .when((time_order_flag.isNull()) & (time_difference_flag == 1), 1)
+        F.when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag") == 1), 1)
+        .when((F.col("time_order_flag") == 1) & (F.col("time_difference_flag").isNull()), None)
+        .when((F.col("time_order_flag").isNull()) & (F.col("time_difference_flag") == 1), 1)
         .otherwise(F.col(flag_column_name)),
     )
     # Solve case for both time diff negative and positive within barcode
