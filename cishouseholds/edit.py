@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import and_
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -290,7 +291,7 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, id_column: str):
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
     Allows a match on Null old values.
@@ -307,7 +308,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, 
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
     csv = (
-        csv.filter(F.col("dataset_name") == dataset_name)
+        csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
         .groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
@@ -711,34 +712,33 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
     return df
 
 
-def count_activities_last_XX_days(
+def edit_to_sum_or_max_value(
     df: DataFrame,
-    activity_combo_last_XX_days: str,
-    list_activities_last_XX_days: List[str],
+    column_name_to_assign: str,
+    columns_to_sum: List[str],
     max_value: int,
 ):
     """
-    Searches for null values in the activities_combo_last_XX_days and when that happens
-    gets
+    Imputes column_name_to_assign based a sum of the columns_to_sum.
+    If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
-    Parameters
-    ----------
-    df
-    activity_combo_last_XX_days
-    list_activities_last_XX_days
-    max_value
+    column_name_to_assign must already exist on the df.
     """
     value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
-    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
+
+    all_columns = [column_name_to_assign, *columns_to_sum]
+    for col in all_columns:
         df = update_column_values_from_map(df, col, value_map)
         df = df.withColumn(col, F.col(col).cast("integer"))
+
     df = df.withColumn(
-        activity_combo_last_XX_days,
-        F.when(
-            F.col(activity_combo_last_XX_days).isNull(),
-            F.least(F.lit(max_value), reduce(add, [F.col(x) for x in list_activities_last_XX_days])),
-        ).otherwise(activity_combo_last_XX_days),
+        column_name_to_assign,
+        F.when(reduce(and_, [F.col(col).isNull() for col in all_columns]), None)
+        .when(
+            F.col(column_name_to_assign).isNull(),
+            F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
     )
-    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
-        df = df.withColumn(col, F.col(col).cast("integer"))
     return df

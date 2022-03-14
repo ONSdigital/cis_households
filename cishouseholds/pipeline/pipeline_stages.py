@@ -43,11 +43,11 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependen
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
+from cishouseholds.weights.extract import prepare_auxillary_data
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
-from cishouseholds.weights.weights import prepare_auxillary_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -285,6 +285,7 @@ def generate_input_processing_function(
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
             transformation_functions=transformation_functions,
+            source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
         )
@@ -374,6 +375,75 @@ def validate_survey_responses(
     )
     update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_table: str,
+    cohort_lookup_path: str,
+    travel_countries_lookup_path: str,
+    rural_urban_lookup_path: str,
+    edited_table: str,
+):
+    """
+    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Parameters
+    ----------
+    input_table
+        input table name for reference table
+    cohort_lookup_path
+        input file path name for cohort corrections lookup file
+    travel_countries_lookup_path
+        input file path name for travel_countries corrections lookup file
+    edited_table
+    """
+    df = extract_from_table(input_table)
+    spark = get_or_create_spark_session()
+
+    cohort_lookup = spark.read.csv(
+        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
+    ).withColumnRenamed("participant_id", "cohort_participant_id")
+
+    travel_countries_lookup = spark.read.csv(
+        travel_countries_lookup_path,
+        header=True,
+        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
+    )
+    rural_urban_lookup_df = spark.read.csv(
+        rural_urban_lookup_path,
+        header=True,
+        schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+    )
+    df = df.join(
+        F.broadcast(cohort_lookup),
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    df = df.join(
+        F.broadcast(travel_countries_lookup),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+
+    if "rural_urban_classification_11" in df.columns:
+        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+    update_table(df, edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -817,7 +887,7 @@ def record_level_interface(
     input_df = extract_from_table(survey_responses_table)
     edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_csv_lookup(
-        df=input_df, dataset_name="NONE", csv_filepath=csv_editing_file, id_column=unique_id_column
+        df=input_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
     )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
