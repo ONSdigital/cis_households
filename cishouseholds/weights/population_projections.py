@@ -72,7 +72,7 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
         individual_level_populations_for_non_response_adjustment.join(
             aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16"),
             individual_level_populations_for_non_response_adjustment["country_name_12"]
-            == dfs["aps_lookup"]["country_name"],
+            == aps_lookup_df["country_name"],
             how="left",
         )
     )
@@ -93,7 +93,6 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
         population_column="population",
         white_proportion_column="percentage_white_ethnicity_country_over16",
     )
-
     individual_level_populations_for_calibration = get_calibration_dfs(
         individual_level_populations_for_non_response_adjustment, "country_name_12", "age"
     )
