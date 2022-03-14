@@ -69,6 +69,13 @@ def register_pipeline_stage(key):
     return _add_pipeline_stage
 
 
+@register_pipeline_stage("csv_to_table")
+def csv_to_table(csv_filepath: str, table_name: str):
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(csv_filepath, header=True)
+    update_table(csv, table_name)
+
+
 @register_pipeline_stage("delete_tables")
 def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
     """
