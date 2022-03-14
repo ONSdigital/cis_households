@@ -56,6 +56,9 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
+# from functools import reduce
+# from itertools import chain
+
 pipeline_stages = {}
 
 
@@ -547,15 +550,14 @@ def impute_demographic_columns(
     if check_table_exists(imputed_values_table):
         imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(survey_responses_table)
-
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
     # imputed_values_df = key_columns_imputed_df.filter(
-    #    reduce(
-    #        lambda col_1, col_2: col_1 | col_2,
-    #        (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-    #    )
+    #     reduce(
+    #         lambda col_1, col_2: col_1 | col_2,
+    #         (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+    #     )
     # )
 
     # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])

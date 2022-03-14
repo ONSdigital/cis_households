@@ -218,3 +218,31 @@ def extract_df_list(files):
             dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
 
     return dfs
+
+
+# import time
+# from pyspark.sql.types import StringType
+
+
+# def str_time_prop(start, end, time_format, prop):
+#     stime = time.mktime(time.strptime(start, time_format))
+#     etime = time.mktime(time.strptime(end, time_format))
+#     ptime = stime + prop * (etime - stime)
+#     return time.strftime(time_format, time.localtime(ptime))
+
+
+# def random_date(start, end, prop):
+#     return str_time_prop(start, end, '%Y-%m-%d %H:%M:%S', prop)
+
+# date_range = ["2018-01-01 00:00:00","2021-12-31 00:00:00"]
+# spark = get_or_create_spark_session()
+# # rnddt = F.udf(lambda x: random_date(date_range[0],date_range[1],x), StringType())
+# df = spark.read.csv("hdfs:///ons/covserolink/landing_zone/preimputation_data.csv",header=True)
+# # df = df.withColumn("rand",F.rand(seed=42))
+# # df = df.withColumn("visit_datetime",rnddt(df.rand))
+# df = df.withColumn("ethnicity")
+# df.drop("rand").toPandas().to_csv("cishouseholds/out.csv",index=False)
+
+# spark = get_or_create_spark_session()
+# df = spark.read.csv("hdfs:///ons/covserolink/landing_zone/preimputation_data.csv",header=True)
+# update_table(df,"survey_testing_table")
