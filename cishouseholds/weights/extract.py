@@ -1,4 +1,5 @@
 import csv
+import re
 from io import StringIO
 from operator import add
 from typing import Union
@@ -15,26 +16,50 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 spark_session = get_or_create_spark_session()
 
 lookup_variable_name_maps = {
-    "address_lookup": {"uprn": "unique_property_reference_code", "postcode": "postcode"},
+    "address_lookup": {
+        "uprn": "unique_property_reference_code",
+        "postcode": "postcode",
+        "town_name": "town_name",
+        "ctry18nm": "crtry18nm",
+        "la_code": "la_code",
+        "ew": "ew",
+        "address_type": "address_type",
+        "council_tax": "council_tax",
+        "address_base_postal": "address_base_postal",
+    },
     "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
-    "cis_phase_lookup": {"LSOA11CD": "lower_super_output_area_code_11", "CIS20CD": "cis_area_code_20"},
-    "country_lookup": {"CTRY20CD": "country_code_12", "CTRY20NM": "country_name_12"},
+    "cis_phase_lookup": {
+        "LSOA11CD": "lower_super_output_area_code_11",
+        "CIS20CD": "cis_area_code_20",
+        "LSOA11NM": "LSOA11NM",
+        "RGN19CD": "RGN19CD",
+    },
+    "country_lookup": {
+        "CTRY20CD": "country_code_12",
+        "CTRY20NM": "country_name_12",
+        "LAD20CD": "LAD20CD",
+        "LAD20NM": "LAD20NM",
+    },
     "old_sample_file_new_sample_file": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
+        "lsoa11": "lower_super_output_area_code_11",
         "cis20cd": "cis_area_code_20",
+        "CIS20CD": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
         "sample": "sample_source",
         "sample_direct": "sample_addressbase_indicator",
         "hh_dweight_swab": "household_level_designweight_swab",
         "hh_dweight_atb": "household_level_designweight_antibodies",
-        "rgngor9d": "region_code",
+        "rgn/gor9d": "region_code",
         "laua": "local_authority_unity_authority_code",
         "oa11oac11": "output_area_code_11_census_output_area_classification_11",
         "msoa11": "middle_super_output_area_code_11",
         "ru11ind": "rural_urban_classification_11",
         "imd": "index_multiple_deprivation",
+        "date_sample_created": "date_sample_created",
+        "batch_number": "batch_number",
     },
     "tranche": {
         "UAC": "ons_household_id",
@@ -42,6 +67,8 @@ lookup_variable_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12": "country_code_12",
         "ctry_name12": "country_name_12",
+        "enrolment_date": "enrolment_date",
+        "tranche": "tranche",
     },
     "population_projection_previous_population_projection_current": {
         "laua": "local_authority_unitary_authority_code",
@@ -56,6 +83,13 @@ lookup_variable_name_maps = {
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
     },
+}
+
+numeric_column_pattern_map = {
+    "^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    "^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
+    "^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
 }
 
 
@@ -190,23 +224,42 @@ def read_csv_to_pyspark_df(
 
 
 def prepare_auxillary_data(auxillary_dfs: dict):
-    auxillary_dfs = rename_columns(auxillary_dfs)
+    auxillary_dfs = rename_and_remove_columns(auxillary_dfs)
     if "aps_lookup" in auxillary_dfs:
         auxillary_dfs["aps_lookup"] = recode_column_values(auxillary_dfs["aps_lookup"], aps_value_map)
     return auxillary_dfs
 
 
-def rename_columns(auxillary_dfs: dict):
+def recode_column_patterns(df: DataFrame):
+    for curent_pattern, new_prefix in numeric_column_pattern_map.items():
+        col = list(filter(re.compile(curent_pattern).match, df.columns))
+        if len(col) > 0:
+            col = col[0]
+            new_col = new_prefix.format(re.findall(r"\d+$", col)[0])  # type: ignore
+            df = df.withColumnRenamed(col, new_col)
+    return df
+
+
+def rename_and_remove_columns(auxillary_dfs: dict):
     """
     iterate over keys in name map dictionary and use name map if name of df is in key.
     break out of name checking loop once a compatible name map has been found.
     """
     for name in auxillary_dfs.keys():
-        for name_list_str in lookup_variable_name_maps.keys():
-            if name in name_list_str:
-                for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
-                    auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
-                break
+        if auxillary_dfs[name] is not None:
+            auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
+            for name_list_str in lookup_variable_name_maps.keys():
+                if name in name_list_str:
+                    auxillary_dfs[name] = auxillary_dfs[name].drop(
+                        *[
+                            col
+                            for col in auxillary_dfs[name].columns
+                            if col not in lookup_variable_name_maps[name_list_str].keys()
+                        ]
+                    )
+                    for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
+                        auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+                    break
     return auxillary_dfs
 
 
