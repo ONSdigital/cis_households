@@ -121,8 +121,6 @@ category_maps = {
         "long_covid_palpitations": _yes_no_categories,
         "long_covid_low_mood": _yes_no_categories,
         "long_covid_difficulty_concentrating": _yes_no_categories,
-        "long_covid_runny_nose_sneezing": _yes_no_categories,
-        "long_covid_noisy_breathing": _yes_no_categories,
         "confirm_received_vouchers": _yes_no_categories,
         "have_landline_number": _yes_no_categories,
         "have_mobile_number": _yes_no_categories,
