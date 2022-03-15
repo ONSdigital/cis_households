@@ -3,7 +3,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -13,7 +12,6 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
-from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -39,7 +37,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
-from cishouseholds.edit import count_activities_last_XX_days
+from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
@@ -61,8 +59,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     Generic transformation steps to be applied to all survey response records.
     """
-
-    df = assign_filename_column(df, "survey_response_source_file")
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "symptoms_last_7_days_any",
@@ -147,32 +143,32 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame) -> DataFrame:
+def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, "age_at_visit", base_date="visit_datetime", date_of_birth="date_of_birth")
+    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_intervals",
         map={2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_over_16",
         map={16: "16-49", 50: "50-70", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_7_intervals",
         map={2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
-        reference_column="age_at_visit",
+        reference_column=column_name_to_assign,
         column_name_to_assign="age_group_5_year_intervals",
         map={
             2: "2-4",
@@ -212,6 +208,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working (unemployed, retired, long-term sick etc.)",
             "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Child under 4-5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
@@ -319,6 +316,21 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
 
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
+
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -335,10 +347,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
 
-    df = count_activities_last_XX_days(
+    df = edit_to_sum_or_max_value(
         df=df,
-        activity_combo_last_XX_days="times_outside_shopping_or_socialising_last_7_days",
-        list_activities_last_XX_days=[
+        column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
+        columns_to_sum=[
             "times_shopping_last_7_days",
             "times_socialise_last_7_days",
         ],
@@ -658,13 +670,6 @@ def union_dependent_cleaning(df):
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
@@ -709,7 +714,7 @@ def union_dependent_derivations(df):
     """
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
-    df = derive_age_columns(df)
+    df = derive_age_columns(df, "age_at_visit")
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
@@ -823,7 +828,7 @@ def union_dependent_derivations(df):
         df,
         column_name_to_assign="people_in_household_count",
         infant_column_pattern=r"infant_[1-8]_age",
-        infant_column_pattern_with_exceptions=r"infant_6_age",
+        infant_column_pattern_with_exceptions=r"infant_[1-5,7,8]_age",
         participant_column_pattern=r"person_[1-8]_not_present_age",
         household_participant_count_column="household_participant_count",
         non_consented_count_column="household_participants_not_consented_count",
@@ -925,20 +930,6 @@ def fill_forwards_transformations(df):
             "Not working (unemployed, retired, long-term sick etc.)",
             "Student",
         ],
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
     )
     df = fill_forward_from_last_change(
         df=df,

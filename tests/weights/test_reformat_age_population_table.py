@@ -7,38 +7,38 @@ def test_reformat_age_population_table(spark_session):
     # df: DataFrame, lookup_df: DataFrame, column_name_to_update: str, join_on_columns: List[str]
     input_df = spark_session.createDataFrame(
         data=[
-            (1, "f1A", "m1A", "f1B", "m1B"),
-            (2, "f2A", "m2A", "f2B", "m2B"),
-            (3, "f3A", "m3A", "f3B", "m3B"),
+            (1, 12, 10, 11, 15),
+            (2, 17, 2, 15, 9),
+            (3, 62, 1, 0, 5),
         ],
         schema="""
             id integer,
-            f1 string,
-            m1 string,
-            f2 string,
-            m2 string
+            f1 integer,
+            m1 integer,
+            f2 integer,
+            m2 integer
             """,
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "m", 1, "m1A"),
-            (1, "m", 2, "m1B"),
-            (2, "m", 1, "m2A"),
-            (2, "m", 2, "m2B"),
-            (3, "m", 1, "m3A"),
-            (3, "m", 2, "m3B"),
-            (1, "f", 1, "f1A"),
-            (1, "f", 2, "f1B"),
-            (2, "f", 1, "f2A"),
-            (2, "f", 2, "f2B"),
-            (3, "f", 1, "f3A"),
-            (3, "f", 2, "f3B"),
+            (1, "m", 1, 10),
+            (1, "m", 2, 15),
+            (2, "m", 1, 2),
+            (2, "m", 2, 9),
+            (3, "m", 1, 1),
+            (3, "m", 2, 5),
+            (1, "f", 1, 12),
+            (1, "f", 2, 11),
+            (2, "f", 1, 17),
+            (2, "f", 2, 15),
+            (3, "f", 1, 62),
+            (3, "f", 2, 0),
         ],
         schema="""
             id integer,
             sex string,
             age integer,
-            population string
+            population integer
             """,
     )
     output_df = reformat_age_population_table(df=input_df, m_f_columns=["f1", "m1", "m2", "f2"])

@@ -42,7 +42,13 @@ def assign_multigeneration(
             ("Scotland", "08", "15", "03", "01"),
             ("NI", "09", "01", "07", "02"),
         ],
-        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+        schema=[
+            country_column,
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+        ],
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(
@@ -77,7 +83,7 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("age_at_visit", "school_year", "count")
+    return transformed_df.drop("count")
 
 
 def assign_household_participant_count(
@@ -109,19 +115,24 @@ def assign_people_in_household_count(
 
     infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
     infant_exceptions_array = F.array(
-        [F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns_with_exceptions]
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
     )
-    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
+    participant_array = F.array(
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
+    )
 
-    infant_num = F.when(
-        F.size(F.array_remove(infant_exceptions_array, 0)) == len(infant_column_pattern_with_exceptions), 0
-    ).otherwise(F.size(F.array_remove(infant_array, 0)))
+    infant_num = F.when(F.size(F.array_remove(infant_exceptions_array, 0)) == 0, 0).otherwise(
+        F.size(F.array_remove(infant_array, 0))
+    )
 
     participant_num = F.size(F.array_remove(participant_array, 0))
 
     df = df.withColumn(
         column_name_to_assign,
-        F.col(household_participant_count_column) + infant_num + participant_num + F.col(non_consented_count_column),
+        F.col(household_participant_count_column)
+        + infant_num
+        + participant_num
+        + F.when(F.col(non_consented_count_column).isNull(), 0).otherwise(F.col(non_consented_count_column)),
     )
     return df
 
@@ -1261,7 +1272,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25).cast("integer")
     )
 
     return df.drop("date_diff")

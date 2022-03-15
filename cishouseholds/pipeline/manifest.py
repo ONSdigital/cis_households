@@ -47,7 +47,9 @@ class Manifest:
         self.invalid_headers: list = []
         self.dry_run = dry_run
 
-    def add_file(self, relative_file_path: str, column_header: str, validate_col_name_length: bool = True):
+    def add_file(
+        self, relative_file_path: str, column_header: str, validate_col_name_length: bool = True, sep: str = "|"
+    ):
         """
         Add a file in the outgoing folder to the manifest.
         The file must exist in a subdirectory of the manifest `outgoing_directory`.
@@ -68,9 +70,9 @@ class Manifest:
             raise ManifestError(f"Cannot add file to manifest, file does not exist: {absolute_file_path}")
 
         true_header_string = read_header(absolute_file_path)
-        true_header_list = true_header_string.split(",")
+        true_header_list = true_header_string.split(sep)
         if true_header_string != column_header:
-            column_header_list = column_header.split(",")
+            column_header_list = column_header.split(sep)
 
             self.invalid_headers.append(
                 f"File:{absolute_file_path}\n"
