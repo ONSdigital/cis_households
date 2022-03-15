@@ -439,13 +439,13 @@ def lookup_based_editing(
         F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
-    if "rural_urban_classification_11" in df.columns:
+    if "lower_super_output_area_code_11" in df.columns:
         df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
+        df = df.join(
+            F.broadcast(rural_urban_lookup_df),
+            how="left",
+            on="lower_super_output_area_code_11",
+        )
     update_table(df, edited_table, mode_overide="overwrite")
 
 
