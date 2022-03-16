@@ -755,7 +755,6 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-
     update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
 
 
@@ -836,7 +835,13 @@ def report(
                 valid_survey_responses_count,
                 filtered_survey_responses_count,
                 invalid_survey_responses_count,
-                *list(processed_file_log.select("file_row_count").distinct().rdd.flatMap(lambda x: x).collect()),
+                *list(
+                    processed_file_log.select("file_row_count", "processed_filename")
+                    .distinct()
+                    .drop("processed_filename")
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                ),
             ],
         }
     )
