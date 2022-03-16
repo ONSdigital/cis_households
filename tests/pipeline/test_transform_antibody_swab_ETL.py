@@ -5,6 +5,7 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 
 
+@pytest.mark.xfail(reason="Test runs, but expected data need defining")
 def test_transform_antibody_swab_ETL(spark_session):
     # df survey data
     survey_schema = """
