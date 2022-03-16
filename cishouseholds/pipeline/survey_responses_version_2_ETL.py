@@ -919,18 +919,21 @@ def fill_forwards_transformations(df):
         record_changed_column="work_main_job_changed",
         record_changed_value="Yes",
     )
-    df = update_column_if_ref_in_list(
-        df=df,
-        column_name_to_update="work_location",
-        old_value=None,
-        new_value="Not applicable, not currently working",
-        reference_column="work_status_v0",
-        check_list=[
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        ],
-    )
+
+    ## Not needed until a future release, will leave commented out in code until required
+    #
+    #    df = update_column_if_ref_in_list(
+    #        df=df,
+    #        column_name_to_update="work_location",
+    #        old_value=None,
+    #        new_value="Not applicable, not currently working",
+    #        reference_column="work_status_v0",
+    #        check_list=[
+    #            "Furloughed (temporarily not working)",
+    #            "Not working (unemployed, retired, long-term sick etc.)",
+    #            "Student",
+    #        ],
+    #    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
