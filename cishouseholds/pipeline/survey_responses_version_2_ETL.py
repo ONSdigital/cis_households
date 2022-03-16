@@ -331,6 +331,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         record_changed_value="Yes",
     )
 
+    times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -343,6 +344,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
             "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
         },
+        "times_outside_shopping_or_socialising_last_7_days": times_value_map,
+        "times_shopping_last_7_days": times_value_map,
+        "times_socialise_last_7_days": times_value_map,
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
