@@ -833,9 +833,9 @@ def report(
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
-                filtered_survey_responses_count,
                 invalid_survey_responses_count,
-                *list(
+                filtered_survey_responses_count
+                * list(
                     processed_file_log.select("file_row_count", "processed_filename")
                     .distinct()
                     .drop("processed_filename")
