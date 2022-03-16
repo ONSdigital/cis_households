@@ -1,3 +1,4 @@
+import re
 from typing import List
 from typing import Union
 
@@ -8,11 +9,10 @@ from pyspark.sql.window import Window
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.edit import clean_df
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
-from cishouseholds.weights.edit import update_data
-from cishouseholds.weights.extract import prepare_auxillary_data
+
+# from cishouseholds.weights.edit import clean_df
 
 # from cishouseholds.weights.derive import get_matches
 
@@ -21,44 +21,36 @@ from cishouseholds.weights.extract import prepare_auxillary_data
 
 
 def generate_weights(auxillary_dfs):
-    auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
+    # auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
     # initialise lookup dataframes
-    household_info_df = household_dweights(
-        auxillary_dfs["address_lookup"],
-        auxillary_dfs["postcode_lookup"],
-        auxillary_dfs["cis_lookup"],
-        auxillary_dfs["country_lookup"],
-    )
+    household_info_df = auxillary_dfs["household_level_populations"]
 
     # 1164
-
-    df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
-
-    # update and clean sample df's
-    df = update_data(df, auxillary_dfs)
-    df = clean_df(df)
+    old_df = recode_columns(auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"], household_info_df)
+    df = union_multiple_tables([old_df, auxillary_dfs["new_sample_file"]])  # step 15: dweights
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
-    tranche_df = auxillary_dfs["tranche"].withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
+    tranche_df = auxillary_dfs["tranche"]
+    if tranche_df is not None:
+        tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
-    # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
-    df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
-
-    df = assign_tranche_factor(
-        df=df,
-        column_name_to_assign="tranche_factor",
-        barcode_column="ons_household_id",
-        barcode_ref_column="TRANCHE_BARCODE_REF",
-        tranche_column="tranche",
-        group_by_columns=["cis_area_code_20", "enrolment_date"],
-    )
+        # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
+        df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
+        df = assign_tranche_factor(
+            df=df,
+            column_name_to_assign="tranche_factor",
+            barcode_column="ons_household_id",
+            barcode_ref_column="TRANCHE_BARCODE_REF",
+            tranche_column="tranche",
+            group_by_columns=["cis_area_code_20", "enrolment_date"],
+        )
+        # df = df.withColumn("tranche_eligible_households",F.lit("No"))
+        # df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment",F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
     df = swab_weight_wrapper(df=df, household_info_df=household_info_df, cis_window=cis_window)
-    df = antibody_weight_wrapper(df=df, cis_window=cis_window)
-
     scenario_string = chose_scenario_of_dweight_for_antibody_different_household(
         df=df,
         tranche_eligible_indicator="tranche_eligible_households",
@@ -66,6 +58,8 @@ def generate_weights(auxillary_dfs):
         n_eligible_hh_tranche_bystrata_column="number_eligible_households_tranche_bystrata_enrolment",
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
+
+    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
 
     df = validate_design_weights(
         df=df,
@@ -84,6 +78,32 @@ def generate_weights(auxillary_dfs):
     return df
 
 
+def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
+    """
+    Recode and rename old column values in sample data if change detected in new sample data
+    Paramaters
+    """
+    old_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, old_df.columns))[0]
+    new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
+    info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
+    info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
+    new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
+    old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
+    if old_lsoa != new_lsoa:
+        old_df = old_df.join(
+            hh_info_df.select(info_lsoa, info_cis, "postcode")
+            .withColumnRenamed(info_lsoa, "lsoa_from_lookup")
+            .withColumnRenamed(info_cis, "cis_from_lookup"),
+            on="postcode",
+            how="left",
+        )
+        old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
+        old_df = (
+            old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
+        )
+    return old_df
+
+
 # 1163
 # necessary columns:
 # - postcode
@@ -91,8 +111,8 @@ def generate_weights(auxillary_dfs):
 # - country_code_12
 # - cis_area_code_20
 # - unique_property_reference_code
-def household_dweights(
-    df_address_base: DataFrame, df_nspl: DataFrame, df_cis20cd: DataFrame, df_country: DataFrame
+def household_level_populations(
+    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
     Steps:
@@ -108,11 +128,11 @@ def household_dweights(
     df_cis20cd
         Dataframe with cis20cd and interim id.
     """
-    df = df_address_base.join(df_nspl, on="postcode", how="left").withColumn(
+    df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
-    df = df.join(df_cis20cd, on="lower_super_output_area_code_11", how="left")
-    df = df.join(df_country, on="country_code_12", how="left")
+    df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")
+    df = df.join(country_lookup, on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
     df = df.withColumn(
@@ -161,28 +181,32 @@ def swab_weight_wrapper(df: DataFrame, household_info_df: DataFrame, cis_window:
 
 
 # Wrapper
-def antibody_weight_wrapper(df: DataFrame, cis_window: Window):
+def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str):
     # Antibody weights
-    df = calculate_scenario_ab_antibody_dweights(
-        df=df,
-        column_name_to_assign="raw_design_weight_antibodies_ab",
-        hh_dweight_antibodies_column="household_level_designweight_antibodies",
-        sample_new_previous_column="sample_new_previous",
-        scaled_dweight_swab_nonadjusted_column="scaled_design_weight_swab_nonadjusted",
-    )
-    df = calculate_scenario_c_antibody_dweights(
-        df=df,
-        column_name_to_assign="raw_design_weight_antibodies_c",
-        sample_new_previous_column="sample_new_previous",
-        tranche_eligible_column="tranche_eligible_households",
-        tranche_num_column="tranche",
-        design_weight_column="scaled_design_weight_swab_nonadjusted",
-        tranche_factor_column="tranche_factor",
-        household_dweight_column="household_level_designweight_antibodies",
-    )
+    if scenario in "AB":
+        design_weight_column = "raw_design_weight_antibodies_ab"
+        df = calculate_scenario_ab_antibody_dweights(
+            df=df,
+            column_name_to_assign=design_weight_column,
+            hh_dweight_antibodies_column="household_level_designweight_antibodies",
+            sample_new_previous_column="sample_new_previous",
+            scaled_dweight_swab_nonadjusted_column="scaled_design_weight_swab_nonadjusted",
+        )
+    elif scenario == "C":
+        design_weight_column = "raw_design_weight_antibodies_c"
+        df = calculate_scenario_c_antibody_dweights(
+            df=df,
+            column_name_to_assign=design_weight_column,
+            sample_new_previous_column="sample_new_previous",
+            tranche_eligible_column="tranche_eligible_households",
+            tranche_num_column="tranche",
+            design_weight_column="scaled_design_weight_swab_nonadjusted",
+            tranche_factor_column="tranche_factor",
+            household_dweight_column="household_level_designweight_antibodies",
+        )
     df = calculate_generic_dweight_variables(
         df=df,
-        design_weight_column="raw_design_weight_antibodies_c",
+        design_weight_column=design_weight_column,
         num_eligible_hosusehold_column="number_eligible_household_sample",
         groupby_columns=["cis_area_code_20", "sample_new_previous"],
         test_type="antibody",
@@ -347,6 +371,8 @@ def chose_scenario_of_dweight_for_antibody_different_household(
     n_eligible_hh_tranche_bystrata_column
     n_sampled_hh_tranche_bystrata_column
     """
+    if tranche_eligible_indicator not in df.columns:  # TODO: not in household_samples_dataframe?
+        return "A"
     df = df.withColumn(
         eligibility_pct_column,
         F.when(
@@ -368,13 +394,10 @@ def chose_scenario_of_dweight_for_antibody_different_household(
     )
     eligibility_pct_val = df.select(eligibility_pct_column).collect()[0][0]
     df = df.drop(eligibility_pct_column)
-    if tranche_eligible_indicator not in df.columns:  # TODO: not in household_samples_dataframe?
-        return "A"
+    if eligibility_pct_val == 0:
+        return "B"
     else:
-        if eligibility_pct_val == 0:
-            return "B"
-        else:
-            return "C"
+        return "C"
 
 
 # 1168

@@ -3,6 +3,8 @@ import os
 
 import yaml
 
+from cishouseholds.hdfs_utils import read_file_to_string
+
 
 @functools.lru_cache(maxsize=1)
 def get_config() -> dict:
@@ -16,5 +18,16 @@ def get_config() -> dict:
         )  # functional
     else:
         with open(config_location) as fh:
+            config = yaml.load(fh, Loader=yaml.FullLoader)
+    return config
+
+
+def get_secondary_config(location) -> dict:
+    if location is None:
+        return {}
+    if location[:8] == "hdfs:///":
+        config = yaml.safe_load(read_file_to_string(location))
+    else:
+        with open(location) as fh:
             config = yaml.load(fh, Loader=yaml.FullLoader)
     return config

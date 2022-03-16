@@ -6,15 +6,16 @@ from cishouseholds.edit import update_from_csv_lookup
 def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
     map_df = spark_session.createDataFrame(
         data=[
-            (1, "B", "original", "converted"),
-            (2, "A", "original", "converted"),
-            (2, "B", "original", "converted"),
-            (3, "B", "original", "converted"),
-            (4, "B", "original", "converted"),
-            (5, "A", "something else", "converted"),
-            (6, "A", "original", "converted"),
+            (1, "i", "B", "original", "converted"),
+            (2, "i", "A", "original", "converted"),
+            (2, "i", "B", "original", "converted"),
+            (3, "i", "B", "original", "converted"),
+            (4, "i", "B", "original", "converted"),
+            (5, "i", "A", "something else", "converted"),
+            (6, "i", "A", "value", "converted A from null"),
+            (6, "i", "B", None, "converted B from null"),
         ],
-        schema="""id integer, column string, old string, new string""",
+        schema="""id integer, dataset_name string, target_column_name string, old_value string, new_value string""",
     )
     csv_filepath = pandas_df_to_temporary_csv(map_df.toPandas()).as_posix()
     input_df = spark_session.createDataFrame(
@@ -24,6 +25,7 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "original"),
             (4, "original", "original"),
             (5, "original", "original"),
+            (6, "value", None),
         ],
         schema="""id integer, A string, B string""",
     )
@@ -34,11 +36,12 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "original", "converted"),
             (4, "original", "converted"),
             (5, "original", "original"),
+            (6, "converted A from null", "converted B from null"),
         ],
         schema="""id integer, A string, B string""",
     )
     df = input_df
     map = csv_filepath
 
-    output_df = update_from_csv_lookup(df, map, "id")
+    output_df = update_from_csv_lookup(df, map, "i", "id")
     assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True)

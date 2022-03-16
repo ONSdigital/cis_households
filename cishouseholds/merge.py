@@ -7,7 +7,6 @@ from pyspark.sql.window import Window
 
 from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
-from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 
 
@@ -32,25 +31,16 @@ def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List
     return df.drop("ROW_NUMBER")
 
 
-def union_tables_hadoop(hadoop_table_name: str, tables: List[DataFrame]):
+def union_dataframes_to_hive(output_table_name: str, dataframe_list: List[DataFrame]) -> None:
     """
-    Helper function for executing the union function on tables with mismatched columns
-    through loading to hadoop table
-    Parameters
-    ---------
-    tables
-    reorder_columns
+    Sequentially append a list of dataframes to a new HIVE table. Overwrites if table exists.
+    Columns are made consistent between dataframes, filling Nulls where columns were not present on all dataframes.
     """
-    try:
-        dataframes = prepare_for_union(tables=tables)
+    dataframes = prepare_for_union(tables=dataframe_list)
 
-        update_table(dataframes[0], hadoop_table_name, mode_overide="overwrite")
-        for dfn in dataframes[1:]:
-            update_table(dfn, hadoop_table_name, mode_overide="append")
-
-        return extract_from_table(hadoop_table_name)
-    except Exception as e:
-        print(f"Unable to connect to hadoop {e}")  # functional
+    update_table(dataframes[0], output_table_name, mode_overide="overwrite")
+    for df in dataframes[1:]:
+        update_table(df, output_table_name, mode_overide="append")
 
 
 def union_multiple_tables(tables: List[DataFrame]):
@@ -69,7 +59,7 @@ def union_multiple_tables(tables: List[DataFrame]):
     return merged_df
 
 
-def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: str):
+def join_assayed_bloods(df: DataFrame, test_target_column: str, join_on_columns: Union[str, List[str]]):
     """
     Given a dataframe containing records for both blood groups create a new dataframe with columns for
     each specific blood group seperated with the appropriate extension appended to the end of the

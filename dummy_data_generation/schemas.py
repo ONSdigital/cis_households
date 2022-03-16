@@ -213,7 +213,7 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
         "Full Name": _("person.full_name"),
         "DoB": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
@@ -299,18 +299,16 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
+            format="%d/%m/%Y",
+        ),
         "If Known; Type of contact": _("text.quote"),
         "Contact with Suspected Covid19 Case": _("choice", items=yes_no_none_choice),
         "If Suspect; Last contact date": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
+            format="%d/%m/%Y",
+        ),
         "If Suspect; Type of contact": _("text.quote"),
         "Household been Hospital last 2 wks": _("choice", items=yes_no_none_choice),
         "Household been in Care home last 2 wks": _("choice", items=yes_no_none_choice),
@@ -328,7 +326,12 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
         "Previous Symptoms-Diarrhoea": _("choice", items=yes_no_none_choice),
         "Previous Symptoms-Loss of taste": _("choice", items=yes_no_none_choice),
         "Previous Symptoms-Loss of smell": _("choice", items=yes_no_none_choice),
-        "If Yes; Date of first symptoms": _("choice", items=yes_no_none_choice),
+        "If Yes; Date of first symptoms": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
         "Did you contact NHS?": _("choice", items=yes_no_none_choice),
         "If Yes; Were you tested": _("choice", items=yes_no_none_choice),
         "If Yes;Test Result": _("choice", items=yes_no_none_choice),
@@ -421,7 +424,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Last_Name": _("person.last_name"),
         "DoB": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            population=[_("datetime.formatted_datetime", fmt="%Y-%m-%d", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
         "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
@@ -608,7 +611,12 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         + "Z",
         "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _("choice", items=yes_no_none_choice),
-        "been_outside_uk_last_date": _("choice", items=yes_no_none_choice),
+        "been_outside_uk_last_date": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
         "Vaccinated_Against_Covid": _("choice", items=yes_no_none_choice),
         "Date_Of_Vaccination": _(
             "custom_random.random_date",
@@ -708,6 +716,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
+        "Visit_Date_type": _(
+            "choice", items=["actual_visit_date", "latest_checkin_date", "sample_taken_date", "scheduled_date"]
+        ),
         "actual_visit_date": _(
             "custom_random.random_date",
             start=start_date_list,
@@ -1015,6 +1026,13 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Symptoms_7_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Palpitations": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "Are_you_self_Isolating_S2": _(
             "choice",
             items=[
@@ -1197,9 +1215,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "Do_you_think_you_have_had_Covid_19": _("choice", items=yes_no_none_choice),
         "think_had_covid_19_any_symptoms": _("choice", items=yes_no_none_choice),
-        "think_had_covid_19_which_symptoms": _(
-            "choice", items=[None, _("text.answer")]
-        ),  # does this need multiple values concatted?
+        "think_had_covid_19_which_symptoms": _("choice", items=[None, _("text.answer")]),
         "Previous_Symptoms_Fever": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Fatigue_weakness": _("choice", items=yes_no_none_choice),
@@ -1216,6 +1232,13 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Previous_Symptoms_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Palpitations": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "If_yes_Date_of_first_symptoms": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],

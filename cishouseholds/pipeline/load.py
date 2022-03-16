@@ -1,14 +1,71 @@
 import functools
 import json
 from datetime import datetime
+from typing import Callable
+from typing import List
 
 import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
+from cishouseholds.derive import assign_filename_column
+from cishouseholds.edit import cast_columns_from_string
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
+from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def extract_validate_transform_input_data(
+    dataset_name: str,
+    id_column: str,
+    resource_path: list,
+    variable_name_map: dict,
+    datetime_map: dict,
+    validation_schema: dict,
+    transformation_functions: List[Callable],
+    source_file_column: str,
+    sep: str = ",",
+    cast_to_double_columns_list: list = [],
+    include_hadoop_read_write: bool = False,
+):
+    if include_hadoop_read_write:
+        storage_config = get_config()["storage"]
+        csv_location = storage_config["csv_editing_file"]
+        filter_config = get_secondary_config(storage_config["filter_config_file"])
+
+    df = extract_input_data(resource_path, validation_schema, sep)
+    df = rename_column_names(df, variable_name_map)
+    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
+
+    if include_hadoop_read_write:
+        update_table(df, f"raw_{dataset_name}")
+        update_table(df.filter(F.col(id_column).isin(filter_config[dataset_name])), f"{dataset_name}_rows_extracted")
+        df = df.filter(~F.col(id_column).isin(filter_config[dataset_name]))
+        df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
+
+    df = convert_columns_to_timestamps(df, datetime_map)
+    df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
+
+    for transformation_function in transformation_functions:
+        df = transformation_function(df)
+    return df
+
+
+def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
+    spark_session = get_or_create_spark_session()
+    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
+    return spark_session.read.csv(
+        file_paths,
+        header=True,
+        schema=spark_schema,
+        ignoreLeadingWhiteSpace=True,
+        ignoreTrailingWhiteSpace=True,
+        sep=sep,
+    )
 
 
 def update_table(df, table_name, mode_overide=None):
@@ -24,48 +81,6 @@ def check_table_exists(table_name: str):
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
-
-
-@register_pipeline_stage("delete_tables")
-def delete_tables(**kwargs):
-    """
-    All key word args are optional:
-    Specify table_names as a list containing absolute table names to remove.
-    Specify pattern as a string in SQL format to set a specific SQL pattern to remove.
-    Specify prefix to remove all tables with a given prefix.
-    """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if "table_names" in kwargs:
-        if kwargs["table_names"] is not None:
-            for table_name in kwargs["table_names"]:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(
-                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['prefix']}_{table_name}"
-                )
-    if "pattern" in kwargs:
-        if kwargs["pattern"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['pattern']}'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if "prefix" in kwargs:
-        if kwargs["prefix"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['prefix']}*'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -177,14 +192,32 @@ def update_processed_file_log(df: DataFrame, filename_column: str, file_type: st
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+    file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
     schema = """
         run_id integer,
         file_type string,
         processed_filename string,
-        processed_datetime timestamp
+        processed_datetime timestamp,
+        file_row_count integer
     """
     run_id = get_run_id()
-    entry = [[run_id, file_type, filename, datetime.now()] for filename in newly_processed_files]
+    entry = [
+        [run_id, file_type, filename, datetime.now(), row_count]
+        for filename, row_count in zip(newly_processed_files, file_lengths)
+    ]
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
+
+
+def extract_df_list(files):
+    dfs = {}
+    for key, file in files.items():
+        if file["file"] == "" or file["file"] is None:
+            dfs[key] = None
+        elif file["type"] == "table":
+            dfs[key] = extract_from_table(file["file"])
+        else:
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
+
+    return dfs

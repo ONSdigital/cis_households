@@ -149,7 +149,7 @@ def update_data(df: DataFrame, auxillary_dfs: dict):
     )
     df = update_column(
         df=df,
-        lookup_df=auxillary_dfs["cis_lookup"],
+        lookup_df=auxillary_dfs["cis_phase_lookup"],
         column_name_to_update="cis_area_code_20",
         join_on_columns=["lower_super_output_area_code_11"],
     )
@@ -203,7 +203,7 @@ def reformat_age_population_table(df: DataFrame, m_f_columns: List[str]):
             df.select(*cols, F.explode(F.array(*[F.col(c) for c in selected_columns])).alias("age_population"))
             .withColumn("sex", F.lit(sex))
             .withColumn("age", F.col("age_population")[0].cast("integer"))
-            .withColumn("population", F.col("age_population")[1])
+            .withColumn("population", F.col("age_population")[1].cast("integer"))
             .drop("age_population")
         )
     return dfs[0].unionByName(dfs[1])

@@ -42,7 +42,13 @@ def assign_multigeneration(
             ("Scotland", "08", "15", "03", "01"),
             ("NI", "09", "01", "07", "02"),
         ],
-        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+        schema=[
+            country_column,
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+        ],
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(
@@ -77,7 +83,7 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("age_at_visit", "school_year", "count")
+    return transformed_df.drop("count")
 
 
 def assign_household_participant_count(
@@ -85,29 +91,50 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    df = df.withColumn(
+        column_name_to_assign, F.size(F.collect_set(F.col(participant_id_column)).over(household_window))
+    )
     return df
 
 
-def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
+def assign_people_in_household_count(
+    df: DataFrame,
+    column_name_to_assign: str,
+    infant_column_pattern: str,
+    infant_column_pattern_with_exceptions: str,
+    participant_column_pattern: str,
+    household_participant_count_column: str,
+    non_consented_count_column: str,
+):
     """
-    Assign number of people within household, including those not participating. Assumes each row contains counts of
-    participants for the household.
+    Update household count column by correcting value using null participants
+    """
+    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
+    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
+    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
 
-    Uses specific column name patterns to count non-participating members.
-    """
-    infant_pattern = "infant_[1-8]_age"
-    not_present_pattern = "person_[1-8]_age"
-    not_consenting_pattern = "person_[1-9]_not_consenting_age"
-    matched_columns = []
-    for col in df.columns:
-        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
-            if re.match(pattern, col):
-                matched_columns.append(col)
-    df = df.withColumn("TEMP", F.array(matched_columns))
-    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
-    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
-    return df.drop("TEMP")
+    infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
+    infant_exceptions_array = F.array(
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
+    )
+    participant_array = F.array(
+        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
+    )
+
+    infant_num = F.when(F.size(F.array_remove(infant_exceptions_array, 0)) == 0, 0).otherwise(
+        F.size(F.array_remove(infant_array, 0))
+    )
+
+    participant_num = F.size(F.array_remove(participant_array, 0))
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.col(household_participant_count_column)
+        + infant_num
+        + participant_num
+        + F.when(F.col(non_consented_count_column).isNull(), 0).otherwise(F.col(non_consented_count_column)),
+    )
+    return df
 
 
 def assign_ever_had_long_term_health_condition_or_disabled(
@@ -1245,7 +1272,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25).cast("integer")
     )
 
     return df.drop("date_diff")
@@ -1386,5 +1413,28 @@ def contact_known_or_suspected_covid_type(
             F.col(contact_known_covid_type_column),
         )
         .otherwise(None),
+    )
+    return df
+
+
+def derive_household_been_columns(
+    df: DataFrame,
+    column_name_to_assign: str,
+    individual_response_column: str,
+    household_response_column: str,
+) -> DataFrame:
+    """
+    Combines a household and individual level response, to an overall household response.
+    Assumes input responses are 'Yes'/'no'.
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(individual_response_column) == "Yes"), "Yes, I have")
+        .when(
+            ((F.col(individual_response_column) != "Yes") | F.col(individual_response_column).isNull())
+            & (F.col(household_response_column) == "Yes"),
+            "No I haven’t, but someone else in my household has",
+        )
+        .otherwise("No, no one in my household has"),
     )
     return df

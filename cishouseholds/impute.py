@@ -10,6 +10,108 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_random_day_in_month
+
+
+def impute_outside_uk_columns(
+    df: DataFrame,
+    outside_uk_date_column: str,
+    outside_country_column: str,
+    outside_uk_since_column: str,
+    visit_datetime_column: str,
+    id_column: str,
+):
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), "No").otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_country_column)),
+    )
+
+    window = (
+        Window.partitionBy(id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_since_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_date_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_country_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_country_column)),
+    )
+    return df
+
+
+def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
+    df = df.withColumn(
+        visit_datetime_column,
+        F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
+            F.col(visit_datetime_column)
+        ),
+    )
+    return df
+
+
+def fill_forward_from_last_change(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
+) -> DataFrame:
+    """
+    Where job has not changed, fill forward from previous response that job has changed.
+    """
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_date_column).asc())
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+
+    df_fill_forwards_from = (
+        df.where((F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1))
+        .select(participant_id_column, visit_date_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+    ).drop("ROW_NUMBER")
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_date_column, "start_datetime")
+    window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
+
+    df_fill_forwards_from = df_fill_forwards_from.withColumn(
+        "end_datetime", F.lead(F.col("start_datetime"), 1).over(window_lag)
+    )
+    df = df.drop(*fill_forward_columns, "ROW_NUMBER")
+
+    df = df.join(
+        df_fill_forwards_from,
+        how="left",
+        on=(
+            (df[participant_id_column] == df_fill_forwards_from["id_right"])
+            & (df[visit_date_column] >= df_fill_forwards_from.start_datetime)
+            & (
+                (df[visit_date_column] < df_fill_forwards_from.end_datetime)
+                | (df_fill_forwards_from.end_datetime.isNull())
+            )
+        ),
+    )
+    return df.drop("id_right", "start_datetime", "end_datetime")
+
 
 def impute_by_distribution(
     df: DataFrame,
@@ -183,7 +285,7 @@ def impute_by_ordered_fill_forward(
     ----------
     df
     column_name_to_assign
-        The colum that will be created with the impute values
+        The column that will be created with the impute values
     column_identity
         Identifies any records that the reference_column is missing forward
         This column is normally intended for user_id, participant_id, etc.
@@ -203,10 +305,16 @@ def impute_by_ordered_fill_forward(
     """
     if order_type == "asc":
         ordering_expression = F.col(order_by_column).asc()
-    else:
+    elif order_type == "desc":
         ordering_expression = F.col(order_by_column).desc()
+    else:
+        raise ValueError("order_type must be 'asc' or 'desc'")
 
-    window = Window.partitionBy(column_identity).orderBy(ordering_expression)
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(ordering_expression)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
@@ -594,3 +702,114 @@ def impute_latest_date_flag(
     )
 
     return df.drop("imputation_flag")
+
+
+def fill_backwards_overriding_not_nulls(
+    df: DataFrame,
+    column_identity,
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df,
+    column_identity,
+    ordering_column,
+    dataset_column,
+    column_list,
+    """
+    window = (
+        Window.partitionBy(column_identity)
+        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    for column in column_list:
+        df = df.withColumn(
+            column,
+            F.first(F.col(column), ignorenulls=True).over(window),
+        )
+    return df
+
+
+def edit_multiple_columns_fill_forward(
+    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
+) -> DataFrame:
+    """
+    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
+    based in fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+    Parameters
+    ----------
+    df
+    participant_id
+    received
+    date
+    column_fillforward_list
+    """
+    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+    for column_name in column_fillforward_list:
+        df = df.withColumn(
+            column_name,
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
+                F.col(column_name)
+            ),
+        )
+
+    return df
+
+
+def impute_date_by_k_nearest_neighbours(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    donor_group_columns: List[str],
+    log_file_path: str,
+    minimum_donors: int = 1,
+    donor_group_column_weights: list = None,
+    donor_group_column_conditions: dict = None,
+    maximum_distance: int = 4999,
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    donor_group_columns
+    log_file_path
+    """
+    df = df.withColumn("_month", F.month(reference_column))
+    df = df.withColumn("_year", F.year(reference_column))
+
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_month",
+        reference_column="_month",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    )
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_year",
+        reference_column="_year",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    )
+    df = df.drop("_month", "_year")
+
+    df = assign_random_day_in_month(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        month_column="_IMPUTED_month",
+        year_column="_IMPUTED_year",
+    )
+    return df.drop("_IMPUTED_month", "_IMPUTED_year")
