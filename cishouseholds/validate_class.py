@@ -76,7 +76,7 @@ class SparkValidate:
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             if column_name not in self.dataframe.columns:
-                print(f"Validation rule references {column_name} that is not in dataframe.")  # functional
+                print(f"Validation rule references {column_name} column and it is not in the dataframe.")  # functional
             else:
                 check = self.functions[list(method.keys())[0]]
                 self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
