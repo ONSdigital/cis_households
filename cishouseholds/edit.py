@@ -14,6 +14,16 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
+    df = df.withColumn(
+        travelled_column,
+        F.when((F.col(country_column).isNotNull()) | (F.col(travel_date_column).isNotNull()), "Yes").otherwise(
+            F.col(travelled_column)
+        ),
+    )
+    return df
+
+
 def update_column_if_ref_in_list(
     df: DataFrame,
     column_name_to_update: str,
