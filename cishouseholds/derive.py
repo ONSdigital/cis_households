@@ -54,6 +54,12 @@ def assign_multigeneration(
     transformed_df = transformed_df.join(
         df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
         on=household_id_column,
+    ).drop("count")
+    transformed_df = assign_age_at_date(
+        df=transformed_df,
+        column_name_to_assign="age_at_visit",
+        base_date=F.col(visit_date_column),
+        date_of_birth=F.col(date_of_birth_column),
     )
     transformed_df = assign_school_year(
         df=transformed_df,
@@ -62,12 +68,6 @@ def assign_multigeneration(
         dob_column=date_of_birth_column,
         country_column=country_column,
         school_year_lookup=school_year_lookup_df,
-    )
-    transformed_df = assign_age_at_date(
-        df=transformed_df,
-        column_name_to_assign="age_at_visit",
-        base_date=F.col(visit_date_column),
-        date_of_birth=F.col(date_of_birth_column),
     )
     generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
     generation2_flag = F.when(
@@ -83,7 +83,18 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("count")
+    transformed_df = (
+        df.drop("age_at_visit")
+        .join(
+            transformed_df.select(
+                "age_at_visit", "school_year", column_name_to_assign, participant_id_column, visit_date_column
+            ),
+            on=[participant_id_column, visit_date_column],
+            how="left",
+        )
+        .distinct()
+    )
+    return transformed_df
 
 
 def assign_household_participant_count(
