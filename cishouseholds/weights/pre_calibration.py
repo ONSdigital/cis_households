@@ -9,6 +9,8 @@ from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
+# from cishouseholds.derive import assign_ethnicity_white
+
 
 def pre_calibration_high_level(
     df_survey: DataFrame,
@@ -25,7 +27,7 @@ def pre_calibration_high_level(
     """
     df = df_survey.join(
         df_dweights,
-        on="ons_household_id",
+        on=df_survey.ons_household_id == df_dweights.unique_property_reference_code,
         how="left",
     )
     df = assign_ethnicity_white(

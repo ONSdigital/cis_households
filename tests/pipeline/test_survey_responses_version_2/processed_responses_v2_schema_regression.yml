@@ -682,11 +682,11 @@ fields:
 - metadata: {}
   name: times_shopping_last_7_days
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: times_socialise_last_7_days
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: is_regularly_lateral_flow_testing
   nullable: true
@@ -956,26 +956,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_received
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_number_of_doses
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: cis_covid_vaccine_type_1
   nullable: true
   type: string
@@ -1112,6 +1092,14 @@ fields:
   nullable: true
   type: double
 - metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1139,6 +1127,26 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: cis_covid_vaccine_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_received
+  nullable: true
+  type: string
 - metadata: {}
   name: household_been_care_home_last_28_days
   nullable: false
