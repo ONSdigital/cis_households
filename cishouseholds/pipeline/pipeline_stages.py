@@ -8,6 +8,8 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import aggregated_output_groupby
+from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
@@ -1060,3 +1062,30 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("aggregated_output")
+def aggregated_output(
+    apply_window,
+    apply_groupby,
+    aggregated_output,
+):
+    """
+    apply_window
+    apply_groupby
+    aggregated_output
+    """
+
+    df = extract_from_table(table_name=aggregated_output)
+
+    if apply_window:
+        df = aggregated_output_window(df)
+
+    if apply_groupby:
+        df = aggregated_output_groupby(df)
+
+    update_table(
+        df=df,
+        table_name=aggregated_output,
+        mode_overide="overwrite",
+    )

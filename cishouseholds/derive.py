@@ -1,5 +1,6 @@
 import re
 from itertools import chain
+from pyclbr import Function
 from typing import List
 from typing import Optional
 from typing import Union
@@ -1448,4 +1449,53 @@ def derive_household_been_columns(
         )
         .otherwise("No, no one in my household has"),
     )
+    return df
+
+
+def aggregated_output_groupby(
+    df: DataFrame,
+    column_group_list: str,
+    apply_function_list: List[Function],
+    column_apply_list: List[str],
+    column_name_to_assign_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_group
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    """
+    return df.groupBy(*column_group_list).agg(
+        *[
+            apply_function(column_apply).alias(column_name_to_assign)
+            for apply_function, column_apply, column_name_to_assign in zip(
+                apply_function_list, column_apply_list, column_name_to_assign_list
+            )
+        ]
+    )
+
+
+def aggregated_output_window(
+    df: DataFrame,
+    column_group_list: str,
+    apply_function_list: List[Function],
+    column_apply_list: List[str],
+    column_name_to_assign_list: List[str],
+    order_column_list: List[str] = [],
+    when_condition=True,
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    """
+    window = Window.partitionBy(*column_group_list).orderBy(order_column_list)
+
+    for apply_function, column_apply, column_name_to_assign in zip(
+        apply_function_list, column_apply_list, column_name_to_assign_list
+    ):
+        df = df.withColumn(column_name_to_assign, F.when(when_condition, apply_function(column_apply).over(window)))
     return df
