@@ -682,11 +682,11 @@ fields:
 - metadata: {}
   name: times_shopping_last_7_days
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: times_socialise_last_7_days
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: is_regularly_lateral_flow_testing
   nullable: true

@@ -331,6 +331,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         record_changed_value="Yes",
     )
 
+    times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -343,6 +344,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
             "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
         },
+        "times_outside_shopping_or_socialising_last_7_days": times_value_map,
+        "times_shopping_last_7_days": times_value_map,
+        "times_socialise_last_7_days": times_value_map,
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
@@ -919,18 +923,21 @@ def fill_forwards_transformations(df):
         record_changed_column="work_main_job_changed",
         record_changed_value="Yes",
     )
-    df = update_column_if_ref_in_list(
-        df=df,
-        column_name_to_update="work_location",
-        old_value=None,
-        new_value="Not applicable, not currently working",
-        reference_column="work_status_v0",
-        check_list=[
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        ],
-    )
+
+    ## Not needed until a future release, will leave commented out in code until required
+    #
+    #    df = update_column_if_ref_in_list(
+    #        df=df,
+    #        column_name_to_update="work_location",
+    #        old_value=None,
+    #        new_value="Not applicable, not currently working",
+    #        reference_column="work_status_v0",
+    #        check_list=[
+    #            "Furloughed (temporarily not working)",
+    #            "Not working (unemployed, retired, long-term sick etc.)",
+    #            "Student",
+    #        ],
+    #    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
