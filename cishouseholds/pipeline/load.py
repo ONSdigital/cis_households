@@ -41,11 +41,12 @@ def extract_validate_transform_input_data(
     df = rename_column_names(df, variable_name_map)
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
 
+    filtered_df = None
     if include_hadoop_read_write and dataset_name in filter_config:
         filter_ids = filter_config[dataset_name]
-
+        filtered_df = df.filter(F.col(id_column).isin(filter_ids))
         update_table(df, f"raw_{dataset_name}")
-        update_table(df.filter(F.col(id_column).isin(filter_ids)), f"{dataset_name}_rows_extracted")
+        update_table(filtered_df, f"{dataset_name}_rows_extracted")
 
         df = df.filter(~F.col(id_column).isin(filter_ids))
         df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
@@ -55,7 +56,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
-    return df
+    return df, filtered_df
 
 
 def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
@@ -182,31 +183,46 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
 
 
-def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str, override_mode: str = None):
+def update_table_and_log_source_files(
+    df: DataFrame, filtered_df: DataFrame, table_name: str, filename_column: str, override_mode: str = None
+):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode)
-    update_processed_file_log(df, filename_column, table_name)
+    update_processed_file_log(df, filtered_df, filename_column, table_name)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, file_type: str):
+def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
     file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+
+    filtered_lengths = {file: 0 for file in newly_processed_files}
+    if filtered_df is not None:
+        filtered_files = filtered_df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+        filtered_lengths = (
+            filtered_df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+        )
+        for file, count in zip(filtered_files, filtered_lengths):
+            filtered_lengths[file] = count
+
     schema = """
         run_id integer,
         file_type string,
         processed_filename string,
         processed_datetime timestamp,
-        file_row_count integer
+        file_row_count integer,
+        filtered_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, file_type, filename, datetime.now(), row_count]
-        for filename, row_count in zip(newly_processed_files, file_lengths)
+        [run_id, file_type, filename, datetime.now(), row_count, filtered_row_count]
+        for filename, row_count, filtered_row_count in zip(
+            newly_processed_files, file_lengths, filtered_lengths.values()
+        )
     ]
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")

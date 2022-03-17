@@ -279,7 +279,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df = extract_validate_transform_input_data(
+        df, filtered_df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -293,7 +293,7 @@ def generate_input_processing_function(
             cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, write_mode)
         return df
 
     _inner_function.__name__ = stage_name
@@ -828,26 +828,52 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
-                filtered_survey_responses_count
-                * list(
-                    processed_file_log.select("file_row_count", "processed_filename")
-                    .distinct()
-                    .drop("processed_filename")
-                    .rdd.flatMap(lambda x: x)
-                    .collect()
-                ),
+                filtered_survey_responses_count,
             ],
         }
     )
 
     output = BytesIO()
+    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
+        for type in file_types:
+            processed_file_names = [
+                name.split("/")[-1]
+                for name in list(
+                    processed_file_log.filter(F.col("file_type") == type)
+                    .select("processed_filename")
+                    .distinct()
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                )
+            ]
+            processed_file_counts = list(
+                processed_file_log.filter(F.col("file_type") == type)
+                .select("file_row_count", "processed_filename")
+                .distinct()
+                .drop("processed_filename")
+                .rdd.flatMap(lambda x: x)
+                .collect()
+            )
+            extracted_counts = list(
+                processed_file_log.filter(F.col("file_type") == type)
+                .select("filtered_row_count", "processed_filename")
+                .distinct()
+                .drop("processed_filename")
+                .rdd.flatMap(lambda x: x)
+                .collect()
+            )
+            counts_df = pd.DataFrame(
+                {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
+            )
+            name = f"{type} row counts"
+            counts_df.to_excel(writer, sheet_name=name, index=False)
+
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
