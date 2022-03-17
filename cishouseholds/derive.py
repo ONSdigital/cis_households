@@ -1454,9 +1454,8 @@ def derive_household_been_columns(
 
 def aggregated_output_groupby(
     df: DataFrame,
-    column_group_list: str,
+    column_group: str,
     apply_function_list: List[Function],
-    column_apply_list: List[str],
     column_name_to_assign_list: List[str],
 ) -> DataFrame:
     """
@@ -1468,12 +1467,11 @@ def aggregated_output_groupby(
     column_apply_list
     column_name_to_assign_list
     """
-    return df.groupBy(*column_group_list).agg(
+
+    return df.groupBy(column_group).agg(
         *[
-            apply_function(column_apply).alias(column_name_to_assign)
-            for apply_function, column_apply, column_name_to_assign in zip(
-                apply_function_list, column_apply_list, column_name_to_assign_list
-            )
+            apply_function.alias(column_name_to_assign)
+            for apply_function, column_name_to_assign in zip(apply_function_list, column_name_to_assign_list)
         ]
     )
 
@@ -1482,7 +1480,6 @@ def aggregated_output_window(
     df: DataFrame,
     column_group_list: str,
     apply_function_list: List[Function],
-    column_apply_list: List[str],
     column_name_to_assign_list: List[str],
     order_column_list: List[str] = [],
     when_condition=True,
@@ -1491,11 +1488,15 @@ def aggregated_output_window(
     Parameters
     ----------
     df
+    column_group_list
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    order_column_list
+    when_condition
     """
     window = Window.partitionBy(*column_group_list).orderBy(order_column_list)
 
-    for apply_function, column_apply, column_name_to_assign in zip(
-        apply_function_list, column_apply_list, column_name_to_assign_list
-    ):
-        df = df.withColumn(column_name_to_assign, F.when(when_condition, apply_function(column_apply).over(window)))
+    for apply_function, column_name_to_assign in zip(apply_function_list, column_name_to_assign_list):
+        df = df.withColumn(column_name_to_assign, apply_function.over(window))
     return df

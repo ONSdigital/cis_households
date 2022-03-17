@@ -1069,23 +1069,51 @@ def aggregated_output(
     apply_window,
     apply_groupby,
     aggregated_output,
+    column_name_to_assign_list,
+    column_group,
+    column_window_list,
+    function_list,
+    column_list_to_apply_function,
 ):
     """
+    Parameters
+    ----------
     apply_window
     apply_groupby
     aggregated_output
+    column_name_to_assign_list
+    column_group
+    column_window_list
+    function_list
+    column_list_to_apply_function
     """
-
     df = extract_from_table(table_name=aggregated_output)
 
-    if apply_window:
-        df = aggregated_output_window(df)
-
+    function_column_obj_list = [
+        function(column) for function, column in zip(function_list, column_list_to_apply_function)
+    ]
     if apply_groupby:
-        df = aggregated_output_groupby(df)
+        dfg = aggregated_output_groupby(
+            df=df,
+            column_group=column_group,
+            apply_function_list=function_column_obj_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+        )
+        update_table(
+            df=dfg,
+            table_name=f"{aggregated_output}_group",
+            mode_overide="overwrite",
+        )
 
-    update_table(
-        df=df,
-        table_name=aggregated_output,
-        mode_overide="overwrite",
-    )
+    if apply_window:
+        dfw = aggregated_output_window(
+            df=df,
+            column_group_list=column_window_list,
+            apply_function_list=function_column_obj_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+        )
+        update_table(
+            df=dfw,
+            table_name=f"{aggregated_output}_window",
+            mode_overide="overwrite",
+        )
