@@ -70,7 +70,9 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
 
     individual_level_populations_for_non_response_adjustment = (
         individual_level_populations_for_non_response_adjustment.join(
-            aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16").distinct(), # TODO: broadcast()
+            aps_lookup_df.select(
+                "country_name", "percentage_white_ethnicity_country_over16"
+            ).distinct(),  # TODO: broadcast()
             individual_level_populations_for_non_response_adjustment["country_name_12"]
             == aps_lookup_df["country_name"],
             how="left",

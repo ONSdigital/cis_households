@@ -315,7 +315,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
         .drop("old_value", "new_value")
     )
 
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id) # TODO: broadcast()
+    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)  # TODO: broadcast()
     r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
     cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
     for col in cols:

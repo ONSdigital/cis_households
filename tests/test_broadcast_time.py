@@ -11,5 +11,6 @@ def test_time_required(f):
     end = timeit.timeit()
     print(f"-- Time required for is ", end - start)  # functional
 
+
 if __name__ == "__main__":
     test_time_required(f=test_assign_multigeneration)

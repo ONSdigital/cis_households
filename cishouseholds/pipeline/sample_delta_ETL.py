@@ -99,7 +99,7 @@ def calculate_design_weights(sample_file: DataFrame, household_populations: Data
         number of addresses (``nb_addresses``) per CIS area (``interim_id``)
     """
     sample_file = sample_file.join(
-        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id" # TODO: broadcast()
+        household_populations.select("interim_id", "nb_addresses"), how="left", on="interim_id"  # TODO: broadcast()
     )
 
     interim_id_window = Window.partitionBy("interim_id")

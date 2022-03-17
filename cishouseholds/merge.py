@@ -122,7 +122,7 @@ def null_safe_join(left_df: DataFrame, right_df: DataFrame, null_safe_on: list, 
 
     join_condition = " AND ".join(null_unsafe_conditions + null_safe_conditions)
 
-    joined_df = left_df.join(right_df, on=F.expr(join_condition), how=how) # TODO: broadcast()
+    joined_df = left_df.join(right_df, on=F.expr(join_condition), how=how)  # TODO: broadcast()
 
     for column in null_safe_on + null_unsafe_on:
         # Recover right entries from outer/right joins
@@ -184,7 +184,7 @@ def assign_group_and_row_number_columns(
     dft = dft.withColumn("dummy", F.lit(1).cast("integer"))
     mini_window = Window.partitionBy("dummy").orderBy("b")
     dft = dft.withColumn(group_column, F.row_number().over(mini_window))
-    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy") # TODO: broadcast()
+    df = df.join(dft, dft.b == F.col(group_by_column)).drop("b", "dummy")  # TODO: broadcast()
     return df
 
 
@@ -214,7 +214,9 @@ def flag_rows_different_to_reference_row(
         group_column, reference_column
     )
     df = df_reference_row_and_col_only.join(
-        df.withColumnRenamed(reference_column, reference_column + "_reference"), on=[group_column], how="inner" # TODO: broadcast()
+        df.withColumnRenamed(reference_column, reference_column + "_reference"),
+        on=[group_column],
+        how="inner",  # TODO: broadcast()
     )
     df = df.withColumn(column_name_to_assign, F.lit(None).cast("integer"))
     df = df.withColumn(
@@ -247,7 +249,7 @@ def check_consistency_in_retained_rows(
             .count()
             .withColumnRenamed("count", "num_" + col + "_distinct")
         )
-        df = df.join(df_grouped, on=[group_column], how="inner") # TODO: broadcast()
+        df = df.join(df_grouped, on=[group_column], how="inner")  # TODO: broadcast()
         check_distinct.append("num_" + col + "_distinct")
     columns = [F.col(col) for col in check_distinct]
     df = df.withColumn("array_distinct", F.array(columns)).drop(*check_distinct)
@@ -841,7 +843,7 @@ def merge_one_to_many_swab_result_pcr_logic(
         .select(group_by_column, result_pcr_logic_flag_column_name)
     )
 
-    return df_output.join(df, [group_by_column], "inner").withColumn( # TODO: broadcast()
+    return df_output.join(df, [group_by_column], "inner").withColumn(  # TODO: broadcast()
         result_pcr_logic_flag_column_name,
         F.when((F.col(pcr_result_column_name) == void_value) & (F.col(result_pcr_logic_flag_column_name) == 1), 1)
         .otherwise(None)

@@ -101,7 +101,7 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     for col in select_df.columns:
         if col != barcode_column:
             select_df = select_df.withColumnRenamed(col, col + "_OLD")
-    joined_df = new_sample_df.join(select_df, on=barcode_column, how="left") # TODO: broadcast()
+    joined_df = new_sample_df.join(select_df, on=barcode_column, how="left")  # TODO: broadcast()
     for col in selection_columns:
         joined_df = joined_df.withColumn(f"MATCHED_{col}", F.when(F.col(col) == F.col(f"{col}_OLD"), 1).otherwise(None))
     return joined_df
