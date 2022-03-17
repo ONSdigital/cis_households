@@ -13,7 +13,7 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
     for col in columns:
         if col not in on:
             df_to_join = df_to_join.withColumnRenamed(col, f"{col}_FT")
-    df = df.join(df_to_join, on=on, how="left")
+    df = df.join(df_to_join, on=on, how="left") # TODO: broadcast()
     for col in columns:
         if col not in on:
             df = df.withColumn(
@@ -53,7 +53,11 @@ def reformat_calibration_df(df: DataFrame, pivot_column: str, groupby_columns: L
         return_df = dfs[0].withColumn("TEMP", F.lit(1))
         for df in dfs[1:]:
             df = df.withColumn("TEMP", F.lit(1))
-            return_df = return_df.join(df, return_df.TEMP == df.TEMP.alias("DF_TEMP"), how="inner").drop("TEMP")
+            return_df = return_df.join(
+                df, # TODO: broadcast()
+                return_df.TEMP == df.TEMP.alias("DF_TEMP"), 
+                how="inner"
+            ).drop("TEMP")
         # spark.conf.set("spark.sql.crossJoin.enabled", "false")
         return return_df
 
@@ -164,7 +168,7 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
     its counterpart in the old dataframe
     """
     lookup_df = lookup_df.withColumnRenamed(column_name_to_update, f"{column_name_to_update}_from_lookup")
-    df = df.join(lookup_df, on=[*join_on_columns], how="left")
+    df = df.join(lookup_df, on=[*join_on_columns], how="left") # TODO: broadcast()
     df = df.withColumn(
         column_name_to_update,
         F.when(

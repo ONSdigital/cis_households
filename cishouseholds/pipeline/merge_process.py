@@ -40,7 +40,7 @@ def merge_process_preparation(
     survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
     labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
 
-    outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
+    outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer") # TODO: broadcast() -0
 
     if merge_type == "swab":
         interval_upper_bound = 480
@@ -486,7 +486,7 @@ def merge_process_filtering(
     df_not_best_match = df_not_best_match.withColumn("not_best_match_for_union", F.lit(1).cast("integer"))
 
     df_lab_residuals = df_not_best_match.select(barcode_column_name, *lab_columns_list).distinct()
-    df_lab_residuals = df_lab_residuals.join(df_best_match, on=lab_record_id, how="left_anti")
+    df_lab_residuals = df_lab_residuals.join(df_best_match, on=lab_record_id, how="left_anti") # TODO: broadcast() -0
 
     drop_list_columns = [
         f"out_of_date_range_{merge_type}",
