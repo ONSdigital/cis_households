@@ -258,6 +258,9 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
+        output_table_name=output_table_name,
+        source_file_column=source_file_column,
+        write_mode=write_mode,
     ):
         file_path_list = [resource_path]
 
