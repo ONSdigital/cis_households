@@ -151,9 +151,11 @@ def update_face_covering_outside_of_home(
         .when(
             F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
-            & ~(
-                (F.col(covered_enclosed_column) == "My face is already covered")
-                & (F.col(covered_enclosed_column) == "My face is already covered")
+            & (
+                ~(
+                    (F.col(covered_enclosed_column) == "My face is already covered")
+                    & (F.col(covered_work_column) == "My face is already covered")
+                )
             ),
             "Yes, usually both Work/school/other",
         )
