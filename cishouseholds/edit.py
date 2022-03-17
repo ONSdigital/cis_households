@@ -133,7 +133,10 @@ def update_face_covering_outside_of_home(
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
@@ -141,12 +144,17 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
@@ -154,14 +162,14 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column) == "My face is already covered")
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "My face is already covered",
         )
         .when(
             (
                 (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_enclosed_column).isNull())
+                | F.col(covered_enclosed_column).isNull()
             )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
