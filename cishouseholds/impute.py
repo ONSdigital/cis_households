@@ -99,7 +99,7 @@ def fill_forward_from_last_change(
     df = df.drop(*fill_forward_columns, "ROW_NUMBER")
 
     df = df.join(
-        df_fill_forwards_from,  # TODO: broadcast() -1
+        F.broadcast(df_fill_forwards_from),
         how="left",
         on=(
             (df[participant_id_column] == df_fill_forwards_from["id_right"])
@@ -262,7 +262,7 @@ def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: 
     )
 
     imputed_df = (
-        df.join(deduplicated_modes, on=group_by_column, how="left")  # TODO: broadcast()
+        df.join(F.broadcast(deduplicated_modes), on=group_by_column, how="left")
         .withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), F.col("_imputed_value")))
         .drop("_imputed_value")
     )
@@ -344,7 +344,7 @@ def merge_previous_imputed_values(
         *[f"_{column}" if column != id_column_name else column for column in imputed_value_lookup_df.columns]
     )  # _ prevents ambiguity in join, but is sliced out when referencing the original columns
 
-    df = df.join(imputed_value_lookup_df, on=id_column_name, how="left")  # TODO: broadcast()
+    df = df.join(F.broadcasted(imputed_value_lookup_df), on=id_column_name, how="left")
     columns_for_editing = [
         (column.replace("_imputation_method", ""), column.replace("_imputation_method", "_is_imputed"), column)
         for column in imputed_value_lookup_df.columns
@@ -560,17 +560,15 @@ def impute_by_k_nearest_neighbours(
     frequencies = donor_df.groupby("unique_donor_group", "don_" + reference_column).agg(
         F.count("*").alias("donor_group_value_frequency")
     )
-    frequencies = frequencies.join(candidates, on="unique_donor_group")  # TODO: broadcast()
+    frequencies = frequencies.join(F.broadcast(candidates), on="unique_donor_group")
     frequencies = frequencies.join(
-        imputing_df.groupby("unique_imputation_group").agg(
-            F.count("*").alias("imputation_group_size")
-        ),  # TODO: broadcast()
+        F.broadcast(imputing_df.groupby("unique_imputation_group").agg(F.count("*").alias("imputation_group_size"))),
         on="unique_imputation_group",
     )
 
     frequencies.cache().count()
 
-    no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")  # TODO: broadcast()
+    no_donors = imputing_df_unique.join(F.broadcast(frequencies), on="unique_imputation_group", how="left_anti")
     no_donors_count = no_donors.count()
     if no_donors_count != 0:
         message = f"{no_donors_count} donor pools with no donors"

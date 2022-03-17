@@ -643,8 +643,8 @@ def impute_demographic_columns(
     #     *lookup_columns,
     # )
     df_with_imputed_values = df.drop(*key_columns).join(
-        key_columns_imputed_df, on="participant_id", how="left"
-    )  # TODO: broadcast()
+        F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
+    )
 
     # update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
@@ -697,8 +697,8 @@ def join_geographic_data(
     design_weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
     geographic_survey_df = survey_responses_df.drop("postcode").join(
-        design_weights_df, on=id_column, how="left"
-    )  # TODO: broadcast()
+        F.broadcast(design_weights_df), on=id_column, how="left"
+    )
     update_table(geographic_survey_df, geographic_responses_table)
 
 

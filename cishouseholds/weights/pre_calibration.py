@@ -26,7 +26,7 @@ def pre_calibration_high_level(
     df_country
     """
     df = df_survey.join(
-        df_dweights,  # TODO: broadcast()
+        df_dweights,
         on=df_survey.ons_household_id == df_dweights.unique_property_reference_code,
         how="left",
     )

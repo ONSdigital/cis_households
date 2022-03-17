@@ -91,7 +91,7 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
     if old_lsoa != new_lsoa:
         old_df = old_df.join(
-            hh_info_df.select(info_lsoa, info_cis, "postcode")  # TODO: broadcast()
+            hh_info_df.select(info_lsoa, info_cis, "postcode")
             .withColumnRenamed(info_lsoa, "lsoa_from_lookup")
             .withColumnRenamed(info_cis, "cis_from_lookup"),
             on="postcode",
@@ -131,8 +131,8 @@ def household_level_populations(
     df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
-    df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")  # TODO: broadcast()
-    df = df.join(country_lookup, on="country_code_12", how="left")  # TODO: broadcast()
+    df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
+    df = df.join(country_lookup, on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
     df = df.withColumn(
@@ -238,7 +238,7 @@ def calculate_dweight_swabs(
     """
     window = Window.partitionBy(*group_by_columns)
     df = df.join(
-        household_info_df.select(  # TODO: broadcast()
+        household_info_df.select(
             "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
         ),
         on="cis_area_code_20",
