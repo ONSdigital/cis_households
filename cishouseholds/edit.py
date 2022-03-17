@@ -123,7 +123,11 @@ def update_face_covering_outside_of_home(
         column_name_to_update,
         F.when(
             (
-                (F.col(covered_enclosed_column) == "Never")
+                (
+                    F.col(covered_enclosed_column).isin(
+                        "Never", "Not going to other enclosed public spaces or using public transport"
+                    )
+                )
                 & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
             ),
             "No",
@@ -724,16 +728,9 @@ def edit_to_sum_or_max_value(
 
     column_name_to_assign must already exist on the df.
     """
-    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
-
-    all_columns = [column_name_to_assign, *columns_to_sum]
-    for col in all_columns:
-        df = update_column_values_from_map(df, col, value_map)
-        df = df.withColumn(col, F.col(col).cast("integer"))
-
     df = df.withColumn(
         column_name_to_assign,
-        F.when(reduce(and_, [F.col(col).isNull() for col in all_columns]), None)
+        F.when(reduce(and_, [F.col(col).isNull() for col in [column_name_to_assign, *columns_to_sum]]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
             F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
