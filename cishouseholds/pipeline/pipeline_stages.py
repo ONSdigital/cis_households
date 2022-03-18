@@ -72,6 +72,13 @@ def register_pipeline_stage(key):
     return _add_pipeline_stage
 
 
+@register_pipeline_stage("csv_to_table")
+def csv_to_table(csv_filepath: str, table_name: str):
+    spark = get_or_create_spark_session()
+    df = spark.read.csv(csv_filepath, header=True)
+    update_table(df, table_name)
+
+
 @register_pipeline_stage("delete_tables")
 def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
     """
@@ -251,6 +258,9 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
+        output_table_name=output_table_name,
+        source_file_column=source_file_column,
+        write_mode=write_mode,
     ):
         file_path_list = [resource_path]
 
@@ -432,13 +442,13 @@ def lookup_based_editing(
         F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
-    if "rural_urban_classification_11" in df.columns:
+    if "lower_super_output_area_code_11" in df.columns:
         df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
+        df = df.join(
+            F.broadcast(rural_urban_lookup_df),
+            how="left",
+            on="lower_super_output_area_code_11",
+        )
     update_table(df, edited_table, mode_overide="overwrite")
 
 
@@ -748,7 +758,6 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-
     update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
 
 
@@ -827,9 +836,15 @@ def report(
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
-                filtered_survey_responses_count,
                 invalid_survey_responses_count,
-                *list(processed_file_log.select("file_row_count").distinct().rdd.flatMap(lambda x: x).collect()),
+                filtered_survey_responses_count
+                * list(
+                    processed_file_log.select("file_row_count", "processed_filename")
+                    .distinct()
+                    .drop("processed_filename")
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                ),
             ],
         }
     )
@@ -882,7 +897,7 @@ def record_level_interface(
     input_df = extract_from_table(survey_responses_table)
     edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_csv_lookup(
-        df=input_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
+        df=edited_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
     )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
