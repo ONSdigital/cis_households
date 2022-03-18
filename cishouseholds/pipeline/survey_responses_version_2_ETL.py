@@ -45,6 +45,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
+from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_from_last_change
@@ -938,16 +939,20 @@ def fill_forwards_transformations(df):
     #            "Student",
     #        ],
     #    )
+    df = update_travel_column(
+        df, "been_outside_uk_since_last_visit", "been_outside_uk_last_country", "been_outside_uk_last_date"
+    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
             "been_outside_uk_last_country",
             "been_outside_uk_last_date",
-            "been_outside_uk_since_april_2020",
+            "been_outside_uk_since_last_visit",
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk_since_april_2020",
+        record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
     return df
