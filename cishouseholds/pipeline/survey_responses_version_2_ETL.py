@@ -45,6 +45,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
+from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_from_last_change
@@ -347,6 +348,26 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         "times_outside_shopping_or_socialising_last_7_days": times_value_map,
         "times_shopping_last_7_days": times_value_map,
         "times_socialise_last_7_days": times_value_map,
+        "work_sectors": {
+            "Social Care": "Social care",
+            "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistics)": "Transport (incl. storage, logistic)",
+            "Retail Sector (incl. wholesale)": "Retail sector (incl. wholesale)",
+            "Hospitality (e.g. hotel or restaurant or cafe)": "Hospitality (e.g. hotel, restaurant)",
+            "Food Production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Food production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Personal Services (e.g. hairdressers or tattooists)": "Personal services (e.g. hairdressers)",
+            "Information technology and communication": "Information technology and communication",
+            "Financial services (incl. insurance)": "Financial services incl. insurance",
+            "Financial Services (incl. insurance)": "Financial services incl. insurance",
+            "Civil Service or Local Government": "Civil service or Local Government",
+            "Arts or Entertainment or Recreation": "Arts,Entertainment or Recreation",
+            "Art or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Other employment sector (specify)": "Other occupation sector",
+            "Other occupation sector (specify)": "Other occupation sector",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
@@ -577,7 +598,7 @@ def union_dependent_cleaning(df):
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
-            "Caribbean": "Black,Caribbean,African-African",
+            "Caribbean": "Black,Caribbean,Afro-Caribbean",
             "Any other Black or African or Caribbean background": "Any other Black background",
             "Any other Mixed/Multiple background": "Any other Mixed background",
             "Bangladeshi": "Asian or Asian British-Bangladeshi",
@@ -620,26 +641,6 @@ def union_dependent_cleaning(df):
             "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
             "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
             "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
-        "work_sectors": {
-            "Social Care": "Social care",
-            "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
-            "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
-            "Transport (incl. storage and logistics)": "Transport (incl. storage, logistic)",
-            "Retail Sector (incl. wholesale)": "Retail sector (incl. wholesale)",
-            "Hospitality (e.g. hotel or restaurant or cafe)": "Hospitality (e.g. hotel, restaurant)",
-            "Food Production and agriculture (incl. farming)": "Food production, agriculture, farming",
-            "Food production and agriculture (incl. farming)": "Food production, agriculture, farming",
-            "Personal Services (e.g. hairdressers or tattooists)": "Personal services (e.g. hairdressers)",
-            "Information technology and communication": "Information technology and communication",
-            "Financial services (incl. insurance)": "Financial services incl. insurance",
-            "Financial Services (incl. insurance)": "Financial services incl. insurance",
-            "Civil Service or Local Government": "Civil service or Local Government",
-            "Arts or Entertainment or Recreation": "Arts,Entertainment or Recreation",
-            "Art or entertainment or recreation": "Arts,Entertainment or Recreation",
-            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
-            "Other employment sector (specify)": "Other occupation sector",
-            "Other occupation sector (specify)": "Other occupation sector",
         },
         "ability_to_socially_distance_at_work_or_school": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
@@ -938,16 +939,20 @@ def fill_forwards_transformations(df):
     #            "Student",
     #        ],
     #    )
+    df = update_travel_column(
+        df, "been_outside_uk_since_last_visit", "been_outside_uk_last_country", "been_outside_uk_last_date"
+    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
             "been_outside_uk_last_country",
             "been_outside_uk_last_date",
-            "been_outside_uk_since_april_2020",
+            "been_outside_uk_since_last_visit",
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk_since_april_2020",
+        record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
     return df

@@ -1521,7 +1521,7 @@
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Other occupation sector (specify)
+  work_sectors: Other occupation sector
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
@@ -2440,7 +2440,7 @@
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: null
   work_person_facing_now: 'No'
-  work_sectors: Civil Service or Local Government
+  work_sectors: Civil service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
@@ -2748,7 +2748,7 @@
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Arts or Entertainment or Recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
@@ -3059,7 +3059,7 @@
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
   work_person_facing_now: 'No'
-  work_sectors: Art or entertainment or recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
   work_status_v0: Student
