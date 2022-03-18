@@ -98,7 +98,7 @@ category_maps = {
         "symptoms_since_last_visit_low_mood_or_not_enjoying_anything": _yes_no_categories,
         "other_pcr_test_since_last_visit": _yes_no_categories,
         "other_antibody_test_since_last_visit": _yes_no_categories,
-        "been_outside_uk_since_april_2020": _yes_no_categories,
+        "been_outside_uk_since_last_visit": _yes_no_categories,
         "have_long_covid_symptoms": _yes_no_categories,
         "long_covid_fever": _yes_no_categories,
         "long_covid_weakness_tiredness": _yes_no_categories,

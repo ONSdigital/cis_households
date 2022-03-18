@@ -14,6 +14,16 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
+    df = df.withColumn(
+        travelled_column,
+        F.when((F.col(country_column).isNotNull()) | (F.col(travel_date_column).isNotNull()), "Yes").otherwise(
+            F.col(travelled_column)
+        ),
+    )
+    return df
+
+
 def update_column_if_ref_in_list(
     df: DataFrame,
     column_name_to_update: str,
@@ -133,7 +143,10 @@ def update_face_covering_outside_of_home(
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
@@ -141,12 +154,17 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
@@ -154,14 +172,14 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column) == "My face is already covered")
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "My face is already covered",
         )
         .when(
             (
                 (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_enclosed_column).isNull())
+                | F.col(covered_enclosed_column).isNull()
             )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
