@@ -23,7 +23,7 @@ def get_config() -> dict:
     return config
 
 
-def get_secondary_config(location) -> Union[dict, None]:
+def get_secondary_config(location) -> Union[dict, None]:  # type: ignore
     if location is None:
         return None
     if location[:8] == "hdfs:///":
