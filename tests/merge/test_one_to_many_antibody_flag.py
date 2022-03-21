@@ -51,6 +51,9 @@ def test_one_to_many_antibody_flag(spark_session):
         siemens_column="siemens",
         tdi_column="tdi",
         visit_date="visit_date",
+        # out_of_date_range_column="out_of_date_range_antibody",
+        # count_barcode_voyager_column_name="count_barcode_voyager",
+        # count_barcode_labs_column_name="count_barcode_antibody",
     )
 
     output_df = output_df.drop("failed_flag_1tom_antibody")
