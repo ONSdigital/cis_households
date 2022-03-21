@@ -329,17 +329,19 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
         return df
     spark = get_or_create_spark_session()
     csv = spark.read.csv(csv_filepath, header=True)
+
+    if dataset_name is not None:
+        csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
+
     csv = (
-        csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
-        .groupBy("id")
+        csv.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
-
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
-    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
+    r = re.compile(r"(.*){1,}_old_value$")
+    cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,
