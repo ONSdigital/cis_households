@@ -56,6 +56,9 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
+# from functools import reduce
+# from itertools import chain
+
 pipeline_stages = {}
 
 
@@ -67,6 +70,13 @@ def register_pipeline_stage(key):
         return func
 
     return _add_pipeline_stage
+
+
+@register_pipeline_stage("csv_to_table")
+def csv_to_table(csv_filepath: str, table_name: str):
+    spark = get_or_create_spark_session()
+    df = spark.read.csv(csv_filepath, header=True)
+    update_table(df, table_name)
 
 
 @register_pipeline_stage("delete_tables")
@@ -248,6 +258,9 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
+        output_table_name=output_table_name,
+        source_file_column=source_file_column,
+        write_mode=write_mode,
     ):
         file_path_list = [resource_path]
 
@@ -269,7 +282,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df = extract_validate_transform_input_data(
+        df, filtered_df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -283,7 +296,7 @@ def generate_input_processing_function(
             cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, write_mode)
         return df
 
     _inner_function.__name__ = stage_name
@@ -429,13 +442,13 @@ def lookup_based_editing(
         F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
-    if "rural_urban_classification_11" in df.columns:
+    if "lower_super_output_area_code_11" in df.columns:
         df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
+        df = df.join(
+            F.broadcast(rural_urban_lookup_df),
+            how="left",
+            on="lower_super_output_area_code_11",
+        )
     update_table(df, edited_table, mode_overide="overwrite")
 
 
@@ -617,15 +630,14 @@ def impute_demographic_columns(
     if check_table_exists(imputed_values_table):
         imputed_value_lookup_df = extract_from_table(imputed_values_table)
     df = extract_from_table(survey_responses_table)
-
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
     # imputed_values_df = key_columns_imputed_df.filter(
-    #    reduce(
-    #        lambda col_1, col_2: col_1 | col_2,
-    #        (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-    #    )
+    #     reduce(
+    #         lambda col_1, col_2: col_1 | col_2,
+    #         (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+    #     )
     # )
 
     # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
@@ -734,7 +746,7 @@ def geography_and_imputation_dependent_processing(
     df_with_imputed_values = assign_ethnicity_white(
         df_with_imputed_values,
         column_name_to_assign="ethnicity_white_corrected",
-        ethnicity_group_column_name="ethnicity_group",
+        ethnicity_group_column_name="ethnicity_group_corrected",
     )
 
     df_with_imputed_values = assign_multigeneration(
@@ -742,11 +754,10 @@ def geography_and_imputation_dependent_processing(
         column_name_to_assign="multigen",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
-        visit_date_column="visit_date_string",
+        visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-
     update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
 
 
@@ -820,20 +831,52 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
-                filtered_survey_responses_count,
                 invalid_survey_responses_count,
-                *list(processed_file_log.select("file_row_count").distinct().rdd.flatMap(lambda x: x).collect()),
+                filtered_survey_responses_count,
             ],
         }
     )
 
     output = BytesIO()
+    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
+        for type in file_types:
+            processed_file_names = [
+                name.split("/")[-1]
+                for name in list(
+                    processed_file_log.filter(F.col("file_type") == type)
+                    .select("processed_filename")
+                    .distinct()
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                )
+            ]
+            processed_file_counts = list(
+                processed_file_log.filter(F.col("file_type") == type)
+                .select("file_row_count", "processed_filename")
+                .distinct()
+                .drop("processed_filename")
+                .rdd.flatMap(lambda x: x)
+                .collect()
+            )
+            extracted_counts = list(
+                processed_file_log.filter(F.col("file_type") == type)
+                .select("filtered_row_count", "processed_filename")
+                .distinct()
+                .drop("processed_filename")
+                .rdd.flatMap(lambda x: x)
+                .collect()
+            )
+            counts_df = pd.DataFrame(
+                {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
+            )
+            name = f"{type} row counts"
+            counts_df.to_excel(writer, sheet_name=name, index=False)
+
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
@@ -880,7 +923,7 @@ def record_level_interface(
     input_df = extract_from_table(survey_responses_table)
     edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_csv_lookup(
-        df=input_df, dataset_name="NONE", csv_filepath=csv_editing_file, id_column=unique_id_column
+        df=edited_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
     )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 

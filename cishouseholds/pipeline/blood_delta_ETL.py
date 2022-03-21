@@ -2,7 +2,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
-from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_substring
 from cishouseholds.derive import assign_test_target
 from cishouseholds.derive import assign_unique_id_column
@@ -13,7 +12,6 @@ def transform_blood_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for blood deltas.
     """
-    df = assign_filename_column(df, "blood_test_source_file")
     df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
     df = assign_substring(
         df,

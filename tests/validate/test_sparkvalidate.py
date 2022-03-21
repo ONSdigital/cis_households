@@ -71,6 +71,7 @@ def test_sparkvalidate(spark_session):
         "column_3": {
             "between": {"lower_bound": {"inclusive": True, "value": 8}, "upper_bound": {"inclusive": True, "value": 9}}
         },
+        "non_existent_col": {"contains": "a"},
     }
     validate_df.validate_column(operations=validation_checks_dict)
     # user defined function external definition
