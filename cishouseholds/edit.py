@@ -14,6 +14,16 @@ from pyspark.sql import DataFrame
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
+    df = df.withColumn(
+        travelled_column,
+        F.when((F.col(country_column).isNotNull()) | (F.col(travel_date_column).isNotNull()), "Yes").otherwise(
+            F.col(travelled_column)
+        ),
+    )
+    return df
+
+
 def update_column_if_ref_in_list(
     df: DataFrame,
     column_name_to_update: str,
@@ -123,13 +133,20 @@ def update_face_covering_outside_of_home(
         column_name_to_update,
         F.when(
             (
-                (F.col(covered_enclosed_column) == "Never")
+                (
+                    F.col(covered_enclosed_column).isin(
+                        "Never", "Not going to other enclosed public spaces or using public transport"
+                    )
+                )
                 & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
             ),
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
@@ -137,12 +154,17 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
@@ -150,14 +172,14 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column) == "My face is already covered")
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "My face is already covered",
         )
         .when(
             (
                 (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_enclosed_column).isNull())
+                | F.col(covered_enclosed_column).isNull()
             )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
@@ -724,16 +746,9 @@ def edit_to_sum_or_max_value(
 
     column_name_to_assign must already exist on the df.
     """
-    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
-
-    all_columns = [column_name_to_assign, *columns_to_sum]
-    for col in all_columns:
-        df = update_column_values_from_map(df, col, value_map)
-        df = df.withColumn(col, F.col(col).cast("integer"))
-
     df = df.withColumn(
         column_name_to_assign,
-        F.when(reduce(and_, [F.col(col).isNull() for col in all_columns]), None)
+        F.when(reduce(and_, [F.col(col).isNull() for col in [column_name_to_assign, *columns_to_sum]]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
             F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
