@@ -42,7 +42,7 @@ def extract_validate_transform_input_data(
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
 
     filtered_df = None
-    if include_hadoop_read_write:
+    if include_hadoop_read_write and filter_config is not None:
         if dataset_name in filter_config:
             filter_ids = filter_config[dataset_name]
             filtered_df = df.filter(F.col(id_column).isin(filter_ids))
@@ -51,7 +51,10 @@ def extract_validate_transform_input_data(
 
             df = df.filter(~F.col(id_column).isin(filter_ids))
 
-        df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
+        if csv_location is not None:
+            df = update_from_csv_lookup(
+                df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column
+            )
 
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
