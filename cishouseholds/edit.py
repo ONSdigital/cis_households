@@ -11,7 +11,8 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.extract import extract_lookup_csv
+from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 
 
 def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
@@ -327,8 +328,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
     """
     if csv_filepath == "" or csv_filepath is None:
         return df
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
+    csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
 
     if dataset_name is not None:
         csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
