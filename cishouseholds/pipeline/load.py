@@ -42,15 +42,13 @@ def extract_validate_transform_input_data(
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
 
     filtered_df = None
-    if include_hadoop_read_write:
-        if dataset_name in filter_config:
-            filter_ids = filter_config[dataset_name]
-            filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-            update_table(df, f"raw_{dataset_name}")
-            update_table(filtered_df, f"{dataset_name}_rows_extracted")
+    if include_hadoop_read_write and dataset_name in filter_config:
+        filter_ids = filter_config[dataset_name]
+        filtered_df = df.filter(F.col(id_column).isin(filter_ids))
+        update_table(df, f"raw_{dataset_name}")
+        update_table(filtered_df, f"{dataset_name}_rows_extracted")
 
-            df = df.filter(~F.col(id_column).isin(filter_ids))
-
+        df = df.filter(~F.col(id_column).isin(filter_ids))
         df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
 
     df = convert_columns_to_timestamps(df, datetime_map)
@@ -205,10 +203,10 @@ def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_co
     filtered_lengths = {file: 0 for file in newly_processed_files}
     if filtered_df is not None:
         filtered_files = filtered_df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
-        filtered_lengths = (
+        filtered_lengths_list = (
             filtered_df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
         )
-        for file, count in zip(filtered_files, filtered_lengths):
+        for file, count in zip(filtered_files, filtered_lengths_list):
             filtered_lengths[file] = count
 
     schema = """
