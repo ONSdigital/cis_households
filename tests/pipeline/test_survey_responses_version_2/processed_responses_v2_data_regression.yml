@@ -262,9 +262,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 1.0
-  times_socialise_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 2
+  times_shopping_last_7_days: '1'
+  times_socialise_last_7_days: '7'
   title: Mr.
   transport_to_work_or_school: Bicycle
   unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-07 10:41:50
@@ -566,9 +566,9 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: None
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 5.0
-  times_socialise_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 2
+  times_shopping_last_7_days: '5'
+  times_socialise_last_7_days: Participant Would Not/Could Not Answer
   title: Mr.
   transport_to_work_or_school: null
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
@@ -877,8 +877,8 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 1
+  times_shopping_last_7_days: Participant Would Not/Could Not Answer
   times_socialise_last_7_days: null
   title: Ms.
   transport_to_work_or_school: Other method
@@ -1185,9 +1185,9 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_outside_shopping_or_socialising_last_7_days: 4.0
-  times_shopping_last_7_days: 4.0
-  times_socialise_last_7_days: 0.0
+  times_outside_shopping_or_socialising_last_7_days: 4
+  times_shopping_last_7_days: '4'
+  times_socialise_last_7_days: '0'
   title: Mrs.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
@@ -1489,9 +1489,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 3.0
-  times_socialise_last_7_days: 0.0
+  times_outside_shopping_or_socialising_last_7_days: 1
+  times_shopping_last_7_days: '3'
+  times_socialise_last_7_days: '0'
   title: Dr.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
@@ -1521,7 +1521,7 @@
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Other occupation sector (specify)
+  work_sectors: Other occupation sector
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
@@ -1794,9 +1794,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 4.0
-  times_socialise_last_7_days: 0.0
+  times_outside_shopping_or_socialising_last_7_days: 0
+  times_shopping_last_7_days: '4'
+  times_socialise_last_7_days: '0'
   title: null
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
@@ -2102,9 +2102,9 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 5.0
-  times_socialise_last_7_days: 4.0
+  times_outside_shopping_or_socialising_last_7_days: 0
+  times_shopping_last_7_days: '5'
+  times_socialise_last_7_days: '4'
   title: Prof.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
@@ -2410,9 +2410,9 @@
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: null
-  times_socialise_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 4
+  times_shopping_last_7_days: Participant Would Not/Could Not Answer
+  times_socialise_last_7_days: '7'
   title: null
   transport_to_work_or_school: Car or Van
   unique_participant_response_id: DVH-0739888271-DHR-389263959191-2022-01-04 06:40:18
@@ -2440,7 +2440,7 @@
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: null
   work_person_facing_now: 'No'
-  work_sectors: Civil Service or Local Government
+  work_sectors: Civil service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
@@ -2714,9 +2714,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 0.0
-  times_socialise_last_7_days: 4.0
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '0'
+  times_socialise_last_7_days: '4'
   title: null
   transport_to_work_or_school: Bus
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
@@ -2748,7 +2748,7 @@
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Arts or Entertainment or Recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
@@ -3023,9 +3023,9 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: 0.0
-  times_socialise_last_7_days: 0.0
+  times_outside_shopping_or_socialising_last_7_days: 0
+  times_shopping_last_7_days: '0'
+  times_socialise_last_7_days: '0'
   title: Dr.
   transport_to_work_or_school: Other method
   unique_participant_response_id: DVH-8720322983-DHR-329500167403-2022-01-06 18:14:23
@@ -3059,7 +3059,7 @@
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
   work_person_facing_now: 'No'
-  work_sectors: Art or entertainment or recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
   work_status_v0: Student

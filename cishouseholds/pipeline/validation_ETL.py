@@ -49,8 +49,8 @@ def validation_calls(SparkVal):
         "valid_file_date": {
             "visit_date_column": "visit_datetime",
             "filename_column": "survey_response_source_file",
-            "swab_barcode_column": "swab_sample_barcode_column",
-            "blood_barcode_column": "blood_sample_barcode_column",
+            "swab_barcode_column": "swab_sample_barcode",
+            "blood_barcode_column": "blood_sample_barcode",
         },
         "check_all_null_given_condition": [
             {

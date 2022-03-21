@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import and_
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -12,6 +13,16 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
+
+
+def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
+    df = df.withColumn(
+        travelled_column,
+        F.when((F.col(country_column).isNotNull()) | (F.col(travel_date_column).isNotNull()), "Yes").otherwise(
+            F.col(travelled_column)
+        ),
+    )
+    return df
 
 
 def update_column_if_ref_in_list(
@@ -123,13 +134,20 @@ def update_face_covering_outside_of_home(
         column_name_to_update,
         F.when(
             (
-                (F.col(covered_enclosed_column) == "Never")
+                (
+                    F.col(covered_enclosed_column).isin(
+                        "Never", "Not going to other enclosed public spaces or using public transport"
+                    )
+                )
                 & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
             ),
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
@@ -137,12 +155,17 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
@@ -150,14 +173,14 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column) == "My face is already covered")
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "My face is already covered",
         )
         .when(
             (
                 (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_enclosed_column).isNull())
+                | F.col(covered_enclosed_column).isNull()
             )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
@@ -291,7 +314,7 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, id_column: str):
+def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
     Allows a match on Null old values.
@@ -306,17 +329,19 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: str, 
     if csv_filepath == "" or csv_filepath is None:
         return df
     csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
+
+    if dataset_name is not None:
+        csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
+
     csv = (
-        csv.filter(F.col("dataset_name") == dataset_name)
-        .groupBy("id")
+        csv.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
-
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
-    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
+    r = re.compile(r"(.*){1,}_old_value$")
+    cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,
@@ -711,34 +736,26 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
     return df
 
 
-def count_activities_last_XX_days(
+def edit_to_sum_or_max_value(
     df: DataFrame,
-    activity_combo_last_XX_days: str,
-    list_activities_last_XX_days: List[str],
+    column_name_to_assign: str,
+    columns_to_sum: List[str],
     max_value: int,
 ):
     """
-    Searches for null values in the activities_combo_last_XX_days and when that happens
-    gets
+    Imputes column_name_to_assign based a sum of the columns_to_sum.
+    If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
-    Parameters
-    ----------
-    df
-    activity_combo_last_XX_days
-    list_activities_last_XX_days
-    max_value
+    column_name_to_assign must already exist on the df.
     """
-    value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
-    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
-        df = update_column_values_from_map(df, col, value_map)
-        df = df.withColumn(col, F.col(col).cast("integer"))
     df = df.withColumn(
-        activity_combo_last_XX_days,
-        F.when(
-            F.col(activity_combo_last_XX_days).isNull(),
-            F.least(F.lit(max_value), reduce(add, [F.col(x) for x in list_activities_last_XX_days])),
-        ).otherwise(activity_combo_last_XX_days),
+        column_name_to_assign,
+        F.when(reduce(and_, [F.col(col).isNull() for col in [column_name_to_assign, *columns_to_sum]]), None)
+        .when(
+            F.col(column_name_to_assign).isNull(),
+            F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
     )
-    for col in [activity_combo_last_XX_days, *list_activities_last_XX_days]:
-        df = df.withColumn(col, F.col(col).cast("integer"))
     return df
