@@ -111,7 +111,7 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     """
     from cishouseholds.pipeline.load import extract_from_table
 
-    table_item_column = extract_from_table(table_name).select(item_column).distinct()
+    table_item_column, _ = extract_from_table(table_name).select(item_column).distinct()
     table_items = column_to_list(table_item_column, item_column)
 
     item_list = [i for i in item_list if i not in table_items]

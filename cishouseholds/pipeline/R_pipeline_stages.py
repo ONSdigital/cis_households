@@ -41,8 +41,8 @@ def weight_calibration(
     spark_session = get_or_create_spark_session()
 
     calibration_config = get_secondary_config(calibration_config_path)
-    population_totals_df = extract_from_table(individual_level_populations_for_calibration_table)
-    full_response_level_df = extract_from_table(responses_pre_calibration_table)
+    population_totals_df, _ = extract_from_table(individual_level_populations_for_calibration_table)
+    full_response_level_df, _ = extract_from_table(responses_pre_calibration_table)
 
     if calibration_config is not None:
         for dataset_options in calibration_config:

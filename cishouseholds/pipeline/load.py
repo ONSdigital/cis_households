@@ -89,7 +89,7 @@ def check_table_exists(table_name: str):
 
 def extract_from_table(table_name: str):
     spark_session = get_or_create_spark_session()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}"), spark_session
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -240,7 +240,7 @@ def extract_df_list(files):
         if file["file"] == "" or file["file"] is None:
             dfs[key] = None
         elif file["type"] == "table":
-            dfs[key] = extract_from_table(file["file"])
+            dfs[key], _ = extract_from_table(file["file"])
         else:
             dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
 

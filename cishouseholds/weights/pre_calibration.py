@@ -296,7 +296,7 @@ def survey_extraction_household_data_response_factor(
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
-    # df = extract_from_table(table_name).select(*required_extracts_column_list) TODO temporarily disabled
+    # df, _ = extract_from_table(table_name).select(*required_extracts_column_list) TODO temporarily disabled
     # will be added once the mock pytest is enabled
 
     # STEP 2 -  check there are no missing values

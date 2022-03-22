@@ -282,7 +282,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df, filtered_df = extract_validate_transform_input_data(
+        df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -296,7 +296,7 @@ def generate_input_processing_function(
             cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, write_mode)
+            update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
         return df
 
     _inner_function.__name__ = stage_name
@@ -335,17 +335,24 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     transformed_table
         output table name for table with applied transformations dependent on complete survey dataset
     """
-    unioned_survey_responses = extract_from_table(unioned_survey_table)
+    unioned_survey_responses, _ = extract_from_table(unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
     unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
     update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("fill_forwards_stage")
-def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
-    df = extract_from_table(unioned_survey_table)
+def fill_forwards_stage(
+    unioned_survey_table: str,
+    filled_forwards_table: str,
+    delete_spark_session: bool,
+):
+    df, spark_session = extract_from_table(unioned_survey_table)
     df = fill_forwards_transformations(df)
     update_table(df, filled_forwards_table, mode_overide="overwrite")
+
+    if delete_spark_session:
+        spark_session.stop()
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -355,6 +362,7 @@ def validate_survey_responses(
     validation_failure_flag_column: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    delete_spark_session: bool,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -373,7 +381,7 @@ def validate_survey_responses(
     invalid_survey_responses_table
         table containing results that failed the error checking process
     """
-    unioned_survey_responses = extract_from_table(survey_responses_table)
+    unioned_survey_responses, spark_session = extract_from_table(survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
         validation_check_failure_column_name=validation_failure_flag_column,
@@ -381,6 +389,9 @@ def validate_survey_responses(
     )
     update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+
+    if delete_spark_session:
+        spark_session.stop()
 
 
 @register_pipeline_stage("lookup_based_editing")
@@ -403,7 +414,7 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    df = extract_from_table(input_table)
+    df, _ = extract_from_table(input_table)
     spark = get_or_create_spark_session()
 
     cohort_lookup = spark.read.csv(
@@ -470,7 +481,7 @@ def outer_join_antibody_results(
         name of HIVE table to write antibody/blood test results that failed to merge.
         Specifically, those with more than two records in the unjoined data.
     """
-    blood_df = extract_from_table(antibody_test_result_table)
+    blood_df, _ = extract_from_table(antibody_test_result_table)
     blood_df = blood_df.dropDuplicates(
         subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
     )
@@ -521,10 +532,10 @@ def merge_blood_ETL(
             3. antibody/blood result records that failed to meet the criteria for joining
     """
 
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df, _ = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    antibody_df = extract_from_table(antibody_table).where(
+    antibody_df, _ = extract_from_table(antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
@@ -562,11 +573,11 @@ def merge_swab_ETL(
             2. residual PCR/swab result records, where there was no barcode match to join on
             3. PCR/swab result records that failed to meet the criteria for joining
     """
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df, _ = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
 
-    swab_df = extract_from_table(swab_table).where(
+    swab_df, _ = extract_from_table(swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
     swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
@@ -581,7 +592,7 @@ def merge_swab_ETL(
 
 
 @register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
+def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table, delete_spark_session: bool):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
 
@@ -594,14 +605,17 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     vaccination_data_table
         output table name for the joined nims and participant table
     """
-    participant_df = extract_from_table(participant_records_table)
-    nims_df = extract_from_table(nims_table)
+    participant_df, spark_session = extract_from_table(participant_records_table)
+    nims_df, _ = extract_from_table(nims_table)
     nims_df = nims_transformations(nims_df)
 
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
     update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
+
+    if delete_spark_session:
+        spark_session.stop()
 
 
 @register_pipeline_stage("impute_demographic_columns")
@@ -628,8 +642,8 @@ def impute_demographic_columns(
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table)
-    df = extract_from_table(survey_responses_table)
+        imputed_value_lookup_df, _ = extract_from_table(imputed_values_table)
+    df, _ = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
@@ -695,8 +709,8 @@ def join_geographic_data(
     id_column
         column containing id to join the 2 input tables
     """
-    design_weights_df = extract_from_table(geographic_table)
-    survey_responses_df = extract_from_table(survey_responses_table)
+    design_weights_df, _ = extract_from_table(geographic_table)
+    survey_responses_df, _ = extract_from_table(survey_responses_table)
     geographic_survey_df = survey_responses_df.drop("postcode").join(design_weights_df, on=id_column, how="left")
     update_table(geographic_survey_df, geographic_responses_table)
 
@@ -716,7 +730,7 @@ def geography_and_imputation_dependent_processing(
     output_imputed_responses_table
     key_columns
     """
-    df_with_imputed_values = extract_from_table(imputed_responses_table)
+    df_with_imputed_values, _ = extract_from_table(imputed_responses_table)
 
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
@@ -792,14 +806,14 @@ def report(
     output_directory
         output folder location to store the report
     """
-    valid_df = extract_from_table(valid_survey_responses_table)
-    invalid_df = extract_from_table(invalid_survey_responses_table)
-    filtered_df = extract_from_table(filtered_survey_responses_table)
-    processed_file_log = extract_from_table("processed_filenames")
+    valid_df, _ = extract_from_table(valid_survey_responses_table)
+    invalid_df, _ = extract_from_table(invalid_survey_responses_table)
+    filtered_df, _ = extract_from_table(filtered_survey_responses_table)
+    processed_file_log, _ = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
-        invalid_files_log = extract_from_table("error_file_log")
+        invalid_files_log, _ = extract_from_table("error_file_log")
         invalid_files_count = invalid_files_log.count()
 
     valid_survey_responses_count = valid_df.count()
@@ -831,52 +845,26 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
+                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
-                filtered_survey_responses_count,
+                filtered_survey_responses_count
+                * list(
+                    processed_file_log.select("file_row_count", "processed_filename")
+                    .distinct()
+                    .drop("processed_filename")
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                ),
             ],
         }
     )
 
     output = BytesIO()
-    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
-        for type in file_types:
-            processed_file_names = [
-                name.split("/")[-1]
-                for name in list(
-                    processed_file_log.filter(F.col("file_type") == type)
-                    .select("processed_filename")
-                    .distinct()
-                    .rdd.flatMap(lambda x: x)
-                    .collect()
-                )
-            ]
-            processed_file_counts = list(
-                processed_file_log.filter(F.col("file_type") == type)
-                .select("file_row_count", "processed_filename")
-                .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
-            )
-            extracted_counts = list(
-                processed_file_log.filter(F.col("file_type") == type)
-                .select("filtered_row_count", "processed_filename")
-                .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
-            )
-            counts_df = pd.DataFrame(
-                {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
-            )
-            name = f"{type} row counts"
-            counts_df.to_excel(writer, sheet_name=name, index=False)
-
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
@@ -895,6 +883,7 @@ def record_level_interface(
     unique_id_list: List,
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
+    delete_spark_session: bool,
 ):
     """
     This stage does two type of edits in a given table from HIVE given an unique_id column.
@@ -920,15 +909,18 @@ def record_level_interface(
     filtered_survey_responses_table
         Hive table when they have been filtered out from survey responses
     """
-    input_df = extract_from_table(survey_responses_table)
+    input_df, spark_session = extract_from_table(survey_responses_table)
     edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_csv_lookup(
-        df=edited_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
+        df=input_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
     )
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
     filtered_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_df, filtered_survey_responses_table, "overwrite")
+
+    if delete_spark_session:
+        spark_session.stop()
 
 
 @register_pipeline_stage("tables_to_csv")
@@ -967,7 +959,9 @@ def tables_to_csv(
     config_file = get_secondary_config(tables_to_csv_config_file)
 
     for table in config_file["create_tables"]:
-        df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
+        df, _ = extract_from_table(table["table_name"]).select(
+            *[element for element in table["column_name_map"].keys()]
+        )
         df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
@@ -1003,7 +997,7 @@ def sample_file_ETL(
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
-    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
+    dfs["household_level_populations"], _ = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(dfs)
     update_table(design_weights, design_weight_table, mode_overide="overwrite")
 
@@ -1062,10 +1056,10 @@ def pre_calibration(
         path to YAML pre-calibration config file
     """
     pre_calibration_config = get_secondary_config(pre_calibration_config_path)
-    household_level_with_design_weights = extract_from_table(design_weight_table)
-    population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
+    household_level_with_design_weights, _ = extract_from_table(design_weight_table)
+    population_by_country, _ = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
 
-    survey_response = extract_from_table(survey_response_table)
+    survey_response, _ = extract_from_table(survey_response_table)
 
     survey_response = survey_response.select(
         "ons_household_id",
