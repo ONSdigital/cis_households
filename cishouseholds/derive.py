@@ -425,7 +425,7 @@ def assign_work_social_column(
             "No",
         )
         .when(
-            (F.col(work_sector_column) != "Social care")
+            (~F.col(work_sector_column).isin(["Social care", "Social Care"]))
             & (F.col(care_home_column).isNull())
             & (F.col(direct_contact_column).isNull()),
             None,
