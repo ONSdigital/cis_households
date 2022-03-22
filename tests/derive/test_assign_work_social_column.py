@@ -10,6 +10,10 @@ def test_assign_work_social_colum(spark_session):
             ("Yes, care/residential home, resident-facing", "Furloughed (temporarily not working)", "Yes", "Yes"),
             ("Yes, other social care, non-resident-facing", "Furloughed (temporarily not working)", None, None),
             ("Yes, other social care, resident-facing", "Furloughed (temporarily not working)", "No", "Yes"),
+            (None, "Social care", "Yes", None),  # 4 "Yes, other social care, non-resident-facing"
+            (None, "Social care", None, "No"),  # 2 "Yes, other social care, resident-facing"
+            (None, "Social care", "Yes", "No"),  # 1 "Yes, care/residential home, resident-facing"
+            (None, "Social care", "Yes", None),  # 3 "Yes, care/residential home, non-resident-facing"
         ],
         schema="work_socialcare string , work_sector string, work_care_nursing_home string,	work_direct_contact string",
     )
@@ -20,4 +24,4 @@ def test_assign_work_social_colum(spark_session):
         "work_care_nursing_home",
         "work_direct_contact",
     )
-    assert_df_equality(output_df, expected_df, ignore_column_order=True)
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_nullable=True)
