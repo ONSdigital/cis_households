@@ -906,23 +906,35 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
+    # for v1 and v2, same variable is named differently, change to same name.
+    df = df.withColumnRenamed("work_direct_contact_persons", "work_direct_contact_patients_clients")
+
+    fill_forwards_and_then_backwards_list = [
+        "work_main_job_title",  # only in v0
+        "work_health_care_v0",
+        "work_social_care",
+        "work_main_job_role",  # same for v1 and v2
+        "work_sectors",
+        "work_sectors_other",
+        "work_nursing_or_residential_care_home",
+        "work_health_care_v1_v2",  # TODO: in python pipeline its called _raw, v1 and v2 same
+        "work_direct_contact_patients_clients",
+    ]
+
     df = fill_forward_from_last_change(
         df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
-            "work_health_care_v1_v2",
-            "work_health_care_v0",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
-        ],
+        fill_forward_columns=fill_forwards_and_then_backwards_list,
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
         record_changed_column="work_main_job_changed",
         record_changed_value="Yes",
+    )
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=fill_forwards_and_then_backwards_list,
     )
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
