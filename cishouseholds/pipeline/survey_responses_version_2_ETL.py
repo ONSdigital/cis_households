@@ -959,7 +959,7 @@ def fill_forwards_transformations(df):
         df=df,
         column_identity="participant_id",
         ordering_column="visit_date",
-        dataset_column="dataset",
+        dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
     return df
