@@ -1,17 +1,9 @@
-import csv
 import re
-from io import StringIO
-from operator import add
-from typing import Union
 
-from pyspark import RDD
 from pyspark.sql import DataFrame
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
 
 spark_session = get_or_create_spark_session()
 
@@ -147,101 +139,6 @@ aps_value_map = {
 }
 # fmt: on
 
-# basic local csv reading----------------------
-
-
-class InvalidFileError(Exception):
-    pass
-
-
-def validate_csv_fields(text_file: RDD, delimiter: str = ","):
-    """
-    Function to validate the number of fields within records of a csv file.
-    Parameters
-    ----------
-    text_file
-        A text file (csv) that has been ready by spark context
-    delimiter
-        Delimiter used in csv file, default as ','
-    """
-
-    def count_fields_in_row(delimiter, row):
-        f = StringIO(row)
-        reader = csv.reader(f, delimiter=delimiter)
-        n_fields = len(next(reader))
-        return n_fields
-
-    header = text_file.first()
-    number_of_columns = count_fields_in_row(delimiter, header)
-    error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
-    return True if error_count == 0 else False
-
-
-def validate_csv_header(text_file: RDD, expected_header: str):
-    """
-    Function to validate header in csv file matches expected header.
-    Parameters
-    ----------
-    text_file
-        A text file (csv) that has been ready by spark context
-    expected_header
-        Exact header expected in csv file
-    """
-    header = text_file.first()
-    return expected_header == header
-
-
-def read_csv_to_pyspark_df(
-    spark_session: SparkSession,
-    csv_file_path: Union[str, list],
-    expected_raw_header_row: str,
-    schema: StructType,
-    sep: str = ",",
-    **kwargs,
-) -> DataFrame:
-    """
-    Validate and read a csv file into a PySpark DataFrame.
-    Parameters
-    ----------
-    csv_file_path
-        file to read to dataframe
-    expected_raw_header_row
-        expected first line of file
-    schema
-        schema to use for returned dataframe, including desired column names
-    Takes keyword arguments from ``pyspark.sql.DataFrameReader.csv``,
-    for example ``timestampFormat="yyyy-MM-dd HH:mm:ss 'UTC'"``.
-    """
-    spark_session = get_or_create_spark_session()
-    if not isinstance(csv_file_path, list):
-        csv_file_path = [csv_file_path]
-
-    for csv_file in csv_file_path:
-        text_file = spark_session.sparkContext.textFile(csv_file)
-        csv_header = validate_csv_header(text_file, expected_raw_header_row)
-        csv_fields = validate_csv_fields(text_file, delimiter=sep)
-
-        if not csv_header:
-            raise InvalidFileError(
-                f"Header of {csv_file} ({text_file.first()}) "
-                f"does not match expected header: {expected_raw_header_row}"
-            )
-
-        if not csv_fields:
-            raise InvalidFileError(
-                f"Number of fields in {csv_file} does not match expected number of columns from header"
-            )
-
-    return spark_session.read.csv(
-        csv_file_path,
-        header=True,
-        schema=schema,
-        ignoreLeadingWhiteSpace=True,
-        ignoreTrailingWhiteSpace=True,
-        sep=sep,
-        **kwargs,
-    )
-
 
 def prepare_auxillary_data(auxillary_dfs: dict):
     auxillary_dfs = rename_and_remove_columns(auxillary_dfs)
@@ -265,6 +162,7 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     iterate over keys in name map dictionary and use name map if name of df is in key.
     break out of name checking loop once a compatible name map has been found.
     """
+    validate_columns(auxillary_dfs)
     for name in auxillary_dfs.keys():
         if auxillary_dfs[name] is not None:
             # auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
@@ -282,6 +180,13 @@ def rename_and_remove_columns(auxillary_dfs: dict):
                         auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
                     break
     return auxillary_dfs
+
+
+def validate_columns(dfs: DataFrame):
+    for name, df in dfs:
+        cols = list(dict.fromkeys(lookup_variable_name_maps[name].values()))
+        if not all(item in df.columns for item in cols):
+            raise ImportError("input dataframe is missing columns")
 
 
 def recode_column_values(df: DataFrame, lookup: dict):

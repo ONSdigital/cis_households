@@ -11,7 +11,8 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.extract import extract_lookup_csv
+from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 
 
 def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
@@ -327,19 +328,20 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
     """
     if csv_filepath == "" or csv_filepath is None:
         return df
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
+    csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
+
+    if dataset_name is not None:
+        csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
+
     csv = (
-        csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
-        .groupBy("id")
+        csv.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
-
     df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
-    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
+    r = re.compile(r"(.*){1,}_old_value$")
+    cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
     for col in cols:
         df = df.withColumn(
             col,

@@ -7,13 +7,23 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import DataFrame
 
-from cishouseholds.pipeline.load import check_table_exists
-from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 class InvalidFileError(Exception):
     pass
+
+
+def extract_lookup_csv(path: str, validation_schema: dict):
+    """
+    extract and validate a csv lookup file from path with validation_schema
+    """
+    spark = get_or_create_spark_session()
+    csv = spark.read.csv(path, header=True)
+    if not all(item in csv.columns for item in validation_schema.keys()):
+        raise ImportError("input dataframe is missing columns")
+    return csv
 
 
 def list_contents(
@@ -99,6 +109,8 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     item_column
         name of column in table containing items to remove from list
     """
+    from cishouseholds.pipeline.load import extract_from_table
+
     table_item_column = extract_from_table(table_name).select(item_column).distinct()
     table_items = column_to_list(table_item_column, item_column)
 
@@ -118,6 +130,8 @@ def get_files_to_be_processed(
     Get list of files matching the specified pattern and optionally filter
     to only those that have not been processed or were previously invalid.
     """
+    from cishouseholds.pipeline.load import check_table_exists
+
     file_paths = get_files_by_date(resource_path, start_date, end_date)
 
     if check_table_exists("error_file_log") and not include_invalid:
