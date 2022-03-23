@@ -958,8 +958,8 @@ def fill_forwards_transformations(df):
     df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
-        ordering_column="visit_date",
-        dataset_column="dataset",
+        ordering_column="visit_datetime",
+        dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
     return df
