@@ -107,13 +107,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     )
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_date",
-        dataset_column="dataset",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     return df
 
 
@@ -932,7 +925,7 @@ def fill_forwards_transformations(df):
         record_changed_value="Yes",
     )
 
-    ## Not needed until a future release, will leave commented out in code until required
+    ## TODO: Not needed until a future release, will leave commented out in code until required
     #
     #    df = update_column_if_ref_in_list(
     #        df=df,
@@ -961,5 +954,12 @@ def fill_forwards_transformations(df):
         visit_date_column="visit_datetime",
         record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
+    )
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date",
+        dataset_column="dataset",
+        column_list=["sex", "date_of_birth", "ethnicity"],
     )
     return df
