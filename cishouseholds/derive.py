@@ -112,29 +112,21 @@ def assign_people_in_household_count(
     df: DataFrame,
     column_name_to_assign: str,
     infant_column_pattern: str,
-    infant_column_pattern_with_exceptions: str,
     participant_column_pattern: str,
     household_participant_count_column: str,
     non_consented_count_column: str,
 ):
     """
     Update household count column by correcting value using null participants
+    Updated logic to include values of 0
     """
     infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
-    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
     participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
 
     infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
-    infant_exceptions_array = F.array(
-        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
-    )
-    participant_array = F.array(
-        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
-    )
+    participant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in participant_columns])
 
-    infant_num = F.when(F.size(F.array_remove(infant_exceptions_array, 0)) == 0, 0).otherwise(
-        F.size(F.array_remove(infant_array, 0))
-    )
+    infant_num = F.size(F.array_remove(infant_array, 0))
 
     participant_num = F.size(F.array_remove(participant_array, 0))
 
@@ -401,7 +393,11 @@ def assign_proportion_column(
 
 
 def assign_work_social_column(
-    df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    work_sector_column: str,
+    care_home_column: str,
+    direct_contact_column: str,
 ) -> DataFrame:
     """
     Assign column for work social with standard string values depending on 3 given reference inputs
@@ -415,8 +411,17 @@ def assign_work_social_column(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col(work_sector_colum).isNull(), None)
-        .when(F.col(work_sector_colum) != "Furloughed (temporarily not working)", "No")
+        F.when(F.col(work_sector_column).isNull(), None)
+        .when(
+            ~F.col(work_sector_column).isin(["Furloughed (temporarily not working)", "Social care", "Social Care"]),
+            "No",
+        )
+        .when(
+            (~F.col(work_sector_column).isin(["Social care", "Social Care"]))
+            & (F.col(care_home_column).isNull())
+            & (F.col(direct_contact_column).isNull()),
+            None,
+        )
         .when(
             (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
             "Yes, care/residential home, resident-facing",
@@ -435,7 +440,8 @@ def assign_work_social_column(
             ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
             & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
             "Yes, other social care, non-resident-facing",
-        ),
+        )
+        .otherwise("No"),
     )
     return df
 

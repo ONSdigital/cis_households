@@ -1830,7 +1830,7 @@
   work_person_facing_now: 'No'
   work_sectors: Social care
   work_sectors_other: I don't even care.
-  work_social_care: 'No'
+  work_social_care: Yes, other social care, non-resident-facing
   work_status_v0: Employed
   work_status_v1: Employed and currently working
   work_status_v2: Employed and currently working
