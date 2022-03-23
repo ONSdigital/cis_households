@@ -12,7 +12,7 @@ def test_assign_people_in_household_count(spark_session):
             (1, 0, 0, 20, 1, 1, 1, 4),
             # Some i's not 0, so should include i 0's in count
             (1, 1, 0, 0, 1, 1, 1, 7),
-            # 0 in p, should not be counted
+            # 0 in p, should be counted
             (1, None, None, None, 1, 0, 1, 3),
             # All i Null
             (3, None, None, None, 1, 0, 0, 4),
