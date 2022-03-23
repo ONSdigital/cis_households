@@ -107,6 +107,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     )
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_date",
+        dataset_column="dataset",
+        column_list=["sex", "date_of_birth", "ethnicity"],
+    )
     return df
 
 
