@@ -13,9 +13,9 @@ def test_assign_people_in_household_count(spark_session):
             # Some i's not 0, so should include i 0's in count
             (1, 1, 0, 0, 1, 1, 1, 7),
             # 0 in p, should be counted
-            (1, None, None, None, 1, 0, 1, 4),
+            (1, None, None, None, 1, 0, 1, 3),
             # All i Null
-            (3, None, None, None, 1, 0, 0, 5),
+            (3, None, None, None, 1, 0, 0, 4),
             # Null in non_consent, shouldn't be counted and outcome should not be null
             (1, None, None, None, 2, None, None, 2),
         ],
