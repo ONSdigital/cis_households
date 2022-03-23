@@ -399,11 +399,7 @@ def assign_proportion_column(
 
 
 def assign_work_social_column(
-    df: DataFrame,
-    column_name_to_assign: str,
-    work_sector_column: str,
-    care_home_column: str,
-    direct_contact_column: str,
+    df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
 ) -> DataFrame:
     """
     Assign column for work social with standard string values depending on 3 given reference inputs
@@ -417,17 +413,8 @@ def assign_work_social_column(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col(work_sector_column).isNull(), None)
-        .when(
-            ~F.col(work_sector_column).isin(["Furloughed (temporarily not working)", "Social care", "Social Care"]),
-            "No",
-        )
-        .when(
-            (~F.col(work_sector_column).isin(["Social care", "Social Care"]))
-            & (F.col(care_home_column).isNull())
-            & (F.col(direct_contact_column).isNull()),
-            None,
-        )
+        F.when(F.col(work_sector_colum).isNull(), None)
+        .when(F.col(work_sector_colum) != "Furloughed (temporarily not working)", "No")
         .when(
             (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
             "Yes, care/residential home, resident-facing",
@@ -446,8 +433,7 @@ def assign_work_social_column(
             ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
             & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
             "Yes, other social care, non-resident-facing",
-        )
-        .otherwise("No"),
+        ),
     )
     return df
 
