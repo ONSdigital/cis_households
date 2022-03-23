@@ -28,4 +28,4 @@ def test_assign_work_social_colum(spark_session):
         "work_care_nursing_home",
         "work_direct_contact",
     )
-    assert_df_equality(output_df, expected_df, ignore_column_order=True)
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_nullable=True)
