@@ -122,7 +122,7 @@ def fill_forward_only_to_nulls(
     changed: str,
     list_fill_forward: List[str],
     changed_positive_value: str = "Yes",
-    visit_type_value: str = "Follow-up Visit",
+    visit_type_value: str = "Completed",
 ) -> DataFrame:
     """
     This function will carry forward values windowed by an id ordered by date.
