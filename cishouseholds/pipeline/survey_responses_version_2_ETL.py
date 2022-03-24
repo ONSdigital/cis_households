@@ -2,6 +2,7 @@
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import assign_additional_agreement_column
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
@@ -316,7 +317,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-
+    df = assign_additional_agreement_column(df, "additional_consent_visit_agreed", "agreed_to_additional_consent_vis")
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
