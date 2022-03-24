@@ -915,6 +915,7 @@ def fill_forwards_transformations(df):
         "work_health_care_v0",
         "work_health_care_v1_v2",  # TODO: in python pipeline its called _raw, v1 and v2 same
     ]
+    # TODO: check if this function is needed or to use fill_forward_only_to_nulls()
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=fill_forwards_and_then_backwards_list,
