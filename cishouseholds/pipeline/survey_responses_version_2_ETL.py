@@ -49,6 +49,7 @@ from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_from_last_change
+from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -921,21 +922,26 @@ def fill_forwards_transformations(df):
         "work_direct_contact_patients_clients",
     ]
 
-    df = fill_forward_from_last_change(
+    df = fill_forward_only_to_nulls(
         df=df,
-        fill_forward_columns=fill_forwards_and_then_backwards_list,
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
+        list_fill_forward=fill_forwards_and_then_backwards_list,
+        id="participant_id",
+        date="visit_datetime",
+        visit_type="visit_type",
+        dataset="survey_response_dataset_major_version",
+        changed="work_main_job_changed",
+        changed_positive_value="Yes",
+        visit_type_value="Follow-up Visit",
     )
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_date",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=fill_forwards_and_then_backwards_list,
-    )
+
+    # TODO: uncomment for releases after R1
+    # df = fill_backwards_overriding_not_nulls(
+    #     df=df,
+    #     column_identity="participant_id",
+    #     ordering_column="visit_date",
+    #     dataset_column="survey_response_dataset_major_version",
+    #     column_list=fill_forwards_and_then_backwards_list,
+    # )
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
     #
