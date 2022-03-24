@@ -844,6 +844,7 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="smokes_or_vapes",
     )
+    df = df.withColumn("study_cohort", F.when(F.col("study_cohort").isNull(), "Original"))
     return df
 
 
