@@ -661,6 +661,8 @@ survey_responses_v2_variable_name_map = {
     "been_outside_uk_last_country": "been_outside_uk_last_country",
     "been_outside_uk_last_date": "been_outside_uk_last_date",
     "Have_you_been_outside_UK_Lastspoke": "been_outside_uk_since_last_visit",
+    "agreed_to_additional_consent_vis": "agreed_to_additional_consent_visit",
+    "additional_consent_requirement": "additional_consent_requirement",
 }
 
 
