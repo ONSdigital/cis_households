@@ -458,11 +458,12 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    df = update_symptoms_last_7_days_any(
-        df=df,
-        column_name_to_update="symptoms_last_7_days_any",
-        count_reference_column="symptoms_last_7_days_symptom_count",
-    )
+    # TODO - not needed until later release
+    # df = update_symptoms_last_7_days_any(
+    #     df=df,
+    #     column_name_to_update="symptoms_last_7_days_any",
+    #     count_reference_column="symptoms_last_7_days_symptom_count",
+    # )
 
     # df = assign_true_if_any(
     #     df=df,
