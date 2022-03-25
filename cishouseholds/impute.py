@@ -167,6 +167,60 @@ def fill_forward_only_to_nulls(
     return df.drop("FLAG_fill_forward")
 
 
+def fill_backwards_work_status_v2(
+    df: DataFrame,
+    date: str,
+    id: str,
+    fill_backward_column: str,
+    condition_column: str,
+    condition_values: List[str] = [],
+    date_range: List[str] = [],
+):
+    """
+    This function fills backwards as long as it is within upper and lower date defined by list daterange.
+    And requires a condition column to have specific values only apart from nulls.
+
+    Parameters
+    ----------
+    df
+    date
+    id
+    fill_backward_column
+    condition_column
+    condition_values
+    date_range
+    """
+    df = df.withColumn("COND_value", F.lit(None))
+
+    condition_time = F.col(date).between(*date_range)
+    df = df.withColumn("COND_time", F.when(~condition_time, 1))
+
+    for value in condition_values:
+        condition_value = F.col(condition_column) != value
+        df = df.withColumn("COND_value", F.when(condition_value, 1).otherwise(F.col("COND_value")))
+
+    df = df.withColumn(
+        "FINAL_CONDITION",
+        F.when(F.col("COND_time").isNull(), F.sum("COND_value").over(Window.partitionBy(id))).otherwise(1),
+    )
+    window = (
+        Window.partitionBy(id, "FINAL_CONDITION")
+        .orderBy(F.col(date).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        fill_backward_column,
+        F.coalesce(
+            F.when(
+                F.col("FINAL_CONDITION").isNull(),
+                F.last(fill_backward_column, ignorenulls=True).over(window),
+            ),
+            F.col(fill_backward_column),
+        ),
+    )
+    return df.drop("COND_value", "COND_time", "FINAL_CONDITION")
+
+
 def impute_by_distribution(
     df: DataFrame,
     column_name_to_assign: str,
