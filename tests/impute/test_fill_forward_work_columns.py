@@ -188,6 +188,14 @@ def test_fill_backwards_work_status_v2(spark_session):
                 (5, "2021-01-03",   3,      4),
                 (5, "2021-01-04",   None,   None),
                 (5, "2021-01-05",   None,   None),
+
+                (6, "2021-01-01",   None,   None),
+                (6, "2021-01-02",   1,      2),
+                (6, "2021-01-03",   None,   None),
+                (6, "2021-01-04",   1,      1),
+                (6, "2021-01-05",   None,   None),
+                (6, "2021-01-06",   None,   None), # id=3 NOT fill backwards case
+                (6, "2021-01-07",   None,   44),
             # fmt: on
         ],
         schema=schema,
@@ -216,6 +224,14 @@ def test_fill_backwards_work_status_v2(spark_session):
                 (5, "2021-01-03",   3,      4),
                 (5, "2021-01-04",   None,   None),
                 (5, "2021-01-05",   None,   None),
+
+                (6, "2021-01-01",   None,   2),
+                (6, "2021-01-02",   1,      2),
+                (6, "2021-01-03",   None,   1),
+                (6, "2021-01-04",   1,      1),
+                (6, "2021-01-05",   None,   None),
+                (6, "2021-01-06",   None,   None), # id=3 NOT fill backwards case
+                (6, "2021-01-07",   None,   44),
             # fmt: on
         ],
         schema=schema,
@@ -226,7 +242,8 @@ def test_fill_backwards_work_status_v2(spark_session):
         id="id",
         fill_backward_column="edit_col",
         condition_column="condition_col",
-        condition_values=[1],
+        condition_column_values=[1],
         date_range=["2019-01-01", "2030-01-01"],
+        fill_backward_column_values=[44],
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
