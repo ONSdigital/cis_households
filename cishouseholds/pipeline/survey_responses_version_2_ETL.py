@@ -909,8 +909,8 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
-    # for v1 and v2, same variable is named differently, change to same name.
-    df = df.withColumnRenamed("work_direct_contact_persons", "work_direct_contact_patients_clients")
+    # for v1 and v2, same variable is named differently:
+    # work_direct_contact_persons, work_direct_contact_patients_clients
 
     fill_forwards_and_then_backwards_list = [
         "work_main_job_title",  # only in v0
