@@ -232,6 +232,7 @@ def test_fill_backwards_work_status_v2(spark_session):
                 (6, "2021-01-05",   None,   None),
                 (6, "2021-01-06",   None,   None), # id=3 NOT fill backwards case
                 (6, "2021-01-07",   None,   44),
+            # 44 not wanted to be filled backwards
             # fmt: on
         ],
         schema=schema,
@@ -244,7 +245,6 @@ def test_fill_backwards_work_status_v2(spark_session):
         condition_column="condition_col",
         condition_column_values=[1],
         date_range=["2019-01-01", "2030-01-01"],
-        fill_backward_column_values=[1, 2, 4, 88],
+        fill_only_backward_column_values=[1, 2, 4, 88],
     )
-    import pdb; pdb.set_trace()
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

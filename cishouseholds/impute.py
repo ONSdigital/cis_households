@@ -173,7 +173,7 @@ def fill_backwards_work_status_v2(
     id: str,
     fill_backward_column: str,
     condition_column: str,
-    fill_backward_column_values: List[str] = [],
+    fill_only_backward_column_values: List[str] = [],
     condition_column_values: List[str] = [],
     date_range: List[str] = [],
 ):
@@ -192,24 +192,27 @@ def fill_backwards_work_status_v2(
     date_range
     """
     df = df.withColumn("COND_value", F.lit(None))
-    condition_time = F.col(date).between(*date_range)
-    df = df.withColumn("COND_time", F.when(~condition_time, 1))
+    df = df.withColumn("COND_not_fill", F.lit(None))
+    df = df.withColumn("COND_time", F.when(F.col(date).between(*date_range), 1))
 
     for value in condition_column_values:
-        condition_value = F.col(condition_column) != value
-        df = df.withColumn("COND_value", F.when(condition_value, 1).otherwise(F.col("COND_value")))
+        condition_value = (F.col(condition_column) == value) | (F.col(condition_column).isNull())
+        df = df.withColumn("COND_value", F.when(condition_value, None).otherwise(1))
 
-    df = df.withColumn("COND_not_fill", F.lit(None))
-    for value in fill_backward_column_values:
-        condition_value = F.col(fill_backward_column) != value
+    df = df.withColumn("COND_value", F.sum("COND_value").over(Window.partitionBy(id)))
+
+    for value in fill_only_backward_column_values:
+        condition_value = (F.col(fill_backward_column) == value) | (F.col(fill_backward_column).isNull())
         df = df.withColumn("COND_not_fill", F.when(condition_value, 1).otherwise(F.col("COND_not_fill")))
 
     df = df.withColumn(
         "FINAL_CONDITION",
-        F.when(F.col("COND_time").isNull(), F.sum("COND_value").over(Window.partitionBy(id))).otherwise(1),
+        F.when(
+            (F.col("COND_value").isNull()) & F.col("COND_not_fill").isNotNull() & F.col("COND_time").isNotNull(), None
+        ).otherwise(1),
     )
     window = (
-        Window.partitionBy(id, "COND_not_fill", "FINAL_CONDITION")
+        Window.partitionBy(id, "FINAL_CONDITION")
         .orderBy(F.col(date).desc())
         .rowsBetween(Window.unboundedPreceding, Window.currentRow)
     )
@@ -217,7 +220,7 @@ def fill_backwards_work_status_v2(
         fill_backward_column,
         F.coalesce(
             F.when(
-                F.col("FINAL_CONDITION").isNull() & F.col("COND_not_fill").isNull(),
+                F.col("FINAL_CONDITION").isNull(),
                 F.last(fill_backward_column, ignorenulls=True).over(window),
             ),
             F.col(fill_backward_column),

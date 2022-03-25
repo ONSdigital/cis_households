@@ -855,13 +855,13 @@ def union_dependent_derivations(df):
         id="participant_id",
         fill_backward_column="work_status_v2",
         condition_column="work_status_v1",
-        fill_backward_column_values=[
+        date_range=["2020-09-01", "2021-08-31"],
+        condition_column_values=["5y and older in full-time education"],
+        fill_only_backward_column_values=[
             "4-5y and older at school/home-school",
             "Attending college or FE (including if temporarily absent)",
             "Attending university (including if temporarily absent)",
         ],
-        condition_values=["5y and older in full-time education"],
-        date_range=["2020-09-01", "2021-08-31"],
     )
     return df
 
