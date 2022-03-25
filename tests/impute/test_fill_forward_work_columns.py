@@ -244,6 +244,7 @@ def test_fill_backwards_work_status_v2(spark_session):
         condition_column="condition_col",
         condition_column_values=[1],
         date_range=["2019-01-01", "2030-01-01"],
-        fill_backward_column_values=[44],
+        fill_backward_column_values=[1, 2, 4, 88],
     )
+    import pdb; pdb.set_trace()
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

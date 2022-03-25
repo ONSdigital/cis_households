@@ -201,7 +201,7 @@ def fill_backwards_work_status_v2(
 
     df = df.withColumn("COND_not_fill", F.lit(None))
     for value in fill_backward_column_values:
-        condition_value = F.col(fill_backward_column) == value
+        condition_value = F.col(fill_backward_column) != value
         df = df.withColumn("COND_not_fill", F.when(condition_value, 1).otherwise(F.col("COND_not_fill")))
 
     df = df.withColumn(
