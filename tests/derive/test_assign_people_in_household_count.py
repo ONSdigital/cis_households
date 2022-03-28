@@ -7,12 +7,12 @@ def test_assign_people_in_household_count(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # All i's are 0, should not count any of them
-            (1, 0, 0, 0, 1, 1, 1, 4),
+            (1, 0, 0, 0, 1, 1, 1, 7),
             # Exception i not 0, but should still not count any of the i's
-            (1, 0, 0, 20, 1, 1, 1, 4),
+            (1, 0, 0, 20, 1, 1, 1, 7),
             # Some i's not 0, so should include i 0's in count
             (1, 1, 0, 0, 1, 1, 1, 7),
-            # 0 in p, should not be counted
+            # 0 in p, should be counted
             (1, None, None, None, 1, 0, 1, 3),
             # All i Null
             (3, None, None, None, 1, 0, 0, 4),
