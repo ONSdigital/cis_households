@@ -86,7 +86,7 @@ def validation_calls(SparkVal):
                 (F.col("work_social_care") == "Yes")
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_persons") == "Yes")
+                    | (F.col("work_direct_contact_patients_clients") == "Yes")
                 )
             )
             | (F.col("work_social_care") == "No")
