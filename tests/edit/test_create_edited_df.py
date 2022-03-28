@@ -44,5 +44,5 @@ def test_create_edited_df(spark_session):
         # fmt: on
         schema="""id integer, A string, B string,  A_old_value string, A_new_value string, B_old_value string, B_new_value string, C_old_value string, C_new_value string""",
     )
-    output_df = create_edited_df(input_df, map_df, "id")
+    output_df, csv = create_edited_df(input_df, map_df, "id")
     assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True)
