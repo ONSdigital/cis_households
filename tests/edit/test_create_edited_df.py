@@ -14,7 +14,7 @@ def test_create_edited_df(spark_session):
             (5, "i", "A", "something else", "converted"),
             (6, "i", "A", "value", "converted A from value"),
             (6, "i", "B", None, "converted B from null"),
-            (6, "i", "C", None, "converted C from null"),
+            (6, "i", "C", None, "converted C from null"),  # non existent column should added and then removed
             (None, "i", "B", None, "null"),  # missing id should be joined but not updated
             (7, "i", "B", None, "converted B from null"),  # non existent id should not be joined
         ],
