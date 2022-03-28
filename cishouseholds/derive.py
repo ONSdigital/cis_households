@@ -1,6 +1,5 @@
 import re
 from itertools import chain
-from pyclbr import Function
 from typing import List
 from typing import Optional
 from typing import Union
@@ -1455,7 +1454,7 @@ def derive_household_been_columns(
 def aggregated_output_groupby(
     df: DataFrame,
     column_group: str,
-    apply_function_list: List[Function],
+    apply_function_list,
     column_name_to_assign_list: List[str],
 ) -> DataFrame:
     """
@@ -1479,10 +1478,9 @@ def aggregated_output_groupby(
 def aggregated_output_window(
     df: DataFrame,
     column_group_list: str,
-    apply_function_list: List[Function],
+    apply_function_list,
     column_name_to_assign_list: List[str],
     order_column_list: List[str] = [],
-    when_condition=True,
 ) -> DataFrame:
     """
     Parameters
