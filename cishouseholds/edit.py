@@ -314,6 +314,23 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
+def create_edited_df(df: DataFrame, csv: DataFrame, id_column: str) -> DataFrame:
+    """
+    Join the dataframe and csv editing files after formatting csv lookup df
+    csv
+    df
+    id_column
+        column on which to join the csv lookup on main dataset df
+    """
+    csv = (
+        csv.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
+    return df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+
+
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
@@ -333,13 +350,7 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
     if dataset_name is not None:
         csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
 
-    csv = (
-        csv.groupBy("id")
-        .pivot("target_column_name")
-        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
-        .drop("old_value", "new_value")
-    )
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
+    df = create_edited_df(df, csv, id_column)
     r = re.compile(r"(.*){1,}_old_value$")
     cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
     for col in cols:
