@@ -45,9 +45,12 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_participant_not_consented
 from cishouseholds.edit import update_symptoms_last_7_days_any
+from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
+from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
+from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -274,7 +277,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     df = assign_work_social_column(
-        df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
+        df,
+        "work_social_care",
+        "work_sectors",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
     )
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = assign_column_given_proportion(
@@ -331,6 +338,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         record_changed_value="Yes",
     )
 
+    times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -342,6 +350,29 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Somewhere else (not your home)": "Working somewhere else (not your home)",
             "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
             "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
+        },
+        "times_outside_shopping_or_socialising_last_7_days": times_value_map,
+        "times_shopping_last_7_days": times_value_map,
+        "times_socialise_last_7_days": times_value_map,
+        "work_sectors": {
+            "Social Care": "Social care",
+            "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
+            "Transport (incl. storage and logistics)": "Transport (incl. storage, logistic)",
+            "Retail Sector (incl. wholesale)": "Retail sector (incl. wholesale)",
+            "Hospitality (e.g. hotel or restaurant or cafe)": "Hospitality (e.g. hotel, restaurant)",
+            "Food Production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Food production and agriculture (incl. farming)": "Food production, agriculture, farming",
+            "Personal Services (e.g. hairdressers or tattooists)": "Personal services (e.g. hairdressers)",
+            "Information technology and communication": "Information technology and communication",
+            "Financial services (incl. insurance)": "Financial services incl. insurance",
+            "Financial Services (incl. insurance)": "Financial services incl. insurance",
+            "Civil Service or Local Government": "Civil service or Local Government",
+            "Arts or Entertainment or Recreation": "Arts,Entertainment or Recreation",
+            "Art or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Other employment sector (specify)": "Other occupation sector",
+            "Other occupation sector (specify)": "Other occupation sector",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -433,11 +464,12 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    df = update_symptoms_last_7_days_any(
-        df=df,
-        column_name_to_update="symptoms_last_7_days_any",
-        count_reference_column="symptoms_last_7_days_symptom_count",
-    )
+    # TODO - not needed until later release
+    # df = update_symptoms_last_7_days_any(
+    #     df=df,
+    #     column_name_to_update="symptoms_last_7_days_any",
+    #     count_reference_column="symptoms_last_7_days_symptom_count",
+    # )
 
     # df = assign_true_if_any(
     #     df=df,
@@ -573,7 +605,7 @@ def union_dependent_cleaning(df):
         },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
-            "Caribbean": "Black,Caribbean,African-African",
+            "Caribbean": "Black,Caribbean,Afro-Caribbean",
             "Any other Black or African or Caribbean background": "Any other Black background",
             "Any other Mixed/Multiple background": "Any other Mixed background",
             "Bangladeshi": "Asian or Asian British-Bangladeshi",
@@ -616,26 +648,6 @@ def union_dependent_cleaning(df):
             "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
             "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
             "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
-        "work_sectors": {
-            "Social Care": "Social care",
-            "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
-            "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
-            "Transport (incl. storage and logistics)": "Transport (incl. storage, logistic)",
-            "Retail Sector (incl. wholesale)": "Retail sector (incl. wholesale)",
-            "Hospitality (e.g. hotel or restaurant or cafe)": "Hospitality (e.g. hotel, restaurant)",
-            "Food Production and agriculture (incl. farming)": "Food production, agriculture, farming",
-            "Food production and agriculture (incl. farming)": "Food production, agriculture, farming",
-            "Personal Services (e.g. hairdressers or tattooists)": "Personal services (e.g. hairdressers)",
-            "Information technology and communication": "Information technology and communication",
-            "Financial services (incl. insurance)": "Financial services incl. insurance",
-            "Financial Services (incl. insurance)": "Financial services incl. insurance",
-            "Civil Service or Local Government": "Civil service or Local Government",
-            "Arts or Entertainment or Recreation": "Arts,Entertainment or Recreation",
-            "Art or entertainment or recreation": "Arts,Entertainment or Recreation",
-            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
-            "Other employment sector (specify)": "Other occupation sector",
-            "Other occupation sector (specify)": "Other occupation sector",
         },
         "ability_to_socially_distance_at_work_or_school": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
@@ -839,6 +851,22 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="smokes_or_vapes",
     )
+    df = df.withColumn("study_cohort", F.when(F.col("study_cohort").isNull(), "Original"))
+
+    df = fill_backwards_work_status_v2(
+        df=df,
+        date="visit_datetime",
+        id="participant_id",
+        fill_backward_column="work_status_v2",
+        condition_column="work_status_v1",
+        date_range=["2020-09-01", "2021-08-31"],
+        condition_column_values=["5y and older in full-time education"],
+        fill_only_backward_column_values=[
+            "4-5y and older at school/home-school",
+            "Attending college or FE (including if temporarily absent)",
+            "Attending university (including if temporarily absent)",
+        ],
+    )
     return df
 
 
@@ -901,46 +929,88 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
+    fill_forwards_and_then_backwards_list = [
+        "work_main_job_title",
+        "work_health_care_v0",
+        "work_health_care_v1_v2",
+    ]
+    # TODO: check if this function is needed or to use fill_forward_only_to_nulls()
     df = fill_forward_from_last_change(
         df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
-            "work_health_care_v1_v2",
-            "work_health_care_v0",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
-        ],
+        fill_forward_columns=fill_forwards_and_then_backwards_list,
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
         record_changed_column="work_main_job_changed",
         record_changed_value="Yes",
     )
-    df = update_column_if_ref_in_list(
+
+    fill_forward_to_nulls_list = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sectors",
+        "work_sectors_other",
+        "work_social_care",
+        "work_health_care_v0",
+        "work_health_care_v1_v2",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
+    ]
+    df = fill_forward_only_to_nulls(
         df=df,
-        column_name_to_update="work_location",
-        old_value=None,
-        new_value="Not applicable, not currently working",
-        reference_column="work_status_v0",
-        check_list=[
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        ],
+        list_fill_forward=fill_forward_to_nulls_list,
+        id="participant_id",
+        date="visit_datetime",
+        visit_type="participant_visit_status",
+        dataset="survey_response_dataset_major_version",
+        changed="work_main_job_changed",
+        changed_positive_value="Yes",
+        visit_type_value="Completed",
     )
+
+    # TODO: uncomment for releases after R1
+    # df = fill_backwards_overriding_not_nulls(
+    #     df=df,
+    #     column_identity="participant_id",
+    #     ordering_column="visit_date",
+    #     dataset_column="survey_response_dataset_major_version",
+    #     column_list=fill_forwards_and_then_backwards_list,
+    # )
+
+    ## TODO: Not needed until a future release, will leave commented out in code until required
+    #
+    #    df = update_column_if_ref_in_list(
+    #        df=df,
+    #        column_name_to_update="work_location",
+    #        old_value=None,
+    #        new_value="Not applicable, not currently working",
+    #        reference_column="work_status_v0",
+    #        check_list=[
+    #            "Furloughed (temporarily not working)",
+    #            "Not working (unemployed, retired, long-term sick etc.)",
+    #            "Student",
+    #        ],
+    #    )
+    df = update_travel_column(
+        df, "been_outside_uk_since_last_visit", "been_outside_uk_last_country", "been_outside_uk_last_date"
+    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
             "been_outside_uk_last_country",
             "been_outside_uk_last_date",
-            "been_outside_uk_since_april_2020",
+            "been_outside_uk_since_last_visit",
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk_since_april_2020",
+        record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
+    )
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_datetime",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth", "ethnicity"],
     )
     return df
