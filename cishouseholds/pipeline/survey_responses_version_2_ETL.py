@@ -48,6 +48,7 @@ from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
+from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
@@ -851,6 +852,21 @@ def union_dependent_derivations(df):
         condition_column="smokes_or_vapes",
     )
     df = df.withColumn("study_cohort", F.when(F.col("study_cohort").isNull(), "Original"))
+
+    df = fill_backwards_work_status_v2(
+        df=df,
+        date="visit_datetime",
+        id="participant_id",
+        fill_backward_column="work_status_v2",
+        condition_column="work_status_v1",
+        date_range=["2020-09-01", "2021-08-31"],
+        condition_column_values=["5y and older in full-time education"],
+        fill_only_backward_column_values=[
+            "4-5y and older at school/home-school",
+            "Attending college or FE (including if temporarily absent)",
+            "Attending university (including if temporarily absent)",
+        ],
+    )
     return df
 
 

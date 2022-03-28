@@ -1,5 +1,6 @@
 from chispa import assert_df_equality
 
+from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
 
@@ -92,7 +93,7 @@ def test_fill_forward_from_last_change(spark_session):
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
 
-def test_fill_forward_2(spark_session):
+def test_fill_forward_only_to_nulls(spark_session):
     schema = """
             id integer,
             date string,
@@ -157,5 +158,93 @@ def test_fill_forward_2(spark_session):
         changed="changed",
         changed_positive_value="Yes",
         visit_type_value=1,
+    )
+    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
+
+
+def test_fill_backwards_work_status_v2(spark_session):
+    schema = """id integer, date string, condition_col integer, edit_col integer"""
+
+    input_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                (3, "1020-01-01",   1,      None), # outside of cutoff date
+
+                (3, "2021-01-01",   None,   None), # id=3 fill backwards case
+                (3, "2021-01-02",   1,      2),
+                (3, "2021-01-03",   None,   None),
+                (3, "2021-01-04",   1,      1),
+                (3, "2021-01-05",   None,   None),
+                (3, "2021-01-06",   None,   2),
+
+                (3, "2021-01-07",   None,   None),
+                (3, "2100-01-01",   None,   88), # outside of cutoff date
+
+                (4, "2021-01-05",   None,   None),
+
+                (5, "2021-01-01",   None,   None), # id=5 NOT fill backwards case
+                (5, "2021-01-02",   1,      2),
+                (5, "2021-01-02",   None,   None),
+                (5, "2021-01-03",   3,      4),
+                (5, "2021-01-04",   None,   None),
+                (5, "2021-01-05",   None,   None),
+
+                (6, "2021-01-01",   None,   None),
+                (6, "2021-01-02",   1,      2),
+                (6, "2021-01-03",   None,   None),
+                (6, "2021-01-04",   1,      1),
+                (6, "2021-01-05",   None,   None),
+                (6, "2021-01-06",   None,   None), # id=3 NOT fill backwards case
+                (6, "2021-01-07",   None,   44),
+            # fmt: on
+        ],
+        schema=schema,
+    )
+
+    expected_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                (3, "1020-01-01",   1,      None),
+
+                (3, "2021-01-01",   None,   2), # filled backward
+                (3, "2021-01-02",   1,      2),
+                (3, "2021-01-03",   None,   1), # filled backward
+                (3, "2021-01-04",   1,      1),
+                (3, "2021-01-05",   None,   2), # filled backward
+                (3, "2021-01-06",   None,   2),
+
+                (3, "2021-01-07",   None,   None),
+                (3, "2100-01-01",   None,   88),
+
+                (4, "2021-01-05",   None,   None),
+
+                (5, "2021-01-01",   None,   None),
+                (5, "2021-01-02",   1,      2),
+                (5, "2021-01-02",   None,   None),
+                (5, "2021-01-03",   3,      4),
+                (5, "2021-01-04",   None,   None),
+                (5, "2021-01-05",   None,   None),
+
+                (6, "2021-01-01",   None,   2),
+                (6, "2021-01-02",   1,      2),
+                (6, "2021-01-03",   None,   1),
+                (6, "2021-01-04",   1,      1),
+                (6, "2021-01-05",   None,   None),
+                (6, "2021-01-06",   None,   None), # id=3 NOT fill backwards case
+                (6, "2021-01-07",   None,   44),
+            # 44 not wanted to be filled backwards
+            # fmt: on
+        ],
+        schema=schema,
+    )
+    actual_df = fill_backwards_work_status_v2(
+        df=input_df,
+        date="date",
+        id="id",
+        fill_backward_column="edit_col",
+        condition_column="condition_col",
+        condition_column_values=[1],
+        date_range=["2019-01-01", "2030-01-01"],
+        fill_only_backward_column_values=[1, 2, 4, 88],
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
