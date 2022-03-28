@@ -167,6 +167,68 @@ def fill_forward_only_to_nulls(
     return df.drop("FLAG_fill_forward")
 
 
+def fill_backwards_work_status_v2(
+    df: DataFrame,
+    date: str,
+    id: str,
+    fill_backward_column: str,
+    condition_column: str,
+    fill_only_backward_column_values: List[str] = [],
+    condition_column_values: List[str] = [],
+    date_range: List[str] = [],
+):
+    """
+    This function fills backwards as long as it is within upper and lower date defined by list daterange.
+    And requires a condition column to have specific values only apart from nulls.
+
+    Parameters
+    ----------
+    df
+    date
+    id
+    fill_backward_column
+    condition_column
+    condition_values
+    date_range
+    """
+    df = df.withColumn("COND_value", F.lit(None))
+    df = df.withColumn("COND_not_fill", F.lit(None))
+    df = df.withColumn("COND_time", F.when(F.col(date).between(*date_range), 1))
+
+    for value in condition_column_values:
+        condition_value = (F.col(condition_column) == value) | (F.col(condition_column).isNull())
+        df = df.withColumn("COND_value", F.when(condition_value, None).otherwise(1))
+
+    df = df.withColumn("COND_value", F.sum("COND_value").over(Window.partitionBy(id)))
+
+    for value in fill_only_backward_column_values:
+        condition_value = (F.col(fill_backward_column) == value) | (F.col(fill_backward_column).isNull())
+        df = df.withColumn("COND_not_fill", F.when(condition_value, 1).otherwise(F.col("COND_not_fill")))
+
+    df = df.withColumn(
+        "FINAL_CONDITION",
+        F.when(
+            (F.col("COND_value").isNull()) & F.col("COND_not_fill").isNotNull() & F.col("COND_time").isNotNull(), None
+        ).otherwise(1),
+    )
+    window = (
+        Window.partitionBy(id, "FINAL_CONDITION")
+        .orderBy(F.col(date).desc())
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        fill_backward_column,
+        F.coalesce(
+            F.when(
+                F.col("FINAL_CONDITION").isNull(),
+                F.last(fill_backward_column, ignorenulls=True).over(window),
+            ),
+            F.col(fill_backward_column),
+        ),
+    )
+    return df.drop("COND_value", "COND_time", "COND_not_fill", "FINAL_CONDITION")
+
+
 def impute_by_distribution(
     df: DataFrame,
     column_name_to_assign: str,
