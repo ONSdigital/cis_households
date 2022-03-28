@@ -126,7 +126,7 @@ def assign_people_in_household_count(
 
     infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
     infant_exceptions_array = F.array(
-        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
+        [F.when((F.col(col).isNull()), 0).otherwise(1) for col in infant_columns_with_exceptions]
     )
     participant_array = F.array(
         [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
