@@ -48,6 +48,7 @@ from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_travel_column
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
+from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import impute_by_ordered_fill_forward
@@ -276,7 +277,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     df = assign_work_social_column(
-        df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
+        df,
+        "work_social_care",
+        "work_sectors",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
     )
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = assign_column_given_proportion(
@@ -847,6 +852,21 @@ def union_dependent_derivations(df):
         condition_column="smokes_or_vapes",
     )
     df = df.withColumn("study_cohort", F.when(F.col("study_cohort").isNull(), "Original"))
+
+    df = fill_backwards_work_status_v2(
+        df=df,
+        date="visit_datetime",
+        id="participant_id",
+        fill_backward_column="work_status_v2",
+        condition_column="work_status_v1",
+        date_range=["2020-09-01", "2021-08-31"],
+        condition_column_values=["5y and older in full-time education"],
+        fill_only_backward_column_values=[
+            "4-5y and older at school/home-school",
+            "Attending college or FE (including if temporarily absent)",
+            "Attending university (including if temporarily absent)",
+        ],
+    )
     return df
 
 
@@ -909,13 +929,10 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
-    # for v1 and v2, same variable is named differently:
-    # work_direct_contact_persons, work_direct_contact_patients_clients
-
     fill_forwards_and_then_backwards_list = [
-        "work_main_job_title",  # only in v0
+        "work_main_job_title",
         "work_health_care_v0",
-        "work_health_care_v1_v2",  # TODO: in python pipeline its called _raw, v1 and v2 same
+        "work_health_care_v1_v2",
     ]
     # TODO: check if this function is needed or to use fill_forward_only_to_nulls()
     df = fill_forward_from_last_change(
@@ -928,13 +945,13 @@ def fill_forwards_transformations(df):
     )
 
     fill_forward_to_nulls_list = [
-        "work_main_job_title_raw",
+        "work_main_job_title",
         "work_main_job_role",
         "work_sectors",
         "work_sectors_other",
-        "work_health_care_combined",
         "work_social_care",
-        "work_health_care_v1_v2_raw",
+        "work_health_care_v0",
+        "work_health_care_v1_v2",
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
     ]
