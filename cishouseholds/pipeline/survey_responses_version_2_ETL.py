@@ -276,7 +276,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     df = assign_work_social_column(
-        df, "work_social_care", "work_sectors", "work_nursing_or_residential_care_home", "work_direct_contact_persons"
+        df,
+        "work_social_care",
+        "work_sectors",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
     )
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = assign_column_given_proportion(
@@ -909,13 +913,10 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
-    # for v1 and v2, same variable is named differently:
-    # work_direct_contact_persons, work_direct_contact_patients_clients
-
     fill_forwards_and_then_backwards_list = [
-        "work_main_job_title",  # only in v0
+        "work_main_job_title",
         "work_health_care_v0",
-        "work_health_care_v1_v2",  # TODO: in python pipeline its called _raw, v1 and v2 same
+        "work_health_care_v1_v2",
     ]
     # TODO: check if this function is needed or to use fill_forward_only_to_nulls()
     df = fill_forward_from_last_change(
@@ -928,13 +929,13 @@ def fill_forwards_transformations(df):
     )
 
     fill_forward_to_nulls_list = [
-        "work_main_job_title_raw",
+        "work_main_job_title",
         "work_main_job_role",
         "work_sectors",
         "work_sectors_other",
-        "work_health_care_combined",
         "work_social_care",
-        "work_health_care_v1_v2_raw",
+        "work_health_care_v0",
+        "work_health_care_v1_v2",
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
     ]
