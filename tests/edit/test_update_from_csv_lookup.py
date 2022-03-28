@@ -12,8 +12,11 @@ def test_update_from_csv_lookup(spark_session, pandas_df_to_temporary_csv):
             (3, "i", "B", "original", "converted"),
             (4, "i", "B", "original", "converted"),
             (5, "i", "A", "something else", "converted"),
-            (6, "i", "A", "value", "converted A from null"),
+            (6, "i", "A", "value", "converted A from value"),
             (6, "i", "B", None, "converted B from null"),
+            (6, "i", "C", None, "converted C from null"),  # non existent column should added and then removed
+            (None, "i", "B", None, "null"),  # missing id should be joined but not updated
+            (7, "i", "B", None, "converted B from null"),  # non existent id should not be joined
         ],
         schema="""id integer, dataset_name string, target_column_name string, old_value string, new_value string""",
     )

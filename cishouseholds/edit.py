@@ -354,13 +354,14 @@ def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union
     r = re.compile(r"(.*){1,}_old_value$")
     cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
     for col in cols:
-        df = df.withColumn(
-            col,
-            F.when(
-                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
-                F.col(f"{col}_new_value"),
-            ).otherwise(F.col(col)),
-        )
+        if col in df.columns:
+            df = df.withColumn(
+                col,
+                F.when(
+                    F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
+                    F.col(f"{col}_new_value"),
+                ).otherwise(F.col(col)),
+            )
 
     drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
     return df.drop(*drop_list)
