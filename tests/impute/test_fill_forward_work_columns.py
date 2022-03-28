@@ -92,34 +92,29 @@ def test_fill_forward_from_last_change(spark_session):
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
 
-def test_fill_forward_2(spark_session):
+def test_fill_forward_only_to_nulls(spark_session):
     schema = """
             id integer,
             date string,
             work_1 string, work_2 string, work_3 string,
-            visit_type integer,
-            dataset integer,
             changed string
         """
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     '2020-01-01',      'q1',   'q2',   'q3',    2,	0,	'Yes'),
-                (1,     '2020-01-02',      None,   None,   None,    1,	1,	0),
-                (1,     '2020-01-03',      None,   None,   None,    1,	1,	0),
-                (1,     '2020-01-04',      'g1',   'g2',   'g3',    1,	1,	'Yes'),
-                (1,     '2020-01-05',      None,   None,   None,    1,	2,	None),
-                (1,     '2020-01-06',      None,   'r2',   None,    1,	2,	0),
-                (1,     '2020-01-07',      None,   None,   None,    1,	2,	0),
-                (1,     '2020-01-08',      'f1',   'f2',   'f3',    1,	2,	'Yes'),
-                (1,     '2020-01-09',      None,   None,   None,    1,	2,	0),
-                (1,     '2020-01-10',      None,   None,   None,    1,	2,	0),
+                (1,     '2020-01-04',      'g1',   'g2',   'g3',    'Yes'),
+                (1,     '2020-01-05',      None,   None,   None,    None),
+                (1,     '2020-01-06',      None,   'r2',   None,    0),
+                (1,     '2020-01-07',      None,   None,   None,    0),
+                (1,     '2020-01-08',      'f1',   'f2',   'f3',    'Yes'),
+                (1,     '2020-01-09',      None,   None,   None,    0),
+                (1,     '2020-01-10',      None,   None,   None,    0),
 
-                (1,     '2020-01-11',      't1',   None,   None,    1,	2,	'Yes'),
-                (1,     '2020-01-12',      None,   'a1',   'h1',    1,	2,	'No'),
-                (1,     '2020-01-13',      None,   None,   None,    1,	2,	'No'),
+                (1,     '2020-01-11',      't1',   None,   None,    'Yes'),
+                (1,     '2020-01-12',      None,   'a1',   'h1',    'No'),
+                (1,     '2020-01-13',      None,   None,   None,    'No'),
 
-                (2,     '2020-01-01',      None,   None,   None,    1,	2,	0),
+                (2,     '2020-01-01',      None,   None,   None,    0),
             # fmt: on
         ],
         schema=schema,
@@ -127,35 +122,29 @@ def test_fill_forward_2(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     '2020-01-01',      'q1',   'q2',   'q3',    2,	0,	'Yes',),
-                (1,     '2020-01-02',      None,   None,   None,    1,	1,	0,),
-                (1,     '2020-01-03',      None,   None,   None,    1,	1,	0,),
-                (1,     '2020-01-04',      'g1',   'g2',   'g3',    1,	1,	'Yes',),
-                (1,     '2020-01-05',      'g1',   'g2',   'g3',    1,	2,	None),
-                (1,     '2020-01-06',      'g1',   'r2',   'g3',    1,	2,	0),
-                (1,     '2020-01-07',      'g1',   'r2',   'g3',    1,	2,	0),
-                (1,     '2020-01-08',      'f1',   'f2',   'f3',    1,	2,	'Yes'),
-                (1,     '2020-01-09',      'f1',   'f2',   'f3',    1,	2,	0),
-                (1,     '2020-01-10',      'f1',   'f2',   'f3',    1,	2,	0),
+                (1,     '2020-01-04',      'g1',   'g2',   'g3',    'Yes',),
+                (1,     '2020-01-05',      'g1',   'g2',   'g3',    None),
+                (1,     '2020-01-06',      'g1',   'r2',   'g3',    0),
+                (1,     '2020-01-07',      'g1',   'r2',   'g3',    0),
+                (1,     '2020-01-08',      'f1',   'f2',   'f3',    'Yes'),
+                (1,     '2020-01-09',      'f1',   'f2',   'f3',    0),
+                (1,     '2020-01-10',      'f1',   'f2',   'f3',    0),
 
-                (1,     '2020-01-11',      't1',   None,   None,    1,	2,	'Yes'),
-                (1,     '2020-01-12',      't1',   'a1',   'h1',    1,	2,	'No'),
-                (1,     '2020-01-13',      't1',   'a1',   'h1',    1,	2,	'No'),
+                (1,     '2020-01-11',      't1',   None,   None,    'Yes'),
+                (1,     '2020-01-12',      't1',   'a1',   'h1',    'No'),
+                (1,     '2020-01-13',      't1',   'a1',   'h1',    'No'),
 
-                (2,     '2020-01-01',      None,   None,   None,    1,	2,	0),
+                (2,     '2020-01-01',      None,   None,   None,    0),
             # fmt: on
         ],
         schema=schema,
     )
     actual_df = fill_forward_only_to_nulls(
         df=input_df,
-        list_fill_forward=["work_1", "work_2", "work_3"],
         id="id",
         date="date",
-        visit_type="visit_type",
-        dataset="dataset",
         changed="changed",
+        list_fill_forward=["work_1", "work_2", "work_3"],
         changed_positive_value="Yes",
-        visit_type_value=1,
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

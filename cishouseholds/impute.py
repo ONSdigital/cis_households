@@ -117,12 +117,9 @@ def fill_forward_only_to_nulls(
     df: DataFrame,
     id: str,
     date: str,
-    visit_type: str,
-    dataset: str,
     changed: str,
     list_fill_forward: List[str],
     changed_positive_value: str = "Yes",
-    visit_type_value: str = "Completed",
 ) -> DataFrame:
     """
     This function will carry forward values windowed by an id ordered by date.
@@ -146,11 +143,7 @@ def fill_forward_only_to_nulls(
     # TODO: use object
     df = df.withColumn(
         "FLAG_fill_forward",
-        (
-            (F.col(visit_type) == visit_type_value)
-            & (F.col(dataset) == 2)
-            & ((F.col(changed) != changed_positive_value) | F.col(changed).isNull())
-        ),
+        (F.col(changed) != changed_positive_value) | F.col(changed).isNull(),
     )
 
     for fill_forward_column in list_fill_forward:
