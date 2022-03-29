@@ -311,23 +311,6 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-# def create_edited_df(df: DataFrame, csv: DataFrame, id_column: str) -> DataFrame:
-#     """
-#     Join the dataframe and csv editing files after formatting csv lookup df
-#     csv
-#     df
-#     id_column
-#         column on which to join the csv lookup on main dataset df
-#     """
-#     csv = (
-#         csv.groupBy("id")
-#         .pivot("target_column_name")
-#         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
-#         .drop("old_value", "new_value")
-#     )
-#     return df.join(csv, csv.id == df[id_column], how="left").drop(csv.id), csv
-
-
 def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
     Edit values in df based on old to new mapping in lookup_df
@@ -369,42 +352,6 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
 
     drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
     return edited_df.drop(*drop_list)
-
-
-# def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
-#     """
-#     Update specific cell values from a map contained in a csv file.
-#     Allows a match on Null old values.
-
-#     Parameters
-#     ----------
-#     df
-#     csv_filepath
-#     id_column
-#         column in dataframe containing unique identifier
-#     """
-#     if csv_filepath == "" or csv_filepath is None:
-#         return df
-#     csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
-
-#     if dataset_name is not None:
-#         csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
-
-#     df, csv = create_edited_df(df, csv, id_column)
-#     r = re.compile(r"(.*){1,}_old_value$")
-#     cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
-#     for col in cols:
-#         if col in df.columns:
-#             df = df.withColumn(
-#                 col,
-#                 F.when(
-#                     F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
-#                     F.col(f"{col}_new_value"),
-#                 ).otherwise(F.col(col)),
-#             )
-
-#     drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
-#     return df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
