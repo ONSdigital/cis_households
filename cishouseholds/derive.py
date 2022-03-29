@@ -131,9 +131,9 @@ def assign_people_in_household_count(
     participant_array = F.array(
         [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
     )
-    infant_sum = sum([F.when(F.col(col).isNull(),0).otherwise(F.col(col)) for col in infant_columns_with_exceptions])
+    infant_sum = sum([F.when(F.col(col).isNull(), 0).otherwise(F.col(col)) for col in infant_columns_with_exceptions])
 
-    infant_num = F.when((F.size(F.array_remove(infant_exceptions_array, 0)) == 0)|(infant_sum==0), 0).otherwise(
+    infant_num = F.when((F.size(F.array_remove(infant_exceptions_array, 0)) == 0) | (infant_sum == 0), 0).otherwise(
         F.size(F.array_remove(infant_array, 0))
     )
 
