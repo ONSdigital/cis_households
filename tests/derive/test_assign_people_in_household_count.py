@@ -35,7 +35,7 @@ def test_assign_people_in_household_count(spark_session):
     )
 
 
-def test_assign_people_in_household_count_real(spark_session):
+def test_assign_people_in_household_count_integration(spark_session):
     # fmt: off
     expected_df = spark_session.createDataFrame(
         data=[(1, 2, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 3, None, None, None, None, None, None, None,3),
