@@ -333,7 +333,9 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
-    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop("id")
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+        pivoted_lookup_df["id"]
+    )
 
     for column_to_edit in columns_to_edit:
         if column_to_edit not in df.columns:
