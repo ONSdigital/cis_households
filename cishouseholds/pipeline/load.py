@@ -1,74 +1,13 @@
 import functools
 import json
 from datetime import datetime
-from typing import Callable
-from typing import List
 
 import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_filename_column
-from cishouseholds.edit import cast_columns_from_string
-from cishouseholds.edit import convert_columns_to_timestamps
-from cishouseholds.edit import rename_column_names
-from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-def extract_validate_transform_input_data(
-    dataset_name: str,
-    id_column: str,
-    resource_path: list,
-    variable_name_map: dict,
-    datetime_map: dict,
-    validation_schema: dict,
-    transformation_functions: List[Callable],
-    source_file_column: str,
-    sep: str = ",",
-    cast_to_double_columns_list: list = [],
-    include_hadoop_read_write: bool = False,
-):
-    if include_hadoop_read_write:
-        storage_config = get_config()["storage"]
-        csv_location = storage_config["csv_editing_file"]
-        filter_config = get_secondary_config(storage_config["filter_config_file"])
-
-    df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
-
-    if include_hadoop_read_write and dataset_name in filter_config:
-        filter_ids = filter_config[dataset_name]
-
-        update_table(df, f"raw_{dataset_name}")
-        update_table(df.filter(F.col(id_column).isin(filter_ids)), f"{dataset_name}_rows_extracted")
-
-        df = df.filter(~F.col(id_column).isin(filter_ids))
-        df = update_from_csv_lookup(df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column)
-
-    df = convert_columns_to_timestamps(df, datetime_map)
-    df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
-
-    for transformation_function in transformation_functions:
-        df = transformation_function(df)
-    return df
-
-
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
-    spark_session = get_or_create_spark_session()
-    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
-    return spark_session.read.csv(
-        file_paths,
-        header=True,
-        schema=spark_schema,
-        ignoreLeadingWhiteSpace=True,
-        ignoreTrailingWhiteSpace=True,
-        sep=sep,
-    )
 
 
 def update_table(df, table_name, mode_overide=None):
@@ -79,11 +18,6 @@ def update_table(df, table_name, mode_overide=None):
 def check_table_exists(table_name: str):
     spark_session = get_or_create_spark_session()
     return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
-
-
-def extract_from_table(table_name: str):
-    spark_session = get_or_create_spark_session()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -182,45 +116,47 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
 
 
-def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str, override_mode: str = None):
+def update_table_and_log_source_files(
+    df: DataFrame, filtered_df: DataFrame, table_name: str, filename_column: str, override_mode: str = None
+):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode)
-    update_processed_file_log(df, filename_column, table_name)
+    update_processed_file_log(df, filtered_df, filename_column, table_name)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, file_type: str):
+def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
     file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+
+    filtered_lengths = {file: 0 for file in newly_processed_files}
+    if filtered_df is not None:
+        filtered_files = filtered_df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+        filtered_lengths_list = (
+            filtered_df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+        )
+        for file, count in zip(filtered_files, filtered_lengths_list):
+            filtered_lengths[file] = count
+
     schema = """
         run_id integer,
         file_type string,
         processed_filename string,
         processed_datetime timestamp,
-        file_row_count integer
+        file_row_count integer,
+        filtered_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, file_type, filename, datetime.now(), row_count]
-        for filename, row_count in zip(newly_processed_files, file_lengths)
+        [run_id, file_type, filename, datetime.now(), row_count, filtered_row_count]
+        for filename, row_count, filtered_row_count in zip(
+            newly_processed_files, file_lengths, filtered_lengths.values()
+        )
     ]
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
-
-
-def extract_df_list(files):
-    dfs = {}
-    for key, file in files.items():
-        if file["file"] == "" or file["file"] is None:
-            dfs[key] = None
-        elif file["type"] == "table":
-            dfs[key] = extract_from_table(file["file"])
-        else:
-            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
-    return dfs

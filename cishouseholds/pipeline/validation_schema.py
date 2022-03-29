@@ -1,5 +1,14 @@
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
+csv_lookup_schema = {
+    "id": {"type": "string"},
+    "dataset_name": {"type": "string"},
+    "target_column_name": {"type": "string"},
+    "old_value": {"type": "string"},
+    "new_value": {"type": "string"},
+}
+
+
 swab_validation_schema = {
     "Sample": {"type": "string", "regex": r"ONS\d{8}"},
     "Result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},

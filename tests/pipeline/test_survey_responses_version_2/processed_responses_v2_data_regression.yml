@@ -277,7 +277,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_type: Phone not answered
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
@@ -581,7 +581,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: At School
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: null
@@ -892,7 +892,7 @@
   withdrawal_reason: Withdrawn
   withdrawal_reason_raw: Withdrawn
   withdrawal_type: On Holiday
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: null
@@ -1200,7 +1200,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: Living Away - For Education
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
@@ -1504,7 +1504,7 @@
   withdrawal_reason: Withdrawn
   withdrawal_reason_raw: Withdrawn
   withdrawal_type: Other
-  work_direct_contact_persons: 'No'
+  work_direct_contact_patients_clients: 'No'
   work_health_care_v1_v2: Other healthcare (e.g. mental health)
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
@@ -1521,7 +1521,7 @@
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Other occupation sector (specify)
+  work_sectors: Other occupation sector
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
@@ -1809,7 +1809,7 @@
   withdrawal_reason: Withdrawn
   withdrawal_reason_raw: Withdrawn
   withdrawal_type: null
-  work_direct_contact_persons: 'No'
+  work_direct_contact_patients_clients: 'No'
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'No'
@@ -1830,7 +1830,7 @@
   work_person_facing_now: 'No'
   work_sectors: Social care
   work_sectors_other: I don't even care.
-  work_social_care: 'No'
+  work_social_care: Yes, other social care, non-resident-facing
   work_status_v0: Employed
   work_status_v1: Employed and currently working
   work_status_v2: Employed and currently working
@@ -2117,7 +2117,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_type: On Holiday
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
@@ -2425,7 +2425,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: Doctor Appointment
-  work_direct_contact_persons: null
+  work_direct_contact_patients_clients: null
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
@@ -2440,7 +2440,7 @@
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: null
   work_person_facing_now: 'No'
-  work_sectors: Civil Service or Local Government
+  work_sectors: Civil service or Local Government
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
@@ -2729,7 +2729,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: At Work
-  work_direct_contact_persons: 'No'
+  work_direct_contact_patients_clients: 'No'
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'No'
@@ -2748,7 +2748,7 @@
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
   work_person_facing_now: 'No'
-  work_sectors: Arts or Entertainment or Recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
   work_social_care: 'No'
@@ -3038,7 +3038,7 @@
   withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_type: Other
-  work_direct_contact_persons: 'Yes'
+  work_direct_contact_patients_clients: 'Yes'
   work_health_care_v1_v2: Secondary care (e.g. hospital)
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
@@ -3059,7 +3059,7 @@
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
   work_person_facing_now: 'No'
-  work_sectors: Art or entertainment or recreation
+  work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
   work_status_v0: Student

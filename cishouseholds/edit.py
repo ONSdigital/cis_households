@@ -1,8 +1,5 @@
 import re
-from functools import reduce
 from itertools import chain
-from operator import add
-from operator import and_
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -11,7 +8,18 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import sum_within_row
+
+
+def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+    """Edit existing column to value when a value is present in any of the listed columns."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+    )
+    return df
 
 
 def update_column_if_ref_in_list(
@@ -97,13 +105,7 @@ def update_participant_not_consented(
     non_consent_count = F.size(
         F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
     )
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(
-            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
-            non_consent_count,
-        ).otherwise(F.col(column_name_to_update)),
-    )
+    df = df.withColumn(column_name_to_update, non_consent_count)
     return df
 
 
@@ -133,7 +135,10 @@ def update_face_covering_outside_of_home(
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
@@ -141,12 +146,17 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
@@ -154,14 +164,14 @@ def update_face_covering_outside_of_home(
             (F.col(covered_enclosed_column) == "My face is already covered")
             & (
                 (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_work_column).isNull())
+                | F.col(covered_work_column).isNull()
             ),
             "My face is already covered",
         )
         .when(
             (
                 (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
-                | (F.col(covered_enclosed_column).isNull())
+                | F.col(covered_enclosed_column).isNull()
             )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
@@ -295,44 +305,50 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
-    Update specific cell values from a map contained in a csv file.
-    Allows a match on Null old values.
+    Edit values in df based on old to new mapping in lookup_df
+    Expected columns on lookup_df:
+    - id
+    - dataset_name
+    - target_column_name
+    - old_value
+    - new_value
+    """
 
-    Parameters
-    ----------
-    df
-    csv_filepath
-    id_column
-        column in dataframe containing unique identifier
-    """
-    if csv_filepath == "" or csv_filepath is None:
-        return df
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
-    csv = (
-        csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
-        .groupBy("id")
+    if dataset_name is not None:
+        lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
+
+    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+
+    pivoted_lookup_df = (
+        lookup_df.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+        pivoted_lookup_df["id"]
+    )
 
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
-    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
-    for col in cols:
-        df = df.withColumn(
-            col,
+    for column_to_edit in columns_to_edit:
+        if column_to_edit not in df.columns:
+            print(
+                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+            )  # functional
+            continue
+        edited_df = edited_df.withColumn(
+            column_to_edit,
             F.when(
-                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
-                F.col(f"{col}_new_value"),
-            ).otherwise(F.col(col)),
+                F.col(column_to_edit).eqNullSafe(
+                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                ),
+                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+            ).otherwise(F.col(column_to_edit)),
         )
 
-    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
-    return df.drop(*drop_list)
+    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+    return edited_df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -730,10 +746,10 @@ def edit_to_sum_or_max_value(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(reduce(and_, [F.col(col).isNull() for col in [column_name_to_assign, *columns_to_sum]]), None)
+        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
-            F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
+            F.least(F.lit(max_value), sum_within_row(columns_to_sum)),
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("integer"),
