@@ -30,7 +30,6 @@ def test_aggregated_output(spark_session):
             col_2_min integer
         """,
     )
-
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -46,15 +45,17 @@ def test_aggregated_output(spark_session):
             col_2_min integer
         """,
     )
-
+    # aggregated groupby
     output_df_gr = aggregated_output_groupby(
         df=input_df,
         column_group="id",
-        apply_function_list=[F.max("col_1"), F.min("col_2")],
+        column_name_list=["col_1", "col_2"],
+        apply_function_list=["max", "min"],
         column_name_to_assign_list=["col_1_max", "col_2_min"],
     )
     assert_df_equality(expected_df, output_df_gr, ignore_column_order=True, ignore_row_order=True)
 
+    # aggregated window
     input_df_w = input_df.drop("col_1_max", "col_2_min")
 
     output_df_w = aggregated_output_window(
