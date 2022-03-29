@@ -16,7 +16,7 @@ def test_update_participant_not_consented(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, 0, 0, 1),
-            (1, None, 0, 0),
+            (0, None, 0, 0),
             (2, 0, 1, 1),
         ],
         schema="""count integer, p1_age integer, p2_age integer, p3_age integer""",
