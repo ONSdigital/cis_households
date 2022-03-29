@@ -1,8 +1,5 @@
 import re
-from functools import reduce
 from itertools import chain
-from operator import add
-from operator import and_
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -11,13 +8,16 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import sum_within_row
 
-def update_travel_column(df: DataFrame, travelled_column: str, country_column, travel_date_column: str):
+
+def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+    """Edit existing column to value when a value is present in any of the listed columns."""
     df = df.withColumn(
-        travelled_column,
-        F.when((F.col(country_column).isNotNull()) | (F.col(travel_date_column).isNotNull()), "Yes").otherwise(
-            F.col(travelled_column)
-        ),
+        column_name_to_assign,
+        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
     )
     return df
 
@@ -752,10 +752,10 @@ def edit_to_sum_or_max_value(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(reduce(and_, [F.col(col).isNull() for col in [column_name_to_assign, *columns_to_sum]]), None)
+        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
-            F.least(F.lit(max_value), reduce(add, [F.coalesce(F.col(x), F.lit(0)) for x in columns_to_sum])),
+            F.least(F.lit(max_value), sum_within_row(columns_to_sum)),
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("integer"),
