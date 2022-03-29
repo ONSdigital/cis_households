@@ -1,6 +1,7 @@
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_people_in_household_count
+from cishouseholds.edit import update_participant_not_consented
 
 
 def test_assign_people_in_household_count(spark_session):
@@ -35,19 +36,28 @@ def test_assign_people_in_household_count(spark_session):
 
 
 def test_assign_people_in_household_count_real(spark_session):
+    # fmt: off
     expected_df = spark_session.createDataFrame(
-        data=[
-            (1,0,0,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None),
-            (1,None,None,None,0,0,0,None,0,None,0,None,None,None,None,None,None,None,None),
-            (1,None,None,0,0,0,0,0,0,0,29,0,0,0,0,0,0,0,0),
-            (1,None,None,0,3,2,0,0,0,0,29,0,0,0,0,0,0,0,0)
+        data=[(1, 0, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 3, None, None, None, None, None, None, None,0),
+                (1, 0, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 3, None, None, None, None, None, None, None,0),
+                (2, 0, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 16, None, None, None, None, None, None, None,0),
+                (2, 0, 0, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 16, None, None, None, None, None, None, None,0),
+                (3, 0, None, None, 0, 0, 0, None, 0, None, 0, None, None, None, None, None, None, None, None, 0, 0, 0, 0, 0, 0, 0, 0,0),
+                (3, 0, None, None, 0, 0, 0, None, 0, None, 0, None, None, None, None, None, None, None, None, 0, 0, 0, 0, 0, 0, 0, 0,0),
+                (4, 0, None, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0),
+                (4, 0, None, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0),
+                (5, 0, None, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,0),
+                (5, 0, None, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,0),
         ],
-        schema="count integer, non_consent integer, i1 integer, i2 integer, i3 integer, i4 integer, i5 integer, i6 integer, i7 integer, i8 integer, p1 integer, p2 integer, p3 integer, p4 integer, p5 integer, p6 integer, p7 integer, p8 integer, total_count integer",
+        schema="id integer, participant_count integer, non_consent_count integer, i1 integer, i2 integer, i3 integer, i4 integer, i5 integer, i6 integer, i7 integer, i8 integer, p1 integer, p2 integer, p3 integer, p4 integer, p5 integer, p6 integer, p7 integer, p8 integer, pn1 integer,pn2 integer, pn3 integer, pn4 integer, pn5 integer, pn6 integer, pn7 integer, pn8 integer, total_count integer",
     )
+    # fmt: on
     input_df = expected_df.drop("total_count")
     input_df.show()
+    input_df = update_participant_not_consented(input_df, "non_consent_count", r"pn[1-8]")
+    input_df.show()
     output_df = assign_people_in_household_count(
-        input_df, "total_count", r"i[1-8]", r"i[1-5,7,8]", r"p[1-8]", "count", "non_consent"
+        input_df, "total_count", r"i[1-8]", r"i[1-5,7,8]", r"p[1-8]", "participant_count", "non_consent_count"
     )
     output_df.show()
     assert_df_equality(

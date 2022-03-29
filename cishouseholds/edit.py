@@ -107,13 +107,7 @@ def update_participant_not_consented(
     non_consent_count = F.size(
         F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
     )
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(
-            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
-            non_consent_count,
-        ).otherwise(F.col(column_name_to_update)),
-    )
+    df = df.withColumn(column_name_to_update,non_consent_count)
     return df
 
 
