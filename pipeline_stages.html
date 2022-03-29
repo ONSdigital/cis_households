@@ -356,22 +356,23 @@ Either value level editing or filtering editing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_responses_table</strong> – table in which editing happens</p></li>
+<li><p><strong>survey_responses_table</strong> – HIVE table containing responses to edit</p></li>
 <li><p><strong>csv_editing_file</strong> – <p>defines the editing from old values to new values in the HIVE tables
 Columns expected</p>
 <blockquote>
 <div><ul>
-<li><p>unique id</p></li>
-<li><p>column name to edit</p></li>
-<li><p>old value</p></li>
-<li><p>new value</p></li>
+<li><p>id</p></li>
+<li><p>dataset_name</p></li>
+<li><p>target_column</p></li>
+<li><p>old_value</p></li>
+<li><p>new_value</p></li>
 </ul>
 </div></blockquote>
 </p></li>
 <li><p><strong>unique_id_column</strong> – unique id that will be edited</p></li>
 <li><p><strong>unique_id_list</strong> – list of ids to be filtered</p></li>
-<li><p><strong>edited_survey_responses_table</strong> – Hive table</p></li>
-<li><p><strong>filtered_survey_responses_table</strong> – Hive table when they have been filtered out from survey responses</p></li>
+<li><p><strong>edited_survey_responses_table</strong> – HIVE table to write edited responses</p></li>
+<li><p><strong>filtered_survey_responses_table</strong> – HIVE table when they have been filtered out from survey responses</p></li>
 </ul>
 </dd>
 </dl>
