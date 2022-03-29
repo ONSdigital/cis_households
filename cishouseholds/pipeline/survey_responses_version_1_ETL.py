@@ -28,9 +28,16 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
         },
         "household_been_hospital_last_28_days": been_value_map,
         "household_been_care_home_last_28_days": been_value_map,
+        "times_outside_shopping_or_socialising_last_7_days": {
+            "None": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7 times or more": 7,
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
-
-    df = df.withColumn("work_main_job_changed", F.when(F.col("work_sectors").isNotNull(), "Yes").otherwise("No"))
-
     return df

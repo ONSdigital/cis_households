@@ -2,8 +2,8 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.input_file_processing import generate_input_processing_function
-from cishouseholds.pipeline.input_file_processing import survey_responses_v1_parameters
+from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
+from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
 from dummy_data_generation.schemas import get_voyager_1_data_description
 
 

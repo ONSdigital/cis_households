@@ -1,15 +1,13 @@
 import traceback
 from datetime import datetime
 
-import cishouseholds.pipeline.input_file_processing  # noqa: F401
+import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
 import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def run_from_config():
@@ -66,7 +64,4 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
 
 
 if __name__ == "__main__":
-    spark = get_or_create_spark_session()
-    df = spark.read.csv("hdfs:///ons/covserolink/landing_zone/preimputation_data.csv", header=True)
-    update_table(df, "survey_testing_table")
     run_from_config()
