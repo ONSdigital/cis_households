@@ -325,6 +325,8 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
     if dataset_name is not None:
         lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
 
+    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+
     pivoted_lookup_df = (
         lookup_df.groupBy("id")
         .pivot("target_column_name")
@@ -333,7 +335,6 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
     )
     edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop("id")
 
-    columns_to_edit = [col[:-10] for col in lookup_df.columns if col.endswith("_old_values")]
     for column_to_edit in columns_to_edit:
         if column_to_edit not in df.columns:
             print(
@@ -343,11 +344,11 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
         edited_df = edited_df.withColumn(
             column_to_edit,
             F.when(
-                F.col(column_to_edit).eqNullSafe(F.col(f"{column_to_edit}_old_value")),
-                F.col(f"{column_to_edit}_new_value"),
-            )
-            .otherwise(F.col(column_to_edit))
-            .cast(df.schema[column_to_edit].dataType),
+                F.col(column_to_edit).eqNullSafe(
+                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                ),
+                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+            ).otherwise(F.col(column_to_edit)),
         )
 
     drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
