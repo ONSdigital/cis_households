@@ -12,9 +12,11 @@ from cishouseholds.derive import assign_filename_column
 from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
-from cishouseholds.edit import update_from_csv_lookup
+from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -52,9 +54,8 @@ def extract_validate_transform_input_data(
             df = df.filter(~F.col(id_column).isin(filter_ids))
 
         if csv_location is not None:
-            df = update_from_csv_lookup(
-                df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column
-            )
+            lookup_df = extract_lookup_csv(csv_location, csv_lookup_schema)
+            df = update_from_lookup_df(df, lookup_df, id_column=id_column, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
