@@ -7,6 +7,31 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 spark_session = get_or_create_spark_session()
 
+sample_file_column_map = {
+    "UAC": "ons_household_id",
+    "uac": "ons_household_id",
+    "lsoa_11": "lower_super_output_area_code_11",
+    "lsoa11": "lower_super_output_area_code_11",
+    "cis20cd": "cis_area_code_20",
+    "CIS20CD": "cis_area_code_20",
+    "ctry12": "country_code_12",
+    "ctry": "country_code_12",
+    "ctry_name12": "country_name_12",
+    "sample": "sample_source",
+    "sample_direct": "sample_addressbase_indicator",
+    "rgn/gor9d": "region_code",
+    "rgn": "region_code",
+    "gor9d": "region_code",
+    "laua": "local_authority_unity_authority_code",
+    "oa11oac11": "output_area_code_11_census_output_area_classification_11",
+    "oa11": "output_area_code_11_census_output_area_classification_11",
+    "msoa11": "middle_super_output_area_code_11",
+    "ru11ind": "rural_urban_classification_11",
+    "imd": "index_multiple_deprivation",
+    "date_sample_created": "date_sample_created",
+    "batch_number": "batch_number",
+}
+
 lookup_variable_name_maps = {
     "address_lookup": {
         "uprn": "unique_property_reference_code",
@@ -32,30 +57,17 @@ lookup_variable_name_maps = {
         "LAD20CD": "LAD20CD",
         "LAD20NM": "LAD20NM",
     },
-    "old_sample_file_new_sample_file": {
-        "UAC": "ons_household_id",
-        "lsoa_11": "lower_super_output_area_code_11",
-        "lsoa11": "lower_super_output_area_code_11",
-        "cis20cd": "cis_area_code_20",
-        "CIS20CD": "cis_area_code_20",
-        "ctry12": "country_code_12",
-        "ctry_name12": "country_name_12",
-        "sample": "sample_source",
-        "sample_direct": "sample_addressbase_indicator",
-        "hh_dweight_swab": "household_level_designweight_swab",
-        "dweight_hh": "household_level_designweight_swab",
-        "dweight_hh_atb": "household_level_designweight_antibodies",
-        "hh_dweight_atb": "household_level_designweight_antibodies",
-        "rgn/gor9d": "region_code",
-        "gor9d": "region_code",
-        "laua": "local_authority_unity_authority_code",
-        "oa11oac11": "output_area_code_11_census_output_area_classification_11",
-        "msoa11": "middle_super_output_area_code_11",
-        "ru11ind": "rural_urban_classification_11",
-        "imd": "index_multiple_deprivation",
-        "date_sample_created": "date_sample_created",
-        "batch_number": "batch_number",
+    "old_sample_file": {
+        **sample_file_column_map,
+        **{
+            "hh_dweight_swab": "household_level_designweight_swab",
+            "dweight_hh": "household_level_designweight_swab",
+            "dweight_hh_atb": "household_level_designweight_antibodies",
+            "hh_dweight_atb": "household_level_designweight_antibodies",
+            "tranche": "tranche",
+        },
     },
+    "new_sample_file": sample_file_column_map,
     "tranche": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
@@ -153,31 +165,23 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     iterate over keys in name map dictionary and use name map if name of df is in key.
     break out of name checking loop once a compatible name map has been found.
     """
-    validate_columns(auxillary_dfs)
     for name in auxillary_dfs.keys():
-        if auxillary_dfs[name] is not None:
-            # auxillary_dfs[name] = recode_column_patterns(auxillary_dfs[name])
-            for name_list_str in lookup_variable_name_maps.keys():
-                if name in name_list_str:
-                    if name not in ["population_projection_current", "population_projection_previous"]:
-                        auxillary_dfs[name] = auxillary_dfs[name].drop(
-                            *[
-                                col
-                                for col in auxillary_dfs[name].columns
-                                if col not in lookup_variable_name_maps[name_list_str].keys()
-                            ]
-                        )
-                    for old_name, new_name in lookup_variable_name_maps[name_list_str].items():
-                        auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
-                    break
+        if name not in ["population_projection_current", "population_projection_previous"]:
+            auxillary_dfs[name] = auxillary_dfs[name].drop(
+                *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
+            )
+        for old_name, new_name in lookup_variable_name_maps[name].items():
+            auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+    validate_columns(auxillary_dfs)
     return auxillary_dfs
 
 
 def validate_columns(dfs: DataFrame):
-    for name, df in dfs:
+    for name, df in dfs.items():
         cols = list(dict.fromkeys(lookup_variable_name_maps[name].values()))
         if not all(item in df.columns for item in cols):
-            raise ImportError("input dataframe is missing columns")
+            non_exist = [col for col in cols if col not in df.columns]
+            raise ImportError(f"input dataframe {name} is missing columns {non_exist}")
 
 
 def recode_column_values(df: DataFrame, lookup: dict):
