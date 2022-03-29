@@ -19,7 +19,7 @@ def test_update_participant_not_consented(spark_session):
             (1, None, 0, 0),
             (2, 0, 1, 1),
         ],
-        schema="""count string, p1_age integer, p2_age integer, p3_age integer""",
+        schema="""count integer, p1_age integer, p2_age integer, p3_age integer""",
     )
 
     output_df = update_participant_not_consented(input_df, "count", r"p\d{1,}_age")
