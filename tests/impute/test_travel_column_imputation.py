@@ -2,7 +2,6 @@ from chispa import assert_df_equality
 
 from cishouseholds.edit import update_travel_column
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls
 
 
 def test_travel_column_imputation(spark_session):
