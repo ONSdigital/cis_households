@@ -11,8 +11,6 @@ from pyspark.sql import DataFrame
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
-from cishouseholds.extract import extract_lookup_csv
-from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 
 
 def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
@@ -307,45 +305,50 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df.drop("TEMP")
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
-    Update specific cell values from a map contained in a csv file.
-    Allows a match on Null old values.
-
-    Parameters
-    ----------
-    df
-    csv_filepath
-    id_column
-        column in dataframe containing unique identifier
+    Edit values in df based on old to new mapping in lookup_df
+    Expected columns on lookup_df:
+    - id
+    - dataset_name
+    - target_column_name
+    - old_value
+    - new_value
     """
-    if csv_filepath == "" or csv_filepath is None:
-        return df
-    csv = extract_lookup_csv(csv_filepath, csv_lookup_schema)
 
     if dataset_name is not None:
-        csv = csv.filter(F.col("dataset_name").eqNullSafe(dataset_name))
+        lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
 
-    csv = (
-        csv.groupBy("id")
+    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+
+    pivoted_lookup_df = (
+        lookup_df.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"(.*){1,}_old_value$")
-    cols = [col[:-10] for col in list(filter(r.match, csv.columns))]
-    for col in cols:
-        df = df.withColumn(
-            col,
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+        pivoted_lookup_df["id"]
+    )
+
+    for column_to_edit in columns_to_edit:
+        if column_to_edit not in df.columns:
+            print(
+                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+            )  # functional
+            continue
+        edited_df = edited_df.withColumn(
+            column_to_edit,
             F.when(
-                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
-                F.col(f"{col}_new_value"),
-            ).otherwise(F.col(col)),
+                F.col(column_to_edit).eqNullSafe(
+                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                ),
+                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+            ).otherwise(F.col(column_to_edit)),
         )
 
-    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
-    return df.drop(*drop_list)
+    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+    return edited_df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):

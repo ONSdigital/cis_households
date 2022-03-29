@@ -2,8 +2,8 @@ import pandas as pd
 import pytest
 from mimesis.schema import Schema
 
-from cishouseholds.pipeline.input_file_processing import blood_delta_parameters
-from cishouseholds.pipeline.input_file_processing import generate_input_processing_function
+from cishouseholds.pipeline.input_file_stages import blood_delta_parameters
+from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
 from dummy_data_generation.schemas import get_blood_data_description
 
 
