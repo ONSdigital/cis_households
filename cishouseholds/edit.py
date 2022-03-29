@@ -331,6 +331,49 @@ def create_edited_df(df: DataFrame, csv: DataFrame, id_column: str) -> DataFrame
     return df.join(csv, csv.id == df[id_column], how="left").drop(csv.id), csv
 
 
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
+    """
+    Edit values in df based on old to new mapping in lookup_df
+    Expected columns on lookup_df:
+    - id
+    - dataset_name
+    - target_column_name
+    - old_value
+    - new_value
+    """
+
+    if dataset_name is not None:
+        lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
+
+    pivoted_lookup_df = (
+        lookup_df.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop("id")
+
+    columns_to_edit = [col[:-10] for col in lookup_df.columns if col.endswith("_old_values")]
+    for column_to_edit in columns_to_edit:
+        if column_to_edit not in df.columns:
+            print(
+                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+            )  # functional
+            continue
+        edited_df = edited_df.withColumn(
+            column_to_edit,
+            F.when(
+                F.col(column_to_edit).eqNullSafe(F.col(f"{column_to_edit}_old_value")),
+                F.col(f"{column_to_edit}_new_value"),
+            )
+            .otherwise(F.col(column_to_edit))
+            .cast(df.schema[column_to_edit].dataType),
+        )
+
+    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+    return edited_df.drop(*drop_list)
+
+
 def update_from_csv_lookup(df: DataFrame, csv_filepath: str, dataset_name: Union[str, None], id_column: str):
     """
     Update specific cell values from a map contained in a csv file.
