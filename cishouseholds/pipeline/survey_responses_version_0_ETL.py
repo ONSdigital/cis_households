@@ -21,15 +21,4 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
-
-    df = df.withColumn(
-        "work_main_job_changed",
-        F.when(
-            F.col("work_main_job_title").isNotNull()
-            | F.col("work_main_job_role").isNotNull()
-            | F.col("work_health_care_v0").isNotNull()
-            | F.col("work_social_care").isNotNull(),
-            "Yes",
-        ).otherwise("No"),
-    )
     return df

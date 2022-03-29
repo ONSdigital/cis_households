@@ -126,13 +126,14 @@ def assign_people_in_household_count(
 
     infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
     infant_exceptions_array = F.array(
-        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in infant_columns_with_exceptions]
+        [F.when((F.col(col).isNull()), 0).otherwise(1) for col in infant_columns_with_exceptions]
     )
     participant_array = F.array(
         [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
     )
+    infant_sum = sum([F.when(F.col(col).isNull(), 0).otherwise(F.col(col)) for col in infant_columns_with_exceptions])
 
-    infant_num = F.when(F.size(F.array_remove(infant_exceptions_array, 0)) == 0, 0).otherwise(
+    infant_num = F.when((F.size(F.array_remove(infant_exceptions_array, 0)) == 0) | (infant_sum == 0), 0).otherwise(
         F.size(F.array_remove(infant_array, 0))
     )
 
@@ -448,7 +449,8 @@ def assign_work_social_column(
             ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
             & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
             "Yes, other social care, non-resident-facing",
-        ),
+        )
+        .otherwise("No"),
     )
     return df
 
