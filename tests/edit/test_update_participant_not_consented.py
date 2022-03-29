@@ -23,4 +23,4 @@ def test_update_participant_not_consented(spark_session):
     )
 
     output_df = update_participant_not_consented(input_df, "count", r"p\d{1,}_age")
-    assert_df_equality(expected_df, output_df)
+    assert_df_equality(expected_df, output_df, ignore_nullable=True)
