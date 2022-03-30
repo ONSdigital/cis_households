@@ -681,7 +681,6 @@ def join_geographic_data(
     survey_responses_table: str,
     geographic_responses_table: str,
     id_column: str,
-    # region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
