@@ -40,6 +40,7 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import map_work_status_v2_replace_dataset_0_1
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
@@ -266,6 +267,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
+            "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
         },
     }
 
@@ -854,7 +856,12 @@ def union_dependent_derivations(df):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-
+    df = map_work_status_v2_replace_dataset_0_1(
+        df=df,
+        map_to_column="work_status_v2",
+        map_from_column="work_status_v1",
+        dataset_column="survey_response_dataset_major_version",
+    )
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
