@@ -12,7 +12,6 @@ from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
@@ -26,6 +25,7 @@ from cishouseholds.pipeline.generate_outputs import map_output_values_and_column
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
@@ -304,7 +304,9 @@ def generate_input_processing_function(
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
+def union_survey_response_files(
+    input_transformed_survey_responses_table_pattern: str, output_unioned_survey_responses_table: str
+):
     """
     Union survey response for v0, v1 and v2, and write to table.
     Parameters
@@ -317,14 +319,14 @@ def union_survey_response_files(transformed_survey_responses_table_pattern: str,
     survey_df_list = []
 
     for version in ["0", "1", "2"]:
-        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
+        survey_table = input_transformed_survey_responses_table_pattern.replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
+    union_dataframes_to_hive(output_unioned_survey_responses_table, survey_df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
-def execute_union_dependent_transformations(unioned_survey_table: str, transformed_table: str):
+def execute_union_dependent_transformations(input_unioned_survey_table: str, output_transformed_table: str):
     """
     Transformations that require the union of the different input survey response files.
     Includes combining data from different files and filling forwards or backwards over time.
@@ -335,26 +337,26 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     transformed_table
         output table name for table with applied transformations dependent on complete survey dataset
     """
-    unioned_survey_responses = extract_from_table(unioned_survey_table)
+    unioned_survey_responses = extract_from_table(input_unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
     unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
-    update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
+    update_table(unioned_survey_responses, output_transformed_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("fill_forwards_stage")
-def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
-    df = extract_from_table(unioned_survey_table)
+def fill_forwards_stage(input_unioned_survey_table: str, output_filled_forwards_table: str):
+    df = extract_from_table(input_unioned_survey_table)
     df = fill_forwards_transformations(df)
-    update_table(df, filled_forwards_table, mode_overide="overwrite")
+    update_table(df, output_filled_forwards_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
 def validate_survey_responses(
-    survey_responses_table: str,
+    input_survey_responses_table: str,
     duplicate_count_column_name: str,
     validation_failure_flag_column: str,
-    valid_survey_responses_table: str,
-    invalid_survey_responses_table: str,
+    output_valid_survey_responses_table: str,
+    output_invalid_survey_responses_table: str,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -373,14 +375,14 @@ def validate_survey_responses(
     invalid_survey_responses_table
         table containing results that failed the error checking process
     """
-    unioned_survey_responses = extract_from_table(survey_responses_table)
+    unioned_survey_responses = extract_from_table(input_survey_responses_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
-    update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
-    update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+    update_table(valid_survey_responses, output_valid_survey_responses_table, mode_overide="overwrite")
+    update_table(erroneous_survey_responses, output_invalid_survey_responses_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("lookup_based_editing")
@@ -389,7 +391,7 @@ def lookup_based_editing(
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
-    edited_table: str,
+    output_edited_table: str,
 ):
     """
     Edit columns based on mappings from lookup files. Often used to correct data quality issues.
@@ -449,12 +451,12 @@ def lookup_based_editing(
             how="left",
             on="lower_super_output_area_code_11",
         )
-    update_table(df, edited_table, mode_overide="overwrite")
+    update_table(df, output_edited_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
 def outer_join_antibody_results(
-    antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
+    input_antibody_test_result_table: str, output_joined_antibody_test_result_table: str, output_failed_join_table: str
 ):
     """
     Outer join of data for two antibody/blood test targets (S and N protein antibodies).
@@ -470,7 +472,7 @@ def outer_join_antibody_results(
         name of HIVE table to write antibody/blood test results that failed to merge.
         Specifically, those with more than two records in the unjoined data.
     """
-    blood_df = extract_from_table(antibody_test_result_table)
+    blood_df = extract_from_table(input_antibody_test_result_table)
     blood_df = blood_df.dropDuplicates(
         subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
     )
@@ -490,16 +492,16 @@ def outer_join_antibody_results(
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, joined_antibody_test_result_table, mode_overide="overwrite")
-    update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
+    update_table(blood_df, output_joined_antibody_test_result_table, mode_overide="overwrite")
+    update_table(failed_blood_join_df, output_failed_join_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
-    survey_responses_table: str,
-    antibody_table: str,
+    input_survey_responses_table: str,
+    input_antibody_table: str,
     blood_files_to_exclude: List[str],
-    antibody_output_tables: List[str],
+    output_antibody_tables: List[str],
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -521,10 +523,10 @@ def merge_blood_ETL(
             3. antibody/blood result records that failed to meet the criteria for joining
     """
 
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    antibody_df = extract_from_table(antibody_table).where(
+    antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
@@ -532,7 +534,7 @@ def merge_blood_ETL(
     survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
 
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
-    output_antibody_table_list = antibody_output_tables
+    output_antibody_table_list = output_antibody_tables
 
     load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
 
@@ -541,7 +543,10 @@ def merge_blood_ETL(
 
 @register_pipeline_stage("merge_swab_ETL")
 def merge_swab_ETL(
-    survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
+    input_survey_responses_table: str,
+    input_swab_table: str,
+    swab_files_to_exclude: List[str],
+    output_swab_tables: List[str],
 ):
     """
     High level function for joining PCR test result data to survey responses.
@@ -562,11 +567,11 @@ def merge_swab_ETL(
             2. residual PCR/swab result records, where there was no barcode match to join on
             3. PCR/swab result records that failed to meet the criteria for joining
     """
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
 
-    swab_df = extract_from_table(swab_table).where(
+    swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
     swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
@@ -575,13 +580,13 @@ def merge_swab_ETL(
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
-    load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
+    load_to_data_warehouse_tables(output_swab_df_list, output_swab_tables)
 
     return survey_antibody_swab_df
 
 
 @register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
+def join_vaccination_data(input_participant_records_table, input_nims_table, output_vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
 
@@ -594,21 +599,21 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     vaccination_data_table
         output table name for the joined nims and participant table
     """
-    participant_df = extract_from_table(participant_records_table)
-    nims_df = extract_from_table(nims_table)
+    participant_df = extract_from_table(input_participant_records_table)
+    nims_df = extract_from_table(input_nims_table)
     nims_df = nims_transformations(nims_df)
 
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
-    update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
+    update_table(participant_df, output_vaccination_data_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(
-    survey_responses_table: str,
-    imputed_values_table: str,
-    survey_responses_imputed_table: str,
+    input_survey_responses_table: str,
+    input_imputed_values_table: str,
+    output_survey_responses_imputed_table: str,
     key_columns: List[str],
 ):
     """
@@ -627,9 +632,9 @@ def impute_demographic_columns(
         names of key demographic columns to be filled forwards
     """
     imputed_value_lookup_df = None
-    if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table)
-    df = extract_from_table(survey_responses_table)
+    if check_table_exists(input_survey_responses_table):
+        imputed_value_lookup_df = extract_from_table(input_imputed_values_table)
+    df = extract_from_table(input_survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
@@ -648,12 +653,12 @@ def impute_demographic_columns(
     df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
     # update_table(imputed_values, imputed_values_table)
-    update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+    update_table(df=df_with_imputed_values, table_name=output_survey_responses_imputed_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, output_household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
@@ -670,14 +675,14 @@ def calculate_household_level_populations(
         dfs["cis_phase_lookup"],
         dfs["country_lookup"],
     )
-    update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
+    update_table(household_info_df, output_household_level_populations_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
 def join_geographic_data(
-    geographic_table: str,
-    survey_responses_table: str,
-    geographic_responses_table: str,
+    input_geographic_table: str,
+    input_survey_responses_table: str,
+    output_geographic_responses_table: str,
     id_column: str,
 ):
     """
@@ -694,17 +699,17 @@ def join_geographic_data(
     id_column
         column containing id to join the 2 input tables
     """
-    design_weights_df = extract_from_table(geographic_table)
-    survey_responses_df = extract_from_table(survey_responses_table)
+    design_weights_df = extract_from_table(input_geographic_table)
+    survey_responses_df = extract_from_table(input_survey_responses_table)
     geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
         design_weights_df, on=id_column, how="left"
     )
-    update_table(geographic_survey_df, geographic_responses_table)
+    update_table(geographic_survey_df, output_geographic_responses_table)
 
 
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
 def geography_and_imputation_dependent_processing(
-    imputed_responses_table: str,
+    input_imputed_responses_table: str,
     output_imputed_responses_table: str,
 ):
     """
@@ -717,7 +722,7 @@ def geography_and_imputation_dependent_processing(
     output_imputed_responses_table
     key_columns
     """
-    df_with_imputed_values = extract_from_table(imputed_responses_table)
+    df_with_imputed_values = extract_from_table(input_imputed_responses_table)
 
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
@@ -767,9 +772,9 @@ def report(
     unique_id_column: str,
     validation_failure_flag_column: str,
     duplicate_count_column_name: str,
-    valid_survey_responses_table: str,
-    invalid_survey_responses_table: str,
-    filtered_survey_responses_table: str,
+    input_valid_survey_responses_table: str,
+    input_invalid_survey_responses_table: str,
+    input_filtered_survey_responses_table: str,
     output_directory: str,
 ):
     """
@@ -793,9 +798,9 @@ def report(
     output_directory
         output folder location to store the report
     """
-    valid_df = extract_from_table(valid_survey_responses_table)
-    invalid_df = extract_from_table(invalid_survey_responses_table)
-    filtered_df = extract_from_table(filtered_survey_responses_table)
+    valid_df = extract_from_table(input_valid_survey_responses_table)
+    invalid_df = extract_from_table(input_invalid_survey_responses_table)
+    filtered_df = extract_from_table(input_filtered_survey_responses_table)
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -890,12 +895,12 @@ def report(
 
 @register_pipeline_stage("record_level_interface")
 def record_level_interface(
-    survey_responses_table: str,
+    input_survey_responses_table: str,
     csv_editing_file: str,
     unique_id_column: str,
     unique_id_list: List,
-    edited_survey_responses_table: str,
-    filtered_survey_responses_table: str,
+    output_edited_survey_responses_table: str,
+    output_filtered_survey_responses_table: str,
 ):
     """
     This stage does two type of edits in a given table from HIVE given an unique_id column.
@@ -922,15 +927,20 @@ def record_level_interface(
     filtered_survey_responses_table
         HIVE table when they have been filtered out from survey responses
     """
-    df = extract_from_table(survey_responses_table)
+    df = extract_from_table(input_survey_responses_table)
 
     filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
-    update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
+    update_table(df=filtered_out_df, table_name=output_filtered_survey_responses_table, mode_overide="overwrite")
 
-    lookup_df = extract_lookup_csv(csv_editing_file, csv_lookup_schema)
+    lookup_df = extract_input_data(
+        file_paths=[csv_editing_file],
+        validation_schema=csv_lookup_schema,
+        dataset_name=csv_editing_file.split("/")[-1],
+        sep="|",
+    )
     filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
-    update_table(edited_df, edited_survey_responses_table, "overwrite")
+    update_table(df=edited_df, table_name=output_edited_survey_responses_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("tables_to_csv")
@@ -987,14 +997,14 @@ def tables_to_csv(
 
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
-    household_level_populations_table,
+    input_household_level_populations_table,
     new_sample_file,
     tranche,
     cis_phase_lookup,
     postcode_lookup,
     table_or_path,
     old_sample_file,
-    design_weight_table,
+    output_design_weight_table,
 ):
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
@@ -1005,9 +1015,9 @@ def sample_file_ETL(
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
-    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
+    dfs["household_level_populations"] = extract_from_table(input_household_level_populations_table)
     design_weights = generate_weights(dfs)
-    update_table(design_weights, design_weight_table, mode_overide="overwrite")
+    update_table(design_weights, output_design_weight_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1018,8 +1028,8 @@ def population_projection(
     year: int,
     aps_lookup: str,
     table_or_path: str,
-    population_totals_table: str,
-    population_projections_table: str,
+    output_population_totals_table: str,
+    output_population_projections_table: str,
 ):
     files = {
         "population_projection_current": {"file": population_projection_current, "type": "path"},
@@ -1030,16 +1040,16 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+    update_table(populations_for_calibration, output_population_totals_table, mode_overide="overwrite")
+    update_table(population_projections, output_population_projections_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("pre_calibration")
 def pre_calibration(
-    design_weight_table,
-    individual_level_populations_for_non_response_adjustment_table,
-    survey_response_table,
-    responses_pre_calibration_table,
+    input_design_weight_table,
+    input_individual_level_populations_for_non_response_adjustment_table,
+    input_survey_response_table,
+    output_responses_pre_calibration_table,
     pre_calibration_config_path,
 ):
     """
@@ -1064,10 +1074,10 @@ def pre_calibration(
         path to YAML pre-calibration config file
     """
     pre_calibration_config = get_secondary_config(pre_calibration_config_path)
-    household_level_with_design_weights = extract_from_table(design_weight_table)
-    population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
+    household_level_with_design_weights = extract_from_table(input_design_weight_table)
+    population_by_country = extract_from_table(input_individual_level_populations_for_non_response_adjustment_table)
 
-    survey_response = extract_from_table(survey_response_table)
+    survey_response = extract_from_table(input_survey_response_table)
 
     survey_response = survey_response.select(
         "ons_household_id",
@@ -1090,4 +1100,4 @@ def pre_calibration(
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )
-    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+    update_table(df_for_calibration, output_responses_pre_calibration_table, mode_overide="overwrite")

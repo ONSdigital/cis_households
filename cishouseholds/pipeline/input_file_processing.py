@@ -1,3 +1,4 @@
+import inspect
 from typing import Callable
 from typing import List
 
@@ -8,14 +9,19 @@ from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import table_operations
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import validate_files
+
+
+class InvalidFileError(Exception):
+    pass
 
 
 def extract_validate_transform_input_data(
@@ -36,7 +42,7 @@ def extract_validate_transform_input_data(
         csv_location = storage_config["csv_editing_file"]
         filter_config = get_secondary_config(storage_config["filter_config_file"])
 
-    df = extract_input_data(resource_path, validation_schema, sep)
+    df = extract_input_data(resource_path, validation_schema, sep, dataset_name)
     df = rename_column_names(df, variable_name_map)
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
 
@@ -51,7 +57,7 @@ def extract_validate_transform_input_data(
             df = df.filter(~F.col(id_column).isin(filter_ids))
 
         if csv_location is not None:
-            lookup_df = extract_lookup_csv(csv_location, csv_lookup_schema)
+            lookup_df = extract_input_data(csv_location, csv_lookup_schema, dataset_name)
             df = update_from_lookup_df(df, lookup_df, id_column=id_column, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
@@ -62,9 +68,21 @@ def extract_validate_transform_input_data(
     return df, filtered_df
 
 
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
+def extract_input_data(file_paths: list, validation_schema: dict, sep: str, dataset_name: str = None):
+    """
+    extract and validate a csv lookup file from path with validation_schema
+    """
     spark_session = get_or_create_spark_session()
+    valid_files = True
+    if validation_schema is not None:
+        valid_files = validate_files(file_paths, validation_schema, sep)
+    if not valid_files:
+        raise InvalidFileError(f"csv file {file_paths} is not valid.")
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
+    if dataset_name in table_operations.keys() and dataset_name is not None:
+        table_operations[dataset_name]["inputs"].append(f"{dataset_name}_csv")  # type: ignore
+    else:
+        table_operations[dataset_name] = {"inputs": [f"{dataset_name}_csv"], "outputs": []}  # type: ignore
     return spark_session.read.csv(
         file_paths,
         header=True,
@@ -75,7 +93,13 @@ def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
     )
 
 
-def extract_from_table(table_name: str):
+def extract_from_table(table_name: str, chart: bool = True):
+    if chart:
+        calling_function_name = inspect.stack()[1].function
+        if calling_function_name in table_operations.keys():
+            table_operations[calling_function_name]["inputs"].append(table_name)  # type: ignore
+        else:
+            table_operations[calling_function_name] = {"inputs": [table_name], "outputs": []}
     spark_session = get_or_create_spark_session()
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
@@ -88,6 +112,5 @@ def extract_df_list(files):
         elif file["type"] == "table":
             dfs[key] = extract_from_table(file["file"])
         else:
-            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
+            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",", dataset_name=key)
     return dfs

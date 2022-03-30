@@ -175,12 +175,13 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     break out of name checking loop once a compatible name map has been found.
     """
     for name in auxillary_dfs.keys():
-        if name not in ["population_projection_current", "population_projection_previous"]:
-            auxillary_dfs[name] = auxillary_dfs[name].drop(
-                *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
-            )
-        for old_name, new_name in lookup_variable_name_maps[name].items():
-            auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+        if auxillary_dfs[name] is not None:
+            if name not in ["population_projection_current", "population_projection_previous"]:
+                auxillary_dfs[name] = auxillary_dfs[name].drop(
+                    *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
+                )
+            for old_name, new_name in lookup_variable_name_maps[name].items():
+                auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
     validate_columns(auxillary_dfs)
     return auxillary_dfs
 
@@ -188,7 +189,7 @@ def rename_and_remove_columns(auxillary_dfs: dict):
 def validate_columns(dfs: DataFrame):
     for name, df in dfs.items():
         cols = list(dict.fromkeys(lookup_variable_name_maps[name].values()))
-        if not all(item in df.columns for item in cols):
+        if df is not None and not all(item in df.columns for item in cols):
             non_exist = [col for col in cols if col not in df.columns]
             raise ImportError(f"input dataframe {name} is missing columns {non_exist}")
 

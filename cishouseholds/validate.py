@@ -83,7 +83,9 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
             missmatches = ", ".join(file_header_set.difference(expected_header_set)) + ", ".join(
                 expected_header_set.difference(file_header_set)
             )
-            error += f"\nInvalid file: Header of {file_path}:\ninconsistent values: {missmatches})\n "
+            error += (
+                f"\nInvalid file: Header of {file_path} with seperator='{sep}':\ninconsistent values: {missmatches})\n "
+            )
 
         if not valid_csv_fields:
             error += (

@@ -1,4 +1,5 @@
 import functools
+import inspect
 import json
 from datetime import datetime
 
@@ -9,8 +10,16 @@ from pyspark.sql.dataframe import DataFrame
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
+table_operations = {}  # type: ignore
 
-def update_table(df, table_name, mode_overide=None):
+
+def update_table(df: DataFrame, table_name: str, chart: bool = True, mode_overide: str = None):
+    if chart:
+        calling_function_name = inspect.stack()[1].function
+        if calling_function_name in table_operations.keys():
+            table_operations[calling_function_name]["outputs"].append(table_name)  # type: ignore
+        else:
+            table_operations[calling_function_name] = {"inputs": [], "outputs": [table_name]}
     storage_config = get_config()["storage"]
     df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
 
@@ -123,7 +132,7 @@ def update_table_and_log_source_files(
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name, override_mode)
+    update_table(df=df, table_name=table_name, mode_overide=override_mode)
     update_processed_file_log(df, filtered_df, filename_column, table_name)
 
 
