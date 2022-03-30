@@ -1,7 +1,7 @@
 import traceback
 from datetime import datetime
 
-import cishouseholds.pipeline.input_file_processing  # noqa: F401
+import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
 import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
