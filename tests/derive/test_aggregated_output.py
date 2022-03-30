@@ -60,7 +60,7 @@ def test_aggregated_output(spark_session):
 
     output_df_w = aggregated_output_window(
         df=input_df_w,
-        column_group_list=["id"],
+        column_window_list=["id"],
         column_name_list=["col_1", "col_2"],
         apply_function_list=["max", "min"],
         column_name_to_assign_list=["col_1_max", "col_2_min"],

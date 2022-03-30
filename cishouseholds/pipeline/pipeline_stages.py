@@ -1098,14 +1098,17 @@ def pre_calibration(
 
 @register_pipeline_stage("aggregated_output")
 def aggregated_output(
-    apply_window,
     apply_groupby,
-    aggregated_output,
-    column_name_to_assign_list,
+    apply_window,
+    input_table_to_aggregate,
     column_group,
     column_window_list,
-    function_list,
-    column_list_to_apply_function,
+    order_window_list,
+    apply_function_list,
+    column_name_list,
+    column_name_to_assign_list,
+    table_save_as,
+    csv_folder_location,
 ):
     """
     Parameters
@@ -1119,33 +1122,47 @@ def aggregated_output(
     function_list
     column_list_to_apply_function
     """
-    df = extract_from_table(table_name=aggregated_output)
+    df = extract_from_table(table_name=input_table_to_aggregate)
 
-    function_column_obj_list = [
-        function(column) for function, column in zip(function_list, column_list_to_apply_function)
-    ]
     if apply_groupby:
         dfg = aggregated_output_groupby(
             df=df,
             column_group=column_group,
-            apply_function_list=function_column_obj_list,
+            apply_function_list=apply_function_list,
+            column_name_list=column_name_list,
             column_name_to_assign_list=column_name_to_assign_list,
         )
-        update_table(
-            df=dfg,
-            table_name=f"{aggregated_output}_group",
-            mode_overide="overwrite",
-        )
+        table_name = f"{input_table_to_aggregate}_group"
+        if table_save_as == "table":
+            update_table(
+                df=dfg,
+                table_name=table_name,
+                mode_overide="overwrite",
+            )
+        elif table_save_as == "csv":
+            dfg.toPandas().to_csv(
+                path_or_buf=f"{csv_folder_location}{table_name}.csv",
+                header=True,
+            )
 
     if apply_window:
         dfw = aggregated_output_window(
             df=df,
-            column_group_list=column_window_list,
-            apply_function_list=function_column_obj_list,
+            column_window_list=column_window_list,
+            column_name_list=column_name_list,
+            apply_function_list=apply_function_list,
             column_name_to_assign_list=column_name_to_assign_list,
+            order_column_list=order_window_list,
         )
-        update_table(
-            df=dfw,
-            table_name=f"{aggregated_output}_window",
-            mode_overide="overwrite",
-        )
+        table_name = f"{input_table_to_aggregate}_window"
+        if table_save_as == "table":
+            update_table(
+                df=dfw,
+                table_name=table_name,
+                mode_overide="overwrite",
+            )
+        elif table_save_as == "csv":
+            dfw.toPandas().to_csv(
+                path_or_buf=f"{csv_folder_location}{table_name}.csv",
+                header=True,
+            )
