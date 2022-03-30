@@ -1098,8 +1098,7 @@ def pre_calibration(
 
 @register_pipeline_stage("aggregated_output")
 def aggregated_output(
-    apply_groupby,
-    apply_window,
+    apply_aggregate_type,
     input_table_to_aggregate,
     column_group,
     column_window_list,
@@ -1124,7 +1123,7 @@ def aggregated_output(
     """
     df = extract_from_table(table_name=input_table_to_aggregate)
 
-    if apply_groupby:
+    if apply_aggregate_type == "groupby":
         dfg = aggregated_output_groupby(
             df=df,
             column_group=column_group,
@@ -1142,7 +1141,7 @@ def aggregated_output(
         elif table_save_as == "csv":
             dfg.toPandas().to_csv(path_or_buf=f"{csv_folder_location}{table_name}.csv", header=True)
 
-    if apply_window:
+    elif apply_aggregate_type == "window":
         dfw = aggregated_output_window(
             df=df,
             column_window_list=column_window_list,
