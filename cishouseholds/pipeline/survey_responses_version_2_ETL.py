@@ -40,6 +40,7 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import map_work_status_v2_replace_dataset_0_1
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
@@ -854,7 +855,13 @@ def union_dependent_derivations(df):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-
+    # 2098 ticket placeholder
+    df = map_work_status_v2_replace_dataset_0_1(
+        df=df,
+        map_to_column="work_status_v2",
+        map_from_column="work_status_v1",
+        dataset_column="survey_response_dataset_major_version",
+    )
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
