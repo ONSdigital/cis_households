@@ -1138,7 +1138,7 @@ def aggregated_output(
                 mode_overide="overwrite",
             )
         elif table_save_as == "csv":
-            dfg.toPandas().to_csv(path_or_buf=f"{csv_folder_location}{table_name}.csv", header=True)
+            write_csv_rename(df=dfg, file_path=f"{csv_folder_location}{table_name}", sep="|", extension=".txt")
 
     elif apply_aggregate_type == "window":
         dfw = aggregated_output_window(
@@ -1157,4 +1157,4 @@ def aggregated_output(
                 mode_overide="overwrite",
             )
         elif table_save_as == "csv":
-            dfw.toPandas().to_csv(path_or_buf=f"{csv_folder_location}{table_name}.csv", header=True)
+            write_csv_rename(df=dfw, file_path=f"{csv_folder_location}{table_name}", sep="|", extension=".txt")
