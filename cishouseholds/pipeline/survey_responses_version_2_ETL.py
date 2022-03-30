@@ -856,7 +856,6 @@ def union_dependent_derivations(df):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-    # 2098 ticket placeholder
     df = map_work_status_v2_replace_dataset_0_1(
         df=df,
         map_to_column="work_status_v2",

@@ -245,10 +245,10 @@ def test_map_work_status_v2_replace_dataset_0_1(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     'a',        'a',        2),
-                (2,     None,       'a',        2), # not the datasets 0, 1 = not map
-                (3,     None,       'a',        0), # datasets 0, 1 = map
-                (4,     None,       'a',        1), # datasets 0, 1 = map
+                (1,     'a',        'b',        2),
+                (2,     None,       'b',        2), # not the datasets 0, 1 = not map
+                (3,     None,       'b',        0), # datasets 0, 1 = map
+                (4,     None,       'b',        1), # datasets 0, 1 = map
                 (5,     None,       None,       1), # from_map None = do nothing
                 (6,     'a',        None,       1),
             # from_map None = do nothing
@@ -259,10 +259,10 @@ def test_map_work_status_v2_replace_dataset_0_1(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     'a',        'a',        2),
-                (2,     None,       'a',        2),
-                (3,     'a',        'a',        0), # map
-                (4,     'a',        'a',        1), # map
+                (1,     'a',        'b',        2),
+                (2,     None,       'b',        2),
+                (3,     'b',        'b',        0), # map
+                (4,     'b',        'b',        1), # map
                 (5,     None,       None,       1),
                 (6,     'a',        None,       1),
             # fmt: on
