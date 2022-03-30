@@ -61,7 +61,11 @@ def test_aggregated_output(spark_session):
     output_df_w = aggregated_output_window(
         df=input_df_w,
         column_group_list=["id"],
-        apply_function_list=[F.max("col_1"), F.min("col_2")],
+        column_name_list=["col_1", "col_2"],
+        apply_function_list=["max", "min"],
         column_name_to_assign_list=["col_1_max", "col_2_min"],
     )
+    import pdb
+
+    pdb.set_trace()
     assert_df_equality(input_df, output_df_w, ignore_column_order=True, ignore_row_order=True)

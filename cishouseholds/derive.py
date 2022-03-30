@@ -1495,8 +1495,9 @@ def aggregated_output_groupby(
 
 def aggregated_output_window(
     df: DataFrame,
-    column_group_list: str,
-    apply_function_list,
+    column_group_list: List[str],
+    column_name_list: List[str],
+    apply_function_list: List,
     column_name_to_assign_list: List[str],
     order_column_list: List[str] = [],
 ) -> DataFrame:
@@ -1512,7 +1513,9 @@ def aggregated_output_window(
     when_condition
     """
     window = Window.partitionBy(*column_group_list).orderBy(order_column_list)
-
-    for apply_function, column_name_to_assign in zip(apply_function_list, column_name_to_assign_list):
+    function_object_list = [
+        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+    ]
+    for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
         df = df.withColumn(column_name_to_assign, apply_function.over(window))
     return df
