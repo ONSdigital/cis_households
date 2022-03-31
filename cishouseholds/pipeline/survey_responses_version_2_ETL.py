@@ -50,7 +50,7 @@ from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls
+from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -938,6 +938,7 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
+
     fill_forward_to_nulls_list = [
         "work_main_job_title",
         "work_main_job_role",
@@ -949,14 +950,14 @@ def fill_forwards_transformations(df):
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
     ]
-    df = update_to_value_if_any_not_null(df, "work_main_job_changed", "Yes", fill_forward_to_nulls_list)
-    df = fill_forward_from_last_change(
+    df = fill_forward_only_to_nulls_in_dataset(
         df=df,
-        fill_forward_columns=fill_forward_to_nulls_list,
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
+        id="participant_id",
+        date="visit_datetime",
+        changed="work_main_job_changed",
+        dataset="survey_response_dataset_major_version",
+        dataset_value=2,
+        list_fill_forward=fill_forward_to_nulls_list,
     )
 
     # TODO: uncomment for releases after R1
@@ -983,9 +984,11 @@ def fill_forwards_transformations(df):
     #        ],
     #    )
     df = update_to_value_if_any_not_null(
-        df, "been_outside_uk_since_last_visit", "Yes", ["been_outside_uk_last_country", "been_outside_uk_last_date"]
+        df=df,
+        column_name_to_assign="been_outside_uk_since_last_visit",
+        value_to_assign="Yes",
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_date"],
     )
-
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
