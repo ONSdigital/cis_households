@@ -22,7 +22,7 @@
   cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: null
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinovac
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Moderna
@@ -299,7 +299,7 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
@@ -635,7 +635,7 @@
   cis_covid_vaccine_date_4: '2022-01-05 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinopharm
   cis_covid_vaccine_type_1: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2: null
@@ -943,7 +943,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: From a research study/trial
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Don't know type
@@ -1247,7 +1247,7 @@
   cis_covid_vaccine_date_4: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'No'
-  cis_covid_vaccine_received: null
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinovac
   cis_covid_vaccine_type_1: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2: Don't know type
@@ -1553,7 +1553,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: null
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Oxford/AstraZeneca
   cis_covid_vaccine_type_1: Moderna
   cis_covid_vaccine_type_2: null
@@ -2168,7 +2168,7 @@
   cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2: Don't know type
@@ -2754,7 +2754,7 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
@@ -3064,5 +3064,5 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education

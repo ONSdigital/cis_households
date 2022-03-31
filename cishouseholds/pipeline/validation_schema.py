@@ -14,6 +14,7 @@ swab_validation_schema = {
     "Result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
     "Date Tested": {"type": "string", "nullable": True},
     "Lab ID": {"type": "string"},
+    "testKit": {"type": "string"},
     "CH1-Target": {"type": "string", "allowed": ["ORF1ab"]},
     "CH1-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
     "CH1-Cq": {"type": "double", "nullable": True, "min": 0},
