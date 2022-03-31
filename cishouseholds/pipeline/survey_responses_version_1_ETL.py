@@ -11,7 +11,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
     df = df.withColumn("work_status_v0", F.col("work_status_v1"))
-    df = df.withColumn("work_status_v0", F.col("work_status_v2"))
+    df = df.withColumn("work_status_v2", F.col("work_status_v1"))
 
     been_value_map = {"No, someone else in my household has": "No I haven’t, but someone else in my household has"}
     column_editing_map = {
