@@ -48,7 +48,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
 
-    df = df.withColumn("work_main_job_changed", F.lit(None))
+    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
 
     fill_forward_to_nulls_list_v1 = [
         "work_main_job_title",
