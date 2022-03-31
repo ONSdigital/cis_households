@@ -1,3 +1,4 @@
+from datetime import datetime
 from io import BytesIO
 
 from cishouseholds.hdfs_utils import write_string_to_file
@@ -10,7 +11,9 @@ def create_chart(test: dict, output_directory: str):
     import json
 
     bytes_data = json.dumps(test, indent=2).encode("utf-8")
-    write_string_to_file(bytes_data, f"{output_directory}/process_map.txt")
+    write_string_to_file(
+        bytes_data, f"{output_directory}/process_map-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+    )
     matplotlib.use("AGG")
     from matplotlib import pyplot as plt  # noqa: E402
 
@@ -44,7 +47,7 @@ def create_chart(test: dict, output_directory: str):
             _from.append(input)
             _to.append(stage_name)
 
-    plt.rcParams["figure.figsize"] = [15, 7]
+    plt.rcParams["figure.figsize"] = [30, 15]
     plt.rcParams["figure.autolayout"] = True
 
     df = pd.DataFrame({"from": _from, "to": _to})
@@ -52,5 +55,7 @@ def create_chart(test: dict, output_directory: str):
     nx.draw(G, with_labels=True, node_size=100, alpha=1, linewidths=10)
 
     byte_io = BytesIO()
-    plt.savefig(byte_io)
-    write_string_to_file(byte_io.read(), f"{output_directory}/process_map.png")
+    plt.savefig(byte_io, format="png")
+    write_string_to_file(
+        byte_io.getbuffer(), f"{output_directory}/process_map-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.png"
+    )

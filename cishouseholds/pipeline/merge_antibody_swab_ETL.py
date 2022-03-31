@@ -4,9 +4,9 @@ from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 
 
-def load_to_data_warehouse_tables(output_df_list, output_table_list):
+def load_to_data_warehouse_tables(output_df_list, output_table_list, processing_function_name):
     for df, table_name in zip(output_df_list, output_table_list):
-        update_table(df, table_name, mode_overide="overwrite")
+        update_table(df, table_name, mode_overide="overwrite", processing_function_name=processing_function_name)
 
 
 def merge_blood(survey_df, antibody_df):

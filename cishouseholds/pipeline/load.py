@@ -13,9 +13,13 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 table_operations = {}  # type: ignore
 
 
-def update_table(df: DataFrame, table_name: str, chart: bool = True, mode_overide: str = None):
+def update_table(
+    df: DataFrame, table_name: str, chart: bool = True, mode_overide: str = None, processing_function_name: str = None
+):
+    calling_function_name = inspect.stack()[1].function
     if chart:
-        calling_function_name = inspect.stack()[1].function
+        if processing_function_name is not None:
+            calling_function_name = processing_function_name
         if calling_function_name in table_operations.keys():
             table_operations[calling_function_name]["outputs"].append(table_name)  # type: ignore
         else:
@@ -126,13 +130,20 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
 
 
 def update_table_and_log_source_files(
-    df: DataFrame, filtered_df: DataFrame, table_name: str, filename_column: str, override_mode: str = None
+    df: DataFrame,
+    filtered_df: DataFrame,
+    table_name: str,
+    filename_column: str,
+    override_mode: str = None,
+    processing_function_name: str = None,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df=df, table_name=table_name, mode_overide=override_mode)
+    update_table(
+        df=df, table_name=table_name, mode_overide=override_mode, processing_function_name=processing_function_name
+    )
     update_processed_file_log(df, filtered_df, filename_column, table_name)
 
 

@@ -294,9 +294,12 @@ def generate_input_processing_function(
             source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
+            processing_function_name=output_table_name,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, write_mode)
+            update_table_and_log_source_files(
+                df, filtered_df, output_table_name, source_file_column, write_mode, output_table_name
+            )
         return df
 
     _inner_function.__name__ = stage_name
@@ -322,7 +325,9 @@ def union_survey_response_files(
         survey_table = input_transformed_survey_responses_table_pattern.replace("*", version)
         survey_df_list.append(extract_from_table(survey_table))
 
-    union_dataframes_to_hive(output_unioned_survey_responses_table, survey_df_list)
+    union_dataframes_to_hive(
+        output_unioned_survey_responses_table, survey_df_list, union_survey_response_files.__name__
+    )
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -536,7 +541,7 @@ def merge_blood_ETL(
     output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
     output_antibody_table_list = output_antibody_tables
 
-    load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
+    load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list, merge_blood_ETL.__name__)
 
     return survey_antibody_df
 
@@ -580,7 +585,7 @@ def merge_swab_ETL(
 
     survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
     output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
-    load_to_data_warehouse_tables(output_swab_df_list, output_swab_tables)
+    load_to_data_warehouse_tables(output_swab_df_list, output_swab_tables, merge_swab_ETL.__name__)
 
     return survey_antibody_swab_df
 
@@ -666,7 +671,7 @@ def calculate_household_level_populations(
         "country_lookup": {"file": country_lookup, "type": "path"},
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
     }
-    dfs = extract_df_list(files)
+    dfs = extract_df_list(files, calculate_household_level_populations.__name__)
     dfs = prepare_auxillary_data(dfs)
 
     household_info_df = household_level_populations(
@@ -935,8 +940,8 @@ def record_level_interface(
     lookup_df = extract_input_data(
         file_paths=[csv_editing_file],
         validation_schema=csv_lookup_schema,
-        dataset_name=csv_editing_file.split("/")[-1],
         sep="|",
+        processing_function_name=record_level_interface.__name__,
     )
     filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
@@ -1013,7 +1018,7 @@ def sample_file_ETL(
         "old_sample_file": {"file": old_sample_file, "type": table_or_path},
         "tranche": {"file": tranche, "type": "path"},
     }
-    dfs = extract_df_list(files)
+    dfs = extract_df_list(files, sample_file_ETL.__name__)
     dfs = prepare_auxillary_data(dfs)
     dfs["household_level_populations"] = extract_from_table(input_household_level_populations_table)
     design_weights = generate_weights(dfs)
@@ -1036,7 +1041,7 @@ def population_projection(
         "aps_lookup": {"file": aps_lookup, "type": "path"},
         "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
     }
-    dfs = extract_df_list(files)
+    dfs = extract_df_list(files, population_projection.__name__)
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )

@@ -31,16 +31,20 @@ def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List
     return df.drop("ROW_NUMBER")
 
 
-def union_dataframes_to_hive(output_table_name: str, dataframe_list: List[DataFrame]) -> None:
+def union_dataframes_to_hive(
+    output_table_name: str, dataframe_list: List[DataFrame], processing_function_name: str = None
+) -> None:
     """
     Sequentially append a list of dataframes to a new HIVE table. Overwrites if table exists.
     Columns are made consistent between dataframes, filling Nulls where columns were not present on all dataframes.
     """
     dataframes = prepare_for_union(tables=dataframe_list)
 
-    update_table(dataframes[0], output_table_name, mode_overide="overwrite")
+    update_table(
+        dataframes[0], output_table_name, mode_overide="overwrite", processing_function_name=processing_function_name
+    )
     for df in dataframes[1:]:
-        update_table(df, output_table_name, mode_overide="append")
+        update_table(df, output_table_name, mode_overide="append", chart=False)
 
 
 def union_multiple_tables(tables: List[DataFrame]):
