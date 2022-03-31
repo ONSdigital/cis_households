@@ -48,12 +48,13 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
 
-    fill_forward_to_nulls_list = [
+    df = df.withColumn("work_main_job_changed", F.lit(None))
+
+    fill_forward_to_nulls_list_v1 = [
         "work_main_job_title",
         "work_main_job_role",
         "work_sectors",
         "work_sectors_other",
-        # "work_health_care_v0",
         "work_health_care_v1_v2",
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
@@ -62,6 +63,6 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="work_main_job_changed",
         value_to_assign="Yes",
-        column_list=fill_forward_to_nulls_list,
+        column_list=fill_forward_to_nulls_list_v1,
     )
     return df
