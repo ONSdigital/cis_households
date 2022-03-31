@@ -1123,25 +1123,15 @@ def aggregated_output(
     df = extract_from_table(table_name=input_table_to_aggregate)
 
     if apply_aggregate_type == "groupby":
-        dfg = aggregated_output_groupby(
+        df = aggregated_output_groupby(
             df=df,
             column_group=column_group,
             apply_function_list=apply_function_list,
             column_name_list=column_name_list,
             column_name_to_assign_list=column_name_to_assign_list,
         )
-        table_name = f"{input_table_to_aggregate}_group"
-        if table_save_as == "table":
-            update_table(
-                df=dfg,
-                table_name=table_name,
-                mode_overide="overwrite",
-            )
-        elif table_save_as == "csv":
-            write_csv_rename(df=dfg, file_path=Path(f"{csv_folder_location}{table_name}"), sep=",", extension=".csv")
-
     elif apply_aggregate_type == "window":
-        dfw = aggregated_output_window(
+        df = aggregated_output_window(
             df=df,
             column_window_list=column_window_list,
             column_name_list=column_name_list,
@@ -1149,12 +1139,17 @@ def aggregated_output(
             column_name_to_assign_list=column_name_to_assign_list,
             order_column_list=order_window_list,
         )
-        table_name = f"{input_table_to_aggregate}_window"
-        if table_save_as == "table":
-            update_table(
-                df=dfw,
-                table_name=table_name,
-                mode_overide="overwrite",
-            )
-        elif table_save_as == "csv":
-            write_csv_rename(df=dfw, file_path=Path(f"{csv_folder_location}{table_name}"), sep=",", extension=".csv")
+
+    if table_save_as == "table":
+        update_table(
+            df=df,
+            table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
+            mode_overide="overwrite",
+        )
+    elif table_save_as == "csv":
+        write_csv_rename(
+            df=df,
+            file_path=Path(f"{csv_folder_location}{input_table_to_aggregate}_{apply_aggregate_type}"),
+            sep=",",
+            extension=".csv",
+        )
