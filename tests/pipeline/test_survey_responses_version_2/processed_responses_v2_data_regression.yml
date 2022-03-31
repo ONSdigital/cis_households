@@ -299,7 +299,7 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
     a problem to stay this far away from other people
@@ -2754,7 +2754,7 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
 - ability_to_socially_distance_at_work_or_school: null
   able_to_take_blood: null
@@ -3064,5 +3064,5 @@
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
-  work_status_v2: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
