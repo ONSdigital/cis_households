@@ -1,6 +1,5 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import map_work_status_v2_replace_dataset_0_1
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -236,43 +235,5 @@ def test_fill_backwards_work_status_v2(spark_session):
         condition_column_values=[1],
         date_range=["2019-01-01", "2030-01-01"],
         fill_only_backward_column_values=[1, 2, 4, 88],
-    )
-    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
-
-
-def test_map_work_status_v2_replace_dataset_0_1(spark_session):
-    schema = """id integer, to_map string, map_from string, dataset integer"""
-    input_df = spark_session.createDataFrame(
-        data=[
-            # fmt: off
-                (1,     'a',        'b',        2),
-                (2,     None,       'b',        2), # not the datasets 0, 1 = not map
-                (3,     None,       'b',        0), # datasets 0, 1 = map
-                (4,     None,       'b',        1), # datasets 0, 1 = map
-                (5,     None,       None,       1), # from_map None = do nothing
-                (6,     'a',        None,       1),
-            # from_map None = do nothing
-            # fmt: on
-        ],
-        schema=schema,
-    )
-    expected_df = spark_session.createDataFrame(
-        data=[
-            # fmt: off
-                (1,     'a',        'b',        2),
-                (2,     None,       'b',        2),
-                (3,     'b',        'b',        0), # map
-                (4,     'b',        'b',        1), # map
-                (5,     None,       None,       1),
-                (6,     'a',        None,       1),
-            # fmt: on
-        ],
-        schema=schema,
-    )
-    actual_df = map_work_status_v2_replace_dataset_0_1(
-        df=input_df,
-        map_to_column="to_map",
-        map_from_column="map_from",
-        dataset_column="dataset",
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)

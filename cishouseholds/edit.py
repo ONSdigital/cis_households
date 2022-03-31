@@ -755,31 +755,3 @@ def edit_to_sum_or_max_value(
         .cast("integer"),
     )
     return df
-
-
-def map_work_status_v2_replace_dataset_0_1(
-    df: DataFrame,
-    map_to_column: str,
-    map_from_column: str,
-    dataset_column: str,
-) -> DataFrame:
-    """
-    This function is specific to work_status_v2 var, when this is null, and dataset is 0, 1
-    it will map work_status_v2 from work_status_v1.
-    Parameters
-    ----------
-    df
-    map_to_column
-    map_from_column
-    dataset_column
-    """
-    df = df.withColumn(
-        map_to_column,
-        F.when(
-            F.col(map_to_column).isNull()
-            & F.col(map_from_column).isNotNull()
-            & ((F.col(dataset_column) == 0) | (F.col(dataset_column) == 1)),
-            F.col(map_from_column),
-        ).otherwise(F.col(map_to_column)),
-    )
-    return df
