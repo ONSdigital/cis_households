@@ -319,7 +319,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-
+    df = update_to_value_if_any_not_null(
+        df,
+        "cis_covid_vaccine_received",
+        "Yes",
+        [
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+        ],
+    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
