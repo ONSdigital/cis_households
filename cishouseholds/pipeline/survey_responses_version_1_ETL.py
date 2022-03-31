@@ -47,7 +47,6 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
         "work_main_job_role",
         "work_sectors",
         "work_sectors_other",
-        "work_social_care",
         "work_health_care_v0",
         "work_health_care_v1_v2",
         "work_nursing_or_residential_care_home",
