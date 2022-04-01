@@ -51,8 +51,9 @@ def create_chart(test: dict, output_directory: str):
     plt.rcParams["figure.autolayout"] = True
 
     df = pd.DataFrame({"from": _from, "to": _to})
+    G = nx.DiGraph
     G = nx.from_pandas_edgelist(df, "from", "to")
-    nx.draw(G, with_labels=True, node_size=100, alpha=1, linewidths=10)
+    nx.draw_networkx(G, with_labels=True, node_size=100, alpha=1, linewidths=10, arrows=True)
 
     byte_io = BytesIO()
     plt.savefig(byte_io, format="png")
