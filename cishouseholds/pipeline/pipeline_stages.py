@@ -1105,8 +1105,6 @@ def aggregated_output(
     apply_function_list,
     column_name_list,
     column_name_to_assign_list,
-    table_save_as,
-    csv_folder_location,
 ):
     """
     Parameters
@@ -1139,17 +1137,8 @@ def aggregated_output(
             column_name_to_assign_list=column_name_to_assign_list,
             order_column_list=order_window_list,
         )
-
-    if table_save_as == "table":
-        update_table(
-            df=df,
-            table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
-            mode_overide="overwrite",
-        )
-    elif table_save_as == "csv":
-        write_csv_rename(
-            df=df,
-            file_path=Path(f"{csv_folder_location}{input_table_to_aggregate}_{apply_aggregate_type}"),
-            sep=",",
-            extension=".csv",
-        )
+    update_table(
+        df=df,
+        table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
+        mode_overide="overwrite",
+    )
