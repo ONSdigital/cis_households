@@ -40,7 +40,6 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
-from cishouseholds.edit import map_work_status_v2_replace_dataset_0_1
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
@@ -51,7 +50,7 @@ from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls
+from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -240,16 +239,13 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "5y and older in full-time education": "5y and older in full-time education",  # noqa: E501
         },
         "work_status_v2": {
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
             "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",  # noqa: E501
             "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
@@ -266,7 +262,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
-            "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
         },
     }
@@ -324,7 +319,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-
+    df = update_to_value_if_any_not_null(
+        df,
+        "cis_covid_vaccine_received",
+        "Yes",
+        [
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+        ],
+    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -856,12 +861,7 @@ def union_dependent_derivations(df):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-    df = map_work_status_v2_replace_dataset_0_1(
-        df=df,
-        map_to_column="work_status_v2",
-        map_from_column="work_status_v1",
-        dataset_column="survey_response_dataset_major_version",
-    )
+
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -938,6 +938,7 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
+
     fill_forward_to_nulls_list = [
         "work_main_job_title",
         "work_main_job_role",
@@ -949,14 +950,14 @@ def fill_forwards_transformations(df):
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
     ]
-    df = update_to_value_if_any_not_null(df, "work_main_job_changed", "Yes", fill_forward_to_nulls_list)
-    df = fill_forward_from_last_change(
+    df = fill_forward_only_to_nulls_in_dataset(
         df=df,
-        fill_forward_columns=fill_forward_to_nulls_list,
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
+        id="participant_id",
+        date="visit_datetime",
+        changed="work_main_job_changed",
+        dataset="survey_response_dataset_major_version",
+        dataset_value=2,
+        list_fill_forward=fill_forward_to_nulls_list,
     )
 
     # TODO: uncomment for releases after R1
@@ -983,9 +984,11 @@ def fill_forwards_transformations(df):
     #        ],
     #    )
     df = update_to_value_if_any_not_null(
-        df, "been_outside_uk_since_last_visit", "Yes", ["been_outside_uk_last_country", "been_outside_uk_last_date"]
+        df=df,
+        column_name_to_assign="been_outside_uk_since_last_visit",
+        value_to_assign="Yes",
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_date"],
     )
-
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
