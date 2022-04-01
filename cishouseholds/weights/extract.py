@@ -32,6 +32,20 @@ sample_file_column_map = {
     "batch_number": "batch_number",
 }
 
+projections_column_map = {
+    "laua": "local_authority_unitary_authority_code",
+    "rgn": "region_code",
+    "ctry": "country_code_12",
+    "ctry_name": "country_name_12",
+    # TODO: check these names are correctly mapped
+    "laname_21": "local_authority_unitary_authority_name",
+    "ladcode_21": "local_authority_unitary_authority_code",
+    "region9charcode": "region_code",
+    "regionname": "region_name",
+    "country9charcode_09": "country_code_12",
+    "countryname_09": "country_name_12",
+}
+
 lookup_variable_name_maps = {
     "address_lookup": {
         "uprn": "unique_property_reference_code",
@@ -86,19 +100,8 @@ lookup_variable_name_maps = {
         "enrolment_date": "enrolment_date",
         "tranche": "tranche",
     },
-    "population_projection_previous_population_projection_current": {
-        "laua": "local_authority_unitary_authority_code",
-        "rgn": "region_code",
-        "ctry": "country_code_12",
-        "ctry_name": "country_name_12",
-        # TODO: check these names are correctly mapped
-        "laname_21": "local_authority_unitary_authority_name",
-        "ladcode_21": "local_authority_unitary_authority_code",
-        "region9charcode": "region_code",
-        "regionname": "region_name",
-        "country9charcode_09": "country_code_12",
-        "countryname_09": "country_name_12",
-    },
+    "population_projection_previous": projections_column_map,
+    "population_projection_current": projections_column_map,
     "aps_lookup": {
         "caseno": "person_id_aps",
         "country": "country_name",
@@ -175,12 +178,13 @@ def rename_and_remove_columns(auxillary_dfs: dict):
     break out of name checking loop once a compatible name map has been found.
     """
     for name in auxillary_dfs.keys():
-        if name not in ["population_projection_current", "population_projection_previous"]:
-            auxillary_dfs[name] = auxillary_dfs[name].drop(
-                *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
-            )
-        for old_name, new_name in lookup_variable_name_maps[name].items():
-            auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
+        if auxillary_dfs[name] is not None:
+            if name not in ["population_projection_current", "population_projection_previous"]:
+                auxillary_dfs[name] = auxillary_dfs[name].drop(
+                    *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
+                )
+            for old_name, new_name in lookup_variable_name_maps[name].items():
+                auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
     validate_columns(auxillary_dfs)
     return auxillary_dfs
 
@@ -188,7 +192,7 @@ def rename_and_remove_columns(auxillary_dfs: dict):
 def validate_columns(dfs: DataFrame):
     for name, df in dfs.items():
         cols = list(dict.fromkeys(lookup_variable_name_maps[name].values()))
-        if not all(item in df.columns for item in cols):
+        if df is not None and not all(item in df.columns for item in cols):
             non_exist = [col for col in cols if col not in df.columns]
             raise ImportError(f"input dataframe {name} is missing columns {non_exist}")
 

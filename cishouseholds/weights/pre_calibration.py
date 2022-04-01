@@ -27,13 +27,13 @@ def pre_calibration_high_level(
     """
     df = df_survey.join(
         df_dweights,
-        on=df_survey.ons_household_id == df_dweights.unique_property_reference_code,
+        on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
     df = assign_ethnicity_white(
         df=df,
         column_name_to_assign="ethnicity_white",
-        ethnicity_group_column_name="ethnicity_group",
+        ethnicity_group_column_name="ethnicity_group_corrected",
     )
     df = dataset_generation(
         df=df,
