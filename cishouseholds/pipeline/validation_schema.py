@@ -1,11 +1,11 @@
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 csv_lookup_schema = {
-    "id": "any",
-    "dataset_name": "string",
-    "target_column_name": "string",
-    "old_value": "any",
-    "new_value": "any",
+    "id": {"type": "string"},
+    "dataset_name": {"type": "string"},
+    "target_column_name": {"type": "string"},
+    "old_value": {"type": "string"},
+    "new_value": {"type": "string"},
 }
 
 

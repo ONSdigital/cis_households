@@ -26,6 +26,7 @@ def validation_calls(SparkVal):
         "visit_id": {"starts_with": r"DHV"},
         "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
         "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        # "region_code":"not_null"
     }
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
@@ -86,7 +87,7 @@ def validation_calls(SparkVal):
                 (F.col("work_social_care") == "Yes")
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_persons") == "Yes")
+                    | (F.col("work_direct_contact_patients_clients") == "Yes")
                 )
             )
             | (F.col("work_social_care") == "No")

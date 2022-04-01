@@ -416,7 +416,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_direct_contact_persons
+  name: work_direct_contact_patients_clients
   nullable: true
   type: string
 - metadata: {}

@@ -107,6 +107,8 @@ class SparkValidate:
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column
         error_message = error_message.format(", ".join(check_columns))
+        if type(check_columns) == str:
+            check_columns = [check_columns]
         return (
             F.when(sum([F.isnull(F.col(col)).cast("integer") for col in check_columns]) > 0, False).otherwise(True),
             error_message,

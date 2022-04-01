@@ -760,7 +760,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
   name: work_main_job_changed
-  nullable: false
+  nullable: true
   type: string
 type: struct

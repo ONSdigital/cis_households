@@ -8,22 +8,26 @@ import pandas as pd
 from pyspark.sql import DataFrame
 
 from cishouseholds.pyspark_utils import column_to_list
+from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import validate_files
 
 
 class InvalidFileError(Exception):
     pass
 
 
-def extract_lookup_csv(path: str, validation_schema: dict):
+def extract_lookup_csv(lookup_file_path: str, validation_schema: dict):
     """
     extract and validate a csv lookup file from path with validation_schema
     """
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(path, header=True)
-    if not all(item in csv.columns for item in validation_schema.keys()):
-        raise ImportError("input dataframe is missing columns")
-    return csv
+    spark_session = get_or_create_spark_session()
+    valid_files = validate_files(lookup_file_path, validation_schema)
+    if not valid_files:
+        raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
+    return spark_session.read.csv(
+        valid_files, header=True, schema=convert_cerberus_schema_to_pyspark(validation_schema)
+    )
 
 
 def list_contents(
@@ -109,7 +113,7 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     item_column
         name of column in table containing items to remove from list
     """
-    from cishouseholds.pipeline.load import extract_from_table
+    from cishouseholds.pipeline.input_file_processing import extract_from_table
 
     table_item_column = extract_from_table(table_name).select(item_column).distinct()
     table_items = column_to_list(table_item_column, item_column)
