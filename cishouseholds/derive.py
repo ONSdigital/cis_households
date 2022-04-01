@@ -12,21 +12,6 @@ from pyspark.sql import Window
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_additional_agreement_column(df: DataFrame, column_name_to_assign: str, consent_column: str):
-    """
-    Assign a new column to denote if a boolean 1 or 0 whether an additional visit can occur
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    consent_column
-    """
-    df = df.withColumn(
-        column_name_to_assign, F.when(F.col(consent_column) == "Yes", 1).when(F.col(consent_column) == "No", 0)
-    )
-    return df
-
-
 def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,
