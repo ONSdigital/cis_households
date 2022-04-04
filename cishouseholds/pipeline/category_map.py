@@ -13,7 +13,7 @@ _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
     "iqvia_raw_category_map": {
-        "agreed_to_additional_consent_vis": _yes_no_categories,
+        "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positiveyn": _yes_no_categories,
         "consent_contact_extra_researchyn": _yes_no_categories,
         "consent_finger_prick_a1_a3": _yes_no_categories,
