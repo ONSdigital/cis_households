@@ -14,6 +14,7 @@ from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
+from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
@@ -23,12 +24,14 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.graph_outputs import create_chart
 from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import table_operations
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
@@ -1106,3 +1109,17 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, output_responses_pre_calibration_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("graph_outputs")
+def graph_outputs(process_map_path: str = None):
+    table_operations_updated = table_operations
+    if process_map_path is not None:
+        table_operations_updated = read_file_to_string(process_map_path)
+        import ast
+
+        # convert string representation of dict to dict
+        table_operations_updated = ast.literal_eval(table_operations)  # type: ignore
+    create_chart(
+        table_operations_updated, "hdfs:///ons/covserolink/output_data"
+    )  # must specify abs file path, TODO: convert to hdfs file path

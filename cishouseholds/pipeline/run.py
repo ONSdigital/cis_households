@@ -5,10 +5,8 @@ import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
 import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.graph_outputs import create_chart
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.load import table_operations
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 
 
@@ -37,9 +35,6 @@ def run_from_config():
         raise e
     run_time = (datetime.now() - run_datetime).total_seconds()
     print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
-    create_chart(
-        table_operations, "hdfs:///ons/covserolink/output_data"
-    )  # must specify abs file path, TODO: convert to hdfs file path
     if pipeline_error_count != 0:
         add_run_status(run_id, "finished with errors")
         raise ValueError(f"Pipeline finished with {pipeline_error_count} stage(s) erroring.")
