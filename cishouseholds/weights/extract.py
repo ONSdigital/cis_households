@@ -17,6 +17,8 @@ sample_file_column_map = {
     "ctry12": "country_code_12",
     "ctry": "country_code_12",
     "ctry_name12": "country_name_12",
+    "pcd": "postcode",
+    "postcode": "postcode",
     "sample": "sample_source",
     "sample_direct": "sample_addressbase_indicator",
     "rgn/gor9d": "region_code",
@@ -28,7 +30,7 @@ sample_file_column_map = {
     "msoa11": "middle_super_output_area_code_11",
     "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
-    "date_sample_created": "date_sample_created",
+    # "date_sample_created": "date_sample_created", # this column is derived from cis phase join table
     "batch_number": "batch_number",
 }
 
@@ -51,34 +53,39 @@ lookup_variable_name_maps = {
         "uprn": "unique_property_reference_code",
         "postcode": "postcode",
         "town_name": "town_name",
-        "ctry18nm": "crtry18nm",
-        "la_code": "la_code",
+        "ctry18nm": "country_name_18",
+        "la_code": "local_authority_code",
         "ew": "ew",
         "address_type": "address_type",
         "council_tax": "council_tax",
-        "address_base_postal": "address_base_postal",
+        "address_base_postal": "addressbase_postal",
         "UPRN": "unique_property_reference_code",
         "POSTCODE": "postcode",
         "TOWN_NAME": "town_name",
-        "CTRY18NM": "crtry18nm",
-        "LA_CODE": "la_code",
+        "CTRY18NM": "country_name_18",
+        "LA_CODE": "local_authority_code",
         "EW": "ew",
         "ADDRESS_TYPE": "address_type",
         "COUNCIL_TAX": "council_tax",
-        "ADDRESSBASE_POSTAL": "address_base_postal",
+        "ADDRESSBASE_POSTAL": "addressbase_postal",
     },
     "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
-    "cis_phase_lookup": {
+    "lsoa_cis_lookup": {
         "LSOA11CD": "lower_super_output_area_code_11",
         "CIS20CD": "cis_area_code_20",
-        "LSOA11NM": "LSOA11NM",
-        "RGN19CD": "RGN19CD",
+        "LSOA11NM": "lower_super_output_area_name_11",
+        "RGN19CD": "region_code_19",
+    },
+    "cis_phase_lookup": {
+        "phase_sample": "sample_source",
+        "country": "country_name_12",
+        "issued_wc": "date_sample_created",
     },
     "country_lookup": {
         "CTRY20CD": "country_code_12",
         "CTRY20NM": "country_name_12",
-        "LAD20CD": "LAD20CD",
-        "LAD20NM": "LAD20NM",
+        "LAD20CD": "local_authority_unitary_authority_code",
+        "LAD20NM": "local_authority_unitary_authority_name",
     },
     "old_sample_file": {
         **sample_file_column_map,
@@ -91,6 +98,22 @@ lookup_variable_name_maps = {
         },
     },
     "new_sample_file": sample_file_column_map,
+    "master_sample_file": {
+        "ons_household_id": "ons_household_id",
+        "FULL_NAME": "full_name",
+        "ADDRESS_LINE_1": "address_line_1",
+        "ADDRESS_LINE_2": "address_line_2",
+        "ADDRESS_LINE_3": "address_line_3",
+        "POSTCODE": "postcode",
+        "REGION": "region",
+        "COUNTRY": "country",
+        "BLOODS": "bloods",
+        "WEEK": "week",
+        "SAMPLE_TYPE": "sample_type",
+        "UPRN": "uprn",
+        "UDPRN": "udprn",
+        "TOWN_NAME": "town_name",
+    },
     "tranche": {
         "UAC": "ons_household_id",
         "lsoa_11": "lower_super_output_area_code_11",
@@ -105,7 +128,7 @@ lookup_variable_name_maps = {
     "aps_lookup": {
         "caseno": "person_id_aps",
         "country": "country_name",
-        "ethgbeul": "ethnicity_aps_engl_wales_scot",
+        "ethgbeul": "ethnicity_aps_england_wales_scotland",
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
@@ -128,7 +151,7 @@ aps_value_map = {
         4: "Scotland",
         5: "Northen Ireland",
     },
-    "ethnicity_aps_engl_wales_scot": {
+    "ethnicity_aps_england_wales_scotland": {
         1: "white british",
         2: "white irish",
         3: "other white",
@@ -181,7 +204,15 @@ def rename_and_remove_columns(auxillary_dfs: dict):
         if auxillary_dfs[name] is not None:
             if name not in ["population_projection_current", "population_projection_previous"]:
                 auxillary_dfs[name] = auxillary_dfs[name].drop(
-                    *[col for col in auxillary_dfs[name].columns if col not in lookup_variable_name_maps[name].keys()]
+                    *[
+                        col
+                        for col in auxillary_dfs[name].columns
+                        if col
+                        not in [
+                            *list(lookup_variable_name_maps[name].keys()),
+                            *list(lookup_variable_name_maps[name].values()),
+                        ]
+                    ]
                 )
             for old_name, new_name in lookup_variable_name_maps[name].items():
                 auxillary_dfs[name] = auxillary_dfs[name].withColumnRenamed(old_name, new_name)
