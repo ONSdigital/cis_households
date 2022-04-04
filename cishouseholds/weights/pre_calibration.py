@@ -589,7 +589,11 @@ def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
     # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
     # These should have the same dweights when window function is applied.
-    check_4 = True
+    check_4 = False not in [
+        df.filter(F.col("sample_group") == "new").select(dweight_col).collect()
+        == df.filter(F.col("sample_group") == "old").select(dweight_col).collect()
+        for dweight_col in dweight_list
+    ]
     return check_1, check_2_3, check_4
 
 
