@@ -149,6 +149,25 @@
 <h1>Pipeline Stages<a class="headerlink" href="#pipeline-stages" title="Permalink to this headline">¶</a></h1>
 <p>Stages that can be run by the pipeline, when specified in the main pipeline configuration file.</p>
 <span class="target" id="module-cishouseholds.pipeline.pipeline_stages"></span><dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.aggregated_output">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">aggregated_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apply_aggregate_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_table_to_aggregate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_window_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_window_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_function_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.aggregated_output" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>apply_window</strong> – </p></li>
+<li><p><strong>apply_groupby</strong> – </p></li>
+<li><p><strong>aggregated_output</strong> – </p></li>
+<li><p><strong>column_name_to_assign_list</strong> – </p></li>
+<li><p><strong>column_group</strong> – </p></li>
+<li><p><strong>column_window_list</strong> – </p></li>
+<li><p><strong>function_list</strong> – </p></li>
+<li><p><strong>column_list_to_apply_function</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.delete_tables">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">delete_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.delete_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
