@@ -882,15 +882,17 @@ def derive_people_in_household_count(df):
     df = assign_household_under_2_count(
         df,
         column_name_to_assign="household_participants_under_2_count",
-        participant_non_consented_column_pattern=r"infant_[1-8]_age",
+        column_pattern=r"infant_[1-8]_age",
     )
     df = df.withColumn(
         "people_in_household_count",
         sum_within_row(
-            "household_participant_count",
-            "household_participants_not_consented_count",
-            "household_participants_not_present_count",
-            "household_participants_under_2_count",
+            [
+                "household_participant_count",
+                "household_participants_not_consented_count",
+                "household_participants_not_present_count",
+                "household_participants_under_2_count",
+            ]
         ),
     )
     return df
