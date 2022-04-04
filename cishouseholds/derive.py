@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Optional
 from typing import Union
@@ -9,6 +11,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.expressions import all_equal
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -108,44 +111,13 @@ def assign_household_participant_count(
     return df
 
 
-def assign_people_in_household_count(
-    df: DataFrame,
-    column_name_to_assign: str,
-    infant_column_pattern: str,
-    infant_column_pattern_with_exceptions: str,
-    participant_column_pattern: str,
-    household_participant_count_column: str,
-    non_consented_count_column: str,
-):
-    """
-    Update household count column by correcting value using null participants
-    """
-    infant_columns = [x for x in df.columns if re.match(infant_column_pattern, x)]
-    infant_columns_with_exceptions = [x for x in df.columns if re.match(infant_column_pattern_with_exceptions, x)]
-    participant_columns = [x for x in df.columns if re.match(participant_column_pattern, x)]
-
-    infant_array = F.array([F.when(F.col(col).isNull(), 0).otherwise(1) for col in infant_columns])
-    infant_exceptions_array = F.array(
-        [F.when((F.col(col).isNull()), 0).otherwise(1) for col in infant_columns_with_exceptions]
+def assign_household_under_2_count(df, column_name_to_assign: str, column_pattern: str):
+    """Count number of individuals below two from age (months) columns matching pattern."""
+    columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
+    count = reduce(
+        add, [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count]
     )
-    participant_array = F.array(
-        [F.when((F.col(col).isNull()) | (F.col(col) == 0), 0).otherwise(1) for col in participant_columns]
-    )
-    infant_sum = sum([F.when(F.col(col).isNull(), 0).otherwise(F.col(col)) for col in infant_columns_with_exceptions])
-
-    infant_num = F.when((F.size(F.array_remove(infant_exceptions_array, 0)) == 0) | (infant_sum == 0), 0).otherwise(
-        F.size(F.array_remove(infant_array, 0))
-    )
-
-    participant_num = F.size(F.array_remove(participant_array, 0))
-
-    df = df.withColumn(
-        column_name_to_assign,
-        F.col(household_participant_count_column)
-        + infant_num
-        + participant_num
-        + F.when(F.col(non_consented_count_column).isNull(), 0).otherwise(F.col(non_consented_count_column)),
-    )
+    df = df.withColumn(column_name_to_assign, F.when(~all_equal(columns_to_count, 0), count).otherwise(0))
     return df
 
 
