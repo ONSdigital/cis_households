@@ -21,9 +21,10 @@ def update_table(df, table_name, mode_overide=None):
 
 def check_table_exists(table_name: str, raise_if_missing: bool = False):
     spark_session = get_or_create_spark_session()
-    table_exists = spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
+    full_table_name = get_full_table_name(table_name)
+    table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
     if raise_if_missing and not table_exists:
-        raise TableNotFoundError(f"Table does not exist: {table_name}")
+        raise TableNotFoundError(f"Table does not exist: {full_table_name}")
     return table_exists
 
 

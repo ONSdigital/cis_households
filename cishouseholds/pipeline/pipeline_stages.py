@@ -875,7 +875,7 @@ def report(
             counts_df = pd.DataFrame(
                 {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
             )
-            name = f"{type} row counts"
+            name = f"{type}"
             counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)

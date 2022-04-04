@@ -392,6 +392,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: agreed_to_additional_consent_visit
+  nullable: true
+  type: string
+- metadata: {}
+  name: additional_consent_requirement
+  nullable: true
+  type: string
+- metadata: {}
   name: work_main_job_title
   nullable: true
   type: string
@@ -949,6 +957,14 @@ fields:
   type: string
 - metadata: {}
   name: long_covid_difficulty_concentrating
+  nullable: true
+  type: string
+- metadata: {}
+  name: long_covid_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: long_covid_noisy_breathing
   nullable: true
   type: string
 - metadata: {}
