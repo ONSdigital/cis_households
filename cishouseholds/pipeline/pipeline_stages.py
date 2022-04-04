@@ -8,10 +8,13 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import aggregated_output_groupby
+from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
-from cishouseholds.edit import update_from_csv_lookup
+from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
@@ -23,10 +26,10 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.input_file_processing import extract_df_list
+from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import check_table_exists
-from cishouseholds.pipeline.load import extract_df_list
-from cishouseholds.pipeline.load import extract_from_table
-from cishouseholds.pipeline.load import extract_validate_transform_input_data
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
@@ -41,6 +44,7 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.extract import prepare_auxillary_data
@@ -56,8 +60,6 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
-# from functools import reduce
-# from itertools import chain
 
 pipeline_stages = {}
 
@@ -653,11 +655,11 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
-        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
         "country_lookup": {"file": country_lookup, "type": "path"},
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
     }
@@ -667,7 +669,7 @@ def calculate_household_level_populations(
     household_info_df = household_level_populations(
         dfs["address_lookup"],
         dfs["postcode_lookup"],
-        dfs["cis_phase_lookup"],
+        dfs["lsoa_cis_lookup"],
         dfs["country_lookup"],
     )
     update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
@@ -679,7 +681,6 @@ def join_geographic_data(
     survey_responses_table: str,
     geographic_responses_table: str,
     id_column: str,
-    # region_column: str,
 ):
     """
     Join weights file onto survey data by household id.
@@ -697,7 +698,9 @@ def join_geographic_data(
     """
     design_weights_df = extract_from_table(geographic_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    geographic_survey_df = survey_responses_df.drop("postcode").join(design_weights_df, on=id_column, how="left")
+    geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
+        design_weights_df, on=id_column, how="left"
+    )
     update_table(geographic_survey_df, geographic_responses_table)
 
 
@@ -874,7 +877,7 @@ def report(
             counts_df = pd.DataFrame(
                 {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
             )
-            name = f"{type} row counts"
+            name = f"{type}"
             counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
@@ -903,32 +906,33 @@ def record_level_interface(
     Parameters
     ----------
     survey_responses_table
-        table in which editing happens
+        HIVE table containing responses to edit
     csv_editing_file
         defines the editing from old values to new values in the HIVE tables
         Columns expected
-            - unique id
-            - column name to edit
-            - old value
-            - new value
+            - id
+            - dataset_name
+            - target_column
+            - old_value
+            - new_value
     unique_id_column
         unique id that will be edited
     unique_id_list
         list of ids to be filtered
     edited_survey_responses_table
-        Hive table
+        HIVE table to write edited responses
     filtered_survey_responses_table
-        Hive table when they have been filtered out from survey responses
+        HIVE table when they have been filtered out from survey responses
     """
-    input_df = extract_from_table(survey_responses_table)
-    edited_df = input_df.filter(~F.col(unique_id_column).isin(unique_id_list))
-    edited_df = update_from_csv_lookup(
-        df=edited_df, dataset_name=None, csv_filepath=csv_editing_file, id_column=unique_id_column
-    )
-    update_table(edited_df, edited_survey_responses_table, "overwrite")
+    df = extract_from_table(survey_responses_table)
 
-    filtered_df = input_df.filter(F.col(unique_id_column).isin(unique_id_list))
-    update_table(filtered_df, filtered_survey_responses_table, "overwrite")
+    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
+    update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
+
+    lookup_df = extract_lookup_csv(csv_editing_file, csv_lookup_schema)
+    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
+    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
+    update_table(edited_df, edited_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("tables_to_csv")
@@ -1089,3 +1093,52 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("aggregated_output")
+def aggregated_output(
+    apply_aggregate_type,
+    input_table_to_aggregate,
+    column_group,
+    column_window_list,
+    order_window_list,
+    apply_function_list,
+    column_name_list,
+    column_name_to_assign_list,
+):
+    """
+    Parameters
+    ----------
+    apply_window
+    apply_groupby
+    aggregated_output
+    column_name_to_assign_list
+    column_group
+    column_window_list
+    function_list
+    column_list_to_apply_function
+    """
+    df = extract_from_table(table_name=input_table_to_aggregate)
+
+    if apply_aggregate_type == "groupby":
+        df = aggregated_output_groupby(
+            df=df,
+            column_group=column_group,
+            apply_function_list=apply_function_list,
+            column_name_list=column_name_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+        )
+    elif apply_aggregate_type == "window":
+        df = aggregated_output_window(
+            df=df,
+            column_window_list=column_window_list,
+            column_name_list=column_name_list,
+            apply_function_list=apply_function_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+            order_column_list=order_window_list,
+        )
+    update_table(
+        df=df,
+        table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
+        mode_overide="overwrite",
+    )

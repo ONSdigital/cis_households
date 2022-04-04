@@ -1,80 +1,17 @@
 import functools
 import json
 from datetime import datetime
-from typing import Callable
-from typing import List
 
 import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_filename_column
-from cishouseholds.edit import cast_columns_from_string
-from cishouseholds.edit import convert_columns_to_timestamps
-from cishouseholds.edit import rename_column_names
-from cishouseholds.edit import update_from_csv_lookup
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def extract_validate_transform_input_data(
-    dataset_name: str,
-    id_column: str,
-    resource_path: list,
-    variable_name_map: dict,
-    datetime_map: dict,
-    validation_schema: dict,
-    transformation_functions: List[Callable],
-    source_file_column: str,
-    sep: str = ",",
-    cast_to_double_columns_list: list = [],
-    include_hadoop_read_write: bool = False,
-):
-    if include_hadoop_read_write:
-        storage_config = get_config()["storage"]
-        csv_location = storage_config["csv_editing_file"]
-        filter_config = get_secondary_config(storage_config["filter_config_file"])
-
-    df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
-
-    filtered_df = None
-    if include_hadoop_read_write and filter_config is not None:
-        if dataset_name in filter_config:
-            filter_ids = filter_config[dataset_name]
-            filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-            update_table(df, f"raw_{dataset_name}")
-            update_table(filtered_df, f"{dataset_name}_rows_extracted")
-
-            df = df.filter(~F.col(id_column).isin(filter_ids))
-
-        if csv_location is not None:
-            df = update_from_csv_lookup(
-                df=df, csv_filepath=csv_location, dataset_name=dataset_name, id_column=id_column
-            )
-
-    df = convert_columns_to_timestamps(df, datetime_map)
-    df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
-
-    for transformation_function in transformation_functions:
-        df = transformation_function(df)
-    return df, filtered_df
-
-
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
-    spark_session = get_or_create_spark_session()
-    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
-    return spark_session.read.csv(
-        file_paths,
-        header=True,
-        schema=spark_schema,
-        ignoreLeadingWhiteSpace=True,
-        ignoreTrailingWhiteSpace=True,
-        sep=sep,
-    )
+class TableNotFoundError(Exception):
+    pass
 
 
 def update_table(df, table_name, mode_overide=None):
@@ -82,14 +19,13 @@ def update_table(df, table_name, mode_overide=None):
     df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
 
 
-def check_table_exists(table_name: str):
+def check_table_exists(table_name: str, raise_if_missing: bool = False):
     spark_session = get_or_create_spark_session()
-    return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
-
-
-def extract_from_table(table_name: str):
-    spark_session = get_or_create_spark_session()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
+    full_table_name = get_full_table_name(table_name)
+    table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
+    if raise_if_missing and not table_exists:
+        raise TableNotFoundError(f"Table does not exist: {full_table_name}")
+    return table_exists
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -232,16 +168,3 @@ def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_co
     df = spark_session.createDataFrame(entry, schema)
     table_name = get_full_table_name("processed_filenames")
     df.write.mode("append").saveAsTable(table_name)  # Always append
-
-
-def extract_df_list(files):
-    dfs = {}
-    for key, file in files.items():
-        if file["file"] == "" or file["file"] is None:
-            dfs[key] = None
-        elif file["type"] == "table":
-            dfs[key] = extract_from_table(file["file"])
-        else:
-            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
-    return dfs

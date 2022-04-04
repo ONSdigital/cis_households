@@ -113,11 +113,13 @@ def fill_forward_from_last_change(
     return df.drop("id_right", "start_datetime", "end_datetime")
 
 
-def fill_forward_only_to_nulls(
+def fill_forward_only_to_nulls_in_dataset(
     df: DataFrame,
     id: str,
     date: str,
     changed: str,
+    dataset: str,
+    dataset_value: int,
     list_fill_forward: List[str],
     changed_positive_value: str = "Yes",
 ) -> DataFrame:
@@ -140,10 +142,9 @@ def fill_forward_only_to_nulls(
     """
     window = Window.partitionBy(id).orderBy(date)
 
-    # TODO: use object
     df = df.withColumn(
         "FLAG_fill_forward",
-        (F.col(changed) != changed_positive_value) | F.col(changed).isNull(),
+        (F.col(dataset) == dataset_value) & ((F.col(changed) != changed_positive_value) | F.col(changed).isNull()),
     )
 
     for fill_forward_column in list_fill_forward:

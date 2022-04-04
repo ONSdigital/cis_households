@@ -1,11 +1,11 @@
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 csv_lookup_schema = {
-    "id": "any",
-    "dataset_name": "string",
-    "target_column_name": "string",
-    "old_value": "any",
-    "new_value": "any",
+    "id": {"type": "string"},
+    "dataset_name": {"type": "string"},
+    "target_column_name": {"type": "string"},
+    "old_value": {"type": "string"},
+    "new_value": {"type": "string"},
 }
 
 
@@ -511,6 +511,8 @@ survey_responses_v2_validation_schema = {
     "Consent_to_fingerprick_blood_samples": {"type": "string"},
     "Accepted_invite_to_fingerprick": {"type": "string"},
     "Re_consented_for_blood": {"type": "string"},
+    "Agreed_to_additional_consent_visit": {"type": "string"},
+    "Additional_Consent_Requirement": {"type": "string"},
     "What_is_the_title_of_your_main_job": {"type": "string"},
     "What_do_you_do_in_your_main_job_business": {"type": "string"},
     "Occupations_sectors_do_you_work_in": {"type": "string"},
@@ -651,6 +653,8 @@ survey_responses_v2_validation_schema = {
     "Long_Covid_Palpitations": {"type": "string"},
     "Long_Covid_Low_mood_not_enjoying_anything": {"type": "string"},
     "Long_Covid_Difficulty_concentrating": {"type": "string"},
+    "Long_Covid_Runny_nose_sneezing": {"type": "string"},
+    "Long_Covid_Noisy_breathing": {"type": "string"},
     "Have_you_been_offered_a_vaccination": {"type": "string"},
     "Vaccinated_Against_Covid": {"type": "string"},
     "Type_Of_Vaccination": {"type": "string"},
