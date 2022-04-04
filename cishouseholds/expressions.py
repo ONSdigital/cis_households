@@ -2,6 +2,7 @@ from functools import reduce
 from operator import add
 from operator import and_
 from operator import or_
+from typing import Any
 
 import pyspark.sql.functions as F
 
@@ -14,6 +15,11 @@ def any_column_not_null(column_list: list):
 def any_column_null(column_list: list):
     "Expression that evaluates true if any column is null."
     return reduce(and_, [F.col(column).isNull() for column in column_list])
+
+
+def all_equal(column_list: list, equal_to: Any):
+    "Expression that evaluates true if all columns are equal to the specified value."
+    return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
 
 
 def sum_within_row(column_list: list):
