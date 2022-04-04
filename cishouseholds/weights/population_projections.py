@@ -57,7 +57,7 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
         "ethnicity_white",
         "country_name",
         "ethnicity_aps_northen_ireland",
-        "ethnicity_aps_engl_wales_scot",
+        "ethnicity_aps_england_wales_scotland",
     )
     aps_lookup_df = assign_white_proportion(
         aps_lookup_df,

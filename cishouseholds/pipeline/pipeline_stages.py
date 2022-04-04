@@ -653,11 +653,11 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
-        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
         "country_lookup": {"file": country_lookup, "type": "path"},
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
     }
@@ -667,7 +667,7 @@ def calculate_household_level_populations(
     household_info_df = household_level_populations(
         dfs["address_lookup"],
         dfs["postcode_lookup"],
-        dfs["cis_phase_lookup"],
+        dfs["lsoa_cis_lookup"],
         dfs["country_lookup"],
     )
     update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
@@ -875,7 +875,7 @@ def report(
             counts_df = pd.DataFrame(
                 {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
             )
-            name = f"{type} row counts"
+            name = f"{type}"
             counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
