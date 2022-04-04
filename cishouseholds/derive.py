@@ -1436,3 +1436,58 @@ def derive_household_been_columns(
         .otherwise("No, no one in my household has"),
     )
     return df
+
+
+def aggregated_output_groupby(
+    df: DataFrame,
+    column_group: str,
+    apply_function_list: List[str],
+    column_name_list: List[str],
+    column_name_to_assign_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_group
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    """
+    function_object_list = [
+        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+    ]
+    return df.groupBy(column_group).agg(
+        *[
+            apply_function.alias(column_name_to_assign)
+            for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list)
+        ]
+    )
+
+
+def aggregated_output_window(
+    df: DataFrame,
+    column_window_list: List[str],
+    column_name_list: List[str],
+    apply_function_list: List,
+    column_name_to_assign_list: List[str],
+    order_column_list: List[str] = [],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_group_list
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    order_column_list
+    when_condition
+    """
+    window = Window.partitionBy(*column_window_list).orderBy(*order_column_list)
+    function_object_list = [
+        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+    ]
+    for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
+        df = df.withColumn(column_name_to_assign, apply_function.over(window))
+    return df

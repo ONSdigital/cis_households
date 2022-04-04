@@ -5,7 +5,6 @@ from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 
@@ -27,14 +26,14 @@ def pre_calibration_high_level(
     """
     df = df_survey.join(
         df_dweights,
-        on=df_survey.ons_household_id == df_dweights.unique_property_reference_code,
+        on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
-    df = assign_ethnicity_white(
-        df=df,
-        column_name_to_assign="ethnicity_white",
-        ethnicity_group_column_name="ethnicity_group",
-    )
+    # df = assign_ethnicity_white(
+    #     df=df,
+    #     column_name_to_assign="ethnicity_white",
+    #     ethnicity_group_column_name="ethnicity_group_corrected",
+    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
@@ -355,7 +354,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
         "scotland": {0: 1, 1396: 2, 2791: 3, 4186: 4, 5581: 5},
         "northern_ireland": {0: 1, 179: 2, 357: 3, 535: 4, 713: 5},
     }
-
     for country in map_index_multiple_deprivation_group_country.keys():
         df = assign_named_buckets(
             df=df,
@@ -363,7 +361,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
             column_name_to_assign=f"index_multiple_deprivation_group_{country}",
             map=map_index_multiple_deprivation_group_country[country],
         )
-
     df = df.withColumn(
         "index_multiple_deprivation_group",
         (
@@ -379,7 +376,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
 
     for country in map_index_multiple_deprivation_group_country.keys():
         df = df.drop(f"index_multiple_deprivation_group_{country}")
-
     return df
 
 
@@ -393,7 +389,6 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     df
     country_column: For northen_ireland, use country, otherwise use cis_area_code_20
     """
-
     df = df.withColumn("country_name_lower", F.lower(F.col("country_name_12")))
 
     window_list_nni = ["sample_addressbase_indicator", "cis_area_code_20", "index_multiple_deprivation_group"]
@@ -409,7 +404,6 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.count(F.col("ons_household_id")).over(w1_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
-
     w2_nni = Window.partitionBy(*window_list_nni, "response_indicator")
     w2_ni = Window.partitionBy(*window_list_ni, "response_indicator")
     df = df.withColumn(
@@ -419,12 +413,10 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.count(F.col("ons_household_id")).over(w2_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w2_ni).cast("int")),
     )
-
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
         F.when(F.col("response_indicator") != 1, 0).otherwise(F.col("total_responded_households_cis_imd_addressbase")),
     )
-
     df = df.withColumn(
         "auxiliary",
         F.when(
@@ -432,11 +424,9 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_nni),
         ).otherwise(F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_ni)),
     )
-
     df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop(
         "auxiliary", "country_name_lower"
     )
-
     return df
 
 
