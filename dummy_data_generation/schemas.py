@@ -902,6 +902,8 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Consent_to_fingerprick_blood_samples": _("choice", items=["False", "True"]),
         "Accepted_invite_to_fingerprick": _("choice", items=yes_no_none_choice),
         "Re_consented_for_blood": _("choice", items=["False", "True"]),
+        "Agreed_to_additional_consent_visit": _("choice", items=yes_no_none_choice),
+        "Additional_Consent_Requirement": _("choice", items=yes_no_none_choice),
         "What_is_the_title_of_your_main_job": _("text.sentence"),  # free text field, can be null 1 to 73
         "What_do_you_do_in_your_main_job_business": _("text.sentence"),  # free text field, can be null 1 to 333
         "Occupations_sectors_do_you_work_in": _(
