@@ -511,7 +511,7 @@ survey_responses_v2_validation_schema = {
     "Consent_to_fingerprick_blood_samples": {"type": "string"},
     "Accepted_invite_to_fingerprick": {"type": "string"},
     "Re_consented_for_blood": {"type": "string"},
-    "Agreed_to_additional_consent_visit ": {"type": "string"},
+    "Agreed_to_additional_consent_visit": {"type": "string"},
     "Additional_Consent_Requirement": {"type": "string"},
     "What_is_the_title_of_your_main_job": {"type": "string"},
     "What_do_you_do_in_your_main_job_business": {"type": "string"},
