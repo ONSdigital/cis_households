@@ -498,6 +498,8 @@ survey_responses_v2_variable_name_map = {
     "Consent_to_fingerprick_blood_samples": "consent_fingerprick_blood_samples",
     "Accepted_invite_to_fingerprick": "accepted_fingerprick_invite",
     "Re_consented_for_blood": "reconsented_blood",
+    "Agreed_to_additional_consent_visit": "agreed_to_additional_consent_visit",
+    "Additional_Consent_Requirement": "additional_consent_requirement",
     "What_is_the_title_of_your_main_job": "work_main_job_title",
     "What_do_you_do_in_your_main_job_business": "work_main_job_role",
     "Occupations_sectors_do_you_work_in": "work_sectors",
@@ -661,8 +663,6 @@ survey_responses_v2_variable_name_map = {
     "been_outside_uk_last_country": "been_outside_uk_last_country",
     "been_outside_uk_last_date": "been_outside_uk_last_date",
     "Have_you_been_outside_UK_Lastspoke": "been_outside_uk_since_last_visit",
-    "Agreed_to_additional_consent_visit": "agreed_to_additional_consent_visit",
-    "Additional_Consent_Requirement": "additional_consent_requirement",
 }
 
 
