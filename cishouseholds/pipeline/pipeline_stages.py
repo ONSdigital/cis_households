@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from io import BytesIO
 from pathlib import Path
+from pickle import NONE
 from typing import List
 from typing import Union
 
@@ -769,8 +770,9 @@ def report(
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
-    filtered_survey_responses_table: str,
     output_directory: str,
+    filtered_survey_responses_table: str = None,
+    datasets: List[str] = [],
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -795,7 +797,14 @@ def report(
     """
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
-    filtered_df = extract_from_table(filtered_survey_responses_table)
+
+    filtered_survey_responses_count = 0
+    if filtered_survey_responses_table is not None:
+        filtered_df = extract_from_table(filtered_survey_responses_table)
+        filtered_survey_responses_count = filtered_df.count()
+
+    dataset_dfs = [extract_from_table(f"{dataset_name}_rows_extracted")]
+
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -805,7 +814,6 @@ def report(
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
-    filtered_survey_responses_count = filtered_df.count()
 
     valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
     invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
@@ -832,12 +840,19 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
+                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
                 filtered_survey_responses_count,
+                *list(
+                    processed_file_log.select("file_row_count", "processed_filename")
+                    .distinct()
+                    .rdd.flatMap(lambda x: x)
+                    .collect()
+                ),
             ],
         }
     )

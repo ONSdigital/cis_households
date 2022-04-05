@@ -132,6 +132,7 @@ def household_level_populations(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
     df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")
+
     df = df.join(country_lookup, on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
