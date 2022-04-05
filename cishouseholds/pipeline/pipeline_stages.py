@@ -29,6 +29,7 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -391,6 +392,7 @@ def lookup_based_editing(
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
+    tenure_group_path: str,
     edited_table: str,
 ):
     """
@@ -405,8 +407,8 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    df = extract_from_table(input_table)
     spark = get_or_create_spark_session()
+    df = extract_from_table(input_table)
 
     cohort_lookup = spark.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
@@ -451,6 +453,17 @@ def lookup_based_editing(
             how="left",
             on="lower_super_output_area_code_11",
         )
+
+    tenure_group = spark.read.csv(tenure_group_path, header=True).select(
+        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
+    )
+
+    for key, value in tenure_group_variable_map.items():
+        tenure_group.withColumnRenamed(key, value)
+
+    # TODO: does it require schema validation?
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+
     update_table(df, edited_table, mode_overide="overwrite")
 
 
