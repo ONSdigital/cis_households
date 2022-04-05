@@ -382,6 +382,15 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
         },
+        "work_health_care_v1_v2": {
+            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
@@ -648,15 +657,6 @@ def union_dependent_cleaning(df):
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
         },
         "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
-        "work_health_care_v1_v2_raw": {
-            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
         "ability_to_socially_distance_at_work_or_school": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
             "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
