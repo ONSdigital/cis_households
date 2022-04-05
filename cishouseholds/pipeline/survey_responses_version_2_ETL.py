@@ -15,11 +15,11 @@ from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_d
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
+from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import assign_people_in_household_count
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
@@ -43,10 +43,11 @@ from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
-from cishouseholds.edit import update_participant_not_consented
+from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
@@ -381,6 +382,15 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
         },
+        "work_health_care_v1_v2": {
+            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
@@ -647,15 +657,6 @@ def union_dependent_cleaning(df):
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
         },
         "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
-        "work_health_care_v1_v2_raw": {
-            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
         "ability_to_socially_distance_at_work_or_school": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
             "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
@@ -832,26 +833,7 @@ def union_dependent_derivations(df):
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
-    df = assign_household_participant_count(
-        df,
-        column_name_to_assign="household_participant_count",
-        household_id_column="ons_household_id",
-        participant_id_column="participant_id",
-    )
-    df = update_participant_not_consented(
-        df,
-        column_name_to_update="household_participants_not_consented_count",
-        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
-    )
-    df = assign_people_in_household_count(
-        df,
-        column_name_to_assign="people_in_household_count",
-        infant_column_pattern=r"infant_[1-8]_age",
-        infant_column_pattern_with_exceptions=r"infant_[1-5,7,8]_age",
-        participant_column_pattern=r"person_[1-8]_not_present_age",
-        household_participant_count_column="household_participant_count",
-        non_consented_count_column="household_participants_not_consented_count",
-    )
+    df = derive_people_in_household_count(df)
     df = update_column_values_from_map(
         df=df,
         column="smokes_nothing_now",
@@ -875,6 +857,43 @@ def union_dependent_derivations(df):
             "Attending college or FE (including if temporarily absent)",
             "Attending university (including if temporarily absent)",
         ],
+    )
+    return df
+
+
+def derive_people_in_household_count(df):
+    """Correct counts of household member groups and sum to get total number of people in household."""
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = update_person_count_from_ages(
+        df,
+        column_name_to_assign="household_participants_not_consented_count",
+        column_pattern=r"person_[1-9]_not_consenting_age",
+    )
+    df = update_person_count_from_ages(
+        df,
+        column_name_to_assign="household_participants_not_present_count",
+        column_pattern=r"person_[1-8]_not_present_age",
+    )
+    df = assign_household_under_2_count(
+        df,
+        column_name_to_assign="household_participants_under_2_count",
+        column_pattern=r"infant_[1-8]_age",
+    )
+    df = df.withColumn(
+        "people_in_household_count",
+        sum_within_row(
+            [
+                "household_participant_count",
+                "household_participants_not_consented_count",
+                "household_participants_not_present_count",
+                "household_participants_under_2_count",
+            ]
+        ),
     )
     return df
 
