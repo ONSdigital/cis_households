@@ -1,7 +1,7 @@
 from typing import Callable
 from typing import List
-from pyspark.sql import DataFrame
 
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_filename_column
@@ -77,7 +77,7 @@ def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
     )
 
 
-def extract_from_table(table_name: str)->DataFrame:
+def extract_from_table(table_name: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     check_table_exists(table_name, raise_if_missing=True)
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
