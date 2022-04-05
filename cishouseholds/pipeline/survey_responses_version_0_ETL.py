@@ -18,7 +18,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
             "Working From Home": "Working from home",
             "Working Outside of your Home": "Working somewhere else (not your home)",
             "Not applicable": "Not applicable, not currently working",
-        },
+        },            
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     return df
