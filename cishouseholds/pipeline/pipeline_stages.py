@@ -851,9 +851,9 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *[f"{dataset_name} extracted rows" for dataset_name in list(rows_extracted_df["dataset_name"])],
-                *[f"{dataset_name} raw rows" for dataset_name in list(raw_rows_df["dataset_name"])],
-                *[f"{dataset_name} transformed rows" for dataset_name in list(transformed_rows_df["dataset_name"])],
+                *[f"extracted {dataset_name}" for dataset_name in list(rows_extracted_df["dataset_name"])],
+                *[f"raw {dataset_name}" for dataset_name in list(raw_rows_df["dataset_name"])],
+                *[f"transformed {dataset_name}" for dataset_name in list(transformed_rows_df["dataset_name"])],
             ],
             "count": [
                 invalid_files_count,
