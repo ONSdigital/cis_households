@@ -3,6 +3,7 @@ from datetime import timedelta
 from io import BytesIO
 from pathlib import Path
 from pickle import NONE
+import subprocess
 from typing import List
 from typing import Union
 
@@ -18,7 +19,7 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
-from cishouseholds.hdfs_utils import read_header
+from cishouseholds.hdfs_utils import create_dir, delete_dir, read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
@@ -135,11 +136,13 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
 
 
 @register_pipeline_stage("generate_dummy_data")
-def generate_dummy_data(output_directory):
-    raw_dir = Path(output_directory) / "generated_data"
-    swab_dir = raw_dir / "swab"
-    blood_dir = raw_dir / "blood"
-    survey_dir = raw_dir / "survey"
+def generate_dummy_data(output_directory:str,purge_existing:bool=False):
+    raw_dir = Path(output_directory)
+    swab_dir = raw_dir / "swabs"
+    blood_dir = raw_dir / "bloods"
+    survey_v0_dir = raw_dir / "responses_v0"
+    survey_v1_dir = raw_dir / "responses_v1"
+    survey_v2_dir = raw_dir / "responses_v2"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -149,7 +152,9 @@ def generate_dummy_data(output_directory):
     for directory in [
         swab_dir,
         blood_dir,
-        survey_dir,
+        survey_v0_dir,
+        survey_v1_dir,
+        survey_v2_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -157,8 +162,10 @@ def generate_dummy_data(output_directory):
         historic_swabs_dir,
         historic_survey_dir,
     ]:
-        directory.mkdir(parents=True, exist_ok=True)
-
+        if purge_existing:
+            delete_dir(str(directory))
+        create_dir(str(directory))
+    
     file_datetime = datetime.now()
     lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
     lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
@@ -207,13 +214,13 @@ def generate_dummy_data(output_directory):
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
 
     generate_survey_v0_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v0_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
     generate_survey_v1_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v1_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
     v2 = generate_survey_v2_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v2_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()
@@ -805,7 +812,7 @@ def report(
         filtered_survey_responses_count = filtered_df.count()
     
     processed_file_log = extract_from_table("processed_filenames")
-    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(F.sum('rows_extracted').alias('total_dataset_rows_extracted'))
+    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(F.sum('filtered_row_count').alias('total_dataset_rows_extracted'))
     dataset_names = list(dataset_grouped_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     extracted_counts = list(dataset_grouped_df.select("dataset_name","total_dataset_rows_extracted").distinct().drop("dataset_name").rdd.flatMap(lambda x: x).collect())
 
@@ -883,11 +890,11 @@ def report(
                 .rdd.flatMap(lambda x: x)
                 .collect()
             )
-            counts_df = pd.DataFrame(
+            individual_counts_df = pd.DataFrame(
                 {"dataset": processed_file_names, "count": processed_file_counts}
             )
             name = f"{type}"
-            counts_df.to_excel(writer, sheet_name=name, index=False)
+            individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
