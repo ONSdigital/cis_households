@@ -814,13 +814,9 @@ def report(
         filtered_survey_responses_count = filtered_df.count()
 
     processed_file_log = extract_from_table("processed_filenames")
-<<<<<<< HEAD
-    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(F.sum('filtered_row_count').alias('total_dataset_rows_extracted'))
-=======
     dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
         F.sum("rows_extracted").alias("total_dataset_rows_extracted")
     )
->>>>>>> 3451ed84a5d5524b6814bd3ef4f68d9835c17a65
     dataset_names = list(dataset_grouped_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     extracted_counts = list(
         dataset_grouped_df.select("dataset_name", "total_dataset_rows_extracted")
@@ -905,13 +901,9 @@ def report(
                 .rdd.flatMap(lambda x: x)
                 .collect()
             )
-<<<<<<< HEAD
             individual_counts_df = pd.DataFrame(
                 {"dataset": processed_file_names, "count": processed_file_counts}
             )
-=======
-            counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
->>>>>>> 3451ed84a5d5524b6814bd3ef4f68d9835c17a65
             name = f"{type}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
