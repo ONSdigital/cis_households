@@ -425,7 +425,9 @@ def lookup_based_editing(
             cis_rural_urban_classification string,
             rural_urban_classification_11 string
         """,
-    )
+    ).drop(
+        "rural_urban_classification_11"
+    )  # Prefer version from sample
     df = df.join(
         F.broadcast(cohort_lookup),
         how="left",
@@ -445,7 +447,6 @@ def lookup_based_editing(
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
     if "lower_super_output_area_code_11" in df.columns:
-        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
         df = df.join(
             F.broadcast(rural_urban_lookup_df),
             how="left",
