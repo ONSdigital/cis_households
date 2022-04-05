@@ -1022,9 +1022,9 @@ def sample_file_ETL(
     output_design_weight_table,
 ):
     table_or_path = "path"
-    if check_table_exists(design_weight_table):
+    if check_table_exists(output_design_weight_table):
         table_or_path = "table"
-        old_sample_file = design_weight_table
+        old_sample_file = output_design_weight_table
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
         "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
@@ -1035,15 +1035,9 @@ def sample_file_ETL(
     }
     dfs = extract_df_list(files, sample_file_ETL.__name__)
     dfs = prepare_auxillary_data(dfs)
-<<<<<<< HEAD
     dfs["household_level_populations"] = extract_from_table(input_household_level_populations_table)
     design_weights = generate_weights(dfs)
     update_table(design_weights, output_design_weight_table, mode_overide="overwrite")
-=======
-    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(dfs, table_or_path)
-    update_table(design_weights, design_weight_table, mode_overide="append")
->>>>>>> origin/main
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1058,9 +1052,9 @@ def population_projection(
     output_population_projections_table: str,
 ):
     table_or_path = "path"
-    if check_table_exists(population_projections_table):
+    if check_table_exists(output_population_projections_table):
         table_or_path = "table"
-        population_projection_previous = population_projections_table
+        population_projection_previous = output_population_projections_table
     files = {
         "population_projection_current": {"file": population_projection_current, "type": "path"},
         "aps_lookup": {"file": aps_lookup, "type": "path"},
@@ -1070,13 +1064,8 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
-<<<<<<< HEAD
     update_table(populations_for_calibration, output_population_totals_table, mode_overide="overwrite")
     update_table(population_projections, output_population_projections_table, mode_overide="overwrite")
-=======
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="append")
->>>>>>> origin/main
 
 
 @register_pipeline_stage("pre_calibration")
@@ -1135,7 +1124,6 @@ def pre_calibration(
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )
-<<<<<<< HEAD
     update_table(df_for_calibration, output_responses_pre_calibration_table, mode_overide="overwrite")
 
 
@@ -1151,55 +1139,3 @@ def graph_outputs(process_map_path: str = None):
     create_chart(
         table_operations_updated, "hdfs:///ons/covserolink/output_data"
     )  # must specify abs file path, TODO: convert to hdfs file path
-=======
-    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
-
-
-@register_pipeline_stage("aggregated_output")
-def aggregated_output(
-    apply_aggregate_type,
-    input_table_to_aggregate,
-    column_group,
-    column_window_list,
-    order_window_list,
-    apply_function_list,
-    column_name_list,
-    column_name_to_assign_list,
-):
-    """
-    Parameters
-    ----------
-    apply_window
-    apply_groupby
-    aggregated_output
-    column_name_to_assign_list
-    column_group
-    column_window_list
-    function_list
-    column_list_to_apply_function
-    """
-    df = extract_from_table(table_name=input_table_to_aggregate)
-
-    if apply_aggregate_type == "groupby":
-        df = aggregated_output_groupby(
-            df=df,
-            column_group=column_group,
-            apply_function_list=apply_function_list,
-            column_name_list=column_name_list,
-            column_name_to_assign_list=column_name_to_assign_list,
-        )
-    elif apply_aggregate_type == "window":
-        df = aggregated_output_window(
-            df=df,
-            column_window_list=column_window_list,
-            column_name_list=column_name_list,
-            apply_function_list=apply_function_list,
-            column_name_to_assign_list=column_name_to_assign_list,
-            order_column_list=order_window_list,
-        )
-    update_table(
-        df=df,
-        table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
-        mode_overide="overwrite",
-    )
->>>>>>> origin/main
