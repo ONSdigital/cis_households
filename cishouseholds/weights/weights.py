@@ -141,7 +141,7 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
 # - cis_area_code_20
 # - unique_property_reference_code
 def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
+    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
     Steps:

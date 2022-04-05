@@ -2,8 +2,6 @@ from datetime import datetime
 from datetime import timedelta
 from io import BytesIO
 from pathlib import Path
-from pickle import NONE
-import subprocess
 from typing import List
 from typing import Union
 
