@@ -28,6 +28,7 @@ def update_table(
     storage_config = get_config()["storage"]
     df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
 
+
 class TableNotFoundError(Exception):
     pass
 
