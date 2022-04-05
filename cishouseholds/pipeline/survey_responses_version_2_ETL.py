@@ -1,6 +1,7 @@
 # flake8: noqa
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_from_mapped_list_key
@@ -884,17 +885,22 @@ def derive_people_in_household_count(df):
         column_name_to_assign="household_participants_under_2_count",
         column_pattern=r"infant_[1-8]_age",
     )
+
+    household_window = Window.partitionBy("ons_household_id")
     df = df.withColumn(
         "people_in_household_count",
-        sum_within_row(
-            [
-                "household_participant_count",
-                "household_participants_not_consented_count",
-                "household_participants_not_present_count",
-                "household_participants_under_2_count",
-            ]
-        ),
+        F.max(
+            sum_within_row(
+                [
+                    "household_participant_count",
+                    "household_participants_not_consented_count",
+                    "household_participants_not_present_count",
+                    "household_participants_under_2_count",
+                ]
+            ),
+        ).over(household_window),
     )
+
     return df
 
 
