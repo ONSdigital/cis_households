@@ -1,12 +1,7 @@
-import subprocess
 from datetime import datetime
 from datetime import timedelta
 from io import BytesIO
 from pathlib import Path
-<<<<<<< HEAD
-=======
-from pickle import NONE
->>>>>>> 46dda43d0715a7fce1a763a8ba3409f8d219ef3a
 from typing import List
 from typing import Union
 
