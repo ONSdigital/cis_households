@@ -299,7 +299,9 @@ def generate_input_processing_function(
             cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode)
+            update_table_and_log_source_files(
+                df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+            )
         return df
 
     _inner_function.__name__ = stage_name
@@ -803,11 +805,19 @@ def report(
     if filtered_survey_responses_table is not None:
         filtered_df = extract_from_table(filtered_survey_responses_table)
         filtered_survey_responses_count = filtered_df.count()
-    
+
     processed_file_log = extract_from_table("processed_filenames")
-    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(F.sum('rows_extracted').alias('total_dataset_rows_extracted'))
+    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
+        F.sum("rows_extracted").alias("total_dataset_rows_extracted")
+    )
     dataset_names = list(dataset_grouped_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
-    extracted_counts = list(dataset_grouped_df.select("dataset_name","total_dataset_rows_extracted").distinct().drop("dataset_name").rdd.flatMap(lambda x: x).collect())
+    extracted_counts = list(
+        dataset_grouped_df.select("dataset_name", "total_dataset_rows_extracted")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -843,7 +853,7 @@ def report(
                 "invalid survey responses",
                 "filtered survey responses",
                 *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
-                *dataset_names
+                *dataset_names,
             ],
             "count": [
                 invalid_files_count,
@@ -852,11 +862,12 @@ def report(
                 filtered_survey_responses_count,
                 *list(
                     processed_file_log.select("file_row_count", "processed_filename")
-                    .distinct().drop("processed_filename")
+                    .distinct()
+                    .drop("processed_filename")
                     .rdd.flatMap(lambda x: x)
                     .collect()
                 ),
-                *extracted_counts
+                *extracted_counts,
             ],
         }
     )
@@ -883,9 +894,7 @@ def report(
                 .rdd.flatMap(lambda x: x)
                 .collect()
             )
-            counts_df = pd.DataFrame(
-                {"dataset": processed_file_names, "count": processed_file_counts}
-            )
+            counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
             name = f"{type}"
             counts_df.to_excel(writer, sheet_name=name, index=False)
 

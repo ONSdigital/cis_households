@@ -125,7 +125,12 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
 
 
 def update_table_and_log_source_files(
-    df: DataFrame, filtered_df: DataFrame, table_name: str, filename_column: str, dataset_name:str, override_mode: str = None
+    df: DataFrame,
+    filtered_df: DataFrame,
+    table_name: str,
+    filename_column: str,
+    dataset_name: str,
+    override_mode: str = None,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
@@ -135,7 +140,9 @@ def update_table_and_log_source_files(
     update_processed_file_log(df, filtered_df, filename_column, table_name, dataset_name)
 
 
-def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str, dataset_name:str):
+def update_processed_file_log(
+    df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str, dataset_name: str
+):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
