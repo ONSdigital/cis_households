@@ -217,7 +217,7 @@ category_maps = {
             "Other occupation sector": 15,
             "NA(Not currently working)": 99,
         },
-        "work_health_care_v1_v2_raw": {
+        "work_health_care_v1_v2": {
             "No": 0,
             "Yes, in primary care, e.g. GP, dentist": 1,
             "Yes, in secondary care, e.g. hospital": 2,
