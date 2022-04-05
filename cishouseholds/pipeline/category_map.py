@@ -13,6 +13,7 @@ _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
     "iqvia_raw_category_map": {
+        "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positiveyn": _yes_no_categories,
         "consent_contact_extra_researchyn": _yes_no_categories,
         "consent_finger_prick_a1_a3": _yes_no_categories,
@@ -121,6 +122,8 @@ category_maps = {
         "long_covid_palpitations": _yes_no_categories,
         "long_covid_low_mood": _yes_no_categories,
         "long_covid_difficulty_concentrating": _yes_no_categories,
+        "long_covid_runny_nose_sneezing": _yes_no_categories,
+        "long_covid_noisy_breathing": _yes_no_categories,
         "confirm_received_vouchers": _yes_no_categories,
         "have_landline_number": _yes_no_categories,
         "have_mobile_number": _yes_no_categories,
@@ -214,7 +217,7 @@ category_maps = {
             "Other occupation sector": 15,
             "NA(Not currently working)": 99,
         },
-        "work_health_care_v1_v2_raw": {
+        "work_health_care_v1_v2": {
             "No": 0,
             "Yes, in primary care, e.g. GP, dentist": 1,
             "Yes, in secondary care, e.g. hospital": 2,

@@ -15,11 +15,11 @@ from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_d
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
+from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import assign_people_in_household_count
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
@@ -40,18 +40,18 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
-from cishouseholds.edit import map_work_status_v2_replace_dataset_0_1
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
-from cishouseholds.edit import update_participant_not_consented
+from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_symptoms_last_7_days_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls
+from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -240,16 +240,13 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "5y and older in full-time education": "5y and older in full-time education",  # noqa: E501
         },
         "work_status_v2": {
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Retired": "Retired",  # noqa: E501
             "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
             "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",  # noqa: E501
             "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
@@ -266,7 +263,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
             "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
-            "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
             "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
         },
     }
@@ -324,7 +320,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-
+    df = update_to_value_if_any_not_null(
+        df,
+        "cis_covid_vaccine_received",
+        "Yes",
+        [
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+        ],
+    )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -375,6 +381,15 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
+        },
+        "work_health_care_v1_v2": {
+            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
+            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
+            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
+            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -642,15 +657,6 @@ def union_dependent_cleaning(df):
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
         },
         "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
-        "work_health_care_v1_v2_raw": {
-            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-        },
         "ability_to_socially_distance_at_work_or_school": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
             "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
@@ -827,26 +833,7 @@ def union_dependent_derivations(df):
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
-    df = assign_household_participant_count(
-        df,
-        column_name_to_assign="household_participant_count",
-        household_id_column="ons_household_id",
-        participant_id_column="participant_id",
-    )
-    df = update_participant_not_consented(
-        df,
-        column_name_to_update="household_participants_not_consented_count",
-        participant_non_consented_column_pattern=r"person_[1-9]_not_consenting_age",
-    )
-    df = assign_people_in_household_count(
-        df,
-        column_name_to_assign="people_in_household_count",
-        infant_column_pattern=r"infant_[1-8]_age",
-        infant_column_pattern_with_exceptions=r"infant_[1-5,7,8]_age",
-        participant_column_pattern=r"person_[1-8]_not_present_age",
-        household_participant_count_column="household_participant_count",
-        non_consented_count_column="household_participants_not_consented_count",
-    )
+    df = derive_people_in_household_count(df)
     df = update_column_values_from_map(
         df=df,
         column="smokes_nothing_now",
@@ -856,12 +843,7 @@ def union_dependent_derivations(df):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-    df = map_work_status_v2_replace_dataset_0_1(
-        df=df,
-        map_to_column="work_status_v2",
-        map_from_column="work_status_v1",
-        dataset_column="survey_response_dataset_major_version",
-    )
+
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -875,6 +857,43 @@ def union_dependent_derivations(df):
             "Attending college or FE (including if temporarily absent)",
             "Attending university (including if temporarily absent)",
         ],
+    )
+    return df
+
+
+def derive_people_in_household_count(df):
+    """Correct counts of household member groups and sum to get total number of people in household."""
+    df = assign_household_participant_count(
+        df,
+        column_name_to_assign="household_participant_count",
+        household_id_column="ons_household_id",
+        participant_id_column="participant_id",
+    )
+    df = update_person_count_from_ages(
+        df,
+        column_name_to_assign="household_participants_not_consented_count",
+        column_pattern=r"person_[1-9]_not_consenting_age",
+    )
+    df = update_person_count_from_ages(
+        df,
+        column_name_to_assign="household_participants_not_present_count",
+        column_pattern=r"person_[1-8]_not_present_age",
+    )
+    df = assign_household_under_2_count(
+        df,
+        column_name_to_assign="household_participants_under_2_count",
+        column_pattern=r"infant_[1-8]_age",
+    )
+    df = df.withColumn(
+        "people_in_household_count",
+        sum_within_row(
+            [
+                "household_participant_count",
+                "household_participants_not_consented_count",
+                "household_participants_not_present_count",
+                "household_participants_under_2_count",
+            ]
+        ),
     )
     return df
 
@@ -938,6 +957,7 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
+
     fill_forward_to_nulls_list = [
         "work_main_job_title",
         "work_main_job_role",
@@ -949,14 +969,14 @@ def fill_forwards_transformations(df):
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
     ]
-    df = update_to_value_if_any_not_null(df, "work_main_job_changed", "Yes", fill_forward_to_nulls_list)
-    df = fill_forward_from_last_change(
+    df = fill_forward_only_to_nulls_in_dataset(
         df=df,
-        fill_forward_columns=fill_forward_to_nulls_list,
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
+        id="participant_id",
+        date="visit_datetime",
+        changed="work_main_job_changed",
+        dataset="survey_response_dataset_major_version",
+        dataset_value=2,
+        list_fill_forward=fill_forward_to_nulls_list,
     )
 
     # TODO: uncomment for releases after R1
@@ -983,9 +1003,11 @@ def fill_forwards_transformations(df):
     #        ],
     #    )
     df = update_to_value_if_any_not_null(
-        df, "been_outside_uk_since_last_visit", "Yes", ["been_outside_uk_last_country", "been_outside_uk_last_date"]
+        df=df,
+        column_name_to_assign="been_outside_uk_since_last_visit",
+        value_to_assign="Yes",
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_date"],
     )
-
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[

@@ -11,6 +11,7 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import table_operations
 from cishouseholds.pipeline.load import update_table
@@ -111,6 +112,7 @@ def extract_from_table(table_name: str, chart: bool = True, processing_function_
         else:
             table_operations[calling_function_name] = {"inputs": [table_name], "outputs": []}
     spark_session = get_or_create_spark_session()
+    check_table_exists(table_name, raise_if_missing=True)
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
