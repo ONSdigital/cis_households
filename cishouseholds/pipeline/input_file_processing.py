@@ -1,6 +1,7 @@
 from typing import Callable
 from typing import List
 
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_filename_column
@@ -11,6 +12,7 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
@@ -36,16 +38,17 @@ def extract_validate_transform_input_data(
         csv_location = storage_config["csv_editing_file"]
         filter_config = get_secondary_config(storage_config["filter_config_file"])
 
-    df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
+    raw_df = extract_input_data(resource_path, validation_schema, sep)
+    raw_df = rename_column_names(raw_df, variable_name_map)
+    raw_df = assign_filename_column(raw_df, source_file_column)  # Must be called before update_from_csv_lookup
 
+    update_table(raw_df, f"raw_{dataset_name}")
+    df = raw_df
     filtered_df = None
     if include_hadoop_read_write and filter_config is not None:
         if dataset_name in filter_config:
             filter_ids = filter_config[dataset_name]
             filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-            update_table(df, f"raw_{dataset_name}")
             update_table(filtered_df, f"{dataset_name}_rows_extracted")
 
             df = df.filter(~F.col(id_column).isin(filter_ids))
@@ -59,7 +62,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
-    return df, filtered_df
+    return raw_df, df, filtered_df
 
 
 def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
@@ -75,8 +78,9 @@ def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
     )
 
 
-def extract_from_table(table_name: str):
+def extract_from_table(table_name: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
+    check_table_exists(table_name, raise_if_missing=True)
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 

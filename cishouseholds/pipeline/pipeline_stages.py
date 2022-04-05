@@ -8,6 +8,8 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import aggregated_output_groupby
+from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
@@ -282,7 +284,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df, filtered_df = extract_validate_transform_input_data(
+        raw_df, df, filtered_df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -296,7 +298,9 @@ def generate_input_processing_function(
             cast_to_double_columns_list=cast_to_double_list,
         )
         if include_hadoop_read_write:
-            update_table_and_log_source_files(df, filtered_df, output_table_name, source_file_column, write_mode)
+            update_table_and_log_source_files(
+                raw_df, df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+            )
         return df
 
     _inner_function.__name__ = stage_name
@@ -423,7 +427,9 @@ def lookup_based_editing(
             cis_rural_urban_classification string,
             rural_urban_classification_11 string
         """,
-    )
+    ).drop(
+        "rural_urban_classification_11"
+    )  # Prefer version from sample
     df = df.join(
         F.broadcast(cohort_lookup),
         how="left",
@@ -443,7 +449,6 @@ def lookup_based_editing(
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
     if "lower_super_output_area_code_11" in df.columns:
-        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
         df = df.join(
             F.broadcast(rural_urban_lookup_df),
             how="left",
@@ -653,11 +658,11 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
-        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
         "country_lookup": {"file": country_lookup, "type": "path"},
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
     }
@@ -667,7 +672,7 @@ def calculate_household_level_populations(
     household_info_df = household_level_populations(
         dfs["address_lookup"],
         dfs["postcode_lookup"],
-        dfs["cis_phase_lookup"],
+        dfs["lsoa_cis_lookup"],
         dfs["country_lookup"],
     )
     update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
@@ -769,8 +774,8 @@ def report(
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
-    filtered_survey_responses_table: str,
     output_directory: str,
+    filtered_survey_responses_table: str = None,
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -795,8 +800,41 @@ def report(
     """
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
-    filtered_df = extract_from_table(filtered_survey_responses_table)
+
+    filtered_survey_responses_count = 0
+    if filtered_survey_responses_table is not None:
+        filtered_df = extract_from_table(filtered_survey_responses_table)
+        filtered_survey_responses_count = filtered_df.count()
+
     processed_file_log = extract_from_table("processed_filenames")
+    dataset_extracted_df = processed_file_log.groupBy("dataset_name").agg(
+        F.sum("filtered_row_count").alias("total_dataset_rows_extracted")
+    )
+    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
+        F.sum("file_row_count").alias("total_dataset_rows")
+    )
+    dataset_names = list(dataset_extracted_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
+    extracted_counts = list(
+        dataset_extracted_df.select("dataset_name", "total_dataset_rows_extracted")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
+    total_dataset_row_counts = list(
+        dataset_grouped_df.select("dataset_name", "total_dataset_rows")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
+    transformed_row_counts = list(
+        processed_file_log.select("dataset_name", "transformed_row_count")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -805,7 +843,6 @@ def report(
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
-    filtered_survey_responses_count = filtered_df.count()
 
     valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
     invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
@@ -832,12 +869,18 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
+                *[f"{dataset_name} rows extracted" for dataset_name in dataset_names],
+                *[f"{dataset_name} raw rows" for dataset_name in dataset_names],
+                *[f"{dataset_name} transformed rows" for dataset_name in dataset_names],
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
                 filtered_survey_responses_count,
+                *extracted_counts,
+                *total_dataset_row_counts,
+                *transformed_row_counts,
             ],
         }
     )
@@ -864,19 +907,9 @@ def report(
                 .rdd.flatMap(lambda x: x)
                 .collect()
             )
-            extracted_counts = list(
-                processed_file_log.filter(F.col("file_type") == type)
-                .select("filtered_row_count", "processed_filename")
-                .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
-            )
-            counts_df = pd.DataFrame(
-                {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
-            )
-            name = f"{type} row counts"
-            counts_df.to_excel(writer, sheet_name=name, index=False)
+            individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
+            name = f"{type}"
+            individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
@@ -992,22 +1025,28 @@ def sample_file_ETL(
     tranche,
     cis_phase_lookup,
     postcode_lookup,
+    master_sample_file,
     table_or_path,
     old_sample_file,
     design_weight_table,
 ):
+    table_or_path = "path"
+    if check_table_exists(design_weight_table):
+        table_or_path = "table"
+        old_sample_file = design_weight_table
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
         "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
         "new_sample_file": {"file": new_sample_file, "type": "path"},
         "old_sample_file": {"file": old_sample_file, "type": table_or_path},
         "tranche": {"file": tranche, "type": "path"},
+        "master_sample_file": {"file": master_sample_file, "type": "path"},
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
     dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(dfs)
-    update_table(design_weights, design_weight_table, mode_overide="overwrite")
+    design_weights = generate_weights(dfs, table_or_path)
+    update_table(design_weights, design_weight_table, mode_overide="append")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1021,6 +1060,10 @@ def population_projection(
     population_totals_table: str,
     population_projections_table: str,
 ):
+    table_or_path = "path"
+    if check_table_exists(population_projections_table):
+        table_or_path = "table"
+        population_projection_previous = population_projections_table
     files = {
         "population_projection_current": {"file": population_projection_current, "type": "path"},
         "aps_lookup": {"file": aps_lookup, "type": "path"},
@@ -1031,7 +1074,7 @@ def population_projection(
         dfs=dfs, month=month, year=year
     )
     update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+    update_table(population_projections, population_projections_table, mode_overide="append")
 
 
 @register_pipeline_stage("pre_calibration")
@@ -1091,3 +1134,52 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("aggregated_output")
+def aggregated_output(
+    apply_aggregate_type,
+    input_table_to_aggregate,
+    column_group,
+    column_window_list,
+    order_window_list,
+    apply_function_list,
+    column_name_list,
+    column_name_to_assign_list,
+):
+    """
+    Parameters
+    ----------
+    apply_window
+    apply_groupby
+    aggregated_output
+    column_name_to_assign_list
+    column_group
+    column_window_list
+    function_list
+    column_list_to_apply_function
+    """
+    df = extract_from_table(table_name=input_table_to_aggregate)
+
+    if apply_aggregate_type == "groupby":
+        df = aggregated_output_groupby(
+            df=df,
+            column_group=column_group,
+            apply_function_list=apply_function_list,
+            column_name_list=column_name_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+        )
+    elif apply_aggregate_type == "window":
+        df = aggregated_output_window(
+            df=df,
+            column_window_list=column_window_list,
+            column_name_list=column_name_list,
+            apply_function_list=apply_function_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+            order_column_list=order_window_list,
+        )
+    update_table(
+        df=df,
+        table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
+        mode_overide="overwrite",
+    )

@@ -10,14 +10,22 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+class TableNotFoundError(Exception):
+    pass
+
+
 def update_table(df, table_name, mode_overide=None):
     storage_config = get_config()["storage"]
     df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
 
 
-def check_table_exists(table_name: str):
+def check_table_exists(table_name: str, raise_if_missing: bool = False):
     spark_session = get_or_create_spark_session()
-    return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
+    full_table_name = get_full_table_name(table_name)
+    table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
+    if raise_if_missing and not table_exists:
+        raise TableNotFoundError(f"Table does not exist: {full_table_name}")
+    return table_exists
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -117,21 +125,30 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
 
 
 def update_table_and_log_source_files(
-    df: DataFrame, filtered_df: DataFrame, table_name: str, filename_column: str, override_mode: str = None
+    raw_df: DataFrame,
+    df: DataFrame,
+    filtered_df: DataFrame,
+    table_name: str,
+    filename_column: str,
+    dataset_name: str,
+    override_mode: str = None,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode)
-    update_processed_file_log(df, filtered_df, filename_column, table_name)
+    update_processed_file_log(raw_df, df, filtered_df, filename_column, table_name, dataset_name)
 
 
-def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str):
+def update_processed_file_log(
+    raw_df: DataFrame, df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str, dataset_name: str
+):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
-    newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
-    file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+    newly_processed_files = raw_df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+    file_lengths = raw_df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+    transformed_row_count = df.count()
 
     filtered_lengths = {file: 0 for file in newly_processed_files}
     if filtered_df is not None:
@@ -145,14 +162,25 @@ def update_processed_file_log(df: DataFrame, filtered_df: DataFrame, filename_co
     schema = """
         run_id integer,
         file_type string,
+        dataset_name string,
         processed_filename string,
         processed_datetime timestamp,
         file_row_count integer,
-        filtered_row_count integer
+        filtered_row_count integer,
+        transformed_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, file_type, filename, datetime.now(), row_count, filtered_row_count]
+        [
+            run_id,
+            file_type,
+            dataset_name,
+            filename,
+            datetime.now(),
+            row_count,
+            filtered_row_count,
+            transformed_row_count,
+        ]
         for filename, row_count, filtered_row_count in zip(
             newly_processed_files, file_lengths, filtered_lengths.values()
         )
