@@ -415,7 +415,7 @@ def assign_work_social_column(
             ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
             & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
             "Yes, other social care, non-resident-facing",
-        )
+        ),
     )
     return df
 
