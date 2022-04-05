@@ -994,22 +994,28 @@ def sample_file_ETL(
     tranche,
     cis_phase_lookup,
     postcode_lookup,
+    master_sample_file,
     table_or_path,
     old_sample_file,
     design_weight_table,
 ):
+    table_or_path = "path"
+    if check_table_exists(design_weight_table):
+        table_or_path = "table"
+        old_sample_file = design_weight_table
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
         "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
         "new_sample_file": {"file": new_sample_file, "type": "path"},
         "old_sample_file": {"file": old_sample_file, "type": table_or_path},
         "tranche": {"file": tranche, "type": "path"},
+        "master_sample_file": {"file": master_sample_file, "type": "path"},
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
     dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(dfs)
-    update_table(design_weights, design_weight_table, mode_overide="overwrite")
+    design_weights = generate_weights(dfs, table_or_path)
+    update_table(design_weights, design_weight_table, mode_overide="append")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1023,6 +1029,10 @@ def population_projection(
     population_totals_table: str,
     population_projections_table: str,
 ):
+    table_or_path = "path"
+    if check_table_exists(population_projections_table):
+        table_or_path = "table"
+        population_projection_previous = population_projections_table
     files = {
         "population_projection_current": {"file": population_projection_current, "type": "path"},
         "aps_lookup": {"file": aps_lookup, "type": "path"},
@@ -1033,7 +1043,7 @@ def population_projection(
         dfs=dfs, month=month, year=year
     )
     update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="overwrite")
+    update_table(population_projections, population_projections_table, mode_overide="append")
 
 
 @register_pipeline_stage("pre_calibration")
