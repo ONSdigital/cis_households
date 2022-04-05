@@ -17,8 +17,6 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
-from cishouseholds.hdfs_utils import create_dir
-from cishouseholds.hdfs_utils import delete_dir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
@@ -136,13 +134,11 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
 
 
 @register_pipeline_stage("generate_dummy_data")
-def generate_dummy_data(output_directory: str, purge_existing: bool = False):
-    raw_dir = Path(output_directory)
-    swab_dir = raw_dir / "swabs"
-    blood_dir = raw_dir / "bloods"
-    survey_v0_dir = raw_dir / "responses_v0"
-    survey_v1_dir = raw_dir / "responses_v1"
-    survey_v2_dir = raw_dir / "responses_v2"
+def generate_dummy_data(output_directory):
+    raw_dir = Path(output_directory) / "generated_data"
+    swab_dir = raw_dir / "swab"
+    blood_dir = raw_dir / "blood"
+    survey_dir = raw_dir / "survey"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -152,9 +148,7 @@ def generate_dummy_data(output_directory: str, purge_existing: bool = False):
     for directory in [
         swab_dir,
         blood_dir,
-        survey_v0_dir,
-        survey_v1_dir,
-        survey_v2_dir,
+        survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -162,9 +156,7 @@ def generate_dummy_data(output_directory: str, purge_existing: bool = False):
         historic_swabs_dir,
         historic_survey_dir,
     ]:
-        if purge_existing:
-            delete_dir(str(directory))
-        create_dir(str(directory))
+        directory.mkdir(parents=True, exist_ok=True)
 
     file_datetime = datetime.now()
     lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
@@ -214,25 +206,13 @@ def generate_dummy_data(output_directory: str, purge_existing: bool = False):
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
 
     generate_survey_v0_data(
-        directory=survey_v0_dir,
-        file_date=file_date,
-        records=50,
-        swab_barcodes=swab_barcode,
-        blood_barcodes=blood_barcode,
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
     generate_survey_v1_data(
-        directory=survey_v1_dir,
-        file_date=file_date,
-        records=50,
-        swab_barcodes=swab_barcode,
-        blood_barcodes=blood_barcode,
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
     v2 = generate_survey_v2_data(
-        directory=survey_v2_dir,
-        file_date=file_date,
-        records=50,
-        swab_barcodes=swab_barcode,
-        blood_barcodes=blood_barcode,
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()
@@ -304,7 +284,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df, filtered_df = extract_validate_transform_input_data(
+        raw_df, df, filtered_df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -319,7 +299,7 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+                raw_df, df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
             )
         return df
 
@@ -826,12 +806,29 @@ def report(
         filtered_survey_responses_count = filtered_df.count()
 
     processed_file_log = extract_from_table("processed_filenames")
-    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
-        F.sum("rows_extracted").alias("total_dataset_rows_extracted")
+    dataset_extracted_df = processed_file_log.groupBy("dataset_name").agg(
+        F.sum("filtered_row_count").alias("total_dataset_rows_extracted")
     )
-    dataset_names = list(dataset_grouped_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
+    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
+        F.sum("file_row_count").alias("total_dataset_rows")
+    )
+    dataset_names = list(dataset_extracted_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     extracted_counts = list(
-        dataset_grouped_df.select("dataset_name", "total_dataset_rows_extracted")
+        dataset_extracted_df.select("dataset_name", "total_dataset_rows_extracted")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
+    total_dataset_row_counts = list(
+        dataset_grouped_df.select("dataset_name", "total_dataset_rows")
+        .distinct()
+        .drop("dataset_name")
+        .rdd.flatMap(lambda x: x)
+        .collect()
+    )
+    transformed_row_counts = list(
+        processed_file_log.select("dataset_name", "transformed_row_count")
         .distinct()
         .drop("dataset_name")
         .rdd.flatMap(lambda x: x)
@@ -871,22 +868,18 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *list(processed_file_log.select("processed_filename").distinct().rdd.flatMap(lambda x: x).collect()),
-                *dataset_names,
+                *[f"{dataset_name} rows extracted" for dataset_name in dataset_names],
+                *[f"{dataset_name} raw rows" for dataset_name in dataset_names],
+                *[f"{dataset_name} transformed rows" for dataset_name in dataset_names],
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
                 filtered_survey_responses_count,
-                *list(
-                    processed_file_log.select("file_row_count", "processed_filename")
-                    .distinct()
-                    .drop("processed_filename")
-                    .rdd.flatMap(lambda x: x)
-                    .collect()
-                ),
                 *extracted_counts,
+                *total_dataset_row_counts,
+                *transformed_row_counts,
             ],
         }
     )

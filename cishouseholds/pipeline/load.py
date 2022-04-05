@@ -125,6 +125,7 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
 
 
 def update_table_and_log_source_files(
+    raw_df: DataFrame,
     df: DataFrame,
     filtered_df: DataFrame,
     table_name: str,
@@ -137,16 +138,17 @@ def update_table_and_log_source_files(
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode)
-    update_processed_file_log(df, filtered_df, filename_column, table_name, dataset_name)
+    update_processed_file_log(raw_df, df, filtered_df, filename_column, table_name, dataset_name)
 
 
 def update_processed_file_log(
-    df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str, dataset_name: str
+    raw_df: DataFrame, df: DataFrame, filtered_df: DataFrame, filename_column: str, file_type: str, dataset_name: str
 ):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
-    newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
-    file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+    newly_processed_files = raw_df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
+    file_lengths = raw_df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
+    transformed_row_count = df.count()
 
     filtered_lengths = {file: 0 for file in newly_processed_files}
     if filtered_df is not None:
@@ -164,11 +166,21 @@ def update_processed_file_log(
         processed_filename string,
         processed_datetime timestamp,
         file_row_count integer,
-        filtered_row_count integer
+        filtered_row_count integer,
+        transformed_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, file_type, dataset_name, filename, datetime.now(), row_count, filtered_row_count]
+        [
+            run_id,
+            file_type,
+            dataset_name,
+            filename,
+            datetime.now(),
+            row_count,
+            filtered_row_count,
+            transformed_row_count,
+        ]
         for filename, row_count, filtered_row_count in zip(
             newly_processed_files, file_lengths, filtered_lengths.values()
         )

@@ -38,16 +38,17 @@ def extract_validate_transform_input_data(
         csv_location = storage_config["csv_editing_file"]
         filter_config = get_secondary_config(storage_config["filter_config_file"])
 
-    df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_csv_lookup
+    raw_df = extract_input_data(resource_path, validation_schema, sep)
+    raw_df = rename_column_names(raw_df, variable_name_map)
+    raw_df = assign_filename_column(raw_df, source_file_column)  # Must be called before update_from_csv_lookup
 
+    update_table(raw_df, f"raw_{dataset_name}")
+    df = raw_df
     filtered_df = None
     if include_hadoop_read_write and filter_config is not None:
         if dataset_name in filter_config:
             filter_ids = filter_config[dataset_name]
             filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-            update_table(df, f"raw_{dataset_name}")
             update_table(filtered_df, f"{dataset_name}_rows_extracted")
 
             df = df.filter(~F.col(id_column).isin(filter_ids))
@@ -61,7 +62,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
-    return df, filtered_df
+    return raw_df, df, filtered_df
 
 
 def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
