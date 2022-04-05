@@ -165,7 +165,7 @@ def generate_dummy_data(output_directory:str,purge_existing:bool=False):
         if purge_existing:
             delete_dir(str(directory))
         create_dir(str(directory))
-    
+
     file_datetime = datetime.now()
     lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
     lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
