@@ -18,7 +18,6 @@ def test_assign_work_social_column(spark_session):
             ("Yes, other social care, non-resident-facing", "Social care", None, "No"),
             ("Yes, other social care, non-resident-facing", "Social care", "No", None),
             ("Yes, other social care, non-resident-facing", "Social care", None, None),
-            
         ],
         schema="work_socialcare string , work_sector string, work_care_nursing_home string,	work_direct_contact string",
     )
