@@ -394,14 +394,8 @@ def assign_work_social_column(
         column_name_to_assign,
         F.when(F.col(work_sector_column).isNull(), None)
         .when(
-            ~F.col(work_sector_column).isin(["Furloughed (temporarily not working)", "Social care", "Social Care"]),
+            F.col(work_sector_column) != "Social care",
             "No",
-        )
-        .when(
-            (~F.col(work_sector_column).isin(["Social care", "Social Care"]))
-            & (F.col(care_home_column).isNull())
-            & (F.col(direct_contact_column).isNull()),
-            None,
         )
         .when(
             (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
@@ -422,7 +416,6 @@ def assign_work_social_column(
             & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
             "Yes, other social care, non-resident-facing",
         )
-        .otherwise("No"),
     )
     return df
 
