@@ -6,6 +6,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -20,15 +21,23 @@ from cishouseholds.weights.edit import null_to_value
 # validation checks relate to final dweights for entire column for both datasets (each hh must have a dweight)
 
 
-def generate_weights(auxillary_dfs):
+def generate_weights(auxillary_dfs, table_or_path):
     # auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
     # initialise lookup dataframes
     household_info_df = auxillary_dfs["household_level_populations"]
 
     # 1164
-    old_df = recode_columns(auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"], household_info_df)
-    df = union_multiple_tables([old_df, auxillary_dfs["new_sample_file"]])  # step 15: dweights
+    if table_or_path == "path":  # process old sample file as a csv adding and recoding new columns
+        old_df = recode_columns(auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"], household_info_df)
+        df = union_multiple_tables([old_df, auxillary_dfs["new_sample_file"]])  # step 15: dweights
+        df = join_and_process_lookups(df, auxillary_dfs["cis_phase_lookup"], auxillary_dfs["master_sample_file"])
+    else:  # old sample file aggregate has already been created as
+        # table therefore only new sample file neeeds to be processed
+        auxillary_dfs["new_sample_file"] = join_and_process_lookups(
+            auxillary_dfs["new_sample_file"], auxillary_dfs["cis_phase_lookup"], auxillary_dfs["master_sample_file"]
+        )
+        df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
@@ -78,6 +87,26 @@ def generate_weights(auxillary_dfs):
     return df
 
 
+def join_and_process_lookups(df: DataFrame, cis_phase_df: DataFrame, master_sample_df: DataFrame):
+    """ """
+    df = df.join(
+        master_sample_df.select("postcode", "ons_household_id").withColumnRenamed("postcode", "postcode_from_master"),
+        on="ons_household_id",
+        how="left",
+    )
+    # set postcode value if empty from master
+    df = df.withColumn(
+        "postcode", F.when(F.col("postcode").isNull(), F.col("postcode_from_master")).otherwise(F.col("postcode"))
+    )
+    df = df.drop("postcode_from_master")
+    # map the abbreviated country names to full names
+    cis_phase_df = update_column_values_from_map(
+        cis_phase_df, "country_name_12", {"ENG": "england", "WAL": "wales", "SCO": "scotland", "IRE": "ireland"}
+    )  # .withColumnRenamed("country","country_name_12")
+    df = df.join(cis_phase_df, on=["country_name_12", "sample_source"], how="left")
+    return df
+
+
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
     """
     Recode and rename old column values in sample data if change detected in new sample data
@@ -112,7 +141,7 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
 # - cis_area_code_20
 # - unique_property_reference_code
 def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
+    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
     Steps:

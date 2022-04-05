@@ -1,5 +1,6 @@
 from typing import Callable
 from typing import List
+from pyspark.sql import DataFrame
 
 from pyspark.sql import functions as F
 
@@ -11,6 +12,7 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
@@ -75,8 +77,9 @@ def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
     )
 
 
-def extract_from_table(table_name: str):
+def extract_from_table(table_name: str)->DataFrame:
     spark_session = get_or_create_spark_session()
+    check_table_exists(table_name, raise_if_missing=True)
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
