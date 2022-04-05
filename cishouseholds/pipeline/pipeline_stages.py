@@ -1,7 +1,12 @@
+import subprocess
 from datetime import datetime
 from datetime import timedelta
 from io import BytesIO
 from pathlib import Path
+<<<<<<< HEAD
+=======
+from pickle import NONE
+>>>>>>> 46dda43d0715a7fce1a763a8ba3409f8d219ef3a
 from typing import List
 from typing import Union
 
@@ -17,7 +22,9 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.filter import file_exclude
-from cishouseholds.hdfs_utils import create_dir, delete_dir, read_header
+from cishouseholds.hdfs_utils import create_dir
+from cishouseholds.hdfs_utils import delete_dir
+from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
@@ -134,7 +141,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
 
 
 @register_pipeline_stage("generate_dummy_data")
-def generate_dummy_data(output_directory:str,purge_existing:bool=False):
+def generate_dummy_data(output_directory: str, purge_existing: bool = False):
     raw_dir = Path(output_directory)
     swab_dir = raw_dir / "swabs"
     blood_dir = raw_dir / "bloods"
@@ -212,13 +219,25 @@ def generate_dummy_data(output_directory:str,purge_existing:bool=False):
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
 
     generate_survey_v0_data(
-        directory=survey_v0_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v0_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
     )
     generate_survey_v1_data(
-        directory=survey_v1_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v1_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
     )
     v2 = generate_survey_v2_data(
-        directory=survey_v2_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_v2_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()
@@ -899,9 +918,7 @@ def report(
                 .rdd.flatMap(lambda x: x)
                 .collect()
             )
-            individual_counts_df = pd.DataFrame(
-                {"dataset": processed_file_names, "count": processed_file_counts}
-            )
+            individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
             name = f"{type}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
