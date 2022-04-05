@@ -8,6 +8,8 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
+from cishouseholds.derive import aggregated_output_groupby
+from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
@@ -1101,3 +1103,52 @@ def pre_calibration(
         pre_calibration_config=pre_calibration_config,
     )
     update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("aggregated_output")
+def aggregated_output(
+    apply_aggregate_type,
+    input_table_to_aggregate,
+    column_group,
+    column_window_list,
+    order_window_list,
+    apply_function_list,
+    column_name_list,
+    column_name_to_assign_list,
+):
+    """
+    Parameters
+    ----------
+    apply_window
+    apply_groupby
+    aggregated_output
+    column_name_to_assign_list
+    column_group
+    column_window_list
+    function_list
+    column_list_to_apply_function
+    """
+    df = extract_from_table(table_name=input_table_to_aggregate)
+
+    if apply_aggregate_type == "groupby":
+        df = aggregated_output_groupby(
+            df=df,
+            column_group=column_group,
+            apply_function_list=apply_function_list,
+            column_name_list=column_name_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+        )
+    elif apply_aggregate_type == "window":
+        df = aggregated_output_window(
+            df=df,
+            column_window_list=column_window_list,
+            column_name_list=column_name_list,
+            apply_function_list=apply_function_list,
+            column_name_to_assign_list=column_name_to_assign_list,
+            order_column_list=order_window_list,
+        )
+    update_table(
+        df=df,
+        table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
+        mode_overide="overwrite",
+    )

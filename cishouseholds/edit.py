@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -90,22 +92,23 @@ def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[in
     return df
 
 
-def update_participant_not_consented(
-    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
-):
+def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, column_pattern: str):
     """
-    update the participant consented column following specific logic
+    Update a count to the count of columns that have a value above 0. Keeps original value if count is not more than 0.
+
     Parameters
-    ---------
-    df
-    column_name_to_update
+    ----------
+    column_patter
+        regex pattern to match columns that should be counted
+
     """
-    r = re.compile(participant_non_consented_column_pattern)
-    non_consent_columns = list(filter(r.match, df.columns))
-    non_consent_count = F.size(
-        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
+    r = re.compile(column_pattern)
+    columns_to_count = list(filter(r.match, df.columns))
+    count = reduce(add, [F.when(F.col(column) > 0, 1).otherwise(0) for column in columns_to_count])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(count > 0, count).when(F.col(column_name_to_assign).isNull(), 0).otherwise(F.col(column_name_to_assign)),
     )
-    df = df.withColumn(column_name_to_update, non_consent_count)
     return df
 
 
