@@ -65,7 +65,7 @@ def extract_validate_transform_input_data(
     return raw_df, df, filtered_df
 
 
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str)->DataFrame:
+def extract_input_data(file_paths: list, validation_schema: dict, sep: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
