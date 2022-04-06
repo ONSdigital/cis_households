@@ -47,9 +47,9 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     expected_header
         Exact header expected in csv file
     """
-    print("TEXT FILE: ",text_file)
+    print("TEXT FILE: ", text_file)
     header = text_file.first()
-    print("HEADER: ",header)
+    print("HEADER: ", header)
     return expected_header == header
 
 
