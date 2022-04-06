@@ -453,15 +453,12 @@ def lookup_based_editing(
             how="left",
             on="lower_super_output_area_code_11",
         )
-
     tenure_group = spark.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-
     for key, value in tenure_group_variable_map.items():
-        tenure_group.withColumnRenamed(key, value)
+        tenure_group = tenure_group.withColumnRenamed(key, value)
 
-    # TODO: does it require schema validation?
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
 
     update_table(df, edited_table, mode_overide="overwrite")
