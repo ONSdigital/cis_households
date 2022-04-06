@@ -47,9 +47,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     expected_header
         Exact header expected in csv file
     """
-    print("TEXT FILE: ",text_file)
     header = text_file.first()
-    print("HEADER: ",header)
     return expected_header == header
 
 
@@ -76,8 +74,6 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
     for file_path in file_paths:
         error = ""
         text_file = spark_session.sparkContext.textFile(file_path)
-        t = spark_session.read.text(file_path)
-        t.show()
         valid_csv_header = validate_csv_header(text_file, expected_header_row)
         valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
