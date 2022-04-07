@@ -104,7 +104,6 @@ def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
         on="ons_household_id",
         how="left",
     )
-    df = df.join(dfs["country_lookup"].select("postcode", "country_name_12"), on="postcode", how="left")
     df = df.join(
         dfs["lsoa_cis_lookup"].select("lower_super_output_area_code_11", "cis_area_code_20"),
         on="lower_super_output_area_code_11",
@@ -117,6 +116,7 @@ def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
         on="postcode",
         how="left",
     )
+    df = df.join(dfs["country_lookup"].select("country_code_12", "country_name_12"), on="country_code_12", how="left")
     df = df.withColumn("batch_number", F.lit(1))
     if first_run:
         return df

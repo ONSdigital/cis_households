@@ -61,7 +61,13 @@ lookup_variable_name_maps = {
         "COUNCIL_TAX": "council_tax",
         "ADDRESSBASE_POSTAL": "addressbase_postal",
     },
-    "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
+    "postcode_lookup": {
+        "pcd": "postcode",
+        "lsoa11": "lower_super_output_area_code_11",
+        "ctry": "country_code_12",
+        "ru11ind": "rural_urban_classification_11",
+        "oac11": "output_area_code_11",
+    },
     "lsoa_cis_lookup": {
         "LSOA11CD": "lower_super_output_area_code_11",
         "CIS20CD": "cis_area_code_20",
