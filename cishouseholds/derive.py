@@ -1340,19 +1340,16 @@ def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
 
 def assign_work_health_care(df, column_name_to_assign, direct_contact_column, health_care_column) -> DataFrame:
     """
-    Combine the different versions of work health care responses.
-    Uses direct contact status to edit these.
+    Combine direct contact and health care responses to get old format of health care responses.
 
     Parameters
     ----------
     df
     column_name_to_assign
     direct_contact_column
-        Column indicating direct contact as Yes/No
-    reference_health_care_column
-        Column to coalesce with, having desired answer format
-    other_health_care_column
-        Column to be edited to match the reference answer format
+        Column indicating whether participant works in direct contact
+    health_care_column
+        Column indicating if participant works in health care
     """
     health_care_map = {
         "Yes, in primary care, e.g. GP, dentist": "Yes, primary care",

@@ -776,7 +776,7 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
     # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
+    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_v0"
     # )
     # df = update_work_facing_now_column(
     #     df,
