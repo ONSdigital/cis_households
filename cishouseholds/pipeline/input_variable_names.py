@@ -678,3 +678,10 @@ household_population_variable_name_map = {
     "nhp_cis": "number_of_households_population_by_cis",
     "nhp_cc12": "number_of_households_population_by_country",
 }
+
+tenure_group_variable_map = {
+    "numAdult": "lfs_adults_in_household_count",
+    "numChild": "lfs_children_in_household_count",
+    "dvhsize": "lfs_people_in_household_count",
+    "tenure_group": "lfs_tenure_group",
+}
