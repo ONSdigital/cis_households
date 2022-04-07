@@ -29,6 +29,7 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -62,6 +63,8 @@ from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
 
 pipeline_stages = {}
+
+# test
 
 
 def register_pipeline_stage(key):
@@ -393,6 +396,7 @@ def lookup_based_editing(
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
+    tenure_group_path: str,
     edited_table: str,
 ):
     """
@@ -407,8 +411,8 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    df = extract_from_table(input_table)
     spark = get_or_create_spark_session()
+    df = extract_from_table(input_table)
 
     cohort_lookup = spark.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
@@ -454,6 +458,14 @@ def lookup_based_editing(
             how="left",
             on="lower_super_output_area_code_11",
         )
+    tenure_group = spark.read.csv(tenure_group_path, header=True).select(
+        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
+    )
+    for key, value in tenure_group_variable_map.items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+
     update_table(df, edited_table, mode_overide="overwrite")
 
 
@@ -807,34 +819,17 @@ def report(
         filtered_survey_responses_count = filtered_df.count()
 
     processed_file_log = extract_from_table("processed_filenames")
-    dataset_extracted_df = processed_file_log.groupBy("dataset_name").agg(
-        F.sum("filtered_row_count").alias("total_dataset_rows_extracted")
+    rows_extracted_df = (
+        processed_file_log.groupBy("dataset_name")
+        .agg(F.sum("filtered_row_count").alias("total_dataset_rows_extracted"))
+        .toPandas()
     )
-    dataset_grouped_df = processed_file_log.groupBy("dataset_name").agg(
-        F.sum("file_row_count").alias("total_dataset_rows")
+    raw_rows_df = (
+        processed_file_log.groupBy("dataset_name")
+        .agg(F.sum("file_row_count").alias("total_dataset_raw_rows"))
+        .toPandas()
     )
-    dataset_names = list(dataset_extracted_df.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
-    extracted_counts = list(
-        dataset_extracted_df.select("dataset_name", "total_dataset_rows_extracted")
-        .distinct()
-        .drop("dataset_name")
-        .rdd.flatMap(lambda x: x)
-        .collect()
-    )
-    total_dataset_row_counts = list(
-        dataset_grouped_df.select("dataset_name", "total_dataset_rows")
-        .distinct()
-        .drop("dataset_name")
-        .rdd.flatMap(lambda x: x)
-        .collect()
-    )
-    transformed_row_counts = list(
-        processed_file_log.select("dataset_name", "transformed_row_count")
-        .distinct()
-        .drop("dataset_name")
-        .rdd.flatMap(lambda x: x)
-        .collect()
-    )
+    transformed_rows_df = processed_file_log.select("dataset_name", "transformed_row_count").distinct().toPandas()
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -869,18 +864,18 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
-                *[f"{dataset_name} rows extracted" for dataset_name in dataset_names],
-                *[f"{dataset_name} raw rows" for dataset_name in dataset_names],
-                *[f"{dataset_name} transformed rows" for dataset_name in dataset_names],
+                *[f"extracted {dataset_name}" for dataset_name in list(rows_extracted_df["dataset_name"])],
+                *[f"raw {dataset_name}" for dataset_name in list(raw_rows_df["dataset_name"])],
+                *[f"transformed {dataset_name}" for dataset_name in list(transformed_rows_df["dataset_name"])],
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
                 filtered_survey_responses_count,
-                *extracted_counts,
-                *total_dataset_row_counts,
-                *transformed_row_counts,
+                *list(rows_extracted_df["total_dataset_rows_extracted"]),
+                *list(raw_rows_df["total_dataset_raw_rows"]),
+                *list(transformed_rows_df["transformed_row_count"]),
             ],
         }
     )
@@ -889,24 +884,14 @@ def report(
     file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
         for type in file_types:
-            processed_file_names = [
-                name.split("/")[-1]
-                for name in list(
-                    processed_file_log.filter(F.col("file_type") == type)
-                    .select("processed_filename")
-                    .distinct()
-                    .rdd.flatMap(lambda x: x)
-                    .collect()
-                )
-            ]
-            processed_file_counts = list(
+            processed_files_df = (
                 processed_file_log.filter(F.col("file_type") == type)
-                .select("file_row_count", "processed_filename")
+                .select("processed_filename", "file_row_count")
                 .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
+                .toPandas()
             )
+            processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
+            processed_file_counts = processed_files_df["file_row_count"]
             individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
             name = f"{type}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
