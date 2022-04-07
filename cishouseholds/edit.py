@@ -107,7 +107,10 @@ def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, col
     count = reduce(add, [F.when(F.col(column) > 0, 1).otherwise(0) for column in columns_to_count])
     df = df.withColumn(
         column_name_to_assign,
-        F.when(count > 0, count).when(F.col(column_name_to_assign).isNull(), 0).otherwise(F.col(column_name_to_assign)),
+        F.when(count > 0, count)
+        .when(F.col(column_name_to_assign).isNull(), 0)
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
     )
     return df
 

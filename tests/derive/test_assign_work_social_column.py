@@ -8,6 +8,7 @@ def test_assign_work_social_column(spark_session):
         data=[
             (None, None, "No", "Yes"),
             ("No", "Self-employed", "No", "Yes"),
+            ("No", "Civil service or Local Government", "No", "Yes"),
             ("No", "Self-employed", None, None),
             ("Yes, care/residential home, resident-facing", "Social care", "Yes", "Yes"),
             ("Yes, other social care, resident-facing", "Social care", "No", "Yes"),

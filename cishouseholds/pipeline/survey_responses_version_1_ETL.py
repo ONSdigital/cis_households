@@ -3,7 +3,50 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.edit import apply_value_map_multiple_columns
+from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_to_value_if_any_not_null
+
+
+def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
+    df = map_column_values_to_null(
+        df=df,
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "ethnicity",
+            "work_sectors",
+            "work_health_care_v1_v2",
+            "work_status_v1",
+            "work_location",
+            "work_direct_contact_patients_clients",
+            "visit_type",
+            "is_self_isolating_detailed",
+            "illness_reduces_activity_or_ability",
+            "ability_to_socially_distance_at_work_or_school",
+            "transport_to_work_or_school",
+            "face_covering_outside_of_home",
+            "other_antibody_test_location",
+            "withdrawal_reason",
+            "work_not_from_home_days_per_week",
+        ],
+    )
+
+    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
+    fill_forward_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sectors",
+        "work_sectors_other",
+        "work_health_care_v1_v2",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
+    ]
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="work_main_job_changed",
+        value_to_assign="Yes",
+        column_list=fill_forward_columns,
+    )
+    return df
 
 
 def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
@@ -11,6 +54,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     Call functions to process input for iqvia version 1 survey deltas.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+
     df = df.withColumn("work_status_v0", F.col("work_status_v1"))
     df = df.withColumn("work_status_v2", F.col("work_status_v1"))
 
@@ -47,22 +91,4 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
-
-    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-
-    fill_forward_to_nulls_list_v1 = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sectors",
-        "work_sectors_other",
-        "work_health_care_v1_v2",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="work_main_job_changed",
-        value_to_assign="Yes",
-        column_list=fill_forward_to_nulls_list_v1,
-    )
     return df

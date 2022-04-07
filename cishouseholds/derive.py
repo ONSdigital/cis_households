@@ -1338,9 +1338,7 @@ def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
     return df
 
 
-def assign_work_health_care(
-    df, column_name_to_assign, direct_contact_column, reference_health_care_column, other_health_care_column
-) -> DataFrame:
+def assign_work_health_care(df, column_name_to_assign, direct_contact_column, health_care_column) -> DataFrame:
     """
     Combine the different versions of work health care responses.
     Uses direct contact status to edit these.
@@ -1366,12 +1364,10 @@ def assign_work_health_care(
         ", non-patient-facing"
     )
     edited_other_health_care_column = F.when(
-        (F.col(other_health_care_column) != "No") & F.col(other_health_care_column).isNotNull(),
-        F.concat(value_map[F.col(other_health_care_column)], patient_facing_text),
-    ).otherwise(F.col(other_health_care_column))
-    df = df.withColumn(
-        column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
-    )
+        (F.col(health_care_column) != "No") & F.col(health_care_column).isNotNull(),
+        F.concat(value_map[F.col(health_care_column)], patient_facing_text),
+    ).otherwise(F.col(health_care_column))
+    df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
     return df
 
 
