@@ -42,11 +42,11 @@ def extract_validate_transform_input_data(
     raw_df = rename_column_names(raw_df, variable_name_map)
     raw_df = assign_filename_column(raw_df, source_file_column)  # Must be called before update_from_csv_lookup
 
-    update_table(raw_df, f"raw_{dataset_name}")
     df = raw_df
     filtered_df = None
-    if include_hadoop_read_write and filter_config is not None:
-        if dataset_name in filter_config:
+    if include_hadoop_read_write:
+        update_table(raw_df, f"raw_{dataset_name}")
+        if filter_config is not None and dataset_name in filter_config:
             filter_ids = filter_config[dataset_name]
             filtered_df = df.filter(F.col(id_column).isin(filter_ids))
             update_table(filtered_df, f"{dataset_name}_rows_extracted")
@@ -65,7 +65,7 @@ def extract_validate_transform_input_data(
     return raw_df, df, filtered_df
 
 
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str):
+def extract_input_data(file_paths: list, validation_schema: dict, sep: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
