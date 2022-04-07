@@ -34,9 +34,9 @@ def test_precalibration_checkpoints(spark_session):
 
     check_1, check_2, check_3, check_4 = precalibration_checkpoints(
         df=input_df_not_pass,
-        country_col='country',
-        grouping_list=['groupby', 'sample_group'],
-        scaled_dweight_adjusted='scaled_dweight_adjusted',
+        country_col="country",
+        grouping_list=["groupby", "sample_group"],
+        scaled_dweight_adjusted="scaled_dweight_adjusted",
         total_population="groupby",
         dweight_list=["dweight_1", "dweight_2"],
     )
@@ -44,7 +44,7 @@ def test_precalibration_checkpoints(spark_session):
     assert check_2 is not True
     assert check_3 is not True
     assert check_4 is not True
-    
+
     expected_df_pass = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -65,9 +65,9 @@ def test_precalibration_checkpoints(spark_session):
 
     check_1, check_2, check_3, check_4 = precalibration_checkpoints(
         df=input_df_pass,
-        country_col='country',
-        grouping_list=['groupby', 'sample_group'],
-        scaled_dweight_adjusted='scaled_dweight_adjusted',
+        country_col="country",
+        grouping_list=["groupby", "sample_group"],
+        scaled_dweight_adjusted="scaled_dweight_adjusted",
         total_population="groupby",
         dweight_list=["dweight_1", "dweight_2"],
     )
