@@ -43,7 +43,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     Parameters
     ----------
     text_file
-        A text file (csv) that has been ready by spark context
+        A text file (csv) that has been read by spark context
     expected_header
         Exact header expected in csv file
     """

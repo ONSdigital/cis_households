@@ -8,8 +8,6 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import functions as F
 
-from cishouseholds.derive import aggregated_output_groupby
-from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
@@ -31,6 +29,7 @@ from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import table_operations
@@ -63,8 +62,13 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
+# from cishouseholds.derive import aggregated_output_groupby
+# from cishouseholds.derive import aggregated_output_window
+
 
 pipeline_stages = {}
+
+# test
 
 
 def register_pipeline_stage(key):
@@ -287,7 +291,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        df, filtered_df = extract_validate_transform_input_data(
+        raw_df, df, filtered_df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -303,7 +307,14 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                df, filtered_df, output_table_name, source_file_column, write_mode, output_table_name
+                raw_df,
+                df,
+                filtered_df,
+                output_table_name,
+                source_file_column,
+                dataset_name,
+                write_mode,
+                output_table_name,
             )
         return df
 
@@ -401,6 +412,7 @@ def lookup_based_editing(
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
     rural_urban_lookup_path: str,
+    tenure_group_path: str,
     output_edited_table: str,
 ):
     """
@@ -415,8 +427,8 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    df = extract_from_table(input_table)
     spark = get_or_create_spark_session()
+    df = extract_from_table(input_table)
 
     cohort_lookup = spark.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
@@ -435,7 +447,9 @@ def lookup_based_editing(
             cis_rural_urban_classification string,
             rural_urban_classification_11 string
         """,
-    )
+    ).drop(
+        "rural_urban_classification_11"
+    )  # Prefer version from sample
     df = df.join(
         F.broadcast(cohort_lookup),
         how="left",
@@ -455,12 +469,19 @@ def lookup_based_editing(
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
 
     if "lower_super_output_area_code_11" in df.columns:
-        df = df.drop("rural_urban_classification_11")  # Assumes version in lookup is better
         df = df.join(
             F.broadcast(rural_urban_lookup_df),
             how="left",
             on="lower_super_output_area_code_11",
         )
+    tenure_group = spark.read.csv(tenure_group_path, header=True).select(
+        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
+    )
+    for key, value in tenure_group_variable_map.items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+
     update_table(df, output_edited_table, mode_overide="overwrite")
 
 
@@ -668,11 +689,7 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-<<<<<<< HEAD
-    address_lookup, cis_phase_lookup, country_lookup, postcode_lookup, output_household_level_populations_table
-=======
-    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
->>>>>>> origin/main
+    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, output_household_level_populations_table
 ):
     files = {
         "address_lookup": {"file": address_lookup, "type": "path"},
@@ -790,6 +807,7 @@ def report(
     input_invalid_survey_responses_table: str,
     input_filtered_survey_responses_table: str,
     output_directory: str,
+    filtered_survey_responses_table: str = None,
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -814,8 +832,24 @@ def report(
     """
     valid_df = extract_from_table(input_valid_survey_responses_table)
     invalid_df = extract_from_table(input_invalid_survey_responses_table)
-    filtered_df = extract_from_table(input_filtered_survey_responses_table)
+
+    filtered_survey_responses_count = 0
+    if filtered_survey_responses_table is not None:
+        filtered_df = extract_from_table(filtered_survey_responses_table)
+        filtered_survey_responses_count = filtered_df.count()
+
     processed_file_log = extract_from_table("processed_filenames")
+    rows_extracted_df = (
+        processed_file_log.groupBy("dataset_name")
+        .agg(F.sum("filtered_row_count").alias("total_dataset_rows_extracted"))
+        .toPandas()
+    )
+    raw_rows_df = (
+        processed_file_log.groupBy("dataset_name")
+        .agg(F.sum("file_row_count").alias("total_dataset_raw_rows"))
+        .toPandas()
+    )
+    transformed_rows_df = processed_file_log.select("dataset_name", "transformed_row_count").distinct().toPandas()
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -824,7 +858,6 @@ def report(
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
-    filtered_survey_responses_count = filtered_df.count()
 
     valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
     invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
@@ -851,12 +884,18 @@ def report(
                 "valid survey responses",
                 "invalid survey responses",
                 "filtered survey responses",
+                *[f"extracted {dataset_name}" for dataset_name in list(rows_extracted_df["dataset_name"])],
+                *[f"raw {dataset_name}" for dataset_name in list(raw_rows_df["dataset_name"])],
+                *[f"transformed {dataset_name}" for dataset_name in list(transformed_rows_df["dataset_name"])],
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
                 filtered_survey_responses_count,
+                *list(rows_extracted_df["total_dataset_rows_extracted"]),
+                *list(raw_rows_df["total_dataset_raw_rows"]),
+                *list(transformed_rows_df["transformed_row_count"]),
             ],
         }
     )
@@ -865,37 +904,17 @@ def report(
     file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
         for type in file_types:
-            processed_file_names = [
-                name.split("/")[-1]
-                for name in list(
-                    processed_file_log.filter(F.col("file_type") == type)
-                    .select("processed_filename")
-                    .distinct()
-                    .rdd.flatMap(lambda x: x)
-                    .collect()
-                )
-            ]
-            processed_file_counts = list(
+            processed_files_df = (
                 processed_file_log.filter(F.col("file_type") == type)
-                .select("file_row_count", "processed_filename")
+                .select("processed_filename", "file_row_count")
                 .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
+                .toPandas()
             )
-            extracted_counts = list(
-                processed_file_log.filter(F.col("file_type") == type)
-                .select("filtered_row_count", "processed_filename")
-                .distinct()
-                .drop("processed_filename")
-                .rdd.flatMap(lambda x: x)
-                .collect()
-            )
-            counts_df = pd.DataFrame(
-                {"dataset": processed_file_names, "count": processed_file_counts, "extracted_count": extracted_counts}
-            )
+            processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
+            processed_file_counts = processed_files_df["file_row_count"]
+            individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
             name = f"{type}"
-            counts_df.to_excel(writer, sheet_name=name, index=False)
+            individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
