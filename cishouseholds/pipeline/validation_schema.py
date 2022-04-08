@@ -183,34 +183,7 @@ projections_column_map = {
     "f85": integer_dict,
 }
 
-# sample_file_column_map = {
-#     "UAC": "ons_household_id",
-#     "uac": "ons_household_id",
-#     "lsoa_11": "lower_super_output_area_code_11",
-#     "lsoa11": "lower_super_output_area_code_11",
-#     "cis20cd": "cis_area_code_20",
-#     "CIS20CD": "cis_area_code_20",
-#     "ctry12": "country_code_12",
-#     "ctry": "country_code_12",
-#     "ctry_name12": "country_name_12",
-#     "pcd": "postcode",
-#     "postcode": "postcode",
-#     "sample": "sample_source",
-#     "sample_direct": "sample_addressbase_indicator",
-#     "rgn/gor9d": "region_code",
-#     "rgn": "region_code",
-#     "gor9d": "region_code",
-#     "laua": "local_authority_unity_authority_code",
-#     "oa11oac11": "output_area_code_11_census_output_area_classification_11",
-#     "oa11": "output_area_code_11_census_output_area_classification_11",
-#     "msoa11": "middle_super_output_area_code_11",
-#     "ru11ind": "rural_urban_classification_11",
-#     "imd": "index_multiple_deprivation",
-#     # "date_sample_created": "date_sample_created", # this column is derived from cis phase join table
-#     "batch_number": "batch_number",
-# }
-
-address_lookup = {
+address_schema = {
     "uprn": string_dict,
     "town_name": string_dict,
     "postcode": string_dict,
@@ -223,7 +196,7 @@ address_lookup = {
     "address_base_postal": string_dict,
 }
 
-postcode_lookup = {
+postcode_schema = {
     "pcd": string_dict,
     "pcd2": string_dict,
     "pcds": string_dict,
@@ -265,8 +238,7 @@ postcode_lookup = {
     "calncv": string_dict,
     "stp": string_dict,
 }
-
-lsoa_cis_lookup = {
+lsoa_cis_schema = {
     "LSOA11CD": string_dict,
     "LSOA11NM": string_dict,
     "CIS20CD": string_dict,
@@ -275,7 +247,7 @@ lsoa_cis_lookup = {
     "interim_id": string_dict,
 }
 
-cis_phase_lookup = {
+cis_phase_schema = { # check
     "phase_name": string_dict,
     "phase_visits": string_dict,
     "phase_sample": string_dict,
@@ -284,13 +256,13 @@ cis_phase_lookup = {
     "issued_wc": string_dict,
     "fieldwork_wc": string_dict,
 }
-country_lookup = {
+country_schema = {
     "CTRY20CD": string_dict,
     "CTRY20NM": string_dict,
     "LAD20CD": string_dict,
     "LAD20NM": string_dict,
 }
-old_sample_file = {
+old_sample_file_schema = {
     "sample": string_dict,
     "UAC": string_dict,
     "GOR9D": string_dict,
@@ -307,29 +279,28 @@ old_sample_file = {
     "sample_direct": string_dict,
     "tranche": string_dict,
     "interim_id": string_dict,
-    "dweight_HH": string_dict,
+    "dweight_hh": string_dict,
     "dweight_hh_atb": string_dict,
 }
-new_sample_file = (
-    {
-        "UAC": string_dict,
-        "sample": string_dict,
-        "LA_CODE": string_dict,
-        "Bloods": string_dict,
-        "oa11": string_dict,
-        "laua": string_dict,
-        "ctry": string_dict,
-        "custodian_region_code": string_dict,
-        "lsoa11": string_dict,
-        "msoa11": string_dict,
-        "ru11ind": string_dict,
-        "oac11": string_dict,
-        "rgn": string_dict,
-        "imd": string_dict,
-        "interim_id": string_dict,
-    },
-)
-master_sample_file = {
+new_sample_file_schema = {
+    "UAC": string_dict,
+    "sample": string_dict,
+    "LA_CODE": string_dict,
+    "Bloods": string_dict,
+    "oa11": string_dict,
+    "laua": string_dict,
+    "ctry": string_dict,
+    "custodian_region_code": string_dict,
+    "lsoa11": string_dict,
+    "msoa11": string_dict,
+    "ru11ind": string_dict,
+    "oac11": string_dict,
+    "rgn": string_dict,
+    "imd": string_dict,
+    "interim_id": string_dict,
+},
+
+master_sample_file_schema = {
     "ons_household_id": integer_dict,
     "FULL_NAME": string_dict,
     "ADDRESS_LINE_1": string_dict,
@@ -345,7 +316,7 @@ master_sample_file = {
     "UDPRN": string_dict,
     "TOWN_NAME": string_dict,
 }
-tranche = {
+tranche_schema = {
     "enrolment_date": string_dict,
     "UAC": integer_dict,
     "lsoa_11": string_dict,
@@ -355,11 +326,11 @@ tranche = {
     "tranche": integer_dict,
 }
 
-population_projection_previous = (projections_column_map,)
+population_projection_previous_schema = projections_column_map
 
-population_projection_current = (projections_column_map,)
+population_projection_current_schema = projections_column_map
 
-aps_lookup = {
+aps_schema = {
     "caseno": integer_dict,
     "age": integer_dict,
     "country": integer_dict,
