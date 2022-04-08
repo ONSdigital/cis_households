@@ -12,15 +12,9 @@ sample_file_column_map = {
     "uac": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
     "lsoa11": "lower_super_output_area_code_11",
-    "cis20cd": "cis_area_code_20",
-    "CIS20CD": "cis_area_code_20",
     "ctry12": "country_code_12",
     "ctry": "country_code_12",
-    "ctry_name12": "country_name_12",
-    "pcd": "postcode",
-    "postcode": "postcode",
     "sample": "sample_source",
-    "sample_direct": "sample_addressbase_indicator",
     "rgn/gor9d": "region_code",
     "rgn": "region_code",
     "gor9d": "region_code",
@@ -30,8 +24,6 @@ sample_file_column_map = {
     "msoa11": "middle_super_output_area_code_11",
     "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
-    # "date_sample_created": "date_sample_created", # this column is derived from cis phase join table
-    "batch_number": "batch_number",
 }
 
 projections_column_map = {
@@ -69,7 +61,13 @@ lookup_variable_name_maps = {
         "COUNCIL_TAX": "council_tax",
         "ADDRESSBASE_POSTAL": "addressbase_postal",
     },
-    "postcode_lookup": {"pcd": "postcode", "lsoa11": "lower_super_output_area_code_11", "ctry": "country_code_12"},
+    "postcode_lookup": {
+        "pcd": "postcode",
+        "lsoa11": "lower_super_output_area_code_11",
+        "ctry": "country_code_12",
+        "ru11ind": "rural_urban_classification_11",
+        "oac11": "output_area_code_11",
+    },
     "lsoa_cis_lookup": {
         "LSOA11CD": "lower_super_output_area_code_11",
         "CIS20CD": "cis_area_code_20",
