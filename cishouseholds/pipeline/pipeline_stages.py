@@ -662,7 +662,9 @@ def impute_demographic_columns(
     #     "participant_id",
     #     *lookup_columns,
     # )
-    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+    df_with_imputed_values = df.drop(*key_columns).join(
+        F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
+    )
 
     # update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")

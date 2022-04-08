@@ -93,5 +93,4 @@ def extract_df_list(files):
             dfs[key] = extract_from_table(file["file"])
         else:
             dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
     return dfs
