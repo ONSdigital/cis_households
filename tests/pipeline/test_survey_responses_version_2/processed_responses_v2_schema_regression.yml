@@ -1140,6 +1140,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_social_care
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_v0
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
@@ -1178,29 +1186,5 @@ fields:
 - metadata: {}
   name: work_status_v1
   nullable: true
-  type: string
-- metadata: {}
-  name: work_social_care
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_person_facing_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: ever_work_person_facing_or_social_care
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_care_home_worker
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_had_long_term_health_condition
-  nullable: false
-  type: string
-- metadata: {}
-  name: ever_had_long_term_health_condition_or_disabled
-  nullable: false
   type: string
 type: struct
