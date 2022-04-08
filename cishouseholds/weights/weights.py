@@ -34,6 +34,7 @@ def generate_weights(auxillary_dfs, table_or_path):
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
     tranche_df = auxillary_dfs["tranche"]
     if tranche_df is not None:
+        tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
         # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
@@ -82,9 +83,8 @@ def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
     """
     Add data from the additional lookup files to main dataset
     """
-    old_sample_df = recode_columns(
-        dfs["old_sample_file"], dfs["new_sample_file"], dfs["household_level_populations"]
-    ).withColumn("date_sample_created", F.lit("2021/11/30"))
+    old_sample_df = recode_columns(dfs["old_sample_file"], dfs["new_sample_file"], dfs["household_level_populations"])
+    old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
     new_sample_file = assign_filename_column(dfs["new_sample_file"], "sample_source_file")
     new_sample_file = new_sample_file.join(
         dfs["master_sample_file"].select("ons_household_id", "sample_type"),
