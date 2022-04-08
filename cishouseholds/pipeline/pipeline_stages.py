@@ -674,13 +674,17 @@ def impute_demographic_columns(
 def calculate_household_level_populations(
     address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
-    files = {
-        "address_lookup": {"file": address_lookup, "type": "path"},
-        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
-        "country_lookup": {"file": country_lookup, "type": "path"},
-        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-    }
-    dfs = extract_df_list(files)
+    # files = {
+    #     "address_lookup": {"file": address_lookup, "type": "path"},
+    #     "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
+    #     "country_lookup": {"file": country_lookup, "type": "path"},
+    #     "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+    # }
+    # dfs = extract_df_list(files)
+
+    # TODO extract every input data previously, can do in for loop
+    df = extract_input_data()
+
     dfs = prepare_auxillary_data(dfs)
 
     household_info_df = household_level_populations(
