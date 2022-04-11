@@ -59,7 +59,6 @@ def generate_weights(auxillary_dfs, table_or_path):
         n_eligible_hh_tranche_bystrata_column="number_eligible_households_tranche_bystrata_enrolment",
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
-
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
 
     df = validate_design_weights(
@@ -68,14 +67,12 @@ def generate_weights(auxillary_dfs, table_or_path):
         num_households_column="number_of_households_population_by_cis",
         window=cis_window,
     )
-
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-
     return df
 
 
@@ -109,7 +106,7 @@ def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
         on="lower_super_output_area_code_11",
         how="left",
     )
-    df = df.join(
+    df = df.drop("rural_urban_classification_11", "country_code_12").join(
         dfs["postcode_lookup"].select(
             "postcode", "rural_urban_classification_11", "output_area_code_11", "country_code_12"
         ),
@@ -173,19 +170,18 @@ def household_level_populations(
     df_cis20cd
         Dataframe with cis20cd and interim id.
     """
-    df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
+    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
-    df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
 
-    df = df.join(country_lookup, on="country_code_12", how="left")
+    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
     df = df.withColumn(
         "number_of_households_population_by_cis",
         F.approx_count_distinct("unique_property_reference_code").over(area_window),
     )
-
     country_window = Window.partitionBy("country_code_12")
     df = df.withColumn(
         "number_of_households_population_by_country",

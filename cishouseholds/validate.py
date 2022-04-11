@@ -80,10 +80,17 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
         if not valid_csv_header:
             file_header_set = set(text_file.first().split(sep))
             expected_header_set = set(validation_schema.keys())
-            missmatches = ", ".join(file_header_set.difference(expected_header_set)) + ", ".join(
-                expected_header_set.difference(file_header_set)
+            missmatches = (
+                ",".join(file_header_set.difference(expected_header_set))
+                + ","
+                + ",".join(expected_header_set.difference(file_header_set))
             )
-            error += f"\nInvalid file: Header of {file_path}:\ninconsistent values: {missmatches})\n "
+            if len(missmatches) == 0:
+                message = "has columns that are out of order"
+            else:
+                message = f"inconsistent values: '{missmatches}'"
+
+            error += f"\nInvalid file: Header of {file_path}:{message}\n"
 
         if not valid_csv_fields:
             error += (

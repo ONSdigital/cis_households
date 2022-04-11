@@ -9,7 +9,6 @@ from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import check_table_exists
@@ -18,6 +17,24 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import validate_files
+
+
+class InvalidFileError(Exception):
+    pass
+
+
+def extract_lookup_csv(lookup_file_path: str, validation_schema: dict):
+    """
+    extract and validate a csv lookup file from path with validation_schema
+    """
+    spark_session = get_or_create_spark_session()
+    valid_files = validate_files(lookup_file_path, validation_schema)
+    if not valid_files:
+        raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
+    return spark_session.read.csv(
+        valid_files, header=True, schema=convert_cerberus_schema_to_pyspark(validation_schema)
+    )
 
 
 def extract_validate_transform_input_data(
@@ -82,16 +99,3 @@ def extract_from_table(table_name: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     check_table_exists(table_name, raise_if_missing=True)
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
-
-
-def extract_df_list(files):
-    dfs = {}
-    for key, file in files.items():
-        if file["file"] == "" or file["file"] is None:
-            dfs[key] = None
-        elif file["type"] == "table":
-            dfs[key] = extract_from_table(file["file"])
-        else:
-            dfs[key] = extract_input_data(file_paths=file["file"], validation_schema=None, sep=",")
-
-    return dfs
