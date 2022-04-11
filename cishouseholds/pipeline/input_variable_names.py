@@ -686,14 +686,14 @@ tenure_group_variable_map = {
 }
 
 projections_column_map = {
-    "laname_21": 'local_authority_unitary_authority_name',
-    "ladcode_21": 'local_authority_unitary_authority_code',
-    "region9charcode": 'region_code',
-    "regionname": 'region_name',
-    "country9charcode_09": 'country_code_12',
-    "countryname_09": 'country_name_12',
+    "laname_21": "local_authority_unitary_authority_name",
+    "ladcode_21": "local_authority_unitary_authority_code",
+    "region9charcode": "region_code",
+    "regionname": "region_name",
+    "country9charcode_09": "country_code_12",
+    "countryname_09": "country_name_12",
 }
-address_lookup = {
+address_column_map = {
     "uprn": "unique_property_reference_code",
     "postcode": "postcode",
     "town_name": "town_name",
@@ -704,31 +704,31 @@ address_lookup = {
     "council_tax": "council_tax",
     "address_base_postal": "addressbase_postal",
 }
-postcode_lookup = {
+postcode_column_map = {
     "pcd": "postcode",
     "lsoa11": "lower_super_output_area_code_11",
     "ctry": "country_code_12",
     "ru11ind": "rural_urban_classification_11",
     "oac11": "output_area_code_11",
 }
-lsoa_cis_lookup = {
+lsoa_cis_column_map = {
     "LSOA11CD": "lower_super_output_area_code_11",
     "CIS20CD": "cis_area_code_20",
     "LSOA11NM": "lower_super_output_area_name_11",
     "RGN19CD": "region_code_19",
 }
-cis_phase_lookup = {
+cis_phase_lookup_column_map = {
     "phase_sample": "sample_source",
     "country": "country_name_12",
     "issued_wc": "date_sample_created",
 }
-country_lookup = {
+country_column_map = {
     "CTRY20CD": "country_code_12",
     "CTRY20NM": "country_name_12",
     "LAD20CD": "local_authority_unitary_authority_code",
     "LAD20NM": "local_authority_unitary_authority_name",
 }
-old_sample_file = {
+old_sample_file_column_map = {
     "UAC": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
     "lsoa11": "lower_super_output_area_code_11",
@@ -744,14 +744,13 @@ old_sample_file = {
     "msoa11": "middle_super_output_area_code_11",
     # "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
-
     # "hh_dweight_swab": "household_level_designweight_swab",
     "dweight_hh": "household_level_designweight_swab",
     "dweight_hh_atb": "household_level_designweight_antibodies",
     # "hh_dweight_atb": "household_level_designweight_antibodies",
     "tranche": "tranche",
 }
-new_sample_file = {
+new_sample_file_column_map = {
     "UAC": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
     "lsoa11": "lower_super_output_area_code_11",
@@ -767,7 +766,7 @@ new_sample_file = {
     "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
 }
-master_sample_file = {
+master_sample_file_column_map = {
     "ons_household_id": "ons_household_id",
     "FULL_NAME": "full_name",
     "ADDRESS_LINE_1": "address_line_1",
@@ -783,7 +782,7 @@ master_sample_file = {
     "UDPRN": "udprn",
     "TOWN_NAME": "town_name",
 }
-tranche = {
+tranche_column_map = {
     "UAC": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
     "cis20cd": "cis_area_code_20",
@@ -793,11 +792,11 @@ tranche = {
     "tranche": "tranche",
 }
 
-population_projection_previous = (projections_column_map,)
+population_projection_previous_column_map = projections_column_map
 
-population_projection_current = (projections_column_map,)
+population_projection_current_column_map = projections_column_map
 
-aps_lookup = {
+aps_column_map = {
     "caseno": "person_id_aps",
     "country": "country_name",
     "ethgbeul": "ethnicity_aps_england_wales_scotland",

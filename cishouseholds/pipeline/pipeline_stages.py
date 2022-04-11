@@ -6,6 +6,30 @@ from typing import List
 from typing import Union
 
 import pandas as pd
+from cis_households.cishouseholds.pipeline.input_variable_names import address_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import aps_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import country_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import new_sample_file_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import old_sample_file_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import population_projection_current_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import postcode_column_map
+from cis_households.cishouseholds.pipeline.input_variable_names import tranche_column_map
+from cis_households.cishouseholds.pipeline.validation_schema import address_schema
+from cis_households.cishouseholds.pipeline.validation_schema import aps_schema
+from cis_households.cishouseholds.pipeline.validation_schema import cis_phase_schema
+from cis_households.cishouseholds.pipeline.validation_schema import country_schema
+from cis_households.cishouseholds.pipeline.validation_schema import lsoa_cis_schema
+from cis_households.cishouseholds.pipeline.validation_schema import master_sample_file_schema
+from cis_households.cishouseholds.pipeline.validation_schema import new_sample_file_schema
+from cis_households.cishouseholds.pipeline.validation_schema import old_sample_file_schema
+from cis_households.cishouseholds.pipeline.validation_schema import population_projection_current_schema
+from cis_households.cishouseholds.pipeline.validation_schema import population_projection_previous_schema
+from cis_households.cishouseholds.pipeline.validation_schema import postcode_schema
+from cis_households.cishouseholds.pipeline.validation_schema import tranche_schema
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
@@ -13,9 +37,10 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
-from cishouseholds.edit import rename_column_names, update_from_lookup_df
+from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.extract import read_rename_csv_based_on_given_columns
 from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
@@ -29,7 +54,6 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
@@ -61,10 +85,9 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-from cis_households.cishouseholds.weights.extract import rename_and_remove_columns
 
-from cis_households.cishouseholds.pipeline.validation_schema import *
-from cis_households.cishouseholds.pipeline.input_variable_names import *
+# fmt: off
+# fmt: on
 
 
 pipeline_stages = {}
@@ -687,37 +710,33 @@ def calculate_household_level_populations(
     # }
     # dfs = extract_df_list(files)
 
-    # TODO extract every input data previously, can do in for loop
     dict_schemas_paths = {
-        'address_lookup': {'schema': address_lookup, 'path': address_lookup, 'column_map': address_schema}, 
-        'postcode_lookup': {'schema': postcode_lookup, 'path': postcode_lookup, 'column_map': postcode_lookup}, 
-        'lsoa_cis_lookup': {'schema': lsoa_cis_lookup, 'path': lsoa_cis_lookup, 'column_map': lsoa_cis_lookup}, 
-        'cis_phase_lookup': {'schema': cis_phase_lookup, 'path': address_, 'column_map': cis_phase_lookup}, 
-        'country_lookup': {'schema': country_lookup, 'path': country_lookup, 'column_map': country_lookup}, 
-        'old_sample_file': {'schema': old_sample_file, 'path': address_, 'column_map': old_sample_file}, 
-        'new_sample_file': {'schema': new_sample_file, 'path': address_, 'column_map': new_sample_file}, 
-        'new_sample_file': {'schema': master_sample_file, 'path': address_, 'column_map': master_sample_file}, 
-        'tranche': {'schema': tranche, 'path': address_, 'column_map': tranche_schema}, 
-        'population_projection_previous': {'schema': population_projection_previous, 'path': address_, 'column_map': population_projection_previous}, 
-        'population_projection_current': {'schema': population_projection_current, 'path': address_, 'column_map': population_projection_current}, 
-        'aps_lookup': {'schema': aps_lookup, 'path': address_, 'column_map': aps_lookup}
+        "address_lookup": {
+            "schema": address_schema,
+            "path": address_lookup,
+            "column_map": address_column_map,
+            "type": "path",
+        },
+        "postcode_lookup": {
+            "schema": postcode_schema,
+            "path": postcode_lookup,
+            "column_map": postcode_column_map,
+            "type": "path",
+        },
+        "lsoa_cis_lookup": {
+            "schema": lsoa_cis_schema,
+            "path": lsoa_cis_lookup,
+            "column_map": lsoa_cis_column_map,
+            "type": "path",
+        },
+        "country_lookup": {
+            "schema": country_schema,
+            "path": country_lookup,
+            "column_map": country_column_map,
+            "type": "path",
+        },
     }
-    dfs = []
-    for table_name in dict_schemas_paths.keys():
-        df = extract_input_data(
-            file_paths=dict_schemas_paths[table_name]['path'], 
-            validation_schema=dict_schemas_paths[table_name]['schema'], 
-            sep=','
-        )
-        df = df.drop(*[col for col in df.columns if col not in dict_schemas_paths[table_name]['column_map'].keys()])
-        df = rename_column_names(df, dict_schemas_paths[table_name]['column_map'])
-        dfs.append(df)
-
-    # TODO: remove columns
-    
-    # TODO: map columns
-
-    dfs = prepare_auxillary_data(dfs)
+    dfs = read_rename_csv_based_on_given_columns(dict_schemas_paths=dict_schemas_paths)
 
     household_info_df = household_level_populations(
         dfs["address_lookup"],
@@ -1058,12 +1077,44 @@ def sample_file_ETL(
         table_or_path = "table"
         old_sample_file = design_weight_table
     files = {
-        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
-        "new_sample_file": {"file": new_sample_file, "type": "path"},
-        "old_sample_file": {"file": old_sample_file, "type": table_or_path},
-        "tranche": {"file": tranche, "type": "path"},
-        "master_sample_file": {"file": master_sample_file, "type": "path"},
+        # "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+        # "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        # "new_sample_file": {"file": new_sample_file, "type": "path"},
+        # "old_sample_file": {"file": old_sample_file, "type": table_or_path},
+        # "tranche": {"file": tranche, "type": "path"},
+        # "master_sample_file": {"file": master_sample_file, "type": "path"},
+        # TODO: change stage
+        "postcode_lookup": {
+            "schema": postcode_schema,
+            "path": postcode_lookup,
+            "column_map": postcode_column_map,
+            "type": "path",
+        },
+        "cis_phase_lookup": {
+            "schema": cis_phase_schema,
+            "path": cis_phase_lookup,
+            "column_map": cis_phase_lookup_column_map,
+            "type": "path",
+        },
+        "old_sample_file": {
+            "schema": old_sample_file_schema,
+            "path": old_sample_file,
+            "column_map": old_sample_file_column_map,
+            "type": table_or_path,
+        },
+        "new_sample_file": {
+            "schema": new_sample_file_schema,
+            "path": new_sample_file,
+            "column_map": new_sample_file_column_map,
+            "type": "path",
+        },
+        "master_sample_file": {
+            "schema": master_sample_file_schema,
+            "path": master_sample_file,
+            "column_map": master_sample_file_column_map,
+            "type": "path",
+        },
+        "tranche": {"schema": tranche_schema, "path": tranche, "column_map": tranche_column_map, "type": "path"},
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
@@ -1088,11 +1139,24 @@ def population_projection(
         table_or_path = "table"
         population_projection_previous = population_projections_table
     files = {
-        "population_projection_current": {"file": population_projection_current, "type": "path"},
-        "aps_lookup": {"file": aps_lookup, "type": "path"},
-        "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
+        "population_projection_previous": {
+            "schema": population_projection_previous_schema,
+            "path": population_projection_previous,
+            "column_map": population_projection_previous_column_map,
+            "type": table_or_path,
+        },
+        "population_projection_current": {
+            "schema": population_projection_current_schema,
+            "path": population_projection_current,
+            "column_map": population_projection_current_column_map,
+            "type": "path",
+        },
+        "aps_lookup": {"schema": aps_schema, "path": aps_lookup, "column_map": aps_column_map, "type": "path"},
     }
-    dfs = extract_df_list(files)
+    dfs = read_rename_csv_based_on_given_columns(
+        dict_schemas_paths=files,
+        table_to_exclude_list=["population_projection_previous", "population_projection_current"],
+    )
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
