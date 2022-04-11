@@ -1050,6 +1050,8 @@ def sample_file_ETL(
     table_or_path,
     old_sample_file,
     design_weight_table,
+    country_lookup,
+    lsoa_cis_lookup,
 ):
     table_or_path = "path"
     if check_table_exists(design_weight_table):
@@ -1094,6 +1096,18 @@ def sample_file_ETL(
             "type": "path",
         },
         "tranche": {"schema": tranche_schema, "path": tranche, "column_map": tranche_column_map, "type": "path"},
+        "lsoa_cis_lookup": {
+            "schema": lsoa_cis_schema,
+            "path": lsoa_cis_lookup,
+            "column_map": lsoa_cis_column_map,
+            "type": "path",
+        },
+        "country_lookup": {
+            "schema": country_schema,
+            "path": country_lookup,
+            "column_map": country_column_map,
+            "type": "path",
+        },
     }
     dfs = extract_df_list(files)
     dfs = prepare_auxillary_data(dfs)
