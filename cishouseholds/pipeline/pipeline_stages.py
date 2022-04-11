@@ -1035,6 +1035,8 @@ def sample_file_ETL(
     tranche,
     cis_phase_lookup,
     postcode_lookup,
+    country_lookup,
+    lsoa_cis_lookup,
     master_sample_file,
     table_or_path,
     old_sample_file,
@@ -1046,7 +1048,9 @@ def sample_file_ETL(
         old_sample_file = output_design_weight_table
     files = {
         "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+        "country_lookup": {"file": country_lookup, "type": "path"},
         "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
         "new_sample_file": {"file": new_sample_file, "type": "path"},
         "old_sample_file": {"file": old_sample_file, "type": table_or_path},
         "tranche": {"file": tranche, "type": "path"},

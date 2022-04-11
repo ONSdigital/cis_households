@@ -1,3 +1,49 @@
+projections_column_name_map = {
+    "laname_21": "local_area_name",
+    "ladcode_21": "local_authority_district_code",
+    "region9charcode": "region_code",
+    "regionname": "region_name",
+    "country9charcode_09": "country_code",
+    "countryname_09": "country_name",
+}
+
+address_lookup_column_name_map = {
+    "uprn": "unique_property_reference_code",
+    "ctry18nm": "country_name_18",
+    "la_code": "local_authority_code",
+    "address_type": "address_type",
+    "address_base_postal": "addressbase_postal",
+    "postcode": "postcode",
+}
+
+postcode_lookup_column_name_map = {
+    "pcd": "postcode",
+    "lsoa11": "lower_super_output_area_code_11",
+    "ctry": "country_code_12",
+    "ru11ind": "rural_urban_classification_11",
+    "oac11": "output_area_code_11",
+}
+
+lsoa_cis_lookup_column_name_map = {
+    "LSOA11CD": "lower_super_output_area_code_11",
+    "CIS20CD": "cis_area_code_20",
+    "LSOA11NM": "lower_super_output_area_name_11",
+    "RGN19CD": "region_code_19",
+}
+
+cis_phase_lookup_column_name_map = {
+    "phase_sample": "sample_source",
+    "country": "country_name_12",
+    "issued_wc": "date_sample_created",
+}
+
+country_lookup_column_name_map = {
+    "CTRY20CD": "country_code_12",
+    "CTRY20NM": "country_name_12",
+    "LAD20CD": "local_authority_unitary_authority_code",
+    "LAD20NM": "local_authority_unitary_authority_name",
+}
+
 swab_variable_name_map = {
     "Sample": "swab_sample_barcode",
     "Result": "pcr_result_classification",
