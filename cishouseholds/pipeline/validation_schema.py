@@ -247,7 +247,7 @@ lsoa_cis_schema = {
     "interim_id": string_dict,
 }
 
-cis_phase_schema = { # check
+cis_phase_schema = {  # check
     "phase_name": string_dict,
     "phase_visits": string_dict,
     "phase_sample": string_dict,
@@ -282,23 +282,25 @@ old_sample_file_schema = {
     "dweight_hh": string_dict,
     "dweight_hh_atb": string_dict,
 }
-new_sample_file_schema = {
-    "UAC": string_dict,
-    "sample": string_dict,
-    "LA_CODE": string_dict,
-    "Bloods": string_dict,
-    "oa11": string_dict,
-    "laua": string_dict,
-    "ctry": string_dict,
-    "custodian_region_code": string_dict,
-    "lsoa11": string_dict,
-    "msoa11": string_dict,
-    "ru11ind": string_dict,
-    "oac11": string_dict,
-    "rgn": string_dict,
-    "imd": string_dict,
-    "interim_id": string_dict,
-},
+new_sample_file_schema = (
+    {
+        "UAC": string_dict,
+        "sample": string_dict,
+        "LA_CODE": string_dict,
+        "Bloods": string_dict,
+        "oa11": string_dict,
+        "laua": string_dict,
+        "ctry": string_dict,
+        "custodian_region_code": string_dict,
+        "lsoa11": string_dict,
+        "msoa11": string_dict,
+        "ru11ind": string_dict,
+        "oac11": string_dict,
+        "rgn": string_dict,
+        "imd": string_dict,
+        "interim_id": string_dict,
+    },
+)
 
 master_sample_file_schema = {
     "ons_household_id": integer_dict,
