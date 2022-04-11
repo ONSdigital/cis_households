@@ -6,30 +6,6 @@ from typing import List
 from typing import Union
 
 import pandas as pd
-from cis_households.cishouseholds.pipeline.input_variable_names import address_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import aps_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import country_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import new_sample_file_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import old_sample_file_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import population_projection_current_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import postcode_column_map
-from cis_households.cishouseholds.pipeline.input_variable_names import tranche_column_map
-from cis_households.cishouseholds.pipeline.validation_schema import address_schema
-from cis_households.cishouseholds.pipeline.validation_schema import aps_schema
-from cis_households.cishouseholds.pipeline.validation_schema import cis_phase_schema
-from cis_households.cishouseholds.pipeline.validation_schema import country_schema
-from cis_households.cishouseholds.pipeline.validation_schema import lsoa_cis_schema
-from cis_households.cishouseholds.pipeline.validation_schema import master_sample_file_schema
-from cis_households.cishouseholds.pipeline.validation_schema import new_sample_file_schema
-from cis_households.cishouseholds.pipeline.validation_schema import old_sample_file_schema
-from cis_households.cishouseholds.pipeline.validation_schema import population_projection_current_schema
-from cis_households.cishouseholds.pipeline.validation_schema import population_projection_previous_schema
-from cis_households.cishouseholds.pipeline.validation_schema import postcode_schema
-from cis_households.cishouseholds.pipeline.validation_schema import tranche_schema
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
@@ -38,7 +14,6 @@ from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.extract import read_rename_csv_based_on_given_columns
 from cishouseholds.filter import file_exclude
@@ -51,10 +26,22 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.input_variable_names import address_column_map
+from cishouseholds.pipeline.input_variable_names import aps_column_map
+from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
+from cishouseholds.pipeline.input_variable_names import country_column_map
+from cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
+from cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import new_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import old_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import population_projection_current_column_map
+from cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map
+from cishouseholds.pipeline.input_variable_names import postcode_column_map
 from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
+from cishouseholds.pipeline.input_variable_names import tranche_column_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -70,7 +57,19 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pipeline.validation_schema import address_schema
+from cishouseholds.pipeline.validation_schema import aps_schema
+from cishouseholds.pipeline.validation_schema import cis_phase_schema
+from cishouseholds.pipeline.validation_schema import country_schema
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
+from cishouseholds.pipeline.validation_schema import lsoa_cis_schema
+from cishouseholds.pipeline.validation_schema import master_sample_file_schema
+from cishouseholds.pipeline.validation_schema import new_sample_file_schema
+from cishouseholds.pipeline.validation_schema import old_sample_file_schema
+from cishouseholds.pipeline.validation_schema import population_projection_current_schema
+from cishouseholds.pipeline.validation_schema import population_projection_previous_schema
+from cishouseholds.pipeline.validation_schema import postcode_schema
+from cishouseholds.pipeline.validation_schema import tranche_schema
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.extract import prepare_auxillary_data
@@ -1109,7 +1108,7 @@ def sample_file_ETL(
             "type": "path",
         },
     }
-    dfs = extract_df_list(files)
+    dfs = read_rename_csv_based_on_given_columns(files)
     dfs = prepare_auxillary_data(dfs)
     dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(dfs, table_or_path)

@@ -745,7 +745,7 @@ old_sample_file_column_map = {
     # "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
     # "hh_dweight_swab": "household_level_designweight_swab",
-    "dweight_hh": "household_level_designweight_swab",
+    "dweight_HH": "household_level_designweight_swab",
     "dweight_hh_atb": "household_level_designweight_antibodies",
     # "hh_dweight_atb": "household_level_designweight_antibodies",
     "tranche": "tranche",

@@ -220,7 +220,8 @@ postcode_schema = {
     "teclec": string_dict,
     "ttwa": string_dict,
     "pct": string_dict,
-    "itl": string_dict,
+    "nuts": string_dict,
+    # "itl": string_dict,
     "park": string_dict,
     "lsoa11": string_dict,
     "msoa11": string_dict,
@@ -232,6 +233,7 @@ postcode_schema = {
     "oac11": string_dict,
     "lat": string_dict,
     "long": string_dict,
+    "lep1": string_dict,
     "lep2": string_dict,
     "pfa": string_dict,
     "imd": string_dict,
@@ -257,10 +259,10 @@ cis_phase_schema = {  # check
     "fieldwork_wc": string_dict,
 }
 country_schema = {
-    "CTRY20CD": string_dict,
-    "CTRY20NM": string_dict,
     "LAD20CD": string_dict,
     "LAD20NM": string_dict,
+    "CTRY20CD": string_dict,
+    "CTRY20NM": string_dict,
 }
 old_sample_file_schema = {
     "sample": string_dict,
@@ -279,28 +281,26 @@ old_sample_file_schema = {
     "sample_direct": string_dict,
     "tranche": string_dict,
     "interim_id": string_dict,
-    "dweight_hh": string_dict,
+    "dweight_HH": string_dict,
     "dweight_hh_atb": string_dict,
 }
-new_sample_file_schema = (
-    {
-        "UAC": string_dict,
-        "sample": string_dict,
-        "LA_CODE": string_dict,
-        "Bloods": string_dict,
-        "oa11": string_dict,
-        "laua": string_dict,
-        "ctry": string_dict,
-        "custodian_region_code": string_dict,
-        "lsoa11": string_dict,
-        "msoa11": string_dict,
-        "ru11ind": string_dict,
-        "oac11": string_dict,
-        "rgn": string_dict,
-        "imd": string_dict,
-        "interim_id": string_dict,
-    },
-)
+new_sample_file_schema = {
+    "UAC": string_dict,
+    "sample": string_dict,
+    "LA_CODE": string_dict,
+    "Bloods": string_dict,
+    "oa11": string_dict,
+    "laua": string_dict,
+    "ctry": string_dict,
+    "custodian_region_code": string_dict,
+    "lsoa11": string_dict,
+    "msoa11": string_dict,
+    "ru11ind": string_dict,
+    "oac11": string_dict,
+    "rgn": string_dict,
+    "imd": string_dict,
+    "interim_id": string_dict,
+}
 
 master_sample_file_schema = {
     "ons_household_id": integer_dict,

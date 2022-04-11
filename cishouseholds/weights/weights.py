@@ -106,7 +106,7 @@ def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
         on="lower_super_output_area_code_11",
         how="left",
     )
-    df = df.join(
+    df = df.drop("rural_urban_classification_11", "country_code_12").join(
         dfs["postcode_lookup"].select(
             "postcode", "rural_urban_classification_11", "output_area_code_11", "country_code_12"
         ),

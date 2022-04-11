@@ -11,27 +11,12 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pyspark_utils import column_to_list
-from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.extract import prepare_auxillary_data
 
 
 class InvalidFileError(Exception):
     pass
-
-
-def extract_lookup_csv(lookup_file_path: str, validation_schema: dict):
-    """
-    extract and validate a csv lookup file from path with validation_schema
-    """
-    spark_session = get_or_create_spark_session()
-    valid_files = validate_files(lookup_file_path, validation_schema)
-    if not valid_files:
-        raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
-    return spark_session.read.csv(
-        valid_files, header=True, schema=convert_cerberus_schema_to_pyspark(validation_schema)
-    )
 
 
 def list_contents(
@@ -154,17 +139,27 @@ def get_files_to_be_processed(
 
 
 def read_rename_csv_based_on_given_columns(dict_schemas_paths: dict, table_to_exclude_list: list = []):
-    dfs = {}
+    dfs = {}  # type: ignore
     for table_name in dict_schemas_paths.keys():
         if dict_schemas_paths[table_name]["type"] == "table":
             df = extract_from_table(table_name)
 
         elif dict_schemas_paths[table_name]["type"] == "path":
-            df = extract_input_data(
-                file_paths=dict_schemas_paths[table_name]["path"],
-                validation_schema=dict_schemas_paths[table_name]["schema"],
-                sep=",",
-            )
+            if dict_schemas_paths[table_name]["path"] is not None:
+                valid_file_paths = validate_files(
+                    [dict_schemas_paths[table_name]["path"]], dict_schemas_paths[table_name]["schema"], sep=","
+                )
+                if not valid_file_paths:
+                    path = dict_schemas_paths[table_name]["path"]
+                    print(f"        - No valid files found in: {path}.")  # functional
+                df = extract_input_data(
+                    file_paths=dict_schemas_paths[table_name]["path"],
+                    validation_schema=dict_schemas_paths[table_name]["schema"],
+                    sep=",",
+                )
+            else:
+                dfs[table_name] = None
+                continue
         # remove columns
         df = df.drop(
             *[
