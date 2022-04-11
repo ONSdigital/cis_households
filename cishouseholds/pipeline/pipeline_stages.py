@@ -844,7 +844,7 @@ def report(
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
     output_directory: str,
-    filtered_survey_responses_table: str = None,
+    tables_to_count: List[str],
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -870,23 +870,14 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
-    filtered_survey_responses_count = 0
-    if filtered_survey_responses_table is not None:
-        filtered_df = extract_from_table(filtered_survey_responses_table)
-        filtered_survey_responses_count = filtered_df.count()
-
     processed_file_log = extract_from_table("processed_filenames")
-    rows_extracted_df = (
-        processed_file_log.groupBy("dataset_name")
-        .agg(F.sum("filtered_row_count").alias("total_dataset_rows_extracted"))
-        .toPandas()
-    )
-    raw_rows_df = (
-        processed_file_log.groupBy("dataset_name")
-        .agg(F.sum("file_row_count").alias("total_dataset_raw_rows"))
-        .toPandas()
-    )
-    transformed_rows_df = processed_file_log.select("dataset_name", "transformed_row_count").distinct().toPandas()
+    table_counts = {}
+    for table_name in tables_to_count:
+        if check_table_exists(table_name):
+            table = extract_from_table(table_name)
+            table_counts[table_name] = table.count()
+        else:
+            table_counts[table_name] = "Table not found"
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -917,22 +908,16 @@ def report(
     counts_df = pd.DataFrame(
         {
             "dataset": [
-                "invalid input files",
-                "valid survey responses",
-                "invalid survey responses",
-                "filtered survey responses",
-                *[f"extracted {dataset_name}" for dataset_name in list(rows_extracted_df["dataset_name"])],
-                *[f"raw {dataset_name}" for dataset_name in list(raw_rows_df["dataset_name"])],
-                *[f"transformed {dataset_name}" for dataset_name in list(transformed_rows_df["dataset_name"])],
+                "error_file_log",
+                invalid_survey_responses_table,
+                valid_survey_responses_table,
+                *list(table_counts.keys()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
-                filtered_survey_responses_count,
-                *list(rows_extracted_df["total_dataset_rows_extracted"]),
-                *list(raw_rows_df["total_dataset_raw_rows"]),
-                *list(transformed_rows_df["transformed_row_count"]),
+                *list(table_counts.values()),
             ],
         }
     )
