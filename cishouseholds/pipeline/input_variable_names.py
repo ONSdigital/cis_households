@@ -686,12 +686,12 @@ tenure_group_variable_map = {
 }
 
 projections_column_map = {
-    "laname_21": 'local_authority_unitary_authority_name',
-    "ladcode_21": 'local_authority_unitary_authority_code',
-    "region9charcode": 'region_code',
-    "regionname": 'region_name',
-    "country9charcode_09": 'country_code_12',
-    "countryname_09": 'country_name_12',
+    "laname_21": "local_authority_unitary_authority_name",
+    "ladcode_21": "local_authority_unitary_authority_code",
+    "region9charcode": "region_code",
+    "regionname": "region_name",
+    "country9charcode_09": "country_code_12",
+    "countryname_09": "country_name_12",
 }
 address_lookup = {
     "uprn": "unique_property_reference_code",
@@ -744,7 +744,6 @@ old_sample_file = {
     "msoa11": "middle_super_output_area_code_11",
     # "ru11ind": "rural_urban_classification_11",
     "imd": "index_multiple_deprivation",
-
     # "hh_dweight_swab": "household_level_designweight_swab",
     "dweight_hh": "household_level_designweight_swab",
     "dweight_hh_atb": "household_level_designweight_antibodies",
