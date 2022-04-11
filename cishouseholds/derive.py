@@ -1338,23 +1338,18 @@ def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
     return df
 
 
-def assign_work_health_care(
-    df, column_name_to_assign, direct_contact_column, reference_health_care_column, other_health_care_column
-) -> DataFrame:
+def assign_work_health_care(df, column_name_to_assign, direct_contact_column, health_care_column) -> DataFrame:
     """
-    Combine the different versions of work health care responses.
-    Uses direct contact status to edit these.
+    Combine direct contact and health care responses to get old format of health care responses.
 
     Parameters
     ----------
     df
     column_name_to_assign
     direct_contact_column
-        Column indicating direct contact as Yes/No
-    reference_health_care_column
-        Column to coalesce with, having desired answer format
-    other_health_care_column
-        Column to be edited to match the reference answer format
+        Column indicating whether participant works in direct contact
+    health_care_column
+        Column indicating if participant works in health care
     """
     health_care_map = {
         "Yes, in primary care, e.g. GP, dentist": "Yes, primary care",
@@ -1366,12 +1361,10 @@ def assign_work_health_care(
         ", non-patient-facing"
     )
     edited_other_health_care_column = F.when(
-        (F.col(other_health_care_column) != "No") & F.col(other_health_care_column).isNotNull(),
-        F.concat(value_map[F.col(other_health_care_column)], patient_facing_text),
-    ).otherwise(F.col(other_health_care_column))
-    df = df.withColumn(
-        column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
-    )
+        (F.col(health_care_column) != "No") & F.col(health_care_column).isNotNull(),
+        F.concat(value_map[F.col(health_care_column)], patient_facing_text),
+    ).otherwise(F.col(health_care_column))
+    df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
     return df
 
 

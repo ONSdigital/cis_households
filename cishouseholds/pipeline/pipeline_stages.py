@@ -14,8 +14,8 @@ from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import extract_lookup_csv
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.extract import read_rename_csv_based_on_given_columns
 from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
@@ -26,10 +26,22 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.input_file_processing import extract_df_list
 from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.input_variable_names import address_column_map
+from cishouseholds.pipeline.input_variable_names import aps_column_map
+from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
+from cishouseholds.pipeline.input_variable_names import country_column_map
+from cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
+from cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import new_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import old_sample_file_column_map
+from cishouseholds.pipeline.input_variable_names import population_projection_current_column_map
+from cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map
+from cishouseholds.pipeline.input_variable_names import postcode_column_map
 from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
+from cishouseholds.pipeline.input_variable_names import tranche_column_map
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -45,7 +57,19 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pipeline.validation_schema import address_schema
+from cishouseholds.pipeline.validation_schema import aps_schema
+from cishouseholds.pipeline.validation_schema import cis_phase_schema
+from cishouseholds.pipeline.validation_schema import country_schema
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
+from cishouseholds.pipeline.validation_schema import lsoa_cis_schema
+from cishouseholds.pipeline.validation_schema import master_sample_file_schema
+from cishouseholds.pipeline.validation_schema import new_sample_file_schema
+from cishouseholds.pipeline.validation_schema import old_sample_file_schema
+from cishouseholds.pipeline.validation_schema import population_projection_current_schema
+from cishouseholds.pipeline.validation_schema import population_projection_previous_schema
+from cishouseholds.pipeline.validation_schema import postcode_schema
+from cishouseholds.pipeline.validation_schema import tranche_schema
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.extract import prepare_auxillary_data
@@ -61,10 +85,7 @@ from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
-
 pipeline_stages = {}
-
-# test
 
 
 def register_pipeline_stage(key):
@@ -662,7 +683,9 @@ def impute_demographic_columns(
     #     "participant_id",
     #     *lookup_columns,
     # )
-    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+    df_with_imputed_values = df.drop(*key_columns).join(
+        F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
+    )
 
     # update_table(imputed_values, imputed_values_table)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
@@ -672,14 +695,41 @@ def impute_demographic_columns(
 def calculate_household_level_populations(
     address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
-    files = {
-        "address_lookup": {"file": address_lookup, "type": "path"},
-        "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
-        "country_lookup": {"file": country_lookup, "type": "path"},
-        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+    # files = {
+    #     "address_lookup": {"file": address_lookup, "type": "path"},
+    #     "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
+    #     "country_lookup": {"file": country_lookup, "type": "path"},
+    #     "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+    # }
+    # dfs = extract_df_list(files)
+
+    dict_schemas_paths = {
+        "address_lookup": {
+            "schema": address_schema,
+            "path": address_lookup,
+            "column_map": address_column_map,
+            "type": "path",
+        },
+        "postcode_lookup": {
+            "schema": postcode_schema,
+            "path": postcode_lookup,
+            "column_map": postcode_column_map,
+            "type": "path",
+        },
+        "lsoa_cis_lookup": {
+            "schema": lsoa_cis_schema,
+            "path": lsoa_cis_lookup,
+            "column_map": lsoa_cis_column_map,
+            "type": "path",
+        },
+        "country_lookup": {
+            "schema": country_schema,
+            "path": country_lookup,
+            "column_map": country_column_map,
+            "type": "path",
+        },
     }
-    dfs = extract_df_list(files)
-    dfs = prepare_auxillary_data(dfs)
+    dfs = read_rename_csv_based_on_given_columns(dict_schemas_paths=dict_schemas_paths)
 
     household_info_df = household_level_populations(
         dfs["address_lookup"],
@@ -787,7 +837,7 @@ def report(
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
     output_directory: str,
-    filtered_survey_responses_table: str = None,
+    tables_to_count: List[str],
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -813,23 +863,14 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
-    filtered_survey_responses_count = 0
-    if filtered_survey_responses_table is not None:
-        filtered_df = extract_from_table(filtered_survey_responses_table)
-        filtered_survey_responses_count = filtered_df.count()
-
     processed_file_log = extract_from_table("processed_filenames")
-    rows_extracted_df = (
-        processed_file_log.groupBy("dataset_name")
-        .agg(F.sum("filtered_row_count").alias("total_dataset_rows_extracted"))
-        .toPandas()
-    )
-    raw_rows_df = (
-        processed_file_log.groupBy("dataset_name")
-        .agg(F.sum("file_row_count").alias("total_dataset_raw_rows"))
-        .toPandas()
-    )
-    transformed_rows_df = processed_file_log.select("dataset_name", "transformed_row_count").distinct().toPandas()
+    table_counts = {}
+    for table_name in tables_to_count:
+        if check_table_exists(table_name):
+            table = extract_from_table(table_name)
+            table_counts[table_name] = table.count()
+        else:
+            table_counts[table_name] = "Table not found"
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -860,22 +901,16 @@ def report(
     counts_df = pd.DataFrame(
         {
             "dataset": [
-                "invalid input files",
-                "valid survey responses",
-                "invalid survey responses",
-                "filtered survey responses",
-                *[f"extracted {dataset_name}" for dataset_name in list(rows_extracted_df["dataset_name"])],
-                *[f"raw {dataset_name}" for dataset_name in list(raw_rows_df["dataset_name"])],
-                *[f"transformed {dataset_name}" for dataset_name in list(transformed_rows_df["dataset_name"])],
+                "error_file_log",
+                invalid_survey_responses_table,
+                valid_survey_responses_table,
+                *list(table_counts.keys()),
             ],
             "count": [
                 invalid_files_count,
                 valid_survey_responses_count,
                 invalid_survey_responses_count,
-                filtered_survey_responses_count,
-                *list(rows_extracted_df["total_dataset_rows_extracted"]),
-                *list(raw_rows_df["total_dataset_raw_rows"]),
-                *list(transformed_rows_df["transformed_row_count"]),
+                *list(table_counts.values()),
             ],
         }
     )
@@ -1014,20 +1049,66 @@ def sample_file_ETL(
     table_or_path,
     old_sample_file,
     design_weight_table,
+    country_lookup,
+    lsoa_cis_lookup,
 ):
     table_or_path = "path"
     if check_table_exists(design_weight_table):
         table_or_path = "table"
         old_sample_file = design_weight_table
     files = {
-        "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-        "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
-        "new_sample_file": {"file": new_sample_file, "type": "path"},
-        "old_sample_file": {"file": old_sample_file, "type": table_or_path},
-        "tranche": {"file": tranche, "type": "path"},
-        "master_sample_file": {"file": master_sample_file, "type": "path"},
+        # "postcode_lookup": {"file": postcode_lookup, "type": "path"},
+        # "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
+        # "new_sample_file": {"file": new_sample_file, "type": "path"},
+        # "old_sample_file": {"file": old_sample_file, "type": table_or_path},
+        # "tranche": {"file": tranche, "type": "path"},
+        # "master_sample_file": {"file": master_sample_file, "type": "path"},
+        # TODO: change stage
+        "postcode_lookup": {
+            "schema": postcode_schema,
+            "path": postcode_lookup,
+            "column_map": postcode_column_map,
+            "type": "path",
+        },
+        "cis_phase_lookup": {
+            "schema": cis_phase_schema,
+            "path": cis_phase_lookup,
+            "column_map": cis_phase_lookup_column_map,
+            "type": "path",
+        },
+        "old_sample_file": {
+            "schema": old_sample_file_schema,
+            "path": old_sample_file,
+            "column_map": old_sample_file_column_map,
+            "type": table_or_path,
+        },
+        "new_sample_file": {
+            "schema": new_sample_file_schema,
+            "path": new_sample_file,
+            "column_map": new_sample_file_column_map,
+            "type": "path",
+        },
+        "master_sample_file": {
+            "schema": master_sample_file_schema,
+            "path": master_sample_file,
+            "column_map": master_sample_file_column_map,
+            "type": "path",
+        },
+        "tranche": {"schema": tranche_schema, "path": tranche, "column_map": tranche_column_map, "type": "path"},
+        "lsoa_cis_lookup": {
+            "schema": lsoa_cis_schema,
+            "path": lsoa_cis_lookup,
+            "column_map": lsoa_cis_column_map,
+            "type": "path",
+        },
+        "country_lookup": {
+            "schema": country_schema,
+            "path": country_lookup,
+            "column_map": country_column_map,
+            "type": "path",
+        },
     }
-    dfs = extract_df_list(files)
+    dfs = read_rename_csv_based_on_given_columns(files)
     dfs = prepare_auxillary_data(dfs)
     dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(dfs, table_or_path)
@@ -1050,11 +1131,24 @@ def population_projection(
         table_or_path = "table"
         population_projection_previous = population_projections_table
     files = {
-        "population_projection_current": {"file": population_projection_current, "type": "path"},
-        "aps_lookup": {"file": aps_lookup, "type": "path"},
-        "population_projection_previous": {"file": population_projection_previous, "type": table_or_path},
+        "population_projection_previous": {
+            "schema": population_projection_previous_schema,
+            "path": population_projection_previous,
+            "column_map": population_projection_previous_column_map,
+            "type": table_or_path,
+        },
+        "population_projection_current": {
+            "schema": population_projection_current_schema,
+            "path": population_projection_current,
+            "column_map": population_projection_current_column_map,
+            "type": "path",
+        },
+        "aps_lookup": {"schema": aps_schema, "path": aps_lookup, "column_map": aps_column_map, "type": "path"},
     }
-    dfs = extract_df_list(files)
+    dfs = read_rename_csv_based_on_given_columns(
+        dict_schemas_paths=files,
+        table_to_exclude_list=["population_projection_previous", "population_projection_current"],
+    )
     populations_for_calibration, population_projections = proccess_population_projection_df(
         dfs=dfs, month=month, year=year
     )
