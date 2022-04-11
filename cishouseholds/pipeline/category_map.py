@@ -223,7 +223,7 @@ category_maps = {
             "Yes, in secondary care, e.g. hospital": 2,
             "Yes, in other healthcare settings, e.g. mental health": 3,
         },
-        "work_health_care_combined": {
+        "work_health_care_v0": {
             "No": 0,
             "Yes, primary care, patient-facing": 1,
             "Yes, secondary care, patient-facing": 2,

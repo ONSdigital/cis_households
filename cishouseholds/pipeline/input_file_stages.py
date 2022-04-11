@@ -11,7 +11,9 @@ from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
 from cishouseholds.pipeline.input_variable_names import unassayed_bloods_variable_name_map
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
 from cishouseholds.pipeline.survey_responses_version_0_ETL import transform_survey_responses_version_0_delta
+from cishouseholds.pipeline.survey_responses_version_1_ETL import clean_survey_responses_version_1
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
+from cishouseholds.pipeline.survey_responses_version_2_ETL import clean_survey_responses_version_2
 from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
@@ -80,6 +82,7 @@ survey_responses_v2_parameters = {
     "datetime_column_map": survey_responses_v2_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
+        clean_survey_responses_version_2,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
     ],
@@ -98,6 +101,7 @@ survey_responses_v1_parameters = {
     "datetime_column_map": survey_responses_v1_datetime_map,
     "transformation_functions": [
         transform_survey_responses_generic,
+        clean_survey_responses_version_1,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_1_delta,
     ],

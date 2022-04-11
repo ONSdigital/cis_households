@@ -145,6 +145,21 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
     df = df.withColumn("been_outside_uk_last_country", F.upper(F.col("been_outside_uk_last_country")))
+
+    df = assign_work_social_column(
+        df,
+        "work_social_care",
+        "work_sectors",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_clients",
+    )
+    df = assign_work_health_care(
+        df,
+        "work_health_care_v0",
+        direct_contact_column="work_direct_contact_patients_clients",
+        health_care_column="work_health_care_v1_v2",
+    )
+
     return df
 
 
@@ -275,78 +290,71 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
 
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
-    df = assign_work_social_column(
-        df,
-        "work_social_care",
-        "work_sectors",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
-    )
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_work_person_facing_or_social_care",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care"],
-        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_care_home_worker",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition",
-        groupby_column="participant_id",
-        reference_columns=["illness_lasting_over_12_months"],
-        count_if=["Yes"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_ever_had_long_term_health_condition_or_disabled(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-        health_conditions_column="illness_lasting_over_12_months",
-        condition_impact_column="illness_reduces_activity_or_ability",
-    )
+    ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
+    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_work_person_facing_or_social_care",
+    #     groupby_column="participant_id",
+    #     reference_columns=["work_social_care"],
+    #     count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_care_home_worker",
+    #     groupby_column="participant_id",
+    #     reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
+    #     count_if=["Yes, care/residential home, resident-facing"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_had_long_term_health_condition",
+    #     groupby_column="participant_id",
+    #     reference_columns=["illness_lasting_over_12_months"],
+    #     count_if=["Yes"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_ever_had_long_term_health_condition_or_disabled(
+    #     df=df,
+    #     column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
+    #     health_conditions_column="illness_lasting_over_12_months",
+    #     condition_impact_column="illness_reduces_activity_or_ability",
+    # )
     return df
 
 
-def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
-    """
-    Transformations that are specific to version 2 survey responses.
-    """
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = update_to_value_if_any_not_null(
-        df,
-        "cis_covid_vaccine_received",
-        "Yes",
-        [
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-        ],
-    )
-    df = fill_forward_from_last_change(
+def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
+    df = map_column_values_to_null(
         df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "ethnicity",
+            "work_sectors",
+            "work_health_care_v1_v2",
+            "work_status_v2",
+            "work_location",
+            "work_direct_contact_patients_clients",
+            "work_nursing_or_residential_care_home",
+            "visit_type",
+            "household_visit_status",
+            "participant_survey_status",
+            "is_self_isolating_detailed",
+            "ability_to_socially_distance_at_work_or_school",
+            "transport_to_work_or_school",
+            "face_covering_outside_of_home",
+            "face_covering_work",
+            "face_covering_other_enclosed_places",
+            "other_antibody_test_location",
+            "withdrawal_reason",
             "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
+            "cis_covid_vaccine_number_of_doses",
+            "work_not_from_home_days_per_week",
+            "times_shopping_last_7_days",
+            "times_socialise_last_7_days",
         ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
     )
-
     times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
@@ -392,9 +400,129 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
             "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
         },
+        "face_covering_outside_of_home": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes at work/school only": "Yes, at work/school only",
+            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
+            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
+        },
+        "face_covering_other_enclosed_places": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes at work/school only": "Yes, at work/school only",
+            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
+            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
+        },
+        "face_covering_work": {
+            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
+            "Yes always": "Yes, always",
+            "Yes sometimes": "Yes, sometimes",
+        },
+        "other_antibody_test_results": {
+            "One or more negative tests but none positive": "Any tests negative, but none negative",
+            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "All tests failed": "All Tests failed",
+        },
+        "other_antibody_test_location": {
+            "Private Lab": "Private lab",
+            "Home Test": "Home test",
+            "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
+        },
+        "other_pcr_test_results": {
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
+            "All tests failed": "All Tests failed",
+            "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
+            "Void": "All Tests failed",
+        },
+        "illness_reduces_activity_or_ability": {
+            "Yes a little": "Yes, a little",
+            "Yes a lot": "Yes, a lot",
+            "Participant Would Not/Could Not Answer": None,
+        },
+        "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
+        "is_self_isolating_detailed": {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+        "ability_to_socially_distance_at_work_or_school": {
+            "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
+            "Easy to maintain 2 meters - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Easy to maintain 2m - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            "Relatively easy to maintain 2 meters - most of the time I can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Relatively easy to maintain 2m - most of the time you can be 2m away from other people": "Relatively easy to maintain 2m",
+            "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+        },
+        "transport_to_work_or_school": {
+            "Bus or Minibus or Coach": "Bus, minibus, coach",
+            "Bus or minibus or coach": "Bus, minibus, coach",
+            "Bus": "Bus, minibus, coach",
+            "Motorbike or Scooter or Moped": "Motorbike, scooter or moped",
+            "Motorbike or scooter or moped": "Motorbike, scooter or moped",
+            "Car or Van": "Car or van",
+            "Taxi/Minicab": "Taxi/minicab",
+            "On Foot": "On foot",
+            "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
+            "Other Method": "Other method",
+        },
+        "last_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "last_suspected_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
+    return df
+
+
+def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
+    """
+    Transformations that are specific to version 2 survey responses.
+    """
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
+
+    df = update_to_value_if_any_not_null(
+        df,
+        "cis_covid_vaccine_received",
+        "Yes",
+        [
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+        ],
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
 
     df = edit_to_sum_or_max_value(
         df=df,
@@ -550,77 +678,7 @@ def symptom_column_transformations(df):
 
 
 def union_dependent_cleaning(df):
-    df = map_column_values_to_null(
-        df=df,
-        value="Participant Would Not/Could Not Answer",
-        column_list=[
-            "ethnicity",
-            "work_sectors",
-            "work_health_care_v1_v2_raw",
-            "work_status_v0",
-            "work_status_v1",
-            "work_status_v2",
-            "work_location",
-            "visit_type",
-            "household_visit_status",
-            "participant_survey_status",
-            "is_self_isolating_detailed",
-            "illness_reduces_activity_or_ability",
-            "ability_to_socially_distance_at_work_or_school",
-            "transport_to_work_or_school",
-            "face_covering_outside_of_home",
-            "face_covering_work",
-            "face_covering_other_enclosed_places",
-            "other_antibody_test_location",
-            "withdrawal_reason",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_number_of_doses",
-            "work_not_from_home_days_per_week",
-            "times_shopping_last_7_days",
-            "times_socialise_last_7_days",
-        ],
-    )
     col_val_map = {
-        "face_covering_outside_of_home": {
-            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
-            "Yes at work/school only": "Yes, at work/school only",
-            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
-            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes in other situations only (including public transport or shops)": "Yes, in other situations only",
-            "Yes always": "Yes, always",
-            "Yes sometimes": "Yes, sometimes",
-        },
-        "face_covering_other_enclosed_places": {
-            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
-            "Yes at work/school only": "Yes, at work/school only",
-            "Yes in other situations only (including public transport/shops)": "Yes, in other situations only",
-            "Yes usually both at work/school and in other situations": "Yes, usually both Work/school/other",
-            "Yes always": "Yes, always",
-            "Yes sometimes": "Yes, sometimes",
-        },
-        "face_covering_work": {
-            "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
-            "Yes always": "Yes, always",
-            "Yes sometimes": "Yes, sometimes",
-        },
-        "other_antibody_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
-            "All tests failed": "All Tests failed",
-        },
-        "other_antibody_test_location": {
-            "Private Lab": "Private lab",
-            "Home Test": "Home test",
-            "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
-        },
-        "other_pcr_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none positive",
-            "One or more negative tests but none were positive": "Any tests negative, but none positive",
-            "All tests failed": "All Tests failed",
-            "Positive": "One or more positive test(s)",
-            "Negative": "Any tests negative, but none positive",
-            "Void": "All Tests failed",
-        },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
             "Caribbean": "Black,Caribbean,Afro-Caribbean",
@@ -640,53 +698,11 @@ def union_dependent_cleaning(df):
             "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
             "Arab": "Other ethnic group-Arab",
         },
-        "illness_reduces_activity_or_ability": {"Yes a little": "Yes, a little", "Yes a lot": "Yes, a lot"},
         "withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
-        },
-        "is_self_isolating_detailed": {
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-        "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
-        "ability_to_socially_distance_at_work_or_school": {
-            "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
-            "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
-            "Easy to maintain 2 meters - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
-            "Easy to maintain 2m - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
-            "Relatively easy to maintain 2 meters - most of the time I can be 2m away from other people": "Relatively easy to maintain 2m",
-            "Relatively easy to maintain 2m - most of the time you can be 2m away from other people": "Relatively easy to maintain 2m",
-            "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis": "Very difficult to be more than 1m away",
-            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
-        },
-        "transport_to_work_or_school": {
-            "Bus or Minibus or Coach": "Bus, minibus, coach",
-            "Bus or minibus or coach": "Bus, minibus, coach",
-            "Bus": "Bus, minibus, coach",
-            "Motorbike or Scooter or Moped": "Motorbike, scooter or moped",
-            "Motorbike or scooter or moped": "Motorbike, scooter or moped",
-            "Car or Van": "Car or van",
-            "Taxi/Minicab": "Taxi/minicab",
-            "On Foot": "On foot",
-            "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
-            "Other Method": "Other method",
-        },
-        "last_covid_contact_location": {
-            "In your own household": "Living in your own home",
-            "Outside your household": "Outside your home",
-        },
-        "last_suspected_covid_contact_location": {
-            "In your own household": "Living in your own home",
-            "Outside your household": "Outside your home",
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -760,16 +776,8 @@ def union_dependent_derivations(df):
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
-    df = assign_work_health_care(
-        df,
-        "work_health_care_combined",
-        direct_contact_column="work_direct_contact_patients_clients",
-        reference_health_care_column="work_health_care_v0",
-        other_health_care_column="work_health_care_v1_v2",
-    )
     # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_combined"
+    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_v0"
     # )
     # df = update_work_facing_now_column(
     #     df,
@@ -863,7 +871,10 @@ def union_dependent_derivations(df):
 
 
 def derive_people_in_household_count(df):
-    """Correct counts of household member groups and sum to get total number of people in household."""
+    """
+    Correct counts of household member groups and sum to get total number of people in household. Takes maximum
+    final count by household for each record.
+    """
     df = assign_household_participant_count(
         df,
         column_name_to_assign="household_participant_count",

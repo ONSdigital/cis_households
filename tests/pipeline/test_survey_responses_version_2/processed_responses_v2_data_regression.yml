@@ -1,5 +1,4 @@
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
-    a problem to stay this far away from other people
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -64,12 +63,8 @@
   ethnic_group: Asian or Asian British
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: I don't even care.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes sometimes
-  face_covering_outside_of_home: Participant Would Not/Could Not Answer
+  face_covering_other_enclosed_places: Yes, sometimes
+  face_covering_outside_of_home: null
   face_covering_work: Never
   first_name: Clemmie
   gender: Prefer not to say
@@ -142,7 +137,7 @@
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
-  other_antibody_test_results: All tests failed
+  other_antibody_test_results: All Tests failed
   other_antibody_test_since_last_visit: 'No'
   other_pcr_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_pcr_test_last_negative_date: null
@@ -270,7 +265,7 @@
   times_shopping_last_7_days: '6'
   times_socialise_last_7_days: '0'
   title: Dr.
-  transport_to_work_or_school: Bus
+  transport_to_work_or_school: Bus, minibus, coach
   unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-07 10:41:50
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-07 10:41:50.000000'
@@ -282,6 +277,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: On Holiday
   work_direct_contact_patients_clients: 'No'
+  work_health_care_v0: Yes, other healthcare, non-patient-facing
   work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
@@ -297,7 +293,6 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
   work_sectors: Retail sector (incl. wholesale)
   work_sectors_other: I don't even care.
   work_social_care: 'No'
@@ -305,8 +300,7 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
-    a problem to stay this far away from other people
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -372,10 +366,6 @@
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: null
   face_covering_work: Never
@@ -447,12 +437,12 @@
   ons_household_id: '261449825198'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_location: Home Test
+  other_antibody_test_location: Home test
   other_antibody_test_results: Waiting for all results
   other_antibody_test_since_last_visit: 'No'
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: null
-  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_results: Any tests negative, but none positive
   other_pcr_test_since_last_visit: 'Yes'
   outward_postcode: TE4H
   participant_id: DHR-077145284257
@@ -589,6 +579,7 @@
   withdrawal_reason_raw: null
   withdrawal_type: Phone not answered
   work_direct_contact_patients_clients: 'No'
+  work_health_care_v0: Yes, secondary care, non-patient-facing
   work_health_care_v1_v2: Yes, in secondary care, e.g. hospital
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'Yes'
@@ -604,7 +595,6 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
   work_sectors: Food production, agriculture, farming
   work_sectors_other: Any element of a tuple can be accessed in constant time.
   work_social_care: 'No'
@@ -613,8 +603,8 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
-    meter away as my work means I am in close contact with others on a regular basis
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
+    away
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
@@ -679,14 +669,9 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Mixed-White & Black African
   ethnicity_other: Make me a sandwich.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
-  face_covering_outside_of_home: My face is already covered for other reasons (e.g.
-    religious or cultural reasons)
-  face_covering_work: Yes sometimes
+  face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: My face is already covered
+  face_covering_work: Yes, sometimes
   first_name: Shawnee
   gender: Prefer not to say
   have_email_address: 'No'
@@ -716,8 +701,8 @@
   infant_7_age: 2.0
   infant_8_age: 4.0
   is_regularly_lateral_flow_testing: null
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: Participant Would Not/Could Not Answer
+  is_self_isolating: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_location: null
   last_name: Waters
@@ -756,8 +741,8 @@
   ons_household_id: '704542495687'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_location: Home Test
-  other_antibody_test_results: One or more negative tests but none were positive
+  other_antibody_test_location: Home test
+  other_antibody_test_results: Any tests negative, but none negative
   other_antibody_test_since_last_visit: 'No'
   other_pcr_test_first_positive_date: '2022-01-05 00:00:00.000000'
   other_pcr_test_last_negative_date: null
@@ -885,7 +870,7 @@
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '2'
-  times_socialise_last_7_days: Participant Would Not/Could Not Answer
+  times_socialise_last_7_days: null
   title: Miss.
   transport_to_work_or_school: Bicycle
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
@@ -899,6 +884,7 @@
   withdrawal_reason_raw: Withdrawn
   withdrawal_type: At School
   work_direct_contact_patients_clients: 'No'
+  work_health_care_v0: null
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'Yes'
@@ -913,7 +899,6 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
   work_sectors: Armed forces
   work_sectors_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
@@ -921,8 +906,7 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m - it is not
-    a problem to stay this far away from other people
+- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -988,14 +972,9 @@
   ethnicity: Mixed-White & Asian
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes sometimes
-  face_covering_outside_of_home: My face is already covered for other reasons (e.g.
-    religious or cultural reasons)
-  face_covering_work: Yes always
+  face_covering_other_enclosed_places: Yes, sometimes
+  face_covering_outside_of_home: My face is already covered
+  face_covering_work: Yes, always
   first_name: Remedios
   gender: null
   have_email_address: 'Yes'
@@ -1065,12 +1044,12 @@
   ons_household_id: '352206298026'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_location: Private Lab
+  other_antibody_test_location: Private lab
   other_antibody_test_results: Waiting for all results
   other_antibody_test_since_last_visit: null
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_pcr_test_results: One or more negative tests but none were positive
+  other_pcr_test_results: Any tests negative, but none positive
   other_pcr_test_since_last_visit: null
   outward_postcode: null
   participant_id: DHR-144229485098
@@ -1194,7 +1173,7 @@
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
-  times_socialise_last_7_days: Participant Would Not/Could Not Answer
+  times_socialise_last_7_days: null
   title: Mr.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
@@ -1208,6 +1187,7 @@
   withdrawal_reason_raw: null
   withdrawal_type: Other
   work_direct_contact_patients_clients: 'Yes'
+  work_health_care_v0: null
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'No'
@@ -1223,7 +1203,6 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
   work_sectors: Armed forces
   work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
@@ -1236,8 +1215,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
-    meter away as my work means I am in close contact with others on a regular basis
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
+    away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: 'Yes'
@@ -1303,13 +1282,9 @@
   ethnicity: Other ethnic group-Arab
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes always
-  face_covering_outside_of_home: Yes at work/school only
-  face_covering_work: Yes always
+  face_covering_other_enclosed_places: Yes, always
+  face_covering_outside_of_home: Yes, at work/school only
+  face_covering_work: Yes, always
   first_name: Forest
   gender: Male
   have_email_address: 'Yes'
@@ -1339,8 +1314,8 @@
   infant_7_age: 6.0
   infant_8_age: 6.0
   is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: Participant Would Not/Could Not Answer
+  is_self_isolating: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_location: null
   last_name: Meyers
@@ -1379,8 +1354,8 @@
   ons_household_id: '248046164260'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
-  other_antibody_test_location: In the NHS (e.g. GP or hospital)
-  other_antibody_test_results: One or more negative tests but none positive
+  other_antibody_test_location: In the NHS (e.g. GP, hospital)
+  other_antibody_test_results: Any tests negative, but none negative
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-06 00:00:00.000000'
@@ -1507,7 +1482,7 @@
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_outside_shopping_or_socialising_last_7_days: 0
-  times_shopping_last_7_days: Participant Would Not/Could Not Answer
+  times_shopping_last_7_days: null
   times_socialise_last_7_days: '1'
   title: null
   transport_to_work_or_school: Bicycle
@@ -1522,6 +1497,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_type: Doctor Appointment
   work_direct_contact_patients_clients: 'Yes'
+  work_health_care_v0: Yes, secondary care, patient-facing
   work_health_care_v1_v2: Yes, in secondary care, e.g. hospital
   work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
   work_in_additional_paid_employment: 'No'
@@ -1539,7 +1515,6 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
   work_sectors: Arts,Entertainment or Recreation
   work_sectors_other: I don't even care.
   work_social_care: 'No'
@@ -1547,8 +1522,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
-    but I can usually be at least 1m from other people
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
+    be 1m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -1613,13 +1588,9 @@
   ethnic_group: White
   ethnicity: White-British
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'Yes'
-  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
-  face_covering_work: Participant Would Not/Could Not Answer
+  face_covering_work: null
   first_name: Reiko
   gender: Male
   have_email_address: 'Yes'
@@ -1689,12 +1660,12 @@
   ons_household_id: '296617139656'
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_location: Participant Would Not/Could Not Answer
-  other_antibody_test_results: One or more negative tests but none positive
+  other_antibody_test_location: null
+  other_antibody_test_results: Any tests negative, but none negative
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_pcr_test_results: One or more negative tests but none were positive
+  other_pcr_test_results: Any tests negative, but none positive
   other_pcr_test_since_last_visit: 'Yes'
   outward_postcode: null
   participant_id: DHR-329500167403
@@ -1822,7 +1793,7 @@
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: '2'
   title: Miss.
-  transport_to_work_or_school: Bus
+  transport_to_work_or_school: Bus, minibus, coach
   unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
@@ -1834,6 +1805,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: Living Away - For Education
   work_direct_contact_patients_clients: 'Yes'
+  work_health_care_v0: null
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: 'Yes'
@@ -1853,7 +1825,6 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: null
   work_sectors: null
   work_sectors_other: Atoms are used within a program to denote distinguished values.
   work_social_care: null
@@ -1861,8 +1832,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2 meters -
-    but I can usually be at least 1m from other people
+- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
+    be 1m
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: null
@@ -1928,14 +1899,9 @@
   ethnicity: Black,Caribbean,African-African
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
-  face_covering_outside_of_home: My face is already covered for other reasons (e.g.
-    religious or cultural reasons)
-  face_covering_work: Yes always
+  face_covering_outside_of_home: My face is already covered
+  face_covering_work: Yes, always
   first_name: Caron
   gender: Male
   have_email_address: null
@@ -2005,12 +1971,12 @@
   ons_household_id: '217846198988'
   other_antibody_test_first_positive_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
-  other_antibody_test_location: Participant Would Not/Could Not Answer
-  other_antibody_test_results: All tests failed
+  other_antibody_test_location: null
+  other_antibody_test_results: All Tests failed
   other_antibody_test_since_last_visit: null
   other_pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_pcr_test_last_negative_date: '2022-01-07 00:00:00.000000'
-  other_pcr_test_results: One or more negative tests but none positive
+  other_pcr_test_results: Any tests negative, but none positive
   other_pcr_test_since_last_visit: 'No'
   outward_postcode: SE3Z
   participant_id: DHR-389263959191
@@ -2149,6 +2115,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: Other
   work_direct_contact_patients_clients: null
+  work_health_care_v0: Yes, other healthcare, non-patient-facing
   work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: null
@@ -2164,7 +2131,6 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: null
-  work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage, logistic)
   work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
     language.
@@ -2239,12 +2205,8 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'Yes'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes sometimes
-  face_covering_outside_of_home: Yes usually both at work/school and in other situations
+  face_covering_other_enclosed_places: Yes, sometimes
+  face_covering_outside_of_home: Yes, usually both Work/school/other
   face_covering_work: null
   first_name: Annika
   gender: Male
@@ -2274,8 +2236,8 @@
   infant_7_age: 5.0
   infant_8_age: 1.0
   is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: Participant Would Not/Could Not Answer
+  is_self_isolating: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_location: Outside your home
   last_name: Day
@@ -2314,7 +2276,7 @@
   ons_household_id: '602276804025'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
-  other_antibody_test_location: Participant Would Not/Could Not Answer
+  other_antibody_test_location: null
   other_antibody_test_results: null
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
@@ -2446,7 +2408,7 @@
   times_shopping_last_7_days: '4'
   times_socialise_last_7_days: '2'
   title: Prof.
-  transport_to_work_or_school: Car or Van
+  transport_to_work_or_school: Car or van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-06 18:06:58.000000'
@@ -2458,6 +2420,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   withdrawal_type: On Holiday
   work_direct_contact_patients_clients: null
+  work_health_care_v0: null
   work_health_care_v1_v2: null
   work_health_care_v1_v2_raw: null
   work_in_additional_paid_employment: 'No'
@@ -2473,7 +2436,6 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
-  work_person_facing_now: 'No'
   work_sectors: Transport (incl. storage, logistic)
   work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
@@ -2547,13 +2509,9 @@
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'Yes'
-  ever_had_long_term_health_condition_or_disabled: 'Yes'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Participant Would Not/Could Not Answer
+  face_covering_other_enclosed_places: null
   face_covering_outside_of_home: 'No'
-  face_covering_work: Yes sometimes
+  face_covering_work: Yes, sometimes
   first_name: Myung
   gender: Female
   have_email_address: 'Yes'
@@ -2622,8 +2580,8 @@
   ons_household_id: '352709577630'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
-  other_antibody_test_location: In the NHS (e.g. GP or hospital)
-  other_antibody_test_results: All tests failed
+  other_antibody_test_location: In the NHS (e.g. GP, hospital)
+  other_antibody_test_results: All Tests failed
   other_antibody_test_since_last_visit: 'Yes'
   other_pcr_test_first_positive_date: null
   other_pcr_test_last_negative_date: '2022-01-02 00:00:00.000000'
@@ -2755,7 +2713,7 @@
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: null
   title: Prof.
-  transport_to_work_or_school: Car or Van
+  transport_to_work_or_school: Car or van
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-03 05:49:36.000000'
@@ -2767,6 +2725,7 @@
   withdrawal_reason_raw: null
   withdrawal_type: Phone not answered
   work_direct_contact_patients_clients: null
+  work_health_care_v0: Yes, other healthcare, non-patient-facing
   work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
   work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
   work_in_additional_paid_employment: 'Yes'
@@ -2785,7 +2744,6 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
   work_sectors: Other occupation sector
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
@@ -2798,8 +2756,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1
-    meter away as my work means I am in close contact with others on a regular basis
+- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
+    away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -2865,14 +2823,9 @@
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
-  ever_care_home_worker: 'No'
-  ever_had_long_term_health_condition: 'No'
-  ever_had_long_term_health_condition_or_disabled: 'No'
-  ever_work_person_facing_or_social_care: 'No'
-  face_covering_other_enclosed_places: Yes always
-  face_covering_outside_of_home: Yes in other situations only (including public transport
-    or shops)
-  face_covering_work: Yes sometimes
+  face_covering_other_enclosed_places: Yes, always
+  face_covering_outside_of_home: Yes, in other situations only
+  face_covering_work: Yes, sometimes
   first_name: Shaun
   gender: Female
   have_email_address: null
@@ -2943,12 +2896,12 @@
   ons_household_id: '883187696082'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_location: Participant Would Not/Could Not Answer
-  other_antibody_test_results: One or more negative tests but none were positive
+  other_antibody_test_location: null
+  other_antibody_test_results: Any tests negative, but none negative
   other_antibody_test_since_last_visit: 'No'
   other_pcr_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_pcr_test_results: All tests failed
+  other_pcr_test_results: All Tests failed
   other_pcr_test_since_last_visit: 'No'
   outward_postcode: LV1J
   participant_id: DHR-627540089585
@@ -3072,7 +3025,7 @@
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '5'
-  times_socialise_last_7_days: Participant Would Not/Could Not Answer
+  times_socialise_last_7_days: null
   title: Ms.
   transport_to_work_or_school: On foot
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
@@ -3086,6 +3039,7 @@
   withdrawal_reason_raw: Withdrawn_no_future_linkage
   withdrawal_type: At Work
   work_direct_contact_patients_clients: null
+  work_health_care_v0: null
   work_health_care_v1_v2: Primary care (e.g. GP, dentist)
   work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
   work_in_additional_paid_employment: null
@@ -3103,7 +3057,6 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_person_facing_now: 'No'
   work_sectors: Civil service or Local Government
   work_sectors_other: Haskell features a type system with type inference and lazy
     evaluation.
