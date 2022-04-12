@@ -891,23 +891,11 @@ def derive_people_in_household_count(df):
         column_name_to_assign="household_participants_not_present_count",
         column_pattern=r"person_[1-8]_not_present_age",
     )
-
-    df = df.withColumn(
-        "household_participants_under_2_count",
-        F.when(
-            F.col("household_members_under_2_years") == " Yes",  # Condition
-            True  # assign_household_under_2_count # available logic
-            # TODO: modify logic to accept [0, None]
-        ).when(
-            F.col("household_members_under_2_years") == "No",
-            True,  # assign_household_under_2_count except when all zero.
-        ),
-    )
     df = assign_household_under_2_count(
         df,
         column_name_to_assign="household_participants_under_2_count",
         column_pattern=r"infant_[1-8]_age",
-        condition_column="household_members_under_2_years",  # TODO based on column input column
+        condition_column="household_members_under_2_years",
     )
 
     household_window = Window.partitionBy("ons_household_id")
