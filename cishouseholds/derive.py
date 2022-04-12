@@ -12,6 +12,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
+from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -111,13 +112,20 @@ def assign_household_participant_count(
     return df
 
 
-def assign_household_under_2_count(df, column_name_to_assign: str, column_pattern: str):
+def assign_household_under_2_count(
+    df: DataFrame, column_name_to_assign: str, column_pattern: str, condition_column: str
+):
     """Count number of individuals below two from age (months) columns matching pattern."""
     columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
     count = reduce(
         add, [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count]
     )
-    df = df.withColumn(column_name_to_assign, F.when(~all_equal(columns_to_count, 0), count).otherwise(0))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(condition_column) == "Yes", F.when(~all_equal(columns_to_count, 0), count).otherwise(0)).when(
+            F.col(condition_column) == "No", F.when(~all_equal_or_Null(columns_to_count, 0), 0).otherwise(0)
+        ),
+    )
     return df
 
 
