@@ -863,13 +863,6 @@ def report(
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
     processed_file_log = extract_from_table("processed_filenames")
-    table_counts = {}
-    for table_name in tables_to_count:
-        if check_table_exists(table_name):
-            table = extract_from_table(table_name)
-            table_counts[table_name] = table.count()
-        else:
-            table_counts[table_name] = "Table not found"
 
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
@@ -878,6 +871,18 @@ def report(
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
+
+    table_counts = {
+        "error_file_log": invalid_files_count,
+        valid_survey_responses_table: valid_survey_responses_count,
+        invalid_survey_responses_table: invalid_survey_responses_count,
+    }
+    for table_name in tables_to_count:
+        if check_table_exists(table_name):
+            table = extract_from_table(table_name)
+            table_counts[table_name] = table.count()
+        else:
+            table_counts[table_name] = "Table not found"
 
     valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
     invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
@@ -900,15 +905,9 @@ def report(
     counts_df = pd.DataFrame(
         {
             "dataset": [
-                "error_file_log",
-                invalid_survey_responses_table,
-                valid_survey_responses_table,
                 *list(table_counts.keys()),
             ],
             "count": [
-                invalid_files_count,
-                invalid_survey_responses_count,
-                valid_survey_responses_count,
                 *list(table_counts.values()),
             ],
         }
