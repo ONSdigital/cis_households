@@ -856,7 +856,6 @@ def report(
         table name of hdfs table of survey responses passing validation checks
     invalid_survey_responses_table
         table name of hdfs table of survey responses failing validation checks
-    filtered_survey_responses_table
     output_directory
         output folder location to store the report
     """
@@ -908,8 +907,8 @@ def report(
             ],
             "count": [
                 invalid_files_count,
-                valid_survey_responses_count,
                 invalid_survey_responses_count,
+                valid_survey_responses_count,
                 *list(table_counts.values()),
             ],
         }
@@ -922,6 +921,7 @@ def report(
             processed_files_df = (
                 processed_file_log.filter(F.col("file_type") == type)
                 .select("processed_filename", "file_row_count")
+                .orderBy("processed_filename")
                 .distinct()
                 .toPandas()
             )
