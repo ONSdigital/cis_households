@@ -1,4 +1,5 @@
 import re
+from typing import Dict
 from typing import List
 from typing import Union
 
@@ -6,7 +7,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.derive import assign_filename_column
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -26,23 +27,14 @@ def generate_weights(auxillary_dfs, table_or_path):
 
     # initialise lookup dataframes
     household_info_df = auxillary_dfs["household_level_populations"]
-
-    # 1164
-    if table_or_path == "path":  # process old sample file as a csv adding and recoding new columns
-        old_df = recode_columns(auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"], household_info_df)
-        df = union_multiple_tables([old_df, auxillary_dfs["new_sample_file"]])  # step 15: dweights
-        df = join_and_process_lookups(df, auxillary_dfs["cis_phase_lookup"], auxillary_dfs["master_sample_file"])
-    else:  # old sample file aggregate has already been created as
-        # table therefore only new sample file neeeds to be processed
-        auxillary_dfs["new_sample_file"] = join_and_process_lookups(
-            auxillary_dfs["new_sample_file"], auxillary_dfs["cis_phase_lookup"], auxillary_dfs["master_sample_file"]
-        )
-        df = union_multiple_tables([auxillary_dfs["old_sample_file"], auxillary_dfs["new_sample_file"]])
+    first_run = False if table_or_path == "path" else True
+    df = join_and_process_lookups(first_run, auxillary_dfs)
 
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
     tranche_df = auxillary_dfs["tranche"]
     if tranche_df is not None:
+        tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
         # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
@@ -67,7 +59,6 @@ def generate_weights(auxillary_dfs, table_or_path):
         n_eligible_hh_tranche_bystrata_column="number_eligible_households_tranche_bystrata_enrolment",
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
-
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
 
     df = validate_design_weights(
@@ -76,35 +67,57 @@ def generate_weights(auxillary_dfs, table_or_path):
         num_households_column="number_of_households_population_by_cis",
         window=cis_window,
     )
-
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-
     return df
 
 
-def join_and_process_lookups(df: DataFrame, cis_phase_df: DataFrame, master_sample_df: DataFrame):
-    """ """
+def join_and_process_lookups(first_run: bool, dfs: Dict[str, DataFrame]):
+    """
+    Add data from the additional lookup files to main dataset
+    """
+    old_sample_df = recode_columns(dfs["old_sample_file"], dfs["new_sample_file"], dfs["household_level_populations"])
+    old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
+    new_sample_file = assign_filename_column(dfs["new_sample_file"], "sample_source_file")
+    new_sample_file = new_sample_file.join(
+        dfs["master_sample_file"].select("ons_household_id", "sample_type"),
+        on="ons_household_id",
+        how="left",
+    ).withColumn("date_sample_created", F.lit("2021/12/06"))
+    new_sample_file = new_sample_file.withColumn(
+        "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
+    )
+    if first_run:
+        old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
+        df = union_multiple_tables([old_sample_df, new_sample_file])
+    else:
+        df = new_sample_file
     df = df.join(
-        master_sample_df.select("postcode", "ons_household_id").withColumnRenamed("postcode", "postcode_from_master"),
+        dfs["master_sample_file"].select("postcode", "ons_household_id"),
         on="ons_household_id",
         how="left",
     )
-    # set postcode value if empty from master
-    df = df.withColumn(
-        "postcode", F.when(F.col("postcode").isNull(), F.col("postcode_from_master")).otherwise(F.col("postcode"))
+    df = df.join(
+        dfs["lsoa_cis_lookup"].select("lower_super_output_area_code_11", "cis_area_code_20"),
+        on="lower_super_output_area_code_11",
+        how="left",
     )
-    df = df.drop("postcode_from_master")
-    # map the abbreviated country names to full names
-    cis_phase_df = update_column_values_from_map(
-        cis_phase_df, "country_name_12", {"ENG": "england", "WAL": "wales", "SCO": "scotland", "IRE": "ireland"}
-    )  # .withColumnRenamed("country","country_name_12")
-    df = df.join(cis_phase_df, on=["country_name_12", "sample_source"], how="left")
-    return df
+    df = df.drop("rural_urban_classification_11", "country_code_12").join(
+        dfs["postcode_lookup"].select(
+            "postcode", "rural_urban_classification_11", "output_area_code_11", "country_code_12"
+        ),
+        on="postcode",
+        how="left",
+    )
+    df = df.join(dfs["country_lookup"].select("country_code_12", "country_name_12"), on="country_code_12", how="left")
+    df = df.withColumn("batch_number", F.lit(1))
+    if first_run:
+        return df
+    return union_multiple_tables([old_sample_df, df])
 
 
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
@@ -116,8 +129,8 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
     info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
     info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
-    new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
-    old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
+    # new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
+    # old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
     if old_lsoa != new_lsoa:
         old_df = old_df.join(
             hh_info_df.select(info_lsoa, info_cis, "postcode")
@@ -127,9 +140,9 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
             how="left",
         )
         old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
-        old_df = (
-            old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
-        )
+        # old_df = (
+        #     old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
+        # )
     return old_df
 
 
@@ -157,19 +170,18 @@ def household_level_populations(
     df_cis20cd
         Dataframe with cis20cd and interim id.
     """
-    df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
+    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
-    df = df.join(cis_phase_lookup, on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
 
-    df = df.join(country_lookup, on="country_code_12", how="left")
+    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
 
     area_window = Window.partitionBy("cis_area_code_20")
     df = df.withColumn(
         "number_of_households_population_by_cis",
         F.approx_count_distinct("unique_property_reference_code").over(area_window),
     )
-
     country_window = Window.partitionBy("country_code_12")
     df = df.withColumn(
         "number_of_households_population_by_country",

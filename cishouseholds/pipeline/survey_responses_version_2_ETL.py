@@ -336,6 +336,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "work_status_v2",
             "work_location",
             "work_direct_contact_patients_clients",
+            "work_nursing_or_residential_care_home",
             "visit_type",
             "household_visit_status",
             "participant_survey_status",
