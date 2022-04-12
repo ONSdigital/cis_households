@@ -63,6 +63,7 @@ sessions = {
         .config("spark.dynamicAllocation.maxExecutors", 12)
         .config("spark.sql.shuffle.partitions", 240)
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.reducer.maxBlocksInFlightPerAddress", 15)
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
