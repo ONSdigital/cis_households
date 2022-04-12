@@ -33,6 +33,17 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
             "Working Outside of your Home": "Working somewhere else (not your home)",
             "Not applicable": "Not applicable, not currently working",
         },
+        "last_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "last_suspected_covid_contact_location": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "other_pcr_test_results": {
+            "Positive": "One or more positive test(s)",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     return df

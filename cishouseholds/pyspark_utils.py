@@ -57,12 +57,13 @@ sessions = {
     ),
     "xl": (
         SparkSession.builder.config("spark.executor.memory", "20g")
-        .config("spark.yarn.executor.memoryOverhead", "2g")
+        .config("spark.yarn.executor.memoryOverhead", "3g")
         .config("spark.executor.cores", 5)
         .config("spark.dynamicAllocation.enabled", "true")
         .config("spark.dynamicAllocation.maxExecutors", 12)
         .config("spark.sql.shuffle.partitions", 240)
         .config("spark.shuffle.service.enabled", "true")
+        .config("spark.reducer.maxBlocksInFlightPerAddress", 150)
         .config("spark.ui.showConsoleProgress", "false")
         .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
         .config("spark.shuffle.service.enabled", "true")
