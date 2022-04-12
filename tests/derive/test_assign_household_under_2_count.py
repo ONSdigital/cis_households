@@ -8,14 +8,15 @@ def test_assign_household_under_2_count(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            (1,     'Yes',     1,      1,      None,     2),  # Assign count of ages > 0
-            (2,     'Yes',     1,      0,      None,     2),  # Include 0 in count
-            (3,     'Yes',     None,   None,   None,     0),  # Assign 0 by default
-            (4,     'Yes',     0,      0,      0,        0),     # Treat as invalid if all 0
+            (1,     'Yes',     1,      1,      None,     2),    # Assign count of ages > 0
+            (2,     'Yes',     1,      0,      None,     2),    # Include 0 in count
+            (3,     'Yes',     None,   None,   None,     0),    # Assign 0 by default
+            (4,     'Yes',     0,      0,      0,        0),    # Treat as invalid if all 0
 
-            (5,     'Yes',     0,      None,   0,        2),     # count 0's
-            (6,     'No',      0,      None,   0,        0),
-            # look for 0's and None
+            (5,     'Yes',     0,      None,   0,        2),    # count 0's
+            (6,     'No',      0,      None,   0,        0),    # look for 0's and None = count is 0
+            (7,     'No',      None,   None,   0,        0),
+            (8,     'No',      None,   None,   None,     0),
             # (7,     'No',      1,      0,      None,     0),
             # # TODO: if 'No', should it edit to 'Yes' and count?
             # fmt: on
