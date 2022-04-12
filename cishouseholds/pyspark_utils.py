@@ -57,7 +57,7 @@ sessions = {
     ),
     "xl": (
         SparkSession.builder.config("spark.executor.memory", "20g")
-        .config("spark.yarn.executor.memoryOverhead", "2g")
+        .config("spark.yarn.executor.memoryOverhead", "3g")
         .config("spark.executor.cores", 5)
         .config("spark.dynamicAllocation.enabled", "true")
         .config("spark.dynamicAllocation.maxExecutors", 12)
