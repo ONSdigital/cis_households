@@ -897,7 +897,6 @@ def derive_people_in_household_count(df):
         column_pattern=r"infant_[1-8]_age",
         condition_column="household_members_under_2_years",
     )
-
     household_window = Window.partitionBy("ons_household_id")
     df = df.withColumn(
         "people_in_household_count",
