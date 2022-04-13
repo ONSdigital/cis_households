@@ -229,8 +229,6 @@ postcode_schema = {
     "teclec": string_dict,
     "ttwa": string_dict,
     "pct": string_dict,
-    # "nuts": string_dict,
-    # "itl": string_dict,
     "park": string_dict,
     "lsoa11": string_dict,
     "msoa11": string_dict,
