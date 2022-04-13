@@ -38,8 +38,8 @@ pipeline {
     // We're not picky
     agent any
     // Keep getting intermittent network errors, so retry whole pipeline
-    retry(3) {
-        stages {
+    stages {
+        retry(3) {
             // Checkout stage to fetch code from  GitLab
             stage("Checkout") {
                 // We have to specify an appropriate slave for each stage
