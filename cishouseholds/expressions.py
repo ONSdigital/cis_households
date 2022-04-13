@@ -22,6 +22,11 @@ def all_equal(column_list: list, equal_to: Any):
     return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
 
 
+def all_equal_or_Null(column_list: list, equal_to: Any):
+    "Expression that finds nulls in all columns."
+    return reduce(and_, [F.col(column).isNull() | F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
+
+
 def sum_within_row(column_list: list):
     """
     Sum of values from one or more columns within a row.
