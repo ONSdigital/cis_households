@@ -116,7 +116,7 @@ def validation_calls(SparkVal):
         ),
         error_message="face covering is null when face covering at work and other places are null",
     )
-    
+
     SparkVal.validate_udl(  # Sample_taken_out_of_range
         logic=(
             ((F.col("visit_datetime") <= F.lit(datetime.now())) & (F.col("visit_datetime") >= F.lit("2020/04/26")))
