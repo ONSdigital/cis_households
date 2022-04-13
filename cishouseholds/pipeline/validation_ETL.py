@@ -116,23 +116,7 @@ def validation_calls(SparkVal):
         ),
         error_message="face covering is null when face covering at work and other places are null",
     )
-    # TODO: Multiple_participant_in_1_day
-    SparkVal.validate_udl(
-        logic=(
-            # Count visit_id over Window in participant_id filter >1 counts
-            (F.count("visit_id").over(Window.partitionBy("participant_id")) > 1)
-            & (
-                (
-                    F.last("visit_id").over(
-                        Window.partitionBy("participant_id").orderBy("visit_date", "visit_date_time")
-                    )
-                    == 1
-                )  # flag the latest visit organised by date
-            )
-        ),
-        error_message="multiple visit from the same participant in one day.",
-    )
-
+    
     SparkVal.validate_udl(  # Sample_taken_out_of_range
         logic=(
             ((F.col("visit_datetime") <= F.lit(datetime.now())) & (F.col("visit_datetime") >= F.lit("2020/04/26")))
