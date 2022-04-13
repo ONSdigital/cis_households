@@ -23,7 +23,7 @@ def all_equal(column_list: list, equal_to: Any):
 
 
 def all_equal_or_Null(column_list: list, equal_to: Any):
-    "Expression that finds nulls in all columns."
+    "Expression that evaluates true if all columns are equal to the specified value OR Null."
     return reduce(
         and_, [(F.col(column).isNull() | F.col(column).eqNullSafe(F.lit(equal_to))) for column in column_list]
     )
