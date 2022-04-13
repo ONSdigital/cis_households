@@ -131,9 +131,11 @@ def assign_household_under_2_count(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col(condition_column) == "Yes", F.when(~all_equal(columns_to_count, 0), count).otherwise(0)).when(
-            F.col(condition_column) == "No", F.when(~all_equal_or_Null(columns_to_count, 0), count).otherwise(0)
-        ),
+        F.when(
+            ((F.col(condition_column) == "Yes") & (~all_equal(columns_to_count, 0)))
+            | ((F.col(condition_column) == "No") & (~all_equal_or_Null(columns_to_count, 0))),
+            count,
+        ).otherwise(0),
     )
     return df
 
