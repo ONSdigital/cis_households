@@ -1,6 +1,7 @@
 # from functools import reduce
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql.window import Window
 
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.validate_class import SparkValidate
@@ -104,6 +105,19 @@ def validation_calls(SparkVal):
             | (F.col("face_covering_outside_of_home").isNotNull())
         ),
         error_message="face covering is null when face covering at work and other places are null",
+    )
+    # TODO: Multiple_participant_in_1_day
+    SparkVal.validate_udl(
+        logic=(
+            # Count visit_id over Window in participant_id filter >1 counts
+            (F.count("visit_id").over(Window.partitionBy("participant_id")) > 1)
+            & (
+                (
+                    F.last("visit_id").over(Window.partitionBy("participant_id")) > 1
+                )  # flag the latest visit organised by date
+            )
+        ),
+        error_message="multiple visit from the same participant in one day.",
     )
 
 
