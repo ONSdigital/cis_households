@@ -37,38 +37,40 @@ pipeline {
     // Agent must always be set at the top level of the pipeline
     // We're not picky
     agent any
+    // Keep getting intermittent network errors, so retry whole pipeline
+    retry(3) {
+        stages {
+            // Checkout stage to fetch code from  GitLab
+            stage("Checkout") {
+                // We have to specify an appropriate slave for each stage
+                // Choose from download, build, test, deploy
+                agent { label "download.jenkins.slave" }
+                steps {
+                    colourText("info", "Checking out code from source control.")
+                    checkout scm
+                    // Stash the files that have been checked out, for use in subsequent stages
+                    stash name: "Checkout", useDefaultExcludes: false
+                }
 
-    stages {
-        // Checkout stage to fetch code from  GitLab
-        stage("Checkout") {
-            // We have to specify an appropriate slave for each stage
-            // Choose from download, build, test, deploy
-            agent { label "download.jenkins.slave" }
-            steps {
-                colourText("info", "Checking out code from source control.")
-                checkout scm
-                // Stash the files that have been checked out, for use in subsequent stages
-                stash name: "Checkout", useDefaultExcludes: false
             }
-
-        }
-        stage("Build and deploy") {
-            agent { label "build.${agentPython3Version}" }
-            steps {
-                unstash name: 'Checkout'
-                colourText('info', "Building package")
-                sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
-                sh 'python3 setup.py build bdist_wheel'
-                stash name: "Build", useDefaultExcludes: false
+            stage("Build and deploy") {
+                agent { label "build.${agentPython3Version}" }
+                steps {
+                    unstash name: 'Checkout'
+                    colourText('info', "Building package")
+                    sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
+                    sh 'python3 setup.py build bdist_wheel'
+                    stash name: "Build", useDefaultExcludes: false
+                }
             }
-        }
-        stage("Deploy") {
-            when { tag "v*" }
-            agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
-            steps {
-                unstash name: "Build"
-                colourText('info', "Deploying to Artifactory")
-                pushToPyPiArtifactoryRepo(PROJECT_NAME)
+            stage("Deploy") {
+                when { tag "v*" }
+                agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
+                steps {
+                    unstash name: "Build"
+                    colourText('info', "Deploying to Artifactory")
+                    pushToPyPiArtifactoryRepo(PROJECT_NAME)
+                }
             }
         }
     }
