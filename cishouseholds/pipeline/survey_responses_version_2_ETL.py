@@ -486,6 +486,9 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
+
+    df = df.withColumn("swab_sample_barcode", F.upper(F.col("swab_sample_barcode")))
+    df = df.withColumn("blood_sample_barcode", F.upper(F.col("blood_sample_barcode")))
     return df
 
 
