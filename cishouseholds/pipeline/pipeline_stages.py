@@ -940,6 +940,18 @@ def report(
     )
 
 
+@register_pipeline_stage("report_iqvia")
+def report_iqvia(swab_residuals_table: str, blood_residuals_table: str):
+    """ " """
+    swab_residuals_df = extract_from_table(swab_residuals_table)
+    blood_residuals_df = extract_from_table(blood_residuals_table)
+    swab_residuals_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
+    output = BytesIO()
+    with pd.ExcelWriter(output) as writer:
+        swab_residuals_df.toPandas().to_excel(writer, sheet_name="unlinked swabs")
+        blood_residuals_df.toPandas().to_excel(writer, sheet_name="unlinked bloods")
+
+
 @register_pipeline_stage("record_level_interface")
 def record_level_interface(
     survey_responses_table: str,

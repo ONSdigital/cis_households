@@ -130,25 +130,33 @@ class SparkValidate:
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(error_message, column_name, range):
-        lower_bound = (
-            (F.col(column_name) >= range["lower_bound"]["value"])
-            if range["lower_bound"]["inclusive"]
-            else (F.col(column_name) > range["lower_bound"]["value"])
-        )
-        upper_bound = (
-            (F.col(column_name) <= range["upper_bound"]["value"])
-            if range["upper_bound"]["inclusive"]
-            else (F.col(column_name) < range["upper_bound"]["value"])
-        )
-        error_message = error_message.format(
-            column_name,
-            range["lower_bound"]["value"],
-            " (inclusive)" if range["lower_bound"]["inclusive"] else "",
-            range["upper_bound"]["value"],
-            " (inclusive)" if range["upper_bound"]["inclusive"] else "",
-        )
-        return lower_bound & upper_bound, error_message
+    def between(error_message, column_name, range_set):
+        if type(range_set) != list:
+            range_set = [range_set]
+        bools = []
+        for range in range_set:
+            lower_bound = (
+                (F.col(column_name) >= range["lower_bound"]["value"])
+                if range["lower_bound"]["inclusive"]
+                else (F.col(column_name) > range["lower_bound"]["value"])
+            )
+            upper_bound = (
+                (F.col(column_name) <= range["upper_bound"]["value"])
+                if range["upper_bound"]["inclusive"]
+                else (F.col(column_name) < range["upper_bound"]["value"])
+            )
+            error_message = error_message.format(
+                column_name,
+                range["lower_bound"]["value"],
+                " (inclusive)" if range["lower_bound"]["inclusive"] else "",
+                range["upper_bound"]["value"],
+                " (inclusive)" if range["upper_bound"]["inclusive"] else "",
+            )
+            if "allow_none" in range and range["allow_none"] == True:
+                bools.append((lower_bound & upper_bound) | F.col(column_name).isNull())
+            else:
+                bools.append(lower_bound & upper_bound)
+        return any(bools), error_message
 
     # Non column wise functions
     @staticmethod
