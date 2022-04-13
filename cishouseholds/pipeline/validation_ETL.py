@@ -113,7 +113,10 @@ def validation_calls(SparkVal):
             (F.count("visit_id").over(Window.partitionBy("participant_id")) > 1)
             & (
                 (
-                    F.last("visit_id").over(Window.partitionBy("participant_id")) > 1
+                    F.last("visit_id").over(
+                        Window.partitionBy("participant_id").orderBy("visit_date", "visit_date_time")
+                    )
+                    == 1
                 )  # flag the latest visit organised by date
             )
         ),
