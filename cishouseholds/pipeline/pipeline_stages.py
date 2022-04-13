@@ -84,6 +84,7 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
+from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 
 pipeline_stages = {}
 
@@ -941,15 +942,19 @@ def report(
 
 
 @register_pipeline_stage("report_iqvia")
-def report_iqvia(swab_residuals_table: str, blood_residuals_table: str):
+def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_repsonse_table):
     """ " """
     swab_residuals_df = extract_from_table(swab_residuals_table)
     blood_residuals_df = extract_from_table(blood_residuals_table)
     swab_residuals_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
-    output = BytesIO()
-    with pd.ExcelWriter(output) as writer:
-        swab_residuals_df.toPandas().to_excel(writer, sheet_name="unlinked swabs")
-        blood_residuals_df.toPandas().to_excel(writer, sheet_name="unlinked bloods")
+    survey_repsonse_table = extract_from_table(survey_repsonse_table)
+    modified_barcodes_df = survey_repsonse_table.filter(F.col("swab_sample_barcode_edited_flag")==1|F.col("blood_sample_barcode_edited_flag")==1).select("blood_sample_barcode","swab_sample_barcode","")
+    sheet_df_map = {
+        "unlinked swabs":swab_residuals_df,
+        "unlinked bloods":blood_residuals_df,
+        "modified barcodes": modified_barcodes_df
+    }
+    output = dfs_to_bytes_excel(sheet_df_map)
 
 
 @register_pipeline_stage("record_level_interface")
