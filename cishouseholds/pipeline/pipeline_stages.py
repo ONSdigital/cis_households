@@ -53,6 +53,7 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
@@ -84,7 +85,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 
 pipeline_stages = {}
 
@@ -948,11 +948,13 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
     blood_residuals_df = extract_from_table(blood_residuals_table)
     swab_residuals_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
     survey_repsonse_table = extract_from_table(survey_repsonse_table)
-    modified_barcodes_df = survey_repsonse_table.filter(F.col("swab_sample_barcode_edited_flag")==1|F.col("blood_sample_barcode_edited_flag")==1).select("blood_sample_barcode","swab_sample_barcode","")
+    modified_barcodes_df = survey_repsonse_table.filter(
+        F.col("swab_sample_barcode_edited_flag") == 1 | F.col("blood_sample_barcode_edited_flag") == 1
+    ).select("blood_sample_barcode", "swab_sample_barcode", "")
     sheet_df_map = {
-        "unlinked swabs":swab_residuals_df,
-        "unlinked bloods":blood_residuals_df,
-        "modified barcodes": modified_barcodes_df
+        "unlinked swabs": swab_residuals_df,
+        "unlinked bloods": blood_residuals_df,
+        "modified barcodes": modified_barcodes_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
 
