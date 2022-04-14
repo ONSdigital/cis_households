@@ -696,10 +696,10 @@ def impute_demographic_columns(
 def calculate_household_level_populations(
     address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
-    address_lookup_df = extract_lookup_csv(address_lookup, address_schema, address_column_map)
-    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map)
-    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map)
-    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map)
+    address_lookup_df = extract_lookup_csv(address_lookup, address_schema, address_column_map, True)
+    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map, True)
+    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map, True)
+    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map, True)
 
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
@@ -1021,16 +1021,18 @@ def sample_file_ETL(
         first_run = False
         old_sample_df = extract_from_table(design_weight_table)
     else:
-        old_sample_df = extract_lookup_csv(old_sample_file, old_sample_file_schema, old_sample_file_column_map)
+        old_sample_df = extract_lookup_csv(old_sample_file, old_sample_file_schema, old_sample_file_column_map, True)
 
-    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map)
-    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map)
-    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map)
-    new_sample_df = extract_lookup_csv(new_sample_file, new_sample_file_schema, new_sample_file_column_map)
-    master_sample_df = extract_lookup_csv(master_sample_file, master_sample_file_schema, master_sample_file_column_map)
+    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map, True)
+    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map, True)
+    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map, True)
+    new_sample_df = extract_lookup_csv(new_sample_file, new_sample_file_schema, new_sample_file_column_map, True)
+    master_sample_df = extract_lookup_csv(
+        master_sample_file, master_sample_file_schema, master_sample_file_column_map, True
+    )
     tranche_df = None
     if tranche is not None:
-        tranche_df = extract_lookup_csv(tranche, tranche_schema, tranche_column_map)
+        tranche_df = extract_lookup_csv(tranche, tranche_schema, tranche_column_map, True)
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(
@@ -1068,7 +1070,7 @@ def population_projection(
     population_projection_current_df = extract_lookup_csv(
         population_projection_current, population_projection_current_schema, population_projection_current_column_map
     )
-    aps_lookup_df = extract_lookup_csv(aps_lookup, aps_schema, aps_column_map)
+    aps_lookup_df = extract_lookup_csv(aps_lookup, aps_schema, aps_column_map, True)
     aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
     populations_for_calibration, population_projections = proccess_population_projection_df(
         population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year

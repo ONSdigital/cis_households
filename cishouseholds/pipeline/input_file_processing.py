@@ -24,7 +24,9 @@ class InvalidFileError(Exception):
     pass
 
 
-def extract_lookup_csv(lookup_file_path: str, validation_schema: dict, column_name_map: dict = None):
+def extract_lookup_csv(
+    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
+):
     """
     extract and validate a csv lookup file from path with validation_schema
     """
@@ -34,6 +36,8 @@ def extract_lookup_csv(lookup_file_path: str, validation_schema: dict, column_na
     df = extract_input_data([lookup_file_path], validation_schema, sep=",")
     if column_name_map is None:
         return df
+    if drop_not_found:
+        df = df.drop(*[col for col in df.columns if col not in column_name_map.keys()])
     df = rename_column_names(df, column_name_map)
     return df
 

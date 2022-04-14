@@ -305,7 +305,7 @@ def calculate_dweight_swabs(
     number_eligible_household_sample when the sample type is "new"
     """
     window = Window.partitionBy(*group_by_columns)
-    df = df.join(
+    df = df.drop("number_of_households_population_by_cis").join(
         household_level_populations_df.select(
             "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
         ),
@@ -332,7 +332,9 @@ def calculate_generic_dweight_variables(
     test_type: str,
     cis_window: Window,
 ) -> DataFrame:
-    """ """
+    """
+    calculate variables common to design weights
+    """
     window = Window.partitionBy(*groupby_columns)
     df = df.withColumn(f"sum_raw_design_weight_{test_type}_cis", F.sum(design_weight_column).over(window))
     df = df.withColumn(f"standard_deviation_raw_design_weight_{test_type}", F.stddev(design_weight_column).over(window))
