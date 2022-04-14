@@ -54,7 +54,7 @@ def test_calculate_dweight_swabs(spark_session):
     # old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str
     output_df = calculate_dweight_swabs(
         df=input_df,
-        household_info_df=household_df,
+        household_level_populations_df=household_df,
         column_name_to_assign="weight",
         sample_type_column="sample_type",
         group_by_columns=["groupby"],
