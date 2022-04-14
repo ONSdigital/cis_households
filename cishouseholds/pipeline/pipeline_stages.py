@@ -1017,6 +1017,10 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
         & (F.col("survey_response_dataset_major_version") == 2)
     ).select("age_at_visit" "blood_sample_barcode" "blood_taken")
+    survey_repsonse_table = extract_from_table(survey_repsonse_table)
+    modified_barcodes_df = survey_repsonse_table.filter(
+        F.col("swab_sample_barcode_edited_flag") == 1 | F.col("blood_sample_barcode_edited_flag") == 1
+    ).select("blood_sample_barcode", "swab_sample_barcode", "")
     sheet_df_map = {
         "unlinked swabs": swab_residuals_df,
         "unlinked bloods": blood_residuals_df,
