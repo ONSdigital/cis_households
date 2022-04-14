@@ -441,7 +441,6 @@ def merge_process_filtering(
             1,
         ),
     )
-
     for xtox in merge_combination:
         best_match_logic = (
             (F.col(xtox + "_" + merge_type) == 1)
