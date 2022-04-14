@@ -24,17 +24,18 @@ class InvalidFileError(Exception):
     pass
 
 
-def extract_lookup_csv(lookup_file_path: str, validation_schema: dict):
+def extract_lookup_csv(lookup_file_path: str, validation_schema: dict, column_name_map: dict = None):
     """
     extract and validate a csv lookup file from path with validation_schema
     """
-    spark_session = get_or_create_spark_session()
     valid_files = validate_files(lookup_file_path, validation_schema)
     if not valid_files:
         raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
-    return spark_session.read.csv(
-        valid_files, header=True, schema=convert_cerberus_schema_to_pyspark(validation_schema)
-    )
+    df = extract_input_data([lookup_file_path], validation_schema, sep=",")
+    if column_name_map is None:
+        return df
+    df = rename_column_names(df, column_name_map)
+    return df
 
 
 def extract_validate_transform_input_data(
