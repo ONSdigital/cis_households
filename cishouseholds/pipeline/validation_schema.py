@@ -194,7 +194,7 @@ address_schema = {
     "LA_CODE": string_dict,
     "LOGICAL_STATUS": string_dict,
     "ADDRESS_LINE2": string_dict,
-    "URPN": string_dict,
+    "UPRN": string_dict,
     "COUNCIL_TAX": string_dict,
     "ADDRESS_LINE3": string_dict,
     "CTRY18CD": string_dict,
