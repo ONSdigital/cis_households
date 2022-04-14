@@ -184,7 +184,7 @@ projections_column_map = {
 }
 
 address_schema = {
-    "ADDRESS_LINE_1": string_dict,
+    "ADDRESS_LINE1": string_dict,
     "ABP_CODE": string_dict,
     "CTRY18NM": string_dict,
     "TOWN_NAME": string_dict,
@@ -201,8 +201,8 @@ address_schema = {
     "POSTCODE": string_dict,
     "EW": string_dict,
     "EPOCH": string_dict,
-    "UDPRN": string_dict,
-    "ADRESSBASE_POSTAL": string_dict,
+    "UPRN": string_dict,
+    "ADDRESSBASE_POSTAL": string_dict,
 }
 
 postcode_schema = {
@@ -319,7 +319,7 @@ master_sample_file_schema = {
     "BLOODS": string_dict,
     "WEEK": string_dict,
     "SAMPLE_TYPE": string_dict,
-    "UPRN": string_dict,
+    "URPN": string_dict,
     "UDPRN": string_dict,
     "TOWN_NAME": string_dict,
 }
