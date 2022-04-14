@@ -15,6 +15,31 @@ from cishouseholds.expressions import all_equal
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def count_barcode_cleaned(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+):
+    """
+    Count occurances of barcode
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    barcode_column
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(
+                (F.col(barcode_column).isNotNull())
+                & (F.col(barcode_column) != "ONS00000000")
+                & (F.datediff(F.col(visit_datetime_colum), F.col(date_taken_column)) <= 14),
+                1,
+            ).otherwise(0)
+        ),
+    )
+    return df
+
+
 def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,

@@ -13,6 +13,7 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.extract import read_rename_csv_based_on_given_columns
@@ -53,6 +54,7 @@ from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
@@ -84,7 +86,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
-from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 
 pipeline_stages = {}
 
@@ -943,16 +944,85 @@ def report(
 
 @register_pipeline_stage("report_iqvia")
 def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_repsonse_table):
-    """ " """
+    """ """
     swab_residuals_df = extract_from_table(swab_residuals_table)
     blood_residuals_df = extract_from_table(blood_residuals_table)
     swab_residuals_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
-    survey_repsonse_table = extract_from_table(survey_repsonse_table)
-    modified_barcodes_df = survey_repsonse_table.filter(F.col("swab_sample_barcode_edited_flag")==1|F.col("blood_sample_barcode_edited_flag")==1).select("blood_sample_barcode","swab_sample_barcode","")
+    survey_repsonse_df = extract_from_table(survey_repsonse_table)
+    modified_barcodes_df = survey_repsonse_df.filter(  # barcode_wrong_format
+        F.col("swab_sample_barcode_edited_flag") == 1 | F.col("blood_sample_barcode_edited_flag") == 1
+    ).select(
+        "blood_sample_barcode",
+        "blood_sample_barcode_raw",
+        "swab_sample_barcode_raw",
+        "swab_sample_barcode",
+        "blood_taken",
+        "visit_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+    missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
+        F.col("visit_status").isin(["completed", "partially completed", "new"])
+        | (
+            (F.col("swab_sample_barcode").isNotNull())
+            & (F.col("withdrawn_participant") != "withdrawn")
+            & (F.col("survey_response_dataset_major_version") == 2)
+            & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
+        )
+    ).select(
+        "visit_status",
+        "swab_sample_barcode",
+        "withdrawn_participant",
+        "survey_response_dataset_major_version",
+        "sex",
+        "age_at_visit",
+        "ethnicity",
+    )
+    duplicate_barcodes_df = count_barcode_cleaned(
+        survey_repsonse_df, "swab_barcode_cleaned_count", "swab_sample_barcode", "samples_taken_datetime","visit_datetime"
+    )
+    duplicate_barcodes_df = count_barcode_cleaned(
+        duplicate_barcodes_df, "blood_barcode_cleaned_count", "blood_sample_barcode", "samples_taken_datetime","visit_datetime"
+    )
+    duplicate_barcodes_df = duplicate_barcodes_df.filter(F.col("swab_barcode_cleaned_count")>1).select(
+        "swab_sample_barcode",
+        "swab_sample_barcode_raw",
+        "blood_sample_barcode",
+        "blood_sample_barcode_raw",
+        "visit_id",
+        "visit_date",
+        "participant_id",
+        ""
+    )
+
+# Count_barcode_cleaned 
+
+# Swab_barcode_IQ 
+
+# Swab_barcode_mk 
+
+# Visit_id 
+
+# Visit_date 
+
+# Participant_id 
+
+# Samples_taken_date_time 
+
+# dataset 
+
+
+    under_8_bloods_df = survey_repsonse_df.filter(
+        (F.col("age_at_visit") <= 8)
+        & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
+        & (F.col("survey_response_dataset_major_version") == 2)
+    ).select("age_at_visit" "blood_sample_barcode" "blood_taken")
     sheet_df_map = {
-        "unlinked swabs":swab_residuals_df,
-        "unlinked bloods":blood_residuals_df,
-        "modified barcodes": modified_barcodes_df
+        "unlinked swabs": swab_residuals_df,
+        "unlinked bloods": blood_residuals_df,
+        "modified barcodes": modified_barcodes_df,
+        "missing values": missing_age_sex_ethnicity_df,
+        "under 8 bloods": under_8_bloods_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
 
