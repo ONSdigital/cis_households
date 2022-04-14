@@ -7,7 +7,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
@@ -127,7 +127,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -333,7 +333,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -423,7 +423,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -753,7 +753,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -843,7 +843,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
@@ -1055,7 +1055,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -1260,7 +1260,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: null
@@ -1381,7 +1381,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'Yes'
@@ -1468,7 +1468,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'Yes'
@@ -1592,7 +1592,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -1679,7 +1679,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   cis_covid_vaccine_date: null
   cis_covid_vaccine_received: 'No'
@@ -2009,7 +2009,7 @@
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
