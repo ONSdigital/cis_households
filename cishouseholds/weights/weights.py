@@ -22,15 +22,15 @@ from cishouseholds.weights.edit import null_to_value
 
 
 def generate_weights(
-    household_level_populations_df,
-    master_sample_df,
-    old_sample_df,
-    new_sample_df,
-    tranche_df,
-    postcode_lookup_df,
-    country_lookup_df,
-    lsoa_cis_lookup_df,
-    first_run,
+    household_level_populations_df: DataFrame,
+    master_sample_df: DataFrame,
+    old_sample_df: DataFrame,
+    new_sample_df: DataFrame,
+    tranche_df: DataFrame,
+    postcode_lookup_df: DataFrame,
+    country_lookup_df: DataFrame,
+    lsoa_cis_lookup_df: DataFrame,
+    first_run: bool,
 ):
     # auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
 
@@ -76,7 +76,7 @@ def generate_weights(
         n_eligible_hh_tranche_bystrata_column="number_eligible_households_tranche_bystrata_enrolment",
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
-    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
+    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
 
     df = validate_design_weights(
         df=df,
@@ -86,7 +86,7 @@ def generate_weights(
     )
     df = carry_forward_design_weights(
         df=df,
-        scenario=scenario_string,
+        scenario=scenario_string,  # type: ignore
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
@@ -249,7 +249,7 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
 
 
 # Wrapper
-def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str):
+def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "A"):
     # Antibody weights
     if scenario in "AB":
         design_weight_column = "raw_design_weight_antibodies_ab"
