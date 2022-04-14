@@ -34,7 +34,6 @@ from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
-from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
@@ -93,8 +92,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_consent_code(
         df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     )
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -489,6 +486,9 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = df.withColumn("deferred", F.when(F.col("deferred").isNull(), "NA").otherwise(F.col("deferred")))
+
+    df = df.withColumn("swab_sample_barcode", F.upper(F.col("swab_sample_barcode")))
+    df = df.withColumn("blood_sample_barcode", F.upper(F.col("blood_sample_barcode")))
     return df
 
 

@@ -261,30 +261,26 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
-    df = df.withColumn("SUFFIX", F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0))
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", ""))
+    suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
+    prefix = F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", "")
 
     # prefix cleaning
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col("PREFIX"), r"[0Q]", "O"))
-    df = df.withColumn(
-        "PREFIX", F.when(~F.col("PREFIX").isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(F.col("PREFIX"))
-    )
+    prefix = F.regexp_replace(prefix, r"[0Q]", "O")
+    prefix = F.when(~prefix.isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(prefix)
 
     # suffix cleaning
-    df = df.withColumn("SUFFIX", F.when(F.length("SUFFIX") >= 4, F.col("SUFFIX")).otherwise(None))
-    df = df.withColumn("SUFFIX", F.when(F.col("SUFFIX").rlike(r"^0{1,}$"), None).otherwise(F.col("SUFFIX")))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"[.O]", "0"))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), "I", "1"))
-    df = df.withColumn("SUFFIX", F.substring(F.concat(F.lit("00000000"), F.col("SUFFIX")), -8, 8))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"^[^027]", "0"))
+    suffix = F.when(F.length(suffix) >= 4, suffix).otherwise(None)
+    suffix = F.when(suffix.rlike(r"^0{1,}$"), None).otherwise(suffix)
+    suffix = F.regexp_replace(suffix, r"[.O]", "0")
+    suffix = F.regexp_replace(suffix, "I", "1")
+    suffix = F.substring(F.concat(F.lit("00000000"), suffix), -8, 8)
+    suffix = F.regexp_replace(suffix, r"^[^027]", "0")
 
-    df = df.withColumn(
-        barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
-    )
+    df = df.withColumn(barcode_column, F.when(suffix.isNotNull(), F.concat(prefix, suffix)).otherwise(None))
     df = df.withColumn(
         edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
     )
-    return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
+    return df.drop("BARCODE_COPY")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
