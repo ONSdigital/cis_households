@@ -6,6 +6,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import grouped_count_distinct
+
 
 # 1172
 def assign_ethnicity_white(
@@ -137,22 +139,15 @@ def count_distinct_in_filtered_df(
     column_name_to_assign: str,
     column_to_count: str,
     filter_positive: Any,
-    window: Window,
+    group_by_columns: List[str],
 ):
     """
     Count distinct rows that meet a given condition over a predefined window (window)
     """
-    # eligible_df = df.filter(filter_positive)
-    # eligible_df = eligible_df.withColumn(column_name_to_assign, F.approx_count_distinct(column_to_count).over(window))
-    # ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
-    # df = eligible_df.unionByName(ineligible_df)
-
-    df = df.withColumn(
-        column_name_to_assign,
-        F.size(
-            F.collect_set(F.when(filter_positive, F.col(column_to_count)).otherwise(None)).over(window)
-        ),  # this wont work
-    )
+    eligible_df = df.filter(filter_positive)
+    eligible_df = grouped_count_distinct(eligible_df, column_name_to_assign, column_to_count, group_by_columns)
+    ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
+    df = eligible_df.unionByName(ineligible_df)
     return df
 
 
@@ -173,13 +168,12 @@ def assign_tranche_factor(
     value is maximum within the predefined window (window)
     """
     df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_ref_column).isNull(), "No").otherwise("Yes"))
-    window = Window.partitionBy(*group_by_columns)
     df = count_distinct_in_filtered_df(
         df=df,
         column_name_to_assign="number_eligible_households_tranche_bystrata_enrolment",
         column_to_count=barcode_column,
         filter_positive=F.col("tranche_eligible_households") == "Yes",
-        window=window,
+        group_by_columns=group_by_columns,
     )
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
         F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
@@ -189,7 +183,7 @@ def assign_tranche_factor(
         column_name_to_assign="number_sampled_households_tranche_bystrata_enrolment",
         column_to_count=barcode_column,
         filter_positive=filter_max_condition,
-        window=window,
+        group_by_columns=group_by_columns,
     )
     df = df.withColumn(
         column_name_to_assign,
