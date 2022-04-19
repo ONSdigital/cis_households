@@ -80,8 +80,8 @@ def test_household_level_populations(spark_session):
         cis_area_code_20 string,
         interim_id integer,
         name string,
-        number_of_households_population_by_cis long,
-        number_of_households_population_by_country long
+        number_of_households_population_by_cis integer,
+        number_of_households_population_by_country integer
     """
     data_expected = [
         ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
