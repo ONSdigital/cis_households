@@ -7,6 +7,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import grouped_count_distinct
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -83,6 +84,7 @@ def generate_weights(
         column_name_to_assign="validated_design_weights",
         num_households_column="number_of_households_population_by_cis",
         window=cis_window,
+        group_by_columns=["cis_area_code_20"],
     )
     df = carry_forward_design_weights(
         df=df,
@@ -203,15 +205,11 @@ def household_level_populations(
 
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
 
-    area_window = Window.partitionBy("cis_area_code_20")
-    df = df.withColumn(
-        "number_of_households_population_by_cis",
-        F.approx_count_distinct("unique_property_reference_code").over(area_window),
+    df = grouped_count_distinct(
+        df, "number_of_households_population_by_cis", "unique_property_reference_code", ["cis_area_code_20"]
     )
-    country_window = Window.partitionBy("country_code_12")
-    df = df.withColumn(
-        "number_of_households_population_by_country",
-        F.approx_count_distinct("unique_property_reference_code").over(country_window),
+    df = grouped_count_distinct(
+        df, "number_of_households_population_by_country", "unique_property_reference_code", ["country_code_12"]
     )
     return df
 
@@ -389,7 +387,9 @@ def calculate_combined_dweight_swabs(
 
 
 # 1166
-def validate_design_weights(df: DataFrame, column_name_to_assign: str, num_households_column: str, window: Window):
+def validate_design_weights(
+    df: DataFrame, column_name_to_assign: str, num_households_column: str, window: Window, group_by_columns: List[str]
+):
     """
     Validate the derived design weights by checking 3 conditions are true:
     - design weights add to household population total
@@ -408,10 +408,11 @@ def validate_design_weights(df: DataFrame, column_name_to_assign: str, num_house
                 "False",
             ).otherwise(F.col(column_name_to_assign)),
         )  # check 1
+        df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", col, group_by_columns)
         df = df.withColumn(
             column_name_to_assign,
-            F.when(F.approx_count_distinct(col).over(window) != 1, "False").otherwise(F.col(column_name_to_assign)),
-        )
+            F.when(F.col("TEMP_DISTINCT_COUNT") != 1, "False").otherwise(F.col(column_name_to_assign)),
+        ).drop("TEMP_DISTINCT_COUNT")
 
     df = df.withColumn("LEAST", F.least(*columns))
     df = df.withColumn(

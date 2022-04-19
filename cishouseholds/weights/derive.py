@@ -149,7 +149,9 @@ def count_distinct_in_filtered_df(
 
     df = df.withColumn(
         column_name_to_assign,
-        F.approx_count_distinct(F.when(filter_positive, F.col(column_to_count)).otherwise(None)).over(window),
+        F.size(
+            F.collect_set(F.when(filter_positive, F.col(column_to_count)).otherwise(None)).over(window)
+        ),  # this wont work
     )
     return df
 

@@ -1,5 +1,6 @@
 from typing import Callable
 from typing import List
+from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -33,7 +34,7 @@ def extract_lookup_csv(
     valid_files = validate_files(lookup_file_path, validation_schema)
     if not valid_files:
         raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
-    df = extract_input_data([lookup_file_path], validation_schema, sep=",")
+    df = extract_input_data(lookup_file_path, validation_schema, sep=",")
     if column_name_map is None:
         return df
     if drop_not_found:
@@ -87,7 +88,7 @@ def extract_validate_transform_input_data(
     return raw_df, df, filtered_df
 
 
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str) -> DataFrame:
+def extract_input_data(file_paths: Union[List[str], str], validation_schema: dict, sep: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
