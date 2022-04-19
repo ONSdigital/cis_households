@@ -921,7 +921,21 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
     pariticipant_visit_date_group_df = (
         survey_repsonse_df.groupBy(F.to_date("visit_datetime")).agg({"visit_datetime": "count"}).alias("visits_in_day")
     )
-    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1)
+    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
+        "participant_id",
+        "visit_datetime",
+        "visit_id",
+        "visits_in_day",
+        "work_main_job_title",
+        "work_main_job_role",
+        "sex",
+        "etnicity",
+        "age_at_visit",
+        "samples_taken_datetime",
+        "swab_sample_barcode",
+        "blood_sample_barcode",
+        "survey_response_dataset_major_version",
+    )
 
     missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
         F.col("visit_status").isin(["completed", "partially completed", "new"])
@@ -996,6 +1010,7 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "modified swabs": modified_swab_barcodes_df,
         "missing values": missing_age_sex_ethnicity_df,
         "under 8 bloods": under_8_bloods_df,
+        "same day visits": pariticipant_visit_date_group_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
 

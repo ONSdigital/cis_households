@@ -41,6 +41,15 @@ def count_barcode_cleaned(
     return df
 
 
+def grouped_count_distinct(
+    df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_columns: List[str]
+):
+    "count distinct value is grouped dataset and return complete dataset"
+    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(reference_column).alias(column_name_to_assign))
+    df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
+    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+
+
 def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,

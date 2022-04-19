@@ -43,6 +43,7 @@ def test_validate_design_weights(spark_session):
         df=input_df,
         column_name_to_assign="validated",
         num_households_column="num_hh",
+        group_by_columns=["window"],
         window=window,
     )
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
