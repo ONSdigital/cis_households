@@ -1,3 +1,4 @@
+from ctypes import Union
 from typing import Callable
 from typing import List
 
@@ -24,17 +25,22 @@ class InvalidFileError(Exception):
     pass
 
 
-def extract_lookup_csv(lookup_file_path: str, validation_schema: dict):
+def extract_lookup_csv(
+    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
+):
     """
     extract and validate a csv lookup file from path with validation_schema
     """
-    spark_session = get_or_create_spark_session()
     valid_files = validate_files(lookup_file_path, validation_schema)
     if not valid_files:
         raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
-    return spark_session.read.csv(
-        valid_files, header=True, schema=convert_cerberus_schema_to_pyspark(validation_schema)
-    )
+    df = extract_input_data(lookup_file_path, validation_schema, sep=",")
+    if column_name_map is None:
+        return df
+    if drop_not_found:
+        df = df.drop(*[col for col in df.columns if col not in column_name_map.keys()])
+    df = rename_column_names(df, column_name_map)
+    return df
 
 
 def extract_validate_transform_input_data(
@@ -82,7 +88,7 @@ def extract_validate_transform_input_data(
     return raw_df, df, filtered_df
 
 
-def extract_input_data(file_paths: list, validation_schema: dict, sep: str) -> DataFrame:
+def extract_input_data(file_paths: Union[list, str], validation_schema: dict, sep: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(

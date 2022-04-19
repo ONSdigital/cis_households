@@ -16,7 +16,6 @@ from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
-from cishouseholds.extract import read_rename_csv_based_on_given_columns
 from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
@@ -32,7 +31,6 @@ from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import address_column_map
 from cishouseholds.pipeline.input_variable_names import aps_column_map
-from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
 from cishouseholds.pipeline.input_variable_names import country_column_map
 from cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
 from cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
@@ -61,7 +59,6 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependen
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pipeline.validation_schema import address_schema
 from cishouseholds.pipeline.validation_schema import aps_schema
-from cishouseholds.pipeline.validation_schema import cis_phase_schema
 from cishouseholds.pipeline.validation_schema import country_schema
 from cishouseholds.pipeline.validation_schema import csv_lookup_schema
 from cishouseholds.pipeline.validation_schema import lsoa_cis_schema
@@ -74,7 +71,8 @@ from cishouseholds.pipeline.validation_schema import postcode_schema
 from cishouseholds.pipeline.validation_schema import tranche_schema
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.extract import prepare_auxillary_data
+from cishouseholds.weights.edit import aps_value_map
+from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
@@ -86,6 +84,9 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
+
+# from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
+# from cishouseholds.pipeline.validation_schema import cis_phase_schema
 
 pipeline_stages = {}
 
@@ -697,47 +698,13 @@ def impute_demographic_columns(
 def calculate_household_level_populations(
     address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
 ):
-    # files = {
-    #     "address_lookup": {"file": address_lookup, "type": "path"},
-    #     "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
-    #     "country_lookup": {"file": country_lookup, "type": "path"},
-    #     "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-    # }
-    # dfs = extract_df_list(files)
-
-    dict_schemas_paths = {
-        "address_lookup": {
-            "schema": address_schema,
-            "path": address_lookup,
-            "column_map": address_column_map,
-            "type": "path",
-        },
-        "postcode_lookup": {
-            "schema": postcode_schema,
-            "path": postcode_lookup,
-            "column_map": postcode_column_map,
-            "type": "path",
-        },
-        "lsoa_cis_lookup": {
-            "schema": lsoa_cis_schema,
-            "path": lsoa_cis_lookup,
-            "column_map": lsoa_cis_column_map,
-            "type": "path",
-        },
-        "country_lookup": {
-            "schema": country_schema,
-            "path": country_lookup,
-            "column_map": country_column_map,
-            "type": "path",
-        },
-    }
-    dfs = read_rename_csv_based_on_given_columns(dict_schemas_paths=dict_schemas_paths)
+    address_lookup_df = extract_lookup_csv(address_lookup, address_schema, address_column_map, True)
+    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map, True)
+    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map, True)
+    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map, True)
 
     household_info_df = household_level_populations(
-        dfs["address_lookup"],
-        dfs["postcode_lookup"],
-        dfs["lsoa_cis_lookup"],
-        dfs["country_lookup"],
+        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
     )
     update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
 
@@ -947,20 +914,15 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
     """ """
     swab_residuals_df = extract_from_table(swab_residuals_table)
     blood_residuals_df = extract_from_table(blood_residuals_table)
-    swab_residuals_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
     survey_repsonse_df = extract_from_table(survey_repsonse_table)
-    modified_barcodes_df = survey_repsonse_df.filter(  # barcode_wrong_format
-        F.col("swab_sample_barcode_edited_flag") == 1 | F.col("blood_sample_barcode_edited_flag") == 1
-    ).select(
-        "blood_sample_barcode",
-        "blood_sample_barcode_raw",
-        "swab_sample_barcode_raw",
-        "swab_sample_barcode",
-        "blood_taken",
-        "visit_datetime",
-        "visit_id",
-        "survey_response_dataset_major_version",
+    swab_residuals_not_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
+    swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive")
+
+    pariticipant_visit_date_group_df = (
+        survey_repsonse_df.groupBy(F.to_date("visit_datetime")).agg({"visit_datetime": "count"}).alias("visits_in_day")
     )
+    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1)
+
     missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
         F.col("visit_status").isin(["completed", "partially completed", "new"])
         | (
@@ -979,12 +941,20 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "ethnicity",
     )
     duplicate_barcodes_df = count_barcode_cleaned(
-        survey_repsonse_df, "swab_barcode_cleaned_count", "swab_sample_barcode", "samples_taken_datetime","visit_datetime"
+        survey_repsonse_df,
+        "swab_barcode_cleaned_count",
+        "swab_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
     )
     duplicate_barcodes_df = count_barcode_cleaned(
-        duplicate_barcodes_df, "blood_barcode_cleaned_count", "blood_sample_barcode", "samples_taken_datetime","visit_datetime"
+        duplicate_barcodes_df,
+        "blood_barcode_cleaned_count",
+        "blood_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
     )
-    duplicate_barcodes_df = duplicate_barcodes_df.filter(F.col("swab_barcode_cleaned_count")>1).select(
+    duplicate_barcodes_df = duplicate_barcodes_df.filter(F.col("swab_barcode_cleaned_count") > 1).select(
         "swab_sample_barcode",
         "swab_sample_barcode_raw",
         "blood_sample_barcode",
@@ -992,39 +962,38 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "visit_id",
         "visit_date",
         "participant_id",
-        ""
+        "samples_taken_datetime",
+        "survey_response_dataset_major_version",
     )
-
-# Count_barcode_cleaned 
-
-# Swab_barcode_IQ 
-
-# Swab_barcode_mk 
-
-# Visit_id 
-
-# Visit_date 
-
-# Participant_id 
-
-# Samples_taken_date_time 
-
-# dataset 
-
 
     under_8_bloods_df = survey_repsonse_df.filter(
         (F.col("age_at_visit") <= 8)
         & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
         & (F.col("survey_response_dataset_major_version") == 2)
-    ).select("age_at_visit" "blood_sample_barcode" "blood_taken")
+    ).select("age_at_visit" "blood_sample_barcode" "blood_taken", "survey_response_dataset_major_version")
     survey_repsonse_table = extract_from_table(survey_repsonse_table)
-    modified_barcodes_df = survey_repsonse_table.filter(
-        F.col("swab_sample_barcode_edited_flag") == 1 | F.col("blood_sample_barcode_edited_flag") == 1
-    ).select("blood_sample_barcode", "swab_sample_barcode", "")
+    modified_swab_barcodes_df = survey_repsonse_table.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
+        "swab_sample_barcode",
+        "swabs_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+    modified_blood_barcodes_df = survey_repsonse_table.filter(F.col("blood_sample_barcode_edited_flag") == 1).select(
+        "blood_sample_barcode",
+        "bloods_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
     sheet_df_map = {
-        "unlinked swabs": swab_residuals_df,
+        "unlinked swabs": swab_residuals_not_positive_df,
+        "unlined postiive swabs": swab_residuals_positive_df,
         "unlinked bloods": blood_residuals_df,
-        "modified barcodes": modified_barcodes_df,
+        "modified bloods": modified_blood_barcodes_df,
+        "modified swabs": modified_swab_barcodes_df,
         "missing values": missing_age_sex_ethnicity_df,
         "under 8 bloods": under_8_bloods_df,
     }
@@ -1133,75 +1102,43 @@ def sample_file_ETL(
     household_level_populations_table,
     new_sample_file,
     tranche,
-    cis_phase_lookup,
     postcode_lookup,
     master_sample_file,
-    table_or_path,
     old_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
 ):
-    table_or_path = "path"
+    first_run = True
     if check_table_exists(design_weight_table):
-        table_or_path = "table"
-        old_sample_file = design_weight_table
-    files = {
-        # "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-        # "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
-        # "new_sample_file": {"file": new_sample_file, "type": "path"},
-        # "old_sample_file": {"file": old_sample_file, "type": table_or_path},
-        # "tranche": {"file": tranche, "type": "path"},
-        # "master_sample_file": {"file": master_sample_file, "type": "path"},
-        # TODO: change stage
-        "postcode_lookup": {
-            "schema": postcode_schema,
-            "path": postcode_lookup,
-            "column_map": postcode_column_map,
-            "type": "path",
-        },
-        "cis_phase_lookup": {
-            "schema": cis_phase_schema,
-            "path": cis_phase_lookup,
-            "column_map": cis_phase_lookup_column_map,
-            "type": "path",
-        },
-        "old_sample_file": {
-            "schema": old_sample_file_schema,
-            "path": old_sample_file,
-            "column_map": old_sample_file_column_map,
-            "type": table_or_path,
-        },
-        "new_sample_file": {
-            "schema": new_sample_file_schema,
-            "path": new_sample_file,
-            "column_map": new_sample_file_column_map,
-            "type": "path",
-        },
-        "master_sample_file": {
-            "schema": master_sample_file_schema,
-            "path": master_sample_file,
-            "column_map": master_sample_file_column_map,
-            "type": "path",
-        },
-        "tranche": {"schema": tranche_schema, "path": tranche, "column_map": tranche_column_map, "type": "path"},
-        "lsoa_cis_lookup": {
-            "schema": lsoa_cis_schema,
-            "path": lsoa_cis_lookup,
-            "column_map": lsoa_cis_column_map,
-            "type": "path",
-        },
-        "country_lookup": {
-            "schema": country_schema,
-            "path": country_lookup,
-            "column_map": country_column_map,
-            "type": "path",
-        },
-    }
-    dfs = read_rename_csv_based_on_given_columns(files)
-    dfs = prepare_auxillary_data(dfs)
-    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(dfs, table_or_path)
+        first_run = False
+        old_sample_df = extract_from_table(design_weight_table)
+    else:
+        old_sample_df = extract_lookup_csv(old_sample_file, old_sample_file_schema, old_sample_file_column_map, True)
+
+    postcode_lookup_df = extract_lookup_csv(postcode_lookup, postcode_schema, postcode_column_map, True)
+    lsoa_cis_lookup_df = extract_lookup_csv(lsoa_cis_lookup, lsoa_cis_schema, lsoa_cis_column_map, True)
+    country_lookup_df = extract_lookup_csv(country_lookup, country_schema, country_column_map, True)
+    new_sample_df = extract_lookup_csv(new_sample_file, new_sample_file_schema, new_sample_file_column_map, True)
+    master_sample_df = extract_lookup_csv(
+        master_sample_file, master_sample_file_schema, master_sample_file_column_map, True
+    )
+    tranche_df = None
+    if tranche is not None:
+        tranche_df = extract_lookup_csv(tranche, tranche_schema, tranche_column_map, True)
+
+    household_level_populations_df = extract_from_table(household_level_populations_table)
+    design_weights = generate_weights(
+        household_level_populations_df,
+        master_sample_df,
+        old_sample_df,
+        new_sample_df,
+        tranche_df,
+        postcode_lookup_df,
+        country_lookup_df,
+        lsoa_cis_lookup_df,
+        first_run,
+    )
     update_table(design_weights, design_weight_table, mode_overide="append")
 
 
@@ -1212,35 +1149,24 @@ def population_projection(
     month: int,
     year: int,
     aps_lookup: str,
-    table_or_path: str,
     population_totals_table: str,
     population_projections_table: str,
 ):
-    table_or_path = "path"
     if check_table_exists(population_projections_table):
-        table_or_path = "table"
-        population_projection_previous = population_projections_table
-    files = {
-        "population_projection_previous": {
-            "schema": population_projection_previous_schema,
-            "path": population_projection_previous,
-            "column_map": population_projection_previous_column_map,
-            "type": table_or_path,
-        },
-        "population_projection_current": {
-            "schema": population_projection_current_schema,
-            "path": population_projection_current,
-            "column_map": population_projection_current_column_map,
-            "type": "path",
-        },
-        "aps_lookup": {"schema": aps_schema, "path": aps_lookup, "column_map": aps_column_map, "type": "path"},
-    }
-    dfs = read_rename_csv_based_on_given_columns(
-        dict_schemas_paths=files,
-        table_to_exclude_list=["population_projection_previous", "population_projection_current"],
+        population_projection_previous_df = extract_from_table(population_projections_table)
+    else:
+        population_projection_previous_df = extract_lookup_csv(
+            population_projection_previous,
+            population_projection_previous_schema,
+            population_projection_previous_column_map,
+        )
+    population_projection_current_df = extract_lookup_csv(
+        population_projection_current, population_projection_current_schema, population_projection_current_column_map
     )
+    aps_lookup_df = extract_lookup_csv(aps_lookup, aps_schema, aps_column_map, True)
+    aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
     populations_for_calibration, population_projections = proccess_population_projection_df(
-        dfs=dfs, month=month, year=year
+        population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
     )
     update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
     update_table(population_projections, population_projections_table, mode_overide="append")

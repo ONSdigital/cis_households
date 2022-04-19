@@ -64,6 +64,8 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
     sep
         file separator
     """
+    if file_path is None or file_path == "":
+        raise FileNotFoundError("No file path specified")
     spark_session = get_or_create_spark_session()
     if not isinstance(file_paths, list):
         file_paths = [file_paths]

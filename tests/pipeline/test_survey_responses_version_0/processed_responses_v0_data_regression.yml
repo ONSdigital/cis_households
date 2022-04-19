@@ -3,7 +3,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '1'
@@ -89,11 +89,12 @@
   sex: Female
   sex_raw: Female
   street: Ballydoonan
+  suffix: B
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -155,7 +156,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
   consent_16_visits: '0'
@@ -240,6 +241,7 @@
   sex: Female
   sex_raw: Female
   street: Benwee
+  suffix: A
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -306,7 +308,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: Luton
   consent_16_visits: '0'
@@ -391,6 +393,7 @@
   sex: null
   sex_raw: null
   street: Invergourie
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -549,11 +552,12 @@
   sex: Male
   sex_raw: Male
   street: null
+  suffix: L
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -615,7 +619,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
   consent_16_visits: '0'
@@ -702,6 +706,7 @@
   sex: null
   sex_raw: null
   street: null
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -768,7 +773,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -856,11 +861,12 @@
   sex: Female
   sex_raw: Female
   street: null
+  suffix: B
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: null
@@ -921,7 +927,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '0'
@@ -1009,6 +1015,7 @@
   sex: Male
   sex_raw: Male
   street: Drumagrove
+  suffix: O
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -1162,11 +1169,12 @@
   sex: Female
   sex_raw: null
   street: null
+  suffix: U
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: null
@@ -1228,7 +1236,7 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
   consent_16_visits: '1'
@@ -1312,11 +1320,12 @@
   sex: Prefer not to say
   sex_raw: null
   street: null
+  suffix: M
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1466,11 +1475,12 @@
   sex: Male
   sex_raw: null
   street: Glendon
+  suffix: U
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'

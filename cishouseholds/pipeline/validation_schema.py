@@ -184,16 +184,25 @@ projections_column_map = {
 }
 
 address_schema = {
-    "uprn": string_dict,
-    "town_name": string_dict,
-    "postcode": string_dict,
-    "ctry18nm": string_dict,
-    "la_code": string_dict,
-    "ew": string_dict,
-    "address_type": string_dict,
-    "council_tax": string_dict,
-    "udprn": string_dict,
-    "address_base_postal": string_dict,
+    "ADDRESS_LINE1": string_dict,
+    "ABP_CODE": string_dict,
+    "CTRY18NM": string_dict,
+    "TOWN_NAME": string_dict,
+    "EXTRACT": string_dict,
+    "ADDRESS_TYPE": string_dict,
+    "ORGANISATION_NAME": string_dict,
+    "LA_CODE": string_dict,
+    "LOGICAL_STATUS": string_dict,
+    "ADDRESS_LINE2": string_dict,
+    "UPRN": string_dict,
+    "COUNCIL_TAX": string_dict,
+    "ADDRESS_LINE3": string_dict,
+    "CTRY18CD": string_dict,
+    "POSTCODE": string_dict,
+    "EW": string_dict,
+    "EPOCH": string_dict,
+    "UDPRN": string_dict,
+    "ADDRESSBASE_POSTAL": string_dict,
 }
 
 postcode_schema = {
@@ -220,8 +229,6 @@ postcode_schema = {
     "teclec": string_dict,
     "ttwa": string_dict,
     "pct": string_dict,
-    "nuts": string_dict,
-    # "itl": string_dict,
     "park": string_dict,
     "lsoa11": string_dict,
     "msoa11": string_dict,
@@ -245,8 +252,6 @@ lsoa_cis_schema = {
     "LSOA11NM": string_dict,
     "CIS20CD": string_dict,
     "RGN19CD": string_dict,
-    "imd": string_dict,
-    "interim_id": string_dict,
 }
 
 cis_phase_schema = {  # check
@@ -314,7 +319,7 @@ master_sample_file_schema = {
     "BLOODS": string_dict,
     "WEEK": string_dict,
     "SAMPLE_TYPE": string_dict,
-    "UPRN": string_dict,
+    "URPN": string_dict,
     "UDPRN": string_dict,
     "TOWN_NAME": string_dict,
 }
