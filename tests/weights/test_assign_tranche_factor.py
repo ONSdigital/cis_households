@@ -18,8 +18,8 @@ def test_assign_tranche_factor(spark_session):
             groupby string,
             tranche integer,
             tranche_eligible_households string,
-            number_eligible_households_tranche_bystrata_enrolment long,
-            number_sampled_households_tranche_bystrata_enrolment long,
+            number_eligible_households_tranche_bystrata_enrolment integer,
+            number_sampled_households_tranche_bystrata_enrolment integer,
             tranche_factor string""",
     )
     output_df = assign_tranche_factor(
