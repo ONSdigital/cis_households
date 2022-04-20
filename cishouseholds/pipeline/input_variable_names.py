@@ -694,7 +694,7 @@ projections_column_map = {
     "countryname_09": "country_name_12",
 }
 address_column_map = {
-    "URPN": "unique_property_reference_code",
+    "UPRN": "unique_property_reference_code",
     "POSTCODE": "postcode",
     "TOWN_NAME": "town_name",
     "CTRY18NM": "country_name_18",
