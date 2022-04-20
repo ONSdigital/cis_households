@@ -36,7 +36,7 @@ from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_
 
 blood_delta_parameters = {
     "stage_name": "blood_delta_ETL",
-    "dataset_name": "blood_delta",
+    "dataset_name": "antibody_test_results",
     "id_column": "blood_sample_barcode",
     "validation_schema": blood_validation_schema,
     "column_name_map": blood_variable_name_map,
@@ -48,7 +48,7 @@ blood_delta_parameters = {
 
 swab_delta_parameters = {
     "stage_name": "swab_delta_ETL",
-    "dataset_name": "swab_delta",
+    "dataset_name": "pcr_test_results",
     "id_column": "swab_sample_barcode",
     "validation_schema": swab_validation_schema,
     "column_name_map": swab_variable_name_map,
@@ -60,7 +60,7 @@ swab_delta_parameters = {
 
 swab_delta_parameters_testKit = {
     "stage_name": "swab_testKit_delta_ETL",
-    "dataset_name": "swab_testkit_delta",
+    "dataset_name": "pcr_test_results",
     "id_column": "swab_sample_barcode",
     "validation_schema": swab_validation_schema_testKit,
     "column_name_map": swab_variable_name_map,
@@ -136,7 +136,7 @@ unassayed_blood_delta_parameters = {
 
 historical_blood_parameters = {
     "stage_name": "historical_blood_ETL",
-    "dataset_name": "historical_blood_delta",
+    "dataset_name": "antibody_test_results",
     "id_column": "blood_sample_barcode",
     "validation_schema": historical_blood_validation_schema,
     "column_name_map": historical_blood_variable_name_map,
