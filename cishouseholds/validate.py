@@ -87,7 +87,10 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
                 + ","
                 + ",".join(expected_header_set.difference(file_header_set))
             )
-            if len(missmatches) == 0:
+            if (
+                len(file_header_set.difference(expected_header_set)) == 0
+                and len(expected_header_set.difference(file_header_set)) == 0
+            ):
                 message = "has columns that are out of order"
             else:
                 message = f"inconsistent values: '{missmatches}'"
