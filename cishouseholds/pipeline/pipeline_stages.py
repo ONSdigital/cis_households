@@ -21,7 +21,9 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import many_to_many_flag
+from cishouseholds.merge import many_to_one_antibody_flag
 from cishouseholds.merge import many_to_one_swab_flag
+from cishouseholds.merge import one_to_many_antibody_flag
 from cishouseholds.merge import one_to_many_swabs
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.pipeline.category_map import category_maps
@@ -51,7 +53,6 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehouse_tables
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.merge_process import merge_process_preparation
 from cishouseholds.pipeline.merge_process import merge_process_validation
@@ -537,12 +538,13 @@ def outer_join_antibody_results(
     update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
 
 
-@register_pipeline_stage("merge_blood_ETL")
-def merge_blood_ETL(
+# ANTIBODY ~~~~~~~~~~~~~~~~~
+@register_pipeline_stage("merge_blood_ETL_a")
+def merge_blood_ETL_a(
     survey_responses_table: str,
     antibody_table: str,
     blood_files_to_exclude: List[str],
-    antibody_output_tables: List[str],
+    joined_output_table: List[str],
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -563,7 +565,6 @@ def merge_blood_ETL(
             2. residual antibody/blood result records, where there was no barcode match to join on
             3. antibody/blood result records that failed to meet the criteria for joining
     """
-
     survey_df = extract_from_table(survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
@@ -572,16 +573,98 @@ def merge_blood_ETL(
     )
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
 
-    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
+    df = merge_process_preparation(
+        survey_df=survey_df,
+        labs_df=antibody_df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+        visit_date_column_name="visit_datetime",
+        received_date_column_name="blood_sample_received_date_s_protein",
+    )
+    update_table(df, joined_output_table)
 
-    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
-    output_antibody_table_list = antibody_output_tables
 
-    load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
+@register_pipeline_stage("merge_blood_ETL_b")
+def merge_blood_ETL_b(
+    input_joined_table,
+    output_xtox_flagged_table,
+):
+    """ """
+    df = extract_from_table(input_joined_table)
 
-    return survey_antibody_df
+    merge_type = "antibody"
+
+    df = one_to_many_antibody_flag(
+        df=df,
+        column_name_to_assign="drop_flag_1tom_" + merge_type,
+        group_by_column="blood_sample_barcode",
+        diff_interval_hours="diff_vs_visit_hr_antibody",
+        siemens_column="siemens_antibody_test_result_value_s_protein",
+        tdi_column="antibody_test_result_classification_s_protein",
+        visit_date="visit_datetime",
+    )
+    df = many_to_one_antibody_flag(
+        df=df,
+        column_name_to_assign="drop_flag_mto1_" + merge_type,
+        group_by_column="blood_sample_barcode",
+    )
+    window_columns = [
+        "abs_offset_diff_vs_visit_hr_antibody",
+        "diff_vs_visit_hr_antibody",
+        "unique_participant_response_id",
+        "unique_antibody_test_id",
+    ]
+    df = many_to_many_flag(
+        df=df,
+        drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
+        group_by_column="blood_sample_barcode",
+        ordering_columns=window_columns,
+        process_type=merge_type,
+        out_of_date_range_column="out_of_date_range_" + merge_type,
+        failure_column_name="failed_flag_mtom_" + merge_type,
+    )
+    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
 
 
+@register_pipeline_stage("merge_blood_ETL_c")
+def merge_blood_ETL_c(
+    table_to_validate,
+    validated_table,
+):
+    """ """
+    df = extract_from_table(table_to_validate)
+
+    df = merge_process_validation(
+        df=df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+    )
+    update_table(df=df, table_name=validated_table, mode_overide="overwrite")
+
+
+@register_pipeline_stage("merge_blood_ETL_d")
+def merge_blood_ETL_d(
+    input_table,
+    antibody_output_tables,
+):
+    """ """
+    df = extract_from_table(input_table)
+
+    df_all_iqvia, df_lab_residuals, df_failed_records = merge_process_filtering(
+        df=df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+        lab_columns_list=[column for column in df.columns if column != "blood_sample_barcode"],
+    )
+    output_antibody_df_list = [
+        df_all_iqvia,  # survey_antibody_swab_df,
+        df_lab_residuals,  # antibody_swab_residuals,
+        df_failed_records,  # survey_antibody_swab_failed
+    ]
+    load_to_data_warehouse_tables(output_antibody_df_list, antibody_output_tables)
+
+
+# SWAB ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_swab_ETL_a")  # STAGE A: merge_process_preparation
 def merge_swab_ETL_a(
     survey_responses_table: str,
