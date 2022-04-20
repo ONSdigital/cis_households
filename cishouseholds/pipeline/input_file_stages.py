@@ -42,7 +42,6 @@ blood_delta_parameters = {
     "column_name_map": blood_variable_name_map,
     "datetime_column_map": blood_datetime_map,
     "transformation_functions": [transform_blood_delta, add_historical_fields],
-    "output_table_name": "transformed_blood_test_data",
     "source_file_column": "blood_test_source_file",
     "write_mode": "append",
 }
@@ -55,7 +54,6 @@ swab_delta_parameters = {
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
     "transformation_functions": [transform_swab_delta],
-    "output_table_name": "transformed_swab_test_data",
     "source_file_column": "swab_test_source_file",
     "write_mode": "append",
 }
@@ -68,7 +66,6 @@ swab_delta_parameters_testKit = {
     "column_name_map": swab_variable_name_map,
     "datetime_column_map": swab_datetime_map,
     "transformation_functions": [transform_swab_delta_testKit, transform_swab_delta],
-    "output_table_name": "transformed_swab_test_data",
     "source_file_column": "swab_test_source_file",
     "write_mode": "append",
 }
@@ -88,7 +85,6 @@ survey_responses_v2_parameters = {
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v2_data",
     "source_file_column": "survey_response_source_file",
 }
 
@@ -107,7 +103,6 @@ survey_responses_v1_parameters = {
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v1_data",
     "source_file_column": "survey_response_source_file",
 }
 
@@ -124,7 +119,6 @@ survey_responses_v0_parameters = {
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v0_data",
     "source_file_column": "survey_response_source_file",
 }
 
@@ -136,7 +130,6 @@ unassayed_blood_delta_parameters = {
     "column_name_map": unassayed_bloods_variable_name_map,
     "datetime_column_map": blood_datetime_map,
     "transformation_functions": [transform_unassayed_blood],
-    "output_table_name": "unassayed_blood_sample_data",
     "source_file_column": "unassayed_blood_source_file",
     "write_mode": "append",
 }
@@ -149,7 +142,6 @@ historical_blood_parameters = {
     "column_name_map": historical_blood_variable_name_map,
     "datetime_column_map": blood_datetime_map,
     "transformation_functions": [transform_blood_delta, add_fields],
-    "output_table_name": "transformed_blood_test_data",
     "source_file_column": "blood_test_source_file",
 }
 
