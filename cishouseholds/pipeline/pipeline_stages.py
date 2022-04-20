@@ -541,10 +541,10 @@ def outer_join_antibody_results(
 # ANTIBODY ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_blood_ETL_a")
 def merge_blood_ETL_a(
-    survey_responses_table: str,
-    antibody_table: str,
+    input_survey_responses_table: str,
+    input_antibody_table: str,
     blood_files_to_exclude: List[str],
-    joined_output_table: List[str],
+    output_joined_table: List[str],
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -565,10 +565,10 @@ def merge_blood_ETL_a(
             2. residual antibody/blood result records, where there was no barcode match to join on
             3. antibody/blood result records that failed to meet the criteria for joining
     """
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    antibody_df = extract_from_table(antibody_table).where(
+    antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
@@ -581,7 +581,7 @@ def merge_blood_ETL_a(
         visit_date_column_name="visit_datetime",
         received_date_column_name="blood_sample_received_date_s_protein",
     )
-    update_table(df, joined_output_table)
+    update_table(df, output_joined_table)
 
 
 @register_pipeline_stage("merge_blood_ETL_b")
@@ -628,18 +628,18 @@ def merge_blood_ETL_b(
 
 @register_pipeline_stage("merge_blood_ETL_c")
 def merge_blood_ETL_c(
-    table_to_validate,
-    validated_table,
+    input_table_to_validate,
+    output_validated_table,
 ):
     """ """
-    df = extract_from_table(table_to_validate)
+    df = extract_from_table(input_table_to_validate)
 
     df = merge_process_validation(
         df=df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
     )
-    update_table(df=df, table_name=validated_table, mode_overide="overwrite")
+    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL_d")
@@ -667,14 +667,15 @@ def merge_blood_ETL_d(
 # SWAB ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_swab_ETL_a")  # STAGE A: merge_process_preparation
 def merge_swab_ETL_a(
-    survey_responses_table: str,
-    swab_table: str,
+    input_survey_responses_table: str,
+    input_swab_table: str,
     swab_files_to_exclude: List[str],
+    output_validated_table: str,
 ):
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    swab_df = extract_from_table(swab_table).where(
+    swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
     swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
@@ -687,14 +688,15 @@ def merge_swab_ETL_a(
         visit_date_column_name="visit_datetime",
         received_date_column_name="pcr_result_recorded_datetime",
     )
-    update_table(df=df, table_name="outter_joined_table")
+    update_table(df=df, table_name=output_validated_table)
 
 
 @register_pipeline_stage("merge_swab_ETL_b")  # STAGE B: one_to_many_swabs, many_to_one_swab_flag, many_to_many_flag
 def merge_swab_ETL_b(
-    outter_joined_table,
+    input_joined_table,
+    output_xtox_flagged_table,
 ):
-    df = extract_from_table(outter_joined_table)
+    df = extract_from_table(input_joined_table)
     merge_type = "swab"
     window_columns = [
         "abs_offset_diff_vs_visit_hr_swab",
@@ -730,18 +732,18 @@ def merge_swab_ETL_b(
         process_type=merge_type,
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
-    update_table(df=df, table_name="outter_joined_xtox_table", mode_overide="overwrite")
+    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_swab_ETL_c")  # STAGE C: merge_process_validation
-def merge_swab_ETL_c(table_to_validate):
-    df = extract_from_table(table_to_validate)
+def merge_swab_ETL_c(input_table_to_validate, output_validated_table):
+    df = extract_from_table(input_table_to_validate)
     df = merge_process_validation(
         df=df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
     )
-    update_table(df=df, table_name="validated_table", mode_overide="overwrite")
+    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
 
 
 @register_pipeline_stage("merge_swab_ETL_d")  # STAGE D: merge_process_filtering
