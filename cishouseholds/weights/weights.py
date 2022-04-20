@@ -7,6 +7,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_filename_column
+from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import grouped_count_distinct
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
@@ -33,8 +34,6 @@ def generate_weights(
     lsoa_cis_lookup_df: DataFrame,
     first_run: bool,
 ):
-    # auxillary_dfs = prepare_auxillary_data(auxillary_dfs)
-
     # initialise lookup dataframes
     df = join_and_process_lookups(
         household_level_populations_df,
@@ -46,7 +45,6 @@ def generate_weights(
         lsoa_cis_lookup_df,
         first_run,
     )
-
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
     if tranche_df is not None:
@@ -63,8 +61,10 @@ def generate_weights(
             tranche_column="tranche",
             group_by_columns=["cis_area_code_20", "enrolment_date"],
         )
-        # df = df.withColumn("tranche_eligible_households",F.lit("No"))
-        # df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment",F.lit(None).cast("integer"))
+    else:
+        df = df.withColumn("tranche_eligible_households", F.lit("No"))
+        df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
+        df = df.withColumn("number_sampled_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
     df = swab_weight_wrapper(
@@ -78,12 +78,12 @@ def generate_weights(
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
-
     df = validate_design_weights(
         df=df,
         column_name_to_assign="validated_design_weights",
         num_households_column="number_of_households_population_by_cis",
-        window=cis_window,
+        swab_weight_column="scaled_design_weight_swab_nonadjusted",
+        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
     )
     df = carry_forward_design_weights(
@@ -96,15 +96,15 @@ def generate_weights(
 
 
 def join_and_process_lookups(
-    household_level_populations_df,
-    master_sample_df,
-    old_sample_df,
-    new_sample_df,
-    postcode_lookup_df,
-    country_lookup_df,
-    lsoa_cis_lookup_df,
+    household_level_populations_df: DataFrame,
+    master_sample_df: DataFrame,
+    old_sample_df: DataFrame,
+    new_sample_df: DataFrame,
+    postcode_lookup_df: DataFrame,
+    country_lookup_df: DataFrame,
+    lsoa_cis_lookup_df: DataFrame,
     first_run: bool,
-):
+) -> DataFrame:
     """
     Add data from the additional lookup files to main dataset
     """
@@ -388,7 +388,12 @@ def calculate_combined_dweight_swabs(
 
 # 1166
 def validate_design_weights(
-    df: DataFrame, column_name_to_assign: str, num_households_column: str, window: Window, group_by_columns: List[str]
+    df: DataFrame,
+    column_name_to_assign: str,
+    num_households_column: str,
+    swab_weight_column: str,
+    antibody_weight_column: str,
+    group_by_columns: List[str],
 ):
     """
     Validate the derived design weights by checking 3 conditions are true:
@@ -398,28 +403,42 @@ def validate_design_weights(
     - dweights consistent by cis area
     """
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
-    df = df.withColumn(column_name_to_assign, F.lit("True"))
-    for col in columns:
-        df = null_to_value(df, col)  # update nulls to 0
-        df = df.withColumn(
-            column_name_to_assign,
-            F.when(
-                F.sum(col).over(window) != F.col(num_households_column),
-                "False",
-            ).otherwise(F.col(column_name_to_assign)),
-        )  # check 1
-        df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", col, group_by_columns)
-        df = df.withColumn(
-            column_name_to_assign,
-            F.when(F.col("TEMP_DISTINCT_COUNT") != 1, "False").otherwise(F.col(column_name_to_assign)),
-        ).drop("TEMP_DISTINCT_COUNT")
-
-    df = df.withColumn("LEAST", F.least(*columns))
+    df = df.withColumn(column_name_to_assign, F.lit(True))
+    # check 1.1
     df = df.withColumn(
-        column_name_to_assign, F.when(F.col("LEAST") <= 0, "False").otherwise(F.col(column_name_to_assign))
-    )  # flag missing
+        column_name_to_assign,
+        F.when(
+            F.lit(df.agg(F.sum(swab_weight_column)).collect()[0][0])
+            != F.lit(df.agg(F.sum(num_households_column)).collect()[0][0]),
+            False,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    # check 1.2
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.lit(df.agg(F.sum(antibody_weight_column)).collect()[0][0])
+            != F.lit(df.agg(F.sum(num_households_column)).collect()[0][0]),
+            False,
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    # check 2
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.least(*columns) < 0, False).otherwise(F.col(column_name_to_assign))
+    )
+    # check 3
 
-    return df.drop("LEAST")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.col("NUM_NULLS") != 0, False).otherwise(F.col(column_name_to_assign))
+    ).drop("NUM_NULLS")
+    # check 4
+    df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("TEMP_DISTINCT_COUNT") != 1, "False").otherwise(F.col(column_name_to_assign)),
+    ).drop("TEMP_DISTINCT_COUNT")
+    return df
 
 
 # 1167
