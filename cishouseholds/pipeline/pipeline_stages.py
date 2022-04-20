@@ -253,7 +253,6 @@ def generate_input_processing_function(
     column_name_map,
     datetime_column_map,
     transformation_functions,
-    output_table_name,
     source_file_column,
     write_mode="overwrite",
     sep=",",
