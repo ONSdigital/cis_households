@@ -436,7 +436,7 @@ def validate_design_weights(
     df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col("TEMP_DISTINCT_COUNT") != 1, "False").otherwise(F.col(column_name_to_assign)),
+        F.when(F.col("TEMP_DISTINCT_COUNT") != 1, False).otherwise(F.col(column_name_to_assign)),
     ).drop("TEMP_DISTINCT_COUNT")
     return df
 
