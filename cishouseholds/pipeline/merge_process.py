@@ -421,7 +421,7 @@ def merge_process_filtering(
         f"failed_mtom_{merge_type}",
         f"failed_flag_mtom_{merge_type}",
         f"1to1_{merge_type}",
-        f"1tonone_{merge_type}",
+        # f"1tonone_{merge_type}",
         f"noneto1_{merge_type}",
         "best_match",
         "not_best_match",
@@ -455,7 +455,8 @@ def merge_process_filtering(
     df_all_iqvia = M.union_multiple_tables(
         tables=[df_all_iqvia, df.filter(F.col(unique_id).isNull() & none_records_logic).drop(*drop_list)]
     )
-    df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
+    # df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())]) 
+    # TODO: pyspark cannot resolve 1tonone_ column, where is it created ?
 
     # window function count number of unique id
     window = Window.partitionBy("unique_participant_response_id")
