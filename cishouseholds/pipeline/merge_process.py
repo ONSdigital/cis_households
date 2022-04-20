@@ -90,6 +90,7 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
     return df
 
 
+# TODO: this function isnt called anymore in the ETL merge
 def execute_merge_specific_antibody(
     survey_df: DataFrame,
     labs_df: DataFrame,
@@ -227,6 +228,7 @@ def merge_process_validation(
     return df
 
 
+# TODO: this function isnt called in the ETL merge anymore.
 def execute_merge_specific_swabs(
     survey_df: DataFrame,
     labs_df: DataFrame,
