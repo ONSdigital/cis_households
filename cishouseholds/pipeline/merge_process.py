@@ -489,7 +489,7 @@ def merge_process_filtering(
     df_lab_residuals = df_lab_residuals.join(df_best_match, on=lab_record_id, how="left_anti")
 
     drop_list_columns = [
-        f"out_of_date_range_{merge_type}",
+        # f"out_of_date_range_{merge_type}",
         f"1tom_{merge_type}",
         f"mto1_{merge_type}",
         f"mtom_{merge_type}",
