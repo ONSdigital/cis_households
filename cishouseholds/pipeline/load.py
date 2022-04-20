@@ -75,14 +75,14 @@ def get_full_table_name(table_short_name):
     return f'{storage_config["database"]}.{storage_config["table_prefix"]}{table_short_name}'
 
 
-def _create_error_file_log_entry(file_id: int, file_path: str, error_text: str):
+def _create_error_file_log_entry(run_id: int, file_path: str, error_text: str):
     """
     Creates an entry (row) to be inserted into the file log
     """
     spark_session = get_or_create_spark_session()
-    schema = "file_id integer, run_datetime timestamp, file_path string, error string"
+    schema = "run_id integer, run_datetime timestamp, file_path string, error string"
 
-    file_log_entry = [[file_id, datetime.now(), file_path, error_text]]
+    file_log_entry = [[run_id, datetime.now(), file_path, error_text]]
 
     return spark_session.createDataFrame(file_log_entry, schema)
 
