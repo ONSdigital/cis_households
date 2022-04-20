@@ -253,7 +253,6 @@ def generate_input_processing_function(
     column_name_map,
     datetime_column_map,
     transformation_functions,
-    output_table_name,
     source_file_column,
     write_mode="overwrite",
     sep=",",
@@ -285,7 +284,6 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
-        output_table_name=output_table_name,
         source_file_column=source_file_column,
         write_mode=write_mode,
     ):
@@ -309,7 +307,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        raw_df, df, filtered_df = extract_validate_transform_input_data(
+        df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -321,10 +319,11 @@ def generate_input_processing_function(
             source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
+            write_mode=write_mode,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                raw_df, df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
         return df
 
@@ -881,11 +880,11 @@ def report(
     )
 
     output = BytesIO()
-    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
+    datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
-        for type in file_types:
+        for dataset in datasets:
             processed_files_df = (
-                processed_file_log.filter(F.col("file_type") == type)
+                processed_file_log.filter(F.col("dataset_name") == dataset)
                 .select("processed_filename", "file_row_count")
                 .orderBy("processed_filename")
                 .distinct()
