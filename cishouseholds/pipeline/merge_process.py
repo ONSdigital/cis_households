@@ -211,10 +211,6 @@ def execute_merge_specific_swabs(
         failure_column_name="failed_flag_mtom_" + merge_type,
     )
 
-    one_to_many_df.cache().count()
-    many_to_one_df.cache().count()
-    many_to_many_df.cache().count()
-
     unioned_df = M.union_multiple_tables(
         tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
     )
@@ -229,94 +225,6 @@ def execute_merge_specific_swabs(
         unioned_df,
         df_non_specific_merge,
         null_safe_on=["unique_pcr_test_id"],
-        null_unsafe_on=["unique_participant_response_id"],
-        how="left",
-    )
-    return unioned_df, none_record_df
-
-
-def execute_merge_specific_antibody(
-    survey_df: DataFrame,
-    labs_df: DataFrame,
-    barcode_column_name: str,
-    visit_date_column_name: str,
-    received_date_column_name: str,
-) -> DataFrame:
-    """
-    Specific high level function to execute the process for Antibody.
-    Parameters
-    ----------
-    survey_df
-    labs_df
-    barcode_column_name
-    visit_date_column_name
-    received_date_column_name
-    """
-    merge_type = "antibody"
-    (
-        many_to_many_df,
-        one_to_many_df,
-        many_to_one_df,
-        one_to_one_df,
-        no_merge_df,
-        df_non_specific_merge,
-        none_record_df,
-    ) = merge_process_preparation(
-        survey_df=survey_df,
-        labs_df=labs_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-        visit_date_column_name=visit_date_column_name,
-        received_date_column_name=received_date_column_name,
-    )
-    one_to_many_df = M.one_to_many_antibody_flag(
-        df=one_to_many_df,
-        column_name_to_assign="drop_flag_1tom_" + merge_type,
-        group_by_column=barcode_column_name,
-        diff_interval_hours="diff_vs_visit_hr_antibody",
-        siemens_column="siemens_antibody_test_result_value_s_protein",
-        tdi_column="antibody_test_result_classification_s_protein",
-        visit_date=visit_date_column_name,
-    )
-    many_to_one_df = M.many_to_one_antibody_flag(
-        df=many_to_one_df,
-        column_name_to_assign="drop_flag_mto1_" + merge_type,
-        group_by_column=barcode_column_name,
-    )
-    window_columns = [
-        "abs_offset_diff_vs_visit_hr_antibody",
-        "diff_vs_visit_hr_antibody",
-        "unique_participant_response_id",
-        "unique_antibody_test_id",
-    ]
-    many_to_many_df = M.many_to_many_flag(
-        df=many_to_many_df,
-        drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
-        group_by_column=barcode_column_name,
-        ordering_columns=window_columns,
-        process_type=merge_type,
-        out_of_date_range_column="out_of_date_range_" + merge_type,
-        failure_column_name="failed_flag_mtom_" + merge_type,
-    )
-
-    one_to_many_df.cache().count()  # TODO: are these still needed?
-    many_to_one_df.cache().count()
-    many_to_many_df.cache().count()
-
-    unioned_df = M.union_multiple_tables(
-        tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
-    )
-
-    unioned_df = merge_process_validation(
-        df=unioned_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-    )
-
-    unioned_df = M.null_safe_join(
-        unioned_df,
-        df_non_specific_merge,
-        null_safe_on=["unique_antibody_test_id"],
         null_unsafe_on=["unique_participant_response_id"],
         how="left",
     )
