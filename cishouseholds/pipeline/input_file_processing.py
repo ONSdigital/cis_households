@@ -52,10 +52,10 @@ def extract_validate_transform_input_data(
     validation_schema: dict,
     transformation_functions: List[Callable],
     source_file_column: str,
+    write_mode: str,
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
-    write_mode: str = "overwrite",
 ):
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
