@@ -80,14 +80,14 @@ def test_household_level_populations(spark_session):
         cis_area_code_20 string,
         interim_id integer,
         name string,
-        number_of_households_population_by_cis long,
-        number_of_households_population_by_country long
+        number_of_households_population_by_cis integer,
+        number_of_households_population_by_country integer
     """
     data_expected = [
         ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
         ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
         ("C3", "S1", "AA", 2, "J2", 72, "name3", 2, 1),
-        ("C2", "S4", "AB", 1, None, None, "name2", 1, 2),
+        ("C2", "S4", "AB", 1, None, None, "name2", None, 2),
         ("C2", "E2", "CE", 3, "J3", 73, "name2", 1, 2),
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected)

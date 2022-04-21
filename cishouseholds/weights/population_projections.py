@@ -12,16 +12,19 @@ from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
 from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
-from cishouseholds.weights.extract import prepare_auxillary_data
 
 
-def proccess_population_projection_df(dfs: dict, month: int, year: int):
+def proccess_population_projection_df(
+    previous_projection_df: DataFrame,
+    population_projection_current_df: DataFrame,
+    aps_lookup_df: DataFrame,
+    month: int,
+    year: int,
+):
     """
     process and format population projections tables by reshaping new dataframe and recalculating predicted values
     """
-    dfs = prepare_auxillary_data(dfs)
-    previous_projection_df = dfs["population_projection_previous"]
-    individual_level_populations_for_non_response_adjustment = dfs["population_projection_current"]
+    individual_level_populations_for_non_response_adjustment = population_projection_current_df
 
     m_f_columns = derive_m_f_column_list(df=individual_level_populations_for_non_response_adjustment)
 
@@ -53,7 +56,7 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
     )
 
     aps_lookup_df = assign_ethnicity_white(
-        dfs["aps_lookup"],
+        aps_lookup_df,
         "ethnicity_white",
         "country_name",
         "ethnicity_aps_northen_ireland",
