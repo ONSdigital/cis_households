@@ -95,9 +95,6 @@ def generate_weights(
     return df
 
 
-#
-
-
 def join_and_process_lookups(
     household_level_populations_df: DataFrame,
     master_sample_df: DataFrame,
