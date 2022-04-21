@@ -720,14 +720,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
-  name: blood_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -775,4 +767,12 @@ fields:
   name: work_status_v2
   nullable: true
   type: string
+- metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
+  type: integer
 type: struct

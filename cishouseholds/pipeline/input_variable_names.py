@@ -694,15 +694,15 @@ projections_column_map = {
     "countryname_09": "country_name_12",
 }
 address_column_map = {
-    "uprn": "unique_property_reference_code",
-    "postcode": "postcode",
-    "town_name": "town_name",
-    "ctry18nm": "country_name_18",
-    "la_code": "local_authority_code",
-    "ew": "ew",
-    "address_type": "address_type",
-    "council_tax": "council_tax",
-    "address_base_postal": "addressbase_postal",
+    "UPRN": "unique_property_reference_code",
+    "POSTCODE": "postcode",
+    "TOWN_NAME": "town_name",
+    "CTRY18NM": "country_name_18",
+    "LA_CODE": "local_authority_code",
+    "EW": "ew",
+    "ADDRESS_TYPE": "address_type",
+    "COUNCIL_TAX": "council_tax",
+    "ADRESSBASE_POSTAL": "addressbase_postal",
 }
 postcode_column_map = {
     "pcd": "postcode",
