@@ -56,6 +56,7 @@ def extract_validate_transform_input_data(
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
+    dataset_version: str = None,
 ):
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
@@ -65,14 +66,14 @@ def extract_validate_transform_input_data(
     df = extract_input_data(resource_path, validation_schema, sep)
     df = rename_column_names(df, variable_name_map)
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
-
+    dataset_version = "" if dataset_version is None else "_" + dataset_version
     if include_hadoop_read_write:
-        update_table(df, f"raw_{dataset_name}", write_mode)
+        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
         filter_ids = []
         if extraction_config is not None and dataset_name in extraction_config:
             filter_ids = extraction_config[dataset_name]
         filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-        update_table(filtered_df, f"extracted_{dataset_name}", write_mode)
+        update_table(filtered_df, f"extracted_{dataset_name}{dataset_version}", write_mode)
         df = df.filter(~F.col(id_column).isin(filter_ids))
 
         if record_editing_config_path is not None:
