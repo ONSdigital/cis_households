@@ -7,6 +7,8 @@ from cishouseholds.merge import many_to_one_swab_flag
 from cishouseholds.merge import one_to_many_antibody_flag
 from cishouseholds.merge import one_to_many_swabs
 from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
+from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
 from cishouseholds.pipeline.merge_process import merge_process_filtering
 from cishouseholds.pipeline.merge_process import merge_process_preparation
 
@@ -16,32 +18,76 @@ def load_to_data_warehouse_tables(output_df_list, output_table_list):
         update_table(df, table_name, mode_overide="overwrite")
 
 
+# merge_blood no longer used in the main ETL mege function
+def merge_blood(survey_df, antibody_df):
+    """
+    Process for matching and merging survey and blood test result data
+    """
+
+    survey_antibody_df, none_record_df = execute_merge_specific_antibody(
+        survey_df=survey_df,
+        labs_df=antibody_df,
+        barcode_column_name="blood_sample_barcode",
+        visit_date_column_name="visit_date_string",
+        received_date_column_name="blood_sample_received_date_s_protein",
+    )
+
+    survey_antibody_df = survey_antibody_df.drop(
+        "abs_offset_diff_vs_visit_hr_antibody",
+        "count_barcode_antibody",
+        "count_barcode_voyager",
+        "diff_vs_visit_hr_antibody",
+    )
+    df_all_iqvia, df_lab_residuals, df_failed_records = merge_process_filtering(
+        df=survey_antibody_df,
+        none_record_df=none_record_df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+        lab_columns_list=[column for column in antibody_df.columns if column != "blood_sample_barcode"],
+    )
+    return df_all_iqvia, df_lab_residuals, df_failed_records
+
+
+# merge_swab no longer used in the main ETL mege function
+def merge_swab(survey_df, swab_df):
+    """
+    Process for matching and merging survey and swab result data.
+    Should be executed after merge with blood test result data.
+    """
+    survey_antibody_swab_df, none_record_df = execute_merge_specific_swabs(
+        survey_df=survey_df,
+        labs_df=swab_df,
+        barcode_column_name="swab_sample_barcode",
+        visit_date_column_name="visit_datetime",
+        received_date_column_name="pcr_result_recorded_datetime",
+        void_value="Void",
+    )
+
+    survey_antibody_swab_df = survey_antibody_swab_df.drop(
+        "abs_offset_diff_vs_visit_hr_swab",
+        "count_barcode_swab",
+        "count_barcode_voyager",
+        "diff_vs_visit_hr_swab",
+        "pcr_flag",
+        "time_order_flag",
+        "time_difference_flag",
+    )
+    df_all_iqvia, df_lab_residuals, df_failed_records = merge_process_filtering(
+        df=survey_antibody_swab_df,
+        none_record_df=none_record_df,
+        merge_type="swab",
+        barcode_column_name="swab_sample_barcode",
+        lab_columns_list=[column for column in swab_df.columns if column != "swab_sample_barcode"],
+    )
+    return df_all_iqvia, df_lab_residuals, df_failed_records
+
+
 # merge substages ANTIBODY ~~~~~~~~~~~~~~~~~
 def merge_blood_process_preparation(
     survey_df,
     antibody_df,
     blood_files_to_exclude: List[str],
 ):
-    """
-    High level function for joining antibody/blood test result data to survey responses.
-    Should be run before the PCR/swab result merge.
-
-    Parameters
-    ----------
-    survey_responses_table
-        name of HIVE table containing survey response records
-    antibody_table
-        name of HIVE table containing antibody/blood result records
-    swab_files_to_exclude
-        antibody/blood result files that should be excluded from the merge.
-        Used to remove files that are found to contain invalid data.
-    swab_output_tables
-        names of the three output tables:
-            1. survey responses and successfully joined results
-            2. residual antibody/blood result records, where there was no barcode match to join on
-            3. antibody/blood result records that failed to meet the criteria for joining
-    """
-
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
 
     df = merge_process_preparation(

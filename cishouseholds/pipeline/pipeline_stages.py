@@ -550,6 +550,25 @@ def merge_blood_ETL(
     input_table,
     antibody_output_tables,
 ):
+    """
+    High level function for joining antibody/blood test result data to survey responses.
+    Should be run before the PCR/swab result merge.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey response records
+    antibody_table
+        name of HIVE table containing antibody/blood result records
+    swab_files_to_exclude
+        antibody/blood result files that should be excluded from the merge.
+        Used to remove files that are found to contain invalid data.
+    swab_output_tables
+        names of the three output tables:
+            1. survey responses and successfully joined results
+            2. residual antibody/blood result records, where there was no barcode match to join on
+            3. antibody/blood result records that failed to meet the criteria for joining
+    """
     survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
@@ -593,6 +612,25 @@ def merge_swab_ETL(
     input_table,
     swab_output_tables,
 ):
+    """
+    High level function for joining PCR test result data to survey responses.
+    Should be run following the antibody/blood result merge.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey response records
+    swab_table
+        name of HIVE table containing PCR/swab result records
+    swab_files_to_exclude
+        PCR/swab result files that should be excluded from the merge.
+        Used to remove files that are found to contain invalid data.
+    swab_output_tables
+        names of the three output tables:
+            1. survey responses and successfully joined results
+            2. residual PCR/swab result records, where there was no barcode match to join on
+            3. PCR/swab result records that failed to meet the criteria for joining
+    """
     survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
