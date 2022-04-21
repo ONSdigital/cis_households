@@ -78,6 +78,14 @@ def generate_weights(
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
+
+    df = carry_forward_design_weights(
+        df=df,
+        scenario=scenario_string,  # type: ignore
+        groupby_column="cis_area_code_20",
+        household_population_column="number_of_households_population_by_cis",
+    )
+
     df = validate_design_weights(
         df=df,
         column_name_to_assign="validated_design_weights",
@@ -85,12 +93,6 @@ def generate_weights(
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
-    )
-    df = carry_forward_design_weights(
-        df=df,
-        scenario=scenario_string,  # type: ignore
-        groupby_column="cis_area_code_20",
-        household_population_column="number_of_households_population_by_cis",
     )
     return df
 
