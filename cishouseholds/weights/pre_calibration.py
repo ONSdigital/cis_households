@@ -1,4 +1,5 @@
 from typing import List
+from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -555,15 +556,17 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
-from cishouseholds.expressions import all_equal
-
 # 1179
+class CheckNotPassed(Exception):
+    pass
+
+
 def precalibration_checkpoints(
     df: DataFrame,
     scaled_dweight_adjusted: str,
     dweight_list: List[str],
     grouping_list: List[str],
-    country_col: str = [],
+    country_col: Union[str, None] = None,
     total_population: str = "number_of_households_population_by_cis",
 ) -> DataFrame:
     """
@@ -573,7 +576,10 @@ def precalibration_checkpoints(
     population_totals
     dweight_list
     """
-    window = Window.partitionBy(country_col, *grouping_list)
+    if isinstance(country_col, str):
+        window = Window.partitionBy(country_col, *grouping_list)
+    else:
+        window = Window.partitionBy(*grouping_list)
 
     # TODO: use validate_design_weights() stefen's function
     # check_1: The design weights are adding up to total population
@@ -610,13 +616,13 @@ def precalibration_checkpoints(
         check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
     if not check_1_passed:
-        raise Exception("check_1: The design weights are NOT adding up to total population.")
+        raise CheckNotPassed("check_1: The design weights are NOT adding up to total population.")
     if not check_2_passed:
-        raise Exception("check_2: The design weights are NOT all are positive.")
+        raise CheckNotPassed("check_2: The design weights are NOT all are positive.")
     if not check_3_passed:
-        raise Exception("check_3 There are no missing design weights.")
+        raise CheckNotPassed("check_3 There are no missing design weights.")
     if not check_4_passed:
-        raise Exception("check_4: There are weights that are NOT the same across sample groups.")
+        raise CheckNotPassed("check_4: There are weights that are NOT the same across sample groups.")
 
     df = df.drop("not_positive", "not_null", "temp")
     return check_1_passed, check_2_passed, check_3_passed, check_4_passed
