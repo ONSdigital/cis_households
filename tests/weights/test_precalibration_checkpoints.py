@@ -1,6 +1,8 @@
+import unittest
+
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
-import unittest
+
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 
 
@@ -47,13 +49,14 @@ def test_precalibration_checkpoints(spark_session):
                 )
             self.assertTrue(check_1_message in context.exception)
 
-    import pdb; pdb.set_trace()
+    import pdb
 
-    if __name__ == '__main__':
+    pdb.set_trace()
+
+    if __name__ == "__main__":
         unittest.main()
 
-    
-    # 
+    #
     # assert check_1 is not True
     # assert check_2 is not True
     # assert check_3 is not True
