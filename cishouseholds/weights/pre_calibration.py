@@ -579,7 +579,7 @@ def precalibration_checkpoints(
     # check_1: The design weights are adding up to total population
     df = df.withColumn("check_1", F.sum(F.col(scaled_dweight_adjusted)).over(window))
     df = df.withColumn("check_1", F.when(F.col(total_population) != F.col("check_1"), 1))
-    check_1 = 1 not in df.select("check_1").toPandas()["check_1"].values.tolist()
+    check_1_passed = 1 not in df.select("check_1").toPandas()["check_1"].values.tolist()
 
     # check_2: The  design weights are all are positive
     df = df.withColumn("not_positive", F.lit(None))
@@ -588,7 +588,7 @@ def precalibration_checkpoints(
             "not_positive",
             F.when(F.col(dweight) < 0, 1).otherwise(F.col("not_positive")),
         )
-    check_2 = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
+    check_2_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
     # check_3: check there are no missing design weights
     df = df.withColumn("not_null", F.lit(None))
@@ -597,29 +597,29 @@ def precalibration_checkpoints(
             "not_null",
             F.when(F.col(dweight).isNull(), 1).otherwise(F.col("not_null")),
         )
-    check_3 = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
+    check_3_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
     # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
     # These should have the same dweights when window function is applied.
     window = Window.partitionBy(*grouping_list)
-    check_4 = True
+    check_4_passed = True
     for dweight in dweight_list:
         df = df.withColumn("temp", F.first(dweight).over(window))
         df = df.withColumn("temp", F.when(F.col(dweight) != F.col("temp"), 1).otherwise(None))
-        check_4 = check_4 and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
+        check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
-    if check_1 is False:
+    if not check_1_passed:
         raise Exception("check_1: The design weights are NOT adding up to total population.")
-    if check_2 is False:
+    if not check_2_passed:
         raise Exception("check_2: The design weights are NOT all are positive.")
-    if check_3 is False:
+    if not check_3_passed:
         raise Exception("check_3 There are no missing design weights.")
-    if check_4 is False:
+    if not check_4_passed:
         raise Exception("check_4: There are weights that are NOT the same across sample groups.")
 
     df = df.drop("not_positive", "not_null", "temp")
-    return check_1, check_2, check_3, check_4
+    return check_1_passed, check_2_passed, check_3_passed, check_4_passed
 
 
 # 1180

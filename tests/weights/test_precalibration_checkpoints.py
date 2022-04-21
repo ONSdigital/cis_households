@@ -46,8 +46,11 @@ def test_precalibration_checkpoints(spark_session):
                     dweight_list=["dweight_1", "dweight_2"],
                 )
             self.assertTrue(check_1_message in context.exception)
+
     import pdb; pdb.set_trace()
-    TestCase.test()
+
+    if __name__ == '__main__':
+        unittest.main()
 
     
     # 
