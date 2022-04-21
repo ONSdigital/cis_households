@@ -610,13 +610,13 @@ def precalibration_checkpoints(
         check_4 = check_4 and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
     if check_1 is False:
-        print("check_1: The design weights are NOT adding up to total population.")
+        raise Exception("check_1: The design weights are NOT adding up to total population.")
     if check_2 is False:
-        print("check_2: The design weights are NOT all are positive.")
+        raise Exception("check_2: The design weights are NOT all are positive.")
     if check_3 is False:
-        print("check_3 There are no missing design weights.")
+        raise Exception("check_3 There are no missing design weights.")
     if check_4 is False:
-        print("check_4: There are weights that are NOT the same across sample groups.")
+        raise Exception("check_4: There are weights that are NOT the same across sample groups.")
 
     df = df.drop("not_positive", "not_null", "temp")
     return check_1, check_2, check_3, check_4
