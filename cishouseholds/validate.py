@@ -65,6 +65,8 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
         file separator
     """
     spark_session = get_or_create_spark_session()
+    if file_paths is None or file_paths in ["", []]:
+        raise FileNotFoundError("No file path specified")
     if not isinstance(file_paths, list):
         file_paths = [file_paths]
 
@@ -85,7 +87,10 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
                 + ","
                 + ",".join(expected_header_set.difference(file_header_set))
             )
-            if len(missmatches) == 0:
+            if (
+                len(file_header_set.difference(expected_header_set)) == 0
+                and len(expected_header_set.difference(file_header_set)) == 0
+            ):
                 message = "has columns that are out of order"
             else:
                 message = f"inconsistent values: '{missmatches}'"

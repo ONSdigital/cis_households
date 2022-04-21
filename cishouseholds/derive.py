@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -12,7 +13,19 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
+from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def grouped_count_distinct(
+    df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
+):
+    "count distinct value is grouped dataset and return complete dataset"
+    if not isinstance(reference_columns, list):
+        reference_columns = [reference_columns]
+    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
+    df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
+    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
 
 
 def assign_multigeneration(
@@ -111,13 +124,31 @@ def assign_household_participant_count(
     return df
 
 
-def assign_household_under_2_count(df, column_name_to_assign: str, column_pattern: str):
-    """Count number of individuals below two from age (months) columns matching pattern."""
+def assign_household_under_2_count(
+    df: DataFrame, column_name_to_assign: str, column_pattern: str, condition_column: str
+):
+    """
+    Count number of individuals below two from age (months) columns matching pattern.
+    if condition column is 'No' it will only count so long the range of columns ONLY have only 0s or nulls.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    column_pattern
+    condition_column
+    """
     columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
     count = reduce(
         add, [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count]
     )
-    df = df.withColumn(column_name_to_assign, F.when(~all_equal(columns_to_count, 0), count).otherwise(0))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col(condition_column) == "Yes") & (~all_equal(columns_to_count, 0)))
+            | ((F.col(condition_column) == "No") & (~all_equal_or_Null(columns_to_count, 0))),
+            count,
+        ).otherwise(0),
+    )
     return df
 
 
@@ -279,7 +310,7 @@ def assign_column_given_proportion(
 
 
 def count_value_occurrences_in_column_subset_row_wise(
-    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int, None]
 ) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
@@ -290,11 +321,12 @@ def count_value_occurrences_in_column_subset_row_wise(
     selection_columns
     count_if_value
     """
-    df = (
-        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
-        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
-        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
-    )
+    df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+    if count_if_value is None:
+        df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    else:
+        df = df.withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+    df = df.withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
     return df
 
 
