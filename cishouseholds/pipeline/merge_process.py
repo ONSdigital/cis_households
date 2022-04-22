@@ -489,10 +489,10 @@ def merge_process_filtering(
     df_lab_residuals = df_lab_residuals.join(df_best_match, on=lab_record_id, how="left_anti")
 
     drop_list_columns = [
-        f"out_of_date_range_{merge_type}",
-        f"1tom_{merge_type}",
-        f"mto1_{merge_type}",
-        f"mtom_{merge_type}",
+        # f"out_of_date_range_{merge_type}",
+        # f"1tom_{merge_type}",
+        # f"mto1_{merge_type}",
+        # f"mtom_{merge_type}",
         f"drop_flag_1tom_{merge_type}",
         f"drop_flag_mto1_{merge_type}",
         f"drop_flag_mtom_{merge_type}",
@@ -542,7 +542,7 @@ def merge_process_filtering(
 
     df_all_iqvia = df_all_iqvia.filter((F.col("not_best_match_for_union").isNull()) | (F.col("unique_id_count") == 1))
 
-    drop_list_columns.extend(["not_best_match_for_union", "unique_id_count"])
+    drop_list_columns.extend(["unique_id_count"])
     return (
         df_all_iqvia.drop(*drop_list_columns),
         df_lab_residuals.drop(*drop_list_columns),
