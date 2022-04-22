@@ -327,7 +327,7 @@ master_sample_file_schema = {
 tranche_schema = {
     "enrolment_date": string_dict,
     "UAC": integer_dict,
-    "lsoa_11": string_dict,
+    "lsoa11": string_dict,
     "cis20cd": string_dict,
     "ctry12": string_dict,
     "ctry_name12": string_dict,
