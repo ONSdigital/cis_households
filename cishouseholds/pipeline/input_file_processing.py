@@ -26,15 +26,15 @@ class InvalidFileError(Exception):
 
 
 def extract_lookup_csv(
-    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
+    lookup_file_path: str, validation_schema: dict = None, column_name_map: dict = None, drop_not_found: bool = False
 ):
     """
     extract and validate a csv lookup file from path with validation_schema
     """
-    valid_files = validate_files(lookup_file_path, validation_schema)
+    valid_files = validate_files(lookup_file_path, validation_schema)  # type: ignore
     if not valid_files:
         raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
-    df = extract_input_data(lookup_file_path, validation_schema, sep=",")
+    df = extract_input_data(lookup_file_path, validation_schema, sep=",")  # type: ignore
     if column_name_map is None:
         return df
     if drop_not_found:
