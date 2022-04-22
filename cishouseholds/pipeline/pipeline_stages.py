@@ -13,6 +13,7 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
@@ -910,16 +911,22 @@ def report(
 
 
 @register_pipeline_stage("report_iqvia")
-def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_repsonse_table):
+def report_iqvia(
+    swab_residuals_table: str,
+    blood_residuals_table: str,
+    survey_repsonse_table: str,
+    merged_result_table: str,
+    output_directory: str,
+):
     """ """
     swab_residuals_df = extract_from_table(swab_residuals_table)
     blood_residuals_df = extract_from_table(blood_residuals_table)
     survey_repsonse_df = extract_from_table(survey_repsonse_table)
+    merge_result_df = extract_from_table(merged_result_table)
     swab_residuals_not_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
     swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive")
-
-    pariticipant_visit_date_group_df = (
-        survey_repsonse_df.groupBy(F.to_date("visit_datetime")).agg({"visit_datetime": "count"}).alias("visits_in_day")
+    pariticipant_visit_date_group_df = assign_visits_in_day(
+        survey_repsonse_df, "visits_in_day", "visit_datetime", "participant_id"
     )
     pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
         "participant_id",
@@ -929,31 +936,34 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "work_main_job_title",
         "work_main_job_role",
         "sex",
-        "etnicity",
+        "ethnicity",
         "age_at_visit",
         "samples_taken_datetime",
         "swab_sample_barcode",
         "blood_sample_barcode",
         "survey_response_dataset_major_version",
     )
-
+    print("VISIT DATE GROUP")
+    pariticipant_visit_date_group_df.show()
     missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
-        F.col("visit_status").isin(["completed", "partially completed", "new"])
+        F.col("participant_visit_status").isin(["completed", "partially completed", "new"])
         | (
             (F.col("swab_sample_barcode").isNotNull())
-            & (F.col("withdrawn_participant") != "withdrawn")
+            & (F.col("participant_survey_status") != "withdrawn")
             & (F.col("survey_response_dataset_major_version") == 2)
             & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
         )
     ).select(
-        "visit_status",
+        "participant_visit_status",
         "swab_sample_barcode",
-        "withdrawn_participant",
+        "participant_survey_status",
         "survey_response_dataset_major_version",
         "sex",
         "age_at_visit",
         "ethnicity",
     )
+    print("MISSING AGE SEX ETH")
+    missing_age_sex_ethnicity_df.show()
     duplicate_barcodes_df = count_barcode_cleaned(
         survey_repsonse_df,
         "swab_barcode_cleaned_count",
@@ -961,6 +971,7 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "samples_taken_datetime",
         "visit_datetime",
     )
+    print("DUPLICATE BARCODES DF")
     duplicate_barcodes_df = count_barcode_cleaned(
         duplicate_barcodes_df,
         "blood_barcode_cleaned_count",
@@ -974,17 +985,29 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "blood_sample_barcode",
         "blood_sample_barcode_raw",
         "visit_id",
-        "visit_date",
+        "visit_datetime",
         "participant_id",
         "samples_taken_datetime",
         "survey_response_dataset_major_version",
     )
-
+    duplicate_barcodes_df.show()
+    print("SAMPLES TAKEN OUT OF RANGE")
+    out_of_range_df = merge_result_df.filter(
+        F.col("out_of_date_range_swab") == 1 | F.col("out_of_date_range_swab") == 1
+    ).select(
+        "pariticipant_id" "visit_id",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "survey_response_dataset_major_version",
+    )
     under_8_bloods_df = survey_repsonse_df.filter(
         (F.col("age_at_visit") <= 8)
         & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
         & (F.col("survey_response_dataset_major_version") == 2)
-    ).select("age_at_visit" "blood_sample_barcode" "blood_taken", "survey_response_dataset_major_version")
+    ).select("age_at_visit", "blood_sample_barcode", "blood_taken", "survey_response_dataset_major_version")
+    print("UNDER 8 BLOODS")
+    under_8_bloods_df.show()
+
     survey_repsonse_table = extract_from_table(survey_repsonse_table)
     modified_swab_barcodes_df = survey_repsonse_table.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
         "swab_sample_barcode",
@@ -1004,6 +1027,7 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
     )
     sheet_df_map = {
         "unlinked swabs": swab_residuals_not_positive_df,
+        "out of range": out_of_range_df,
         "unlined postiive swabs": swab_residuals_positive_df,
         "unlinked bloods": blood_residuals_df,
         "modified bloods": modified_blood_barcodes_df,
@@ -1013,6 +1037,10 @@ def report_iqvia(swab_residuals_table: str, blood_residuals_table: str, survey_r
         "same day visits": pariticipant_visit_date_group_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
+    write_string_to_file(
+        output.getbuffer(),
+        f"{output_directory}/iqvia_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
+    )
 
 
 @register_pipeline_stage("record_level_interface")
