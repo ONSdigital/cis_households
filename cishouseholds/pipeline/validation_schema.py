@@ -320,7 +320,7 @@ master_sample_file_schema = {
     "BLOODS": string_dict,
     "WEEK": string_dict,
     "SAMPLE_TYPE": string_dict,
-    "URPN": string_dict,
+    "UPRN": string_dict,
     "UDPRN": string_dict,
     "TOWN_NAME": string_dict,
 }
