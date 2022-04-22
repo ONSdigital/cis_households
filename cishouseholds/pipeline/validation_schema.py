@@ -274,7 +274,7 @@ old_sample_file_schema = {
     "sample": string_dict,
     "UAC": string_dict,
     "GOR9D": string_dict,
-    "DVHsize": string_dict,
+    "DVHSize": string_dict,
     "UA19NM": string_dict,
     "LHB19CD": string_dict,
     "LHB19NM": string_dict,

@@ -38,7 +38,7 @@ def extract_lookup_csv(
     if column_name_map is None:
         return df
     if drop_not_found:
-        df = df.drop(*[col for col in df.columns if col not in column_name_map.keys()])
+        df = df.select(*column_name_map.keys())
     df = rename_column_names(df, column_name_map)
     return df
 
