@@ -1,6 +1,6 @@
 import pytest
 
-from cishouseholds.weights.pre_calibration import CheckNotPassed
+from cishouseholds.weights.pre_calibration import DesignWeightError
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 
 
@@ -32,7 +32,7 @@ def test_precalibration_checkpoints(spark_session):
     )
     input_df_not_pass = expected_df_not_pass.drop("not_positive_or_null")
 
-    with pytest.raises(CheckNotPassed):
+    with pytest.raises(DesignWeightError):
         precalibration_checkpoints(
             df=input_df_not_pass,
             country_col="country",

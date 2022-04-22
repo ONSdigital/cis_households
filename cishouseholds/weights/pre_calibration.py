@@ -557,7 +557,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
 
 
 # 1179
-class CheckNotPassed(Exception):
+class DesignWeightError(Exception):
     pass
 
 
@@ -616,13 +616,13 @@ def precalibration_checkpoints(
         check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
     if not check_1_passed:
-        raise CheckNotPassed("check_1: The design weights are NOT adding up to total population.")
+        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2_passed:
-        raise CheckNotPassed("check_2: The design weights are NOT all are positive.")
+        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
     if not check_3_passed:
-        raise CheckNotPassed("check_3 There are no missing design weights.")
+        raise DesignWeightError("check_3 There are no missing design weights.")
     if not check_4_passed:
-        raise CheckNotPassed("check_4: There are weights that are NOT the same across sample groups.")
+        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
 
     df = df.drop("not_positive", "not_null", "temp")
     return check_1_passed, check_2_passed, check_3_passed, check_4_passed
