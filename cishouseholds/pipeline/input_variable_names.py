@@ -731,7 +731,7 @@ country_column_map = {
 old_sample_file_column_map = {
     "UAC": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
-    "lsoa11": "lower_super_output_area_code_11",
+    # "lsoa11": "lower_super_output_area_code_11",
     # "ctry12": "country_code_12",
     # "ctry": "country_code_12",
     "sample": "sample_source",
@@ -753,7 +753,7 @@ old_sample_file_column_map = {
 new_sample_file_column_map = {
     "UAC": "ons_household_id",
     "lsoa_11": "lower_super_output_area_code_11",
-    "lsoa11": "lower_super_output_area_code_11",
+    # "lsoa11": "lower_super_output_area_code_11",
     "ctry": "country_code_12",
     "sample": "sample_source",
     # "rgn/gor9d": "region_code",
