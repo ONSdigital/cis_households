@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -16,6 +17,7 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+<<<<<<< HEAD
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
     Count number of visits of each pariticipant in a given day
@@ -58,6 +60,15 @@ def grouped_count_distinct(
 ):
     "count distinct value is grouped dataset and return complete dataset"
     grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(reference_column).alias(column_name_to_assign))
+=======
+def grouped_count_distinct(
+    df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
+):
+    "count distinct value is grouped dataset and return complete dataset"
+    if not isinstance(reference_columns, list):
+        reference_columns = [reference_columns]
+    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
+>>>>>>> d7281f40fdcf18ac3dbfad88f580b6612a0eb0c9
     df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
     return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
 
@@ -344,7 +355,7 @@ def assign_column_given_proportion(
 
 
 def count_value_occurrences_in_column_subset_row_wise(
-    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int, None]
 ) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
@@ -355,11 +366,12 @@ def count_value_occurrences_in_column_subset_row_wise(
     selection_columns
     count_if_value
     """
-    df = (
-        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
-        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
-        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
-    )
+    df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+    if count_if_value is None:
+        df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    else:
+        df = df.withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+    df = df.withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
     return df
 
 

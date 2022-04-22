@@ -48,8 +48,13 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehouse_tables
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_filtering
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_preparation
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_xtox_flag
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_filtering
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_preparation
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_xtox_flag
+from cishouseholds.pipeline.merge_process import merge_process_validation
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
@@ -256,7 +261,6 @@ def generate_input_processing_function(
     column_name_map,
     datetime_column_map,
     transformation_functions,
-    output_table_name,
     source_file_column,
     write_mode="overwrite",
     sep=",",
@@ -288,7 +292,6 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
-        output_table_name=output_table_name,
         source_file_column=source_file_column,
         write_mode=write_mode,
     ):
@@ -312,7 +315,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        raw_df, df, filtered_df = extract_validate_transform_input_data(
+        df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -324,10 +327,11 @@ def generate_input_processing_function(
             source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
+            write_mode=write_mode,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                raw_df, df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
         return df
 
@@ -536,12 +540,19 @@ def outer_join_antibody_results(
     update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
 
 
+# ANTIBODY ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
-    survey_responses_table: str,
-    antibody_table: str,
-    blood_files_to_exclude: List[str],
-    antibody_output_tables: List[str],
+    input_survey_responses_table,
+    input_antibody_table,
+    blood_files_to_exclude,
+    output_joined_table,
+    input_joined_table,
+    output_xtox_flagged_table,
+    input_table_to_validate,
+    output_validated_table,
+    input_table,
+    antibody_output_tables,
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -562,28 +573,48 @@ def merge_blood_ETL(
             2. residual antibody/blood result records, where there was no barcode match to join on
             3. antibody/blood result records that failed to meet the criteria for joining
     """
-
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    antibody_df = extract_from_table(antibody_table).where(
+    antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
+    df = merge_blood_process_preparation(
+        survey_df,
+        antibody_df,
+        blood_files_to_exclude,
+    )
+    update_table(df, output_joined_table)
 
-    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
+    df = extract_from_table(input_joined_table)
+    df = merge_blood_xtox_flag(df)
+    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
 
-    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
-    output_antibody_table_list = antibody_output_tables
+    df = extract_from_table(input_table_to_validate)
+    df = merge_process_validation(
+        df=df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+    )
+    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
 
-    load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
-
-    return survey_antibody_df
+    df = extract_from_table(input_table)
+    output_antibody_df_list = merge_blood_process_filtering(df)
+    load_to_data_warehouse_tables(output_antibody_df_list, antibody_output_tables)
 
 
 @register_pipeline_stage("merge_swab_ETL")
 def merge_swab_ETL(
-    survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
+    input_survey_responses_table,
+    input_swab_table,
+    swab_files_to_exclude,
+    output_joined_table,
+    input_joined_table,
+    output_xtox_flagged_table,
+    input_table_to_validate,
+    output_validated_table,
+    input_table,
+    swab_output_tables,
 ):
     """
     High level function for joining PCR test result data to survey responses.
@@ -604,22 +635,34 @@ def merge_swab_ETL(
             2. residual PCR/swab result records, where there was no barcode match to join on
             3. PCR/swab result records that failed to meet the criteria for joining
     """
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-
-    swab_df = extract_from_table(swab_table).where(
+    swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
+    df = merge_swab_process_preparation(
+        survey_df,
+        swab_df,
+        swab_files_to_exclude,
+    )
+    update_table(df=df, table_name=output_joined_table)
 
-    swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
+    df = extract_from_table(input_joined_table)
+    df = merge_swab_xtox_flag(df)
+    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
 
-    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
-    output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
+    df = extract_from_table(input_table_to_validate)
+    df = merge_process_validation(
+        df=df,
+        merge_type="swab",
+        barcode_column_name="swab_sample_barcode",
+    )
+    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
+
+    df = extract_from_table(input_table)
+    output_swab_df_list = merge_swab_process_filtering(df)
     load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
-
-    return survey_antibody_swab_df
 
 
 @register_pipeline_stage("join_vaccination_data")
@@ -884,11 +927,11 @@ def report(
     )
 
     output = BytesIO()
-    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
+    datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
-        for type in file_types:
+        for dataset in datasets:
             processed_files_df = (
-                processed_file_log.filter(F.col("file_type") == type)
+                processed_file_log.filter(F.col("dataset_name") == dataset)
                 .select("processed_filename", "file_row_count")
                 .orderBy("processed_filename")
                 .distinct()

@@ -15,7 +15,6 @@ def merge_process_preparation(
     barcode_column_name: str,
     visit_date_column_name: str,
     received_date_column_name: str,
-    merge_type_necessary_columns: List[str],
 ) -> DataFrame:
     """
     Common function to either Swab/Antibody merge that executes the functions for assigning an unique identifier
@@ -44,26 +43,11 @@ def merge_process_preparation(
 
     if merge_type == "swab":
         interval_upper_bound = 480
-        unique_id = "unique_pcr_test_id"
-
     elif merge_type == "antibody":
         interval_upper_bound = 240
-        unique_id = "unique_antibody_test_id"
-
-    # take none:1 and 1:none out
-    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col(unique_id).isNull())
-    # check if barcode column is null dump the records in none_record_df
-    none_record_df = outer_df.filter(none_records_logic)
-    outer_df = outer_df.filter(~none_records_logic)
-    df = outer_df.select(*merge_type_necessary_columns)
-
-    merge_type_necessary_columns.remove("unique_participant_response_id")
-    merge_type_necessary_columns.remove(unique_id)
-
-    df_non_specific_merge = outer_df.drop(*merge_type_necessary_columns).distinct()
 
     df = M.assign_time_difference_and_flag_if_outside_interval(
-        df=df,
+        df=outer_df,
         column_name_outside_interval_flag="out_of_date_range_" + merge_type,
         column_name_time_difference="diff_vs_visit_hr_" + merge_type,
         start_datetime_reference_column=visit_date_column_name,
@@ -72,30 +56,14 @@ def merge_process_preparation(
         interval_upper_bound=interval_upper_bound,
         interval_bound_format="hours",
     )
-
     df = M.assign_absolute_offset(
         df=df,
         column_name_to_assign="abs_offset_diff_vs_visit_hr_" + merge_type,
         reference_column="diff_vs_visit_hr_" + merge_type,
         offset=24,
     )
-
-    (
-        many_to_many_df,
-        one_to_many_df,
-        many_to_one_df,
-        one_to_one_df,
-        no_merge_df,
-    ) = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
-    return (
-        many_to_many_df,
-        one_to_many_df,
-        many_to_one_df,
-        one_to_one_df,
-        no_merge_df,
-        df_non_specific_merge,
-        none_record_df,
-    )
+    df = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
+    return df
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
@@ -118,188 +86,11 @@ def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
             count_barcode_voyager_column_name="count_barcode_voyager",
             count_barcode_voyager_condition=condition[1],
         )
-    one_to_one_df = df.filter(F.col("1to1" + "_" + merge_type) == 1)
-
-    many_to_many_df = df.filter(F.col("mtom" + "_" + merge_type) == 1)
-
-    one_to_many_df = df.filter(F.col("1tom" + "_" + merge_type) == 1)
-
-    many_to_one_df = df.filter(F.col("mto1" + "_" + merge_type) == 1)
-
-    # TODO: if none_record_df method works, discard no_merge_df
-    no_merge_df = df.filter(
-        (F.col("mtom" + "_" + merge_type).isNull())
-        & (F.col("1tom" + "_" + merge_type).isNull())
-        & (F.col("mto1" + "_" + merge_type).isNull())
-        & (F.col("1to1" + "_" + merge_type).isNull())
-    )
-    no_merge_df = no_merge_df.withColumn(
-        "noneto1_" + merge_type, F.when((F.col("count_barcode_voyager").isNull()), 1).otherwise(None)
-    )
-    no_merge_df = no_merge_df.withColumn(
-        "1tonone_" + merge_type, F.when((F.col("count_barcode_" + merge_type).isNull()), 1).otherwise(None)
-    )
-
     # validate that only one match type exists at this point
-
-    return many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df
-
-
-def merge_process_validation(
-    df: DataFrame,
-    merge_type: str,
-    barcode_column_name: str,
-) -> DataFrame:
-    """
-    Once the merging, preparation and one_to_many, many_to_one and many_to_many functions are executed,
-    this function will apply the validation function after identifying what type of merge it is.
-    Parameters
-    ----------
-    df
-    merge_type
-        either swab or antibody, no other value accepted.
-    barcode_column_name
-    """
-
-    flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
-    flag_column_names_syntax = [column + merge_type for column in flag_column_names]
-
-    failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
-    failed_column_names_syntax = [column + merge_type for column in failed_column_names]
-
-    existing_failure_column_dict = {
-        "failed_1tom_antibody": "failed_flag_1tom_antibody",
-        "failed_mtom_antibody": "failed_flag_mtom_antibody",
-        "failed_mtom_swab": "failed_flag_mtom_swab",
-    }
-
-    for flag_column, failed_column in zip(flag_column_names_syntax, failed_column_names_syntax):
-        existing_failure_column = None
-        group_by = [barcode_column_name]
-
-        if failed_column in existing_failure_column_dict:
-            existing_failure_column = existing_failure_column_dict[failed_column]
-
-        if "mtom" in failed_column:
-            group_by = [barcode_column_name, "unique_participant_response_id"]
-
-        df = check_singular_match(
-            df=df,
-            drop_flag_column_name=flag_column,
-            failure_column_name=failed_column,
-            group_by_columns=group_by,
-            existing_failure_column=existing_failure_column,
-        )
     return df
 
 
-def execute_merge_specific_swabs(
-    survey_df: DataFrame,
-    labs_df: DataFrame,
-    barcode_column_name: str,
-    visit_date_column_name: str,
-    received_date_column_name: str,
-    void_value: str = "Void",
-) -> DataFrame:
-    """
-    Specific high level function to execute the process for swab.
-    Parameters
-    ----------
-    survey_df
-    labs_df
-    barcode_column_name
-    visit_date_column_name
-    received_date_column_name
-    void_value
-        by default is "Void" but it is possible to specify what is considered as void in the PCR result test.
-    """
-    merge_type = "swab"
-    (
-        many_to_many_df,
-        one_to_many_df,
-        many_to_one_df,
-        one_to_one_df,
-        no_merge_df,
-        df_non_specific_merge,
-        none_record_df,
-    ) = merge_process_preparation(
-        survey_df=survey_df,
-        labs_df=labs_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-        visit_date_column_name=visit_date_column_name,
-        received_date_column_name=received_date_column_name,
-        merge_type_necessary_columns=[
-            "swab_sample_barcode",
-            "unique_participant_response_id",
-            "unique_pcr_test_id",
-            "visit_datetime",
-            "pcr_result_recorded_datetime",
-            "pcr_result_classification",
-            "count_barcode_" + merge_type,
-            "count_barcode_voyager",
-        ],
-    )
-
-    window_columns = [
-        "abs_offset_diff_vs_visit_hr_swab",
-        "diff_vs_visit_hr_swab",
-        visit_date_column_name,
-        # Stata also uses uncleaned barcode from labs
-    ]
-    one_to_many_df = M.one_to_many_swabs(
-        df=one_to_many_df,
-        group_by_column=barcode_column_name,
-        ordering_columns=window_columns,
-        pcr_result_column_name="pcr_result_classification",
-        void_value=void_value,
-        flag_column_name="drop_flag_1tom_" + merge_type,
-    )
-    many_to_one_df = M.many_to_one_swab_flag(
-        df=many_to_one_df,
-        column_name_to_assign="drop_flag_mto1_" + merge_type,
-        group_by_column=barcode_column_name,
-        ordering_columns=window_columns,
-    )
-    many_to_many_df = M.many_to_many_flag(
-        df=many_to_many_df,
-        drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
-        group_by_column=barcode_column_name,
-        out_of_date_range_column="out_of_date_range_swab",
-        ordering_columns=[
-            "abs_offset_diff_vs_visit_hr_swab",
-            "diff_vs_visit_hr_swab",
-            "unique_participant_response_id",
-            "unique_pcr_test_id",
-        ],
-        process_type="swab",
-        failure_column_name="failed_flag_mtom_" + merge_type,
-    )
-
-    one_to_many_df.cache().count()
-    many_to_one_df.cache().count()
-    many_to_many_df.cache().count()
-
-    unioned_df = M.union_multiple_tables(
-        tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
-    )
-
-    unioned_df = merge_process_validation(
-        df=unioned_df,
-        merge_type=merge_type,
-        barcode_column_name=barcode_column_name,
-    )
-
-    unioned_df = M.null_safe_join(
-        unioned_df,
-        df_non_specific_merge,
-        null_safe_on=["unique_pcr_test_id"],
-        null_unsafe_on=["unique_participant_response_id"],
-        how="left",
-    )
-    return unioned_df, none_record_df
-
-
+# TODO: this function isnt called anymore in the ETL merge
 def execute_merge_specific_antibody(
     survey_df: DataFrame,
     labs_df: DataFrame,
@@ -333,18 +124,6 @@ def execute_merge_specific_antibody(
         barcode_column_name=barcode_column_name,
         visit_date_column_name=visit_date_column_name,
         received_date_column_name=received_date_column_name,
-        merge_type_necessary_columns=[
-            "blood_sample_barcode",
-            "unique_participant_response_id",
-            "unique_antibody_test_id",
-            "visit_date_string",
-            "blood_sample_received_date_s_protein",
-            "antibody_test_result_recorded_date_s_protein",
-            "antibody_test_result_classification_s_protein",
-            "count_barcode_antibody",
-            "count_barcode_voyager",
-            "siemens_antibody_test_result_value_s_protein",
-        ],
     )
 
     one_to_many_df = M.one_to_many_antibody_flag(
@@ -401,9 +180,150 @@ def execute_merge_specific_antibody(
     return unioned_df, none_record_df
 
 
+def merge_process_validation(
+    df: DataFrame,
+    merge_type: str,
+    barcode_column_name: str,
+) -> DataFrame:
+    """
+    Once the merging, preparation and one_to_many, many_to_one and many_to_many functions are executed,
+    this function will apply the validation function after identifying what type of merge it is.
+    Parameters
+    ----------
+    df
+    merge_type
+        either swab or antibody, no other value accepted.
+    barcode_column_name
+    """
+
+    flag_column_names = ["drop_flag_1tom_", "drop_flag_mto1_", "drop_flag_mtom_"]
+    flag_column_names_syntax = [column + merge_type for column in flag_column_names]
+
+    failed_column_names = ["failed_1tom_", "failed_mto1_", "failed_mtom_"]
+    failed_column_names_syntax = [column + merge_type for column in failed_column_names]
+
+    existing_failure_column_dict = {
+        "failed_1tom_antibody": "failed_flag_1tom_antibody",
+        "failed_mtom_antibody": "failed_flag_mtom_antibody",
+        "failed_mtom_swab": "failed_flag_mtom_swab",
+    }
+
+    for flag_column, failed_column in zip(flag_column_names_syntax, failed_column_names_syntax):
+        existing_failure_column = None
+        group_by = [barcode_column_name]
+
+        if failed_column in existing_failure_column_dict:
+            existing_failure_column = existing_failure_column_dict[failed_column]
+
+        if "mtom" in failed_column:
+            group_by = [barcode_column_name, "unique_participant_response_id"]
+
+        df = check_singular_match(
+            df=df,
+            drop_flag_column_name=flag_column,
+            failure_column_name=failed_column,
+            group_by_columns=group_by,
+            existing_failure_column=existing_failure_column,
+        )
+    return df
+
+
+# TODO: this function isnt called in the ETL merge anymore.
+def execute_merge_specific_swabs(
+    survey_df: DataFrame,
+    labs_df: DataFrame,
+    barcode_column_name: str,
+    visit_date_column_name: str,
+    received_date_column_name: str,
+    void_value: str = "Void",
+) -> DataFrame:
+    """
+    Specific high level function to execute the process for swab.
+    Parameters
+    ----------
+    survey_df
+    labs_df
+    barcode_column_name
+    visit_date_column_name
+    received_date_column_name
+    void_value
+        by default is "Void" but it is possible to specify what is considered as void in the PCR result test.
+    """
+    merge_type = "swab"
+    (
+        many_to_many_df,
+        one_to_many_df,
+        many_to_one_df,
+        one_to_one_df,
+        no_merge_df,
+        df_non_specific_merge,
+        none_record_df,
+    ) = merge_process_preparation(
+        survey_df=survey_df,
+        labs_df=labs_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
+        visit_date_column_name=visit_date_column_name,
+        received_date_column_name=received_date_column_name,
+    )
+
+    window_columns = [
+        "abs_offset_diff_vs_visit_hr_swab",
+        "diff_vs_visit_hr_swab",
+        visit_date_column_name,
+        # Stata also uses uncleaned barcode from labs
+    ]
+    one_to_many_df = M.one_to_many_swabs(
+        df=one_to_many_df,
+        group_by_column=barcode_column_name,
+        ordering_columns=window_columns,
+        pcr_result_column_name="pcr_result_classification",
+        void_value=void_value,
+        flag_column_name="drop_flag_1tom_" + merge_type,
+    )
+    many_to_one_df = M.many_to_one_swab_flag(
+        df=many_to_one_df,
+        column_name_to_assign="drop_flag_mto1_" + merge_type,
+        group_by_column=barcode_column_name,
+        ordering_columns=window_columns,
+    )
+    many_to_many_df = M.many_to_many_flag(
+        df=many_to_many_df,
+        drop_flag_column_name_to_assign="drop_flag_mtom_" + merge_type,
+        group_by_column=barcode_column_name,
+        out_of_date_range_column="out_of_date_range_swab",
+        ordering_columns=[
+            "abs_offset_diff_vs_visit_hr_swab",
+            "diff_vs_visit_hr_swab",
+            "unique_participant_response_id",
+            "unique_pcr_test_id",
+        ],
+        process_type="swab",
+        failure_column_name="failed_flag_mtom_" + merge_type,
+    )
+
+    unioned_df = M.union_multiple_tables(
+        tables=[many_to_many_df, one_to_many_df, many_to_one_df, one_to_one_df, no_merge_df]
+    )
+
+    unioned_df = merge_process_validation(
+        df=unioned_df,
+        merge_type=merge_type,
+        barcode_column_name=barcode_column_name,
+    )
+
+    unioned_df = M.null_safe_join(
+        unioned_df,
+        df_non_specific_merge,
+        null_safe_on=["unique_pcr_test_id"],
+        null_unsafe_on=["unique_participant_response_id"],
+        how="left",
+    )
+    return unioned_df, none_record_df
+
+
 def merge_process_filtering(
     df: DataFrame,
-    none_record_df: DataFrame,
     merge_type: str,
     barcode_column_name: str,
     lab_columns_list: List[str],
@@ -441,7 +361,6 @@ def merge_process_filtering(
             1,
         ),
     )
-
     for xtox in merge_combination:
         best_match_logic = (
             (F.col(xtox + "_" + merge_type) == 1)
@@ -501,7 +420,7 @@ def merge_process_filtering(
         f"failed_mtom_{merge_type}",
         f"failed_flag_mtom_{merge_type}",
         f"1to1_{merge_type}",
-        f"1tonone_{merge_type}",
+        # f"1tonone_{merge_type}",
         f"noneto1_{merge_type}",
         "best_match",
         "not_best_match",
@@ -522,19 +441,21 @@ def merge_process_filtering(
         unique_id = "unique_antibody_test_id"
         drop_list = ["count_barcode_voyager", "count_barcode_antibody"]
 
-    print("        -creating residuals table")  # functional
+    none_records_logic = (F.col("unique_participant_response_id").isNull()) | (F.col(unique_id).isNull())
+
     df_lab_residuals = M.union_multiple_tables(
         tables=[
             df_lab_residuals,
-            none_record_df.filter(F.col("unique_participant_response_id").isNull()).select(*df_lab_residuals.columns),
+            df.filter(F.col("unique_participant_response_id").isNull() & none_records_logic).select(
+                *df_lab_residuals.columns
+            ),
         ]
     )
-
-    print("        -creating IQVIA only table")  # functional
     df_all_iqvia = M.union_multiple_tables(
-        tables=[df_all_iqvia, none_record_df.filter(F.col(unique_id).isNull()).drop(*drop_list)]
+        tables=[df_all_iqvia, df.filter(F.col(unique_id).isNull() & none_records_logic).drop(*drop_list)]
     )
-    df_all_iqvia = M.union_multiple_tables(tables=[df_all_iqvia, df.where(F.col("1tonone_" + merge_type).isNotNull())])
+    # TODO: pyspark cannot resolve 1tonone_ column, where is it created ?
+    # 1tonone_ df is in the main df anyways so does not need to be unioned
 
     # window function count number of unique id
     window = Window.partitionBy("unique_participant_response_id")

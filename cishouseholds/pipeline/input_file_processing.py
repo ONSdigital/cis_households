@@ -53,40 +53,39 @@ def extract_validate_transform_input_data(
     validation_schema: dict,
     transformation_functions: List[Callable],
     source_file_column: str,
+    write_mode: str,
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
 ):
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
-        csv_location = storage_config["csv_editing_file"]
-        filter_config = get_secondary_config(storage_config["filter_config_file"])
+        record_editing_config_path = storage_config["record_editing_config_file"]
+        extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
-    raw_df = extract_input_data(resource_path, validation_schema, sep)
-    raw_df = rename_column_names(raw_df, variable_name_map)
-    raw_df = assign_filename_column(raw_df, source_file_column)  # Must be called before update_from_csv_lookup
+    df = extract_input_data(resource_path, validation_schema, sep)
+    df = rename_column_names(df, variable_name_map)
+    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
 
-    df = raw_df
-    filtered_df = None
     if include_hadoop_read_write:
-        update_table(raw_df, f"raw_{dataset_name}")
-        if filter_config is not None and dataset_name in filter_config:
-            filter_ids = filter_config[dataset_name]
-            filtered_df = df.filter(F.col(id_column).isin(filter_ids))
-            update_table(filtered_df, f"{dataset_name}_rows_extracted")
+        update_table(df, f"raw_{dataset_name}", write_mode)
+        filter_ids = []
+        if extraction_config is not None and dataset_name in extraction_config:
+            filter_ids = extraction_config[dataset_name]
+        filtered_df = df.filter(F.col(id_column).isin(filter_ids))
+        update_table(filtered_df, f"extracted_{dataset_name}", write_mode)
+        df = df.filter(~F.col(id_column).isin(filter_ids))
 
-            df = df.filter(~F.col(id_column).isin(filter_ids))
-
-        if csv_location is not None:
-            lookup_df = extract_lookup_csv(csv_location, csv_lookup_schema)
-            df = update_from_lookup_df(df, lookup_df, id_column=id_column, dataset_name=dataset_name)
+        if record_editing_config_path is not None:
+            editing_lookup_df = extract_lookup_csv(record_editing_config_path, csv_lookup_schema)
+            df = update_from_lookup_df(df, editing_lookup_df, id_column=id_column, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
-    return raw_df, df, filtered_df
+    return df
 
 
 def extract_input_data(file_paths: Union[List[str], str], validation_schema: dict, sep: str) -> DataFrame:

@@ -175,6 +175,7 @@ def assign_tranche_factor(
         filter_positive=F.col("tranche_eligible_households") == "Yes",
         group_by_columns=group_by_columns,
     )
+
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
         F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
     )
