@@ -702,7 +702,7 @@ address_column_map = {
     "EW": "ew",
     "ADDRESS_TYPE": "address_type",
     "COUNCIL_TAX": "council_tax",
-    "ADRESSBASE_POSTAL": "addressbase_postal",
+    "ADDRESSBASE_POSTAL": "addressbase_postal",
 }
 postcode_column_map = {
     "pcd": "postcode",
