@@ -37,18 +37,20 @@ pipeline {
     // Agent must always be set at the top level of the pipeline
     // We're not picky
     agent any
-
+    // Keep getting intermittent network errors, so retry whole pipeline
     stages {
-        // Checkout stage to fetch code from  GitLab
+            // Checkout stage to fetch code from  GitLab
         stage("Checkout") {
             // We have to specify an appropriate slave for each stage
             // Choose from download, build, test, deploy
             agent { label "download.jenkins.slave" }
             steps {
                 colourText("info", "Checking out code from source control.")
-                checkout scm
-                // Stash the files that have been checked out, for use in subsequent stages
-                stash name: "Checkout", useDefaultExcludes: false
+                retry(3) {
+                    checkout scm
+                    // Stash the files that have been checked out, for use in subsequent stages
+                    stash name: "Checkout", useDefaultExcludes: false
+                }
             }
 
         }
@@ -57,9 +59,11 @@ pipeline {
             steps {
                 unstash name: 'Checkout'
                 colourText('info', "Building package")
-                sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
-                sh 'python3 setup.py build bdist_wheel'
-                stash name: "Build", useDefaultExcludes: false
+                retry(3) {
+                    sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
+                    sh 'python3 setup.py build bdist_wheel'
+                    stash name: "Build", useDefaultExcludes: false
+                }
             }
         }
         stage("Deploy") {
@@ -68,7 +72,9 @@ pipeline {
             steps {
                 unstash name: "Build"
                 colourText('info', "Deploying to Artifactory")
-                pushToPyPiArtifactoryRepo(PROJECT_NAME)
+                retry(3) {
+                    pushToPyPiArtifactoryRepo(PROJECT_NAME)
+                }
             }
         }
     }
