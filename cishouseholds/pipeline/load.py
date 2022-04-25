@@ -17,7 +17,7 @@ class TableNotFoundError(Exception):
 def update_table(df, table_name, write_mode, archive=False):
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
-        now = datetime.strftime(datetime.now(), format="%Y%m%d")
+        now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
 
 
