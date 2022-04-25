@@ -27,18 +27,7 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import address_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import aps_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import country_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import master_sample_file_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import new_sample_file_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import old_sample_file_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import population_projection_current_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import postcode_column_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map  # noqa: F401
-from cishouseholds.pipeline.input_variable_names import tranche_column_map  # noqa: F401
+from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
@@ -59,18 +48,7 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
-from cishouseholds.pipeline.validation_schema import address_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import aps_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import country_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import csv_lookup_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import lsoa_cis_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import master_sample_file_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import new_sample_file_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import old_sample_file_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import population_projection_current_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import population_projection_previous_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import postcode_schema  # noqa: F401
-from cishouseholds.pipeline.validation_schema import tranche_schema  # noqa: F401
+from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.edit import aps_value_map
@@ -106,7 +84,12 @@ def register_pipeline_stage(key):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     for file in file_operations:
-        df = extract_lookup_csv(file["path"], eval(file["schema"]), eval(file["column_map"]), file["drop_not_found"])
+        df = extract_lookup_csv(
+            file["path"],
+            validation_schemas[file["schema"]],
+            column_name_maps[file["column_map"]],
+            file["drop_not_found"],
+        )
         update_table(df, file["table_name"], "overwrite")
 
 
@@ -486,7 +469,7 @@ def lookup_based_editing(
     tenure_group = spark.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in tenure_group_variable_map.items():
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
         tenure_group = tenure_group.withColumnRenamed(key, value)
 
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
@@ -988,7 +971,7 @@ def record_level_interface(
     filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
 
-    lookup_df = extract_lookup_csv(csv_editing_file, csv_lookup_schema)
+    lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
     filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
@@ -1063,7 +1046,12 @@ def sample_file_ETL(
         first_run = False
         old_sample_df = extract_from_table(design_weight_table)
     else:
-        old_sample_df = extract_lookup_csv(old_sample_file, old_sample_file_schema, old_sample_file_column_map, True)
+        old_sample_df = extract_lookup_csv(
+            old_sample_file,
+            validation_schemas["old_sample_file_schema"],
+            column_name_maps["old_sample_file_column_map"],
+            True,
+        )
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
@@ -1072,7 +1060,9 @@ def sample_file_ETL(
     master_sample_df = extract_from_table(master_sample_file)
     tranche_df = None
     if tranche is not None:
-        tranche_df = extract_lookup_csv(tranche, tranche_schema, tranche_column_map, True)
+        tranche_df = extract_lookup_csv(
+            tranche, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
+        )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
     design_weights = generate_weights(
@@ -1104,13 +1094,17 @@ def population_projection(
     else:
         population_projection_previous_df = extract_lookup_csv(
             population_projection_previous,
-            population_projection_previous_schema,
-            population_projection_previous_column_map,
+            validation_schemas["population_projection_previous_schema"],
+            column_name_maps["population_projection_previous_column_map"],
         )
     population_projection_current_df = extract_lookup_csv(
-        population_projection_current, population_projection_current_schema, population_projection_current_column_map
+        population_projection_current,
+        validation_schemas["population_projection_current_schema"],
+        column_name_maps["population_projection_current_column_map"],
     )
-    aps_lookup_df = extract_lookup_csv(aps_lookup, aps_schema, aps_column_map, True)
+    aps_lookup_df = extract_lookup_csv(
+        aps_lookup, validation_schemas["aps_schema"], column_name_maps["aps_column_map"], True
+    )
     aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
     populations_for_calibration, population_projections = proccess_population_projection_df(
         population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
