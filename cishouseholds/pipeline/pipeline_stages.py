@@ -1086,7 +1086,7 @@ def sample_file_ETL(
         lsoa_cis_lookup_df,
         first_run,
     )
-    update_table(design_weights, design_weight_table, write_mode="append")
+    update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
