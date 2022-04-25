@@ -1036,28 +1036,24 @@ def sample_file_ETL(
     tranche,
     postcode_lookup,
     master_sample_file,
-    old_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
 ):
-    first_run = True
+    first_run = True if check_table_exists(design_weight_table) else False
+
     if check_table_exists(design_weight_table):
         first_run = False
-        old_sample_df = extract_from_table(design_weight_table)
-    else:
-        old_sample_df = extract_lookup_csv(
-            old_sample_file,
-            validation_schemas["old_sample_file_schema"],
-            column_name_maps["old_sample_file_column_map"],
-            True,
-        )
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    new_sample_df = extract_from_table(new_sample_file)
+    old_sample_df = extract_from_table(design_weight_table)
     master_sample_df = extract_from_table(master_sample_file)
+
+    new_sample_df = extract_lookup_csv(
+        new_sample_file, validation_schemas["new_sample_file_schema"], column_name_maps["new_sample_file_column_map"]
+    )
     tranche_df = None
     if tranche is not None:
         tranche_df = extract_lookup_csv(
