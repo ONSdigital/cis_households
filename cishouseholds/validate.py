@@ -51,7 +51,7 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     return expected_header == header
 
 
-def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: str = ","):
+def validate_files(file_paths: Union[str, list], validation_schema: dict = None, sep: str = ","):
     """
     Validate the header and field count of one or more CSV files on HDFS.
 
@@ -64,6 +64,8 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
     sep
         file separator
     """
+    if validation_schema is None:
+        return file_paths
     spark_session = get_or_create_spark_session()
     if file_paths is None or file_paths in ["", []]:
         raise FileNotFoundError("No file path specified")

@@ -84,10 +84,12 @@ def register_pipeline_stage(key):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     for file in file_operations:
+        schema = validation_schemas[file["schema"]] if file["schema"] in validation_schemas else None
+        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
         df = extract_lookup_csv(
             file["path"],
-            validation_schemas[file["schema"]],
-            column_name_maps[file["column_map"]],
+            schema,
+            column_map,
             file["drop_not_found"],
         )
         update_table(df, file["table_name"], "overwrite")
@@ -1032,6 +1034,7 @@ def tables_to_csv(
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
     household_level_populations_table,
+    old_sample_file,
     new_sample_file,
     tranche,
     postcode_lookup,
@@ -1048,11 +1051,14 @@ def sample_file_ETL(
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(design_weight_table)
+    old_sample_df = extract_from_table(old_sample_file)
     master_sample_df = extract_from_table(master_sample_file)
 
     new_sample_df = extract_lookup_csv(
-        new_sample_file, validation_schemas["new_sample_file_schema"], column_name_maps["new_sample_file_column_map"]
+        new_sample_file,
+        validation_schemas["new_sample_file_schema"],
+        column_name_maps["new_sample_file_column_map"],
+        True,
     )
     tranche_df = None
     if tranche is not None:
