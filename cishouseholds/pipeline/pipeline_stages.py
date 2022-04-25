@@ -370,14 +370,14 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     unioned_survey_responses = extract_from_table(unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
     unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
-    update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
+    update_table(unioned_survey_responses, transformed_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("fill_forwards_stage")
 def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
     df = extract_from_table(unioned_survey_table)
     df = fill_forwards_transformations(df)
-    update_table(df, filled_forwards_table, mode_overide="overwrite")
+    update_table(df, filled_forwards_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -411,8 +411,8 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
-    update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
-    update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("lookup_based_editing")
@@ -491,7 +491,7 @@ def lookup_based_editing(
 
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
 
-    update_table(df, edited_table, mode_overide="overwrite")
+    update_table(df, edited_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -532,8 +532,8 @@ def outer_join_antibody_results(
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, joined_antibody_test_result_table, mode_overide="overwrite")
-    update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
+    update_table(blood_df, joined_antibody_test_result_table, write_mode="overwrite")
+    update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
 
 
 # ANTIBODY ~~~~~~~~~~~~~~~~~
@@ -584,7 +584,7 @@ def merge_blood_ETL(
 
     df = extract_from_table(input_joined_table)
     df = merge_blood_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
+    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
 
     df = extract_from_table(input_table_to_validate)
     df = merge_process_validation(
@@ -592,7 +592,7 @@ def merge_blood_ETL(
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
+    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
 
     df = extract_from_table(input_table)
     output_antibody_df_list = merge_blood_process_filtering(df)
@@ -646,7 +646,7 @@ def merge_swab_ETL(
 
     df = extract_from_table(input_joined_table)
     df = merge_swab_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, mode_overide="overwrite")
+    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
 
     df = extract_from_table(input_table_to_validate)
     df = merge_process_validation(
@@ -654,7 +654,7 @@ def merge_swab_ETL(
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, mode_overide="overwrite")
+    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
 
     df = extract_from_table(input_table)
     output_swab_df_list = merge_swab_process_filtering(df)
@@ -682,7 +682,7 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
-    update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
+    update_table(participant_df, vaccination_data_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("impute_demographic_columns")
@@ -746,7 +746,7 @@ def calculate_household_level_populations(
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
     )
-    update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
+    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
@@ -775,7 +775,7 @@ def join_geographic_data(
     geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
         design_weights_df, on=id_column, how="left"
     )
-    update_table(geographic_survey_df, geographic_responses_table)
+    update_table(geographic_survey_df, geographic_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
@@ -835,7 +835,7 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-    update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
+    update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("report")
@@ -1086,7 +1086,7 @@ def sample_file_ETL(
         lsoa_cis_lookup_df,
         first_run,
     )
-    update_table(design_weights, design_weight_table, mode_overide="append")
+    update_table(design_weights, design_weight_table, write_mode="append")
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1115,8 +1115,8 @@ def population_projection(
     populations_for_calibration, population_projections = proccess_population_projection_df(
         population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
     )
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="append")
+    update_table(populations_for_calibration, population_totals_table, write_mode="overwrite")
+    update_table(population_projections, population_projections_table, write_mode="append")
 
 
 @register_pipeline_stage("pre_calibration")
@@ -1175,7 +1175,7 @@ def pre_calibration(
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )
-    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+    update_table(df_for_calibration, responses_pre_calibration_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("aggregated_output")
@@ -1223,5 +1223,5 @@ def aggregated_output(
     update_table(
         df=df,
         table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
-        mode_overide="overwrite",
+        write_mode="overwrite",
     )

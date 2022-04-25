@@ -14,9 +14,8 @@ class TableNotFoundError(Exception):
     pass
 
 
-def update_table(df, table_name, mode_overide=None):
-    storage_config = get_config()["storage"]
-    df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
+def update_table(df, table_name, write_mode):
+    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
 
 
 def check_table_exists(table_name: str, raise_if_missing: bool = False):
