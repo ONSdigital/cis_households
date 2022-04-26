@@ -25,6 +25,7 @@ from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import column_name_maps
@@ -81,13 +82,29 @@ def register_pipeline_stage(key):
     return _add_pipeline_stage
 
 
+@register_pipeline_stage("blind_csv_to_table")
+def blind_csv_to_table(path: str, table_name: str):
+    """
+    Convert a single csv file to a HDFS table by inferring a schema
+    """
+    df = extract_input_data(path, None, ",")
+    df = update_table(df, table_name, "overwrite")
+
+
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
+    """
+    Convert a list of csv files into a HDFS table
+    """
     for file in file_operations:
+        if file["schema"] not in validation_schemas:
+            raise ValueError(file["schema"] + " schema does not exists")
+        schema = validation_schemas[file["schema"]]
+        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
         df = extract_lookup_csv(
             file["path"],
-            validation_schemas[file["schema"]],
-            column_name_maps[file["column_map"]],
+            schema,
+            column_map,
             file["drop_not_found"],
         )
         update_table(df, file["table_name"], "overwrite")
@@ -1032,6 +1049,7 @@ def tables_to_csv(
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
     household_level_populations_table,
+    old_sample_file,
     new_sample_file,
     tranche,
     postcode_lookup,
@@ -1048,11 +1066,14 @@ def sample_file_ETL(
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(design_weight_table)
+    old_sample_df = extract_from_table(old_sample_file)
     master_sample_df = extract_from_table(master_sample_file)
 
     new_sample_df = extract_lookup_csv(
-        new_sample_file, validation_schemas["new_sample_file_schema"], column_name_maps["new_sample_file_column_map"]
+        new_sample_file,
+        validation_schemas["new_sample_file_schema"],
+        column_name_maps["new_sample_file_column_map"],
+        True,
     )
     tranche_df = None
     if tranche is not None:
