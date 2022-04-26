@@ -97,11 +97,10 @@ def csv_to_table(file_operations: list):
     Convert a list of csv files into a HDFS table
     """
     for file in file_operations:
+        if file["schema"] not in validation_schemas:
+            raise ValueError(file["schema"] + " schema does not exists")
         schema = validation_schemas[file["schema"]]
         column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
-        if file["schema"] not in validation_schemas:
-            raise ValueError(f"{schema} schema does not exists")
-
         df = extract_lookup_csv(
             file["path"],
             schema,
