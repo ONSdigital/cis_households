@@ -920,7 +920,7 @@ def report(
             processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
             processed_file_counts = processed_files_df["file_row_count"]
             individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
-            name = f"{type}"
+            name = f"{dataset}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
