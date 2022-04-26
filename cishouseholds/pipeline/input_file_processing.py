@@ -26,7 +26,7 @@ class InvalidFileError(Exception):
 
 
 def extract_lookup_csv(
-    lookup_file_path: str, validation_schema: dict = None, column_name_map: dict = None, drop_not_found: bool = False
+    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
 ):
     """
     extract and validate a csv lookup file from path with validation_schema
