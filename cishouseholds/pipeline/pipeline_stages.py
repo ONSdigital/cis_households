@@ -84,7 +84,9 @@ def register_pipeline_stage(key):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     for file in file_operations:
-        schema = validation_schemas[file["schema"]] if file["schema"] in validation_schemas else None
+        if file["schema"] not in validation_schemas:
+                raise ValueError(f"{file["schema"]} schema does not exists")
+        schema = validation_schemas[file["schema"]]
         column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
         df = extract_lookup_csv(
             file["path"],
