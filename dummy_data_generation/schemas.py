@@ -2121,15 +2121,15 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.5, 0.5],
         ),
         "think_had_covid_any_symptoms": _("choice", items=yes_no_none_choice),  # 217
-        "think_had_covid_sympton_fever": _("choice", items=yes_no_none_choice),  # 218
-        "think_had_covid_sympton_headache": _("choice", items=yes_no_none_choice),  # 219
-        "think_had_covid_sympton_muscle_ache_myalgia": _("choice", items=yes_no_none_choice),  # 220
-        "think_had_covid_sympton_fatigue": _("choice", items=yes_no_none_choice),  # 221
-        "think_had_covid_sympton_nausea_or_vomiting": _("choice", items=yes_no_none_choice),  # 222
+        "think_had_covid_symptom_fever": _("choice", items=yes_no_none_choice),  # 218
+        "think_had_covid_symptom_headache": _("choice", items=yes_no_none_choice),  # 219
+        "think_had_covid_symptom_muscle_ache_myalgia": _("choice", items=yes_no_none_choice),  # 220
+        "think_had_covid_symptom_fatigue": _("choice", items=yes_no_none_choice),  # 221
+        "think_had_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),  # 222
         "think_had_covid_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),  # 223
-        "think_had_covid_sympton_diarrhoea": _("choice", items=yes_no_none_choice),  # 224
-        "think_had_covid_sympton_sore_throat": _("choice", items=yes_no_none_choice),  # 225
-        "think_had_covid_sympton_cough": _("choice", items=yes_no_none_choice),  # 226
+        "think_had_covid_symptom_diarrhoea": _("choice", items=yes_no_none_choice),  # 224
+        "think_had_covid_symptom_sore_throat": _("choice", items=yes_no_none_choice),  # 225
+        "think_had_covid_symptom_cough": _("choice", items=yes_no_none_choice),  # 226
         "think_had_covid_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),  # 227
         "think_had_covid_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),  # 228
         "think_had_covid_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),  # 229
