@@ -2023,12 +2023,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_type_3": _("choice", items=type_of_vaccination),
         "cis_covid_vaccine_type_other_3": _("text.quote"),
         # 201 to 250
-        "cis_covid_vaccine_date_3": _(  # 201
+        "cis_covid_vaccine_date_3": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_4": _(  # 202
+        "cis_covid_vaccine_type_4": _(
             "choice",
             items=[
                 "Janssen/Johnson&Johnson",
@@ -2039,13 +2039,13 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "cis_covid_vaccine_type_other_4": _("choice", items=[None]),  # 203
-        "cis_covid_vaccine_date_4": _(  # 204
+        "cis_covid_vaccine_type_other_4": _("choice", items=[None]),
+        "cis_covid_vaccine_date_4": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_5": _(  # 205
+        "cis_covid_vaccine_type_5": _(
             "choice",
             items=[
                 "Janssen/Johnson&Johnson",
@@ -2056,13 +2056,13 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "cis_covid_vaccine_type_other_5": _("choice", items=[None]),  # 206
-        "cis_covid_vaccine_date_5": _(  # 207
+        "cis_covid_vaccine_type_other_5": _("choice", items=[None]),
+        "cis_covid_vaccine_date_5": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_6": _(  # 208
+        "cis_covid_vaccine_type_6": _(
             "choice",
             items=[
                 "Janssen/Johnson&Johnson",
@@ -2073,15 +2073,15 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "cis_covid_vaccine_type_other_6": _("choice", items=[None]),  # 209
-        "cis_covid_vaccine_date_": _(  # 210
+        "cis_covid_vaccine_type_other_6": _("choice", items=[None]),
+        "cis_covid_vaccine_date_": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_flu_vaccine_received": _("choice", items=yes_no_none_choice),  # 211
-        "been_outside_uk": _("choice", items=yes_no_none_choice),  # 212
-        "been_outside_uk_last_country": _(  # 213
+        "cis_flu_vaccine_received": _("choice", items=yes_no_none_choice),
+        "been_outside_uk": _("choice", items=yes_no_none_choice),
+        "been_outside_uk_last_country": _(
             "choice",
             items=[
                 "Afghanistan",
@@ -2109,45 +2109,45 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "been_outside_uk_last_return_date": _(  # 214
+        "been_outside_uk_last_return_date": _(
             "discrete_distribution",
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid": _("choice", items=yes_no_none_choice),  # 215
-        "think_had_covid_onset_date": _(  # 216
+        "think_had_covid": _("choice", items=yes_no_none_choice),
+        "think_had_covid_onset_date": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid_any_symptoms": _("choice", items=yes_no_none_choice),  # 217
-        "think_had_covid_symptom_fever": _("choice", items=yes_no_none_choice),  # 218
-        "think_had_covid_symptom_headache": _("choice", items=yes_no_none_choice),  # 219
-        "think_had_covid_symptom_muscle_ache_myalgia": _("choice", items=yes_no_none_choice),  # 220
-        "think_had_covid_symptom_fatigue": _("choice", items=yes_no_none_choice),  # 221
-        "think_had_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),  # 222
-        "think_had_covid_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),  # 223
-        "think_had_covid_symptom_diarrhoea": _("choice", items=yes_no_none_choice),  # 224
-        "think_had_covid_symptom_sore_throat": _("choice", items=yes_no_none_choice),  # 225
-        "think_had_covid_symptom_cough": _("choice", items=yes_no_none_choice),  # 226
-        "think_had_covid_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),  # 227
-        "think_had_covid_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),  # 228
-        "think_had_covid_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),  # 229
-        "think_had_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_none_choice),  # 230
-        "think_had_covid_symptom_loss_of_appetite": _("choice", items=yes_no_none_choice),  # 231
-        "think_had_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_none_choice),  # 232
-        "think_had_covid_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),  # 233
-        "think_had_covid_symptom_chest_pain": _("choice", items=yes_no_none_choice),  # 234
-        "think_had_covid_symptom_palpitations": _("choice", items=yes_no_none_choice),  # 235
-        "think_had_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_none_choice),  # 236
-        "think_had_covid_symptom_anxiety": _("choice", items=yes_no_none_choice),  # 237
-        "think_had_covid_symptom_low_mood": _("choice", items=yes_no_none_choice),  # 238
-        "think_had_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_none_choice),  # 239
-        "think_had_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_none_choice),  # 240
-        "think_had_covid_contacted_nhs": _("choice", items=yes_no_none_choice),  # 241
-        "think_had_covid_admitted_to_hospital": _("choice", items=yes_no_none_choice),  # 242
-        "other_covid_infection_test": _("choice", items=yes_no_none_choice),  # 243
-        "other_covid_infection_test_results": _(  # 244
+        "think_had_covid_any_symptoms": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_fever": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_headache": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_fatigue": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_diarrhoea": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_sore_throat": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_cough": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_loss_of_appetite": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_chest_pain": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_palpitations": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_anxiety": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_low_mood": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "think_had_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_none_choice),
+        "think_had_covid_contacted_nhs": _("choice", items=yes_no_none_choice),
+        "think_had_covid_admitted_to_hospital": _("choice", items=yes_no_none_choice),
+        "other_covid_infection_test": _("choice", items=yes_no_none_choice),
+        "other_covid_infection_test_results": _(
             "choice",
             items=[
                 "All tests failed",
@@ -2158,7 +2158,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "other_covid_infection_test_first_positive_date": _(  # 245
+        "other_covid_infection_test_first_positive_date": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
@@ -2173,9 +2173,9 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "regularly_lateral_flow_testing": _("choice", items=yes_no_none_choice),  # 247
-        "other_antibody_test": _("choice", items=yes_no_none_choice),  # 248
-        "other_antibody_test_results": _(  # 249
+        "regularly_lateral_flow_testing": _("choice", items=yes_no_none_choice),
+        "other_antibody_test": _("choice", items=yes_no_none_choice),
+        "other_antibody_test_results": _(
             "choice",
             items=[
                 "All tests failed",
@@ -2186,7 +2186,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "other_antibody_test_first_positive_date": _(  # 250
+        "other_antibody_test_first_positive_date": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
