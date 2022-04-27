@@ -1491,6 +1491,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
     }
 
 
+# List Variables unique for CISD
 type_of_vaccination = [
     "Pfizer / BioNTech",
     "Moderna",
