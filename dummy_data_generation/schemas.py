@@ -1596,7 +1596,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "reason_for_not_consenting_8": _("text.quote"),
         "person_not_consenting_age_9": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
         "reason_for_not_consenting_9": _("text.quote"),
-        "household_participants_not_consenting_count": _("custom_random.random_integer", lower=0, upper=8),
+        "household_participants_not_consenting_count": _("custom_random.random_integer", lower=0, upper=9),
         "participant_status": _("choice", items=["Active", "Completed", "Withdrawn"]),
         "participant_withdrawal_reason": _(
             "choice",
