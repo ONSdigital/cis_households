@@ -2148,8 +2148,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
+            format="%Y-%m-%dT%H:%M:%S",
+        )
         + "Z",
         "self_isolating": _("text.sentence"),
         "self_isolating_reason": _("choice", items=self_isolating_reasons),
@@ -2275,21 +2275,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "work_main_job_changed": _("choice", items=yes_no_none_choice),
         "cis_covid_vacine_type": _(
             "choice",
-            items=[
-                "Don't know type",
-                "From a research study/trial",
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Novavax",
-                "Other / specify",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                "Sinopharm",
-                "Sinovac",
-                "Sputnik",
-                "Valneva",
-                None,
-            ],
+            items=type_of_vaccination,
         ),
         "cis_covid_vaccine_type_other": _("text.quote"),
         "cis_covid_vaccine_date": _(
