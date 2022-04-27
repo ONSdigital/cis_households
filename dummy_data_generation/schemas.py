@@ -492,9 +492,6 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Work_in_a_nursing_residential_care_home": _("choice", items=yes_no_none_choice),
         "Do_you_currently_work_in_healthcare": _("choice", items=yes_no_none_choice),
         "Direct_contact_patients_clients_resid": _("choice", items=yes_no_none_choice),
-        "Have_physical_mental_health_or_illnesses": _("choice", items=yes_no_none_choice),
-        "physical_mental_health_or_illness_reduces_activity_ability": _("choice", items=yes_no_none_choice),
-        "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _("text.sentence"),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
@@ -959,9 +956,6 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _(
             "choice", items=[None, "Yes,  cigarettes", "Yes, cigar", "Yes, pipe", "Yes, vape/e-cigarettes"]
-        ),
-        "Do_you_currently_smoke_or_vape_at_all": _(
-            "choice", items=[None, "Cigarettes", "Cigar", "Pipe", "Vape/e-cigarettes", "Hookah/shisha pipes"]
         ),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
@@ -1843,9 +1837,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "choice", items=[None, "Not at all", "Yes, a little", "Yes, a lot"]
         ),
         "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
-        "Do_you_currently_smoke_or_vape": _(
-            "choice", items=[None, "Yes,  cigarettes", "Yes, cigar", "Yes, pipe", "Yes, vape/e-cigarettes"]
-        ),
         "Do_you_currently_smoke_or_vape_at_all": _(
             "choice", items=[None, "Cigarettes", "Cigar", "Pipe", "Vape/e-cigarettes", "Hookah/shisha pipes"]
         ),
@@ -1894,55 +1885,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "Had_symptoms_in_the_last_7_days": _("choice", items=yes_no_none_choice),
         "Which_symptoms_in_the_last_7_days": _(
             "choice", items=[None, "Fever ", "Muscle ache", "Weakness/tiredness", "Sore  Throat"]
-        ),
-        "Date_of_first_symptom_onset": _(
-            "discrete_distribution",
-            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
-            weights=[0.5, 0.5],
-        ),
-        "Symptoms_7_Fever": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Muscle_ache_myalgia": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Fatigue_weakness": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Sore_throat": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Cough": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Shortness_of_breath": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Headache": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Nausea_vomiting": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Abdominal_pain": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Diarrhoea": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Loss_of_taste": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Loss_of_smell": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Chest_pain": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Palpitations": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Worry_anxiety": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
-        "Are_you_self_Isolating_S2": _(
-            "choice",
-            items=[
-                "No",
-                "Yes because you have/have had symptoms of COVID-19 or a positive test",
-                "Yes because you live with someone who has/has had symptoms or a positive test but you haven't had"
-                "symptoms yourself",
-                "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or"
-                "shielding)",
-                "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having"
-                "been in contact with a known case or quarantining after travel abroad)",
-                "Participant Would Not/Could Not Answer",
-                "Yes because you have/have had symptoms of COVID-19",
-                "Yes because you live with someone who has/has had symptoms but you haven't had them yourself",
-                "Yes for other reasons (e.g. going into hospital or quarantining)",
-                None,
-            ],
-        ),
-        "Do_you_think_you_have_Covid_Symptoms": _(
-            "choice", items=["Yes", "Participant Would Not/Could Not Answer", "No", None]
         ),
         "Regular_testing_COVID": _("choice", items=yes_no_none_choice),
         "Do_you_think_you_have_had_Covid_19": _("choice", items=yes_no_none_choice),
@@ -2013,76 +1955,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
         ),
         "Have_you_been_offered_a_vaccination": _("choice", items=yes_no_none_choice),
-        "Vaccinated_Against_Covid": _("choice", items=yes_no_none_choice),
-        "Number_Of_Doses": _("choice", items=["1", "2", "3 or more", None]),
-        "Type_Of_Vaccination_1": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "Vaccination_Other_1": _("choice", items=[None]),
-        "Date_Of_Vaccination_1": _(
-            "discrete_distribution",
-            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
-            weights=[0.5, 0.5],
-        ),
-        "Type_Of_Vaccination_2": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "Vaccination_Other_2": _("choice", items=[None]),
-        "Date_Of_Vaccination_2": _(
-            "discrete_distribution",
-            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
-            weights=[0.5, 0.5],
-        ),
-        "Type_Of_Vaccination_3": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "Vaccination_Other_3": _("choice", items=[None]),
-        "Date_Of_Vaccination_3": _(
-            "discrete_distribution",
-            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
-            weights=[0.5, 0.5],
-        ),
-        "Type_Of_Vaccination_4": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "Vaccination_Other_4": _("choice", items=[None]),
-        "Date_Of_Vaccination_4": _(
-            "discrete_distribution",
-            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
-            weights=[0.5, 0.5],
-        ),
         "Vaccinated_against_flu": _("choice", items=yes_no_none_choice),
         "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _(
