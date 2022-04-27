@@ -1501,6 +1501,7 @@ type_of_vaccination = [
     "From a research study/trial",
     "Another vaccine please specify",
     "I don't know the type",
+    None,
 ]
 
 self_isolating_reasons = [
