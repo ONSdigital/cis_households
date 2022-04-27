@@ -1523,28 +1523,28 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
-         "digital_opt_in_window_start_datetime": _(
+        "digital_opt_in_window_start_datetime": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
-         "digital_opt_in_window_end_datetime": _(
+        "digital_opt_in_window_end_datetime": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
-         "digital_opted_in_datetime": _(
+        "digital_opted_in_datetime": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
             format="%Y-%m-%dT%H:%M:%S.%f",
         )[:-3]
         + "Z",
-         "digital_enrolment_datetime": _(
+        "digital_enrolment_datetime": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
