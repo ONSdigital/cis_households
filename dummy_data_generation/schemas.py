@@ -2,10 +2,10 @@ from datetime import datetime
 
 yes_no_choice = ["Yes", "No"]
 yes_no_none_choice = ["Yes", "No", None]
+yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
 times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know" "None", "Prefer not to say", None]
-
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -1493,6 +1493,30 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
     }
 
 
+# List Variables unique for CISD
+type_of_vaccination = [
+    "Pfizer / BioNTech",
+    "Moderna",
+    "Oxford / AstraZeneca",
+    "Janssen / Johnson&Johnson",
+    "Novavax",
+    "Sinovac",
+    "Sputnik",
+    "Valneva",
+    "Sinopharm",
+    "From a research study/trial",
+    "Another vaccine please specify",
+    "I don't know the type",
+]
+
+self_isolating_reasons = [
+    "I have or have had symptoms of COVID-19 or a positive test",  # noqa: E501, E261
+    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501, E261
+    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501, E261
+    "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501, E261
+]
+
+
 def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
@@ -2096,6 +2120,69 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "Have_you_been_outside_UK_Lastspoke": _("choice", items=yes_no_none_choice),
         "Have_Long_Covid_Symptoms": _("choice", items=yes_no_none_choice),
+        # 151 to 200
+        "think_have_covid_symptom_fever": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_headache": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_muscle_ache": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_fatigue": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_abdominal_pain": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_diarrhoea": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_sore_throat": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_cough": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_shortness_of_breath": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_loss_of_taste": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_loss_of_smell": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_loss_of_appetite": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_noisy_breathing": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_chest_pain": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_palpitations": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_anxiety": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_low_mood": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_choice),
+        "think_have_covid_onset_date": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        )[:-3]
+        + "Z",
+        "self_isolating": _("text.sentence"),
+        "self_isolating_reason": _("choice", items=self_isolating_reasons),
+        "think_have_covid": _("choice", items=["Yes", "No", "Don't know"]),
+        "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
+        "illness_reduces_activity_or_ability": _("choice", items=["Yes a lot", "Yes a little", "Not at all"]),
+        "ever_smoked_regularly": _("choice", items=yes_no_prefer_not_to_say),
+        "currently_smokes_or_vapes": _("choice", items=yes_no_prefer_not_to_say),
+        "currently_smokes_or_vapes_description": _("choice", items=yes_no_prefer_not_to_say),
+        "cis_covid_vaccine_received": _("choice", items=yes_no_choice),
+        "cis_covid_vaccine_number_of_doses": _("choice", items=["1", "2", "3", "4", "5", "6 or more", None]),
+        "cis_covid_vaccine_type_1": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_1": _("text.quote"),
+        "cis_covid_vaccine_date_1": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "cis_covid_vaccine_type_2": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_2": _("text.quote"),
+        "cis_covid_vaccine_date_2": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
+        "cis_covid_vaccine_type_3": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_3": _("text.quote"),
+        # 251 to 311
+        "other_antibody_test_last_negative_date": _(
+            "discrete_distribution",
+            population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
+            weights=[0.5, 0.5],
+        ),
         "think_have_long_covid": _("choice", items=["Yes", "No", None]),
         "think_have_long_covid_symptom_reduced_ability": _("choice", items=yes_no_none_choice),
         "think_have_long_covid_symptom_fever": _("choice", items=yes_no_none_choice),
