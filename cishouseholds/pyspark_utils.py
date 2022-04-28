@@ -72,7 +72,7 @@ def get_or_create_spark_session() -> SparkSession:
     Session size is configured via pipeline config.
     """
     config = get_config()
-    session_size = config["pyspark_session_size"]
+    session_size = config.get("pyspark_session_size", "xs")
     spark_session_options = session_options[session_size]
     spark_session = (
         SparkSession.builder.config("spark.executor.memory", spark_session_options["spark.executor.memory"])
