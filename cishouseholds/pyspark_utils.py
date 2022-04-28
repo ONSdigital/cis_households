@@ -1,7 +1,9 @@
+import os
 from typing import Any
 from typing import Mapping
 
 from pandas.core.frame import DataFrame
+from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
@@ -72,7 +74,35 @@ sessions = {
         .enableHiveSupport()
         .getOrCreate()
     ),
+    "xxl": (
+        SparkSession.builder.config("spark.executor.memory", "64g")
+        .config("spark.yarn.executor.memoryOverhead", "6g")
+        .config("spark.executor.cores", 4)
+        .config("spark.dynamicAllocation.enabled", "true")
+        .config("spark.dynamicAllocation.maxExecutors", 15)
+        .config("spark.sql.shuffle.partitions", 1000)
+        .config("spark.shuffle.service.enabled", "true")
+        .config("spark.ui.showConsoleProgress", "false")
+        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
+        .config("spark.shuffle.service.enabled", "true")
+        .config("spark.sql.crossJoin.enabled", "true")
+        .config("spark.sql.adaptive.enabled", "true")
+        .appName("cishouseholds")
+        .enableHiveSupport()
+        .getOrCreate()
+    ),
 }
+
+
+def get_spark_ui_url():
+    "Get the URL to open the Spark UI for the current spark session."
+    return f"http://spark-{os.environ['CDSW_ENGINE_ID']}.{os.environ['CDSW_DOMAIN']}"
+
+
+def get_spark_application_id():
+    "Get the spark application ID, for use in debugging applications."
+    sc = SparkContext.getOrCreate()
+    return sc._jsc.sc().applicationId()
 
 
 def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:

@@ -8,6 +8,8 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pyspark_utils import get_spark_application_id
+from cishouseholds.pyspark_utils import get_spark_ui_url
 
 
 def run_from_config():
@@ -28,6 +30,8 @@ def run_from_config():
     add_run_status(run_id, "started")
     pipeline_error_count = None
     try:
+        print(f"Spark UI: {get_spark_ui_url()}")  # functional
+        print(f"Spark application ID: {get_spark_application_id()}")  # functional
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         pipeline_error_count = run_pipeline_stages(pipeline_stage_list, run_id)
     except Exception as e:
