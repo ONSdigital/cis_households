@@ -492,6 +492,9 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Work_in_a_nursing_residential_care_home": _("choice", items=yes_no_none_choice),
         "Do_you_currently_work_in_healthcare": _("choice", items=yes_no_none_choice),
         "Direct_contact_patients_clients_resid": _("choice", items=yes_no_none_choice),
+        "Have_physical_mental_health_or_illnesses": _("choice", items=yes_no_none_choice),
+        "physical_mental_health_or_illness_reduces_activity_ability": _("choice", items=yes_no_none_choice),
+        "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _("text.sentence"),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
@@ -956,6 +959,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _(
             "choice", items=[None, "Yes,  cigarettes", "Yes, cigar", "Yes, pipe", "Yes, vape/e-cigarettes"]
+        ),
+        "Do_you_currently_smoke_or_vape_at_all": _(
+            "choice", items=[None, "Cigarettes", "Cigar", "Pipe", "Vape/e-cigarettes", "Hookah/shisha pipes"]
         ),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
@@ -1528,28 +1534,9 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
-        "Participant_status": _("choice", items=["Active", "Completed", "Withdrawn"]),
-        "Withdrawal_reason": _(
+        "participant_withdrawal_type": _(
             "choice",
-            items=[
-                None,
-                "Withdrawn_no_future_linkage_or_use of samples",
-                "Withdrawn_no_future_linkage",
-                "Withdrawn",
-            ],
-        ),
-        "Withdrawn_Type": _(
-            "choice",
-            items=[
-                None,
-                "Phone not answered",
-                "At School",
-                "On Holiday",
-                "Other",
-                "At Work",
-                "Doctor Appointment",
-                "Living Away - For Education",
-            ],
+            items=["Withdrawn", "Withdrawn - no future linkage", "Withdrawn - no future linkage or use of samples"],
         ),
         "NotAttendReason": _(
             "choice",
@@ -1660,23 +1647,56 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "Person8_Reason_for_Not_Consenting": _("text.quote"),
         "Person_9_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
         "Person9_Reason_for_Not_Consenting": _("text.quote"),
-        "Participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
-        "Title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
-        "First_Name": _("person.first_name"),
-        "Middle_Name": _("person.first_name"),
-        "Last_Name": _("person.last_name"),
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
+        "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
+        "first_name": _("person.first_name"),
+        "middle_name": _("person.first_name"),
+        "last_name": _("person.last_name"),
         # Format dd/mm/YYY HH:MM
-        "DoB": _(
+        "date_of_birth": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
+            population=[_("datetime.formatted_datetime", fmt="%Y-%m-%d", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
+        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "Have_landline_number": _("choice", items=yes_no_none_choice),
         "Have_mobile_number": _("choice", items=yes_no_none_choice),
         "Have_email_address": _("choice", items=yes_no_none_choice),
-        "Prefer_receive_vouchers": _("choice", items=["Email", "Paper(Post)"]),
+        "voucher_type_preference": _("choice", items=["Email", "Letter"]),
         "Confirm_receive_vouchers": _("choice", items=["false", "true"]),
+        "household_completion_window_id": _(
+            "random.custom_code", mask="############", digit="#"
+        ),  # tbc what these ids will look like
+        "household_completion_window_status": _("choice", items=["New", "Open", "Closed"]),
+        "completion_window_cadence": _("choice", items=["Weekly", "Monthly"]),
+        "participant_completion_window_id": _(
+            "random.custom_code", mask="############", digit="#"
+        ),  # tbc what these ids will look like
+        "participant_completion_window_status": _("choice", items=["New", "Open", "Closed"]),
+        "participant_completion_window_start_datetime": _(
+            "custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%SZ"
+        ),
+        "participant_completion_window_end_datetime": _(
+            "custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%SZ"
+        ),
+        "survey_type": _(items=["First Survey", "Follow-up Survey"]),
+        "opted_out": _("choice", items=yes_no_choice),
+        "opted_out_datetime": _(
+            "custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%SZ"
+        ),
+        "opted_out_blood": _("choice", items=yes_no_choice),
+        "opted_out_blood_datetime": _(
+            "custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%SZ"
+        ),
+        "blood_sample_transport_status": _(
+            items=[
+                "Dispatched",
+                "Arrived at Sorting Office",
+                "Arrived at Consolidation Hub",
+                "Arrived at Lab",
+                "Results Returned",
+            ]
+        ),
         "No_Email_address": _("custom_random.random_integer", lower=0, upper=1),
         "Able_to_take_blood": _("choice", items=yes_no_none_choice),
         "No_Blood_reason_fingerprick": _(
@@ -1733,9 +1753,9 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "Sex": _("choice", items=["Female", "Male", None]),
-        "Gender": _("choice", items=["Female", "Male", "Prefer not to say", None]),
-        "Ethnic_group": _(
+        "sex": _("choice", items=["Female", "Male", None]),
+        # "Gender": _("choice", items=["Female", "Male", "Prefer not to say", None]), not in digital
+        "ethnic_group": _(
             "choice",
             items=[
                 "Asian or Asian British",
@@ -1745,7 +1765,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "White",
             ],
         ),
-        "Ethnicity": _(
+        "ethnicity": _(
             "choice",
             items=[
                 "Any other Asian background",
@@ -1768,7 +1788,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "White-Irish",
             ],
         ),
-        "Ethnicity_Other": _("text.sentence"),  # free text field, can be null 1 to 249
+        "ethnicity_other": _("text.sentence"),  # free text field, can be null 1 to 249
         "Consent_to_First_Visit": _("choice", items=yes_no_choice),
         "Consent_to_Five_Visits": _("choice", items=yes_no_choice),
         "Consent_to_April_22": _("choice", items=yes_no_choice),
@@ -1777,12 +1797,15 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "Consent_to_Finger_prick_A1_A3": _("choice", items=yes_no_none_choice),
         "Consent_to_extend_study_under_16_B1_B3": _("choice", items=yes_no_none_choice),
         "Consent_to_be_Contacted_Extra_Research": _("choice", items=yes_no_choice),
-        "Consent_to_be_Contacted_Extra_ResearchYN": _("choice", items=yes_no_none_choice),
-        "Consent_to_use_of_Surplus_Blood_Samples": _("choice", items=yes_no_choice),
-        "Consent_to_use_of_Surplus_Blood_SamplesYN": _("choice", items=yes_no_none_choice),
+        "consent_contact_extra_research_yn": _("choice", items=yes_no_choice),
+        "consent_use_of_surplus_blood_samples_yn": _("choice", items=yes_no_choice),
         "Approached_for_blood_samples?": _("choice", items=yes_no_none_choice),
-        "Consent_to_blood_samples_if_positive": _("choice", items=["False", "True"]),
-        "Consent_to_blood_samples_if_positiveYN": _("choice", items=yes_no_none_choice),
+        "consent_blood_samples_if_positive_yn": _("choice", items=yes_no_choice),
+        "participant_invited_digital": _("choice", items=yes_no_choice),
+        "participant_enrolled_digital": _("choice", items=yes_no_choice),
+        "participant_enrollment_datetime": _(
+            "custom_random.random_date", start=start_date_list, end=end_date_list, format="%Y-%m-%dT%H:%M:%SZ"
+        ),
         "Consent_to_fingerprick_blood_samples": _("choice", items=["False", "True"]),
         "Accepted_invite_to_fingerprick": _("choice", items=yes_no_none_choice),
         "Re_consented_for_blood": _("choice", items=["False", "True"]),
@@ -2284,52 +2307,22 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_4": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "cis_covid_vaccine_type_other_4": _("choice", items=[None]),
+        "cis_covid_vaccine_type_4": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_4": _("text.quote"),
         "cis_covid_vaccine_date_4": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_5": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "cis_covid_vaccine_type_other_5": _("choice", items=[None]),
+        "cis_covid_vaccine_type_5": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_5": _("text.quote"),
         "cis_covid_vaccine_date_5": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vaccine_type_6": _(
-            "choice",
-            items=[
-                "Janssen/Johnson&Johnson",
-                "Moderna",
-                "Don't know type",
-                "Oxford/AstraZeneca",
-                "Pfizer/BioNTech",
-                None,
-            ],
-        ),
-        "cis_covid_vaccine_type_other_6": _("choice", items=[None]),
+        "cis_covid_vaccine_type_6": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_6": _("text.quote"),
         "cis_covid_vaccine_date_": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
