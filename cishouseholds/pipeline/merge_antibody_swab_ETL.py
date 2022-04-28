@@ -15,7 +15,7 @@ from cishouseholds.pipeline.merge_process import merge_process_preparation
 
 def load_to_data_warehouse_tables(output_df_list, output_table_list):
     for df, table_name in zip(output_df_list, output_table_list):
-        update_table(df, table_name, mode_overide="overwrite")
+        update_table(df, table_name, write_mode="overwrite")
 
 
 # merge_blood no longer used in the main ETL mege function
