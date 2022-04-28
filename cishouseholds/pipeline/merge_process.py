@@ -36,10 +36,30 @@ def merge_process_preparation(
     ----
     It is assumed that the barcode column name for survey and labs is the same.
     """
-    survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
-    labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
+    survey_df = M.assign_count_of_occurrences_column(
+        df=survey_df,
+        reference_column=barcode_column_name,
+        column_name_to_assign="count_barcode_voyager",
+    )
+    labs_df = M.assign_count_of_occurrences_column(
+        df=labs_df,
+        reference_column=barcode_column_name,
+        column_name_to_assign="count_barcode_" + merge_type,
+    )
+    # TODO: separate >1 and =1 in survey_df and labs_df
+    survey_df_unique = survey_df.filter(F.col("count_barcode_voyager") == 1)
+    labs_df_unique = labs_df.filter(F.col("count_barcode_" + merge_type) == 1)
 
-    outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
+    survey_df_multiple = survey_df.filter(F.col("count_barcode_voyager") > 1)
+    labs_df_multiple = labs_df.filter(F.col("count_barcode_" + merge_type) > 1)
+
+    merge_1to1_df = survey_df_unique.join(labs_df_unique, on=barcode_column_name, how="inner")  # for 1:1
+    # for none:1, 1:none. TODO: antijoin
+    nones_and_1s_df = survey_df_unique.join(labs_df_unique, on=barcode_column_name, how="outer")
+
+    # union 1:none & co with manys:none & co
+    outer_df_multiple = survey_df_multiple.join(labs_df_multiple, on=barcode_column_name, how="outer")
+    outer_df_to_merge = M.union_multiple_tables([outer_df_multiple, nones_and_1s_df])
 
     if merge_type == "swab":
         interval_upper_bound = 480
@@ -47,7 +67,7 @@ def merge_process_preparation(
         interval_upper_bound = 240
 
     df = M.assign_time_difference_and_flag_if_outside_interval(
-        df=outer_df,
+        df=outer_df_to_merge,
         column_name_outside_interval_flag="out_of_date_range_" + merge_type,
         column_name_time_difference="diff_vs_visit_hr_" + merge_type,
         start_datetime_reference_column=visit_date_column_name,
@@ -63,7 +83,7 @@ def merge_process_preparation(
         offset=24,
     )
     df = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
-    return df
+    return merge_1to1_df, df
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):
