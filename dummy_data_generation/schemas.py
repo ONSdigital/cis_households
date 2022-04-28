@@ -1515,96 +1515,6 @@ self_isolating_reasons = [
 def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
-        "household_invited_to_digital": _("choice", items=yes_no_choice),
-        "digital_enrolment_invite_datetime": _(
-            "custom_random.random_date",
-            start=start_date_list,
-            end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
-        "digital_opt_in_window_start_datetime": _(
-            "custom_random.random_date",
-            start=start_date_list,
-            end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
-        "digital_opt_in_window_end_datetime": _(
-            "custom_random.random_date",
-            start=start_date_list,
-            end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
-        "digital_opted_in_datetime": _(
-            "custom_random.random_date",
-            start=start_date_list,
-            end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
-        "digital_enrolment_datetime": _(
-            "custom_random.random_date",
-            start=start_date_list,
-            end=end_date_list,
-            format="%Y-%m-%dT%H:%M:%S.%f",
-        )[:-3]
-        + "Z",
-        "street": _("choice", items=[None, _("address.street_name")]),
-        "city": _("choice", items=[None, _("address.city")]),
-        "county": _("choice", items=[None, _("address.province")]),
-        "postcode": _("choice", items=[None, _("address.postal_code")]),
-        "any_household_members_under_2_years": _("choice", items=yes_no_choice),
-        "infant_age_months_1": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_2": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_3": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_4": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_5": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_6": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_7": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "infant_age_months_8": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
-        "any_household_members_over_2_years_and_not_present": _("choice", items=yes_no_none_choice),
-        "person_not_present_age_1": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_2": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_3": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_4": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_5": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_present_age_8": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_consenting_age_1": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
-        "reason_for_not_consenting_1": _("text.quote"),
-        "person_not_consenting_age_2": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.2),
-        "reason_for_not_consenting_2": _("text.quote"),
-        "person_not_consenting_age_3": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.3),
-        "reason_for_not_consenting_3": _("text.quote"),
-        "person_not_consenting_age_4": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.4),
-        "reason_for_not_consenting_4": _("text.quote"),
-        "person_not_consenting_age_5": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
-        "reason_for_not_consenting_5": _("text.quote"),
-        "person_not_consenting_age_6": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
-        "reason_for_not_consenting_6": _("text.quote"),
-        "person_not_consenting_age_7": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.6),
-        "reason_for_not_consenting_7": _("text.quote"),
-        "person_not_consenting_age_8": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.7),
-        "reason_for_not_consenting_8": _("text.quote"),
-        "person_not_consenting_age_9": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
-        "reason_for_not_consenting_9": _("text.quote"),
-        "household_participants_not_consenting_count": _("custom_random.random_integer", lower=0, upper=9),
-        "participant_status": _("choice", items=["Active", "Completed", "Withdrawn"]),
-        "participant_withdrawal_reason": _(
-            "choice",
-            items=[
-                "Moving Location",
-                "No longer wants to take part",
-                "No longer convenient",
-                "Bad experience with tester/survey",
-                "Participant does not want to self swab",
-                "Swab/blood process distressing",
-                "Too many visits",
-            ],
-        ),
         "Visit_ID": _(
             "choice",
             items=[
@@ -1617,6 +1527,16 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
+        ),
+        "Participant_status": _("choice", items=["Active", "Completed", "Withdrawn"]),
+        "Withdrawal_reason": _(
+            "choice",
+            items=[
+                None,
+                "Withdrawn_no_future_linkage_or_use of samples",
+                "Withdrawn_no_future_linkage",
+                "Withdrawn",
+            ],
         ),
         "Withdrawn_Type": _(
             "choice",
@@ -1696,10 +1616,50 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Deferred 1",
             ],
         ),
+        "Street": _("choice", items=[None, _("address.street_name")]),
+        "City": _("choice", items=[None, _("address.city")]),
+        "County": _("choice", items=[None, _("address.province")]),
+        "Postcode": _("choice", items=[None, _("address.postal_code")]),
         "Cohort": _("choice", items=["Blood and Swab", "Swab Only"]),
         "Fingerprick_Status": _(
             "choice", items=[None, "Accepted", "At least one person consented", "Declined", "Invited", "Not invited"]
         ),
+        "Household_Members_Under_2_Years": _("choice", items=yes_no_none_choice),
+        "Infant_1": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_2": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_3": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_4": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_5": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_6": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_7": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Infant_8": _("custom_random.random_integer", lower=0, upper=8, null_percent=0.1),
+        "Household_Members_Over_2_and_Not_Present": _("choice", items=[None, "Yes", "No"]),
+        "Person_1": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_2": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_3": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_4": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_5": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_8": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
+        "Person_1_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
+        "Person1_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_2_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.2),
+        "Person2_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_3_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.3),
+        "Person3_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_4_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.4),
+        "Person4_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_5_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
+        "Person5_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_6_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
+        "Person6_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_7_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.6),
+        "Person7_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_8_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.7),
+        "Person8_Reason_for_Not_Consenting": _("text.quote"),
+        "Person_9_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
+        "Person9_Reason_for_Not_Consenting": _("text.quote"),
         "Participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
         "Title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "First_Name": _("person.first_name"),
@@ -2005,6 +1965,262 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "Have_you_been_outside_UK_Lastspoke": _("choice", items=yes_no_none_choice),
         "Have_Long_Covid_Symptoms": _("choice", items=yes_no_none_choice),
+        # 101 to 150
+        "swab_sample_transport_status": _(
+            "choice",
+            items=[
+                "Dispatched",
+                "Arrived at Sorting Office",
+                "Arrived at Consolidation Hub",
+                "Arrived at Lab",
+                "Results Returned",
+            ],
+        ),
+        "sample_kit_dispatched_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "sample_kit_not_dispatched_code": _(),  # Waiting for further info
+        "sample_collection_courier_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        ),
+        "sample_collection_kit_received_delivery_partner_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        ),
+        "survey_completion_status": _(
+            "choice",
+            items=[
+                "New",
+                "In Progress",
+                "Completed",
+                "Archived",
+                "Submitted",
+            ],
+        ),
+        "survey_last_modified_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "survey_completed_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "survey_not_completed_reason_code": _(),  # Waiting for further info
+        "swab_sample_barcode": _(),  # Waiting for further info
+        "blood_sample_barcode": _(),  # Waiting for further info
+        "swab_sample_barcode_user_entered": _(),  # Waiting for further info
+        "blood_sample_barcode_user_entered": _(),  # Waiting for further info
+        "Swab_Barcode_Status_Error": _(),  # Waiting for further info
+        "Blood_Barcode_Status_Error": _(),  # Waiting for further info
+        "swab_sample_received_consolidation_point_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "blood_sample_received_consolidation_point_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "swab_sample_received_lab_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "blood_sample_received_lab_datetime": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%d/%m/%Y",
+        ),
+        "digital_type_preference": _(),  # Waiting for further info
+        "swab_taken": _(
+            "choice",
+            items=[
+                "Yes",
+                "No",
+            ],
+        ),
+        "swab_not_taken_reason": _(
+            "choice",
+            items=[
+                "I tried but could not take it",
+                "I did not want to take it this month",
+                "The swab test kit arrived damaged",
+                "The swab test kit arrived with parts missing",
+                "The swab test kit arrived both damaged and with parts missing",
+                "I am near the end of my testing window and my swab test kit has not arrived",
+            ],
+        ),
+        "swab_not_taken_damage_description": _(),  # Waiting for further info
+        "swab_not_taken_missing_parts": _(
+            "choice",
+            items=[
+                "Sample pot with fluid in the bottom and barcode on",
+                "Swab stick",
+                "Re-sealable biohazard bag with absorbent pad",
+                "Copy of your swab barcode",
+                "Sample box",
+                "Sample return bag with a return label on",
+                "Other please specify",
+            ],
+        ),
+        "swab_not_taken_other": _(),  # Waiting for further info
+        "questionnaire_started_no_incentive": _(
+            "choice",
+            items=[
+                "Yes",
+                "No",
+            ],
+        ),
+        "swab_taken_date_time": _(),  # Waiting for further info
+        "swab_returned": _(
+            "choice",
+            items=[
+                "Yes",
+                "No",
+            ],
+        ),
+        "swab_return_date": _(),  # Waiting for further info
+        "swab_return_future_date": _(),  # Waiting for further info
+        "blood_taken": _(
+            "choice",
+            items=[
+                "Yes",
+                "No",
+            ],
+        ),
+        "blood_not_taken_reason": _(
+            "choice",
+            items=[
+                "I tried but could not take it",
+                "I asked not to receive a blood test kit this month",
+                "I decided not to take it this month",
+                "The blood test kit arrived damaged",
+                "The blood test kit arrived with parts missing",
+                "The blood test kit arrived both damaged and with parts missing",
+                "I am near the end of my testing window and my blood test kit has not arrived",
+            ],
+        ),
+        "blood_not_taken_damage_description": _(),  # Waiting for further info
+        "blood_not_taken_missing_parts": _(
+            "choice",
+            items=[
+                "Small sample test tube. This is the tube that is used to collect the blood",
+                "Large sample carrier tube with barcode on",
+                "This is the tube that you put the small sample test tube in to after collecting blood",
+                "Re-sealable biohazard bag with absorbent pad",
+                "Copy of your blood barcode",
+                "Lancets",
+                "Plasters",
+                "Alcohol wipes",
+                "Cleansing wipe",
+                "Sample box",
+                "Sample return bag with a return label on",
+                "Other please specify",
+            ],
+        ),
+        "blood_not_taken_other": _(),  # Waiting for further info
+        "blood_not_taken_could_not_reason": _(
+            "choice",
+            items=[
+                "I couldn't get enough blood into the pot",
+                "The pot spilled",
+                "I had bruising or pain",
+                "I felt unwell",
+                "Other please specify",
+            ],
+        ),
+        "blood_not_taken_could_not_other": _(),  # Waiting for further info
+        "blood_taken_date_time": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        ),
+        "blood_returned": _(
+            "choice",
+            items=[
+                "Yes",
+                "No",
+            ],
+        ),
+        "blood_return_date": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        ),
+        "blood_return_future_date": _(
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format="%Y-%m-%dT%H:%M:%S.%f",
+        ),
+        "work_status_digital": _(
+            "choice",
+            items=[
+                "Employed",
+                "Self-employed",
+                "Not in paid work. This includes being unemployed or doing voluntary work",
+                "Education",
+            ],
+        ),
+        "work_status_employment": _(
+            "choice",
+            items=[
+                "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+            ],
+        ),
+        "work_status_unemployment": _(
+            "choice",
+            items=[
+                "Looking for paid work and able to start",
+                "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+                "Retired",
+            ],
+        ),
+        "work_status_education": _(),  # Waiting for further info
+        "work_in_additional_paid_employment": _("choice", items=yes_no_prefer_not_to_say),
+        "work_main_job_title": _(),  # Waiting for further info
+        "work_main_job_role": _(),  # Waiting for further info
+        "work_sector": _(
+            "choice",
+            items=[
+                "Teaching and education",
+                "Healthcare",
+                "Social Care",
+                "Transport. This includes storage and logistics",
+                "Retail sector. This includes wholesale",
+                "Hospitality - for example hotels or restaurants or cafe",
+                "Food production and agriculture. This includes farming",
+                "Personal Services - for example hairdressers or tattooists",
+                "Information technology and communication",
+                "Financial services.This includes insurance",
+                "Manufacturing or construction",
+                "Civil Service or Local Government",
+                "Armed forces",
+                "Arts or entertainment or recreation",
+                " Other employment sector please specify",
+            ],
+        ),
+        "work_sector_other": _(),  # Waiting for further info
         # 151 to 200
         "think_have_covid_symptom_fever": _("choice", items=yes_no_choice),
         "think_have_covid_symptom_headache": _("choice", items=yes_no_choice),
