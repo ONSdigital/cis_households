@@ -85,7 +85,6 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-
     df = validate_design_weights(
         df=df,
         column_name_to_assign="validated_design_weights",
@@ -112,20 +111,21 @@ def join_and_process_lookups(
     """
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
     old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
-    new_sample_file = assign_filename_column(new_sample_df, "sample_source_file")
-    new_sample_file = new_sample_file.join(
+    new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
+    new_sample_df = new_sample_df.join(
         master_sample_df.select("ons_household_id", "sample_type"),
         on="ons_household_id",
         how="left",
     ).withColumn("date_sample_created", F.lit("2021/12/06"))
-    new_sample_file = new_sample_file.withColumn(
+    new_sample_df = new_sample_df.withColumn(
         "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
     )
+
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
-        df = union_multiple_tables([old_sample_df, new_sample_file])
+        df = union_multiple_tables([old_sample_df, new_sample_df])
     else:
-        df = new_sample_file
+        df = new_sample_df
     df = df.join(
         master_sample_df.select("postcode", "ons_household_id"),
         on="ons_household_id",
@@ -200,16 +200,19 @@ def household_level_populations(
     df_cis20cd
         Dataframe with cis20cd and interim id.
     """
-    df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
-        "postcode", F.regexp_replace(F.col("postcode"), " ", "")
-    )
+    address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
+    df = address_lookup.join(postcode_lookup, on="postcode", how="left")
+    df.show()
     df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
-
+    df.show()
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-
+    df.show()
+    print("COUN PRE:", df.count())
     df = grouped_count_distinct(
         df, "number_of_households_population_by_cis", "unique_property_reference_code", ["cis_area_code_20"]
     )
+    df.show()
+    print("COUNT POST:", df.count())
     df = grouped_count_distinct(
         df, "number_of_households_population_by_country", "unique_property_reference_code", ["country_code_12"]
     )

@@ -107,6 +107,7 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
+        print(f"    created table:" + file["table_name"])
         update_table(df, file["table_name"], "overwrite")
 
 
@@ -746,6 +747,7 @@ def calculate_household_level_populations(
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
     )
+    household_info_df.show()
     update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
 
 

@@ -14,6 +14,7 @@ from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -24,8 +25,11 @@ def grouped_count_distinct(
     if not isinstance(reference_columns, list):
         reference_columns = [reference_columns]
     grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
-    df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
-    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+    print("grouped")
+    grouped_df.show()
+    df = null_safe_join(df, grouped_df, group_by_columns, [])
+    # df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
+    return df  # .withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
 
 
 def assign_multigeneration(

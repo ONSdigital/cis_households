@@ -76,10 +76,10 @@ sessions = {
     ),
     "xxl": (
         SparkSession.builder.config("spark.executor.memory", "64g")
-        .config("spark.yarn.executor.memoryOverhead", "6g")
-        .config("spark.executor.cores", 4)
+        .config("spark.yarn.executor.memoryOverhead", "16g")
+        .config("spark.executor.cores", 6)
         .config("spark.dynamicAllocation.enabled", "true")
-        .config("spark.dynamicAllocation.maxExecutors", 15)
+        .config("spark.dynamicAllocation.maxExecutors", 14)
         .config("spark.sql.shuffle.partitions", 1000)
         .config("spark.shuffle.service.enabled", "true")
         .config("spark.ui.showConsoleProgress", "false")
