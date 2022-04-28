@@ -58,6 +58,7 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
+from cishouseholds.weights.weights import join_greography_lookups
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -734,8 +735,8 @@ def impute_demographic_columns(
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
-@register_pipeline_stage("calculate_household_level_populations")
-def calculate_household_level_populations(
+@register_pipeline_stage("collate_geographies")
+def collate_geographies(
     address_lookup_table,
     postcode_lookup_table,
     lsoa_cis_lookup_table,
@@ -747,8 +748,15 @@ def calculate_household_level_populations(
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup_table)
     country_lookup_df = extract_from_table(country_lookup_table)
 
-    df = household_level_populations(address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df)
+    df = join_greography_lookups(address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df)
     update_table(df, joined_geography_lookup_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(joined_geography_lookup_table, household_level_populations_table):
+    df = extract_from_table(joined_geography_lookup_table)
+    df = household_level_populations(df)
+    update_table(df, household_level_populations_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")

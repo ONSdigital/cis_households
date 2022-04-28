@@ -176,10 +176,21 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     return old_df
 
 
+def join_greography_lookups(df):
+    "Join geographies required for household level population calculation"
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
+    )
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
+    )
+    return df
+
+
 def household_level_populations(
     address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
 ):
-    "Join geographies and derive household counts for design weight calculations"
+    "Derive household counts for design weight calculations"
     df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
@@ -187,12 +198,6 @@ def household_level_populations(
 
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
 
-    df = assign_distinct_count_in_group(
-        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
-    )
-    df = assign_distinct_count_in_group(
-        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
-    )
     return df
 
 
