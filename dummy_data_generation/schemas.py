@@ -492,6 +492,9 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Work_in_a_nursing_residential_care_home": _("choice", items=yes_no_none_choice),
         "Do_you_currently_work_in_healthcare": _("choice", items=yes_no_none_choice),
         "Direct_contact_patients_clients_resid": _("choice", items=yes_no_none_choice),
+        "Have_physical_mental_health_or_illnesses": _("choice", items=yes_no_none_choice),
+        "physical_mental_health_or_illness_reduces_activity_ability": _("choice", items=yes_no_none_choice),
+        "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _("text.sentence"),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
@@ -956,6 +959,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Have_you_ever_smoked_regularly": _("choice", items=yes_no_none_choice),
         "Do_you_currently_smoke_or_vape": _(
             "choice", items=[None, "Yes,  cigarettes", "Yes, cigar", "Yes, pipe", "Yes, vape/e-cigarettes"]
+        ),
+        "Do_you_currently_smoke_or_vape_at_all": _(
+            "choice", items=[None, "Cigarettes", "Cigar", "Pipe", "Vape/e-cigarettes", "Hookah/shisha pipes"]
         ),
         "Smoke_Yes_cigarettes": _("choice", items=yes_no_none_choice),
         "Smoke_Yes_cigar": _("choice", items=yes_no_none_choice),
