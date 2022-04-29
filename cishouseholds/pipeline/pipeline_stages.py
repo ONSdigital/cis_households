@@ -107,7 +107,7 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
-        print(f"    created table:" + file["table_name"])
+        print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
 
 

@@ -13,7 +13,6 @@ from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
-from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
