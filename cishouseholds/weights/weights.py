@@ -14,6 +14,7 @@ from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
+from cishouseholds.weights.pre_calibration import DesignWeightError
 
 # from cishouseholds.weights.edit import clean_df
 
@@ -68,11 +69,9 @@ def generate_weights(
         df = df.withColumn("number_sampled_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
-    print("0: ", df.count())
     df = swab_weight_wrapper(
         df=df, household_level_populations_df=household_level_populations_df, cis_window=cis_window
     )
-    print("1: ", df.count())
     scenario_string = chose_scenario_of_dweight_for_antibody_different_household(
         df=df,
         tranche_eligible_indicator="tranche_eligible_households",
@@ -81,14 +80,12 @@ def generate_weights(
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
-    print("2: ", df.count())
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,  # type: ignore
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-    print("3: ", df.count())
     df = validate_design_weights(
         df=df,
         column_name_to_assign="validated_design_weights",
@@ -97,7 +94,6 @@ def generate_weights(
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
     )
-    print("4: ", df.count())
     return df
 
 
@@ -401,54 +397,44 @@ def validate_design_weights(
     - no design weights are missing
     - dweights consistent by cis area
     """
+    # import pdb; pdb.set_trace()
+    window = Window.partitionBy(F.lit(1))
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
-    df = df.withColumn(column_name_to_assign, F.lit(True))
     # check 1.1
     df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            F.lit(df.agg(F.sum(swab_weight_column)).collect()[0][0])
-            != F.lit(df.agg(F.sum(num_households_column)).collect()[0][0]),
-            False,
-        ).otherwise(F.col(column_name_to_assign)),
+        "CHECK1s",
+        F.when(F.sum(swab_weight_column).over(window) == F.sum(num_households_column).over(window), 0).otherwise(1),
     )
-    print("CHECK 1")
-    df.show()
     # check 1.2
     df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            F.lit(df.agg(F.sum(antibody_weight_column)).collect()[0][0])
-            != F.lit(df.agg(F.sum(num_households_column)).collect()[0][0]),
-            False,
-        ).otherwise(F.col(column_name_to_assign)),
+        "CHECK1a",
+        F.when(F.sum(antibody_weight_column).over(window) == F.sum(num_households_column).over(window), 0).otherwise(1),
     )
-    print("CHECK 1b")
-    df.show()
     # check 2
-    df = df.withColumn(
-        column_name_to_assign, F.when(F.least(*columns) < 0, False).otherwise(F.col(column_name_to_assign))
-    )
-    print("CHECK 2")
-    df.show()
+    df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
     # check 3
-
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
-    print("3a: ")
-    df.show()
-    df = df.withColumn(
-        column_name_to_assign, F.when(F.col("NUM_NULLS") != 0, False).otherwise(F.col(column_name_to_assign))
-    ).drop("NUM_NULLS")
-    print("CHECK 3")
-    df.show()
+    df = df.withColumn("CHECK3", F.when(F.col("NUM_NULLS") != 0, 1).otherwise(0)).drop("NUM_NULLS")
     # check 4
     df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col("TEMP_DISTINCT_COUNT") != 1, False).otherwise(F.col(column_name_to_assign)),
-    ).drop("TEMP_DISTINCT_COUNT")
-    print("CHECK 4")
-    df.show()
+    df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
+
+    pdf = df.select("CHECK1a", "CHECK1s", "CHECK2", "CHECK3", "CHECK4").toPandas()
+
+    check_1_s = True if 1 not in pdf["CHECK1s"].values.tolist() else False
+    check_1_a = True if 1 not in pdf["CHECK1a"].values.tolist() else False
+    check_2 = True if 1 not in pdf["CHECK2"].values.tolist() else False
+    check_3 = True if 1 not in pdf["CHECK3"].values.tolist() else False
+    check_4 = True if 1 not in pdf["CHECK4"].values.tolist() else False
+
+    if not check_1_a or check_1_s:
+        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
+    if not check_2:
+        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
+    if not check_3:
+        raise DesignWeightError("check_3 There are no missing design weights.")
+    if not check_4:
+        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
     return df
 
 
