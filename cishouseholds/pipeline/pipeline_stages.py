@@ -537,19 +537,15 @@ def outer_join_antibody_results(
     update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
 
 
-# ANTIBODY ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
     input_survey_responses_table,
     input_antibody_table,
     blood_files_to_exclude,
     merged_1to1_table,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
     merged_responses_antibody_data,
     antibody_merge_residuals,
     antibody_merge_failed_records,
@@ -584,22 +580,22 @@ def merge_blood_ETL(
         antibody_df,
         blood_files_to_exclude,
     )
-    update_table(df, output_joined_table, write_mode="overwrite")
+    update_table(df, joined_table, write_mode="overwrite")
     update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
 
-    df = extract_from_table(input_joined_table)  # TODO: output joined table and input joined table refer to the same
+    df = extract_from_table(joined_table)
     df = merge_blood_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
+    df = extract_from_table(validated_table)
 
     (
         merged_responses_antibody_df,
@@ -619,7 +615,6 @@ def merge_blood_ETL(
         ],
         [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
     )
-    # TODO: unsure that inputs output tables are consistent
 
 
 @register_pipeline_stage("merge_swab_ETL")
@@ -628,12 +623,9 @@ def merge_swab_ETL(
     input_swab_table,
     swab_files_to_exclude,
     merged_1to1_table,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
     merged_responses_antibody_swab_data,
     swab_merge_residuals,
     swab_merge_failed_records,
@@ -669,21 +661,21 @@ def merge_swab_ETL(
         swab_files_to_exclude,
     )
     update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
-    update_table(df=df, table_name=output_joined_table, write_mode="overwrite")
+    update_table(df=df, table_name=joined_table, write_mode="overwrite")
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(joined_table)
     df = merge_swab_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
+    df = extract_from_table(validated_table)
     (
         merged_responses_antibody_swab_df,
         swab_merge_residuals_df,
