@@ -6,9 +6,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import grouped_count_distinct
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -47,6 +47,7 @@ def generate_weights(
     )
     # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
+
     if tranche_df is not None:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
@@ -67,9 +68,11 @@ def generate_weights(
         df = df.withColumn("number_sampled_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
+    print("0: ", df.count())
     df = swab_weight_wrapper(
         df=df, household_level_populations_df=household_level_populations_df, cis_window=cis_window
     )
+    print("1: ", df.count())
     scenario_string = chose_scenario_of_dweight_for_antibody_different_household(
         df=df,
         tranche_eligible_indicator="tranche_eligible_households",
@@ -78,13 +81,14 @@ def generate_weights(
         n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
     )
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
-
+    print("2: ", df.count())
     df = carry_forward_design_weights(
         df=df,
         scenario=scenario_string,  # type: ignore
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
+    print("3: ", df.count())
     df = validate_design_weights(
         df=df,
         column_name_to_assign="validated_design_weights",
@@ -93,6 +97,7 @@ def generate_weights(
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
     )
+    print("4: ", df.count())
     return df
 
 
@@ -120,7 +125,6 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
     )
-
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
         df = union_multiple_tables([old_sample_df, new_sample_df])
@@ -139,11 +143,13 @@ def join_and_process_lookups(
     df = df.drop("rural_urban_classification_11", "country_code_12").join(
         postcode_lookup_df.select(
             "postcode", "rural_urban_classification_11", "output_area_code_11", "country_code_12"
-        ),
+        ).distinct(),
         on="postcode",
         how="left",
     )
-    df = df.join(country_lookup_df.select("country_code_12", "country_name_12"), on="country_code_12", how="left")
+    df = df.join(
+        country_lookup_df.select("country_code_12", "country_name_12").distinct(), on="country_code_12", how="left"
+    )
     df = df.withColumn("batch_number", F.lit(1))
     if first_run:
         return df
@@ -176,13 +182,6 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     return old_df
 
 
-# 1163
-# necessary columns:
-# - postcode
-# - lower_super_output_area_code_11
-# - country_code_12
-# - cis_area_code_20
-# - unique_property_reference_code
 def household_level_populations(
     address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
@@ -202,19 +201,14 @@ def household_level_populations(
     """
     address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
     df = address_lookup.join(postcode_lookup, on="postcode", how="left")
-    df.show()
     df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
-    df.show()
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df.show()
-    print("COUN PRE:", df.count())
-    df = grouped_count_distinct(
-        df, "number_of_households_population_by_cis", "unique_property_reference_code", ["cis_area_code_20"]
+
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
     )
-    df.show()
-    print("COUNT POST:", df.count())
-    df = grouped_count_distinct(
-        df, "number_of_households_population_by_country", "unique_property_reference_code", ["country_code_12"]
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
     )
     return df
 
@@ -311,7 +305,7 @@ def calculate_dweight_swabs(
     df = df.drop("number_of_households_population_by_cis").join(
         household_level_populations_df.select(
             "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
-        ),
+        ).distinct(),
         on="cis_area_code_20",
         how="left",
     )
@@ -418,6 +412,8 @@ def validate_design_weights(
             False,
         ).otherwise(F.col(column_name_to_assign)),
     )
+    print("CHECK 1")
+    df.show()
     # check 1.2
     df = df.withColumn(
         column_name_to_assign,
@@ -427,22 +423,30 @@ def validate_design_weights(
             False,
         ).otherwise(F.col(column_name_to_assign)),
     )
+    print("CHECK 1b")
+    df.show()
     # check 2
     df = df.withColumn(
         column_name_to_assign, F.when(F.least(*columns) < 0, False).otherwise(F.col(column_name_to_assign))
     )
+    print("CHECK 2")
+    df.show()
     # check 3
 
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
     df = df.withColumn(
         column_name_to_assign, F.when(F.col("NUM_NULLS") != 0, False).otherwise(F.col(column_name_to_assign))
     ).drop("NUM_NULLS")
+    print("CHECK 3")
+    df.show()
     # check 4
-    df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
+    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col("TEMP_DISTINCT_COUNT") != 1, False).otherwise(F.col(column_name_to_assign)),
     ).drop("TEMP_DISTINCT_COUNT")
+    print("CHECK 4")
+    df.show()
     return df
 
 

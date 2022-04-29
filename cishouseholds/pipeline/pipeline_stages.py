@@ -737,18 +737,21 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup_table,
+    postcode_lookup_table,
+    lsoa_cis_lookup_table,
+    country_lookup_table,
+    joined_geography_lookup_table,
 ):
-    address_lookup_df = extract_from_table(address_lookup)
-    postcode_lookup_df = extract_from_table(postcode_lookup)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
-    country_lookup_df = extract_from_table(country_lookup)
+    address_lookup_df = extract_from_table(address_lookup_table)
+    postcode_lookup_df = extract_from_table(postcode_lookup_table)
+    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup_table)
+    country_lookup_df = extract_from_table(country_lookup_table)
 
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
     )
-    household_info_df.show()
-    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
+    update_table(household_info_df, joined_geography_lookup_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
