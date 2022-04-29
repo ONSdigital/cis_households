@@ -1561,13 +1561,14 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
         ),
         "blood_sample_transport_status": _(
+            "choice",
             items=[
                 "Dispatched",
                 "Arrived at Sorting Office",
                 "Arrived at Consolidation Hub",
                 "Arrived at Lab",
                 "Results Returned",
-            ]
+            ],
         ),
         "sex": _("choice", items=["Female", "Male", None]),
         "ethnic_group": _(
@@ -1898,6 +1899,55 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "work_sector_other": _("text.sentence"),
         # 151 to 200
+        "work_in_healthcare": _(
+            "choice",
+            items=[
+                None,
+                "Primary care (e.g. GP, dentist)",
+                "Secondary care (e.g. hospital)",
+                " Other healthcare (e.g. mental health)",
+            ],
+        ),
+        "work_nursing_or_residential_care_home": _("choice", items=yes_no_prefer_not_to_say),
+        "work_direct_contact_patients_or_clients": _("choice", items=yes_no_prefer_not_to_say),
+        "where_are_you_mainly_working_now": _(
+            "choice",
+            items=[
+                "From home meaning in the same grounds or building as your home",
+                "Somewhere else meaning not at your home",
+                "Both from home and somewhere else",
+            ],
+        ),
+        "work_not_from_home_days_per_week": _(
+            "choice",
+            items=[None, "0", "1", "2", "3", "4", "5", "6", "7"],
+        ),
+        "education_in_person_days_per_week": _(
+            "choice",
+            items=[None, "0", "1", "2", "3", "4", "5", "6", "7"],
+        ),
+        "transport_to_work_or_education": _(
+            "choice",
+            items=[
+                "Underound, Metro, Light Rail or Tram",
+                "Train",
+                "Bus, minibus or coach",
+                "Car or van",
+                "Taxi or minicab",
+                "Bicycle",
+                "On foot",
+                "Other method",
+            ],
+        ),
+        "ability_to_socially_distance_at_work_or_education": _(
+            "choice",
+            items=[
+                "Easy to maintain 2 metres apart",
+                "Relatively easy to maintain 2 metres apart",
+                "Difficult to maintain 2 metres apart",
+                "Very difficult to be more than 1 metre away",
+            ],
+        ),
         "think_have_covid_symptom_fever": _("choice", items=yes_no_choice),
         "think_have_covid_symptom_headache": _("choice", items=yes_no_choice),
         "think_have_covid_symptom_muscle_ache": _("choice", items=yes_no_choice),
