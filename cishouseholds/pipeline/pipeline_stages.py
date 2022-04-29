@@ -584,10 +584,10 @@ def merge_blood_ETL(
         antibody_df,
         blood_files_to_exclude,
     )
-    update_table(df, output_joined_table)
-    update_table(df_1to1, merged_1to1_table)  # Fastforward 1to1 succesful matches
+    update_table(df, output_joined_table, write_mode="overwrite")
+    update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(input_joined_table)  # TODO: output joined table and input joined table refer to the same
     df = merge_blood_xtox_flag(df)
     update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
 
@@ -619,6 +619,7 @@ def merge_blood_ETL(
         ],
         [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
     )
+    # TODO: unsure that inputs output tables are consistent
 
 
 @register_pipeline_stage("merge_swab_ETL")
@@ -667,8 +668,8 @@ def merge_swab_ETL(
         swab_df,
         swab_files_to_exclude,
     )
-    update_table(df=df_1to1, table_name=merged_1to1_table)
-    update_table(df=df, table_name=output_joined_table)
+    update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
+    update_table(df=df, table_name=output_joined_table, write_mode="overwrite")
 
     df = extract_from_table(input_joined_table)
     df = merge_swab_xtox_flag(df)
