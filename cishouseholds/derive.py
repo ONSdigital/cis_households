@@ -33,7 +33,7 @@ def assign_distinct_count_in_group(
     group_window = Window.partitionBy(*group_by_columns)
     df = df.withColumn(
         column_name_to_assign,
-        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window),
+        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
     )
     return df
 
