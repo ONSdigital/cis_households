@@ -434,6 +434,8 @@ def validate_design_weights(
     # check 3
 
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
+    print("3a: ")
+    df.show()
     df = df.withColumn(
         column_name_to_assign, F.when(F.col("NUM_NULLS") != 0, False).otherwise(F.col(column_name_to_assign))
     ).drop("NUM_NULLS")

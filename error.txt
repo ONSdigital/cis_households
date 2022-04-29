@@ -1,0 +1,7 @@
+Run ID: 2
+Spark UI: http://spark-t1efcvddo6ufyqff.cdswmn-d01-01.ons.statistics.gov.uk
+Spark application ID: application_1641374371460_11774
+Stage 1/1: sample_file_ETL
+0:  48667
+1:  48667
+    - completed in: 1 minute(s) and 13.9 second(s)
