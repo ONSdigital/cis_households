@@ -6,9 +6,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import grouped_count_distinct
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -176,42 +176,32 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     return old_df
 
 
-# 1163
-# necessary columns:
-# - postcode
-# - lower_super_output_area_code_11
-# - country_code_12
-# - cis_area_code_20
-# - unique_property_reference_code
+def join_greography_lookups(df):
+    "Join geographies required for household level population calculation"
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
+    )
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
+    )
+    return df
+
+
 def household_level_populations(
     address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
-) -> DataFrame:
-    """
-    Steps:
-    1. merge address base extract and NSPL by postcode
-    2. merge the result of first step  into LSOAtoCis lookup, by lower_super_output_area_code_11
-    3. merge the result of the second step with country name lookup by country_code
-    4. calculate required population total columns on joined dataset
-
-    df_address_base
-        Dataframe with address base file
-    df_nspl
-        Dataframe linking postcodes and lower level output area.
-    df_cis20cd
-        Dataframe with cis20cd and interim id.
-    """
+):
+    "Derive household counts for design weight calculations"
     df = address_lookup.join(postcode_lookup, on="postcode", how="left").withColumn(
         "postcode", F.regexp_replace(F.col("postcode"), " ", "")
     )
     df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
 
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-
-    df = grouped_count_distinct(
-        df, "number_of_households_population_by_cis", "unique_property_reference_code", ["cis_area_code_20"]
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
     )
-    df = grouped_count_distinct(
-        df, "number_of_households_population_by_country", "unique_property_reference_code", ["country_code_12"]
+    df = assign_distinct_count_in_group(
+        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
     )
     return df
 
@@ -435,7 +425,7 @@ def validate_design_weights(
         column_name_to_assign, F.when(F.col("NUM_NULLS") != 0, False).otherwise(F.col(column_name_to_assign))
     ).drop("NUM_NULLS")
     # check 4
-    df = grouped_count_distinct(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
+    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col("TEMP_DISTINCT_COUNT") != 1, False).otherwise(F.col(column_name_to_assign)),
