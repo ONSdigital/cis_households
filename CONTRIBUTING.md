@@ -49,6 +49,7 @@ Activate the `conda` environment and install the project development dependencie
 ```
 activate cis
 pip install pypandoc==1.5
+pip install pyspark==2.4.1
 pip install 'cffi>=1.10.0'
 pip install -e .[dev]
 ```

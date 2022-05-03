@@ -398,14 +398,18 @@ def validate_design_weights_or_precal(
     window = Window.partitionBy(F.lit(1))
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
     # check 1.1
-    df = df.withColumn(
-        "CHECK1s",
-        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_column).over(window), 0).otherwise(1),
+    df = (
+        df.withColumn(
+            "CHECK1s",
+            F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
+        )
+        .withColumn("tot", F.sum(swab_weight_column).over(window))
+        .withColumn("tot2", F.sum(antibody_weight_column).over(window))
     )
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_column).over(window), 0).otherwise(1),
+        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
     )
     # check 2
     df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
@@ -422,7 +426,7 @@ def validate_design_weights_or_precal(
     check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
     check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
 
-    if not check_1_a or check_1_s:
+    if not (check_1_a or check_1_s):
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2:
         raise DesignWeightError("check_2: The design weights are NOT all are positive.")
