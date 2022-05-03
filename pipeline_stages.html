@@ -459,10 +459,10 @@ Optionally also point to an update map to be used for the variable name mapping 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.union_survey_response_files">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">union_survey_response_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformed_survey_responses_table_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unioned_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.union_survey_response_files" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">union_survey_response_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables_to_union</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unioned_survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.union_survey_response_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Union survey response for v0, v1 and v2, and write to table.
-:param transformed_survey_responses_table_pattern: input table pattern for extracting each of the transformed survey responses tables
-:param unioned_survey_responses_table: output table name for the combine file of 3 unioned survey responses</p>
+:param unioned_survey_responses_table: input tables for extracting each of the transformed survey responses tables
+:param unioned_survey_responses_table: output table name for the combine file of all unioned survey responses</p>
 </dd></dl>
 
 <dl class="py function">
