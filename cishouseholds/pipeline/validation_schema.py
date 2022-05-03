@@ -1048,7 +1048,7 @@ validation_schemas = {
         "consent_blood_samples_if_positive_yn": string_dict,
         "participant_invited_digital": string_dict,
         "participant_enrolled_digital": string_dict,
-        "participant_enrollment_datetime": string_dict,
+        "participant_enrolment_datetime": string_dict,
         "swab_sample_transport_status": string_dict,
         "sample_kit_dispatched_datetime": string_dict,
         "sample_kit_not_dispatched_code": string_dict,

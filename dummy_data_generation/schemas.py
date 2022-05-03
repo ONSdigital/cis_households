@@ -1610,7 +1610,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "consent_blood_samples_if_positive_yn": _("choice", items=yes_no_choice),
         "participant_invited_digital": _("choice", items=yes_no_choice),
         "participant_enrolled_digital": _("choice", items=yes_no_choice),
-        "participant_enrollment_datetime": _(
+        "participant_enrolment_datetime": _(
             "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
         ),
         # 101 to 150
