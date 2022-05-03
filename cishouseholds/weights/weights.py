@@ -6,6 +6,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
@@ -197,12 +198,8 @@ def household_level_populations(
     df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
 
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df = assign_distinct_count_in_group(
-        df, "number_of_households_population_by_cis", ["unique_property_reference_code"], ["cis_area_code_20"]
-    )
-    df = assign_distinct_count_in_group(
-        df, "number_of_households_population_by_country", ["unique_property_reference_code"], ["country_code_12"]
-    )
+    df = assign_count_by_group(df, "number_of_households_population_by_cis", ["cis_area_code_20"])
+    df = assign_count_by_group(df, "number_of_households_population_by_country", ["country_code_12"])
     return df
 
 
