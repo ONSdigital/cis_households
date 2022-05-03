@@ -8,6 +8,7 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.weights.weights import DesignWeightError
 from cishouseholds.weights.weights import validate_design_weights_or_precal
 
 # from cishouseholds.derive import assign_ethnicity_white
@@ -557,11 +558,6 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179
-class DesignWeightError(Exception):
-    pass
-
-
 def precalibration_checkpoints(
     df: DataFrame,
     scaled_dweight_adjusted: str,
@@ -582,7 +578,6 @@ def precalibration_checkpoints(
     else:
         window = Window.partitionBy(*grouping_list)
 
-    # TODO: use validate_design_weights() stefen's function
     # check_1: The design weights are adding up to total population
     df = df.withColumn("check_1", F.sum(F.col(scaled_dweight_adjusted)).over(window))
     df = df.withColumn("check_1", F.when(F.col(total_population) != F.col("check_1"), 1))

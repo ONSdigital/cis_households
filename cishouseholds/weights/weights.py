@@ -14,7 +14,6 @@ from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
 from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
-from cishouseholds.weights.pre_calibration import DesignWeightError
 
 # from cishouseholds.weights.edit import clean_df
 
@@ -86,7 +85,7 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-    df = validate_design_weights_or_precal(
+    validate_design_weights_or_precal(
         df=df,
         num_households_column="number_of_households_population_by_cis",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
@@ -377,6 +376,10 @@ def calculate_combined_dweight_swabs(
         F.col("scaling_factor_combined_design_weight_swab") * F.col(design_weight_column),
     )
     return df
+
+
+class DesignWeightError(Exception):
+    pass
 
 
 # 1166
