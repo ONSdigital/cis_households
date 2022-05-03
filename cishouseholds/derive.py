@@ -38,6 +38,20 @@ def assign_distinct_count_in_group(
     return df
 
 
+def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
+    return df
+
+
 def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,
