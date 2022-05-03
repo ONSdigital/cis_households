@@ -32,6 +32,7 @@ from cishouseholds.pipeline.input_file_processing import extract_validate_transf
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
@@ -921,7 +922,7 @@ def report(
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
-        invalid_files_count = invalid_files_log.count()
+        invalid_files_count = invalid_files_log.filter(F.col("run_id") == get_run_id()).count()
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
@@ -981,7 +982,7 @@ def report(
             processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
             processed_file_counts = processed_files_df["file_row_count"]
             individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
-            name = f"{type}"
+            name = f"{dataset}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
