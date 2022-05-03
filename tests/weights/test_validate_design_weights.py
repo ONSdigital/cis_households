@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.weights import validate_design_weights
+from cishouseholds.weights.weights import validate_design_weights_or_precal
 
 
 def test_validate_design_weights(spark_session):
@@ -42,9 +42,8 @@ def test_validate_design_weights(spark_session):
             validated boolean
             """,
     )
-    output_df = validate_design_weights(
+    output_df = validate_design_weights_or_precal(
         df=input_df,
-        column_name_to_assign="validated",
         num_households_column="num_hh",
         swab_weight_column="swab_weight",
         antibody_weight_column="antibody_weight",

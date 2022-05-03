@@ -86,9 +86,8 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_population_by_cis",
     )
-    df = validate_design_weights(
+    df = validate_design_weights_or_precal(
         df=df,
-        column_name_to_assign="validated_design_weights",
         num_households_column="number_of_households_population_by_cis",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
@@ -381,9 +380,8 @@ def calculate_combined_dweight_swabs(
 
 
 # 1166
-def validate_design_weights(
+def validate_design_weights_or_precal(
     df: DataFrame,
-    column_name_to_assign: str,
     num_households_column: str,
     swab_weight_column: str,
     antibody_weight_column: str,
@@ -402,12 +400,12 @@ def validate_design_weights(
     # check 1.1
     df = df.withColumn(
         "CHECK1s",
-        F.when(F.sum(swab_weight_column).over(window) == F.sum(num_households_column).over(window), 0).otherwise(1),
+        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_column).over(window), 0).otherwise(1),
     )
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.sum(num_households_column).over(window), 0).otherwise(1),
+        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_column).over(window), 0).otherwise(1),
     )
     # check 2
     df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
