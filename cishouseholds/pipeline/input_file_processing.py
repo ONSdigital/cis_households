@@ -15,7 +15,7 @@ from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
-from cishouseholds.pipeline.validation_schema import csv_lookup_schema
+from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -26,7 +26,7 @@ class InvalidFileError(Exception):
 
 
 def extract_lookup_csv(
-    lookup_file_path: str, validation_schema: dict = None, column_name_map: dict = None, drop_not_found: bool = False
+    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
 ):
     """
     extract and validate a csv lookup file from path with validation_schema
@@ -77,7 +77,7 @@ def extract_validate_transform_input_data(
         df = df.filter(~F.col(id_column).isin(filter_ids))
 
         if record_editing_config_path is not None:
-            editing_lookup_df = extract_lookup_csv(record_editing_config_path, csv_lookup_schema)
+            editing_lookup_df = extract_lookup_csv(record_editing_config_path, validation_schemas["csv_lookup_schema"])
             df = update_from_lookup_df(df, editing_lookup_df, id_column=id_column, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
@@ -88,7 +88,7 @@ def extract_validate_transform_input_data(
     return df
 
 
-def extract_input_data(file_paths: Union[List[str], str], validation_schema: dict, sep: str) -> DataFrame:
+def extract_input_data(file_paths: Union[List[str], str], validation_schema: Union[dict, None], sep: str) -> DataFrame:
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
