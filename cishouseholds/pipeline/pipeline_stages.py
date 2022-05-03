@@ -19,6 +19,7 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -537,19 +538,18 @@ def outer_join_antibody_results(
     update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
 
 
-# ANTIBODY ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
     input_survey_responses_table,
     input_antibody_table,
     blood_files_to_exclude,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
-    antibody_output_tables,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_data,
+    antibody_merge_residuals,
+    antibody_merge_failed_records,
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -576,28 +576,46 @@ def merge_blood_ETL(
     antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    df = merge_blood_process_preparation(
+    df_1to1, df = merge_blood_process_preparation(
         survey_df,
         antibody_df,
         blood_files_to_exclude,
     )
-    update_table(df, output_joined_table)
+    update_table(df, joined_table, write_mode="overwrite")
+    update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(joined_table)
     df = merge_blood_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
-    output_antibody_df_list = merge_blood_process_filtering(df)
-    load_to_data_warehouse_tables(output_antibody_df_list, antibody_output_tables)
+    df = extract_from_table(validated_table)
+
+    (
+        merged_responses_antibody_df,
+        antibody_merge_residuals_df,
+        antibody_merge_failed_records_df,
+    ) = merge_blood_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_df,
+            antibody_merge_residuals_df,
+            antibody_merge_failed_records_df,
+        ],
+        [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
+    )
 
 
 @register_pipeline_stage("merge_swab_ETL")
@@ -605,13 +623,13 @@ def merge_swab_ETL(
     input_survey_responses_table,
     input_swab_table,
     swab_files_to_exclude,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
-    swab_output_tables,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_swab_data,
+    swab_merge_residuals,
+    swab_merge_failed_records,
 ):
     """
     High level function for joining PCR test result data to survey responses.
@@ -638,28 +656,49 @@ def merge_swab_ETL(
     swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    df = merge_swab_process_preparation(
+    df_1to1, df = merge_swab_process_preparation(
         survey_df,
         swab_df,
         swab_files_to_exclude,
     )
-    update_table(df=df, table_name=output_joined_table)
+    update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
+    update_table(df=df, table_name=joined_table, write_mode="overwrite")
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(joined_table)
     df = merge_swab_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
-    output_swab_df_list = merge_swab_process_filtering(df)
-    load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
+    df = extract_from_table(validated_table)
+    (
+        merged_responses_antibody_swab_df,
+        swab_merge_residuals_df,
+        swab_merge_failed_records_df,
+    ) = merge_swab_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_swab_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_swab_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_swab_df,
+            swab_merge_residuals_df,
+            swab_merge_failed_records_df,
+        ],
+        [
+            merged_responses_antibody_swab_data,
+            swab_merge_residuals,
+            swab_merge_failed_records,
+        ],
+    )
 
 
 @register_pipeline_stage("join_vaccination_data")
