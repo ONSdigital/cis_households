@@ -1,3 +1,4 @@
+import time
 import traceback
 from datetime import datetime
 
@@ -33,7 +34,9 @@ def run_from_config():
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
-        pipeline_error_count = run_pipeline_stages(pipeline_stage_list, run_id)
+        pipeline_error_count = run_pipeline_stages(
+            pipeline_stage_list, run_id, config["retry_n_times_on_fail"], config["retry_wait_time"]
+        )
     except Exception as e:
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
@@ -45,25 +48,28 @@ def run_from_config():
     add_run_status(run_id, "finished")
 
 
-def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
+def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int, retry_wait_time: int):
     """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
-        try:
-            stage_name = stage_config.pop("function")
-            stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
-            print(stage_text)  # functional
-            pipeline_stages[stage_name](**stage_config)
-        except Exception:
-            pipeline_error_count += 1
-            add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
-            print(f"Error: {traceback.format_exc()}")  # functional
-        finally:
-            run_time = (datetime.now() - stage_start).total_seconds()
-            print(f"    - completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
+        for attempt in range(1, retry_count + 1):
+            try:
+                stage_name = stage_config.pop("function")
+                stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
+                print(stage_text)  # functional
+                pipeline_stages[stage_name](**stage_config)
+            except Exception:
+                pipeline_error_count += 1
+                status = "errored" if attempt == 1 else f"errored on attempt {attempt}"
+                add_run_status(run_id, status, stage_text, "\n".join(traceback.format_exc()))
+                print(f"Error: {traceback.format_exc()}")  # functional
+            finally:
+                run_time = (datetime.now() - stage_start).total_seconds()
+                print(f"    - completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
+            time.sleep(retry_wait_time)
     return pipeline_error_count
 
 
