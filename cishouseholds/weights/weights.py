@@ -418,13 +418,11 @@ def validate_design_weights(
     df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
 
-    pdf = df.select("CHECK1a", "CHECK1s", "CHECK2", "CHECK3", "CHECK4").toPandas()
-
-    check_1_s = True if 1 not in pdf["CHECK1s"].values.tolist() else False
-    check_1_a = True if 1 not in pdf["CHECK1a"].values.tolist() else False
-    check_2 = True if 1 not in pdf["CHECK2"].values.tolist() else False
-    check_3 = True if 1 not in pdf["CHECK3"].values.tolist() else False
-    check_4 = True if 1 not in pdf["CHECK4"].values.tolist() else False
+    check_1_s = True if df.filter(F.col("CHECK1s") == 1).count() == 0 else False
+    check_1_a = True if df.filter(F.col("CHECK1a") == 1).count() == 0 else False
+    check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
+    check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
+    check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
 
     if not check_1_a or check_1_s:
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
@@ -434,7 +432,7 @@ def validate_design_weights(
         raise DesignWeightError("check_3 There are no missing design weights.")
     if not check_4:
         raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
-    return df
+    return df.drop(*[col for col in df.columns if "CHECK" in col])
 
 
 # 1167
