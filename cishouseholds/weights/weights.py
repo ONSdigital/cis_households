@@ -430,7 +430,6 @@ def validate_design_weights_or_precal(
         raise DesignWeightError("check_3 There are no missing design weights.")
     if not check_4:
         raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
-    return df.drop(*[col for col in df.columns if "CHECK" in col])
 
 
 # 1167
