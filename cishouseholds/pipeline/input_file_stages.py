@@ -14,6 +14,7 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_surv
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
 from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
+from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
@@ -130,6 +131,19 @@ historical_blood_parameters = {
     "datetime_column_map": blood_datetime_map,
     "transformation_functions": [transform_blood_delta, add_fields],
     "source_file_column": "blood_test_source_file",
+}
+
+cis_digital_parameters = {
+    "stage_name": "survey_responses_version_digital_ETL",
+    "dataset_name": "survey_responses_digital",
+    "id_column": "visit_id",
+    "validation_schema": validation_schemas["cis_digital_validation_schema"],
+    "column_name_map": None,
+    "datetime_column_map": cis_digital_datetime_map,
+    "transformation_functions": [],
+    "sep": "|",
+    "cast_to_double_list": survey_response_cast_to_double,
+    "source_file_column": "survey_response_source_file",  # Double check
 }
 
 for parameters in [
