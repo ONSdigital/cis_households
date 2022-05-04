@@ -750,7 +750,7 @@ def union_dependent_derivations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
-    df = assign_fake_id(df, "hh_id_fake", "ons_household_id")
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
