@@ -1,6 +1,7 @@
 from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.historical_blood_ETL import add_fields
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
@@ -142,7 +143,7 @@ cis_digital_parameters = {
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [],
     "sep": "|",
-    "cast_to_double_list": survey_response_cast_to_double,
+    "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "survey_response_source_file",  # Double check
 }
 
@@ -155,5 +156,6 @@ for parameters in [
     survey_responses_v0_parameters,
     unassayed_blood_delta_parameters,
     historical_blood_parameters,
+    # cis_digital_parameters,
 ]:
     generate_input_processing_function(**parameters)
