@@ -195,9 +195,9 @@ def household_level_populations(
         Dataframe with cis20cd and interim id.
     """
     address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
-    df = address_lookup.join(postcode_lookup, on="postcode", how="left")
-    df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
-    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
+    df = address_lookup.join(postcode_lookup.distinct(), on="postcode", how="left")
+    df = df.join(F.broadcast(cis_phase_lookup.distinct()), on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(country_lookup.distinct()), on="country_code_12", how="left")
     df = assign_count_by_group(df, "number_of_households_population_by_cis", ["cis_area_code_20"])
     df = assign_count_by_group(df, "number_of_households_population_by_country", ["country_code_12"])
     return df
