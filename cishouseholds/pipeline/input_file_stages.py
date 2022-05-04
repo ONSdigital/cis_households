@@ -136,9 +136,9 @@ historical_blood_parameters = {
 cis_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
     "dataset_name": "survey_responses_digital",
-    "id_column": "visit_id",
+    "id_column": "participant_completion_window_id",  # A unique key, not sure if Primary Key
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
-    "column_name_map": None,
+    "column_name_map": column_name_maps["survey_responses_cis_digital_variable_name_map"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [],
     "sep": "|",

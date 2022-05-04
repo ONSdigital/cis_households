@@ -1551,7 +1551,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "participant_completion_window_end_datetime": _(
             "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
         ),
-        "survey_type": _(items=["First Survey", "Follow-up Survey"]),
+        "survey_type": _("choice", items=["First Survey", "Follow-up Survey"]),
         "opted_out": _("choice", items=yes_no_choice),
         "opted_out_datetime": _(
             "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
