@@ -55,13 +55,15 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
     pipeline_error_count = 0
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
-        for attempt in range(1, retry_count + 1):
+        stage_error = True
+        attempt = 1
+        while stage_error and attempt < retry_count:
             try:
                 stage_name = stage_config.pop("function")
                 stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
                 print(stage_text)  # functional
                 pipeline_stages[stage_name](**stage_config)
-                break
+                stage_error = False
             except Exception:
                 pipeline_error_count += 1
                 status = "errored" if attempt == 1 else f"errored on attempt {attempt}"
@@ -71,6 +73,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
                 run_time = (datetime.now() - stage_start).total_seconds()
                 print(f"    - completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
             time.sleep(retry_wait_time)
+            attempt += 1
     return pipeline_error_count
 
 
