@@ -928,24 +928,27 @@ def create_formatted_datetime_string_columns(df):
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
     }
-    date_format_string_list = [
-        "date_of_birth",
-        "improved_visit_date",
-        "think_had_covid_date",
-        "cis_covid_vaccine_date",
-        "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4",
-        "last_suspected_covid_contact_date",
-        "last_covid_contact_date",
-        "other_pcr_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_pcr_test_last_negative_date",
-        "been_outside_uk_last_date",
-        "symptoms_last_7_days_onset_date",
-    ]
+    date_format_string_list = set(
+        [
+            "date_of_birth",
+            "improved_visit_date",
+            "think_had_covid_date",
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+            "cis_covid_vaccine_date_3",
+            "cis_covid_vaccine_date_4",
+            "last_suspected_covid_contact_date",
+            "last_covid_contact_date",
+            "other_pcr_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_pcr_test_last_negative_date",
+            "been_outside_uk_last_date",
+            "symptoms_last_7_days_onset_date",
+        ]
+        + datetime_format_dict["yyyy-MM-dd"]
+    )
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
@@ -970,8 +973,6 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-
-    # TODO: create CISD _string for time and timestamp columns from timestamp_map
     #  timestamp
     for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
         df = assign_column_to_date_string(
@@ -979,15 +980,6 @@ def create_formatted_datetime_string_columns(df):
             column_name_to_assign=column_name_to_assign + "_string",
             reference_column=column_name_to_assign,
             time_format="ddMMMyyyy HH:mm:ss",
-            lower_case=True,
-        )
-    #  time
-    for column_name_to_assign in datetime_format_dict["yyyy-MM-dd"]:
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign + "_string",
-            reference_column=column_name_to_assign,
-            time_format="ddMMMyyyy",
             lower_case=True,
         )
     return df

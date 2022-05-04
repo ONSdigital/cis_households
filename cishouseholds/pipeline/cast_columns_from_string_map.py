@@ -29,3 +29,7 @@ survey_response_cast_to_double = [
     "bloods_taken",
     "swabs_taken",
 ]
+
+survey_response_cisd_cast_to_double = [
+    "",
+]
