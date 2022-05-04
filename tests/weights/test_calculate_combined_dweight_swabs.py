@@ -31,7 +31,7 @@ def test_calculate_combined_dweight_swabs(spark_session):
     output_df = calculate_combined_dweight_swabs(
         df=input_df,
         design_weight_column="combined_design_weight_swab",
-        num_households_column="number_of_households_population_by_cis",
+        num_households_column="number_of_households_by_cis_area",
         cis_window=window,
     )
 

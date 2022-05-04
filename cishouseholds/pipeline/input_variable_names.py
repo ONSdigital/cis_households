@@ -666,8 +666,8 @@ column_name_maps = {
         "cis20cd": "cis_area_code_20",
         "ctry12cd": "country_code_12",
         "ctry20nm": "country_name_12",
-        "nhp_cis": "number_of_households_population_by_cis",
-        "nhp_cc12": "number_of_households_population_by_country",
+        "nhp_cis": "number_of_households_by_cis_area",
+        "nhp_cc12": "number_of_households_by_country",
     },
     "tenure_group_variable_map": {
         "numAdult": "lfs_adults_in_household_count",

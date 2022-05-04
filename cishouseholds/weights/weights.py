@@ -84,11 +84,11 @@ def generate_weights(
         df=df,
         scenario=scenario_string,  # type: ignore
         groupby_column="cis_area_code_20",
-        household_population_column="number_of_households_population_by_cis",
+        household_population_column="number_of_households_by_cis_area",
     )
     validate_design_weights_or_precal(
         df=df,
-        num_households_column="number_of_households_population_by_cis",
+        num_households_column="number_of_households_by_cis_area",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
@@ -178,28 +178,21 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
 
 
 def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
+    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup_df: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
     Steps:
-    1. merge address base extract and NSPL by postcode
-    2. merge the result of first step  into LSOAtoCis lookup, by lower_super_output_area_code_11
-    3. merge the result of the second step with country name lookup by country_code
-    4. calculate required population total columns on joined dataset
-
-    df_address_base
-        Dataframe with address base file
-    df_nspl
-        Dataframe linking postcodes and lower level output area.
-    df_cis20cd
-        Dataframe with cis20cd and interim id.
+    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
+    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
+    3. join country lookup by country_code
+    4. calculate household counts by CIS area and country
     """
     address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
     df = address_lookup.join(postcode_lookup.distinct(), on="postcode", how="left")
-    df = df.join(F.broadcast(cis_phase_lookup.distinct()), on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(lsoa_cis_lookup_df.distinct()), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup.distinct()), on="country_code_12", how="left")
-    df = assign_count_by_group(df, "number_of_households_population_by_cis", ["cis_area_code_20"])
-    df = assign_count_by_group(df, "number_of_households_population_by_country", ["country_code_12"])
+    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
+    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
     return df
 
 
@@ -229,7 +222,7 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
     df = calculate_combined_dweight_swabs(
         df=df,
         design_weight_column="combined_design_weight_swab",
-        num_households_column="number_of_households_population_by_cis",
+        num_households_column="number_of_households_by_cis_area",
         cis_window=cis_window,
     )
     return df
@@ -292,9 +285,9 @@ def calculate_dweight_swabs(
     number_eligible_household_sample when the sample type is "new"
     """
     window = Window.partitionBy(*group_by_columns)
-    df = df.drop("number_of_households_population_by_cis").join(
+    df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
-            "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
+            "number_of_households_by_cis_area", "number_of_households_population_by_country", "cis_area_code_20"
         ).distinct(),
         on="cis_area_code_20",
         how="left",
@@ -304,7 +297,7 @@ def calculate_dweight_swabs(
         column_name_to_assign,
         F.when(
             F.col(sample_type_column) == "new",
-            F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample"),
+            F.col("number_of_households_by_cis_area") / F.col("number_eligible_household_sample"),
         ).otherwise(F.col(previous_dweight_column)),
     )
     return df
