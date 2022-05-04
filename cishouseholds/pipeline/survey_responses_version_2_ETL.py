@@ -972,7 +972,7 @@ def create_formatted_datetime_string_columns(df):
         )
 
     # TODO: create CISD _string for time and timestamp columns from timestamp_map
-    # timestamp
+    #  timestamp
     for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
         df = assign_column_to_date_string(
             df=df,
@@ -981,7 +981,7 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-    # time
+    #  time
     for column_name_to_assign in datetime_format_dict["yyyy-MM-dd"]:
         df = assign_column_to_date_string(
             df=df,
