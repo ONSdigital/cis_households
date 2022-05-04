@@ -264,14 +264,6 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "
     return df
 
 
-# 1166
-# necessary household df columns:
-# - number_of_households_population_by_cis
-# - number_of_households_population_by_country
-# - cis_area_code_20
-
-# necessary df columns:
-# - cis_area_code_20
 def calculate_dweight_swabs(
     df: DataFrame,
     household_level_populations_df: DataFrame,
@@ -288,7 +280,7 @@ def calculate_dweight_swabs(
     window = Window.partitionBy(*group_by_columns)
     df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
-            "number_of_households_by_cis_area", "number_of_households_population_by_country", "cis_area_code_20"
+            "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
         ).distinct(),
         on="cis_area_code_20",
         how="left",
