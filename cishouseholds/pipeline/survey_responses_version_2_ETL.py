@@ -56,6 +56,7 @@ from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
+from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -970,6 +971,25 @@ def create_formatted_datetime_string_columns(df):
             lower_case=True,
         )
 
+    # TODO: create CISD _string for time and timestamp columns from timestamp_map
+    #  timestamp
+    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        df = assign_column_to_date_string(
+            df=df,
+            column_name_to_assign=column_name_to_assign + "_string",
+            reference_column=column_name_to_assign,
+            time_format="ddMMMyyyy HH:mm:ss",
+            lower_case=True,
+        )
+    #  time
+    for column_name_to_assign in datetime_format_dict["yyyy-MM-dd"]:
+        df = assign_column_to_date_string(
+            df=df,
+            column_name_to_assign=column_name_to_assign + "_string",
+            reference_column=column_name_to_assign,
+            time_format="ddMMMyyyy",
+            lower_case=True,
+        )
     return df
 
 
