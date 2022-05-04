@@ -71,7 +71,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
                 attempt_run_time = (datetime.now() - attempt_start).total_seconds()
                 print(f"Error: {traceback.format_exc()}")  # functional
                 print(
-                    f"    - attempt ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
+                    f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
                 )  # functional
             add_run_status(run_id, status, stage_text, "\n".join(traceback.format_exc()))
             attempt += 1
