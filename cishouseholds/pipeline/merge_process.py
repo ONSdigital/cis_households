@@ -36,11 +36,42 @@ def merge_process_preparation(
     ----
     It is assumed that the barcode column name for survey and labs is the same.
     """
-    survey_df = M.assign_count_of_occurrences_column(survey_df, barcode_column_name, "count_barcode_voyager")
-    labs_df = M.assign_count_of_occurrences_column(labs_df, barcode_column_name, "count_barcode_" + merge_type)
+    survey_df = M.assign_count_of_occurrences_column(
+        df=survey_df,
+        reference_column=barcode_column_name,
+        column_name_to_assign="count_barcode_voyager",
+    )
+    labs_df = M.assign_count_of_occurrences_column(
+        df=labs_df,
+        reference_column=barcode_column_name,
+        column_name_to_assign="count_barcode_" + merge_type,
+    )
+    # Filter unique barcodes
+    survey_df_unique = survey_df.filter(F.col("count_barcode_voyager") == 1)
+    labs_df_unique = labs_df.filter(F.col("count_barcode_" + merge_type) == 1)
 
+    # 1:1 MERGE: unique barcodes that match
+    merge_1to1_df = survey_df_unique.join(labs_df_unique, on=barcode_column_name, how="inner")
+
+    # 1:NONE, NONE:1 unmerged: unique barcodes that do not match
+    nones_and_1s_survey_df = survey_df_unique.join(labs_df_unique, on=barcode_column_name, how="left_anti").select(
+        survey_df.columns
+    )
+
+    nones_and_1s_labs_df = labs_df_unique.join(survey_df_unique, on=barcode_column_name, how="left_anti").select(
+        labs_df.columns
+    )
+
+    # Filter repeated barcode to merge unioned to the unique barcodes that do not match
+    survey_df_multiple = survey_df.filter(F.col("count_barcode_voyager") > 1)
+    labs_df_multiple = labs_df.filter(F.col("count_barcode_" + merge_type) > 1)
+
+    # union repeated (m & 1 & none: 1:m, m:m etc) barcode with single (1 & none: 1:none, none:1).
+    survey_df = M.union_multiple_tables([nones_and_1s_survey_df, survey_df_multiple])
+    labs_df = M.union_multiple_tables([nones_and_1s_labs_df, labs_df_multiple])
     outer_df = survey_df.join(labs_df, on=barcode_column_name, how="outer")
 
+    # onwards, only outer_df will be labelled with the merging logic and merge_1to1_df wont be required any logic
     if merge_type == "swab":
         interval_upper_bound = 480
     elif merge_type == "antibody":
@@ -63,7 +94,7 @@ def merge_process_preparation(
         offset=24,
     )
     df = assign_merge_process_group_flags_and_filter(df=df, merge_type=merge_type)
-    return df
+    return merge_1to1_df, df
 
 
 def assign_merge_process_group_flags_and_filter(df: DataFrame, merge_type: str):

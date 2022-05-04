@@ -35,7 +35,7 @@ def run_from_config():
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         pipeline_error_count = run_pipeline_stages(
-            pipeline_stage_list, run_id, config["retry_n_times_on_fail"], config["retry_wait_time"]
+            pipeline_stage_list, run_id, config["retry_times_on_fail"], config["retry_wait_time_seconds"]
         )
     except Exception as e:
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
