@@ -137,25 +137,25 @@ historical_blood_parameters = {
 cis_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
     "dataset_name": "survey_responses_digital",
-    "id_column": "participant_completion_window_id",  # A unique key, not sure if Primary Key
+    "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "column_name_map": column_name_maps["survey_responses_cis_digital_variable_name_map"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
-    "source_file_column": "survey_response_source_file",  # Double check
+    "source_file_column": "survey_response_source_file",
 }
 
 for parameters in [
     blood_delta_parameters,
     swab_delta_parameters,
     swab_delta_parameters_testKit,
+    cis_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,
     unassayed_blood_delta_parameters,
     historical_blood_parameters,
-    # cis_digital_parameters,
 ]:
     generate_input_processing_function(**parameters)
