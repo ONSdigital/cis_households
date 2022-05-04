@@ -60,7 +60,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
         stage_name = stage_config.pop("function")
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
         print(stage_text)  # functional
-        while not stage_success and attempt < retry_count:
+        while not stage_success and attempt < retry_count + 1:
             # TODO: log the retry event with run status and no traceback
             if attempt != 0:
                 add_run_status(run_id, "retry", stage_text, "")
