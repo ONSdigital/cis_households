@@ -48,7 +48,7 @@ def run_from_config():
     add_run_status(run_id, "finished")
 
 
-def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int, retry_wait_time: int):
+def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int = 1, retry_wait_time: int = 1):
     """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
@@ -56,24 +56,32 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
         stage_error = True
-        attempt = 1
+        attempt = 0
+        stage_name = stage_config.pop("function")
+        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
+        print(stage_text)  # functional
         while stage_error and attempt < retry_count:
+            attempt_start = datetime.now()
             try:
-                stage_name = stage_config.pop("function")
-                stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
-                print(stage_text)  # functional
                 pipeline_stages[stage_name](**stage_config)
                 stage_error = False
+                status = "success"
             except Exception:
-                pipeline_error_count += 1
                 status = "errored" if attempt == 1 else f"errored on attempt {attempt}"
-                add_run_status(run_id, status, stage_text, "\n".join(traceback.format_exc()))
+                attempt_run_time = (datetime.now() - attempt_start).total_seconds()
                 print(f"Error: {traceback.format_exc()}")  # functional
-            finally:
-                run_time = (datetime.now() - stage_start).total_seconds()
-                print(f"    - completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
-            time.sleep(retry_wait_time)
+                print(
+                    f"    - attempt ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
+                )  # functional
+            add_run_status(run_id, status, stage_text, "\n".join(traceback.format_exc()))
             attempt += 1
+            time.sleep(retry_wait_time)
+        if stage_error:
+            pipeline_error_count += 1
+        stage_run_time = (datetime.now() - stage_start).total_seconds()
+        print(
+            f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
+        )  # functional
     return pipeline_error_count
 
 
