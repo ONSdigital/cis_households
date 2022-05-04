@@ -19,6 +19,7 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -31,6 +32,7 @@ from cishouseholds.pipeline.input_file_processing import extract_validate_transf
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
@@ -58,6 +60,7 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
+from cishouseholds.weights.weights import join_greography_lookups
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -336,23 +339,19 @@ def generate_input_processing_function(
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
+def union_survey_response_files(tables_to_union: List, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
     Parameters
     ----------
-    transformed_survey_responses_table_pattern
-        input table pattern for extracting each of the transformed survey responses tables
     unioned_survey_responses_table
-        output table name for the combine file of 3 unioned survey responses
+        input tables for extracting each of the transformed survey responses tables
+    unioned_survey_responses_table
+        output table name for the combine file of all unioned survey responses
     """
-    survey_df_list = []
+    df_list = [extract_from_table(table) for table in tables_to_union]
 
-    for version in ["0", "1", "2"]:
-        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
-        survey_df_list.append(extract_from_table(survey_table))
-
-    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
+    union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -536,19 +535,18 @@ def outer_join_antibody_results(
     update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
 
 
-# ANTIBODY ~~~~~~~~~~~~~~~~~
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
     input_survey_responses_table,
     input_antibody_table,
     blood_files_to_exclude,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
-    antibody_output_tables,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_data,
+    antibody_merge_residuals,
+    antibody_merge_failed_records,
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -575,28 +573,46 @@ def merge_blood_ETL(
     antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    df = merge_blood_process_preparation(
+    df_1to1, df = merge_blood_process_preparation(
         survey_df,
         antibody_df,
         blood_files_to_exclude,
     )
-    update_table(df, output_joined_table)
+    update_table(df, joined_table, write_mode="overwrite")
+    update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(joined_table)
     df = merge_blood_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="antibody",
         barcode_column_name="blood_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
-    output_antibody_df_list = merge_blood_process_filtering(df)
-    load_to_data_warehouse_tables(output_antibody_df_list, antibody_output_tables)
+    df = extract_from_table(validated_table)
+
+    (
+        merged_responses_antibody_df,
+        antibody_merge_residuals_df,
+        antibody_merge_failed_records_df,
+    ) = merge_blood_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_df,
+            antibody_merge_residuals_df,
+            antibody_merge_failed_records_df,
+        ],
+        [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
+    )
 
 
 @register_pipeline_stage("merge_swab_ETL")
@@ -604,13 +620,13 @@ def merge_swab_ETL(
     input_survey_responses_table,
     input_swab_table,
     swab_files_to_exclude,
-    output_joined_table,
-    input_joined_table,
-    output_xtox_flagged_table,
-    input_table_to_validate,
-    output_validated_table,
-    input_table,
-    swab_output_tables,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_swab_data,
+    swab_merge_residuals,
+    swab_merge_failed_records,
 ):
     """
     High level function for joining PCR test result data to survey responses.
@@ -637,28 +653,49 @@ def merge_swab_ETL(
     swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    df = merge_swab_process_preparation(
+    df_1to1, df = merge_swab_process_preparation(
         survey_df,
         swab_df,
         swab_files_to_exclude,
     )
-    update_table(df=df, table_name=output_joined_table)
+    update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
+    update_table(df=df, table_name=joined_table, write_mode="overwrite")
 
-    df = extract_from_table(input_joined_table)
+    df = extract_from_table(joined_table)
     df = merge_swab_xtox_flag(df)
-    update_table(df=df, table_name=output_xtox_flagged_table, write_mode="overwrite")
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table_to_validate)
+    df = extract_from_table(xtox_flagged_table)
     df = merge_process_validation(
         df=df,
         merge_type="swab",
         barcode_column_name="swab_sample_barcode",
     )
-    update_table(df=df, table_name=output_validated_table, write_mode="overwrite")
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    df = extract_from_table(input_table)
-    output_swab_df_list = merge_swab_process_filtering(df)
-    load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
+    df = extract_from_table(validated_table)
+    (
+        merged_responses_antibody_swab_df,
+        swab_merge_residuals_df,
+        swab_merge_failed_records_df,
+    ) = merge_swab_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_swab_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_swab_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_swab_df,
+            swab_merge_residuals_df,
+            swab_merge_failed_records_df,
+        ],
+        [
+            merged_responses_antibody_swab_data,
+            swab_merge_residuals,
+            swab_merge_failed_records,
+        ],
+    )
 
 
 @register_pipeline_stage("join_vaccination_data")
@@ -734,19 +771,28 @@ def impute_demographic_columns(
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
-@register_pipeline_stage("calculate_household_level_populations")
-def calculate_household_level_populations(
-    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
+@register_pipeline_stage("collate_geographies")
+def collate_geographies(
+    address_lookup_table,
+    postcode_lookup_table,
+    lsoa_cis_lookup_table,
+    country_lookup_table,
+    joined_geography_lookup_table,
 ):
-    address_lookup_df = extract_from_table(address_lookup)
-    postcode_lookup_df = extract_from_table(postcode_lookup)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
-    country_lookup_df = extract_from_table(country_lookup)
+    address_lookup_df = extract_from_table(address_lookup_table)
+    postcode_lookup_df = extract_from_table(postcode_lookup_table)
+    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup_table)
+    country_lookup_df = extract_from_table(country_lookup_table)
 
-    household_info_df = household_level_populations(
-        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
-    )
-    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
+    df = join_greography_lookups(address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df)
+    update_table(df, joined_geography_lookup_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(joined_geography_lookup_table, household_level_populations_table):
+    df = extract_from_table(joined_geography_lookup_table)
+    df = household_level_populations(df)
+    update_table(df, household_level_populations_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
@@ -876,7 +922,7 @@ def report(
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
-        invalid_files_count = invalid_files_log.count()
+        invalid_files_count = invalid_files_log.filter(F.col("run_id") == get_run_id()).count()
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
@@ -936,7 +982,7 @@ def report(
             processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
             processed_file_counts = processed_files_df["file_row_count"]
             individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
-            name = f"{type}"
+            name = f"{dataset}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
