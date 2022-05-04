@@ -975,6 +975,18 @@ def create_formatted_datetime_string_columns(df):
 
 def fill_forwards_transformations(df):
 
+    # df = fill_backwards_overriding_not_nulls(
+    #     df=df,
+    #     column_identity="participant_id",
+    #     ordering_column="visit_date",
+    #     dataset_column="survey_response_dataset_major_version",
+    #     column_list=[
+    #       "sex",
+    #       "date_of_birth",
+    #       "ethnicity"
+    #    ],
+    # )
+
     fill_forward_to_nulls_list = [
         "work_main_job_title",
         "work_main_job_role",
@@ -985,6 +997,9 @@ def fill_forwards_transformations(df):
         "work_health_care_v1_v2",
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_clients",
+        "sex",
+        "date_of_birth",
+        "ethnicity",
     ]
     df = fill_forward_only_to_nulls_in_dataset(
         df=df,
