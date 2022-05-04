@@ -21,7 +21,7 @@ def test_household_level_populations(spark_session):
         (2, "A A"),
         (3, "C E"),
         (4, "D F"),
-        (4, "D F"),  # 2 counts of uprn **
+        (5, "D G"),  # uprn unique to household **
     ]
     df_input_address_base = spark_session.createDataFrame(data_address_base, schema=schema_address_base)
 
@@ -32,14 +32,14 @@ def test_household_level_populations(spark_session):
         country_code_12 string
     """
     data_nspl = [
-        ("AT", "E2", "C2"),
-        ("HX", "E1", "C2"),
-        ("HY", "S3", "C2"),
-        ("HZ", "S3", "C3"),
-        ("DF", "S5", "C6"),  # postcode match from address base, country code not in lookup
-        ("CE", "E2", "C2"),  # postcode match from address base
-        ("AA", "S1", "C3"),  # postcode match from address base
-        ("AB", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
+        ("D G", "E2", "C2"),
+        ("H X", "E1", "C2"),
+        ("H Y", "S3", "C2"),
+        ("H Z", "S3", "C3"),
+        ("D F", "S5", "C6"),  # postcode match from address base, country code not in lookup
+        ("C E", "E2", "C2"),  # postcode match from address base
+        ("A A", "S1", "C3"),  # postcode match from address base
+        ("A B", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
     ]
     df_input_nspl = spark_session.createDataFrame(data_nspl, schema=schema_nspl)
 
@@ -84,11 +84,11 @@ def test_household_level_populations(spark_session):
         number_of_households_population_by_country integer
     """
     data_expected = [
-        ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
+        ("C2", "E2", "DG", 5, "J3", 73, "name2", 2, 3),
         ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
         ("C3", "S1", "AA", 2, "J2", 72, "name3", 2, 1),
-        ("C2", "S4", "AB", 1, None, None, "name2", 1, 2),
-        ("C2", "E2", "CE", 3, "J3", 73, "name2", 1, 2),
+        ("C2", "S4", "AB", 1, None, None, "name2", 1, 3),
+        ("C2", "E2", "CE", 3, "J3", 73, "name2", 2, 3),
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected)
     df_output = household_level_populations(df_input_address_base, df_input_nspl, df_input_lsoa, df_input_country)
