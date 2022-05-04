@@ -737,7 +737,6 @@ column_name_maps = {
         # "lsoa_11": "lower_super_output_area_code_11",
         "lsoa11": "lower_super_output_area_code_11",
         "ctry": "country_code_12",
-        "sample": "sample_source",
         # "rgn/gor9d": "region_code",
         "rgn": "region_code",
         # "gor9d": "region_code",

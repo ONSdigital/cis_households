@@ -36,7 +36,7 @@ def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     return True if error_count == 0 else False
 
 
-def validate_csv_header(text_file: RDD, expected_header: str):
+def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: str = ","):
     """
     Function to validate header in csv file matches expected header.
 
@@ -47,8 +47,11 @@ def validate_csv_header(text_file: RDD, expected_header: str):
     expected_header
         Exact header expected in csv file
     """
-    header = text_file.first()
-    return expected_header == header
+    actual_header = text_file.first()
+    buffer = StringIO(actual_header)
+    reader = csv.reader(buffer, delimiter=delimiter)
+    actual_header = next(reader)
+    return expected_header == actual_header
 
 
 def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: str = ","):
@@ -70,7 +73,7 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
     if not isinstance(file_paths, list):
         file_paths = [file_paths]
 
-    expected_header_row = sep.join(validation_schema.keys())
+    expected_header_row = list(validation_schema.keys())
 
     valid_files = []
     for file_path in file_paths:
@@ -80,26 +83,23 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
         valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not valid_csv_header:
-            file_header_set = set(text_file.first().split(sep))
-            expected_header_set = set(validation_schema.keys())
-            missmatches = (
-                ",".join(file_header_set.difference(expected_header_set))
-                + ","
-                + ",".join(expected_header_set.difference(file_header_set))
+            actual_header = text_file.first()
+            buffer = StringIO(actual_header)
+            reader = csv.reader(buffer, delimiter=sep)
+            actual_header = next(reader)
+            expected_header = list(validation_schema.keys())
+            error += (
+                f"Invalid file header:{file_path}\n"
+                f"Expected:     {expected_header}\n"
+                f"Actual:       {actual_header}\n"
+                f"Missing:      {set(expected_header) - set(actual_header)}\n"
+                f"Additional:   {set(actual_header) - set(expected_header)}\n"
             )
-            if (
-                len(file_header_set.difference(expected_header_set)) == 0
-                and len(expected_header_set.difference(file_header_set)) == 0
-            ):
-                message = "has columns that are out of order"
-            else:
-                message = f"inconsistent values: '{missmatches}'"
-
-            error += f"\nInvalid file: Header of {file_path}:{message}\n"
 
         if not valid_csv_fields:
             error += (
-                f"\nInvalid file: Number of fields in {file_path} does not match expected number of columns from header"
+                f"\nInvalid file: Number of fields in {file_path} "
+                "row(s) does not match expected number of columns from header"
             )
 
         if error != "":

@@ -303,7 +303,7 @@ validation_schemas = {
         "oa11": string_dict,
         "laua": string_dict,
         "ctry": string_dict,
-        "custodian_region_code": string_dict,
+        "CUSTODIAN_REGION_CODE": string_dict,
         "lsoa11": string_dict,
         "msoa11": string_dict,
         "ru11ind": string_dict,
