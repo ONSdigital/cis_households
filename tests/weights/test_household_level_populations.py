@@ -36,7 +36,6 @@ def test_household_level_populations(spark_session):
         ("HX", "E1", "C2"),
         ("HY", "S3", "C2"),
         ("HZ", "S3", "C3"),
-        ("HZ", "S3", "C3"),  # Intentional duplicate, should be dropped before join
         ("DF", "S5", "C6"),  # postcode match from address base, country code not in lookup
         ("CE", "E2", "C2"),  # postcode match from address base
         ("AA", "S1", "C3"),  # postcode match from address base
@@ -54,7 +53,6 @@ def test_household_level_populations(spark_session):
         ("E1", "J3", 73),
         ("E2", "J3", 73),
         ("S3", "J3", 73),
-        ("S3", "J3", 73),  # Intentional duplicate, should be dropped before join
         ("S1", "J2", 72),  # match lsoa from nspl
         ("S5", "J2", 72),  # match lsoa from nspl
     ]
@@ -67,7 +65,6 @@ def test_household_level_populations(spark_session):
     """
     data_country = [
         ("C1", "name1"),
-        ("C2", "name2"),  # Intentional duplicate, should be dropped before join
         ("C2", "name2"),  # match country code from nspl
         ("C3", "name3"),  # match country code from nspl
         ("C4", "name4"),
@@ -83,8 +80,8 @@ def test_household_level_populations(spark_session):
         cis_area_code_20 string,
         interim_id integer,
         name string,
-        number_of_households_population_by_cis integer,
-        number_of_households_population_by_country integer
+        number_of_households_by_cis_area integer,
+        number_of_households_by_country integer
     """
     data_expected = [
         ("C2", "E2", "DG", 5, "J3", 73, "name2", 2, 3),
