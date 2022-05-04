@@ -32,14 +32,14 @@ def test_household_level_populations(spark_session):
         country_code_12 string
     """
     data_nspl = [
-        ("D G", "E2", "C2"),
-        ("H X", "E1", "C2"),
-        ("H Y", "S3", "C2"),
-        ("H Z", "S3", "C3"),
-        ("D F", "S5", "C6"),  # postcode match from address base, country code not in lookup
-        ("C E", "E2", "C2"),  # postcode match from address base
-        ("A A", "S1", "C3"),  # postcode match from address base
-        ("A B", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
+        ("DG", "E2", "C2"),
+        ("HX", "E1", "C2"),
+        ("HY", "S3", "C2"),
+        ("HZ", "S3", "C3"),
+        ("DF", "S5", "C6"),  # postcode match from address base, country code not in lookup
+        ("CE", "E2", "C2"),  # postcode match from address base
+        ("AA", "S1", "C3"),  # postcode match from address base
+        ("AB", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
     ]
     df_input_nspl = spark_session.createDataFrame(data_nspl, schema=schema_nspl)
 
