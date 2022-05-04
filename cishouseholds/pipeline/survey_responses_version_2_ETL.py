@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -749,6 +750,7 @@ def union_dependent_derivations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
