@@ -181,11 +181,12 @@ def household_level_populations(
     address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup_df: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
-    Steps:
     1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
     2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
-    3. join country lookup by country_code
+    3. join country lookup by country_code to get country names
     4. calculate household counts by CIS area and country
+
+    N.B. Expects join keys to be deduplicated.
     """
     address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
     df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
