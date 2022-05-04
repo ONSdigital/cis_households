@@ -84,11 +84,11 @@ def test_household_level_populations(spark_session):
         number_of_households_population_by_country integer
     """
     data_expected = [
-        ("C2", "E2", "DG", 5, "J3", 73, "name2", 2, 3),
+        (None, None, "DG", 5, None, None, None, 2, 1),
         ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
         ("C3", "S1", "AA", 2, "J2", 72, "name3", 2, 1),
-        ("C2", "S4", "AB", 1, None, None, "name2", 1, 3),
-        ("C2", "E2", "CE", 3, "J3", 73, "name2", 2, 3),
+        ("C2", "S4", "AB", 1, None, None, "name2", 2, 2),
+        ("C2", "E2", "CE", 3, "J3", 73, "name2", 1, 2),
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected)
     df_output = household_level_populations(df_input_address_base, df_input_nspl, df_input_lsoa, df_input_country)
