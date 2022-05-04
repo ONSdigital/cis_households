@@ -27,8 +27,8 @@ def test_calculate_dweight_swabs(spark_session):
             (1, 1, "A"),
         ],
         schema="""
-            number_of_households_population_by_cis integer,
-            number_of_households_population_by_country integer,
+            number_of_households_by_cis_area integer,
+            number_of_households_by_country integer,
             cis_area_code_20 string
             """,
     )
@@ -45,13 +45,12 @@ def test_calculate_dweight_swabs(spark_session):
             groupby string,
             id integer,
             previous_weight integer,
-            number_of_households_population_by_cis integer,
-            number_of_households_population_by_country integer,
+            number_of_households_by_cis_area integer,
+            number_of_households_by_country integer,
             number_eligible_household_sample long,
             weight double
             """,
     )
-    # old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str
     output_df = calculate_dweight_swabs(
         df=input_df,
         household_level_populations_df=household_df,

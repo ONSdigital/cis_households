@@ -12,7 +12,7 @@ def test_calculate_combined_dweight_swabs(spark_session):
         ],
         schema="""
             combined_design_weight_swab integer,
-            number_of_households_population_by_cis integer,
+            number_of_households_by_cis_area integer,
             window integer
             """,
     )
@@ -20,7 +20,7 @@ def test_calculate_combined_dweight_swabs(spark_session):
         data=[(2, 1, 2, 2, 0.5, 1.0), (1, 1, 1, 1, 1.0, 1.0)],
         schema="""
            combined_design_weight_swab integer,
-           number_of_households_population_by_cis integer,
+           number_of_households_by_cis_area integer,
            window integer,
            sum_combined_design_weight_swab long,
            scaling_factor_combined_design_weight_swab double,
