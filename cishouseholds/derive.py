@@ -2,7 +2,6 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
-from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -26,15 +25,40 @@ def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: 
     return df
 
 
-def grouped_count_distinct(
-    df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
+def assign_distinct_count_in_group(
+    df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
 ):
-    "count distinct value is grouped dataset and return complete dataset"
-    if not isinstance(reference_columns, list):
-        reference_columns = [reference_columns]
-    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
-    df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
-    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+    """
+    Window-based count of distinct values by group
+
+    Parameters
+    ----------
+    count_distinct_columns
+        columns to determine distinct records
+    group_by_columns
+        columns to group by and count within
+    """
+    count_distinct_columns_window = Window.partitionBy(*count_distinct_columns).orderBy(F.lit(0))
+    group_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
+    )
+    return df
+
+
+def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
+    return df
 
 
 def assign_multigeneration(

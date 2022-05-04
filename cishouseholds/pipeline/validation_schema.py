@@ -313,7 +313,7 @@ validation_schemas = {
         "interim_id": string_dict,
     },
     "master_sample_file_schema": {
-        "ons_household_id": integer_dict,
+        "ons_household_id": string_dict,
         "FULL_NAME": string_dict,
         "ADDRESS_LINE_1": string_dict,
         "ADDRESS_LINE_2": string_dict,
