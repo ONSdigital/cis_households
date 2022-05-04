@@ -17,6 +17,15 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    window = Window.orderBy(reference_column)
+    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    return df
+
+
 def grouped_count_distinct(
     df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
 ):
