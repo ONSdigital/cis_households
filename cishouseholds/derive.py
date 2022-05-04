@@ -11,9 +11,36 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import assign_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def derive_had_symptom_last_7_days_from_digital(
+    df: DataFrame, column_name_to_assign: str, self_isolating_column: str, self_isolating_reason_column: str
+):
+    """
+    Derive columns in voyager 2 format based on input columns from CISD digital
+    """
+    df = assign_from_map(
+        df,
+        column_name_to_assign,
+        self_isolating_reason_column,
+        {
+            "I have or have had symptoms of COVID-19 or a positive test": "Yes because you have/have had symptoms of COVID-19 or a positive test",  # noqa: E501
+            "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test": "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself",  # noqa: E501
+            "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad": "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)",  # noqa: E501
+            "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding": "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)",  # noqa: E501
+        },
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(self_isolating_column) == "No", "No")
+        .when(F.col(self_isolating_column) == "Prefer not to say", None)
+        .otherwise(F.col(column_name_to_assign)),
+    )
+    return df
 
 
 def assign_distinct_count_in_group(
