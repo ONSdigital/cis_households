@@ -84,7 +84,47 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
         print(
             f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
         )  # functional
+
+        splunk_logging(
+            run_id=run_id,
+            stage_name=stage_name,
+            event_time=attempt_start,
+            exception=Exception,
+            success_run=stage_success,
+        )
     return pipeline_error_count
+
+
+def splunk_logging(
+    run_id,
+    stage_name,
+    event_time,
+    exception,
+    success_run,
+    output_directory="",
+):
+    """
+    This function executes at every stage writing in a log file in append mode the run_id,
+    stage_name, event_start_time and status.
+
+    Parameters
+    ----------
+    run_id
+    stage_name
+    event_time
+    exception
+    success_run
+    output_directory=""
+    """
+    with open(f"{output_directory}/status.log", "a") as f:
+        if success_run is True:
+            f.write(
+                f"run_id={run_id}, stage_name={stage_name}, event_start_time={event_time}, status=successful"  # noqa: E501
+            )
+        else:
+            f.write(
+                f"run_id={run_id}, stage_name={stage_name}, event_start_time={event_time}, error=ERROR:{exception[0:100]}"  # noqa: E501
+            )
 
 
 if __name__ == "__main__":
