@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -126,6 +127,8 @@ def join_and_process_lookups(
         df = union_multiple_tables([old_sample_df, new_sample_df])
     else:
         df = new_sample_df
+    master_sample_df = clean_postcode(master_sample_df, "postcode")
+    postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
     df = df.join(
         master_sample_df.select("postcode", "ons_household_id"),
         on="ons_household_id",
@@ -161,9 +164,9 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
     info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
     info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
-    # new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
-    # old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
     if old_lsoa != new_lsoa:
+        old_df = clean_postcode(old_df, "postcode")
+        hh_info_df = clean_postcode(hh_info_df, "postcode")
         old_df = old_df.join(
             hh_info_df.select(info_lsoa, info_cis, "postcode")
             .withColumnRenamed(info_lsoa, "lsoa_from_lookup")
@@ -172,9 +175,6 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
             how="left",
         )
         old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
-        # old_df = (
-        #     old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
-        # )
     return old_df
 
 
@@ -189,7 +189,8 @@ def household_level_populations(
 
     N.B. Expects join keys to be deduplicated.
     """
-    address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
+    address_lookup = clean_postcode(address_lookup, "postcode")
+    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
     df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
     df = df.join(F.broadcast(lsoa_cis_lookup_df), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
