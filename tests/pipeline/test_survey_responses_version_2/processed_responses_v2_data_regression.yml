@@ -178,7 +178,7 @@
   physical_contact_18_to_69_years: Participant Would Not/Could Not Answer
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: 21 or more
-  postcode: PS0F 2CG
+  postcode: PS0F2CG
   prefer_receive_vouchers: Email
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
@@ -478,7 +478,7 @@
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
-  postcode: TE4H 2TC
+  postcode: TE4H2TC
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: null
@@ -2004,7 +2004,7 @@
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: null
-  postcode: SE3Z 6OR
+  postcode: SE3Z6OR
   prefer_receive_vouchers: Email
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
@@ -2609,7 +2609,7 @@
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: '0'
   physical_contact_under_18_years: 21 or more
-  postcode: UK0X 5SF
+  postcode: UK0X5SF
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
@@ -2922,7 +2922,7 @@
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
   physical_contact_under_18_years: 21 or more
-  postcode: LV1J 6SR
+  postcode: LV1J6SR
   prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
