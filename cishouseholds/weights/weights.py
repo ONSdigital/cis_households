@@ -88,7 +88,8 @@ def generate_weights(
     )
     validate_design_weights_or_precal(
         df=df,
-        num_households_column="number_of_households_by_cis_area",
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
@@ -368,7 +369,8 @@ class DesignWeightError(Exception):
 # 1166
 def validate_design_weights_or_precal(
     df: DataFrame,
-    num_households_column: str,
+    num_households_by_cis_column: str,
+    num_households_by_country_column: str,
     swab_weight_column: str,
     antibody_weight_column: str,
     group_by_columns: List[str],
@@ -384,18 +386,14 @@ def validate_design_weights_or_precal(
     window = Window.partitionBy(F.lit(1))
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
     # check 1.1
-    df = (
-        df.withColumn(
-            "CHECK1s",
-            F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
-        )
-        .withColumn("tot", F.sum(swab_weight_column).over(window))
-        .withColumn("tot2", F.sum(antibody_weight_column).over(window))
+    df = df.withColumn(
+        "CHECK1s",
+        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_by_cis_column), 0).otherwise(1),
     )
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
+        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_by_country_column), 0).otherwise(1),
     )
     # check 2
     df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
