@@ -35,7 +35,7 @@ def test_derive_had_self_isolating_from_digital(spark_session):
         """,
     )
 
-    output_df = derive_had_self_isolating_from_digital(
+    output_df = derive_self_isolating_from_digital(
         expected_df.drop("self_isolating_transformed"),
         "self_isolating_transformed",
         "self_isolating",
