@@ -111,8 +111,6 @@ def join_and_process_lookups(
     """
     Add data from the additional lookup files to main dataset
     """
-    old_sample_df = clean_postcode(old_sample_df, "postcode")
-    household_level_populations_df = clean_postcode(household_level_populations_df, "postcode")
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
     old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
@@ -129,7 +127,6 @@ def join_and_process_lookups(
         df = union_multiple_tables([old_sample_df, new_sample_df])
     else:
         df = new_sample_df
-    df = clean_postcode(df, "postcode")
     master_sample_df = clean_postcode(master_sample_df, "postcode")
     postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
     df = df.join(
@@ -168,6 +165,8 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
     info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
     if old_lsoa != new_lsoa:
+        old_df = clean_postcode(old_df, "postcode")
+        hh_info_df = clean_postcode(hh_info_df, "postcode")
         old_df = old_df.join(
             hh_info_df.select(info_lsoa, info_cis, "postcode")
             .withColumnRenamed(info_lsoa, "lsoa_from_lookup")
