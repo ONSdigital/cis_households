@@ -79,7 +79,7 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
     for file_path in file_paths:
         error = ""
         text_file = spark_session.sparkContext.textFile(file_path)
-        valid_csv_header = validate_csv_header(text_file, expected_header_row)
+        valid_csv_header = validate_csv_header(text_file, expected_header_row, delimiter=sep)
         valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not valid_csv_header:
