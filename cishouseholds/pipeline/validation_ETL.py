@@ -24,8 +24,8 @@ def validation_calls(SparkVal):
             }
         },
         "visit_id": {"starts_with": r"DHV"},
-        "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
-        "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        "blood_sample_barcode": {"matches": r"^((ON|on)([SWCNswcn]0|S2|S7|s2|s7)[0-9]{7})$"},
+        "swab_sample_barcode": {"matches": r"^((ON|on)([SWCNswcn]0|S2|S7|s2|s7)[0-9]{7})$"},
         # "region_code":"not_null"
     }
     for col in SparkVal.dataframe.columns:

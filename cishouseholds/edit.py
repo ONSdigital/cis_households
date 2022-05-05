@@ -257,8 +257,8 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
     edited_column
         signifies if updating was performed on row
     """
-    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
+    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
     suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
