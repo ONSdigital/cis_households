@@ -64,7 +64,8 @@ def pre_calibration_high_level(
 
     validate_design_weights_or_precal(
         df=df,
-        num_households_column="number_of_households_by_cis_area",
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
         group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
