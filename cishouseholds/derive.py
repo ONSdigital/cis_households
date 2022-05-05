@@ -16,6 +16,24 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def derive_had_symptom_last_7days_from_digital(df: DataFrame, column_name_to_assign: str, symptom_column_pattern: str):
+    """
+    Derive symptoms in v2 format from digital file
+    """
+    symptom_columns = [col for col in df.columns if re.match(symptom_column_pattern, col)]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULL", symptom_columns, None)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("NUM_YES") > 0, "Yes")
+        .when(F.col("NUM_NULL") == len(symptom_columns), None)
+        .when(F.col("NUM_NO") == len(symptom_columns), "No"),
+    )
+    return df.drop("NUM_NULL", "NUM_YES", "NUM_NO")
+
+
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Derive an incremental id from a reference column containing an id
