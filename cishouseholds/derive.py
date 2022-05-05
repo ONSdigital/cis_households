@@ -17,7 +17,7 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def derive_had_symptom_last_7_days_from_digital(
+def derive_had_self_isolating_from_digital(
     df: DataFrame, column_name_to_assign: str, self_isolating_column: str, self_isolating_reason_column: str
 ):
     """

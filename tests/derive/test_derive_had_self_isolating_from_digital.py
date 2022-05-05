@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import derive_had_symptom_last_7_days_from_digital
+from cishouseholds.derive import derive_had_self_isolating_from_digital
 
 
-def test_derive_had_symptom_last_7_days_from_digital(spark_session):
+def test_derive_had_self_isolating_from_digital(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (
@@ -35,7 +35,7 @@ def test_derive_had_symptom_last_7_days_from_digital(spark_session):
         """,
     )
 
-    output_df = derive_had_symptom_last_7_days_from_digital(
+    output_df = derive_had_self_isolating_from_digital(
         expected_df.drop("self_isolating_transformed"),
         "self_isolating_transformed",
         "self_isolating",
