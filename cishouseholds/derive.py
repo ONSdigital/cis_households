@@ -17,7 +17,7 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def derive_had_self_isolating_from_digital(
+def derive_self_isolating_from_digital(
     df: DataFrame, column_name_to_assign: str, self_isolating_column: str, self_isolating_reason_column: str
 ):
     """
@@ -40,6 +40,15 @@ def derive_had_self_isolating_from_digital(
         .when(F.col(self_isolating_column) == "Prefer not to say", None)
         .otherwise(F.col(column_name_to_assign)),
     )
+    return df
+
+
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    window = Window.orderBy(reference_column)
+    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
     return df
 
 
@@ -845,7 +854,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )

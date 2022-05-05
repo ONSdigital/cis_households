@@ -2,48 +2,38 @@ from chispa import assert_df_equality
 
 from cishouseholds.weights.weights import household_level_populations
 
-# necessary columns:
-# - postcode
-# - lower_super_output_area_code_11
-# - country_code_12
-# - cis_area_code_20
-# - unique_property_reference_code
-
 
 def test_household_level_populations(spark_session):
-    # address base file ---------------
     schema_address_base = """
             unique_property_reference_code integer,
             postcode string
         """
     data_address_base = [
-        (1, "A B"),
-        (2, "A A"),
-        (3, "C E"),
-        (4, "D F"),
-        (5, "D G"),  # uprn unique to household **
+        (1, "AAA BBB"),
+        (2, "AAA AAA"),
+        (3, "CCC EEE"),
+        (4, "DDD FFF"),
+        (5, "DDD GGG"),  # uprn unique to household **
     ]
     df_input_address_base = spark_session.createDataFrame(data_address_base, schema=schema_address_base)
 
-    # NSPL ---------------
     schema_nspl = """
         postcode string,
         lower_super_output_area_code_11 string,
         country_code_12 string
     """
     data_nspl = [
-        ("DG", "E2", "C2"),
-        ("HX", "E1", "C2"),
-        ("HY", "S3", "C2"),
-        ("HZ", "S3", "C3"),
-        ("DF", "S5", "C6"),  # postcode match from address base, country code not in lookup
-        ("CE", "E2", "C2"),  # postcode match from address base
-        ("AA", "S1", "C3"),  # postcode match from address base
-        ("AB", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
+        ("DDD GGG", "E2", "C2"),
+        ("HHH XXX", "E1", "C2"),
+        ("HHH YYY", "S3", "C2"),
+        ("HHH ZZZ", "S3", "C3"),
+        ("DDD FFF", "S5", "C6"),  # postcode match from address base, country code not in lookup
+        ("CCC EEE", "E2", "C2"),  # postcode match from address base
+        ("AAA AAA", "S1", "C3"),  # postcode match from address base
+        ("AAA BBB", "S4", "C2"),  # postcode match from address base, lsoa not in lookup
     ]
     df_input_nspl = spark_session.createDataFrame(data_nspl, schema=schema_nspl)
 
-    # LSOA to CIS area lookup ---------------
     schema_lsoa = """
         lower_super_output_area_code_11 string,
         cis_area_code_20 string,
@@ -58,7 +48,6 @@ def test_household_level_populations(spark_session):
     ]
     df_input_lsoa = spark_session.createDataFrame(data_lsoa, schema=schema_lsoa)
 
-    # Country Lookup ---------------
     schema_country = """
         country_code_12 string,
         name string
@@ -80,15 +69,15 @@ def test_household_level_populations(spark_session):
         cis_area_code_20 string,
         interim_id integer,
         name string,
-        number_of_households_population_by_cis integer,
-        number_of_households_population_by_country integer
+        number_of_households_by_cis_area integer,
+        number_of_households_by_country integer
     """
     data_expected = [
-        ("C2", "E2", "DG", 5, "J3", 73, "name2", 2, 3),
-        ("C6", "S5", "DF", 4, "J2", 72, None, 2, 1),
-        ("C3", "S1", "AA", 2, "J2", 72, "name3", 2, 1),
-        ("C2", "S4", "AB", 1, None, None, "name2", 1, 3),
-        ("C2", "E2", "CE", 3, "J3", 73, "name2", 2, 3),
+        ("C2", "E2", "DDD GGG", 5, "J3", 73, "name2", 2, 3),
+        ("C6", "S5", "DDD FFF", 4, "J2", 72, None, 2, 1),
+        ("C3", "S1", "AAA AAA", 2, "J2", 72, "name3", 2, 1),
+        ("C2", "S4", "AAA BBB", 1, None, None, "name2", 1, 3),
+        ("C2", "E2", "CCC EEE", 3, "J3", 73, "name2", 2, 3),
     ]
     df_expected = spark_session.createDataFrame(data_expected, schema=schema_expected)
     df_output = household_level_populations(df_input_address_base, df_input_nspl, df_input_lsoa, df_input_country)

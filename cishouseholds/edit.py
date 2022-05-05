@@ -292,19 +292,14 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     df
     postcode_column
     """
+    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
+    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
+    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
     df = df.withColumn(
         postcode_column,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
+        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
     )
-    df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
-    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
-    df = df.withColumn(
-        postcode_column,
-        F.when(
-            (F.length(postcode_column) <= 4), F.format_string("%s %s", F.col(postcode_column), F.col("TEMP"))
-        ).otherwise(None),
-    )
-    return df.drop("TEMP")
+    return df
 
 
 def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):

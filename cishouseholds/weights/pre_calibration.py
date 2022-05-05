@@ -64,7 +64,8 @@ def pre_calibration_high_level(
 
     validate_design_weights_or_precal(
         df=df,
-        num_households_column="number_of_households_population_by_cis",
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
         group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
@@ -564,7 +565,7 @@ def precalibration_checkpoints(
     dweight_list: List[str],
     grouping_list: List[str],
     country_col: Union[str, None] = None,
-    total_population: str = "number_of_households_population_by_cis",
+    total_population: str = "number_of_households_by_cis_area",
 ) -> DataFrame:
     """
     Parameters

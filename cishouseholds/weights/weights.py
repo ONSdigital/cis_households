@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
@@ -84,11 +85,12 @@ def generate_weights(
         df=df,
         scenario=scenario_string,  # type: ignore
         groupby_column="cis_area_code_20",
-        household_population_column="number_of_households_population_by_cis",
+        household_population_column="number_of_households_by_cis_area",
     )
     validate_design_weights_or_precal(
         df=df,
-        num_households_column="number_of_households_population_by_cis",
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         group_by_columns=["cis_area_code_20"],
@@ -109,6 +111,8 @@ def join_and_process_lookups(
     """
     Add data from the additional lookup files to main dataset
     """
+    old_sample_df = clean_postcode(old_sample_df, "postcode")
+    household_level_populations_df = clean_postcode(household_level_populations_df, "postcode")
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
     old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
@@ -125,6 +129,9 @@ def join_and_process_lookups(
         df = union_multiple_tables([old_sample_df, new_sample_df])
     else:
         df = new_sample_df
+    df = clean_postcode(df, "postcode")
+    master_sample_df = clean_postcode(master_sample_df, "postcode")
+    postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
     df = df.join(
         master_sample_df.select("postcode", "ons_household_id"),
         on="ons_household_id",
@@ -160,8 +167,6 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
     new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
     info_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, hh_info_df.columns))[0]
     info_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, hh_info_df.columns))[0]
-    # new_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, new_df.columns))[0]
-    # old_cis = list(filter(re.compile(r"^cis_area_code_\d{1,}$").match, old_df.columns))[0]
     if old_lsoa != new_lsoa:
         old_df = old_df.join(
             hh_info_df.select(info_lsoa, info_cis, "postcode")
@@ -171,35 +176,27 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
             how="left",
         )
         old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
-        # old_df = (
-        #     old_df.withColumn(old_cis, "cis_area_code_from_lookup").withColumnRenamed(old_cis, new_cis).drop(old_cis)
-        # )
     return old_df
 
 
 def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, cis_phase_lookup: DataFrame, country_lookup: DataFrame
+    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup_df: DataFrame, country_lookup: DataFrame
 ) -> DataFrame:
     """
-    Steps:
-    1. merge address base extract and NSPL by postcode
-    2. merge the result of first step  into LSOAtoCis lookup, by lower_super_output_area_code_11
-    3. merge the result of the second step with country name lookup by country_code
-    4. calculate required population total columns on joined dataset
+    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
+    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
+    3. join country lookup by country_code to get country names
+    4. calculate household counts by CIS area and country
 
-    df_address_base
-        Dataframe with address base file
-    df_nspl
-        Dataframe linking postcodes and lower level output area.
-    df_cis20cd
-        Dataframe with cis20cd and interim id.
+    N.B. Expects join keys to be deduplicated.
     """
-    address_lookup = address_lookup.withColumn("postcode", F.regexp_replace(F.col("postcode"), " ", ""))
-    df = address_lookup.join(postcode_lookup, on="postcode", how="left")
-    df = df.join(F.broadcast(cis_phase_lookup), on="lower_super_output_area_code_11", how="left")
+    address_lookup = clean_postcode(address_lookup, "postcode")
+    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
+    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
+    df = df.join(F.broadcast(lsoa_cis_lookup_df), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df = assign_count_by_group(df, "number_of_households_population_by_cis", ["cis_area_code_20"])
-    df = assign_count_by_group(df, "number_of_households_population_by_country", ["country_code_12"])
+    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
+    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
     return df
 
 
@@ -229,7 +226,7 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
     df = calculate_combined_dweight_swabs(
         df=df,
         design_weight_column="combined_design_weight_swab",
-        num_households_column="number_of_households_population_by_cis",
+        num_households_column="number_of_households_by_cis_area",
         cis_window=cis_window,
     )
     return df
@@ -270,14 +267,6 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "
     return df
 
 
-# 1166
-# necessary household df columns:
-# - number_of_households_population_by_cis
-# - number_of_households_population_by_country
-# - cis_area_code_20
-
-# necessary df columns:
-# - cis_area_code_20
 def calculate_dweight_swabs(
     df: DataFrame,
     household_level_populations_df: DataFrame,
@@ -292,9 +281,9 @@ def calculate_dweight_swabs(
     number_eligible_household_sample when the sample type is "new"
     """
     window = Window.partitionBy(*group_by_columns)
-    df = df.drop("number_of_households_population_by_cis").join(
+    df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
-            "number_of_households_population_by_cis", "number_of_households_population_by_country", "cis_area_code_20"
+            "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
         ).distinct(),
         on="cis_area_code_20",
         how="left",
@@ -304,7 +293,7 @@ def calculate_dweight_swabs(
         column_name_to_assign,
         F.when(
             F.col(sample_type_column) == "new",
-            F.col("number_of_households_population_by_cis") / F.col("number_eligible_household_sample"),
+            F.col("number_of_households_by_cis_area") / F.col("number_eligible_household_sample"),
         ).otherwise(F.col(previous_dweight_column)),
     )
     return df
@@ -382,7 +371,8 @@ class DesignWeightError(Exception):
 # 1166
 def validate_design_weights_or_precal(
     df: DataFrame,
-    num_households_column: str,
+    num_households_by_cis_column: str,
+    num_households_by_country_column: str,
     swab_weight_column: str,
     antibody_weight_column: str,
     group_by_columns: List[str],
@@ -398,18 +388,14 @@ def validate_design_weights_or_precal(
     window = Window.partitionBy(F.lit(1))
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
     # check 1.1
-    df = (
-        df.withColumn(
-            "CHECK1s",
-            F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
-        )
-        .withColumn("tot", F.sum(swab_weight_column).over(window))
-        .withColumn("tot2", F.sum(antibody_weight_column).over(window))
+    df = df.withColumn(
+        "CHECK1s",
+        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_by_cis_column), 0).otherwise(1),
     )
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_column), 0).otherwise(1),
+        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_by_country_column), 0).otherwise(1),
     )
     # check 2
     df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
