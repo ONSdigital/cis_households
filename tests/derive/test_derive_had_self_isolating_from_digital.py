@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import derive_had_self_isolating_from_digital
+from cishouseholds.derive import derive_self_isolating_from_digital
 
 
 def test_derive_had_self_isolating_from_digital(spark_session):
