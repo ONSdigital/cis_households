@@ -1,13 +1,17 @@
 from typing import List
+from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.weights.weights import DesignWeightError
+from cishouseholds.weights.weights import validate_design_weights_or_precal
+
+# from cishouseholds.derive import assign_ethnicity_white
 
 
 def pre_calibration_high_level(
@@ -25,14 +29,14 @@ def pre_calibration_high_level(
     """
     df = df_survey.join(
         df_dweights,
-        on="ons_household_id",
+        on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
-    df = assign_ethnicity_white(
-        df=df,
-        column_name_to_assign="ethnicity_white",
-        ethnicity_group_column_name="ethnicity_group",
-    )
+    # df = assign_ethnicity_white(
+    #     df=df,
+    #     column_name_to_assign="ethnicity_white",
+    #     ethnicity_group_column_name="ethnicity_group_corrected",
+    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
@@ -57,6 +61,15 @@ def pre_calibration_high_level(
     df = adjusted_design_weights_to_population_totals(df)
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
+
+    validate_design_weights_or_precal(
+        df=df,
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_weight_column="scaled_design_weight_adjusted_swab",
+        antibody_weight_column="scaled_design_weight_adjusted_antibody",
+        group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
+    )
     return df
 
 
@@ -353,7 +366,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
         "scotland": {0: 1, 1396: 2, 2791: 3, 4186: 4, 5581: 5},
         "northern_ireland": {0: 1, 179: 2, 357: 3, 535: 4, 713: 5},
     }
-
     for country in map_index_multiple_deprivation_group_country.keys():
         df = assign_named_buckets(
             df=df,
@@ -361,7 +373,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
             column_name_to_assign=f"index_multiple_deprivation_group_{country}",
             map=map_index_multiple_deprivation_group_country[country],
         )
-
     df = df.withColumn(
         "index_multiple_deprivation_group",
         (
@@ -377,7 +388,6 @@ def derive_index_multiple_deprivation_group(df: DataFrame):
 
     for country in map_index_multiple_deprivation_group_country.keys():
         df = df.drop(f"index_multiple_deprivation_group_{country}")
-
     return df
 
 
@@ -391,7 +401,6 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
     df
     country_column: For northen_ireland, use country, otherwise use cis_area_code_20
     """
-
     df = df.withColumn("country_name_lower", F.lower(F.col("country_name_12")))
 
     window_list_nni = ["sample_addressbase_indicator", "cis_area_code_20", "index_multiple_deprivation_group"]
@@ -407,7 +416,6 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.count(F.col("ons_household_id")).over(w1_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w1_ni).cast("int")),
     )
-
     w2_nni = Window.partitionBy(*window_list_nni, "response_indicator")
     w2_ni = Window.partitionBy(*window_list_ni, "response_indicator")
     df = df.withColumn(
@@ -417,12 +425,10 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.count(F.col("ons_household_id")).over(w2_nni).cast("int"),
         ).otherwise(F.count(F.col("ons_household_id")).over(w2_ni).cast("int")),
     )
-
     df = df.withColumn(
         "total_responded_households_cis_imd_addressbase",
         F.when(F.col("response_indicator") != 1, 0).otherwise(F.col("total_responded_households_cis_imd_addressbase")),
     )
-
     df = df.withColumn(
         "auxiliary",
         F.when(
@@ -430,11 +436,9 @@ def derive_total_responded_and_sampled_households(df: DataFrame) -> DataFrame:
             F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_nni),
         ).otherwise(F.max(F.col("total_responded_households_cis_imd_addressbase")).over(w1_ni)),
     )
-
     df = df.withColumn("total_responded_households_cis_imd_addressbase", F.col("auxiliary")).drop(
         "auxiliary", "country_name_lower"
     )
-
     return df
 
 
@@ -555,40 +559,70 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179
-def precalibration_checkpoints(df: DataFrame, test_type: str, dweight_list: List[str]) -> DataFrame:
+def precalibration_checkpoints(
+    df: DataFrame,
+    scaled_dweight_adjusted: str,
+    dweight_list: List[str],
+    grouping_list: List[str],
+    country_col: Union[str, None] = None,
+    total_population: str = "number_of_households_by_cis_area",
+) -> DataFrame:
     """
     Parameters
     ----------
     df
-    test_type
     population_totals
     dweight_list
     """
-    # TODO: use validate_design_weights() stefen's function
-    # check_1: The design weights are adding up to total population
-    check_1 = (
-        df.select(F.sum(F.col("scaled_design_weight_adjusted_" + test_type))).collect()[0][0]
-        == df.select("number_of_households_population_by_cis").collect()[0][0]
-    )
-    # check_2 and check_3: The  design weights are all are positive AND check there are no missing design weights
-    df = df.withColumn("not_positive_or_null", F.lit(None))
+    if isinstance(country_col, str):
+        window = Window.partitionBy(country_col, *grouping_list)
+    else:
+        window = Window.partitionBy(*grouping_list)
 
+    # check_1: The design weights are adding up to total population
+    df = df.withColumn("check_1", F.sum(F.col(scaled_dweight_adjusted)).over(window))
+    df = df.withColumn("check_1", F.when(F.col(total_population) != F.col("check_1"), 1))
+    check_1_passed = 1 not in df.select("check_1").toPandas()["check_1"].values.tolist()
+
+    # check_2: The  design weights are all are positive
+    df = df.withColumn("not_positive", F.lit(None))
     for dweight in dweight_list:
         df = df.withColumn(
-            "not_positive_or_null",
-            F.when((F.col(dweight) < 0) | (F.col(dweight).isNull()), 1).otherwise(F.col("not_positive_or_null")),
+            "not_positive",
+            F.when(F.col(dweight) < 0, 1).otherwise(F.col("not_positive")),
         )
+    check_2_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
-    check_2_3 = 0 == len(
-        df.distinct().where(F.col("not_positive_or_null") == 1).select("not_positive_or_null").collect()
-    )
+    # check_3: check there are no missing design weights
+    df = df.withColumn("not_null", F.lit(None))
+    for dweight in dweight_list:
+        df = df.withColumn(
+            "not_null",
+            F.when(F.col(dweight).isNull(), 1).otherwise(F.col("not_null")),
+        )
+    check_3_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
     # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
     # These should have the same dweights when window function is applied.
-    check_4 = True
-    return check_1, check_2_3, check_4
+    window = Window.partitionBy(*grouping_list)
+    check_4_passed = True
+    for dweight in dweight_list:
+        df = df.withColumn("temp", F.first(dweight).over(window))
+        df = df.withColumn("temp", F.when(F.col(dweight) != F.col("temp"), 1).otherwise(None))
+        check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
+
+    if not check_1_passed:
+        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
+    if not check_2_passed:
+        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
+    if not check_3_passed:
+        raise DesignWeightError("check_3 There are no missing design weights.")
+    if not check_4_passed:
+        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
+
+    df = df.drop("not_positive", "not_null", "temp")
+    return check_1_passed, check_2_passed, check_3_passed, check_4_passed
 
 
 # 1180

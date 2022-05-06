@@ -48,6 +48,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: visit_date_type
+  nullable: true
+  type: string
+- metadata: {}
   name: improved_visit_date
   nullable: true
   type: timestamp
@@ -116,41 +120,41 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: household_members_over_2_years_and_not_present
+  name: any_household_members_over_2_years_and_not_present
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_age
+  name: person_1_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_2_age
+  name: person_2_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_3_age
+  name: person_3_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_4_age
+  name: person_4_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_5_age
+  name: person_5_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_6_age
+  name: person_6_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_7_age
+  name: person_7_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_8_age
+  name: person_8_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
@@ -280,11 +284,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_fingerprick
+  name: no_fingerprick_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
-  name: no_blood_reason_venous
+  name: no_venous_blood_taken_reason
   nullable: true
   type: string
 - metadata: {}
@@ -322,11 +326,11 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_april_22
   nullable: true
@@ -334,11 +338,11 @@ fields:
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_finger_prick_a1_a3
   nullable: true
@@ -350,7 +354,7 @@ fields:
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_researchyn
   nullable: true
@@ -358,7 +362,7 @@ fields:
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samplesyn
   nullable: true
@@ -388,6 +392,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: agreed_to_additional_consent_visit
+  nullable: true
+  type: string
+- metadata: {}
+  name: additional_consent_requirement
+  nullable: true
+  type: string
+- metadata: {}
   name: work_main_job_title
   nullable: true
   type: string
@@ -412,7 +424,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_direct_contact_persons
+  name: work_direct_contact_patients_clients
   nullable: true
   type: string
 - metadata: {}
@@ -560,6 +572,34 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: symptoms_last_7_days_chest_pain
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_palpitations
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_vertigo_dizziness
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_worry_anxiety
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_low_mood_not_enjoying_anything
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_memory_loss_or_confusion
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_last_7_days_difficulty_concentrating
+  nullable: true
+  type: string
+- metadata: {}
   name: is_self_isolating_detailed
   nullable: true
   type: string
@@ -580,7 +620,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: contact_suspect_positive_covid_last_28_days
+  name: contact_suspected_positive_covid_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -610,7 +650,7 @@ fields:
 - metadata: {}
   name: hours_a_day_with_someone_else_at_home
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: physical_contact_under_18_years
   nullable: true
@@ -646,7 +686,7 @@ fields:
 - metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: times_shopping_last_7_days
   nullable: true
@@ -745,6 +785,34 @@ fields:
   type: string
 - metadata: {}
   name: symptoms_since_last_visit_loss_of_appetite
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_chest_pain
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_palpitations
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_vertigo_dizziness
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_worry_anxiety
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_low_mood_or_not_enjoying_anything
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_memory_loss_or_confusion
+  nullable: true
+  type: string
+- metadata: {}
+  name: symptoms_since_last_visit_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
@@ -892,29 +960,17 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: long_covid_runny_nose_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: long_covid_noisy_breathing
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_offered
   nullable: true
   type: string
-- metadata: {}
-  name: cis_covid_vaccine_received
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_number_of_doses
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date
-  nullable: true
-  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_1
   nullable: true
@@ -926,7 +982,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_1
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_2
   nullable: true
@@ -938,7 +994,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_2
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_3
   nullable: true
@@ -950,7 +1006,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_3
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_4
   nullable: true
@@ -962,7 +1018,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_4
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_flu_vaccine_received
   nullable: true
@@ -978,7 +1034,7 @@ fields:
 - metadata: {}
   name: been_outside_uk_last_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: been_outside_uk_since_last_visit
   nullable: true
@@ -1048,67 +1104,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent
+  name: consent_summary
   nullable: true
   type: double
-- metadata: {}
-  name: ethnicity_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_white
-  nullable: false
-  type: string
-- metadata: {}
-  name: visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_datetime_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: date_of_birth_string
-  nullable: true
-  type: string
 - metadata: {}
   name: swab_taken
   nullable: false
   type: string
 - metadata: {}
   name: blood_taken
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: any_symptoms_last_7_days_or_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: any_symptoms_around_visit
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
   nullable: false
   type: string
 - metadata: {}
@@ -1120,31 +1124,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: age_at_visit
-  nullable: true
-  type: long
-- metadata: {}
-  name: age_group_5_intervals
+  name: hh_id
   nullable: true
   type: string
 - metadata: {}
-  name: age_group_over_16
+  name: is_self_isolating
   nullable: true
   type: string
 - metadata: {}
-  name: age_group_7_intervals
+  name: work_social_care
   nullable: true
   type: string
 - metadata: {}
-  name: age_group_5_year_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: school_year_september
-  nullable: true
-  type: integer
-- metadata: {}
-  name: self_isolating
+  name: work_health_care_v0
   nullable: true
   type: string
 - metadata: {}
@@ -1152,7 +1144,39 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
-  name: improved_visit_date_string
+  name: cis_covid_vaccine_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_received
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_been_care_home_last_28_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: household_been_hospital_last_28_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1
   nullable: true
   type: string
 type: struct

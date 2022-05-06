@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from pyspark.sql import DataFrame
@@ -90,6 +91,65 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
     return grouped_df.filter(F.col("group") != "missing")
 
 
+numeric_column_pattern_map = {
+    r"^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    r"^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    r"^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
+    r"^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
+}
+
+
+aps_value_map = {
+    "country_name": {
+        1: "England",
+        2: "Wales",
+        3: "Scotland",
+        4: "Scotland",
+        5: "Northen Ireland",
+    },
+    "ethnicity_aps_england_wales_scotland": {
+        1: "white british",
+        2: "white irish",
+        3: "other white",
+        4: "mixed/multiple ethnic groups",
+        5: "indian",
+        6: "pakistani",
+        7: "bangladeshi",
+        8: "chinese",
+        9: "any other asian  background",
+        10: "black/ african /caribbean /black/ british",
+        11: "other ethnic group",
+    },
+    "ethnicity_aps_northen_ireland": {
+        1: "white",
+        2: "irish traveller",
+        3: "mixed/multiple ethnic groups",
+        4: "asian/asian british",
+        5: "black/ african/ caribbean /black british",
+        6: "chinese",
+        7: "arab",
+        8: "other ethnic group",
+    },
+}
+# fmt: on
+
+
+def recode_column_patterns(df: DataFrame):
+    for curent_pattern, new_prefix in numeric_column_pattern_map.items():
+        col = list(filter(re.compile(curent_pattern).match, df.columns))
+        if len(col) > 0:
+            col = col[0]
+            new_col = new_prefix.format(re.findall(r"\d{1,}", col)[0])  # type: ignore
+            df = df.withColumnRenamed(col, new_col)
+    return df
+
+
+def recode_column_values(df: DataFrame, lookup: dict):
+    for column_name, map in lookup.items():
+        df = update_column_values_from_map(df, column_name, map)
+    return df
+
+
 def update_population_values(df: DataFrame):
     maps = {
         "interim_region_code": {
@@ -149,7 +209,7 @@ def update_data(df: DataFrame, auxillary_dfs: dict):
     )
     df = update_column(
         df=df,
-        lookup_df=auxillary_dfs["cis_lookup"],
+        lookup_df=auxillary_dfs["cis_phase_lookup"],
         column_name_to_update="cis_area_code_20",
         join_on_columns=["lower_super_output_area_code_11"],
     )
@@ -203,7 +263,7 @@ def reformat_age_population_table(df: DataFrame, m_f_columns: List[str]):
             df.select(*cols, F.explode(F.array(*[F.col(c) for c in selected_columns])).alias("age_population"))
             .withColumn("sex", F.lit(sex))
             .withColumn("age", F.col("age_population")[0].cast("integer"))
-            .withColumn("population", F.col("age_population")[1])
+            .withColumn("population", F.col("age_population")[1].cast("integer"))
             .drop("age_population")
         )
     return dfs[0].unionByName(dfs[1])

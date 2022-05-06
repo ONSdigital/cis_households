@@ -1,73 +1,16 @@
 import csv
-from datetime import datetime
 from io import StringIO
 from operator import add
 from typing import List
 from typing import Union
 
-from cerberus import TypeDefinition
-from cerberus import Validator
 from pyspark import RDD
-from pyspark.accumulators import AddingAccumulatorParam
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql import Row
 from pyspark.sql import Window
 
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-# from typing import List
-# from typing import List
-
-
-class PySparkValidator(Validator):
-    """
-    A Cerberus validator class, which adds support for `timestamp` time. This is an alias for `datetime`.
-    This allows reuse of validation schema as PySpark schema.
-    """
-
-    types_mapping = Validator.types_mapping.copy()
-    types_mapping["timestamp"] = TypeDefinition("timestamp", (datetime,), ())
-    types_mapping["double"] = TypeDefinition("double", (float,), ())
-
-
-def filter_and_accumulate_validation_errors(
-    row: Row, accumulator: AddingAccumulatorParam, cerberus_validator: Validator
-) -> bool:
-    """
-    Validate rows of data using a Cerberus validator object, filtering invalid rows out of the returned dataframe.
-    Field errors are recorded in the given accumulator, as a list of dictionaries.
-    Examples
-    --------
-    >>> validator = cerberus.Validator({"id": {"type": "string"}})
-    >>> error_accumulator = spark_session.sparkContext.accumulator(
-            value=[], accum_param=AddingAccumulatorParam(zero_value=[])
-            )
-    >>> filtered_df = df.rdd.filter(lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator))
-    """
-    row_dict = row.asDict()
-    result = cerberus_validator.validate(row_dict)
-    if not result:
-        accumulator += [(row, cerberus_validator.errors)]
-    return result
-
-
-def validate_and_filter(df: DataFrame, validation_schema: Validator, error_accumulator: AddingAccumulatorParam):
-    """
-    High level function to validate a PySpark DataFrame using Cerberus.
-    Filters invalid records out and accumulates errors.
-
-    Notes
-    -----
-    As a side effect, errors are added to the ``error_accumulator``.
-    """
-    return df
-    validator = PySparkValidator(validation_schema)
-    filtered_df = df.rdd.filter(
-        lambda r: filter_and_accumulate_validation_errors(r, error_accumulator, validator)
-    ).toDF(schema=df.schema)
-    return filtered_df
 
 
 def validate_csv_fields(text_file: RDD, delimiter: str = ","):
@@ -93,19 +36,22 @@ def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     return True if error_count == 0 else False
 
 
-def validate_csv_header(text_file: RDD, expected_header: str):
+def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: str = ","):
     """
     Function to validate header in csv file matches expected header.
 
     Parameters
     ----------
     text_file
-        A text file (csv) that has been ready by spark context
+        A text file (csv) that has been read by spark context
     expected_header
         Exact header expected in csv file
     """
-    header = text_file.first()
-    return expected_header == header
+    actual_header = text_file.first()
+    buffer = StringIO(actual_header)
+    reader = csv.reader(buffer, delimiter=delimiter)
+    actual_header = next(reader)
+    return expected_header == actual_header
 
 
 def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: str = ","):
@@ -122,27 +68,38 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
         file separator
     """
     spark_session = get_or_create_spark_session()
+    if file_paths is None or file_paths in ["", []]:
+        raise FileNotFoundError("No file path specified")
     if not isinstance(file_paths, list):
         file_paths = [file_paths]
 
-    expected_header_row = sep.join(validation_schema.keys())
+    expected_header_row = list(validation_schema.keys())
 
     valid_files = []
     for file_path in file_paths:
         error = ""
         text_file = spark_session.sparkContext.textFile(file_path)
-        valid_csv_header = validate_csv_header(text_file, expected_header_row)
+        valid_csv_header = validate_csv_header(text_file, expected_header_row, delimiter=sep)
         valid_csv_fields = validate_csv_fields(text_file, delimiter=sep)
 
         if not valid_csv_header:
+            actual_header = text_file.first()
+            buffer = StringIO(actual_header)
+            reader = csv.reader(buffer, delimiter=sep)
+            actual_header = next(reader)
+            expected_header = list(validation_schema.keys())
             error += (
-                f"\nInvalid file: Header of {file_path}:\n{text_file.first()})\n "
-                f"does not match expected header:\n{expected_header_row}\n"
+                f"Invalid file header:{file_path}\n"
+                f"Expected:     {expected_header}\n"
+                f"Actual:       {actual_header}\n"
+                f"Missing:      {set(expected_header) - set(actual_header)}\n"
+                f"Additional:   {set(actual_header) - set(expected_header)}\n"
             )
 
         if not valid_csv_fields:
             error += (
-                f"\nInvalid file: Number of fields in {file_path} does not match expected number of columns from header"
+                f"\nInvalid file: Number of fields in {file_path} "
+                "row(s) does not match expected number of columns from header"
             )
 
         if error != "":

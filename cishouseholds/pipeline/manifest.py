@@ -1,13 +1,12 @@
-import hashlib
 import json
 import os
 from datetime import datetime
 
 from cishouseholds.hdfs_utils import delete_file
+from cishouseholds.hdfs_utils import hdfs_md5sum
 from cishouseholds.hdfs_utils import hdfs_stat_size
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import isfile
-from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 
@@ -48,7 +47,9 @@ class Manifest:
         self.invalid_headers: list = []
         self.dry_run = dry_run
 
-    def add_file(self, relative_file_path: str, column_header: str, validate_col_name_length: bool = True):
+    def add_file(
+        self, relative_file_path: str, column_header: str, validate_col_name_length: bool = True, sep: str = "|"
+    ):
         """
         Add a file in the outgoing folder to the manifest.
         The file must exist in a subdirectory of the manifest `outgoing_directory`.
@@ -69,9 +70,9 @@ class Manifest:
             raise ManifestError(f"Cannot add file to manifest, file does not exist: {absolute_file_path}")
 
         true_header_string = read_header(absolute_file_path)
-        true_header_list = true_header_string.split(",")
+        true_header_list = true_header_string.split(sep)
         if true_header_string != column_header:
-            column_header_list = column_header.split(",")
+            column_header_list = column_header.split(sep)
 
             self.invalid_headers.append(
                 f"File:{absolute_file_path}\n"
@@ -94,7 +95,7 @@ class Manifest:
             "file": os.path.basename(relative_file_path),
             "subfolder": os.path.dirname(relative_file_path),
             "sizeBytes": hdfs_stat_size(absolute_file_path),
-            "md5sum": self._md5(absolute_file_path),
+            "md5sum": hdfs_md5sum(absolute_file_path),
             "header": column_header,
         }
         self.manifest["files"].append(file_manifest)
@@ -133,13 +134,3 @@ class Manifest:
             absolute_path = os.path.join(self.outgoing_directory, f["subfolder"], f["file"])
             if isfile(absolute_path):
                 delete_file(absolute_path)
-
-    @staticmethod
-    def _md5(filename: str) -> str:
-        """
-        Calculate the hexadecimal md5sum for a file in HDFS.
-        """
-        hash_md5 = hashlib.md5()
-        content = read_file_to_string(filename)
-        hash_md5.update(content.encode("utf-8"))
-        return hash_md5.hexdigest()

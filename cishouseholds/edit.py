@@ -1,4 +1,7 @@
+import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -7,7 +10,181 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import sum_within_row
+
+
+def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+    """Edit existing column to value when a value is present in any of the listed columns."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+    )
+    return df
+
+
+def update_column_if_ref_in_list(
+    df: DataFrame,
+    column_name_to_update: str,
+    old_value,
+    new_value,
+    reference_column: str,
+    check_list: List[Union[str, int]],
+):
+    """
+    Update column value with new_value if the current value is equal to old_value
+    and reference column is in list
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    old_value
+    new_value
+    reference_column:str
+    check_list
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).eqNullSafe(old_value) & F.col(reference_column).isin(check_list), new_value
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
+# SUBSTITUTED by update_column_values_from_map()
+# def update_column_values_from_column_reference(
+#     df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping
+# ):
+#     """
+#     Map column values depending on values of reference columns
+#     Parameters
+#     ----------
+#     df
+#     column_name_to_update
+#     reference_column
+#     map
+#     """
+#     for key, val in map.items():
+#         df = df.withColumn(
+#             column_name_to_update, F.when(F.col(reference_column) == key, val).otherwise(F.col(column_name_to_update))
+#         )
+#     return df
+
+
+def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
+    """
+    convert values outside range to null
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    range
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(column_name_to_update) >= range[0]) & (F.col(column_name_to_update) <= range[1]),
+            F.col(column_name_to_update),
+        ).otherwise(None),
+    )
+    return df
+
+
+def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, column_pattern: str):
+    """
+    Update a count to the count of columns that have a value above 0. Keeps original value if count is not more than 0.
+
+    Parameters
+    ----------
+    column_patter
+        regex pattern to match columns that should be counted
+
+    """
+    r = re.compile(column_pattern)
+    columns_to_count = list(filter(r.match, df.columns))
+    count = reduce(add, [F.when(F.col(column) > 0, 1).otherwise(0) for column in columns_to_count])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(count > 0, count)
+        .when(F.col(column_name_to_assign).isNull(), 0)
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
+    )
+    return df
+
+
+def update_face_covering_outside_of_home(
+    df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
+):
+    """
+    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Parameters
+    ----------
+    df
+    column_name_to_update
+    covered_enclosed_column
+    covered_work_column
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (
+                (
+                    F.col(covered_enclosed_column).isin(
+                        "Never", "Not going to other enclosed public spaces or using public transport"
+                    )
+                )
+                & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
+            ),
+            "No",
+        )
+        .when(
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
+            "Yes, at work/school only",
+        )
+        .when(
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_work_column).isNull()
+            ),
+            "Yes, in other situations only",
+        )
+        .when(
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
+            "Yes, usually both Work/school/other",
+        )
+        .when(
+            (F.col(covered_enclosed_column) == "My face is already covered")
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
+                | F.col(covered_work_column).isNull()
+            ),
+            "My face is already covered",
+        )
+        .when(
+            (
+                (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
+            & (F.col(covered_work_column) == "My face is already covered"),
+            "My face is already covered",
+        )
+        .otherwise(F.col(column_name_to_update)),
+    )
+    return df
 
 
 def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
@@ -20,7 +197,7 @@ def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, c
     count_reference_column
     """
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "No").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
     )
     return df
 
@@ -68,36 +245,42 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
-def clean_barcode(df: DataFrame, barcode_column: str) -> DataFrame:
+def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
+    Parameters
+    ---------
+    df
+    barcode_column
+    edited_column
+        signifies if updating was performed on row
     """
+    df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
-    df = df.withColumn("SUFFIX", F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0))
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", ""))
+    suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
+    prefix = F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", "")
 
     # prefix cleaning
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col("PREFIX"), r"[0Q]", "O"))
-    df = df.withColumn(
-        "PREFIX", F.when(~F.col("PREFIX").isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(F.col("PREFIX"))
-    )
+    prefix = F.regexp_replace(prefix, r"[0Q]", "O")
+    prefix = F.when(~prefix.isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(prefix)
 
     # suffix cleaning
-    df = df.withColumn("SUFFIX", F.when(F.length("SUFFIX") >= 4, F.col("SUFFIX")).otherwise(None))
-    df = df.withColumn("SUFFIX", F.when(F.col("SUFFIX").rlike(r"^0{1,}$"), None).otherwise(F.col("SUFFIX")))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"[.O]", "0"))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), "I", "1"))
-    df = df.withColumn("SUFFIX", F.substring(F.concat(F.lit("00000000"), F.col("SUFFIX")), -8, 8))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"^[^027]", "0"))
+    suffix = F.when(F.length(suffix) >= 4, suffix).otherwise(None)
+    suffix = F.when(suffix.rlike(r"^0{1,}$"), None).otherwise(suffix)
+    suffix = F.regexp_replace(suffix, r"[.O]", "0")
+    suffix = F.regexp_replace(suffix, "I", "1")
+    suffix = F.substring(F.concat(F.lit("00000000"), suffix), -8, 8)
+    suffix = F.regexp_replace(suffix, r"^[^027]", "0")
 
+    df = df.withColumn(barcode_column, F.when(suffix.isNotNull(), F.concat(prefix, suffix)).otherwise(None))
     df = df.withColumn(
-        barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
+        edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
     )
-    return df.drop("PREFIX", "SUFFIX")
+    return df.drop("BARCODE_COPY")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
@@ -109,41 +292,60 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     df
     postcode_column
     """
+    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
+    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
+    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
     df = df.withColumn(
         postcode_column,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
+        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
     )
-    df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
-    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
-    df = df.withColumn(
-        postcode_column,
-        F.when(
-            (F.length(postcode_column) <= 4), F.format_string("%s %s", F.col(postcode_column), F.col("TEMP"))
-        ).otherwise(None),
-    )
-    return df.drop("TEMP")
-
-
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
-    """
-    Update specific cell values from a map contained in a csv file
-    Parameters
-    ----------
-    df
-    csv_filepath
-    id_column
-        column in dataframe containing unique identifier
-    """
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
-    csv = csv.groupBy("id", "old", "new").pivot("column").count()
-    cols = csv.columns[3:]
-    for col in cols:
-        copy = csv.filter(F.col(col) == 1)
-        copy = copy.drop(col).withColumnRenamed("old", col)
-        df = df.join(copy.select("id", "new", col), on=["id", col], how="left")
-        df = df.withColumn(col, F.when(~F.col("new").isNull(), F.col("new")).otherwise(F.col(col))).drop("new")
     return df
+
+
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
+    """
+    Edit values in df based on old to new mapping in lookup_df
+    Expected columns on lookup_df:
+    - id
+    - dataset_name
+    - target_column_name
+    - old_value
+    - new_value
+    """
+
+    if dataset_name is not None:
+        lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
+
+    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+
+    pivoted_lookup_df = (
+        lookup_df.groupBy("id")
+        .pivot("target_column_name")
+        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+        .drop("old_value", "new_value")
+    )
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+        pivoted_lookup_df["id"]
+    )
+
+    for column_to_edit in columns_to_edit:
+        if column_to_edit not in df.columns:
+            print(
+                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+            )  # functional
+            continue
+        edited_df = edited_df.withColumn(
+            column_to_edit,
+            F.when(
+                F.col(column_to_edit).eqNullSafe(
+                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                ),
+                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+            ).otherwise(F.col(column_to_edit)),
+        )
+
+    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+    return edited_df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -188,6 +390,7 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
+    condition_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
@@ -201,6 +404,8 @@ def update_column_values_from_map(
     error_if_value_not_found
     default_value
     """
+    if condition_column is None:
+        condition_column = column
 
     if default_value is None:
         default_value = F.col(column)
@@ -216,7 +421,10 @@ def update_column_values_from_map(
         df = df.withColumn(column, mapping_expr[df[column]])
     else:
         df = df.withColumn(
-            column, F.when(F.col(column).isin(*list(map.keys())), mapping_expr[df[column]]).otherwise(default_value)
+            column,
+            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
+                default_value
+            ),
         )
     return df
 
@@ -295,6 +503,20 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     return df
 
 
+def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
+    """
+    Map columns from column list with given value to null
+    Parameters
+    ----------
+    df
+    column_list
+    value
+    """
+    for col in column_list:
+        df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
+    return df
+
+
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
@@ -309,6 +531,12 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
 
+    return df
+
+
+def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
+    for col, map in column_map_dic.items():
+        df = update_column_values_from_map(df, col, map)
     return df
 
 
@@ -399,8 +627,10 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     """
     key_types = set([type(key) for key in mapper.keys()])
     value_types = set([type(values) for values in mapper.values()])
-    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types}"
-    assert len(value_types) == 1, f"all map values must be the same type, they are {value_types}"
+    assert len(key_types) == 1, f"all map keys must be the same type, they are {key_types} for {column_name_to_assign}"
+    assert (
+        len(value_types) == 1
+    ), f"all map values must be the same type, they are {value_types} for {column_name_to_assign}"
 
     mapping_expr = F.create_map([F.lit(x) for x in chain(*mapper.items())])
 
@@ -496,4 +726,29 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
         if column_name in df.columns:
             df = df.withColumn(column_name, F.col(column_name).cast(cast_type))
 
+    return df
+
+
+def edit_to_sum_or_max_value(
+    df: DataFrame,
+    column_name_to_assign: str,
+    columns_to_sum: List[str],
+    max_value: int,
+):
+    """
+    Imputes column_name_to_assign based a sum of the columns_to_sum.
+    If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
+
+    column_name_to_assign must already exist on the df.
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
+        .when(
+            F.col(column_name_to_assign).isNull(),
+            F.least(F.lit(max_value), sum_within_row(columns_to_sum)),
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
+    )
     return df

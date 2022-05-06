@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Optional
 from typing import Union
@@ -9,7 +11,54 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.expressions import all_equal
+from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    window = Window.orderBy(reference_column)
+    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    return df
+
+
+def assign_distinct_count_in_group(
+    df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
+):
+    """
+    Window-based count of distinct values by group
+
+    Parameters
+    ----------
+    count_distinct_columns
+        columns to determine distinct records
+    group_by_columns
+        columns to group by and count within
+    """
+    count_distinct_columns_window = Window.partitionBy(*count_distinct_columns).orderBy(F.lit(0))
+    group_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
+    )
+    return df
+
+
+def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
+    return df
 
 
 def assign_multigeneration(
@@ -42,12 +91,24 @@ def assign_multigeneration(
             ("Scotland", "08", "15", "03", "01"),
             ("NI", "09", "01", "07", "02"),
         ],
-        schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
+        schema=[
+            country_column,
+            "school_start_month",
+            "school_start_day",
+            "school_year_ref_month",
+            "school_year_ref_day",
+        ],
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count()
     transformed_df = transformed_df.join(
         df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
         on=household_id_column,
+    ).drop("count")
+    transformed_df = assign_age_at_date(
+        df=transformed_df,
+        column_name_to_assign="age_at_visit",
+        base_date=F.col(visit_date_column),
+        date_of_birth=F.col(date_of_birth_column),
     )
     transformed_df = assign_school_year(
         df=transformed_df,
@@ -56,12 +117,6 @@ def assign_multigeneration(
         dob_column=date_of_birth_column,
         country_column=country_column,
         school_year_lookup=school_year_lookup_df,
-    )
-    transformed_df = assign_age_at_date(
-        df=transformed_df,
-        column_name_to_assign="age_at_visit",
-        base_date=F.col(visit_date_column),
-        date_of_birth=F.col(date_of_birth_column),
     )
     generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
     generation2_flag = F.when(
@@ -77,7 +132,18 @@ def assign_multigeneration(
     transformed_df = transformed_df.withColumn(
         column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
     )
-    return transformed_df.drop("age_at_visit", "school_year", "count")
+    transformed_df = (
+        df.drop("age_at_visit")
+        .join(
+            transformed_df.select(
+                "age_at_visit", "school_year", column_name_to_assign, participant_id_column, visit_date_column
+            ),
+            on=[participant_id_column, visit_date_column],
+            how="left",
+        )
+        .distinct()
+    )
+    return transformed_df
 
 
 def assign_household_participant_count(
@@ -85,29 +151,38 @@ def assign_household_participant_count(
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
-    df.withColumn(column_name_to_assign, F.count(F.col(participant_id_column).over(household_window)))
+    df = df.withColumn(
+        column_name_to_assign, F.size(F.collect_set(F.col(participant_id_column)).over(household_window))
+    )
     return df
 
 
-def assign_people_in_household_count(df: DataFrame, column_name_to_assign: str, participant_count_column: str):
+def assign_household_under_2_count(
+    df: DataFrame, column_name_to_assign: str, column_pattern: str, condition_column: str
+):
     """
-    Assign number of people within household, including those not participating. Assumes each row contains counts of
-    participants for the household.
-
-    Uses specific column name patterns to count non-participating members.
+    Count number of individuals below two from age (months) columns matching pattern.
+    if condition column is 'No' it will only count so long the range of columns ONLY have only 0s or nulls.
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    column_pattern
+    condition_column
     """
-    infant_pattern = "infant_[1-8]_age"
-    not_present_pattern = "person_[1-8]_age"
-    not_consenting_pattern = "person_[1-9]_not_consenting_age"
-    matched_columns = []
-    for col in df.columns:
-        for pattern in [infant_pattern, not_present_pattern, not_consenting_pattern]:
-            if re.match(pattern, col):
-                matched_columns.append(col)
-    df = df.withColumn("TEMP", F.array(matched_columns))
-    df = df.withColumn("TEMP", F.size(F.expr("filter(TEMP, x -> x is not null)")))
-    df = df.withColumn(column_name_to_assign, F.col(participant_count_column) + F.col("TEMP"))
-    return df.drop("TEMP")
+    columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
+    count = reduce(
+        add, [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count]
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col(condition_column) == "Yes") & (~all_equal(columns_to_count, 0)))
+            | ((F.col(condition_column) == "No") & (~all_equal_or_Null(columns_to_count, 0))),
+            count,
+        ).otherwise(0),
+    )
+    return df
 
 
 def assign_ever_had_long_term_health_condition_or_disabled(
@@ -268,7 +343,7 @@ def assign_column_given_proportion(
 
 
 def count_value_occurrences_in_column_subset_row_wise(
-    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int, None]
 ) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
@@ -279,11 +354,12 @@ def count_value_occurrences_in_column_subset_row_wise(
     selection_columns
     count_if_value
     """
-    df = (
-        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
-        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
-        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
-    )
+    df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+    if count_if_value is None:
+        df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    else:
+        df = df.withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+    df = df.withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
     return df
 
 
@@ -363,7 +439,11 @@ def assign_proportion_column(
 
 
 def assign_work_social_column(
-    df: DataFrame, column_name_to_assign: str, work_sector_colum: str, care_home_column: str, direct_contact_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    work_sector_column: str,
+    care_home_column: str,
+    direct_contact_column: str,
 ) -> DataFrame:
     """
     Assign column for work social with standard string values depending on 3 given reference inputs
@@ -377,8 +457,11 @@ def assign_work_social_column(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col(work_sector_colum).isNull(), None)
-        .when(F.col(work_sector_colum) != "Furloughed (temporarily not working)", "No")
+        F.when(F.col(work_sector_column).isNull(), None)
+        .when(
+            F.col(work_sector_column) != "Social care",
+            "No",
+        )
         .when(
             (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
             "Yes, care/residential home, resident-facing",
@@ -744,7 +827,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )
@@ -1245,7 +1328,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
     """
 
     df = df.withColumn("date_diff", F.datediff(base_date, date_of_birth)).withColumn(
-        column_name_to_assign, F.floor(F.col("date_diff") / 365.25)
+        column_name_to_assign, F.floor(F.col("date_diff") / 365.25).cast("integer")
     )
 
     return df.drop("date_diff")
@@ -1320,23 +1403,18 @@ def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
     return df
 
 
-def assign_work_health_care(
-    df, column_name_to_assign, direct_contact_column, reference_health_care_column, other_health_care_column
-) -> DataFrame:
+def assign_work_health_care(df, column_name_to_assign, direct_contact_column, health_care_column) -> DataFrame:
     """
-    Combine the different versions of work health care responses.
-    Uses direct contact status to edit these.
+    Combine direct contact and health care responses to get old format of health care responses.
 
     Parameters
     ----------
     df
     column_name_to_assign
     direct_contact_column
-        Column indicating direct contact as Yes/No
-    reference_health_care_column
-        Column to coalesce with, having desired answer format
-    other_health_care_column
-        Column to be edited to match the reference answer format
+        Column indicating whether participant works in direct contact
+    health_care_column
+        Column indicating if participant works in health care
     """
     health_care_map = {
         "Yes, in primary care, e.g. GP, dentist": "Yes, primary care",
@@ -1348,12 +1426,10 @@ def assign_work_health_care(
         ", non-patient-facing"
     )
     edited_other_health_care_column = F.when(
-        (F.col(other_health_care_column) != "No") & F.col(other_health_care_column).isNotNull(),
-        F.concat(value_map[F.col(other_health_care_column)], patient_facing_text),
-    ).otherwise(F.col(other_health_care_column))
-    df = df.withColumn(
-        column_name_to_assign, F.coalesce(F.col(reference_health_care_column), edited_other_health_care_column)
-    )
+        (F.col(health_care_column) != "No") & F.col(health_care_column).isNotNull(),
+        F.concat(value_map[F.col(health_care_column)], patient_facing_text),
+    ).otherwise(F.col(health_care_column))
+    df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
     return df
 
 
@@ -1387,4 +1463,82 @@ def contact_known_or_suspected_covid_type(
         )
         .otherwise(None),
     )
+    return df
+
+
+def derive_household_been_columns(
+    df: DataFrame,
+    column_name_to_assign: str,
+    individual_response_column: str,
+    household_response_column: str,
+) -> DataFrame:
+    """
+    Combines a household and individual level response, to an overall household response.
+    Assumes input responses are 'Yes'/'no'.
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(individual_response_column) == "Yes"), "Yes, I have")
+        .when(
+            ((F.col(individual_response_column) != "Yes") | F.col(individual_response_column).isNull())
+            & (F.col(household_response_column) == "Yes"),
+            "No I haven’t, but someone else in my household has",
+        )
+        .otherwise("No, no one in my household has"),
+    )
+    return df
+
+
+def aggregated_output_groupby(
+    df: DataFrame,
+    column_group: str,
+    apply_function_list: List[str],
+    column_name_list: List[str],
+    column_name_to_assign_list: List[str],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_group
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    """
+    function_object_list = [
+        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+    ]
+    return df.groupBy(column_group).agg(
+        *[
+            apply_function.alias(column_name_to_assign)
+            for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list)
+        ]
+    )
+
+
+def aggregated_output_window(
+    df: DataFrame,
+    column_window_list: List[str],
+    column_name_list: List[str],
+    apply_function_list: List,
+    column_name_to_assign_list: List[str],
+    order_column_list: List[str] = [],
+) -> DataFrame:
+    """
+    Parameters
+    ----------
+    df
+    column_group_list
+    apply_function_list
+    column_apply_list
+    column_name_to_assign_list
+    order_column_list
+    when_condition
+    """
+    window = Window.partitionBy(*column_window_list).orderBy(*order_column_list)
+    function_object_list = [
+        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+    ]
+    for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
+        df = df.withColumn(column_name_to_assign, apply_function.over(window))
     return df

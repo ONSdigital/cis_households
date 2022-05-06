@@ -1,20 +1,16 @@
+import time
 import traceback
 from datetime import datetime
 
-import cishouseholds.pipeline.generate_outputs  # noqa: F401
-import cishouseholds.pipeline.historical_blood_ETL  # noqa: F401
-import cishouseholds.pipeline.input_file_processing  # noqa: F401
-import cishouseholds.pipeline.merge_antibody_swab_ETL  # noqa: F401
-import cishouseholds.pipeline.post_merge_processing  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_0_ETL  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_1_ETL  # noqa: F401
-import cishouseholds.pipeline.survey_responses_version_2_ETL  # noqa: F401
-import cishouseholds.pipeline.weight_calibration  # noqa: F401
+import cishouseholds.pipeline.input_file_stages  # noqa: F401
+import cishouseholds.pipeline.pipeline_stages  # noqa: F401
+import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
-from cishouseholds.pipeline.load import delete_tables  # noqa: F401
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pyspark_utils import get_spark_application_id
+from cishouseholds.pyspark_utils import get_spark_ui_url
 
 
 def run_from_config():
@@ -35,8 +31,12 @@ def run_from_config():
     add_run_status(run_id, "started")
     pipeline_error_count = None
     try:
+        print(f"Spark UI: {get_spark_ui_url()}")  # functional
+        print(f"Spark application ID: {get_spark_application_id()}")  # functional
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
-        pipeline_error_count = run_pipeline_stages(pipeline_stage_list, run_id)
+        pipeline_error_count = run_pipeline_stages(
+            pipeline_stage_list, run_id, config.get("retry_times_on_fail", 0), config.get("retry_wait_time_seconds", 0)
+        )
     except Exception as e:
         add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
         raise e
@@ -48,25 +48,42 @@ def run_from_config():
     add_run_status(run_id, "finished")
 
 
-def run_pipeline_stages(pipeline_stage_list: list, run_id: int):
+def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int = 1, retry_wait_time: int = 1):
     """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
-        try:
-            stage_name = stage_config.pop("function")
-            stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
-            print(stage_text)  # functional
-            pipeline_stages[stage_name](**stage_config)
-        except Exception:
+        stage_success = False
+        attempt = 0
+        stage_name = stage_config.pop("function")
+        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
+        print(stage_text)  # functional
+        while not stage_success and attempt < retry_count + 1:
+            # TODO: log the retry event with run status and no traceback
+            if attempt != 0:
+                add_run_status(run_id, "retry", stage_text, "")
+            attempt_start = datetime.now()
+            try:
+                pipeline_stages[stage_name](**stage_config)
+                stage_success = True
+                add_run_status(run_id, "success", stage_text, "")
+            except Exception:
+                attempt_run_time = (datetime.now() - attempt_start).total_seconds()
+                print(f"Error: {traceback.format_exc()}")  # functional
+                print(
+                    f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
+                )  # functional
+                add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
+            attempt += 1
+            time.sleep(retry_wait_time)
+        if not stage_success:
             pipeline_error_count += 1
-            add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
-            print(f"Error: {traceback.format_exc()}")  # functional
-        finally:
-            run_time = (datetime.now() - stage_start).total_seconds()
-            print(f"    - completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
+        stage_run_time = (datetime.now() - stage_start).total_seconds()
+        print(
+            f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
+        )  # functional
     return pipeline_error_count
 
 

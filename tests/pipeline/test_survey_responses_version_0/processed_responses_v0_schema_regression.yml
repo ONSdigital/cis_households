@@ -44,19 +44,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: no_paticicpants_not_consented
-  nullable: true
-  type: double
-- metadata: {}
-  name: reason_participants_not_consented
+  name: household_participants_not_consented_count
   nullable: true
   type: string
 - metadata: {}
-  name: not_present_household_count
+  name: household_participants_not_consented_reason
   nullable: true
   type: string
 - metadata: {}
-  name: not_present_household_reason
+  name: household_participants_not_present_count
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_participants_not_present_reason
   nullable: true
   type: string
 - metadata: {}
@@ -96,41 +96,41 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: household_members_over_2_years_and_not_present
+  name: any_household_members_over_2_years_and_not_present
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_age
+  name: person_1_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_2_age
+  name: person_2_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_3_age
+  name: person_3_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_4_age
+  name: person_4_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_5_age
+  name: person_5_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_6_age
+  name: person_6_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_7_age
+  name: person_7_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
-  name: person_8_age
+  name: person_8_not_present_age
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: person_1_not_consenting_age
   nullable: true
@@ -208,6 +208,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: suffix
+  nullable: true
+  type: string
+- metadata: {}
   name: full_name
   nullable: true
   type: string
@@ -248,37 +252,33 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: gender
-  nullable: true
-  type: string
-- metadata: {}
   name: ethnicity
   nullable: true
   type: string
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: work_status_v0
   nullable: true
@@ -388,7 +388,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: contact_suspect_positive_covid_last_28_days
+  name: contact_suspected_positive_covid_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -400,11 +400,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: household_been_hospital_last_28_days
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_28_days_other_household_member
+  name: household_been_care_home_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -472,11 +472,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_tested
+  name: other_pcr_test_since_last_visit
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_test_result
+  name: other_pcr_test_results
   nullable: true
   type: string
 - metadata: {}
@@ -501,10 +501,6 @@ fields:
   type: string
 - metadata: {}
   name: work_health_care_v0_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_status_v0_raw
   nullable: true
   type: string
 - metadata: {}
@@ -548,67 +544,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent
+  name: consent_summary
   nullable: true
   type: double
-- metadata: {}
-  name: ethnicity_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_white
-  nullable: false
-  type: string
-- metadata: {}
-  name: visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: samples_taken_datetime_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: date_of_birth_string
-  nullable: true
-  type: string
 - metadata: {}
   name: swab_taken
   nullable: false
   type: string
 - metadata: {}
   name: blood_taken
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_covid_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_symptom_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: symptoms_since_last_visit_count
-  nullable: false
-  type: integer
-- metadata: {}
-  name: any_symptoms_last_7_days_or_now
-  nullable: true
-  type: string
-- metadata: {}
-  name: any_symptoms_around_visit
-  nullable: false
-  type: string
-- metadata: {}
-  name: symptoms_last_7_days_cghfevamn_symptom_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: symptoms_around_cghfevamn_symptom_group
   nullable: false
   type: string
 - metadata: {}
@@ -620,27 +564,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: age_at_visit
-  nullable: true
-  type: long
-- metadata: {}
-  name: age_group_5_intervals
+  name: hh_id
   nullable: true
   type: string
 - metadata: {}
-  name: age_group_over_16
-  nullable: true
-  type: string
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
 - metadata: {}
-  name: age_group_7_intervals
+  name: swab_sample_barcode_edited_flag
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
-  name: age_group_5_year_intervals
-  nullable: true
-  type: string
-- metadata: {}
-  name: school_year_september
+  name: blood_sample_barcode_edited_flag
   nullable: true
   type: integer
 type: struct
