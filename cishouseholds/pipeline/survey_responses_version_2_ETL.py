@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -56,6 +57,7 @@ from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
+from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -749,6 +751,7 @@ def union_dependent_derivations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
@@ -927,24 +930,27 @@ def create_formatted_datetime_string_columns(df):
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
     }
-    date_format_string_list = [
-        "date_of_birth",
-        "improved_visit_date",
-        "think_had_covid_date",
-        "cis_covid_vaccine_date",
-        "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4",
-        "last_suspected_covid_contact_date",
-        "last_covid_contact_date",
-        "other_pcr_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_pcr_test_last_negative_date",
-        "been_outside_uk_last_date",
-        "symptoms_last_7_days_onset_date",
-    ]
+    date_format_string_list = set(
+        [
+            "date_of_birth",
+            "improved_visit_date",
+            "think_had_covid_date",
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+            "cis_covid_vaccine_date_3",
+            "cis_covid_vaccine_date_4",
+            "last_suspected_covid_contact_date",
+            "last_covid_contact_date",
+            "other_pcr_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_pcr_test_last_negative_date",
+            "been_outside_uk_last_date",
+            "symptoms_last_7_days_onset_date",
+        ]
+        + datetime_format_dict["yyyy-MM-dd"]
+    )
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
@@ -969,7 +975,15 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-
+    #  timestamp
+    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        df = assign_column_to_date_string(
+            df=df,
+            column_name_to_assign=column_name_to_assign + "_string",
+            reference_column=column_name_to_assign,
+            time_format="ddMMMyyyy HH:mm:ss",
+            lower_case=True,
+        )
     return df
 
 
@@ -1044,4 +1058,8 @@ def fill_forwards_transformations(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
+    return df
+
+
+def digital_specific_cleaning(df):
     return df

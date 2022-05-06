@@ -6,18 +6,26 @@ from cishouseholds.edit import clean_postcode
 def test_clean_postcode(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
-            ("     I G $ 4 0   D.B          .   ", 1),
-            ("     ., ; wb $ 1 % 6 ofj          )   ", 2),
-            (" aaa    ., ; wb $ 1 % 6 ofj          )   ", 3),
+            ("AB123CD", 1),
+            ("A1  2BC", 2),
+            ("AB1 2CD", 3),
+            ("AB12 3CD", 4),
+            ("A1 2BC", 5),
+            ("AB12CD", 6),
+            ("12345678", 7),
         ],
         schema="""ref string, id integer""",
     )
 
     expected_df = spark_session.createDataFrame(
         data=[
-            ("IG4 0DB", 1),
-            ("WB16 OFJ", 2),
-            (None, 3),
+            ("AB123CD", 1),
+            ("A1  2BC", 2),
+            ("AB1 2CD", 3),
+            ("AB123CD", 4),
+            ("A1  2BC", 5),
+            ("AB1 2CD", 6),
+            (None, 7),
         ],
         schema="""ref string, id integer""",
     )

@@ -1,79 +1,51 @@
+import os
 from typing import Any
 from typing import Mapping
 
 from pandas.core.frame import DataFrame
+from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
 from cishouseholds.pipeline.config import get_config
 
-sessions = {
-    "s": (
-        SparkSession.builder.config("spark.executor.memory", "1g")
-        .config("spark.executor.cores", 1)
-        .config("spark.dynamicAllocation.enabled", "true")
-        .config("spark.dynamicAllocation.maxExecutors", 3)
-        .config("spark.sql.shuffle.partitions", 12)
-        .config("spark.ui.showConsoleProgress", "false")
-        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
-        .config("spark.shuffle.service.enabled", "true")
-        .config("spark.sql.crossJoin.enabled", "true")
-        .config("spark.sql.adaptive.enabled", "true")
-        .appName("cishouseholds")
-        .enableHiveSupport()
-        .getOrCreate()
-    ),
-    "m": (
-        SparkSession.builder.config("spark.executor.memory", "6g")
-        .config("spark.executor.cores", 3)
-        .config("spark.dynamicAllocation.enabled", "true")
-        .config("spark.dynamicAllocation.maxExecutors", 3)
-        .config("spark.sql.shuffle.partitions", 18)
-        .config("spark.ui.showConsoleProgress", "false")
-        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
-        .config("spark.shuffle.service.enabled", "true")
-        .config("spark.debug.maxToStringFields", 2000)
-        .config("spark.sql.crossJoin.enabled", "true")
-        .config("spark.sql.adaptive.enabled", "true")
-        .appName("cishouseholds")
-        .enableHiveSupport()
-        .getOrCreate()
-    ),
-    "l": (
-        SparkSession.builder.config("spark.executor.memory", "10g")
-        .config("spark.yarn.executor.memoryOverhead", "1g")
-        .config("spark.executor.cores", 5)
-        .config("spark.dynamicAllocation.enabled", "true")
-        .config("spark.dynamicAllocation.maxExecutors", 5)
-        .config("spark.sql.shuffle.partitions", 200)
-        .config("spark.ui.showConsoleProgress", "false")
-        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
-        .config("spark.shuffle.service.enabled", "true")
-        .config("spark.sql.crossJoin.enabled", "true")
-        .config("spark.sql.adaptive.enabled", "true")
-        .appName("cishouseholds")
-        .enableHiveSupport()
-        .getOrCreate()
-    ),
-    "xl": (
-        SparkSession.builder.config("spark.executor.memory", "20g")
-        .config("spark.yarn.executor.memoryOverhead", "3g")
-        .config("spark.executor.cores", 5)
-        .config("spark.dynamicAllocation.enabled", "true")
-        .config("spark.dynamicAllocation.maxExecutors", 12)
-        .config("spark.sql.shuffle.partitions", 240)
-        .config("spark.shuffle.service.enabled", "true")
-        .config("spark.reducer.maxBlocksInFlightPerAddress", 150)
-        .config("spark.ui.showConsoleProgress", "false")
-        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
-        .config("spark.shuffle.service.enabled", "true")
-        .config("spark.sql.crossJoin.enabled", "true")
-        .config("spark.sql.adaptive.enabled", "true")
-        .appName("cishouseholds")
-        .enableHiveSupport()
-        .getOrCreate()
-    ),
+session_options = {
+    "l": {
+        "spark.executor.memory": "64g",
+        "spark.executor.cores": 4,
+        "spark.dynamicAllocation.maxExecutors": 15,
+        "spark.sql.shuffle.partitions": 1000,
+    },
+    "m": {
+        "spark.executor.memory": "32g",
+        "spark.executor.cores": 5,
+        "spark.dynamicAllocation.maxExecutors": 12,
+        "spark.sql.shuffle.partitions": 200,
+    },
+    "s": {
+        "spark.executor.memory": "16g",
+        "spark.executor.cores": 5,
+        "spark.dynamicAllocation.maxExecutors": 5,
+        "spark.sql.shuffle.partitions": 50,
+    },
+    "xs": {
+        "spark.executor.memory": "1g",
+        "spark.executor.cores": 1,
+        "spark.dynamicAllocation.maxExecutors": 3,
+        "spark.sql.shuffle.partitions": 12,
+    },
 }
+
+
+def get_spark_ui_url():
+    "Get the URL to open the Spark UI for the current spark session."
+    return f"http://spark-{os.environ['CDSW_ENGINE_ID']}.{os.environ['CDSW_DOMAIN']}"
+
+
+def get_spark_application_id():
+    "Get the spark application ID, for use in debugging applications."
+    sc = SparkContext.getOrCreate()
+    return sc._jsc.sc().applicationId()
 
 
 def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
@@ -100,8 +72,23 @@ def get_or_create_spark_session() -> SparkSession:
     Session size is configured via pipeline config.
     """
     config = get_config()
-    session_size = config.get("pyspark_session_size", "m")
-    spark_session = sessions[session_size]
+    session_size = config.get("pyspark_session_size", "xs")
+    spark_session_options = session_options[session_size]
+    spark_session = (
+        SparkSession.builder.config("spark.executor.memory", spark_session_options["spark.executor.memory"])
+        .config("spark.executor.cores", spark_session_options["spark.executor.cores"])
+        .config("spark.dynamicAllocation.enabled", "true")
+        .config("spark.dynamicAllocation.maxExecutors", spark_session_options["spark.dynamicAllocation.maxExecutors"])
+        .config("spark.sql.shuffle.partitions", spark_session_options["spark.sql.shuffle.partitions"])
+        .config("spark.ui.showConsoleProgress", "false")
+        .config("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation", "true")
+        .config("spark.shuffle.service.enabled", "true")
+        .config("spark.sql.crossJoin.enabled", "true")
+        .config("spark.sql.adaptive.enabled", "true")
+        .appName("cishouseholds")
+        .enableHiveSupport()
+        .getOrCreate()
+    )
 
     return spark_session
 
