@@ -33,6 +33,7 @@ from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import delete_tables
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
@@ -116,7 +117,7 @@ def csv_to_table(file_operations: list):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -132,39 +133,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
     pattern
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if table_names is not None:
-        if type(table_names) != list:
-            table_names = [table_names]  # type:ignore
-        for table_name in table_names:
-            print(
-                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )  # functional
-            spark_session.sql(
-                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )
-    if pattern is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if prefix is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    delete_tables(prefix, table_names, pattern)
 
 
 @register_pipeline_stage("generate_dummy_data")
