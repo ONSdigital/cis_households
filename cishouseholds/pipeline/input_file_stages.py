@@ -140,7 +140,6 @@ cis_digital_parameters = {
     "dataset_name": "survey_responses_digital",
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
-    "column_name_map": column_name_maps["survey_responses_cis_digital_variable_name_map"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [digital_specific_cleaning],
     "sep": "|",
