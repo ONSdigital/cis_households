@@ -1,6 +1,7 @@
 from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
 from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
+from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.historical_blood_ETL import add_fields
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
@@ -9,11 +10,13 @@ from cishouseholds.pipeline.survey_responses_version_1_ETL import clean_survey_r
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
 from cishouseholds.pipeline.survey_responses_version_2_ETL import clean_survey_responses_version_2
 from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
+from cishouseholds.pipeline.survey_responses_version_2_ETL import digital_specific_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
 from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
+from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
@@ -132,10 +135,23 @@ historical_blood_parameters = {
     "source_file_column": "blood_test_source_file",
 }
 
+cis_digital_parameters = {
+    "stage_name": "survey_responses_version_digital_ETL",
+    "dataset_name": "survey_responses_digital",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": validation_schemas["cis_digital_validation_schema"],
+    "datetime_column_map": cis_digital_datetime_map,
+    "transformation_functions": [digital_specific_cleaning],
+    "sep": "|",
+    "cast_to_double_list": survey_response_cisd_cast_to_double,
+    "source_file_column": "survey_response_source_file",
+}
+
 for parameters in [
     blood_delta_parameters,
     swab_delta_parameters,
     swab_delta_parameters_testKit,
+    cis_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,
