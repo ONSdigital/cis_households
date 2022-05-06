@@ -15,41 +15,35 @@ from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
-from cishouseholds.extract import read_rename_csv_based_on_given_columns
-from cishouseholds.filter import file_exclude
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import address_column_map
-from cishouseholds.pipeline.input_variable_names import aps_column_map
-from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
-from cishouseholds.pipeline.input_variable_names import country_column_map
-from cishouseholds.pipeline.input_variable_names import lsoa_cis_column_map
-from cishouseholds.pipeline.input_variable_names import master_sample_file_column_map
-from cishouseholds.pipeline.input_variable_names import new_sample_file_column_map
-from cishouseholds.pipeline.input_variable_names import old_sample_file_column_map
-from cishouseholds.pipeline.input_variable_names import population_projection_current_column_map
-from cishouseholds.pipeline.input_variable_names import population_projection_previous_column_map
-from cishouseholds.pipeline.input_variable_names import postcode_column_map
-from cishouseholds.pipeline.input_variable_names import tenure_group_variable_map
-from cishouseholds.pipeline.input_variable_names import tranche_column_map
+from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehouse_tables
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_filtering
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_preparation
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_xtox_flag
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_filtering
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_preparation
+from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_xtox_flag
+from cishouseholds.pipeline.merge_process import merge_process_validation
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
@@ -57,22 +51,11 @@ from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
-from cishouseholds.pipeline.validation_schema import address_schema
-from cishouseholds.pipeline.validation_schema import aps_schema
-from cishouseholds.pipeline.validation_schema import cis_phase_schema
-from cishouseholds.pipeline.validation_schema import country_schema
-from cishouseholds.pipeline.validation_schema import csv_lookup_schema
-from cishouseholds.pipeline.validation_schema import lsoa_cis_schema
-from cishouseholds.pipeline.validation_schema import master_sample_file_schema
-from cishouseholds.pipeline.validation_schema import new_sample_file_schema
-from cishouseholds.pipeline.validation_schema import old_sample_file_schema
-from cishouseholds.pipeline.validation_schema import population_projection_current_schema
-from cishouseholds.pipeline.validation_schema import population_projection_previous_schema
-from cishouseholds.pipeline.validation_schema import postcode_schema
-from cishouseholds.pipeline.validation_schema import tranche_schema
+from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.extract import prepare_auxillary_data
+from cishouseholds.weights.edit import aps_value_map
+from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
@@ -84,6 +67,9 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 from dummy_data_generation.generate_data import generate_unioxf_medtest_data
+
+# from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
+# from cishouseholds.pipeline.validation_schema import cis_phase_schema
 
 pipeline_stages = {}
 
@@ -98,11 +84,33 @@ def register_pipeline_stage(key):
     return _add_pipeline_stage
 
 
+@register_pipeline_stage("blind_csv_to_table")
+def blind_csv_to_table(path: str, table_name: str):
+    """
+    Convert a single csv file to a HDFS table by inferring a schema
+    """
+    df = extract_input_data(path, None, ",")
+    df = update_table(df, table_name, "overwrite")
+
+
 @register_pipeline_stage("csv_to_table")
-def csv_to_table(csv_filepath: str, table_name: str):
-    spark = get_or_create_spark_session()
-    df = spark.read.csv(csv_filepath, header=True)
-    update_table(df, table_name)
+def csv_to_table(file_operations: list):
+    """
+    Convert a list of csv files into a HDFS table
+    """
+    for file in file_operations:
+        if file["schema"] not in validation_schemas:
+            raise ValueError(file["schema"] + " schema does not exists")
+        schema = validation_schemas[file["schema"]]
+        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
+        df = extract_lookup_csv(
+            file["path"],
+            schema,
+            column_map,
+            file["drop_not_found"],
+        )
+        print("    created table:" + file["table_name"])  # functional
+        update_table(df, file["table_name"], "overwrite")
 
 
 @register_pipeline_stage("delete_tables")
@@ -249,12 +257,11 @@ def generate_input_processing_function(
     dataset_name,
     id_column,
     validation_schema,
-    column_name_map,
     datetime_column_map,
     transformation_functions,
-    output_table_name,
     source_file_column,
     write_mode="overwrite",
+    column_name_map=None,
     sep=",",
     cast_to_double_list=[],
     include_hadoop_read_write=True,
@@ -284,7 +291,6 @@ def generate_input_processing_function(
         end_date=None,
         include_processed=False,
         include_invalid=False,
-        output_table_name=output_table_name,
         source_file_column=source_file_column,
         write_mode=write_mode,
     ):
@@ -308,7 +314,7 @@ def generate_input_processing_function(
             print(f"        - No valid files found in: {resource_path}.")  # functional
             return
 
-        raw_df, df, filtered_df = extract_validate_transform_input_data(
+        df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
             resource_path=file_path_list,
             dataset_name=dataset_name,
@@ -320,10 +326,11 @@ def generate_input_processing_function(
             source_file_column=source_file_column,
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
+            write_mode=write_mode,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                raw_df, df, filtered_df, output_table_name, source_file_column, dataset_name, write_mode
+                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
         return df
 
@@ -332,23 +339,19 @@ def generate_input_processing_function(
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
+def union_survey_response_files(tables_to_union: List, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
     Parameters
     ----------
-    transformed_survey_responses_table_pattern
-        input table pattern for extracting each of the transformed survey responses tables
     unioned_survey_responses_table
-        output table name for the combine file of 3 unioned survey responses
+        input tables for extracting each of the transformed survey responses tables
+    unioned_survey_responses_table
+        output table name for the combine file of all unioned survey responses
     """
-    survey_df_list = []
+    df_list = [extract_from_table(table) for table in tables_to_union]
 
-    for version in ["0", "1", "2"]:
-        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
-        survey_df_list.append(extract_from_table(survey_table))
-
-    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
+    union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -366,14 +369,14 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     unioned_survey_responses = extract_from_table(unioned_survey_table)
     unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
     unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
-    update_table(unioned_survey_responses, transformed_table, mode_overide="overwrite")
+    update_table(unioned_survey_responses, transformed_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("fill_forwards_stage")
 def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
     df = extract_from_table(unioned_survey_table)
     df = fill_forwards_transformations(df)
-    update_table(df, filled_forwards_table, mode_overide="overwrite")
+    update_table(df, filled_forwards_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -407,8 +410,8 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
-    update_table(valid_survey_responses, valid_survey_responses_table, mode_overide="overwrite")
-    update_table(erroneous_survey_responses, invalid_survey_responses_table, mode_overide="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("lookup_based_editing")
@@ -482,12 +485,12 @@ def lookup_based_editing(
     tenure_group = spark.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in tenure_group_variable_map.items():
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
         tenure_group = tenure_group.withColumnRenamed(key, value)
 
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
 
-    update_table(df, edited_table, mode_overide="overwrite")
+    update_table(df, edited_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -528,16 +531,22 @@ def outer_join_antibody_results(
         F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
     )
 
-    update_table(blood_df, joined_antibody_test_result_table, mode_overide="overwrite")
-    update_table(failed_blood_join_df, failed_join_table, mode_overide="overwrite")
+    update_table(blood_df, joined_antibody_test_result_table, write_mode="overwrite")
+    update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("merge_blood_ETL")
 def merge_blood_ETL(
-    survey_responses_table: str,
-    antibody_table: str,
-    blood_files_to_exclude: List[str],
-    antibody_output_tables: List[str],
+    input_survey_responses_table,
+    input_antibody_table,
+    blood_files_to_exclude,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_data,
+    antibody_merge_residuals,
+    antibody_merge_failed_records,
 ):
     """
     High level function for joining antibody/blood test result data to survey responses.
@@ -558,28 +567,66 @@ def merge_blood_ETL(
             2. residual antibody/blood result records, where there was no barcode match to join on
             3. antibody/blood result records that failed to meet the criteria for joining
     """
-
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-    antibody_df = extract_from_table(antibody_table).where(
+    antibody_df = extract_from_table(input_antibody_table).where(
         F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
     )
-    antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
+    df_1to1, df = merge_blood_process_preparation(
+        survey_df,
+        antibody_df,
+        blood_files_to_exclude,
+    )
+    update_table(df, joined_table, write_mode="overwrite")
+    update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
 
-    survey_antibody_df, antibody_residuals, survey_antibody_failed = merge_blood(survey_df, antibody_df)
+    df = extract_from_table(joined_table)
+    df = merge_blood_xtox_flag(df)
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    output_antibody_df_list = [survey_antibody_df, antibody_residuals, survey_antibody_failed]
-    output_antibody_table_list = antibody_output_tables
+    df = extract_from_table(xtox_flagged_table)
+    df = merge_process_validation(
+        df=df,
+        merge_type="antibody",
+        barcode_column_name="blood_sample_barcode",
+    )
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    load_to_data_warehouse_tables(output_antibody_df_list, output_antibody_table_list)
+    df = extract_from_table(validated_table)
 
-    return survey_antibody_df
+    (
+        merged_responses_antibody_df,
+        antibody_merge_residuals_df,
+        antibody_merge_failed_records_df,
+    ) = merge_blood_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_df,
+            antibody_merge_residuals_df,
+            antibody_merge_failed_records_df,
+        ],
+        [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
+    )
 
 
 @register_pipeline_stage("merge_swab_ETL")
 def merge_swab_ETL(
-    survey_responses_table: str, swab_table: str, swab_files_to_exclude: List[str], swab_output_tables: List[str]
+    input_survey_responses_table,
+    input_swab_table,
+    swab_files_to_exclude,
+    merged_1to1_table,
+    joined_table,
+    xtox_flagged_table,
+    validated_table,
+    merged_responses_antibody_swab_data,
+    swab_merge_residuals,
+    swab_merge_failed_records,
 ):
     """
     High level function for joining PCR test result data to survey responses.
@@ -600,22 +647,55 @@ def merge_swab_ETL(
             2. residual PCR/swab result records, where there was no barcode match to join on
             3. PCR/swab result records that failed to meet the criteria for joining
     """
-    survey_df = extract_from_table(survey_responses_table).where(
+    survey_df = extract_from_table(input_survey_responses_table).where(
         F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
     )
-
-    swab_df = extract_from_table(swab_table).where(
+    swab_df = extract_from_table(input_swab_table).where(
         F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
     )
-    swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
+    df_1to1, df = merge_swab_process_preparation(
+        survey_df,
+        swab_df,
+        swab_files_to_exclude,
+    )
+    update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
+    update_table(df=df, table_name=joined_table, write_mode="overwrite")
 
-    swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
+    df = extract_from_table(joined_table)
+    df = merge_swab_xtox_flag(df)
+    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
 
-    survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed = merge_swab(survey_df, swab_df)
-    output_swab_df_list = [survey_antibody_swab_df, antibody_swab_residuals, survey_antibody_swab_failed]
-    load_to_data_warehouse_tables(output_swab_df_list, swab_output_tables)
+    df = extract_from_table(xtox_flagged_table)
+    df = merge_process_validation(
+        df=df,
+        merge_type="swab",
+        barcode_column_name="swab_sample_barcode",
+    )
+    update_table(df=df, table_name=validated_table, write_mode="overwrite")
 
-    return survey_antibody_swab_df
+    df = extract_from_table(validated_table)
+    (
+        merged_responses_antibody_swab_df,
+        swab_merge_residuals_df,
+        swab_merge_failed_records_df,
+    ) = merge_swab_process_filtering(df)
+
+    # load back 1to1 fastforwarded matches
+    merged_1to1_df = extract_from_table(merged_1to1_table)
+    merged_responses_antibody_swab_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_swab_df])
+
+    load_to_data_warehouse_tables(
+        [
+            merged_responses_antibody_swab_df,
+            swab_merge_residuals_df,
+            swab_merge_failed_records_df,
+        ],
+        [
+            merged_responses_antibody_swab_data,
+            swab_merge_residuals,
+            swab_merge_failed_records,
+        ],
+    )
 
 
 @register_pipeline_stage("join_vaccination_data")
@@ -639,7 +719,7 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     participant_df = participant_df.join(nims_df, on="participant_id", how="left")
     participant_df = derive_overall_vaccination(participant_df)
 
-    update_table(participant_df, vaccination_data_table, mode_overide="overwrite")
+    update_table(participant_df, vaccination_data_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("impute_demographic_columns")
@@ -693,51 +773,29 @@ def impute_demographic_columns(
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup_table,
+    postcode_lookup_table,
+    lsoa_cis_lookup_table,
+    country_lookup_table,
+    household_level_populations_table,
 ):
-    # files = {
-    #     "address_lookup": {"file": address_lookup, "type": "path"},
-    #     "lsoa_cis_lookup": {"file": lsoa_cis_lookup, "type": "path"},
-    #     "country_lookup": {"file": country_lookup, "type": "path"},
-    #     "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-    # }
-    # dfs = extract_df_list(files)
-
-    dict_schemas_paths = {
-        "address_lookup": {
-            "schema": address_schema,
-            "path": address_lookup,
-            "column_map": address_column_map,
-            "type": "path",
-        },
-        "postcode_lookup": {
-            "schema": postcode_schema,
-            "path": postcode_lookup,
-            "column_map": postcode_column_map,
-            "type": "path",
-        },
-        "lsoa_cis_lookup": {
-            "schema": lsoa_cis_schema,
-            "path": lsoa_cis_lookup,
-            "column_map": lsoa_cis_column_map,
-            "type": "path",
-        },
-        "country_lookup": {
-            "schema": country_schema,
-            "path": country_lookup,
-            "column_map": country_column_map,
-            "type": "path",
-        },
-    }
-    dfs = read_rename_csv_based_on_given_columns(dict_schemas_paths=dict_schemas_paths)
+    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
+    postcode_lookup_df = (
+        extract_from_table(postcode_lookup_table)
+        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
+        .distinct()
+    )
+    lsoa_cis_lookup_df = (
+        extract_from_table(lsoa_cis_lookup_table)
+        .select("lower_super_output_area_code_11", "cis_area_code_20")
+        .distinct()
+    )
+    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
 
     household_info_df = household_level_populations(
-        dfs["address_lookup"],
-        dfs["postcode_lookup"],
-        dfs["lsoa_cis_lookup"],
-        dfs["country_lookup"],
+        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
     )
-    update_table(household_info_df, household_level_populations_table, mode_overide="overwrite")
+    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")
@@ -766,7 +824,7 @@ def join_geographic_data(
     geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
         design_weights_df, on=id_column, how="left"
     )
-    update_table(geographic_survey_df, geographic_responses_table)
+    update_table(geographic_survey_df, geographic_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
@@ -826,7 +884,7 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )
-    update_table(df_with_imputed_values, output_imputed_responses_table, mode_overide="overwrite")
+    update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("report")
@@ -867,7 +925,7 @@ def report(
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
-        invalid_files_count = invalid_files_log.count()
+        invalid_files_count = invalid_files_log.filter(F.col("run_id") == get_run_id()).count()
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
@@ -914,11 +972,11 @@ def report(
     )
 
     output = BytesIO()
-    file_types = list(processed_file_log.select("file_type").distinct().rdd.flatMap(lambda x: x).collect())
+    datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
-        for type in file_types:
+        for dataset in datasets:
             processed_files_df = (
-                processed_file_log.filter(F.col("file_type") == type)
+                processed_file_log.filter(F.col("dataset_name") == dataset)
                 .select("processed_filename", "file_row_count")
                 .orderBy("processed_filename")
                 .distinct()
@@ -927,7 +985,7 @@ def report(
             processed_file_names = [name.split("/")[-1] for name in processed_files_df["processed_filename"]]
             processed_file_counts = processed_files_df["file_row_count"]
             individual_counts_df = pd.DataFrame({"dataset": processed_file_names, "count": processed_file_counts})
-            name = f"{type}"
+            name = f"{dataset}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
@@ -979,7 +1037,7 @@ def record_level_interface(
     filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
 
-    lookup_df = extract_lookup_csv(csv_editing_file, csv_lookup_schema)
+    lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
     filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
     edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
@@ -1040,78 +1098,51 @@ def tables_to_csv(
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
     household_level_populations_table,
+    old_sample_file,
     new_sample_file,
     tranche,
-    cis_phase_lookup,
     postcode_lookup,
     master_sample_file,
-    table_or_path,
-    old_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
 ):
-    table_or_path = "path"
+    first_run = True if check_table_exists(design_weight_table) else False
+
     if check_table_exists(design_weight_table):
-        table_or_path = "table"
-        old_sample_file = design_weight_table
-    files = {
-        # "postcode_lookup": {"file": postcode_lookup, "type": "path"},
-        # "cis_phase_lookup": {"file": cis_phase_lookup, "type": "path"},
-        # "new_sample_file": {"file": new_sample_file, "type": "path"},
-        # "old_sample_file": {"file": old_sample_file, "type": table_or_path},
-        # "tranche": {"file": tranche, "type": "path"},
-        # "master_sample_file": {"file": master_sample_file, "type": "path"},
-        # TODO: change stage
-        "postcode_lookup": {
-            "schema": postcode_schema,
-            "path": postcode_lookup,
-            "column_map": postcode_column_map,
-            "type": "path",
-        },
-        "cis_phase_lookup": {
-            "schema": cis_phase_schema,
-            "path": cis_phase_lookup,
-            "column_map": cis_phase_lookup_column_map,
-            "type": "path",
-        },
-        "old_sample_file": {
-            "schema": old_sample_file_schema,
-            "path": old_sample_file,
-            "column_map": old_sample_file_column_map,
-            "type": table_or_path,
-        },
-        "new_sample_file": {
-            "schema": new_sample_file_schema,
-            "path": new_sample_file,
-            "column_map": new_sample_file_column_map,
-            "type": "path",
-        },
-        "master_sample_file": {
-            "schema": master_sample_file_schema,
-            "path": master_sample_file,
-            "column_map": master_sample_file_column_map,
-            "type": "path",
-        },
-        "tranche": {"schema": tranche_schema, "path": tranche, "column_map": tranche_column_map, "type": "path"},
-        "lsoa_cis_lookup": {
-            "schema": lsoa_cis_schema,
-            "path": lsoa_cis_lookup,
-            "column_map": lsoa_cis_column_map,
-            "type": "path",
-        },
-        "country_lookup": {
-            "schema": country_schema,
-            "path": country_lookup,
-            "column_map": country_column_map,
-            "type": "path",
-        },
-    }
-    dfs = read_rename_csv_based_on_given_columns(files)
-    dfs = prepare_auxillary_data(dfs)
-    dfs["household_level_populations"] = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(dfs, table_or_path)
-    update_table(design_weights, design_weight_table, mode_overide="append")
+        first_run = False
+
+    postcode_lookup_df = extract_from_table(postcode_lookup)
+    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
+    country_lookup_df = extract_from_table(country_lookup)
+    old_sample_df = extract_from_table(old_sample_file)
+    master_sample_df = extract_from_table(master_sample_file)
+
+    new_sample_df = extract_lookup_csv(
+        new_sample_file,
+        validation_schemas["new_sample_file_schema"],
+        column_name_maps["new_sample_file_column_map"],
+        True,
+    )
+    tranche_df = None
+    if tranche is not None:
+        tranche_df = extract_lookup_csv(
+            tranche, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
+        )
+
+    household_level_populations_df = extract_from_table(household_level_populations_table)
+    design_weights = generate_weights(
+        household_level_populations_df,
+        master_sample_df,
+        old_sample_df,
+        new_sample_df,
+        tranche_df,
+        postcode_lookup_df,
+        country_lookup_df,
+        lsoa_cis_lookup_df,
+        first_run,
+    )
+    update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
 
 @register_pipeline_stage("calculate_individual_level_population_totals")
@@ -1121,38 +1152,31 @@ def population_projection(
     month: int,
     year: int,
     aps_lookup: str,
-    table_or_path: str,
     population_totals_table: str,
     population_projections_table: str,
 ):
-    table_or_path = "path"
     if check_table_exists(population_projections_table):
-        table_or_path = "table"
-        population_projection_previous = population_projections_table
-    files = {
-        "population_projection_previous": {
-            "schema": population_projection_previous_schema,
-            "path": population_projection_previous,
-            "column_map": population_projection_previous_column_map,
-            "type": table_or_path,
-        },
-        "population_projection_current": {
-            "schema": population_projection_current_schema,
-            "path": population_projection_current,
-            "column_map": population_projection_current_column_map,
-            "type": "path",
-        },
-        "aps_lookup": {"schema": aps_schema, "path": aps_lookup, "column_map": aps_column_map, "type": "path"},
-    }
-    dfs = read_rename_csv_based_on_given_columns(
-        dict_schemas_paths=files,
-        table_to_exclude_list=["population_projection_previous", "population_projection_current"],
+        population_projection_previous_df = extract_from_table(population_projections_table)
+    else:
+        population_projection_previous_df = extract_lookup_csv(
+            population_projection_previous,
+            validation_schemas["population_projection_previous_schema"],
+            column_name_maps["population_projection_previous_column_map"],
+        )
+    population_projection_current_df = extract_lookup_csv(
+        population_projection_current,
+        validation_schemas["population_projection_current_schema"],
+        column_name_maps["population_projection_current_column_map"],
     )
+    aps_lookup_df = extract_lookup_csv(
+        aps_lookup, validation_schemas["aps_schema"], column_name_maps["aps_column_map"], True
+    )
+    aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
     populations_for_calibration, population_projections = proccess_population_projection_df(
-        dfs=dfs, month=month, year=year
+        population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
     )
-    update_table(populations_for_calibration, population_totals_table, mode_overide="overwrite")
-    update_table(population_projections, population_projections_table, mode_overide="append")
+    update_table(populations_for_calibration, population_totals_table, write_mode="overwrite")
+    update_table(population_projections, population_projections_table, write_mode="append")
 
 
 @register_pipeline_stage("pre_calibration")
@@ -1211,7 +1235,7 @@ def pre_calibration(
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )
-    update_table(df_for_calibration, responses_pre_calibration_table, mode_overide="overwrite")
+    update_table(df_for_calibration, responses_pre_calibration_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("aggregated_output")
@@ -1259,5 +1283,5 @@ def aggregated_output(
     update_table(
         df=df,
         table_name=f"{input_table_to_aggregate}_{apply_aggregate_type}",
-        mode_overide="overwrite",
+        write_mode="overwrite",
     )

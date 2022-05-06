@@ -18,16 +18,16 @@ def gen_tmp_file(tmp_path):
 
 def test_validate_csv_header_with_valid_header():
     spark_session = get_or_create_spark_session()
-    expected_header = '"field_1"|"field_2"|"field_3"'
+    expected_header = ["field_1", "field_2", "field_3"]
     text_rdd = spark_session.sparkContext.parallelize(['"field_1"|"field_2"|"field_3"', "1|1|1"])
-    assert validate_csv_header(text_rdd, expected_header=expected_header)
+    assert validate_csv_header(text_rdd, expected_header=expected_header, delimiter="|")
 
 
 def test_validate_csv_header_with_invalid_header():
     spark_session = get_or_create_spark_session()
-    expected_header = '"field_1"|"field_2"|"field_3"'
+    expected_header = ["field_1", "field_2", "field_3"]
     text_rdd = spark_session.sparkContext.parallelize(['"blah"\n1'])
-    assert not validate_csv_header(text_rdd, expected_header=expected_header)
+    assert not validate_csv_header(text_rdd, expected_header=expected_header, delimiter="|")
 
 
 def test_validate_csv_fields():

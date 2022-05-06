@@ -16,6 +16,51 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    window = Window.orderBy(reference_column)
+    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    return df
+
+
+def assign_distinct_count_in_group(
+    df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
+):
+    """
+    Window-based count of distinct values by group
+
+    Parameters
+    ----------
+    count_distinct_columns
+        columns to determine distinct records
+    group_by_columns
+        columns to group by and count within
+    """
+    count_distinct_columns_window = Window.partitionBy(*count_distinct_columns).orderBy(F.lit(0))
+    group_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
+    )
+    return df
+
+
+def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
+    return df
+
+
 def assign_multigeneration(
     df: DataFrame,
     column_name_to_assign: str,
@@ -298,7 +343,7 @@ def assign_column_given_proportion(
 
 
 def count_value_occurrences_in_column_subset_row_wise(
-    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int]
+    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int, None]
 ) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
@@ -309,11 +354,12 @@ def count_value_occurrences_in_column_subset_row_wise(
     selection_columns
     count_if_value
     """
-    df = (
-        df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
-        .withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
-        .withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
-    )
+    df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
+    if count_if_value is None:
+        df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    else:
+        df = df.withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
+    df = df.withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
     return df
 
 
@@ -781,7 +827,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )
