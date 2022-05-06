@@ -900,20 +900,22 @@ def derive_people_in_household_count(df):
         condition_column="household_members_under_2_years",
     )
     household_window = Window.partitionBy("ons_household_id")
+
+    household_participants = [
+        "household_participant_count",
+        "household_participants_not_consented_count",
+        "household_participants_not_present_count",
+        "household_participants_under_2_count",
+    ]
+    for household_participant_type in household_participants:
+        df = df.withColumn(
+            household_participant_type,
+            F.max(household_participant_type).over(household_window),
+        )
     df = df.withColumn(
         "people_in_household_count",
-        F.max(
-            sum_within_row(
-                [
-                    "household_participant_count",
-                    "household_participants_not_consented_count",
-                    "household_participants_not_present_count",
-                    "household_participants_under_2_count",
-                ]
-            ),
-        ).over(household_window),
+        sum_within_row(household_participants),
     )
-
     return df
 
 
