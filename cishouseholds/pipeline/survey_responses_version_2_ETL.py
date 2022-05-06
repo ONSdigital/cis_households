@@ -33,6 +33,7 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_postcode
@@ -610,6 +611,11 @@ def symptom_column_transformations(df):
             "symptoms_since_last_visit_loss_of_appetite",
         ],
         count_if_value="Yes",
+    )
+    df = derive_had_symptom_last_7days_from_digital(
+        df=df,
+        column_name_to_assign="had_symptom_last_7_days",
+        symptom_column_pattern="think_have_covid_symptom_*",
     )
     # TODO - not needed until later release
     # df = update_symptoms_last_7_days_any(
