@@ -10,7 +10,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
-
 from cishouseholds.edit import update_column_values_from_map
 
 
@@ -112,7 +111,7 @@ def impute_think_had_covid(
     )
 
     return transformed_df
-  
+
 
 def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
     df = df.withColumn(
