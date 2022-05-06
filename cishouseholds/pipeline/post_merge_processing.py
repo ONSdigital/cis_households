@@ -8,7 +8,7 @@ from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import merge_previous_imputed_values
-from cishouseholds.pipeline.input_variable_names import nims_column_name_map
+from cishouseholds.pipeline.input_variable_names import column_name_maps
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
@@ -81,7 +81,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
 def nims_transformations(df: DataFrame) -> DataFrame:
     """Clean and transform NIMS data after reading from table."""
-    df = rename_column_names(df, nims_column_name_map)
+    df = rename_column_names(df, column_name_maps["nims_column_name_map"])
     df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
     df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
 

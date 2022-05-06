@@ -3,6 +3,7 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.edit import apply_value_map_multiple_columns
+from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_to_value_if_any_not_null
 
@@ -91,4 +92,6 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     return df

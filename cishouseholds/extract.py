@@ -7,12 +7,7 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import DataFrame
 
-from cishouseholds.edit import rename_column_names
-from cishouseholds.pipeline.input_file_processing import extract_from_table
-from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pyspark_utils import column_to_list
-from cishouseholds.validate import validate_files
-from cishouseholds.weights.extract import prepare_auxillary_data
 
 
 class InvalidFileError(Exception):
@@ -136,42 +131,3 @@ def get_files_to_be_processed(
         file_paths = remove_list_items_in_table(file_paths, "processed_filenames", "processed_filename")
 
     return file_paths
-
-
-def read_rename_csv_based_on_given_columns(dict_schemas_paths: dict, table_to_exclude_list: list = []):
-    dfs = {}  # type: ignore
-    for table_name in dict_schemas_paths.keys():
-        if dict_schemas_paths[table_name]["type"] == "table":
-            df = extract_from_table(table_name)
-
-        elif dict_schemas_paths[table_name]["type"] == "path":
-            if dict_schemas_paths[table_name]["path"] is not None:
-                valid_file_paths = validate_files(
-                    [dict_schemas_paths[table_name]["path"]], dict_schemas_paths[table_name]["schema"], sep=","
-                )
-                if not valid_file_paths:
-                    path = dict_schemas_paths[table_name]["path"]
-                    print(f"        - No valid files found in: {path}.")  # functional
-                df = extract_input_data(
-                    file_paths=dict_schemas_paths[table_name]["path"],
-                    validation_schema=dict_schemas_paths[table_name]["schema"],
-                    sep=",",
-                )
-            else:
-                dfs[table_name] = None
-                continue
-        # remove columns
-        df = df.drop(
-            *[
-                col
-                for col in df.columns
-                if col not in dict_schemas_paths[table_name]["column_map"].keys()
-                if table_name not in table_to_exclude_list
-            ]
-        )
-        # map columns
-        df = rename_column_names(df, dict_schemas_paths[table_name]["column_map"])
-        dfs[table_name] = df
-
-    dfs = prepare_auxillary_data(dfs)
-    return dfs

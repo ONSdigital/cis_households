@@ -79,5 +79,5 @@ def weight_calibration(
                     + bounds[0]
                     + "-"
                     + bounds[1],
-                    mode_overide="overwrite",
+                    write_mode="overwrite",
                 )
