@@ -44,7 +44,8 @@ def test_validate_design_weights(spark_session):
     with pytest.raises(DesignWeightError):
         validate_design_weights_or_precal(
             df=input1_df,
-            num_households_column="num_hh",
+            num_households_by_cis_column="num_hh",
+            num_households_by_country_column="num_hh",
             swab_weight_column="swab_weight",
             antibody_weight_column="antibody_weight",
             group_by_columns=["window"],
@@ -52,7 +53,8 @@ def test_validate_design_weights(spark_session):
 
     validate_design_weights_or_precal(
         df=input2_df,
-        num_households_column="num_hh",
+        num_households_by_cis_column="num_hh",
+        num_households_by_country_column="num_hh",
         swab_weight_column="swab_weight",
         antibody_weight_column="antibody_weight",
         group_by_columns=["window"],

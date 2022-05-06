@@ -257,11 +257,11 @@ def generate_input_processing_function(
     dataset_name,
     id_column,
     validation_schema,
-    column_name_map,
     datetime_column_map,
     transformation_functions,
     source_file_column,
     write_mode="overwrite",
+    column_name_map=None,
     sep=",",
     cast_to_double_list=[],
     include_hadoop_read_write=True,
@@ -779,10 +779,18 @@ def calculate_household_level_populations(
     country_lookup_table,
     household_level_populations_table,
 ):
-    address_lookup_df = extract_from_table(address_lookup_table)
-    postcode_lookup_df = extract_from_table(postcode_lookup_table)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup_table)
-    country_lookup_df = extract_from_table(country_lookup_table)
+    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
+    postcode_lookup_df = (
+        extract_from_table(postcode_lookup_table)
+        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
+        .distinct()
+    )
+    lsoa_cis_lookup_df = (
+        extract_from_table(lsoa_cis_lookup_table)
+        .select("lower_super_output_area_code_11", "cis_area_code_20")
+        .distinct()
+    )
+    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
 
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df

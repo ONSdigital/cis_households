@@ -106,7 +106,7 @@
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'Yes'
-  postcode: FN0F 6OF
+  postcode: FN0F6OF
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
   sex: null
   sex_raw: null
@@ -732,7 +732,7 @@
   physical_contact_18_to_69_years: 'No'
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
-  postcode: SE3Z 6OR
+  postcode: SE3Z6OR
   samples_taken_datetime: '2022-01-01 16:24:54.000000'
   sex: Female
   sex_raw: Female
