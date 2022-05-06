@@ -1,6 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
+from functools import reduce
 from io import BytesIO
+from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -747,27 +749,28 @@ def impute_demographic_columns(
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
         imputed_value_lookup_df = extract_from_table(imputed_values_table)
+
     df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
-    # imputed_values_df = key_columns_imputed_df.filter(
-    #     reduce(
-    #         lambda col_1, col_2: col_1 | col_2,
-    #         (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-    #     )
-    # )
+    imputed_values_df = key_columns_imputed_df.filter(
+        reduce(
+            lambda col_1, col_2: col_1 | col_2,
+            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+        )
+    )
 
-    # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    # imputed_values = imputed_values_df.select(
-    #     "participant_id",
-    #     *lookup_columns,
-    # )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    imputed_values = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
     df_with_imputed_values = df.drop(*key_columns).join(
         F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
     )
 
-    # update_table(imputed_values, imputed_values_table)
+    update_table(imputed_values, imputed_values_table, "overwrite", force=True)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 

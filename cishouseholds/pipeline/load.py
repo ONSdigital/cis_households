@@ -7,6 +7,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.pipeline_stages import delete_tables
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -14,7 +15,9 @@ class TableNotFoundError(Exception):
     pass
 
 
-def update_table(df, table_name, write_mode, archive=False):
+def update_table(df, table_name, write_mode, archive=False, force=False):
+    if force:
+        delete_tables(table_names=[table_name])
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
         now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
