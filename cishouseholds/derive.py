@@ -17,7 +17,6 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-<<<<<<< HEAD
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
     Count number of visits of each pariticipant in a given day
@@ -56,19 +55,12 @@ def count_barcode_cleaned(
 
 
 def grouped_count_distinct(
-    df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_columns: List[str]
-):
-    "count distinct value is grouped dataset and return complete dataset"
-    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(reference_column).alias(column_name_to_assign))
-=======
-def grouped_count_distinct(
     df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
 ):
     "count distinct value is grouped dataset and return complete dataset"
     if not isinstance(reference_columns, list):
         reference_columns = [reference_columns]
     grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
->>>>>>> d7281f40fdcf18ac3dbfad88f580b6612a0eb0c9
     df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
     return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
 

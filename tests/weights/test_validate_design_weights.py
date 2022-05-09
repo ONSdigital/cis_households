@@ -46,13 +46,8 @@ def test_validate_design_weights(spark_session):
         df=input_df,
         column_name_to_assign="validated",
         num_households_column="num_hh",
-<<<<<<< HEAD
-        group_by_columns=["window"],
-        window=window,
-=======
         swab_weight_column="swab_weight",
         antibody_weight_column="antibody_weight",
         group_by_columns=["window"],
->>>>>>> d7281f40fdcf18ac3dbfad88f580b6612a0eb0c9
     )
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
