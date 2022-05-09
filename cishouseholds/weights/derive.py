@@ -6,10 +6,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import grouped_count_distinct
+from cishouseholds.derive import assign_distinct_count_in_group
 
 
-# 1172
 def assign_ethnicity_white(
     df: DataFrame, column_name_to_assign: str, country_column: str, ethnicity_column_ni: str, ethnicity_column: str
 ):
@@ -145,7 +144,9 @@ def count_distinct_in_filtered_df(
     Count distinct rows that meet a given condition over a predefined window (window)
     """
     eligible_df = df.filter(filter_positive)
-    eligible_df = grouped_count_distinct(eligible_df, column_name_to_assign, column_to_count, group_by_columns)
+    eligible_df = assign_distinct_count_in_group(
+        eligible_df, column_name_to_assign, [column_to_count], group_by_columns
+    )
     ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
     df = eligible_df.unionByName(ineligible_df)
     return df

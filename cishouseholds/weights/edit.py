@@ -92,10 +92,10 @@ def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupb
 
 
 numeric_column_pattern_map = {
-    "^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
-    "^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
-    "^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
-    "^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
+    r"^losa_\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    r"^lsoa\d{1,}": "lower_super_output_area_code_{}",  # noqa:W605
+    r"^CIS\d{1,}CD": "cis_area_code_{}",  # noqa:W605
+    r"^cis\d{1,}cd": "cis_area_code_{}",  # noqa:W605
 }
 
 

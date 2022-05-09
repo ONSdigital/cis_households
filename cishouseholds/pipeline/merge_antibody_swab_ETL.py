@@ -15,7 +15,7 @@ from cishouseholds.pipeline.merge_process import merge_process_preparation
 
 def load_to_data_warehouse_tables(output_df_list, output_table_list):
     for df, table_name in zip(output_df_list, output_table_list):
-        update_table(df, table_name, mode_overide="overwrite")
+        update_table(df, table_name, write_mode="overwrite")
 
 
 # merge_blood no longer used in the main ETL mege function
@@ -90,7 +90,7 @@ def merge_blood_process_preparation(
 ):
     antibody_df = file_exclude(antibody_df, "blood_test_source_file", blood_files_to_exclude)
 
-    df = merge_process_preparation(
+    merged_1to1, df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=antibody_df,
         merge_type="antibody",
@@ -98,7 +98,7 @@ def merge_blood_process_preparation(
         visit_date_column_name="visit_datetime",
         received_date_column_name="blood_sample_received_date_s_protein",
     )
-    return df
+    return merged_1to1, df
 
 
 def merge_blood_xtox_flag(df):
@@ -161,7 +161,7 @@ def merge_swab_process_preparation(
 ):
     swab_df = file_exclude(swab_df, "swab_test_source_file", swab_files_to_exclude)
     swab_df = swab_df.dropDuplicates(subset=[column for column in swab_df.columns if column != "swab_test_source_file"])
-    df = merge_process_preparation(
+    merged_1to1, df = merge_process_preparation(
         survey_df=survey_df,
         labs_df=swab_df,
         merge_type="swab",
@@ -169,7 +169,7 @@ def merge_swab_process_preparation(
         visit_date_column_name="visit_datetime",
         received_date_column_name="pcr_result_recorded_datetime",
     )
-    return df
+    return merged_1to1, df
 
 
 def merge_swab_xtox_flag(df):
