@@ -82,7 +82,7 @@ def generate_digital_data(directory, file_date, records, swab_barcodes, blood_ba
         )
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
-    write_output(survey_responses, directory / f"ONSE_CISDigital_v1_0_responses_{file_date}.txt", "|")
+    write_output(survey_responses, directory / f"ONSE_CISDigital_v1_0_responses_{file_date}_000000.txt", "|")
     return survey_responses
 
 
