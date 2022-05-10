@@ -1009,12 +1009,15 @@ def report_iqvia(
     survey_repsonse_table: str,
     merged_result_table: str,
     output_directory: str,
+    swab_table: str,
 ):
     """ """
     swab_residuals_df = extract_from_table(swab_residuals_table)
     blood_residuals_df = extract_from_table(blood_residuals_table)
     survey_repsonse_df = extract_from_table(survey_repsonse_table)
     merge_result_df = extract_from_table(merged_result_table)
+    swab_df = extract_from_table(swab_table)
+
     swab_residuals_not_positive_df = swab_residuals_df.filter(
         F.col("pcr_result_classification") != "positive"
     )  # Unlinked_lab_swab_results
@@ -1160,6 +1163,52 @@ def report_iqvia(
     multiple_visit_1_day_df = multiple_visit_1_day(
         survey_repsonse_df, "participant_id", "visit_id", "visit_date", "visit_datetime"
     )
+
+    # Swab_matches_not_exact
+    swab_matches_not_exact = non_exact_swab_df.filter(
+        (F.col("visit_date") < datetime.now()) & (F.col("visit_date") > F.date_sub(datetime.now(), 30))
+    ).select(
+        "Swab_merge_type",
+        "swab_sample_barcode",
+        # 'Swab_barcode_IQ',
+        # 'Swab_barcode_mk',
+        "pcr_result_classification",
+        "pcr_result_recorded_datetime",
+        "visit_date",
+        "visit_id",
+        "participant_id",
+    )
+
+    too_early_too_late_list = [
+        "swab_sample_barcode",
+        "visit_id",
+        "participant_id",
+        "visit_date_time",
+        "visit_date",
+        "pcr_result_recorded_datetime",
+        "pcr_result_recorded_date",
+        "pcr_result_classification",
+        # diff_vs_visit* - diff_vs_visit_hr ,
+        # diff_vs_visit* - diff_vs_visit_day ,
+        # count_cleaned_swab,
+        # count_cleaned_mk,
+        "samples_taken_date_time",
+    ]
+
+    # Swab_match_too_early
+    swab_too_early_df = swab_df.filter(
+        F.col("pcr_result_recorded_datetime").isNotNull() & F.col("visit_date_time")
+        >= F.col("pcr_result_recorded_datetime")
+    ).select(*too_early_too_late_list)
+
+    # Swab_match_late
+    swab_too_late_df = swab_df.filter(
+        (F.col("diff_vs_visit_day") > 10)
+        & F.col("pcr_result_recorded_datetime").isNotNull()
+        & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
+    ).select(*too_early_too_late_list)
+
+    # Swab_barcode_blood_switched
     sheet_df_map = {
         "unlinked swabs": swab_residuals_not_positive_df,
         "non exact swabs": non_exact_swab_df,
@@ -1174,6 +1223,9 @@ def report_iqvia(
         "under 8 bloods": under_8_bloods_df,
         "same day visits": pariticipant_visit_date_group_df,
         "multiple visits 1-day": multiple_visit_1_day_df,
+        "swab matches_not_exact": swab_matches_not_exact,
+        "swab match too early": swab_too_early_df,
+        "swab match late": swab_too_late_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
     write_string_to_file(
