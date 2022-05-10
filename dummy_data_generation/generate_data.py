@@ -16,6 +16,7 @@ from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_nims_data_description
+from dummy_data_generation.schemas import get_survey_responses_digital_data_description
 from dummy_data_generation.schemas import get_swab_data_description
 from dummy_data_generation.schemas import get_unassayed_blood_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
@@ -68,6 +69,20 @@ def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
     write_output(survey_responses, directory / f"ONSECRF5_Datafile_{file_date}.csv", "|")
+    return survey_responses
+
+
+def generate_digital_data(directory, file_date, records, swab_barcodes, blood_barcodes):
+    """
+    Generate survey digital data.
+    """
+    schema = Schema(
+        schema=get_survey_responses_digital_data_description(
+            _, swab_barcodes=swab_barcodes, blood_barcodes=blood_barcodes
+        )
+    )
+    survey_responses = pd.DataFrame(schema.create(iterations=records))
+    write_output(survey_responses, directory / f"ONSE_CISDigital_v1_0_responses_{file_date}_000000.txt", "|")
     return survey_responses
 
 
