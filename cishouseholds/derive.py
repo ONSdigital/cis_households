@@ -16,11 +16,13 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def derive_had_symptom_last_7days_from_digital(df: DataFrame, column_name_to_assign: str, symptom_column_pattern: str):
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
     """
     Derive symptoms in v2 format from digital file
     """
-    symptom_columns = [col for col in df.columns if re.match(symptom_column_pattern, col)]
+    symptom_columns = [f"{symptom_column_prefix}_{symptom}" for symptom in symptoms]
 
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
