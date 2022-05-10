@@ -63,6 +63,7 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
+from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -142,6 +143,7 @@ def generate_dummy_data(output_directory):
     swab_dir = raw_dir / "swab"
     blood_dir = raw_dir / "blood"
     survey_dir = raw_dir / "survey"
+    digital_survey_dir = raw_dir / "responses_digital"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -152,6 +154,7 @@ def generate_dummy_data(output_directory):
         swab_dir,
         blood_dir,
         survey_dir,
+        digital_survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -216,6 +219,13 @@ def generate_dummy_data(output_directory):
     )
     v2 = generate_survey_v2_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+    )
+    generate_digital_data(
+        directory=digital_survey_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()
