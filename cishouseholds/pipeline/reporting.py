@@ -6,6 +6,8 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.merge import union_multiple_tables
+
 
 def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]):
     output = BytesIO()
@@ -34,3 +36,18 @@ def multiple_visit_1_day(df, participant_id, visit_id, date_column, datetime_col
     )
     df_multiple_visit = df_multiple_visit.filter(F.col("FLAG") == 1)
     return df_multiple_visit.drop("FLAG")
+
+
+def unmatching_antibody_to_swab_viceversa(swab_df, antibody_df, column_list):
+    """
+    Parameters
+    ----------
+    swab_df
+    antibody_df
+    column_list
+    """
+    unmatched_swab_df = swab_df.join(antibody_df, on="barcode", how="left_anti").select(*column_list)
+    unmatched_antibody_df = antibody_df.join(swab_df, on="barcode", how="left_anti").select(*column_list)
+
+    df = union_multiple_tables(tables=[unmatched_swab_df, unmatched_antibody_df])
+    return df

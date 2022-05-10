@@ -51,6 +51,7 @@ from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
+from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
@@ -1209,6 +1210,18 @@ def report_iqvia(
     ).select(*too_early_too_late_list)
 
     # Swab_barcode_blood_switched
+    swab_barcode_blood_switched_df = unmatching_antibody_to_swab_viceversa(
+        swab_df=swab_residuals_table,
+        antibody_df=blood_residuals_df,
+        column_list=[
+            "participant_id",
+            "visit_id",
+            "visit_date",
+            "swab_sample_barcode",
+            "blood_sample_barcode",
+        ],
+    )
+
     sheet_df_map = {
         "unlinked swabs": swab_residuals_not_positive_df,
         "non exact swabs": non_exact_swab_df,
@@ -1226,6 +1239,7 @@ def report_iqvia(
         "swab matches_not_exact": swab_matches_not_exact,
         "swab match too early": swab_too_early_df,
         "swab match late": swab_too_late_df,
+        "swab blood barcode switched": swab_barcode_blood_switched_df,
     }
     output = dfs_to_bytes_excel(sheet_df_map)
     write_string_to_file(
