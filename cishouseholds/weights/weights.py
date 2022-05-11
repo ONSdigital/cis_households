@@ -115,7 +115,7 @@ def join_and_process_lookups(
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
     new_sample_df = new_sample_df.join(
         master_sample_df.select("ons_household_id", "sample_type").withColumn(
-            "ons_household_id", F.substring(F.col("ons_household_id"), 5, F.length("ons_household_id") - 4)
+            "ons_household_id", F.substring(F.col("ons_household_id"), 5, F.length(F.col("ons_household_id")) - 4)
         ),
         on="ons_household_id",
         how="left",
