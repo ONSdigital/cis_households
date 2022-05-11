@@ -1014,25 +1014,20 @@ def report_iqvia(
 ):
     """ """
     swab_residuals_df = extract_from_table(swab_residuals_table)
+    # Unlinked_blood
     blood_residuals_df = extract_from_table(blood_residuals_table)
     survey_repsonse_df = extract_from_table(survey_repsonse_table)
     merge_result_df = extract_from_table(merged_result_table)
     swab_df = extract_from_table(swab_table)
 
-    swab_residuals_not_positive_df = swab_residuals_df.filter(
-        F.col("pcr_result_classification") != "positive"
-    )  # Unlinked_lab_swab_results
-    swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive").select(
-        "swab_sample_barcode",
-        "pcr_result_classification",
-        "pcr_lab_id",
-        "pcr_result_recorded_date",
-        "pcr_result_recorded_datetime",
-    )
     pariticipant_visit_date_group_df = assign_visits_in_day(
         survey_repsonse_df, "visits_in_day", "visit_datetime", "participant_id"
     )
-    non_exact_swab_df = merge_result_df.filter(F.col("1to1_swab") != 1).select(  # Swab_matches_not_exact
+
+    # Swab_matches_not_exact
+    non_exact_swab_df = merge_result_df.filter(
+        (~F.col("1to1_swab").eqNullSafe(1)) & (F.col("visit_date") > F.date_sub(datetime.now(), 30))
+    ).select(
         "mto1_swab",
         "1tom_swab",
         "1to1_swab",
@@ -1045,7 +1040,8 @@ def report_iqvia(
         "visit_id",
         "participant_id",
     )
-    # non_exact_antibody_df = merge_result_df.filter(F.col("1to1_antibody") != 1).select(
+    # only swabs non_exact match is requested but uncomment the following lines if the blood is wanted.
+    # non_exact_antibody_df = merge_result_df.filter(~ F.col("1to1_antibody").eqNullSafe(1)).select(
     #     "mto1_antibody",
     #     "1tom_antibody",
     #     "1to1_antibody",
@@ -1058,67 +1054,9 @@ def report_iqvia(
     #     "visit_id",
     #     "participant_id",
     # )
-    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
-        "participant_id",
-        "visit_datetime",
-        "visit_id",
-        "visits_in_day",
-        "work_main_job_title",
-        "work_main_job_role",
-        "sex",
-        "ethnicity",
-        "age_at_visit",
-        "samples_taken_datetime",
-        "swab_sample_barcode",
-        "blood_sample_barcode",
-        "survey_response_dataset_major_version",
-    )
 
-    missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
-        F.col("participant_visit_status").isin(["completed", "partially completed", "new"])
-        | (
-            (F.col("swab_sample_barcode").isNotNull())
-            & (F.col("participant_survey_status") != "withdrawn")
-            & (F.col("survey_response_dataset_major_version") == 2)
-            & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
-        )
-    ).select(
-        "participant_visit_status",
-        "swab_sample_barcode",
-        "participant_survey_status",
-        "survey_response_dataset_major_version",
-        "sex",
-        "age_at_visit",
-        "ethnicity",
-    )
-
-    duplicate_barcodes_df = count_barcode_cleaned(
-        survey_repsonse_df,
-        "swab_barcode_cleaned_count",
-        "swab_sample_barcode",
-        "samples_taken_datetime",
-        "visit_datetime",
-    )
-    duplicate_barcodes_df = count_barcode_cleaned(
-        duplicate_barcodes_df,
-        "blood_barcode_cleaned_count",
-        "blood_sample_barcode",
-        "samples_taken_datetime",
-        "visit_datetime",
-    )
-    duplicate_barcodes_df = duplicate_barcodes_df.filter(F.col("swab_barcode_cleaned_count") > 1).select(
-        "swab_sample_barcode",
-        "swab_sample_barcode_raw",
-        "blood_sample_barcode",
-        "blood_sample_barcode_raw",
-        "visit_id",
-        "visit_datetime",
-        "participant_id",
-        "samples_taken_datetime",
-        "survey_response_dataset_major_version",
-    )
-
-    out_of_range_df = merge_result_df.filter(  # Sample_taken_out_of_range
+    # Sample_taken_out_of_range
+    out_of_range_df = merge_result_df.filter(
         (F.col("out_of_date_range_swab") == 1) | (F.col("out_of_date_range_antibody") == 1)
     ).select(
         "participant_id",
@@ -1127,6 +1065,11 @@ def report_iqvia(
         "samples_taken_datetime",
         "survey_response_dataset_major_version",
     )
+
+    # Unlinked_lab_swab_results
+    swab_residuals_not_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
+
+    # out_of_age_range
     out_of_age_range_df = survey_repsonse_df.filter((F.col("age_at_visit") < 2) | (F.col("age_at_visit") > 105)).select(
         "participant_id",
         "visit_id",
@@ -1138,46 +1081,6 @@ def report_iqvia(
         "work_status_v1",
         "work_status_v2",
         "survey_response_dataset_major_version",
-    )
-    under_8_bloods_df = survey_repsonse_df.filter(
-        (F.col("age_at_visit") <= 8)
-        & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
-        & (F.col("survey_response_dataset_major_version") == 2)
-    ).select("age_at_visit", "blood_sample_barcode", "blood_taken", "survey_response_dataset_major_version")
-
-    modified_swab_barcodes_df = survey_repsonse_df.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
-        "swab_sample_barcode",
-        "swabs_taken",
-        "visit_datetime",
-        "samples_taken_datetime",
-        "visit_id",
-        "survey_response_dataset_major_version",
-    )
-    modified_blood_barcodes_df = survey_repsonse_df.filter(F.col("blood_sample_barcode_edited_flag") == 1).select(
-        "blood_sample_barcode",
-        "bloods_taken",
-        "visit_datetime",
-        "samples_taken_datetime",
-        "visit_id",
-        "survey_response_dataset_major_version",
-    )
-    multiple_visit_1_day_df = multiple_visit_1_day(
-        survey_repsonse_df, "participant_id", "visit_id", "visit_date", "visit_datetime"
-    )
-
-    # Swab_matches_not_exact
-    swab_matches_not_exact = non_exact_swab_df.filter(
-        (F.col("visit_date") < datetime.now()) & (F.col("visit_date") > F.date_sub(datetime.now(), 30))
-    ).select(
-        "Swab_merge_type",
-        "swab_sample_barcode",
-        # 'Swab_barcode_IQ',
-        # 'Swab_barcode_mk',
-        "pcr_result_classification",
-        "pcr_result_recorded_datetime",
-        "visit_date",
-        "visit_id",
-        "participant_id",
     )
 
     too_early_too_late_list = [
@@ -1198,8 +1101,8 @@ def report_iqvia(
 
     # Swab_match_too_early
     swab_too_early_df = swab_df.filter(
-        F.col("pcr_result_recorded_datetime").isNotNull() & F.col("visit_date_time")
-        >= F.col("pcr_result_recorded_datetime")
+        F.col("pcr_result_recorded_datetime").isNotNull()
+        & (F.col("visit_date_time") >= F.col("pcr_result_recorded_datetime"))
     ).select(*too_early_too_late_list)
 
     # Swab_match_late
@@ -1208,6 +1111,107 @@ def report_iqvia(
         & F.col("pcr_result_recorded_datetime").isNotNull()
         & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
     ).select(*too_early_too_late_list)
+
+    # Multiple_participant_in_1_day
+    multiple_visit_1_day_df = multiple_visit_1_day(
+        survey_repsonse_df, "participant_id", "visit_id", "visit_date", "visit_datetime"
+    )
+    # Unlinked_positive_swab
+    swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive").select(
+        "swab_sample_barcode",
+        "pcr_result_classification",
+        "pcr_lab_id",
+        "pcr_result_recorded_date",
+        "pcr_result_recorded_datetime",
+    )
+    # Blood_taken_under_8y
+    under_8_bloods_df = survey_repsonse_df.filter(
+        (F.col("age_at_visit") <= 8)
+        & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
+        & (F.col("survey_response_dataset_major_version") == 2)
+    ).select("age_at_visit", "blood_sample_barcode", "blood_taken", "survey_response_dataset_major_version")
+
+    # Duplicate_swab_barcodes
+    duplicate_barcodes_swab_df = count_barcode_cleaned(
+        survey_repsonse_df,
+        "swab_barcode_cleaned_count",
+        "swab_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
+    )
+    # Duplicate blood barcodes
+    duplicate_barcodes_blood_df = count_barcode_cleaned(
+        duplicate_barcodes_swab_df,
+        "blood_barcode_cleaned_count",
+        "blood_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
+    )
+    duplicate_barcodes_df = duplicate_barcodes_blood_df.filter(
+        (F.col("swab_barcode_cleaned_count") > 1) | (F.col("blood_barcode_cleaned_count") > 1)
+    ).select(
+        "swab_sample_barcode",
+        "swab_sample_barcode_raw",
+        "blood_sample_barcode",
+        "blood_sample_barcode_raw",
+        "visit_id",
+        "visit_datetime",
+        "participant_id",
+        "samples_taken_datetime",
+        "survey_response_dataset_major_version",
+    )
+    # Missing_sex_age_ethnicity
+    missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
+        F.col("participant_visit_status").isin(["completed", "partially completed", "new"])
+        | (
+            (F.col("swab_sample_barcode").isNotNull())
+            & (F.col("participant_survey_status") != "withdrawn")
+            & (F.col("survey_response_dataset_major_version") == 2)
+            & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
+        )
+    ).select(
+        "participant_visit_status",
+        "swab_sample_barcode",
+        "participant_survey_status",
+        "survey_response_dataset_major_version",
+        "sex",
+        "age_at_visit",
+        "ethnicity",
+    )
+    # Swab_barcode_wrong_format
+    modified_swab_barcodes_df = survey_repsonse_df.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
+        "swab_sample_barcode",
+        "swabs_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+    # Blood_barcode_wrong_format
+    modified_blood_barcodes_df = survey_repsonse_df.filter(F.col("blood_sample_barcode_edited_flag") == 1).select(
+        "blood_sample_barcode",
+        "bloods_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+
+    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
+        "participant_id",
+        "visit_datetime",
+        "visit_id",
+        "visits_in_day",
+        "work_main_job_title",
+        "work_main_job_role",
+        "sex",
+        "ethnicity",
+        "age_at_visit",
+        "samples_taken_datetime",
+        "swab_sample_barcode",
+        "blood_sample_barcode",
+        "survey_response_dataset_major_version",
+    )
 
     # Swab_barcode_blood_switched
     swab_barcode_blood_switched_df = unmatching_antibody_to_swab_viceversa(
@@ -1227,7 +1231,7 @@ def report_iqvia(
         "non exact swabs": non_exact_swab_df,
         "out of range": out_of_range_df,
         "out of age range": out_of_age_range_df,
-        "unlined postiive swabs": swab_residuals_positive_df,
+        "unlinked positive swabs": swab_residuals_positive_df,
         "unlinked bloods": blood_residuals_df,
         "modified bloods": modified_blood_barcodes_df,
         "duplicate barcodes": duplicate_barcodes_df,
@@ -1236,7 +1240,6 @@ def report_iqvia(
         "under 8 bloods": under_8_bloods_df,
         "same day visits": pariticipant_visit_date_group_df,
         "multiple visits 1-day": multiple_visit_1_day_df,
-        "swab matches_not_exact": swab_matches_not_exact,
         "swab match too early": swab_too_early_df,
         "swab match late": swab_too_late_df,
         "swab blood barcode switched": swab_barcode_blood_switched_df,
