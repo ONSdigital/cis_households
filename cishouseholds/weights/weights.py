@@ -1,10 +1,9 @@
 import re
-from typing import List
-from typing import Union
-
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+from typing import List
+from typing import Union
 
 from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
@@ -115,7 +114,9 @@ def join_and_process_lookups(
     old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
     new_sample_df = new_sample_df.join(
-        master_sample_df.select("ons_household_id", "sample_type"),
+        master_sample_df.select("ons_household_id", "sample_type").withColumn(
+            "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"^.{4}", "")
+        ),
         on="ons_household_id",
         how="left",
     ).withColumn("date_sample_created", F.lit("2021/12/06"))
