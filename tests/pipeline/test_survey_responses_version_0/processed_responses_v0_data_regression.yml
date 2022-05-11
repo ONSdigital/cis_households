@@ -3,16 +3,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
@@ -89,11 +89,12 @@
   sex: Female
   sex_raw: Female
   street: Ballydoonan
+  suffix: B
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: 'No'
@@ -155,16 +156,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '1'
   consent_summary: 1.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -240,6 +241,7 @@
   sex: Female
   sex_raw: Female
   street: Benwee
+  suffix: A
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -306,16 +308,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: Luton
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 1.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -385,12 +387,13 @@
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   phase: Houston, we have a problem.
-  postcode: TE4H 2TC
+  postcode: TE4H2TC
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
   sex: null
   sex_raw: null
   street: Invergourie
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -463,13 +466,13 @@
   blood_taken: 'No'
   bloods_taken: 1.0
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Buckinghamshire
@@ -549,11 +552,12 @@
   sex: Male
   sex_raw: Male
   street: null
+  suffix: L
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: 'Yes'
@@ -615,16 +619,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -702,6 +706,7 @@
   sex: null
   sex_raw: null
   street: null
+  suffix: C
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -768,16 +773,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -856,11 +861,12 @@
   sex: Female
   sex_raw: Female
   street: null
+  suffix: B
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 1.0
   symptoms_last_7_days_abdominal_pain: null
   symptoms_last_7_days_any: null
@@ -921,16 +927,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 1.0
-  consent_5_visits: 1.0
-  consent_blood_test: 0.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '0'
+  consent_1_visit: '1'
+  consent_5_visits: '1'
+  consent_blood_test: '0'
+  consent_contact_extra_research: '1'
   consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: null
@@ -1003,12 +1009,13 @@
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   phase: Elementary, my dear Watson.
-  postcode: NC0C 6UK
+  postcode: NC0C6UK
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-03 10:12:51.000000'
   sex: Male
   sex_raw: Male
   street: Drumagrove
+  suffix: O
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
@@ -1079,13 +1086,13 @@
   blood_taken: 'No'
   bloods_taken: 0.0
   city: null
-  consent_16_visits: 0.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '0'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 0.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Worcestershire
@@ -1162,11 +1169,12 @@
   sex: Female
   sex_raw: null
   street: null
+  suffix: U
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'No'
   symptoms_last_7_days_any: null
@@ -1228,16 +1236,16 @@
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
   blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 1.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 0.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '1'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '0'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 0.0
+  consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: North Yorkshire
@@ -1312,11 +1320,12 @@
   sex: Prefer not to say
   sex_raw: null
   street: null
+  suffix: M
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'
@@ -1382,13 +1391,13 @@
   blood_taken: 'No'
   bloods_taken: 0.0
   city: null
-  consent_16_visits: 1.0
-  consent_1_visit: 0.0
-  consent_5_visits: 0.0
-  consent_blood_test: 1.0
-  consent_contact_extra_research: 1.0
+  consent_16_visits: '1'
+  consent_1_visit: '0'
+  consent_5_visits: '0'
+  consent_blood_test: '1'
+  consent_contact_extra_research: '1'
   consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: 1.0
+  consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
@@ -1466,11 +1475,12 @@
   sex: Male
   sex_raw: null
   street: Glendon
+  suffix: U
   survey_response_dataset_major_version: 0
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swabs_taken: 0.0
   symptoms_last_7_days_abdominal_pain: 'Yes'
   symptoms_last_7_days_any: 'No'

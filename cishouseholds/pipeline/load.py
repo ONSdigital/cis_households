@@ -7,69 +7,27 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def update_table(df, table_name, mode_overide=None):
-    storage_config = get_config()["storage"]
-    df.write.mode(mode_overide or storage_config["write_mode"]).saveAsTable(get_full_table_name(table_name))
+class TableNotFoundError(Exception):
+    pass
 
 
-def check_table_exists(table_name: str):
+def update_table(df, table_name, write_mode, archive=False):
+    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+    if archive:
+        now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
+        df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
+
+
+def check_table_exists(table_name: str, raise_if_missing: bool = False):
     spark_session = get_or_create_spark_session()
-    return spark_session.catalog._jcatalog.tableExists(get_full_table_name(table_name))
-
-
-def extract_from_table(table_name: str):
-    spark_session = get_or_create_spark_session()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
-
-
-@register_pipeline_stage("delete_tables")
-def delete_tables(**kwargs):
-    """
-    All key word args are optional:
-    Specify table_names as a list containing absolute table names to remove.
-    Specify pattern as a string in SQL format to set a specific SQL pattern to remove.
-    Specify prefix to remove all tables with a given prefix.
-    """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if "table_names" in kwargs:
-        if kwargs["table_names"] is not None:
-            if type(kwargs["table_names"]) != list:
-                kwargs["table_names"] = [kwargs["table_names"]]
-            for table_name in kwargs["table_names"]:
-                print(
-                    f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )  # functional
-                spark_session.sql(
-                    f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-                )
-    if "pattern" in kwargs:
-        if kwargs["pattern"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['pattern']}'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if "prefix" in kwargs:
-        if kwargs["prefix"] is not None:
-            tables = (
-                spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{kwargs['prefix']}*'")
-                .select("tableName")
-                .toPandas()["tableName"]
-                .tolist()
-            )
-            for table_name in tables:
-                print(f"dropping table: {table_name}")  # functional
-                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    full_table_name = get_full_table_name(table_name)
+    table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
+    if raise_if_missing and not table_exists:
+        raise TableNotFoundError(f"Table does not exist: {full_table_name}")
+    return table_exists
 
 
 def add_error_file_log_entry(file_path: str, error_text: str):
@@ -119,14 +77,14 @@ def get_full_table_name(table_short_name):
     return f'{storage_config["database"]}.{storage_config["table_prefix"]}{table_short_name}'
 
 
-def _create_error_file_log_entry(file_id: int, file_path: str, error_text: str):
+def _create_error_file_log_entry(run_id: int, file_path: str, error_text: str):
     """
     Creates an entry (row) to be inserted into the file log
     """
     spark_session = get_or_create_spark_session()
-    schema = "file_id integer, run_datetime timestamp, file_path string, error string"
+    schema = "run_id integer, run_datetime timestamp, file_path string, error string"
 
-    file_log_entry = [[file_id, datetime.now(), file_path, error_text]]
+    file_log_entry = [[run_id, datetime.now(), file_path, error_text]]
 
     return spark_session.createDataFrame(file_log_entry, schema)
 
@@ -168,30 +126,36 @@ def add_run_status(run_id: int, run_status: str, error_stage: str = None, run_er
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
 
 
-def update_table_and_log_source_files(df: DataFrame, table_name: str, filename_column: str, override_mode: str = None):
+def update_table_and_log_source_files(
+    df: DataFrame,
+    table_name: str,
+    filename_column: str,
+    dataset_name: str,
+    override_mode: str = None,
+):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode)
-    update_processed_file_log(df, filename_column, table_name)
+    update_processed_file_log(df, filename_column, dataset_name)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, file_type: str):
+def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
     file_lengths = df.groupBy(filename_column).count().select("count").rdd.flatMap(lambda x: x).collect()
     schema = """
         run_id integer,
-        file_type string,
+        dataset_name string,
         processed_filename string,
         processed_datetime timestamp,
         file_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, file_type, filename, datetime.now(), row_count]
+        [run_id, dataset_name, filename, datetime.now(), row_count]
         for filename, row_count in zip(newly_processed_files, file_lengths)
     ]
     df = spark_session.createDataFrame(entry, schema)

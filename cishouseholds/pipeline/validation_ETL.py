@@ -26,12 +26,18 @@ def validation_calls(SparkVal):
         "visit_id": {"starts_with": r"DHV"},
         "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
         "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        # "region_code":"not_null"
     }
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
             column_calls[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
     SparkVal.validate_column(column_calls)
+
+    vaccine_columns = []
+    for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
+        for number in range(1, 5):
+            vaccine_columns.append(template.format(number))
 
     dataset_calls = {
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
@@ -41,6 +47,12 @@ def validation_calls(SparkVal):
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
         ],
+        "valid_file_date": {
+            "visit_date_column": "visit_datetime",
+            "filename_column": "survey_response_source_file",
+            "swab_barcode_column": "swab_sample_barcode",
+            "blood_barcode_column": "blood_sample_barcode",
+        },
         "check_all_null_given_condition": [
             {
                 "condition": F.col("work_main_job_changed") != "Yes",
@@ -51,7 +63,11 @@ def validation_calls(SparkVal):
                     "work_sectors_other",
                     "work_location",
                 ],
-            }
+            },
+            {
+                "condition": F.col("visit_type") != "First Visit",
+                "null_columns": vaccine_columns,
+            },
         ],
     }
 
@@ -65,27 +81,13 @@ def validation_calls(SparkVal):
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
     )
 
-    # _vaccine_n_columns_are_null = [
-    #     F.col(item).isNull()
-    #     for number in range(1, 5)
-    #     for item in (
-    #         f"cis_covid_vaccine_type_{number}",
-    #         f"cis_covid_vaccine_type_other_{number}",
-    #         f"cis_covid_vaccine_date_{number}",
-    #     )
-    # ]
-    # SparkVal.validate_udl(
-    #     logic=(F.col("visit_type") == "First Visit" | (reduce(lambda x, y: x & y, _vaccine_n_columns_are_null))),
-    #     error_message="vaccine _n fields are all null if not first visit",
-    # )
-
     SparkVal.validate_udl(
         logic=(
             (
                 (F.col("work_social_care") == "Yes")
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_persons") == "Yes")
+                    | (F.col("work_direct_contact_patients_clients") == "Yes")
                 )
             )
             | (F.col("work_social_care") == "No")
@@ -110,7 +112,10 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     SparkVal.count_complete_duplicates(duplicate_count_column_name)
     validation_calls(SparkVal)
     return SparkVal.filter(
-        selected_errors=["participant_id, visit_datetime, visit_id, ons_household_id should not be null"],
+        selected_errors=[
+            "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
+            "the date in visit_datetime should be before the date expressed in survey_response_source_file when both swab_sample_barcode_column and blood_sample_barcode_column are null",  # noqa:E501
+        ],
         any=True,
         return_failed=True,
     )

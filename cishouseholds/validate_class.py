@@ -26,6 +26,10 @@ class SparkValidate:
             "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
+            "valid_file_date": {
+                "function": self.check_valid_file_date,
+                "error_message": "the date in {} should be before the date expressed in {} when both {} and {} are null",  # noqa:E501
+            },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
                 "error_message": "{} should all be null given condition {}",
@@ -71,8 +75,11 @@ class SparkValidate:
     def validate_column(self, operations):
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
-            check = self.functions[list(method.keys())[0]]
-            self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
+            if column_name not in self.dataframe.columns:
+                print(f"Validation rule references {column_name} column and it is not in the dataframe.")  # functional
+            else:
+                check = self.functions[list(method.keys())[0]]
+                self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
         for method, params in operations.items():
@@ -100,6 +107,8 @@ class SparkValidate:
     @staticmethod
     def not_null(error_message, check_columns):  # works in validate and validate_column
         error_message = error_message.format(", ".join(check_columns))
+        if type(check_columns) == str:
+            check_columns = [check_columns]
         return (
             F.when(sum([F.isnull(F.col(col)).cast("integer") for col in check_columns]) > 0, False).otherwise(True),
             error_message,
@@ -170,5 +179,31 @@ class SparkValidate:
                 ),
                 True,
             ).otherwise(False),
+            error_message,
+        )
+
+    @staticmethod
+    def check_valid_file_date(
+        error_message: str,
+        visit_date_column: str,
+        filename_column: str,
+        swab_barcode_column: str,
+        blood_barcode_column: str,
+    ):
+        error_message = error_message.format(
+            visit_date_column, filename_column, swab_barcode_column, blood_barcode_column
+        )
+        return (
+            F.when(
+                (
+                    (
+                        F.to_timestamp(F.regexp_extract(F.col(filename_column), r"\d{8}(?=.csv)", 0), format="yyyyMMdd")
+                        < F.col(visit_date_column)
+                    )
+                    & F.col(swab_barcode_column).isNull()
+                    & F.col(blood_barcode_column).isNull()
+                ),
+                False,
+            ).otherwise(True),
             error_message,
         )

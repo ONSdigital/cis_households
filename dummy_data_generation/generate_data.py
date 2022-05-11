@@ -2,18 +2,13 @@
 Generate fake data for households survey raw input data.
 """
 # mypy: ignore-errors
-from datetime import datetime
-from datetime import timedelta
 from io import StringIO
-from pathlib import Path
 
 import pandas as pd
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
 from cishouseholds.hdfs_utils import write_string_to_file
-from cishouseholds.pipeline.load import get_full_table_name
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from dummy_data_generation.helpers import code_mask
 from dummy_data_generation.helpers import CustomRandom
@@ -21,6 +16,7 @@ from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_nims_data_description
+from dummy_data_generation.schemas import get_survey_responses_digital_data_description
 from dummy_data_generation.schemas import get_swab_data_description
 from dummy_data_generation.schemas import get_unassayed_blood_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
@@ -73,6 +69,20 @@ def generate_survey_v2_data(directory, file_date, records, swab_barcodes, blood_
     )
     survey_responses = pd.DataFrame(schema.create(iterations=records))
     write_output(survey_responses, directory / f"ONSECRF5_Datafile_{file_date}.csv", "|")
+    return survey_responses
+
+
+def generate_digital_data(directory, file_date, records, swab_barcodes, blood_barcodes):
+    """
+    Generate survey digital data.
+    """
+    schema = Schema(
+        schema=get_survey_responses_digital_data_description(
+            _, swab_barcodes=swab_barcodes, blood_barcodes=blood_barcodes
+        )
+    )
+    survey_responses = pd.DataFrame(schema.create(iterations=records))
+    write_output(survey_responses, directory / f"ONSE_CIS_Digital_v1_0_responses_{file_date}_000000.txt", "|")
     return survey_responses
 
 
@@ -250,94 +260,3 @@ def generate_nims_table(table_name, participant_ids, records=10):
     )
     nims_df.write.saveAsTable(table_name, mode="overwrite")
     return nims_df
-
-
-@register_pipeline_stage("generate_dummy_data")
-def generate_dummy_data(output_directory):
-    raw_dir = Path(output_directory) / "generated_data"
-    swab_dir = raw_dir / "swab"
-    blood_dir = raw_dir / "blood"
-    survey_dir = raw_dir / "survey"
-    northern_ireland_dir = raw_dir / "northern_ireland_sample"
-    sample_direct_dir = raw_dir / "england_wales_sample"
-    unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
-    historic_bloods_dir = raw_dir / "historic_blood"
-    historic_swabs_dir = raw_dir / "historic_swab"
-    historic_survey_dir = raw_dir / "historic_survey"
-    for directory in [
-        swab_dir,
-        blood_dir,
-        survey_dir,
-        northern_ireland_dir,
-        sample_direct_dir,
-        unprocessed_bloods_dir,
-        historic_bloods_dir,
-        historic_swabs_dir,
-        historic_survey_dir,
-    ]:
-        directory.mkdir(parents=True, exist_ok=True)
-
-    file_datetime = datetime.now()
-    lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
-    lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
-    file_date = datetime.strftime(file_datetime, format="%Y%m%d")
-
-    # Historic files
-    # historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
-    # historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
-
-    # historic_v2 = generate_survey_v2_data(
-    #     directory=historic_survey_dir,
-    #     file_date=file_date,
-    #     records=100,
-    #     swab_barcodes=historic_swabs["Sample"].unique().tolist(),
-    #     blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
-    # )
-
-    # Delta files
-    lab_swabs_1 = generate_ons_gl_report_data(swab_dir, file_date, 10)
-    lab_swabs_2 = generate_ons_gl_report_data(swab_dir, lab_date_1, 10)
-    lab_swabs_3 = generate_ons_gl_report_data(swab_dir, lab_date_2, 10)
-    lab_swabs = pd.concat([lab_swabs_1, lab_swabs_2, lab_swabs_3])
-
-    lab_bloods_s_1, lab_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
-    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, lab_date_1, 10)
-    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, lab_date_2, 10)
-
-    lab_bloods = pd.concat(
-        [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
-    )
-
-    historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
-    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "S")
-
-    # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
-    # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
-    # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
-
-    # swab/blood barcode lists
-    swab_barcode = lab_swabs["Sample"].unique().tolist()
-    blood_barcode = lab_bloods["Serum Source ID"].unique().tolist()
-    blood_barcode += historic_blood_n["blood_barcode_OX"].unique().tolist()
-    blood_barcode += historic_blood_s["blood_barcode_OX"].unique().tolist()
-
-    swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
-    blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
-
-    generate_survey_v0_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-    generate_survey_v1_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-    v2 = generate_survey_v2_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-
-    participant_ids = v2["Participant_id"].unique().tolist()
-
-    generate_nims_table(get_full_table_name("cis_nims_20210101"), participant_ids)
-
-
-if __name__ == "__main__":
-    generate_dummy_data()

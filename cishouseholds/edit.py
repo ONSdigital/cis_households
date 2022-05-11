@@ -1,5 +1,7 @@
 import re
+from functools import reduce
 from itertools import chain
+from operator import add
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -8,7 +10,18 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import sum_within_row
+
+
+def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+    """Edit existing column to value when a value is present in any of the listed columns."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+    )
+    return df
 
 
 def update_column_if_ref_in_list(
@@ -79,27 +92,25 @@ def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[in
     return df
 
 
-def update_participant_not_consented(
-    df: DataFrame, column_name_to_update: str, participant_non_consented_column_pattern: str
-):
+def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, column_pattern: str):
     """
-    update the participant consented column following specific logic
+    Update a count to the count of columns that have a value above 0. Keeps original value if count is not more than 0.
+
     Parameters
-    ---------
-    df
-    column_name_to_update
+    ----------
+    column_patter
+        regex pattern to match columns that should be counted
+
     """
-    r = re.compile(participant_non_consented_column_pattern)
-    non_consent_columns = list(filter(r.match, df.columns))
-    non_consent_count = F.size(
-        F.array_remove(F.array([F.when(F.col(col) > 0, 1).otherwise(0) for col in non_consent_columns]), 0)
-    )
+    r = re.compile(column_pattern)
+    columns_to_count = list(filter(r.match, df.columns))
+    count = reduce(add, [F.when(F.col(column) > 0, 1).otherwise(0) for column in columns_to_count])
     df = df.withColumn(
-        column_name_to_update,
-        F.when(
-            (F.col(column_name_to_update).isNull()) & (non_consent_count > 0),
-            non_consent_count,
-        ).otherwise(F.col(column_name_to_update)),
+        column_name_to_assign,
+        F.when(count > 0, count)
+        .when(F.col(column_name_to_assign).isNull(), 0)
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
     )
     return df
 
@@ -120,33 +131,54 @@ def update_face_covering_outside_of_home(
         column_name_to_update,
         F.when(
             (
-                (F.col(covered_enclosed_column) == "Never")
+                (
+                    F.col(covered_enclosed_column).isin(
+                        "Never", "Not going to other enclosed public spaces or using public transport"
+                    )
+                )
                 & (F.col(covered_work_column).isin(["Never", "Not going to place of work or education"]))
             ),
             "No",
         )
         .when(
-            ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+            (
+                ~(F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]),
             "Yes, at work/school only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"])
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])),
+            (F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]))
+                | F.col(covered_work_column).isNull()
+            ),
             "Yes, in other situations only",
         )
         .when(
-            F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
+            ~(
+                # Don't want them both to have this value, as should result in next outcome if they are
+                (F.col(covered_enclosed_column) == "My face is already covered")
+                & (F.col(covered_work_column) == "My face is already covered")
+            )
+            & F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"])
             & F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always", "My face is already covered"]),
             "Yes, usually both Work/school/other",
         )
         .when(
             (F.col(covered_enclosed_column) == "My face is already covered")
-            & (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"])),
+            & (
+                (~F.col(covered_work_column).isin(["Yes, sometimes", "Yes, always"]))
+                | F.col(covered_work_column).isNull()
+            ),
             "My face is already covered",
         )
         .when(
-            (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+            (
+                (~F.col(covered_enclosed_column).isin(["Yes, sometimes", "Yes, always"]))
+                | F.col(covered_enclosed_column).isNull()
+            )
             & (F.col(covered_work_column) == "My face is already covered"),
             "My face is already covered",
         )
@@ -229,30 +261,26 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
     df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
 
-    df = df.withColumn("SUFFIX", F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0))
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", ""))
+    suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
+    prefix = F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", "")
 
     # prefix cleaning
-    df = df.withColumn("PREFIX", F.regexp_replace(F.col("PREFIX"), r"[0Q]", "O"))
-    df = df.withColumn(
-        "PREFIX", F.when(~F.col("PREFIX").isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(F.col("PREFIX"))
-    )
+    prefix = F.regexp_replace(prefix, r"[0Q]", "O")
+    prefix = F.when(~prefix.isin(["ONS", "ONW", "ONC", "ONN"]), F.lit("ONS")).otherwise(prefix)
 
     # suffix cleaning
-    df = df.withColumn("SUFFIX", F.when(F.length("SUFFIX") >= 4, F.col("SUFFIX")).otherwise(None))
-    df = df.withColumn("SUFFIX", F.when(F.col("SUFFIX").rlike(r"^0{1,}$"), None).otherwise(F.col("SUFFIX")))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"[.O]", "0"))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), "I", "1"))
-    df = df.withColumn("SUFFIX", F.substring(F.concat(F.lit("00000000"), F.col("SUFFIX")), -8, 8))
-    df = df.withColumn("SUFFIX", F.regexp_replace(F.col("SUFFIX"), r"^[^027]", "0"))
+    suffix = F.when(F.length(suffix) >= 4, suffix).otherwise(None)
+    suffix = F.when(suffix.rlike(r"^0{1,}$"), None).otherwise(suffix)
+    suffix = F.regexp_replace(suffix, r"[.O]", "0")
+    suffix = F.regexp_replace(suffix, "I", "1")
+    suffix = F.substring(F.concat(F.lit("00000000"), suffix), -8, 8)
+    suffix = F.regexp_replace(suffix, r"^[^027]", "0")
 
-    df = df.withColumn(
-        barcode_column, F.when(F.col("SUFFIX").isNotNull(), F.concat("PREFIX", "SUFFIX")).otherwise(None)
-    )
+    df = df.withColumn(barcode_column, F.when(suffix.isNotNull(), F.concat(prefix, suffix)).otherwise(None))
     df = df.withColumn(
         edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
     )
-    return df.drop("PREFIX", "SUFFIX", "BARCODE_COPY")
+    return df.drop("BARCODE_COPY")
 
 
 def clean_postcode(df: DataFrame, postcode_column: str):
@@ -264,56 +292,60 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     df
     postcode_column
     """
+    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
+    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
+    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
     df = df.withColumn(
         postcode_column,
-        F.upper(F.ltrim(F.rtrim(F.regexp_replace(postcode_column, r"[^a-zA-Z\d:]", "")))),
+        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
     )
-    df = df.withColumn("TEMP", F.substring(df[postcode_column], -3, 3))
-    df = df.withColumn(postcode_column, F.regexp_replace(postcode_column, r"[^*]{3}$", ""))
-    df = df.withColumn(
-        postcode_column,
-        F.when(
-            (F.length(postcode_column) <= 4), F.format_string("%s %s", F.col(postcode_column), F.col("TEMP"))
-        ).otherwise(None),
-    )
-    return df.drop("TEMP")
+    return df
 
 
-def update_from_csv_lookup(df: DataFrame, csv_filepath: str, id_column: str):
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
-    Update specific cell values from a map contained in a csv file.
-    Allows a match on Null old values.
-
-    Parameters
-    ----------
-    df
-    csv_filepath
-    id_column
-        column in dataframe containing unique identifier
+    Edit values in df based on old to new mapping in lookup_df
+    Expected columns on lookup_df:
+    - id
+    - dataset_name
+    - target_column_name
+    - old_value
+    - new_value
     """
-    spark = get_or_create_spark_session()
-    csv = spark.read.csv(csv_filepath, header=True)
-    csv = (
-        csv.groupBy("id")
+
+    if dataset_name is not None:
+        lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
+
+    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+
+    pivoted_lookup_df = (
+        lookup_df.groupBy("id")
         .pivot("target_column_name")
         .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
         .drop("old_value", "new_value")
     )
+    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+        pivoted_lookup_df["id"]
+    )
 
-    df = df.join(csv, csv.id == df[id_column], how="left").drop(csv.id)
-    r = re.compile(r"[a-z,A-Z,0-9]{1,}_old_value$")
-    cols = [col.rstrip("_old_value") for col in list(filter(r.match, csv.columns))]
-    for col in cols:
-        df = df.withColumn(
-            col,
+    for column_to_edit in columns_to_edit:
+        if column_to_edit not in df.columns:
+            print(
+                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+            )  # functional
+            continue
+        edited_df = edited_df.withColumn(
+            column_to_edit,
             F.when(
-                F.col(col).eqNullSafe(F.col(f"{col}_old_value")),
-                F.col(f"{col}_new_value"),
-            ).otherwise(F.col(col)),
+                F.col(column_to_edit).eqNullSafe(
+                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                ),
+                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+            ).otherwise(F.col(column_to_edit)),
         )
 
-    drop_list = [*[f"{col}_old_value" for col in cols], *[f"{col}_new_value" for col in cols]]
-    return df.drop(*drop_list)
+    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+    return edited_df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
@@ -697,38 +729,26 @@ def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -
     return df
 
 
-def count_activities_last_XX_days(
+def edit_to_sum_or_max_value(
     df: DataFrame,
-    activity_combo_last_XX_days: str,
-    list_activities_last_XX_days: List[str],
+    column_name_to_assign: str,
+    columns_to_sum: List[str],
     max_value: int,
 ):
     """
-    Searches for null values in the activities_combo_last_XX_days and when that happens
-    gets
+    Imputes column_name_to_assign based a sum of the columns_to_sum.
+    If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
-    Parameters
-    ----------
-    df
-    activity_combo_last_XX_days
-    list_activities_last_XX_days
-    max_value
+    column_name_to_assign must already exist on the df.
     """
-    df = df.withColumn("FLAG_count", F.lit(0).cast("integer"))
-    df = df.withColumn("FLAG_all-null", F.coalesce(*[F.col(column) for column in list_activities_last_XX_days]))
-    for activity_column in list_activities_last_XX_days:
-        df = df.withColumn(
-            "FLAG_count",
-            F.when(
-                (F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull()),
-                (F.col("FLAG_count") + F.when(F.col(activity_column).isNull(), 0).otherwise(F.col(activity_column))),
-            ),
-        )
     df = df.withColumn(
-        activity_combo_last_XX_days,
-        F.when(
-            F.col(activity_combo_last_XX_days).isNull() & F.col("FLAG_all-null").isNotNull(),
-            F.when(F.col("FLAG_count") < max_value, F.col("FLAG_count")).otherwise(max_value),
-        ).otherwise(F.col(activity_combo_last_XX_days)),
+        column_name_to_assign,
+        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
+        .when(
+            F.col(column_name_to_assign).isNull(),
+            F.least(F.lit(max_value), sum_within_row(columns_to_sum)),
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("integer"),
     )
-    return df.drop("FLAG_count", "FLAG_all-null")
+    return df

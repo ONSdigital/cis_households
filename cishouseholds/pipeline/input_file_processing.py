@@ -1,211 +1,109 @@
-from cishouseholds.extract import get_files_to_be_processed
-from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
-from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
-from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
-from cishouseholds.pipeline.ETL_scripts import extract_validate_transform_input_data
-from cishouseholds.pipeline.historical_blood_ETL import add_fields
-from cishouseholds.pipeline.input_variable_names import blood_variable_name_map
-from cishouseholds.pipeline.input_variable_names import historical_blood_variable_name_map
-from cishouseholds.pipeline.input_variable_names import survey_responses_v0_variable_name_map
-from cishouseholds.pipeline.input_variable_names import survey_responses_v1_variable_name_map
-from cishouseholds.pipeline.input_variable_names import survey_responses_v2_variable_name_map
-from cishouseholds.pipeline.input_variable_names import swab_variable_name_map
-from cishouseholds.pipeline.input_variable_names import unassayed_bloods_variable_name_map
-from cishouseholds.pipeline.load import update_table_and_log_source_files
-from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
-from cishouseholds.pipeline.survey_responses_version_0_ETL import transform_survey_responses_version_0_delta
-from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
-from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
-from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
-from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
-from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
-from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
-from cishouseholds.pipeline.timestamp_map import blood_datetime_map
-from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
-from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
-from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
-from cishouseholds.pipeline.timestamp_map import swab_datetime_map
-from cishouseholds.pipeline.unassayed_blood_ETL import transform_unassayed_blood
-from cishouseholds.pipeline.validation_schema import blood_validation_schema
-from cishouseholds.pipeline.validation_schema import historical_blood_validation_schema
-from cishouseholds.pipeline.validation_schema import survey_responses_v0_validation_schema
-from cishouseholds.pipeline.validation_schema import survey_responses_v1_validation_schema
-from cishouseholds.pipeline.validation_schema import survey_responses_v2_validation_schema
-from cishouseholds.pipeline.validation_schema import swab_validation_schema
-from cishouseholds.pipeline.validation_schema import swab_validation_schema_testKit
-from cishouseholds.pipeline.validation_schema import unassayed_blood_validation_schema
+from typing import Callable
+from typing import List
+from typing import Union
+
+from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
+
+from cishouseholds.derive import assign_filename_column
+from cishouseholds.edit import cast_columns_from_string
+from cishouseholds.edit import convert_columns_to_timestamps
+from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import update_table
+from cishouseholds.pipeline.validation_schema import validation_schemas
+from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
 
 
-blood_delta_parameters = {
-    "stage_name": "blood_delta_ETL",
-    "validation_schema": blood_validation_schema,
-    "column_name_map": blood_variable_name_map,
-    "datetime_column_map": blood_datetime_map,
-    "transformation_functions": [transform_blood_delta, add_historical_fields],
-    "output_table_name": "transformed_blood_test_data",
-    "source_file_column": "blood_test_source_file",
-    "write_mode": "append",
-}
-
-swab_delta_parameters = {
-    "stage_name": "swab_delta_ETL",
-    "validation_schema": swab_validation_schema,
-    "column_name_map": swab_variable_name_map,
-    "datetime_column_map": swab_datetime_map,
-    "transformation_functions": [transform_swab_delta],
-    "output_table_name": "transformed_swab_test_data",
-    "source_file_column": "swab_test_source_file",
-    "write_mode": "append",
-}
-
-swab_delta_parameters_testKit = {
-    "stage_name": "swab_testKit_delta_ETL",
-    "validation_schema": swab_validation_schema_testKit,
-    "column_name_map": swab_variable_name_map,
-    "datetime_column_map": swab_datetime_map,
-    "transformation_functions": [transform_swab_delta_testKit, transform_swab_delta],
-    "output_table_name": "transformed_swab_test_data",
-    "source_file_column": "swab_test_source_file",
-    "write_mode": "append",
-}
-
-survey_responses_v2_parameters = {
-    "stage_name": "survey_responses_version_2_ETL",
-    "validation_schema": survey_responses_v2_validation_schema,
-    "column_name_map": survey_responses_v2_variable_name_map,
-    "datetime_column_map": survey_responses_v2_datetime_map,
-    "transformation_functions": [
-        transform_survey_responses_generic,
-        derive_additional_v1_2_columns,
-        transform_survey_responses_version_2_delta,
-    ],
-    "sep": "|",
-    "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v2_data",
-    "source_file_column": "survey_response_source_file",
-}
-
-survey_responses_v1_parameters = {
-    "stage_name": "survey_responses_version_1_ETL",
-    "validation_schema": survey_responses_v1_validation_schema,
-    "column_name_map": survey_responses_v1_variable_name_map,
-    "datetime_column_map": survey_responses_v1_datetime_map,
-    "transformation_functions": [
-        transform_survey_responses_generic,
-        derive_additional_v1_2_columns,
-        transform_survey_responses_version_1_delta,
-    ],
-    "sep": "|",
-    "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v1_data",
-    "source_file_column": "survey_response_source_file",
-}
-
-survey_responses_v0_parameters = {
-    "stage_name": "survey_responses_version_0_ETL",
-    "validation_schema": survey_responses_v0_validation_schema,
-    "column_name_map": survey_responses_v0_variable_name_map,
-    "datetime_column_map": survey_responses_v0_datetime_map,
-    "transformation_functions": [
-        transform_survey_responses_generic,
-        transform_survey_responses_version_0_delta,
-    ],
-    "sep": "|",
-    "cast_to_double_list": survey_response_cast_to_double,
-    "output_table_name": "transformed_survey_responses_v0_data",
-    "source_file_column": "survey_response_source_file",
-}
-
-unassayed_blood_delta_parameters = {
-    "stage_name": "unassayed_blood_ETL",
-    "validation_schema": unassayed_blood_validation_schema,
-    "column_name_map": unassayed_bloods_variable_name_map,
-    "datetime_column_map": blood_datetime_map,
-    "transformation_functions": [transform_unassayed_blood],
-    "output_table_name": "unassayed_blood_sample_data",
-    "source_file_column": "unassayed_blood_source_file",
-    "write_mode": "append",
-}
-
-historical_blood_parameters = {
-    "stage_name": "historical_blood_ETL",
-    "validation_schema": historical_blood_validation_schema,
-    "column_name_map": historical_blood_variable_name_map,
-    "datetime_column_map": blood_datetime_map,
-    "transformation_functions": [transform_blood_delta, add_fields],
-    "output_table_name": "transformed_blood_test_data",
-    "source_file_column": "blood_test_source_file",
-}
+class InvalidFileError(Exception):
+    pass
 
 
-def generate_input_processing_function(
-    stage_name,
-    validation_schema,
-    column_name_map,
-    datetime_column_map,
-    transformation_functions,
-    output_table_name,
-    source_file_column,
-    write_mode="overwrite",
-    sep=",",
-    cast_to_double_list=[],
-    include_hadoop_read_write=True,
+def extract_lookup_csv(
+    lookup_file_path: str, validation_schema: dict, column_name_map: dict = None, drop_not_found: bool = False
 ):
     """
-    Generate an input file processing stage function and register it.
-
-    Returns dataframe for use in testing.
-
-    Parameters
-    ----------
-    include_hadoop_read_write
-        set to False for use in testing on non-hadoop environments
-
-    Notes
-    -----
-    See underlying functions for other parameter documentation.
+    extract and validate a csv lookup file from path with validation_schema
     """
-
-    @register_pipeline_stage(stage_name)
-    def _inner_function(**kwargs):
-        file_path_list = [kwargs["resource_path"]]
-        if include_hadoop_read_write:
-            file_path_list = get_files_to_be_processed(**kwargs)
-        if not file_path_list:
-            print(f"        - No files selected in {kwargs['resource_path']}")  # functional
-            return
-
-        valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
-        if not valid_file_paths:
-            print(f"        - No valid files found in: {kwargs['resource_path']}.")  # functional
-            return
-
-        df = extract_validate_transform_input_data(
-            resource_path=file_path_list,
-            variable_name_map=column_name_map,
-            datetime_map=datetime_column_map,
-            validation_schema=validation_schema,
-            transformation_functions=transformation_functions,
-            sep=sep,
-            cast_to_double_columns_list=cast_to_double_list,
-        )
-        if include_hadoop_read_write:
-            update_table_and_log_source_files(df, output_table_name, source_file_column, write_mode)
+    valid_files = validate_files(lookup_file_path, validation_schema)  # type: ignore
+    if not valid_files:
+        raise InvalidFileError(f"Lookup csv file {lookup_file_path} is not valid.")
+    df = extract_input_data(lookup_file_path, validation_schema, sep=",")  # type: ignore
+    if column_name_map is None:
         return df
+    if drop_not_found:
+        df = df.select(*column_name_map.keys())
+    df = rename_column_names(df, column_name_map)
+    return df
 
-    _inner_function.__name__ = stage_name
-    return _inner_function
+
+def extract_validate_transform_input_data(
+    dataset_name: str,
+    id_column: str,
+    resource_path: list,
+    datetime_map: dict,
+    validation_schema: dict,
+    transformation_functions: List[Callable],
+    source_file_column: str,
+    write_mode: str,
+    variable_name_map: dict = None,
+    sep: str = ",",
+    cast_to_double_columns_list: list = [],
+    include_hadoop_read_write: bool = False,
+    dataset_version: str = None,
+):
+    if include_hadoop_read_write:
+        storage_config = get_config()["storage"]
+        record_editing_config_path = storage_config["record_editing_config_file"]
+        extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
+
+    df = extract_input_data(resource_path, validation_schema, sep)
+    if variable_name_map is not None:
+        df = rename_column_names(df, variable_name_map)
+
+    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
+    dataset_version = "" if dataset_version is None else "_" + dataset_version
+    if include_hadoop_read_write:
+        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
+        filter_ids = []
+        if extraction_config is not None and dataset_name in extraction_config:
+            filter_ids = extraction_config[dataset_name]
+        filtered_df = df.filter(F.col(id_column).isin(filter_ids))
+        update_table(filtered_df, f"extracted_{dataset_name}{dataset_version}", write_mode)
+        df = df.filter(~F.col(id_column).isin(filter_ids))
+
+        if record_editing_config_path is not None:
+            editing_lookup_df = extract_lookup_csv(record_editing_config_path, validation_schemas["csv_lookup_schema"])
+            df = update_from_lookup_df(df, editing_lookup_df, id_column=id_column, dataset_name=dataset_name)
+
+    df = convert_columns_to_timestamps(df, datetime_map)
+    df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
+
+    for transformation_function in transformation_functions:
+        df = transformation_function(df)
+    return df
 
 
-for parameters in [
-    blood_delta_parameters,
-    swab_delta_parameters,
-    swab_delta_parameters_testKit,
-    survey_responses_v2_parameters,
-    survey_responses_v1_parameters,
-    survey_responses_v0_parameters,
-    unassayed_blood_delta_parameters,
-    historical_blood_parameters,
-]:
-    generate_input_processing_function(**parameters)
+def extract_input_data(file_paths: Union[List[str], str], validation_schema: Union[dict, None], sep: str) -> DataFrame:
+    spark_session = get_or_create_spark_session()
+    spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
+    return spark_session.read.csv(
+        file_paths,
+        header=True,
+        schema=spark_schema,
+        ignoreLeadingWhiteSpace=True,
+        ignoreTrailingWhiteSpace=True,
+        sep=sep,
+    )
+
+
+def extract_from_table(table_name: str) -> DataFrame:
+    spark_session = get_or_create_spark_session()
+    check_table_exists(table_name, raise_if_missing=True)
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")

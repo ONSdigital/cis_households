@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_ethnicity_white
 from cishouseholds.weights.derive import assign_population_projections
 from cishouseholds.weights.derive import assign_white_proportion
@@ -11,16 +12,19 @@ from cishouseholds.weights.derive import derive_m_f_column_list
 from cishouseholds.weights.edit import reformat_age_population_table
 from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
-from cishouseholds.weights.extract import prepare_auxillary_data
 
 
-def proccess_population_projection_df(dfs: dict, month: int, year: int):
+def proccess_population_projection_df(
+    previous_projection_df: DataFrame,
+    population_projection_current_df: DataFrame,
+    aps_lookup_df: DataFrame,
+    month: int,
+    year: int,
+):
     """
     process and format population projections tables by reshaping new dataframe and recalculating predicted values
     """
-    dfs = prepare_auxillary_data(dfs)
-    previous_projection_df = dfs["population_projection_previous"]
-    individual_level_populations_for_non_response_adjustment = dfs["population_projection_current"]
+    individual_level_populations_for_non_response_adjustment = population_projection_current_df
 
     m_f_columns = derive_m_f_column_list(df=individual_level_populations_for_non_response_adjustment)
 
@@ -52,11 +56,11 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
     )
 
     aps_lookup_df = assign_ethnicity_white(
-        dfs["aps_lookup"],
+        aps_lookup_df,
         "ethnicity_white",
         "country_name",
         "ethnicity_aps_northen_ireland",
-        "ethnicity_aps_engl_wales_scot",
+        "ethnicity_aps_england_wales_scotland",
     )
     aps_lookup_df = assign_white_proportion(
         aps_lookup_df,
@@ -69,9 +73,9 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
 
     individual_level_populations_for_non_response_adjustment = (
         individual_level_populations_for_non_response_adjustment.join(
-            aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16"),
+            aps_lookup_df.select("country_name", "percentage_white_ethnicity_country_over16").distinct(),
             individual_level_populations_for_non_response_adjustment["country_name_12"]
-            == dfs["aps_lookup"]["country_name"],
+            == aps_lookup_df["country_name"],
             how="left",
         )
     )
@@ -92,7 +96,6 @@ def proccess_population_projection_df(dfs: dict, month: int, year: int):
         population_column="population",
         white_proportion_column="percentage_white_ethnicity_country_over16",
     )
-
     individual_level_populations_for_calibration = get_calibration_dfs(
         individual_level_populations_for_non_response_adjustment, "country_name_12", "age"
     )
@@ -244,7 +247,7 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         "England",
     ]
 
-    output_df = None
+    calibrated_dfs = []
     for dataset_name, country, min_age, groupby_columns, additional_columns in zip(
         data_set_names, countries, min_ages, groupby_columns_set, additional_columns_set
     ):
@@ -259,9 +262,7 @@ def get_calibration_dfs(df: DataFrame, country_column: str, age_column: str):
         )
         if calibrated_df is not None:
             calibrated_df = calibrated_df.withColumn("dataset_name", F.lit(dataset_name))
-            if output_df is None:
-                output_df = calibrated_df
-            else:
-                output_df = output_df.union(calibrated_df)
+            calibrated_dfs.append(calibrated_df)
 
+    output_df = union_multiple_tables(calibrated_dfs)
     return output_df

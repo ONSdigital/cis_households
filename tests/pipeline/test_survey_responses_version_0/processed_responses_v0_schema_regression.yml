@@ -208,6 +208,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: suffix
+  nullable: true
+  type: string
+- metadata: {}
   name: full_name
   nullable: true
   type: string
@@ -254,27 +258,27 @@ fields:
 - metadata: {}
   name: consent_1_visit
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_5_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_16_visits
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_contact_extra_research
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_blood_test
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: consent_use_of_surplus_blood_samples
   nullable: true
-  type: double
+  type: string
 - metadata: {}
   name: work_status_v0
   nullable: true
@@ -544,14 +548,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
-  name: blood_sample_barcode_edited_flag
-  nullable: true
-  type: integer
-- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -574,5 +570,13 @@ fields:
 - metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
+  type: integer
+- metadata: {}
+  name: swab_sample_barcode_edited_flag
+  nullable: true
+  type: integer
+- metadata: {}
+  name: blood_sample_barcode_edited_flag
+  nullable: true
   type: integer
 type: struct
