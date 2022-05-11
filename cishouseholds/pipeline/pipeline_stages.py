@@ -60,7 +60,7 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
-from cishouseholds.weights.weights import join_greography_lookups
+from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -110,6 +110,7 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
+        print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
 
 
@@ -171,6 +172,7 @@ def generate_dummy_data(output_directory):
     swab_dir = raw_dir / "swab"
     blood_dir = raw_dir / "blood"
     survey_dir = raw_dir / "survey"
+    digital_survey_dir = raw_dir / "responses_digital"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -181,6 +183,7 @@ def generate_dummy_data(output_directory):
         swab_dir,
         blood_dir,
         survey_dir,
+        digital_survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -246,6 +249,13 @@ def generate_dummy_data(output_directory):
     v2 = generate_survey_v2_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
+    generate_digital_data(
+        directory=digital_survey_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
+    )
 
     participant_ids = v2["Participant_id"].unique().tolist()
 
@@ -257,11 +267,11 @@ def generate_input_processing_function(
     dataset_name,
     id_column,
     validation_schema,
-    column_name_map,
     datetime_column_map,
     transformation_functions,
     source_file_column,
     write_mode="overwrite",
+    column_name_map=None,
     sep=",",
     cast_to_double_list=[],
     include_hadoop_read_write=True,
@@ -771,28 +781,31 @@ def impute_demographic_columns(
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
-@register_pipeline_stage("collate_geographies")
-def collate_geographies(
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(
     address_lookup_table,
     postcode_lookup_table,
     lsoa_cis_lookup_table,
     country_lookup_table,
-    joined_geography_lookup_table,
+    household_level_populations_table,
 ):
-    address_lookup_df = extract_from_table(address_lookup_table)
-    postcode_lookup_df = extract_from_table(postcode_lookup_table)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup_table)
-    country_lookup_df = extract_from_table(country_lookup_table)
+    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
+    postcode_lookup_df = (
+        extract_from_table(postcode_lookup_table)
+        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
+        .distinct()
+    )
+    lsoa_cis_lookup_df = (
+        extract_from_table(lsoa_cis_lookup_table)
+        .select("lower_super_output_area_code_11", "cis_area_code_20")
+        .distinct()
+    )
+    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
 
-    df = join_greography_lookups(address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df)
-    update_table(df, joined_geography_lookup_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("calculate_household_level_populations")
-def calculate_household_level_populations(joined_geography_lookup_table, household_level_populations_table):
-    df = extract_from_table(joined_geography_lookup_table)
-    df = household_level_populations(df)
-    update_table(df, household_level_populations_table, write_mode="overwrite")
+    household_info_df = household_level_populations(
+        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
+    )
+    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("join_geographic_data")

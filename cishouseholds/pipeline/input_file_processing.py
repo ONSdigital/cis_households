@@ -47,12 +47,12 @@ def extract_validate_transform_input_data(
     dataset_name: str,
     id_column: str,
     resource_path: list,
-    variable_name_map: dict,
     datetime_map: dict,
     validation_schema: dict,
     transformation_functions: List[Callable],
     source_file_column: str,
     write_mode: str,
+    variable_name_map: dict = None,
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
@@ -64,7 +64,9 @@ def extract_validate_transform_input_data(
         extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
+    if variable_name_map is not None:
+        df = rename_column_names(df, variable_name_map)
+
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
     if include_hadoop_read_write:

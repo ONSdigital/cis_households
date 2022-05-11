@@ -16,6 +16,15 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    window = Window.orderBy(reference_column)
+    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    return df
+
+
 def assign_distinct_count_in_group(
     df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
 ):
@@ -35,6 +44,20 @@ def assign_distinct_count_in_group(
         column_name_to_assign,
         F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
     )
+    return df
+
+
+def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
     return df
 
 
@@ -804,7 +827,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )
