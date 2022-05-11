@@ -1,9 +1,10 @@
 import re
+from typing import List
+from typing import Union
+
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-from typing import List
-from typing import Union
 
 from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
