@@ -1092,25 +1092,33 @@ def report_iqvia(
         "pcr_result_recorded_datetime",
         "pcr_result_recorded_date",
         "pcr_result_classification",
-        # diff_vs_visit* - diff_vs_visit_hr ,
-        # diff_vs_visit* - diff_vs_visit_day ,
+        "diff_vs_visit_hr",
+        "diff_vs_visit",
         # count_cleaned_swab,
         # count_cleaned_mk,
         "samples_taken_date_time",
     ]
 
     # Swab_match_too_early
-    swab_too_early_df = swab_df.filter(
-        F.col("pcr_result_recorded_datetime").isNotNull()
-        & (F.col("visit_date_time") >= F.col("pcr_result_recorded_datetime"))
-    ).select(*too_early_too_late_list)
+    swab_too_early_df = (
+        swab_df.filter(
+            F.col("pcr_result_recorded_datetime").isNotNull()
+            & (F.col("visit_date_time") >= F.col("pcr_result_recorded_datetime"))
+        )
+        .select(*too_early_too_late_list)
+        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
+    )
 
     # Swab_match_late
-    swab_too_late_df = swab_df.filter(
-        (F.col("diff_vs_visit_day") > 10)
-        & F.col("pcr_result_recorded_datetime").isNotNull()
-        & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
-    ).select(*too_early_too_late_list)
+    swab_too_late_df = (
+        swab_df.filter(
+            (F.col("diff_vs_visit") > 10)
+            & F.col("pcr_result_recorded_datetime").isNotNull()
+            & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
+        )
+        .select(*too_early_too_late_list)
+        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
+    )
 
     # Multiple_participant_in_1_day
     multiple_visit_1_day_df = multiple_visit_1_day(
