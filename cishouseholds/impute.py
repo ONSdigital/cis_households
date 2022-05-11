@@ -11,6 +11,10 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_random_day_in_month
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.udfs import generate_sample_proportional_to_size_udf
+
+sample_proportional_to_size_udf = generate_sample_proportional_to_size_udf(get_or_create_spark_session())
 
 
 def impute_outside_uk_columns(
@@ -705,15 +709,23 @@ def impute_by_k_nearest_neighbours(
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
     )
+
     frequencies = frequencies.withColumn("expected_frequency", F.col("probability") * F.col("imputation_group_size"))
     frequencies = frequencies.withColumn("expected_frequency_integer_part", F.floor(F.col("expected_frequency")))
     frequencies = frequencies.withColumn(
         "expected_frequency_decimal_part", F.col("expected_frequency") - F.col("expected_frequency_integer_part")
     )
 
+    total_integer_part_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
-        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("expected_frequency_integer_part")
+        "total_expected_frequency_integer_part",
+        F.sum(F.col("expected_frequency_integer_part")).over(total_integer_part_window),
     )
+
+    frequencies = frequencies.withColumn(
+        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("total_expected_frequency_integer_part")
+    )
+
     integer_part_donors = frequencies.select(
         "expected_frequency_integer_part", "unique_imputation_group", "don_" + reference_column
     )
@@ -724,14 +736,40 @@ def impute_by_k_nearest_neighbours(
     )
 
     decimal_part_donors = frequencies.filter(F.col("expected_frequency_decimal_part") > 0).select(
-        "probability", "unique_imputation_group", "don_" + reference_column, "required_decimal_donor_count"
+        "expected_frequency_decimal_part",
+        "unique_imputation_group",
+        "don_" + reference_column,
+        "required_decimal_donor_count",
     )
 
-    random_uniques_window = Window.partitionBy("unique_imputation_group").orderBy(
-        (F.rand() * F.col("probability")).desc()
+    rescale_window = Window.partitionBy("unique_imputation_group")
+
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part_total", F.sum(F.col("expected_frequency_decimal_part")).over(rescale_window)
     )
-    decimal_part_donors = decimal_part_donors.withColumn("donor_row_id", F.row_number().over(random_uniques_window))
-    decimal_part_donors = decimal_part_donors.filter(F.col("donor_row_id") <= F.col("required_decimal_donor_count"))
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part",
+        F.col("expected_frequency_decimal_part") / F.col("expected_frequency_decimal_part_total"),
+    )
+
+    decimal_parts_grouped = decimal_part_donors.groupby("unique_imputation_group").agg(
+        F.collect_list("don_" + reference_column).alias("don_" + reference_column),
+        F.collect_list("expected_frequency_decimal_part").alias("expected_frequency_decimal_part"),
+        F.first("required_decimal_donor_count").alias("required_decimal_donor_count"),
+    )
+
+    decimals_to_impute = decimal_parts_grouped.withColumn(
+        "don_" + reference_column,
+        sample_proportional_to_size_udf(
+            "don_" + reference_column, "expected_frequency_decimal_part", "required_decimal_donor_count"
+        ),
+    )
+
+    decimals_to_impute = decimals_to_impute.select("unique_imputation_group", "don_" + reference_column)
+
+    decimal_part_donors = decimals_to_impute.withColumn(
+        "don_" + reference_column, F.explode(F.col("don_" + reference_column))
+    )
 
     to_impute_df = integer_part_donors.select("unique_imputation_group", "don_" + reference_column).unionByName(
         decimal_part_donors.select("unique_imputation_group", "don_" + reference_column)
