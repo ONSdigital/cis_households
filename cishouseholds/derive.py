@@ -20,8 +20,13 @@ def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: 
     """
     Derive an incremental id from a reference column containing an id
     """
-    window = Window.orderBy(reference_column)
-    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    # window = Window.orderBy(reference_column)
+    # df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
+    distinct_list = list(df.select(reference_column).distinct().toPandas()[reference_column])
+    dict_with_index = {distinct_list[i]: i + 1 for i in range(len(distinct_list))}
+    # Applying the mapping of dictionary.
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*dict_with_index.items())])
+    df = df.withColumn(column_name_to_assign, mapping_expr.getItem(F.col(reference_column)))
     return df
 
 
