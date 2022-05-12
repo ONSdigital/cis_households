@@ -951,7 +951,8 @@ def create_formatted_datetime_string_columns(df):
             "been_outside_uk_last_date",
             "symptoms_last_7_days_onset_date",
         ]
-        + datetime_format_dict["yyyy-MM-dd"]
+        # TODO: Add back in once digital data is being included or make backwards compatible
+        # + cis_digital_datetime_map["yyyy-MM-dd"]
     )
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
@@ -977,15 +978,15 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-    #  timestamp
-    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign + "_string",
-            reference_column=column_name_to_assign,
-            time_format="ddMMMyyyy HH:mm:ss",
-            lower_case=True,
-        )
+    # TODO: Add back in once digital data is being included or make backwards compatible
+    # for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+    #     df = assign_column_to_date_string(
+    #         df=df,
+    #         column_name_to_assign=column_name_to_assign + "_string",
+    #         reference_column=column_name_to_assign,
+    #         time_format="ddMMMyyyy HH:mm:ss",
+    #         lower_case=True,
+    #     )
     return df
 
 
