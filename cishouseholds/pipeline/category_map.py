@@ -517,5 +517,6 @@ category_maps = {
             "sample_taken_date": 2,
             "scheduled_date": 3,
         },
+        "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
     },
 }
