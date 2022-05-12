@@ -156,7 +156,7 @@ class SparkValidate:
                 bools.append((lower_bound & upper_bound) | (F.col(column_name).isNull()))
             else:
                 bools.append(lower_bound & upper_bound)
-        return any(bools), error_message
+        return F.array_contains(F.array(*bools), True), error_message
 
     # Non column wise functions
     @staticmethod
