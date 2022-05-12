@@ -153,7 +153,7 @@ class SparkValidate:
                 " (inclusive)" if range["upper_bound"]["inclusive"] else "",
             )
             if "allow_none" in range and range["allow_none"] is True:
-                bools.append((lower_bound & upper_bound) | F.col(column_name).isNull())
+                bools.append((lower_bound & upper_bound) | (F.col(column_name).isNull()))
             else:
                 bools.append(lower_bound & upper_bound)
         return any(bools), error_message
