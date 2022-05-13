@@ -57,9 +57,13 @@ def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: 
     """
     Derive an incremental id from a reference column containing an id
     """
-    window = Window.orderBy(reference_column)
-    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
-    return df
+    df_unique_id = df.select(reference_column).distinct()
+    df_unique_id = df_unique_id.withColumn("TEMP", F.lit(1))
+    window = Window.partitionBy(F.col("TEMP")).orderBy(reference_column)
+    df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
+
+    df = df.join(df_unique_id, on=reference_column, how="left")
+    return df.drop("TEMP")
 
 
 def assign_distinct_count_in_group(
