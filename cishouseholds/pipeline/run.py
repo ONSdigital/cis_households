@@ -11,6 +11,7 @@ from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pyspark_utils import get_spark_application_id
 from cishouseholds.pyspark_utils import get_spark_ui_url
+from cishouseholds.validate import upfront_key_value_parameters_validation
 
 
 def run_from_config():
@@ -25,15 +26,18 @@ def run_from_config():
       resource_path: "path_to.csv"
     """
     config = get_config()
+    pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+    upfront_key_value_parameters_validation(function_list=pipeline_stages, config_file_arguments=pipeline_stage_list)
     run_datetime = datetime.now()
     run_id = add_run_log_entry(run_datetime)
     print(f"Run ID: {run_id}")  # functional
     add_run_status(run_id, "started")
     pipeline_error_count = None
+
     try:
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list, run_id, config.get("retry_times_on_fail", 0), config.get("retry_wait_time_seconds", 0)
         )
