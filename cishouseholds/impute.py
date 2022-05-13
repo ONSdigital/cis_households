@@ -117,7 +117,36 @@ def fill_forward_from_last_change(
     return df.drop("id_right", "start_datetime", "end_datetime")
 
 
-def fill_forward_only_to_nulls_in_dataset(
+def fill_forward_only_to_nulls(
+    df: DataFrame,
+    id: str,
+    date: str,
+    list_fill_forward: List[str],
+) -> DataFrame:
+    """
+    Fill forward to not nulls for the whole dataset.
+
+    Parameters
+    ----------
+    df
+    id
+    date
+    list_fill_forward
+    """
+
+    window = Window.partitionBy(id).orderBy(date)
+
+    for fill_forward_column in list_fill_forward:
+        df = df.withColumn(
+            fill_forward_column,
+            F.coalesce(
+                F.last(fill_forward_column, ignorenulls=True).over(window),
+            ),
+        )
+    return df
+
+
+def fill_forward_only_to_nulls_in_dataset_based_on_column(
     df: DataFrame,
     id: str,
     date: str,
