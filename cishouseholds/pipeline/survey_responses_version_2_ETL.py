@@ -52,7 +52,8 @@ from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset
+from cishouseholds.impute import fill_forward_only_to_nulls
+from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset_based_on_column
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
@@ -990,25 +991,41 @@ def create_formatted_datetime_string_columns(df):
 
 def fill_forwards_transformations(df):
 
-    fill_forward_to_nulls_list = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sectors",
-        "work_sectors_other",
-        "work_social_care",
-        "work_health_care_v0",
-        "work_health_care_v1_v2",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
-    ]
-    df = fill_forward_only_to_nulls_in_dataset(
+    df = fill_backwards_overriding_not_nulls(
+        df=df,
+        column_identity="participant_id",
+        ordering_column="visit_datetime",
+        dataset_column="survey_response_dataset_major_version",
+        column_list=["sex", "date_of_birth", "ethnicity"],
+    )
+    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
         id="participant_id",
         date="visit_datetime",
         changed="work_main_job_changed",
         dataset="survey_response_dataset_major_version",
         dataset_value=2,
-        list_fill_forward=fill_forward_to_nulls_list,
+        list_fill_forward=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_social_care",
+            "work_health_care_v0",
+            "work_health_care_v1_v2",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
+        ],
+    )
+    df = fill_forward_only_to_nulls(
+        df=df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "sex",
+            "date_of_birth",
+            "ethnicity",
+        ],
     )
 
     # TODO: uncomment for releases after R1
