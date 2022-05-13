@@ -63,7 +63,7 @@ def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: 
     df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
 
     df = df.join(df_unique_id, on=reference_column, how="left")
-    return df
+    return df.drop("TEMP")
 
 
 def assign_distinct_count_in_group(
