@@ -123,7 +123,9 @@ def join_and_process_lookups(
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
 
     new_sample_df = new_sample_df.join(
-        master_sample_df.select("ons_household_id", "sample_type"),
+        master_sample_df.select("ons_household_id", "sample_type").withColumn(
+            "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"^.{4}", "")
+        ),
         on="ons_household_id",
         how="left",
     ).withColumn("date_sample_created", F.lit("2021/12/06"))
