@@ -27,13 +27,13 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
