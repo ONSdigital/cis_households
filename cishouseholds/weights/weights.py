@@ -123,7 +123,9 @@ def join_and_process_lookups(
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
 
     new_sample_df = new_sample_df.join(
-        master_sample_df.select("ons_household_id", "sample_type"),
+        master_sample_df.select("ons_household_id", "sample_type").withColumn(
+            "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"^.{4}", "")
+        ),
         on="ons_household_id",
         how="left",
     ).withColumn("date_sample_created", F.lit("2021/12/06"))
@@ -203,10 +205,14 @@ def household_level_populations(
     address_lookup = clean_postcode(address_lookup, "postcode")
     postcode_lookup = clean_postcode(postcode_lookup, "postcode")
     df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
+    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/a.csv", index=False)
     df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
+    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/ab.csv", index=False)
     df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
     df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
+    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/count.csv", index=False)
+
     return df
 
 
@@ -415,6 +421,7 @@ def validate_design_weights_or_precal(
     # check 4
     df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
+    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/out.csv", index=False)
     check_1_s = True if df.filter(F.col("CHECK1s") == 1).count() == 0 else False
     check_1_a = True if df.filter(F.col("CHECK1a") == 1).count() == 0 else False
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
