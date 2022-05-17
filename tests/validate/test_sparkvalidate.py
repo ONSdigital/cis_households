@@ -83,6 +83,7 @@ def test_sparkvalidate(spark_session):
     validate_df.validate_udl(
         logic=((F.col("column_2") > 4) & (F.col("column_3") < 10)),
         error_message="col_2 and col_3 should_be_within_interval 4 and 10",
+        columns=["column_2", "column_3"],
     )
     # duplicate
     operations = {
@@ -127,6 +128,7 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     validate_df.validate_udl(
         logic=((F.col("column_2") > 4) & (F.col("column_3") < 10)),
         error_message="col_2 and col_3 should_be_within_interval 4 and 10",
+        colmns=["column_2", "column_3"],
     )
     # duplicate
     operations = {
