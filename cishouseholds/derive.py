@@ -20,9 +20,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def derive_self_isolating_from_digital(
     df: DataFrame, column_name_to_assign: str, self_isolating_column: str, self_isolating_reason_column: str
 ):
-    """
-    Derive columns in voyager 2 format based on input columns from CISD digital
-    """
+
     df = assign_from_map(
         df,
         column_name_to_assign,
@@ -34,13 +32,30 @@ def derive_self_isolating_from_digital(
             "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding": "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)",  # noqa: E501
         },
     )
+
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(self_isolating_column) == "No", "No")
         .when(F.col(self_isolating_column) == "Prefer not to say", None)
         .otherwise(F.col(column_name_to_assign)),
     )
+
     return df
+
+
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
+    """
+    Derive columns in voyager 2 format based on input columns from CISD digital
+    """
+    symptom_columns = [f"{symptom_column_prefix}_{symptom}" for symptom in symptoms]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULL", symptom_columns, None)
+
+    return df.drop("NUM_NULL", "NUM_YES", "NUM_NO")
 
 
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
