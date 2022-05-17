@@ -1,5 +1,5 @@
 from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pipeline.input_file_processing import extract_from_table
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.pipeline_stages import register_pipeline_stage
 from cishouseholds.pipeline.weight_calibration import calibrate_weights

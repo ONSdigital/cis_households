@@ -108,7 +108,7 @@ def assign_distinct_count_in_group(
     return df
 
 
-def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_columns: List[str]):
     """
     Window-based count of all rows by group
 
