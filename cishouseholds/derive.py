@@ -43,13 +43,54 @@ def derive_self_isolating_from_digital(
     return df
 
 
+def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
+    """
+    Count number of visits of each pariticipant in a given day
+    Parameters
+    ----------
+    """
+    window = Window.partitionBy(participant_id_column, F.to_date(visit_date_column))
+    df = df.withColumn(column_name_to_assign, F.sum(F.lit(1)).over(window))
+    return df
+
+
+def count_barcode_cleaned(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+):
+    """
+    Count occurances of barcode
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    barcode_column
+    """
+    window = Window.partitionBy(barcode_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(
+                (F.col(barcode_column).isNotNull())
+                & (F.col(barcode_column) != "ONS00000000")
+                & (F.datediff(F.col(visit_datetime_colum), F.col(date_taken_column)) <= 14),
+                1,
+            ).otherwise(0)
+        ).over(window),
+    )
+    return df
+
+
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Derive an incremental id from a reference column containing an id
     """
-    window = Window.orderBy(reference_column)
-    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
-    return df
+    df_unique_id = df.select(reference_column).distinct()
+    df_unique_id = df_unique_id.withColumn("TEMP", F.lit(1))
+    window = Window.partitionBy(F.col("TEMP")).orderBy(reference_column)
+    df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
+
+    df = df.join(df_unique_id, on=reference_column, how="left")
+    return df.drop("TEMP")
 
 
 def assign_distinct_count_in_group(

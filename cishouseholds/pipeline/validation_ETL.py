@@ -1,4 +1,6 @@
 # from functools import reduce
+from datetime import datetime
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -23,9 +25,17 @@ def validation_calls(SparkVal):
                 },
             }
         },
+        "age_at_visit": {
+            "between": {
+                "lower_bound": {"inclusive": True, "value": 2},
+                "upper_bound": {"inclusive": True, "value": 105},
+                "allow_none": True,
+            }
+        },
         "visit_id": {"starts_with": r"DHV"},
         "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
         "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        "1tot1_swab": {"matches": 1},  # Swab_matches_not_exact
         # "region_code":"not_null"
     }
     for col in SparkVal.dataframe.columns:
@@ -79,6 +89,7 @@ def validation_calls(SparkVal):
             | (F.col("cis_covid_vaccine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
+        columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
 
     SparkVal.validate_udl(
@@ -93,6 +104,7 @@ def validation_calls(SparkVal):
             | (F.col("work_social_care") == "No")
         ),
         error_message="work social care should be 'No' if not working in care homes or in direct contact",
+        columns=["work_social_care", "work_nursing_or_residential_care_home", "work_direct_contact_patients_clients"],
     )
 
     SparkVal.validate_udl(
@@ -104,6 +116,35 @@ def validation_calls(SparkVal):
             | (F.col("face_covering_outside_of_home").isNotNull())
         ),
         error_message="face covering is null when face covering at work and other places are null",
+        columns=["face_covering_other_enclosed_places", "face_covering_work", "face_covering_outside_of_home"],
+    )
+
+    SparkVal.validate_udl(  # Sample_taken_out_of_range
+        logic=(
+            ((F.col("visit_datetime") <= F.lit(datetime.now())) & (F.col("visit_datetime") >= F.lit("2020/04/26")))
+            | (
+                (F.col("visit_datetime") <= F.lit(datetime.now()))
+                & (F.col("visit_datetime") >= F.lit("2020/04/26"))
+                & (F.col("samples_taken_datetime").isNull())
+            )
+        ),
+        error_message="sample taken should be within date range",
+        columns=["visit_datetime", "samples_taken_datetime"],
+    )
+
+    SparkVal.validate_udl(  # No_blood_match_mismatching
+        logic=(
+            ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) <= 2))
+            | ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) >= 11))
+        ),
+        error_message="blood sample recieved date should be between 2 days before and 11 after visit date",
+        columns=["blood_sample_received_date", "visit_datetime"],
+    )
+
+    SparkVal.validate_udl(
+        logic=((F.col("pcr_result_recorded_datetime") >= F.col("visit_datetime")) & (F.col("diff_vs_visit_hr") <= 240)),
+        error_message="the swab result should be recieved within 10 days after the visit",
+        columns=["pcr_result_recorded_datetime", "visit_datetime", "diff_vs_visit_hr"],
     )
 
 
