@@ -520,7 +520,7 @@ category_maps = {
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
     },
     "household_level_design_weights_category_map": {
-        "": {
+        "local_authority_unity_authority_code": {
             1: "E06000001",
             2: "E06000002",
             3: "E06000003",
