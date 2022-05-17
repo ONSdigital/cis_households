@@ -295,8 +295,10 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
     inward_code = F.substring(cleaned_postcode_characters, -3, 3)
     outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
-    df = df.withColumn(postcode_column, F.concat(outward_code, inward_code))
-    # df.withColumn("LEFT",outward_code).withColumn("RIGHT",inward_code).withColumn("LEFT-len",F.length(outward_code)).withColumn("RIGHT-len",F.length(inward_code)).select("LEFT","RIGHT","LEFT-len","RIGHT-len",postcode_column).toPandas().to_csv(f"/home/cdsw/cis_households/cishouseholds/weights/temp{random.randint(1,100)}.csv",index=False)
+    df = df.withColumn(
+        postcode_column,
+        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
+    )
     return df
 
 

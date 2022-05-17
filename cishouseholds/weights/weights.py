@@ -205,13 +205,10 @@ def household_level_populations(
     address_lookup = clean_postcode(address_lookup, "postcode")
     postcode_lookup = clean_postcode(postcode_lookup, "postcode")
     df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
-    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/a.csv", index=False)
     df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/ab.csv", index=False)
     df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
     df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
-    df.toPandas().to_csv("/home/cdsw/cis_households/cishouseholds/weights/count.csv", index=False)
 
     return df
 
