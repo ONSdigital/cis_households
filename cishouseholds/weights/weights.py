@@ -508,6 +508,7 @@ def calculate_scenario_ab_antibody_dweights(
             F.col(hh_dweight_antibodies_column),
         ).otherwise(F.col(scaled_dweight_swab_nonadjusted_column)),
     )
+    print(df.select(column_name_to_assign).toPandas())  # functional
     return df
 
 
