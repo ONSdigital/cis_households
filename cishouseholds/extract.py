@@ -42,7 +42,7 @@ def list_contents(
         files.append(dic)
     df = pd.DataFrame(files)
     if date_from_filename:
-        df["upload_date"] = df["filename"].str.extract((r"_(\d{8})(?:_\d{4}|_\d{6})?[.](?:csv|txt)"), expand=False)
+        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(?:_\d{4}|_\d{6})?(?=.csv|.txt)"), expand=False)
         df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y%m%d")
     return df
 
