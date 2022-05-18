@@ -78,7 +78,9 @@ def update_table(df, table_name, write_mode, archive=False, force=False):
         spark = get_or_create_spark_session()
         df.registerTempTable("TEMP")
         df = spark.sql("select * from TEMP")
-    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+        df.write.mode("overwrite").saveAsTable(get_full_table_name(table_name))
+    else:
+        df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
         now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
