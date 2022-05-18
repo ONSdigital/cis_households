@@ -24,10 +24,10 @@ def test_derive_people_in_household_count(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            ("A", "1",  0, 0, None, None, None, None, None, None,    1, 0, 1,    'Yes'),
-            ("B", "1",  4, 0, None, None, None, None, None, None,    1, 0, 5,    'Yes'),
-            ("C", "1",  0, 0, 0,    None, None, None, None, None,    1, 1, 2,    'Yes'),
-            ("D", "1",  0, 0, 0,    None, None, None, None, None,    1, 0, 1,    'No'),
+            ("A", "1",  0, 0, None, None, None, None, None, None,    1, 0, 1, "1",   'Yes'),
+            ("B", "1",  4, 0, None, None, None, None, None, None,    1, 0, 5, "5+",  'Yes'),
+            ("C", "1",  0, 0, 0,    None, None, None, None, None,    1, 1, 2, "2",   'Yes'),
+            ("D", "1",  0, 0, 0,    None, None, None, None, None,    1, 0, 1, "1",   'No'),
             # fmt: on
         ],
         schema="""ons_household_id string, participant_id string,
@@ -40,6 +40,7 @@ def test_derive_people_in_household_count(spark_session):
             household_participant_count integer,
             household_participants_under_2_count integer,
             people_in_household_count integer,
+            people_in_household_count_group string,
             household_members_under_2_years string""",
     )
     output_df = derive_people_in_household_count(input_df)

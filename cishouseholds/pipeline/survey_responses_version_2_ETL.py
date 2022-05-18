@@ -31,6 +31,7 @@ from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
+from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
@@ -871,6 +872,7 @@ def union_dependent_derivations(df):
             "Attending university (including if temporarily absent)",
         ],
     )
+    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
     return df
 
 
@@ -917,6 +919,12 @@ def derive_people_in_household_count(df):
     df = df.withColumn(
         "people_in_household_count",
         sum_within_row(household_participants),
+    )
+    df = df.withColumn(
+        "people_in_household_count_group",
+        F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
+            F.col("people_in_household_count").cast("string")
+        ),
     )
     return df
 
