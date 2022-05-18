@@ -26,7 +26,7 @@ def run_from_config():
       resource_path: "path_to.csv"
     """
     spark = get_or_create_spark_session()
-    spark.sparkContext.setCheckpointDir(get_config()["storage"]["root_dir"])
+    spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_dir"])
 
     config = get_config()
     run_datetime = datetime.now()
