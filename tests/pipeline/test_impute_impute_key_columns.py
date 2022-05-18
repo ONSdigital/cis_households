@@ -18,7 +18,7 @@ def test_impute_key_columns(spark_session):
     ]
     input_df = spark_session.createDataFrame(
         input_data,
-        schema="""ons_household_id string, participant_id string, cis_area_code_20 string, region_code string, work_status_group string, people_in_household_group string,
+        schema="""ons_household_id string, participant_id string, cis_area_code_20 string, region_code string, work_status_group string, people_in_household_count_group string,
                 ethnicity_white string, sex string, date_of_birth string, visit_datetime string""",
     )
 

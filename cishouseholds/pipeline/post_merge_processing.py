@@ -70,7 +70,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         deduplicated_df,
         impute_by_k_nearest_neighbours,
         reference_column="date_of_birth",
-        donor_group_columns=["region_code", "people_in_household_group", "work_status_group"],
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     )
 
