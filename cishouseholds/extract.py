@@ -7,6 +7,7 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import DataFrame
 
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
 
 
@@ -96,8 +97,6 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     item_column
         name of column in table containing items to remove from list
     """
-    from cishouseholds.pipeline.input_file_processing import extract_from_table
-
     table_item_column = extract_from_table(table_name).select(item_column).distinct()
     table_items = column_to_list(table_item_column, item_column)
 
