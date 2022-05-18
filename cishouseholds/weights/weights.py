@@ -506,10 +506,7 @@ def calculate_scenario_ab_antibody_dweights(
         F.when(
             (F.col(hh_dweight_antibodies_column).isNotNull()) & (F.col(sample_new_previous_column) == "previous"),
             F.col(hh_dweight_antibodies_column),
-        ).when(
-            (F.col(hh_dweight_antibodies_column).isNull()) | (F.col(sample_new_previous_column) == "new"),
-            F.col(scaled_dweight_swab_nonadjusted_column),
-        ),
+        ).otherwise(F.col(scaled_dweight_swab_nonadjusted_column)),
     )
     return df
 
