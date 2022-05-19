@@ -1,6 +1,8 @@
 import functools
 import json
 from datetime import datetime
+from typing import List
+from typing import Union
 
 import pkg_resources
 import pyspark.sql.functions as F
@@ -12,6 +14,65 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 class TableNotFoundError(Exception):
     pass
+
+
+def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+    """
+    Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
+    Should not be used in production, as all tables may be deleted.
+
+    Use one or more of the optional parameters.
+
+    Parameters
+    ----------
+    prefix
+        remove all tables with a given table name prefix (see config for current prefix)
+    table_names
+        one or more absolute table names to delete (including prefix)
+    pattern
+        drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
+    """
+    spark_session = get_or_create_spark_session()
+    storage_config = get_config()["storage"]
+
+    if table_names is not None:
+        if type(table_names) != list:
+            table_names = [table_names]  # type:ignore
+        for table_name in table_names:
+            print(
+                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+            )  # functional
+            spark_session.sql(
+                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
+            )
+    if pattern is not None:
+        tables = (
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
+            .select("tableName")
+            .toPandas()["tableName"]
+            .tolist()
+        )
+        for table_name in tables:
+            print(f"dropping table: {table_name}")  # functional
+            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    if prefix is not None:
+        tables = (
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
+            .select("tableName")
+            .toPandas()["tableName"]
+            .tolist()
+        )
+        for table_name in tables:
+            print(f"dropping table: {table_name}")  # functional
+            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+
+
+def extract_from_table(table_name: str, break_lineage: bool = False) -> DataFrame:
+    spark_session = get_or_create_spark_session()
+    check_table_exists(table_name, raise_if_missing=True)
+    if break_lineage:
+        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}").checkpoint()
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
 def update_table(df, table_name, write_mode, archive=False):

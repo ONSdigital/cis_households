@@ -105,7 +105,7 @@ def assign_distinct_count_in_group(
     return df
 
 
-def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_columns: List[str]):
     """
     Window-based count of all rows by group
 
@@ -1488,6 +1488,27 @@ def assign_work_health_care(df, column_name_to_assign, direct_contact_column, he
         F.concat(value_map[F.col(health_care_column)], patient_facing_text),
     ).otherwise(F.col(health_care_column))
     df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
+    return df
+
+
+def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
+    """
+    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
+    Results in groups of:
+    - Unknown (null)
+    - Student
+    - Employed
+    - Not working (unemployed, retired, long term sick etc)
+    """
+    df = df.withColumn(
+        colum_name_to_assign,
+        F.when(
+            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
+            "Employed",
+        )
+        .when(F.col(reference_column).isNull(), "Unknown")
+        .otherwise(F.col(reference_column)),
+    )
     return df
 
 
