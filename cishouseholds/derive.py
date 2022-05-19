@@ -16,11 +16,16 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def concat_fields_if_true(df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str):
-    """ """
+def concat_fields_if_true(
+    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
+):
+    """
+    concat the names of fields where a given condition is met to form a new column
+    """
     columns = [col for col in df.columns if re.match(column_name_pattern, col)]
     df = df.withColumn(
-        column_name_to_assign, F.concat(*[F.when(F.col(col) == true_value, col).otherwise("") for col in columns])
+        column_name_to_assign,
+        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
     )
     return df
 
