@@ -171,6 +171,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Erlang is known for its designs that are well suited for systems.
+  self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or a
+    positive test
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Female
   social_distance_contact_18_to_69_years: 1 to 5
@@ -467,6 +469,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Erlang is known for its designs that are well suited for systems.
+  self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or a
+    positive test
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Female
   social_distance_contact_18_to_69_years: 6 to 10
@@ -767,6 +771,9 @@
   sample_kit_dispatched_datetime: null
   self_isolating: Erlang is a general-purpose, concurrent, functional programming
     language.
+  self_isolating_detailed: Yes for other reasons related to you having had an increased
+    risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining
+    after travel abroad)
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
   sex: Male
@@ -1070,6 +1077,8 @@
   sample_kit_dispatched_datetime: null
   self_isolating: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  self_isolating_detailed: Yes for other reasons related to reducing your risk of
+    getting COVID-19 (e.g. going into hospital or shielding)
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Female
@@ -1367,6 +1376,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Type classes first appeared in the Haskell programming language.
+  self_isolating_detailed: Yes for other reasons related to reducing your risk of
+    getting COVID-19 (e.g. going into hospital or shielding)
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Female
@@ -1675,6 +1686,9 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Type classes first appeared in the Haskell programming language.
+  self_isolating_detailed: Yes for other reasons related to you having had an increased
+    risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining
+    after travel abroad)
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
   sex: null
@@ -1972,6 +1986,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Where are my pants?
+  self_isolating_detailed: Yes for other reasons related to reducing your risk of
+    getting COVID-19 (e.g. going into hospital or shielding)
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Male
@@ -2279,6 +2295,8 @@
   sample_kit_dispatched_datetime: null
   self_isolating: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or a
+    positive test
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: null
   social_distance_contact_18_to_69_years: null
@@ -2581,6 +2599,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Type classes first appeared in the Haskell programming language.
+  self_isolating_detailed: Yes because you live with someone who has/has had symptoms
+    or a positive test but you haven’t had symptoms yourself
   self_isolating_reason: I haven't had any symptoms but I live with someone who has
     or has had symptoms or a positive test
   sex: Male
@@ -2881,6 +2901,8 @@
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
   self_isolating: Type classes first appeared in the Haskell programming language.
+  self_isolating_detailed: Yes because you have/have had symptoms of COVID-19 or a
+    positive test
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Male
   social_distance_contact_18_to_69_years: Don't know

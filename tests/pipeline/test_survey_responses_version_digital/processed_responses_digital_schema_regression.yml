@@ -1131,4 +1131,8 @@ fields:
   name: survey_response_source_file
   nullable: false
   type: string
+- metadata: {}
+  name: self_isolating_detailed
+  nullable: true
+  type: string
 type: struct
