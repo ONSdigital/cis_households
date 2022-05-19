@@ -1087,7 +1087,3 @@ def fill_forwards_transformations(df):
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
     return df
-
-
-def digital_specific_cleaning(df):
-    return df
