@@ -4,9 +4,6 @@ name: bump_UAT_version
 
 # Test to bumpversion of code
 on:
-  schedule:
-  - cron: '0 9 * * 0'
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
