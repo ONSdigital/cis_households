@@ -4,6 +4,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: visit_id
+  nullable: true
+  type: string
+- metadata: {}
   name: household_invited_to_digital
   nullable: true
   type: string
