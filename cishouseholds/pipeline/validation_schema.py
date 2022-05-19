@@ -1018,6 +1018,7 @@ validation_schemas = {
     },
     "cis_digital_validation_schema": {
         "ons_household_id": string_dict,
+        "visit_id": string_dict,
         "household_invited_to_digital": string_dict,
         "digital_enrolment_invite_datetime": string_dict,
         "digital_opt_in_window_start_datetime": string_dict,
