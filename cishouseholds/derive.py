@@ -1494,6 +1494,27 @@ def assign_work_health_care(df, column_name_to_assign, direct_contact_column, he
     return df
 
 
+def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
+    """
+    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
+    Results in groups of:
+    - Unknown (null)
+    - Student
+    - Employed
+    - Not working (unemployed, retired, long term sick etc)
+    """
+    df = df.withColumn(
+        colum_name_to_assign,
+        F.when(
+            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
+            "Employed",
+        )
+        .when(F.col(reference_column).isNull(), "Unknown")
+        .otherwise(F.col(reference_column)),
+    )
+    return df
+
+
 def contact_known_or_suspected_covid_type(
     df: DataFrame,
     contact_known_covid_type_column: str,
