@@ -732,7 +732,7 @@ def impute_demographic_columns(
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table)
+        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
 
     df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
@@ -754,7 +754,7 @@ def impute_demographic_columns(
         F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
     )
 
-    update_table(imputed_values, imputed_values_table, "overwrite", force=True)
+    update_table(imputed_values, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 

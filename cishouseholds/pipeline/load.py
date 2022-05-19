@@ -67,17 +67,15 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
             spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
 
-def extract_from_table(table_name: str) -> DataFrame:
+def extract_from_table(table_name: str, break_lineage: bool = False) -> DataFrame:
     spark_session = get_or_create_spark_session()
     check_table_exists(table_name, raise_if_missing=True)
+    if break_lineage:
+        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}").checkpoint()
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
-def update_table(df, table_name, write_mode, archive=False, force=False):
-    if force:
-        spark = get_or_create_spark_session()
-        df.registerTempTable("TEMP")
-        df = spark.sql("select * from TEMP")
+def update_table(df, table_name, write_mode, archive=False):
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
         now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
