@@ -26,12 +26,9 @@ def derive_had_symptom_last_7days_from_digital(
 
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULL", symptom_columns, None)
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col("NUM_YES") > 0, "Yes")
-        .when(F.col("NUM_NULL") == len(symptom_columns), None)
-        .when(F.col("NUM_NO") == len(symptom_columns), "No"),
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") == len(symptom_columns), "No"),
     )
     return df.drop("NUM_NULL", "NUM_YES", "NUM_NO")
 
