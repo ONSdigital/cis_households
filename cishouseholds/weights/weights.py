@@ -423,15 +423,14 @@ def validate_design_weights_or_precal(
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
     check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
     check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    print("CHECKS: ", check_1_a, check_1_s, check_2, check_3, check_4)  # functional
-    # if not (check_1_a or check_1_s):
-    #     raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
-    # if not check_2:
-    #     raise DesignWeightError("check_2: The design weights are NOT all are positive.")
-    # if not check_3:
-    #     raise DesignWeightError("check_3 There are no missing design weights.")
-    # if not check_4:
-    #     raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
+    if not (check_1_a or check_1_s):
+        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
+    if not check_2:
+        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
+    if not check_3:
+        raise DesignWeightError("check_3 There are no missing design weights.")
+    if not check_4:
+        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
 
 
 # 1167
