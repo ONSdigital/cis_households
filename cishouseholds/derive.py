@@ -16,6 +16,15 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def concat_fields_if_true(df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str):
+    """ """
+    columns = [col for col in df.columns if re.match(column_name_pattern, col)]
+    df = df.withColumn(
+        column_name_to_assign, F.concat(*[F.when(F.col(col) == true_value, col).otherwise("") for col in columns])
+    )
+    return df
+
+
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
     Count number of visits of each pariticipant in a given day
