@@ -1091,3 +1091,9 @@ def fill_forwards_transformations(df):
 
 def digital_specific_cleaning(df):
     return df
+
+
+def digital_specific_transformations(df):
+    df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
+
+    return df
