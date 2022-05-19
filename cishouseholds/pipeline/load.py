@@ -75,7 +75,7 @@ def extract_from_table(table_name: str, break_lineage: bool = False) -> DataFram
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
 
 
-def update_table(df, table_name, write_mode, archive=False, force=False):
+def update_table(df, table_name, write_mode, archive=False):
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
         now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
