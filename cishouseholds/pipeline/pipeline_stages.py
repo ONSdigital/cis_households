@@ -852,19 +852,19 @@ def geography_and_imputation_dependent_processing(
 
     df_with_imputed_values = assign_column_from_mapped_list_key(
         df=df_with_imputed_values,
-        column_name_to_assign="ethnicity_group_corrected",
+        column_name_to_assign="ethnicity_group",
         reference_column="ethnicity",
         map=ethnicity_map,
     )
     df_with_imputed_values = assign_ethnicity_white(
         df_with_imputed_values,
-        column_name_to_assign="ethnicity_white_corrected",
-        ethnicity_group_column_name="ethnicity_group_corrected",
+        column_name_to_assign="ethnicity_white",
+        ethnicity_group_column_name="ethnicity_group",
     )
 
     df_with_imputed_values = assign_multigeneration(
         df=df_with_imputed_values,
-        column_name_to_assign="multigen",
+        column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
         visit_date_column="visit_datetime",
