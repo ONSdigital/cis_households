@@ -99,6 +99,7 @@
   last_name: Waters
   last_suspected_covid_contact_date: null
   last_suspected_covid_type: Someone I live with
+  long_covid_symptoms: ''
   middle_name: Isaac
   ons_household_id: '441094840601'
   opted_out: 'No'
@@ -226,6 +227,7 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -284,6 +286,7 @@
   transport_to_work_or_education: Train
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: 'Yes'
   work_in_healthcare: Other healthcare (e.g. mental health)
@@ -398,6 +401,7 @@
   last_name: Cervantes
   last_suspected_covid_contact_date: 06/01/2022
   last_suspected_covid_type: Someone I do not live with
+  long_covid_symptoms: ''
   middle_name: Jae
   ons_household_id: '571295570558'
   opted_out: 'No'
@@ -520,6 +524,7 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: Don't know
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -578,6 +583,7 @@
   transport_to_work_or_education: Taxi or minicab
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: 'No'
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -693,6 +699,7 @@
   last_name: Gross
   last_suspected_covid_contact_date: 09/01/2022
   last_suspected_covid_type: Someone I do not live with
+  long_covid_symptoms: ''
   middle_name: Clarence
   ons_household_id: '420762754008'
   opted_out: 'No'
@@ -824,6 +831,7 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -882,6 +890,7 @@
   transport_to_work_or_education: Taxi or minicab
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: 'No'
   work_in_healthcare: Other healthcare (e.g. mental health)
@@ -1000,6 +1009,7 @@
   last_name: Bolton
   last_suspected_covid_contact_date: 08/01/2022
   last_suspected_covid_type: null
+  long_covid_symptoms: ''
   middle_name: My
   ons_household_id: '736535270957'
   opted_out: 'No'
@@ -1124,6 +1134,7 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -1182,6 +1193,7 @@
   transport_to_work_or_education: Bus, minibus or coach
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: Prefer not to say
   work_in_additional_paid_employment: Prefer not to say
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -1297,6 +1309,7 @@
   last_name: Brady
   last_suspected_covid_contact_date: null
   last_suspected_covid_type: Someone I live with
+  long_covid_symptoms: ''
   middle_name: Argentina
   ons_household_id: '836394225258'
   opted_out: 'Yes'
@@ -1424,6 +1437,7 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -1482,6 +1496,7 @@
   transport_to_work_or_education: Other method
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: 'Yes'
   work_in_healthcare: null
@@ -1604,6 +1619,7 @@
   last_name: Meyers
   last_suspected_covid_contact_date: 03/01/2022
   last_suspected_covid_type: Someone I live with
+  long_covid_symptoms: ''
   middle_name: Buck
   ons_household_id: '544728808246'
   opted_out: 'Yes'
@@ -1729,6 +1745,7 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -1787,6 +1804,7 @@
   transport_to_work_or_education: Taxi or minicab
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'Yes'
   work_in_additional_paid_employment: 'Yes'
   work_in_healthcare: null
@@ -1904,6 +1922,7 @@
   last_name: Romero
   last_suspected_covid_contact_date: 07/01/2022
   last_suspected_covid_type: Someone I live with
+  long_covid_symptoms: ''
   middle_name: Jessika
   ons_household_id: '195028486959'
   opted_out: 'Yes'
@@ -2028,6 +2047,7 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -2086,6 +2106,7 @@
   transport_to_work_or_education: Bus, minibus or coach
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: Prefer not to say
   work_in_additional_paid_employment: 'No'
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -2209,6 +2230,7 @@
   last_name: Hunt
   last_suspected_covid_contact_date: null
   last_suspected_covid_type: Someone I do not live with
+  long_covid_symptoms: ''
   middle_name: Gale
   ons_household_id: '425723964512'
   opted_out: 'No'
@@ -2333,6 +2355,7 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: Don't know
   think_have_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -2391,6 +2414,7 @@
   transport_to_work_or_education: Bicycle
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Both from home and somewhere else
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'Yes'
   work_in_additional_paid_employment: 'No'
   work_in_healthcare: null
@@ -2513,6 +2537,7 @@
   last_name: Day
   last_suspected_covid_contact_date: 08/01/2022
   last_suspected_covid_type: Someone I live with
+  long_covid_symptoms: ''
   middle_name: Hank
   ons_household_id: '602276804025'
   opted_out: 'Yes'
@@ -2635,6 +2660,7 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -2693,6 +2719,7 @@
   transport_to_work_or_education: Underound, Metro, Light Rail or Tram
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: Prefer not to say
   work_in_additional_paid_employment: 'No'
   work_in_healthcare: Secondary care (e.g. hospital)
@@ -2811,6 +2838,7 @@
   last_name: Mosley
   last_suspected_covid_contact_date: null
   last_suspected_covid_type: Someone I do not live with
+  long_covid_symptoms: ''
   middle_name: Quinn
   ons_household_id: 061403237378
   opted_out: 'Yes'
@@ -2935,6 +2963,7 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: Don't know
   think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -2994,6 +3023,7 @@
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: From home meaning in the same grounds or building
     as your home
+  which_symptoms_last_7_days: ''
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: Prefer not to say
   work_in_healthcare: null

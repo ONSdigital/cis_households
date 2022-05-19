@@ -1131,4 +1131,16 @@ fields:
   name: survey_response_source_file
   nullable: false
   type: string
+- metadata: {}
+  name: think_had_covid_which_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: which_symptoms_last_7_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: long_covid_symptoms
+  nullable: false
+  type: string
 type: struct

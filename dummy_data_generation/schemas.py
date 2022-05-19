@@ -1524,6 +1524,13 @@ digital_date_format = "%Y-%m-%d"
 def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
+        "visit_id": _(
+            "choice",
+            items=[
+                _("random.custom_code", mask="DVH-##########", digit="#"),
+                _("random.custom_code", mask="DHVF-##########", digit="#"),
+            ],
+        ),
         # added remaining cisd fields
         "household_invited_to_digital": _("choice", items=yes_no_choice),
         "digital_enrolment_invite_datetime": _(
