@@ -12,6 +12,7 @@ from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
 from cishouseholds.weights.edit import join_on_existing
@@ -423,6 +424,7 @@ def validate_design_weights_or_precal(
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
     check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
     check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
+    update_table(df, "test_output", "overwrite")
     if not (check_1_a or check_1_s):
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2:
