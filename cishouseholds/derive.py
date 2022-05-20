@@ -16,6 +16,23 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
+    """
+    Derive symptoms in v2 format from digital file
+    """
+    symptom_columns = [f"{symptom_column_prefix}{symptom}" for symptom in symptoms]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
+    )
+    return df.drop("NUM_YES", "NUM_NO")
+
+
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
     Count number of visits of each pariticipant in a given day

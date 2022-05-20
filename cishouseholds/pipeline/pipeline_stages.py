@@ -12,8 +12,6 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
-from cishouseholds.derive import assign_column_from_mapped_list_key
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
@@ -831,46 +829,15 @@ def geography_and_imputation_dependent_processing(
     """
     df_with_imputed_values = extract_from_table(imputed_responses_table)
 
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-
-    df_with_imputed_values = assign_column_from_mapped_list_key(
-        df=df_with_imputed_values,
-        column_name_to_assign="ethnicity_group_corrected",
-        reference_column="ethnicity",
-        map=ethnicity_map,
-    )
-    df_with_imputed_values = assign_ethnicity_white(
-        df_with_imputed_values,
-        column_name_to_assign="ethnicity_white_corrected",
-        ethnicity_group_column_name="ethnicity_group_corrected",
-    )
-
     df_with_imputed_values = assign_multigeneration(
         df=df_with_imputed_values,
-        column_name_to_assign="multigen",
+        column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
         visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
-    )
+    )  # Includes school year derivation
     update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
 
 
