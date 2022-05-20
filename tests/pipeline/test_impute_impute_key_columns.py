@@ -10,15 +10,15 @@ def test_impute_key_columns(spark_session):
     """Test that high level imputation fills all missing values and reduces
     to one record per participant."""
     input_data = [
-        ("A", "A-A", "1", "A", "g1", 1, "white", "Female", "1990-01-01", "1990-01-01"),
-        ("A", "A-A", "1", "B", "g1", 1, "white", "Female", None, "1990-01-02"),  # Fill forward
-        ("A", "A-B", "1", "B", "g1", 1, None, None, "1990-01-01", "1990-01-01"),  # Impute by mode
-        ("B", "B-A", "2", "B", "g1", 1, "other", "Female", None, "1990-01-01"),  # Impute by lookup
-        ("C", "C-A", "2", "A", "g1", 1, None, "Female", "1990-01-01", "1990-01-01"),  # Impute by KNN
+        ("A", "A-A", "1", "A", "g1", "3", "white", "Female", "1990-01-01", "1990-01-01"),
+        ("A", "A-A", "1", "B", "g1", "3", "white", "Female", None, "1990-01-02"),  # Fill forward
+        ("A", "A-B", "1", "B", "g1", "3", None, None, "1990-01-01", "1990-01-01"),  # Impute by mode
+        ("B", "B-A", "2", "B", "g1", "1", "other", "Female", None, "1990-01-01"),  # Impute by lookup
+        ("C", "C-A", "2", "A", "g1", "1", None, "Female", "1990-01-01", "1990-01-01"),  # Impute by KNN
     ]
     input_df = spark_session.createDataFrame(
         input_data,
-        schema="""ons_household_id string, participant_id string, cis_area_code_20 string, region_code string, work_status_group string, dvhsize integer,
+        schema="""ons_household_id string, participant_id string, cis_area_code_20 string, region_code string, work_status_group string, people_in_household_count_group string,
                 ethnicity_white string, sex string, date_of_birth string, visit_datetime string""",
     )
 

@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
@@ -30,6 +31,8 @@ from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
+from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
@@ -51,11 +54,13 @@ from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset
+from cishouseholds.impute import fill_forward_only_to_nulls
+from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset_based_on_column
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
+from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -749,6 +754,7 @@ def union_dependent_derivations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
     """
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
@@ -867,6 +873,7 @@ def union_dependent_derivations(df):
             "Attending university (including if temporarily absent)",
         ],
     )
+    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
     return df
 
 
@@ -898,20 +905,28 @@ def derive_people_in_household_count(df):
         condition_column="household_members_under_2_years",
     )
     household_window = Window.partitionBy("ons_household_id")
+
+    household_participants = [
+        "household_participant_count",
+        "household_participants_not_consented_count",
+        "household_participants_not_present_count",
+        "household_participants_under_2_count",
+    ]
+    for household_participant_type in household_participants:
+        df = df.withColumn(
+            household_participant_type,
+            F.max(household_participant_type).over(household_window),
+        )
     df = df.withColumn(
         "people_in_household_count",
-        F.max(
-            sum_within_row(
-                [
-                    "household_participant_count",
-                    "household_participants_not_consented_count",
-                    "household_participants_not_present_count",
-                    "household_participants_under_2_count",
-                ]
-            ),
-        ).over(household_window),
+        sum_within_row(household_participants),
     )
-
+    df = df.withColumn(
+        "people_in_household_count_group",
+        F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
+            F.col("people_in_household_count").cast("string")
+        ),
+    )
     return df
 
 
@@ -927,24 +942,28 @@ def create_formatted_datetime_string_columns(df):
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
     }
-    date_format_string_list = [
-        "date_of_birth",
-        "improved_visit_date",
-        "think_had_covid_date",
-        "cis_covid_vaccine_date",
-        "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4",
-        "last_suspected_covid_contact_date",
-        "last_covid_contact_date",
-        "other_pcr_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_pcr_test_last_negative_date",
-        "been_outside_uk_last_date",
-        "symptoms_last_7_days_onset_date",
-    ]
+    date_format_string_list = set(
+        [
+            "date_of_birth",
+            "improved_visit_date",
+            "think_had_covid_date",
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+            "cis_covid_vaccine_date_3",
+            "cis_covid_vaccine_date_4",
+            "last_suspected_covid_contact_date",
+            "last_covid_contact_date",
+            "other_pcr_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_pcr_test_last_negative_date",
+            "been_outside_uk_last_date",
+            "symptoms_last_7_days_onset_date",
+        ]
+        # TODO: Add back in once digital data is being included or make backwards compatible
+        # + cis_digital_datetime_map["yyyy-MM-dd"]
+    )
     for column_name_to_assign in date_format_dict.keys():
         df = assign_column_to_date_string(
             df=df,
@@ -969,31 +988,37 @@ def create_formatted_datetime_string_columns(df):
             time_format="ddMMMyyyy HH:mm:ss",
             lower_case=True,
         )
-
+    # TODO: Add back in once digital data is being included or make backwards compatible
+    # for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+    #     df = assign_column_to_date_string(
+    #         df=df,
+    #         column_name_to_assign=column_name_to_assign + "_string",
+    #         reference_column=column_name_to_assign,
+    #         time_format="ddMMMyyyy HH:mm:ss",
+    #         lower_case=True,
+    #     )
     return df
 
 
 def fill_forwards_transformations(df):
-
-    fill_forward_to_nulls_list = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sectors",
-        "work_sectors_other",
-        "work_social_care",
-        "work_health_care_v0",
-        "work_health_care_v1_v2",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
-    ]
-    df = fill_forward_only_to_nulls_in_dataset(
+    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
         id="participant_id",
         date="visit_datetime",
         changed="work_main_job_changed",
         dataset="survey_response_dataset_major_version",
         dataset_value=2,
-        list_fill_forward=fill_forward_to_nulls_list,
+        list_fill_forward=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sectors",
+            "work_sectors_other",
+            "work_social_care",
+            "work_health_care_v0",
+            "work_health_care_v1_v2",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_clients",
+        ],
     )
 
     # TODO: uncomment for releases after R1
@@ -1037,6 +1062,7 @@ def fill_forwards_transformations(df):
         record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
+
     df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
@@ -1044,4 +1070,27 @@ def fill_forwards_transformations(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
+    df = fill_forward_only_to_nulls(
+        df=df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "sex",
+            "date_of_birth",
+            "ethnicity",
+        ],
+    )
+    return df
+
+
+def digital_specific_cleaning(df):
+    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
+    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_", "Yes", ";")
+    df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_", "Yes", ";")
+    return df
+
+
+def digital_specific_transformations(df):
+    df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
+
     return df

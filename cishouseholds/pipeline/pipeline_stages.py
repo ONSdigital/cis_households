@@ -1,19 +1,20 @@
 from datetime import datetime
 from datetime import timedelta
+from functools import reduce
 from io import BytesIO
+from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
-from cishouseholds.pipeline.load import get_run_id
 
 import pandas as pd
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
-from cishouseholds.derive import assign_column_from_mapped_list_key
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_visits_in_day
+from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import read_header
@@ -26,13 +27,15 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import delete_tables
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_full_table_name
+from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
@@ -47,6 +50,9 @@ from cishouseholds.pipeline.merge_process import merge_process_validation
 from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
+from cishouseholds.pipeline.reporting import multiple_visit_1_day
+from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
@@ -60,6 +66,7 @@ from cishouseholds.weights.population_projections import proccess_population_pro
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from cishouseholds.weights.weights import generate_weights
 from cishouseholds.weights.weights import household_level_populations
+from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_ons_gl_report_data
@@ -109,11 +116,12 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
+        print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -129,39 +137,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
     pattern
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if table_names is not None:
-        if type(table_names) != list:
-            table_names = [table_names]  # type:ignore
-        for table_name in table_names:
-            print(
-                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )  # functional
-            spark_session.sql(
-                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )
-    if pattern is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if prefix is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    delete_tables(prefix, table_names, pattern)
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -170,6 +146,7 @@ def generate_dummy_data(output_directory):
     swab_dir = raw_dir / "swab"
     blood_dir = raw_dir / "blood"
     survey_dir = raw_dir / "survey"
+    digital_survey_dir = raw_dir / "responses_digital"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -180,6 +157,7 @@ def generate_dummy_data(output_directory):
         swab_dir,
         blood_dir,
         survey_dir,
+        digital_survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -245,6 +223,13 @@ def generate_dummy_data(output_directory):
     v2 = generate_survey_v2_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
     )
+    generate_digital_data(
+        directory=digital_survey_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=swab_barcode,
+        blood_barcodes=blood_barcode,
+    )
 
     participant_ids = v2["Participant_id"].unique().tolist()
 
@@ -256,11 +241,11 @@ def generate_input_processing_function(
     dataset_name,
     id_column,
     validation_schema,
-    column_name_map,
     datetime_column_map,
     transformation_functions,
     source_file_column,
     write_mode="overwrite",
+    column_name_map=None,
     sep=",",
     cast_to_double_list=[],
     include_hadoop_read_write=True,
@@ -338,23 +323,19 @@ def generate_input_processing_function(
 
 
 @register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(transformed_survey_responses_table_pattern: str, unioned_survey_responses_table: str):
+def union_survey_response_files(tables_to_union: List, unioned_survey_responses_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
     Parameters
     ----------
-    transformed_survey_responses_table_pattern
-        input table pattern for extracting each of the transformed survey responses tables
     unioned_survey_responses_table
-        output table name for the combine file of 3 unioned survey responses
+        input tables for extracting each of the transformed survey responses tables
+    unioned_survey_responses_table
+        output table name for the combine file of all unioned survey responses
     """
-    survey_df_list = []
+    df_list = [extract_from_table(table) for table in tables_to_union]
 
-    for version in ["0", "1", "2"]:
-        survey_table = transformed_survey_responses_table_pattern.replace("*", version)
-        survey_df_list.append(extract_from_table(survey_table))
-
-    union_dataframes_to_hive(unioned_survey_responses_table, survey_df_list)
+    union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -749,39 +730,52 @@ def impute_demographic_columns(
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table)
+        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+
     df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
-    # imputed_values_df = key_columns_imputed_df.filter(
-    #     reduce(
-    #         lambda col_1, col_2: col_1 | col_2,
-    #         (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-    #     )
-    # )
+    imputed_values_df = key_columns_imputed_df.filter(
+        reduce(
+            lambda col_1, col_2: col_1 | col_2,
+            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+        )
+    )
 
-    # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    # imputed_values = imputed_values_df.select(
-    #     "participant_id",
-    #     *lookup_columns,
-    # )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    imputed_values = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
     df_with_imputed_values = df.drop(*key_columns).join(
         F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
     )
 
-    # update_table(imputed_values, imputed_values_table)
+    update_table(imputed_values, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
 @register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
-    address_lookup, lsoa_cis_lookup, country_lookup, postcode_lookup, household_level_populations_table
+    address_lookup_table,
+    postcode_lookup_table,
+    lsoa_cis_lookup_table,
+    country_lookup_table,
+    household_level_populations_table,
 ):
-    address_lookup_df = extract_from_table(address_lookup)
-    postcode_lookup_df = extract_from_table(postcode_lookup)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
-    country_lookup_df = extract_from_table(country_lookup)
+    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
+    postcode_lookup_df = (
+        extract_from_table(postcode_lookup_table)
+        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
+        .distinct()
+    )
+    lsoa_cis_lookup_df = (
+        extract_from_table(lsoa_cis_lookup_table)
+        .select("lower_super_output_area_code_11", "cis_area_code_20")
+        .distinct()
+    )
+    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
 
     household_info_df = household_level_populations(
         address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
@@ -835,46 +829,15 @@ def geography_and_imputation_dependent_processing(
     """
     df_with_imputed_values = extract_from_table(imputed_responses_table)
 
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-
-    df_with_imputed_values = assign_column_from_mapped_list_key(
-        df=df_with_imputed_values,
-        column_name_to_assign="ethnicity_group_corrected",
-        reference_column="ethnicity",
-        map=ethnicity_map,
-    )
-    df_with_imputed_values = assign_ethnicity_white(
-        df_with_imputed_values,
-        column_name_to_assign="ethnicity_white_corrected",
-        ethnicity_group_column_name="ethnicity_group_corrected",
-    )
-
     df_with_imputed_values = assign_multigeneration(
         df=df_with_imputed_values,
-        column_name_to_assign="multigen",
+        column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
         visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
-    )
+    )  # Includes school year derivation
     update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
 
 
@@ -916,7 +879,7 @@ def report(
     invalid_files_count = 0
     if check_table_exists("error_file_log"):
         invalid_files_log = extract_from_table("error_file_log")
-        invalid_files_count = invalid_files_log.filter(F.col("run_id")==get_run_id()).count()
+        invalid_files_count = invalid_files_log.filter(F.col("run_id") == get_run_id()).count()
 
     valid_survey_responses_count = valid_df.count()
     invalid_survey_responses_count = invalid_df.count()
@@ -986,6 +949,262 @@ def report(
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    )
+
+
+@register_pipeline_stage("report_iqvia")
+def report_iqvia(
+    swab_residuals_table: str,
+    blood_residuals_table: str,
+    survey_repsonse_table: str,
+    merged_result_table: str,
+    output_directory: str,
+    swab_table: str,
+):
+    """ """
+    swab_residuals_df = extract_from_table(swab_residuals_table)
+    # Unlinked_blood
+    blood_residuals_df = extract_from_table(blood_residuals_table)
+    survey_repsonse_df = extract_from_table(survey_repsonse_table)
+    merge_result_df = extract_from_table(merged_result_table)
+    swab_df = extract_from_table(swab_table)
+
+    pariticipant_visit_date_group_df = assign_visits_in_day(
+        survey_repsonse_df, "visits_in_day", "visit_datetime", "participant_id"
+    )
+
+    # Swab_matches_not_exact
+    non_exact_swab_df = merge_result_df.filter(
+        (~F.col("1to1_swab").eqNullSafe(1)) & (F.col("visit_date") > F.date_sub(datetime.now(), 30))
+    ).select(
+        "mto1_swab",
+        "1tom_swab",
+        "1to1_swab",
+        "swab_sample_barcode",
+        # "Swab_barcode_IQ"
+        # "Swab_barcode_mk"
+        "pcr_result_classification",
+        "pcr_result_recorded_datetime",
+        "visit_datetime",
+        "visit_id",
+        "participant_id",
+    )
+    # only swabs non_exact match is requested but uncomment the following lines if the blood is wanted.
+    # non_exact_antibody_df = merge_result_df.filter(~ F.col("1to1_antibody").eqNullSafe(1)).select(
+    #     "mto1_antibody",
+    #     "1tom_antibody",
+    #     "1to1_antibody",
+    #     "swab_sample_barcode",
+    #     # "Swab_barcode_IQ"
+    #     # "Swab_barcode_mk"
+    #     "pcr_result_classification",
+    #     "pcr_result_recorded_datetime",
+    #     "visit_datetime",
+    #     "visit_id",
+    #     "participant_id",
+    # )
+
+    # Sample_taken_out_of_range
+    out_of_range_df = merge_result_df.filter(
+        (F.col("out_of_date_range_swab") == 1) | (F.col("out_of_date_range_antibody") == 1)
+    ).select(
+        "participant_id",
+        "visit_id",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "survey_response_dataset_major_version",
+    )
+
+    # Unlinked_lab_swab_results
+    swab_residuals_not_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
+
+    # out_of_age_range
+    out_of_age_range_df = survey_repsonse_df.filter((F.col("age_at_visit") < 2) | (F.col("age_at_visit") > 105)).select(
+        "participant_id",
+        "visit_id",
+        "visit_datetime",
+        "age_at_visit",
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_status_v0",
+        "work_status_v1",
+        "work_status_v2",
+        "survey_response_dataset_major_version",
+    )
+
+    too_early_too_late_list = [
+        "swab_sample_barcode",
+        "visit_id",
+        "participant_id",
+        "visit_date_time",
+        "visit_date",
+        "pcr_result_recorded_datetime",
+        "pcr_result_recorded_date",
+        "pcr_result_classification",
+        "diff_vs_visit_hr",
+        "diff_vs_visit",
+        # count_cleaned_swab,
+        # count_cleaned_mk,
+        "samples_taken_date_time",
+    ]
+
+    # Swab_match_too_early
+    swab_too_early_df = (
+        swab_df.filter(
+            F.col("pcr_result_recorded_datetime").isNotNull()
+            & (F.col("visit_date_time") >= F.col("pcr_result_recorded_datetime"))
+        )
+        .select(*too_early_too_late_list)
+        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
+    )
+
+    # Swab_match_late
+    swab_too_late_df = (
+        swab_df.filter(
+            (F.col("diff_vs_visit") > 10)
+            & F.col("pcr_result_recorded_datetime").isNotNull()
+            & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
+        )
+        .select(*too_early_too_late_list)
+        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
+    )
+
+    # Multiple_participant_in_1_day
+    multiple_visit_1_day_df = multiple_visit_1_day(
+        survey_repsonse_df, "participant_id", "visit_id", "visit_date", "visit_datetime"
+    )
+    # Unlinked_positive_swab
+    swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive").select(
+        "swab_sample_barcode",
+        "pcr_result_classification",
+        "pcr_lab_id",
+        "pcr_result_recorded_date",
+        "pcr_result_recorded_datetime",
+    )
+    # Blood_taken_under_8y
+    under_8_bloods_df = survey_repsonse_df.filter(
+        (F.col("age_at_visit") <= 8)
+        & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
+        & (F.col("survey_response_dataset_major_version") == 2)
+    ).select("age_at_visit", "blood_sample_barcode", "blood_taken", "survey_response_dataset_major_version")
+
+    # Duplicate_swab_barcodes
+    duplicate_barcodes_swab_df = count_barcode_cleaned(
+        survey_repsonse_df,
+        "swab_barcode_cleaned_count",
+        "swab_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
+    )
+    # Duplicate blood barcodes
+    duplicate_barcodes_blood_df = count_barcode_cleaned(
+        duplicate_barcodes_swab_df,
+        "blood_barcode_cleaned_count",
+        "blood_sample_barcode",
+        "samples_taken_datetime",
+        "visit_datetime",
+    )
+    duplicate_barcodes_df = duplicate_barcodes_blood_df.filter(
+        (F.col("swab_barcode_cleaned_count") > 1) | (F.col("blood_barcode_cleaned_count") > 1)
+    ).select(
+        "swab_sample_barcode",
+        "swab_sample_barcode_raw",
+        "blood_sample_barcode",
+        "blood_sample_barcode_raw",
+        "visit_id",
+        "visit_datetime",
+        "participant_id",
+        "samples_taken_datetime",
+        "survey_response_dataset_major_version",
+    )
+    # Missing_sex_age_ethnicity
+    missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
+        F.col("participant_visit_status").isin(["completed", "partially completed", "new"])
+        | (
+            (F.col("swab_sample_barcode").isNotNull())
+            & (F.col("participant_survey_status") != "withdrawn")
+            & (F.col("survey_response_dataset_major_version") == 2)
+            & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
+        )
+    ).select(
+        "participant_visit_status",
+        "swab_sample_barcode",
+        "participant_survey_status",
+        "survey_response_dataset_major_version",
+        "sex",
+        "age_at_visit",
+        "ethnicity",
+    )
+    # Swab_barcode_wrong_format
+    modified_swab_barcodes_df = survey_repsonse_df.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
+        "swab_sample_barcode",
+        "swabs_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+    # Blood_barcode_wrong_format
+    modified_blood_barcodes_df = survey_repsonse_df.filter(F.col("blood_sample_barcode_edited_flag") == 1).select(
+        "blood_sample_barcode",
+        "bloods_taken",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "visit_id",
+        "survey_response_dataset_major_version",
+    )
+
+    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
+        "participant_id",
+        "visit_datetime",
+        "visit_id",
+        "visits_in_day",
+        "work_main_job_title",
+        "work_main_job_role",
+        "sex",
+        "ethnicity",
+        "age_at_visit",
+        "samples_taken_datetime",
+        "swab_sample_barcode",
+        "blood_sample_barcode",
+        "survey_response_dataset_major_version",
+    )
+
+    # Swab_barcode_blood_switched
+    swab_barcode_blood_switched_df = unmatching_antibody_to_swab_viceversa(
+        swab_df=swab_residuals_table,
+        antibody_df=blood_residuals_df,
+        column_list=[
+            "participant_id",
+            "visit_id",
+            "visit_date",
+            "swab_sample_barcode",
+            "blood_sample_barcode",
+        ],
+    )
+
+    sheet_df_map = {
+        "unlinked swabs": swab_residuals_not_positive_df,
+        "non exact swabs": non_exact_swab_df,
+        "out of range": out_of_range_df,
+        "out of age range": out_of_age_range_df,
+        "unlinked positive swabs": swab_residuals_positive_df,
+        "unlinked bloods": blood_residuals_df,
+        "modified bloods": modified_blood_barcodes_df,
+        "duplicate barcodes": duplicate_barcodes_df,
+        "modified swabs": modified_swab_barcodes_df,
+        "missing values": missing_age_sex_ethnicity_df,
+        "under 8 bloods": under_8_bloods_df,
+        "same day visits": pariticipant_visit_date_group_df,
+        "multiple visits 1-day": multiple_visit_1_day_df,
+        "swab match too early": swab_too_early_df,
+        "swab match late": swab_too_late_df,
+        "swab blood barcode switched": swab_barcode_blood_switched_df,
+    }
+    output = dfs_to_bytes_excel(sheet_df_map)
+    write_string_to_file(
+        output.getbuffer(),
+        f"{output_directory}/iqvia_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
     )
 
 

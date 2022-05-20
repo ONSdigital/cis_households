@@ -76,7 +76,9 @@ class SparkValidate:
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             if column_name not in self.dataframe.columns:
-                print(f"Validation rule references {column_name} column and it is not in the dataframe.")  # functional
+                print(
+                    f"    - Validation rule references {column_name} column and it is not in the dataframe."
+                )  # functional
             else:
                 check = self.functions[list(method.keys())[0]]
                 self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
@@ -88,8 +90,12 @@ class SparkValidate:
             for p in params:
                 self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
-    def validate_udl(self, logic, error_message):
-        self.execute_check(logic, error_message)
+    def validate_udl(self, logic, error_message, columns):
+        missing = list(set(columns).difference(set(self.dataframe.columns)))
+        if len(missing) == 0:
+            self.execute_check(logic, error_message)
+        else:
+            print(" - Falied to run check as required " + ",".join(missing) + " missing from dataframe")  # functional
 
     def execute_check(self, check, error_message, *params, **kwargs):
         if callable(check):
@@ -130,25 +136,33 @@ class SparkValidate:
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(error_message, column_name, range):
-        lower_bound = (
-            (F.col(column_name) >= range["lower_bound"]["value"])
-            if range["lower_bound"]["inclusive"]
-            else (F.col(column_name) > range["lower_bound"]["value"])
-        )
-        upper_bound = (
-            (F.col(column_name) <= range["upper_bound"]["value"])
-            if range["upper_bound"]["inclusive"]
-            else (F.col(column_name) < range["upper_bound"]["value"])
-        )
-        error_message = error_message.format(
-            column_name,
-            range["lower_bound"]["value"],
-            " (inclusive)" if range["lower_bound"]["inclusive"] else "",
-            range["upper_bound"]["value"],
-            " (inclusive)" if range["upper_bound"]["inclusive"] else "",
-        )
-        return lower_bound & upper_bound, error_message
+    def between(error_message, column_name, range_set):
+        if type(range_set) != list:
+            range_set = [range_set]
+        bools = []
+        for range in range_set:
+            lower_bound = (
+                (F.col(column_name) >= range["lower_bound"]["value"])
+                if range["lower_bound"]["inclusive"]
+                else (F.col(column_name) > range["lower_bound"]["value"])
+            )
+            upper_bound = (
+                (F.col(column_name) <= range["upper_bound"]["value"])
+                if range["upper_bound"]["inclusive"]
+                else (F.col(column_name) < range["upper_bound"]["value"])
+            )
+            error_message = error_message.format(
+                column_name,
+                range["lower_bound"]["value"],
+                " (inclusive)" if range["lower_bound"]["inclusive"] else "",
+                range["upper_bound"]["value"],
+                " (inclusive)" if range["upper_bound"]["inclusive"] else "",
+            )
+            if "allow_none" in range and range["allow_none"] is True:
+                bools.append((lower_bound & upper_bound) | (F.col(column_name).isNull()))
+            else:
+                bools.append(lower_bound & upper_bound)
+        return F.array_contains(F.array(*bools), True), error_message
 
     # Non column wise functions
     @staticmethod

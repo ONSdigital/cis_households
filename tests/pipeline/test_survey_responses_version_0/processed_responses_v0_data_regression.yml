@@ -387,7 +387,7 @@
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   phase: Houston, we have a problem.
-  postcode: TE4H 2TC
+  postcode: TE4H2TC
   received_shielding_letter: null
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
   sex: null
@@ -1009,7 +1009,7 @@
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   phase: Elementary, my dear Watson.
-  postcode: NC0C 6UK
+  postcode: NC0C6UK
   received_shielding_letter: 'Yes'
   samples_taken_datetime: '2022-01-03 10:12:51.000000'
   sex: Male
