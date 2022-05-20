@@ -28,9 +28,9 @@ def derive_had_symptom_last_7days_from_digital(
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") == len(symptom_columns), "No"),
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
     )
-    return df.drop("NUM_NULL", "NUM_YES", "NUM_NO")
+    return df.drop("NUM_YES", "NUM_NO")
 
 
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
