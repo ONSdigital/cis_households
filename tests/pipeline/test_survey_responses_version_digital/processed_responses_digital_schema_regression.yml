@@ -1143,4 +1143,8 @@ fields:
   name: long_covid_symptoms
   nullable: false
   type: string
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
 type: struct

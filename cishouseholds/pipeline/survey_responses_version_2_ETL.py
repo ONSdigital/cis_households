@@ -1088,3 +1088,9 @@ def digital_specific_cleaning(df):
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_", "Yes", ";")
     df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_", "Yes", ";")
     return df
+
+
+def digital_specific_transformations(df):
+    df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
+
+    return df
