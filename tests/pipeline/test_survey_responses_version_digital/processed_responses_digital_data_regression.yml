@@ -75,6 +75,7 @@
   ethnicity_other: I don't even care.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shawnee
@@ -375,6 +376,7 @@
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Remedios
   hospital_last_28_days: null
@@ -670,6 +672,7 @@
   ethnicity_other: Do you have any idea why this is not working?
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: I am not going to my place of work or education
   first_name: Clemmie
   hospital_last_28_days: 'No'
@@ -976,6 +979,7 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shaun
@@ -1274,6 +1278,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Reiko
   hospital_last_28_days: 'No'
@@ -1581,6 +1586,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Forest
   hospital_last_28_days: null
@@ -1881,6 +1887,7 @@
   ethnicity_other: Ports are created with the built-in function open_port.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Caron
   hospital_last_28_days: 'No'
@@ -2186,6 +2193,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Honey
   hospital_last_28_days: 'No'
@@ -2489,6 +2497,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Annika
@@ -2788,6 +2797,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Myung
   hospital_last_28_days: 'Yes'
