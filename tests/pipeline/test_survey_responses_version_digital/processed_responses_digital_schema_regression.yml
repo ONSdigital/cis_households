@@ -1132,6 +1132,18 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_covid_which_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: which_symptoms_last_7_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: long_covid_symptoms
+  nullable: false
+  type: string
+- metadata: {}
   name: face_covering_outside_of_home
   nullable: true
   type: string

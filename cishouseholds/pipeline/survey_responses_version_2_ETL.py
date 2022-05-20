@@ -32,6 +32,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
@@ -1083,6 +1084,9 @@ def fill_forwards_transformations(df):
 
 
 def digital_specific_cleaning(df):
+    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
+    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_", "Yes", ";")
+    df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_", "Yes", ";")
     return df
 
 
