@@ -1132,11 +1132,13 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-<<<<<<< HEAD
-<<<<<<< HEAD
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
 - metadata: {}
   name: visit_id
   nullable: true
@@ -1195,23 +1197,6 @@ fields:
   type: string
 - metadata: {}
   name: hh_id
-=======
-=======
-  name: think_had_covid_which_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: which_symptoms_last_7_days
-  nullable: false
-  type: string
-- metadata: {}
-  name: long_covid_symptoms
-  nullable: false
-  type: string
-- metadata: {}
->>>>>>> origin/main
-  name: face_covering_outside_of_home
->>>>>>> origin/main
   nullable: true
   type: string
 type: struct
