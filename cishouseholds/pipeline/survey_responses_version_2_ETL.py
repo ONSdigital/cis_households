@@ -32,6 +32,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
