@@ -1091,7 +1091,7 @@ def fill_forwards_transformations(df):
 
 
 def digital_specific_cleaning(df):
-    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_*", "Yes", ";")
-    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_*", "Yes", ";")
-    df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_*", "Yes", ";")
+    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
+    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_", "Yes", ";")
+    df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_", "Yes", ";")
     return df
