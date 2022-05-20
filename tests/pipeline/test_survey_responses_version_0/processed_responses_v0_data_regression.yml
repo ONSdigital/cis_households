@@ -11,7 +11,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -19,7 +18,7 @@
   date_of_birth: '1988-12-04 00:00:00.000000'
   days_since_think_had_covid: 5
   days_since_think_had_covid_group: 0-14
-  email: null
+  email_address: null
   ethnicity: Any other ethnic group
   full_name: Crystle Osborn
   hh_id: '212633229661'
@@ -164,7 +163,6 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '1'
-  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
@@ -172,7 +170,7 @@
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: 0
   days_since_think_had_covid_group: 0-14
-  email: depict1972@gsnail.ac.uk
+  email_address: depict1972@gsnail.ac.uk
   ethnicity: Any other Mixed background
   full_name: Jae Cervantes
   hh_id: '558190156218'
@@ -316,7 +314,6 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
-  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -324,7 +321,7 @@
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: -5
   days_since_think_had_covid_group: null
-  email: null
+  email_address: null
   ethnicity: Mixed-White & Black African
   full_name: Argentina Brady
   hh_id: '167403959807'
@@ -471,7 +468,6 @@
   consent_5_visits: '1'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -479,7 +475,7 @@
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: 1
   days_since_think_had_covid_group: 0-14
-  email: duckers1863@gsnail.ac.uk
+  email_address: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   full_name: Barton Ramos
   hh_id: '846198988073'
@@ -627,7 +623,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
-  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -635,7 +630,7 @@
   date_of_birth: '2020-02-01 00:00:00.000000'
   days_since_think_had_covid: 4
   days_since_think_had_covid_group: 0-14
-  email: uncontenting1914@gsnail.ac.uk
+  email_address: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
   full_name: Annika Reilly
   hh_id: '602276804025'
@@ -781,7 +776,6 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
-  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -789,7 +783,7 @@
   date_of_birth: '2021-12-18 00:00:00.000000'
   days_since_think_had_covid: 6
   days_since_think_had_covid_group: 0-14
-  email: cortina2016@gsnail.ac.uk
+  email_address: cortina2016@gsnail.ac.uk
   ethnicity: Any other Black background
   full_name: Alan Robbins
   hh_id: '769043821442'
@@ -935,7 +929,6 @@
   consent_5_visits: '1'
   consent_blood_test: '0'
   consent_contact_extra_research: '1'
-  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
@@ -943,7 +936,7 @@
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: 6
   days_since_think_had_covid_group: 0-14
-  email: null
+  email_address: null
   ethnicity: Mixed-White & Black African
   full_name: Caron Barton
   hh_id: '105638762102'
@@ -1091,7 +1084,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -1099,7 +1091,7 @@
   date_of_birth: '1997-03-07 00:00:00.000000'
   days_since_think_had_covid: 4
   days_since_think_had_covid_group: 0-14
-  email: elizabethan1976@gsnail.ac.uk
+  email_address: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
   full_name: Clemmie Harper
   hh_id: '826911152672'
@@ -1244,7 +1236,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -1252,7 +1243,7 @@
   date_of_birth: '1994-09-20 00:00:00.000000'
   days_since_think_had_covid: -1
   days_since_think_had_covid_group: null
-  email: paraflocculus2029@gsnail.ac.uk
+  email_address: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
   full_name: Honey Porter
   hh_id: '407714528425'
@@ -1396,7 +1387,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -1404,7 +1394,7 @@
   date_of_birth: '1982-12-15 00:00:00.000000'
   days_since_think_had_covid: -1
   days_since_think_had_covid_group: null
-  email: null
+  email_address: null
   ethnicity: Asian or Asian British-Indian
   full_name: Carlos Martin
   hh_id: '736535270957'

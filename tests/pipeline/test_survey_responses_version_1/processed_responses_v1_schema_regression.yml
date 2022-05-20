@@ -224,7 +224,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: email
+  name: email_address
   nullable: true
   type: string
 - metadata: {}
@@ -715,10 +715,6 @@ fields:
   name: outward_postcode
   nullable: true
   type: string
-- metadata: {}
-  name: consent_summary
-  nullable: true
-  type: double
 - metadata: {}
   name: swab_taken
   nullable: false

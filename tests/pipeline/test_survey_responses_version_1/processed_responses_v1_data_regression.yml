@@ -17,7 +17,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -25,7 +24,7 @@
   date_of_birth: '1988-12-04 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: mastiff1901@gsnail.ac.uk
+  email_address: mastiff1901@gsnail.ac.uk
   ethnicity: Any other Black background
   ethnicity_other: Do you come here often?
   face_covering_outside_of_home: 'Yes'
@@ -222,7 +221,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -230,7 +228,7 @@
   date_of_birth: '1982-12-15 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: null
+  email_address: null
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   face_covering_outside_of_home: 'No'
@@ -433,7 +431,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
-  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -441,7 +438,7 @@
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: null
+  email_address: null
   ethnicity: White-Irish
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
@@ -643,7 +640,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -651,7 +647,7 @@
   date_of_birth: '1997-03-07 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: dashed1989@gsnail.ac.uk
+  email_address: dashed1989@gsnail.ac.uk
   ethnicity: Mixed-White & Asian
   ethnicity_other: The Galactic Empire is nearing completion of the Death Star, a
     space station with the power to destroy entire planets.
@@ -853,7 +849,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
-  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -861,7 +856,7 @@
   date_of_birth: '2020-02-01 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: delage1844@gsnail.ac.uk
+  email_address: delage1844@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: Type classes first appeared in the Haskell programming language.
   face_covering_outside_of_home: null
@@ -1065,7 +1060,6 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -1073,7 +1067,7 @@
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
-  email: cortina2016@gsnail.ac.uk
+  email_address: cortina2016@gsnail.ac.uk
   ethnicity: White-British
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
   face_covering_outside_of_home: 'Yes'
@@ -1270,7 +1264,6 @@
   consent_5_visits: '1'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -1278,7 +1271,7 @@
   date_of_birth: '2021-12-18 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: predelinquent1840@gsnail.ac.uk
+  email_address: predelinquent1840@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   face_covering_outside_of_home: null
@@ -1478,7 +1471,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -1486,7 +1478,7 @@
   date_of_birth: '1994-09-20 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: null
+  email_address: null
   ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
@@ -1689,7 +1681,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -1697,7 +1688,7 @@
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: laylight1961@gsnail.ac.uk
+  email_address: laylight1961@gsnail.ac.uk
   ethnicity: Any other ethnic group
   ethnicity_other: The arguments can be primitive data types or compound data types.
   face_covering_outside_of_home: 'No'
@@ -1895,7 +1886,6 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
-  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -1903,7 +1893,7 @@
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
-  email: balate1925@gsnail.ac.uk
+  email_address: balate1925@gsnail.ac.uk
   ethnicity: Any other Asian background
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   face_covering_outside_of_home: 'No'
