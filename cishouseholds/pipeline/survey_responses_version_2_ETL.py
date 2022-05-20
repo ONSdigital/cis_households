@@ -1000,14 +1000,6 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
-
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
         id="participant_id",
@@ -1025,16 +1017,6 @@ def fill_forwards_transformations(df):
             "work_health_care_v1_v2",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",
-        ],
-    )
-    df = fill_forward_only_to_nulls(
-        df=df,
-        id="participant_id",
-        date="visit_datetime",
-        list_fill_forward=[
-            "sex",
-            "date_of_birth",
-            "ethnicity",
         ],
     )
 
@@ -1079,11 +1061,22 @@ def fill_forwards_transformations(df):
         record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
+
     df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
         ordering_column="visit_datetime",
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
+    )
+    df = fill_forward_only_to_nulls(
+        df=df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "sex",
+            "date_of_birth",
+            "ethnicity",
+        ],
     )
     return df
