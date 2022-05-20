@@ -464,7 +464,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_date
+  name: think_had_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}

@@ -35,7 +35,7 @@ def derive_had_symptom_last_7days_from_digital(
 
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
-    Count number of visits of each pariticipant in a given day
+    Count number of visits of each participant in a given day
     Parameters
     ----------
     """
@@ -48,7 +48,7 @@ def count_barcode_cleaned(
     df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
 ):
     """
-    Count occurances of barcode
+    Count occurrences of barcode
     Parameters
     ----------
     df
@@ -1170,7 +1170,7 @@ def assign_column_regex_match(
         Name of column that will be matched
     pattern
         Regular expression pattern as a string
-        Needs to be a raw string literal (preceeded by r"")
+        Needs to be a raw string literal (preceded by r"")
 
     Returns
     -------

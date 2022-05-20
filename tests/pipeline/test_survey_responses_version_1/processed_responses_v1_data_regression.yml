@@ -161,7 +161,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: null
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -367,7 +367,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
@@ -582,7 +582,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -787,7 +787,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1000,7 +1000,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1210,7 +1210,7 @@
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: 'No'
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1415,7 +1415,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1626,7 +1626,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1834,7 +1834,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -2043,7 +2043,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: null
+  think_had_covid_onset_date: null
   think_had_covid_which_symptoms: null
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: null

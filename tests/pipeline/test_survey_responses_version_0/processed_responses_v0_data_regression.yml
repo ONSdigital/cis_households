@@ -125,7 +125,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: '2022-01-04 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_had_covid_which_symptoms: Do you come here often?
   think_have_covid_symptoms: null
   unique_participant_response_id: DHVF-0322983639-DHR-422525832950-2022-01-09 11:40:06
@@ -277,7 +277,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: '2022-01-09 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: null
@@ -429,7 +429,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: '2022-01-07 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-07 00:00:00.000000'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: 'No'
@@ -588,7 +588,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
-  think_had_covid_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_which_symptoms: Haskell features a type system with type inference
     and lazy evaluation.
   think_have_covid_symptoms: null
@@ -742,7 +742,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
-  think_had_covid_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_had_covid_which_symptoms: He looked inquisitively at his keyboard and wrote
     another sentence.
   think_have_covid_symptoms: 'Yes'
@@ -897,7 +897,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: '2022-01-01 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_had_covid_which_symptoms: Make me a sandwich.
   think_have_covid_symptoms: 'Yes'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-07 16:06:21
@@ -1051,7 +1051,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
     language.
   think_have_covid_symptoms: null
@@ -1205,7 +1205,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_date: '2022-01-05 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_had_covid_which_symptoms: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
   think_have_covid_symptoms: 'No'
@@ -1356,7 +1356,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
-  think_had_covid_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
     and writing poetry.
   think_have_covid_symptoms: null
@@ -1511,7 +1511,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid_symptoms: 'Yes'
