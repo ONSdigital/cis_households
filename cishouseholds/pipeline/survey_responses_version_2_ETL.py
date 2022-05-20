@@ -90,17 +90,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
-        df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
+        df, "bad_email", reference_column="email_address", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    df = assign_consent_code(
-        df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-    )
+    if not all(col in df.columns for col in df.columns):
+        df = assign_consent_code(
+            df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+        )
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
-    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
         binary_reference_column="think_had_covid",
@@ -946,7 +947,7 @@ def create_formatted_datetime_string_columns(df):
         [
             "date_of_birth",
             "improved_visit_date",
-            "think_had_covid_date",
+            "think_had_covid_onset_date",
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_date_1",
             "cis_covid_vaccine_date_2",
@@ -1080,17 +1081,4 @@ def fill_forwards_transformations(df):
             "ethnicity",
         ],
     )
-    return df
-
-
-def digital_specific_cleaning(df):
-    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
-    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "symptoms_last_7_days_", "Yes", ";")
-    df = concat_fields_if_true(df, "long_covid_symptoms", "long_covid_symptom_", "Yes", ";")
-    return df
-
-
-def digital_specific_transformations(df):
-    df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
-
     return df
