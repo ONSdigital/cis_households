@@ -1,4 +1,4 @@
-from cis_households.cishouseholds.pipeline.survey_responses_version_2_ETL import digital_specific_transformations
+from cishouseholds.pipeline.survey_responses_version_2_ETL import digital_specific_transformations
 
 from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
 from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
