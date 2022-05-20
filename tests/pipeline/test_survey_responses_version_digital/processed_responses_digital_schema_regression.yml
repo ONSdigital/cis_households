@@ -1131,4 +1131,8 @@ fields:
   name: survey_response_source_file
   nullable: false
   type: string
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
 type: struct
