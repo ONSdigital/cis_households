@@ -79,6 +79,7 @@
   ethnicity_other: I don't even care.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shawnee
@@ -395,6 +396,7 @@
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Remedios
   hh_id: '571295570558'
@@ -707,6 +709,7 @@
   ethnicity_other: Do you have any idea why this is not working?
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: I am not going to my place of work or education
   first_name: Clemmie
   hh_id: '420762754008'
@@ -1030,6 +1033,7 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shaun
@@ -1344,6 +1348,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Reiko
   hh_id: '836394225258'
@@ -1670,6 +1675,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Forest
   hh_id: '544728808246'
@@ -1987,6 +1993,7 @@
   ethnicity_other: Ports are created with the built-in function open_port.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Caron
   hh_id: '195028486959'
@@ -2309,6 +2316,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Honey
   hh_id: '425723964512'
@@ -2629,6 +2637,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Annika
@@ -2946,6 +2955,7 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Myung
   hh_id: 061403237378

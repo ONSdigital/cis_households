@@ -1132,6 +1132,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+<<<<<<< HEAD
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
@@ -1193,6 +1194,9 @@ fields:
   type: string
 - metadata: {}
   name: hh_id
+=======
+  name: face_covering_outside_of_home
+>>>>>>> origin/main
   nullable: true
   type: string
 type: struct
