@@ -2,7 +2,6 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
-from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -12,20 +11,139 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def grouped_count_distinct(
-    df: DataFrame, column_name_to_assign: str, reference_columns: Any, group_by_columns: List[str]
+def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+    """
+    assign an incremental count to each participants visit
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    df = df.withColumn(column_name_to_assign, F.row_number().over(window))
+    visit_order_map = {v: k for k, v in category_maps["iqvia_raw_category_map"]["visit_order"].items()}
+    df = update_column_values_from_map(df, column_name_to_assign, visit_order_map)
+    return df
+
+
+def concat_fields_if_true(
+    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
 ):
-    "count distinct value is grouped dataset and return complete dataset"
-    if not isinstance(reference_columns, list):
-        reference_columns = [reference_columns]
-    grouped_df = df.groupBy(*group_by_columns).agg(F.countDistinct(*reference_columns).alias(column_name_to_assign))
-    df = df.join(grouped_df.select(*group_by_columns, column_name_to_assign), on=group_by_columns, how="left")
-    return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
+    """
+    concat the names of fields where a given condition is met to form a new column
+    """
+    columns = [col for col in df.columns if re.match(column_name_pattern, col)]
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
+    )
+    return df
+
+
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
+    """
+    Derive symptoms in v2 format from digital file
+    """
+    symptom_columns = [f"{symptom_column_prefix}{symptom}" for symptom in symptoms]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
+    )
+    return df.drop("NUM_YES", "NUM_NO")
+
+
+def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
+    """
+    Count number of visits of each participant in a given day
+    Parameters
+    ----------
+    """
+    window = Window.partitionBy(participant_id_column, F.to_date(visit_date_column))
+    df = df.withColumn(column_name_to_assign, F.sum(F.lit(1)).over(window))
+    return df
+
+
+def count_barcode_cleaned(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+):
+    """
+    Count occurances of barcode
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    barcode_column
+    """
+    window = Window.partitionBy(barcode_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(
+                (F.col(barcode_column).isNotNull())
+                & (F.col(barcode_column) != "ONS00000000")
+                & (F.datediff(F.col(visit_datetime_colum), F.col(date_taken_column)) <= 14),
+                1,
+            ).otherwise(0)
+        ).over(window),
+    )
+    return df
+
+
+def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
+    """
+    Derive an incremental id from a reference column containing an id
+    """
+    df_unique_id = df.select(reference_column).distinct()
+    df_unique_id = df_unique_id.withColumn("TEMP", F.lit(1))
+    window = Window.partitionBy(F.col("TEMP")).orderBy(reference_column)
+    df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
+
+    df = df.join(df_unique_id, on=reference_column, how="left")
+    return df.drop("TEMP")
+
+
+def assign_distinct_count_in_group(
+    df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
+):
+    """
+    Window-based count of distinct values by group
+
+    Parameters
+    ----------
+    count_distinct_columns
+        columns to determine distinct records
+    group_by_columns
+        columns to group by and count within
+    """
+    count_distinct_columns_window = Window.partitionBy(*count_distinct_columns).orderBy(F.lit(0))
+    group_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(F.when(F.row_number().over(count_distinct_columns_window) == 1, 1)).over(group_window).cast("integer"),
+    )
+    return df
+
+
+def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_columns: List[str]):
+    """
+    Window-based count of all rows by group
+
+    Parameters
+    ----------
+    group_by_columns
+        columns to group by and count within
+    """
+    count_window = Window.partitionBy(*group_by_columns)
+    df = df.withColumn(column_name_to_assign, F.count("*").over(count_window).cast("integer"))
+    return df
 
 
 def assign_multigeneration(
@@ -794,7 +912,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.upper(F.split(reference_column, " ").getItem(0)))
+    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
         column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
     )
@@ -1397,6 +1515,27 @@ def assign_work_health_care(df, column_name_to_assign, direct_contact_column, he
         F.concat(value_map[F.col(health_care_column)], patient_facing_text),
     ).otherwise(F.col(health_care_column))
     df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
+    return df
+
+
+def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
+    """
+    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
+    Results in groups of:
+    - Unknown (null)
+    - Student
+    - Employed
+    - Not working (unemployed, retired, long term sick etc)
+    """
+    df = df.withColumn(
+        colum_name_to_assign,
+        F.when(
+            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
+            "Employed",
+        )
+        .when(F.col(reference_column).isNull(), "Unknown")
+        .otherwise(F.col(reference_column)),
+    )
     return df
 
 

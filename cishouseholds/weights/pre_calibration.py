@@ -8,6 +8,8 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.weights.weights import DesignWeightError
+from cishouseholds.weights.weights import validate_design_weights_or_precal
 
 # from cishouseholds.derive import assign_ethnicity_white
 
@@ -30,11 +32,6 @@ def pre_calibration_high_level(
         on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
-    # df = assign_ethnicity_white(
-    #     df=df,
-    #     column_name_to_assign="ethnicity_white",
-    #     ethnicity_group_column_name="ethnicity_group_corrected",
-    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
@@ -60,12 +57,13 @@ def pre_calibration_high_level(
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
 
-    precalibration_checkpoints(
+    validate_design_weights_or_precal(
         df=df,
-        scaled_dweight_adjusted="scaled_design_weight_adjusted_swab",
-        dweight_list=[],  # TODO
-        grouping_list=["participant_id", "sample_case", "cis_area_code_20"],
-        total_population="population_totals",  # TODO
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_weight_column="scaled_design_weight_adjusted_swab",
+        antibody_weight_column="scaled_design_weight_adjusted_antibody",
+        group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
     )
     return df
 
@@ -556,18 +554,13 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
-# 1179
-class DesignWeightError(Exception):
-    pass
-
-
 def precalibration_checkpoints(
     df: DataFrame,
     scaled_dweight_adjusted: str,
     dweight_list: List[str],
     grouping_list: List[str],
     country_col: Union[str, None] = None,
-    total_population: str = "number_of_households_population_by_cis",
+    total_population: str = "number_of_households_by_cis_area",
 ) -> DataFrame:
     """
     Parameters
@@ -581,7 +574,6 @@ def precalibration_checkpoints(
     else:
         window = Window.partitionBy(*grouping_list)
 
-    # TODO: use validate_design_weights() stefen's function
     # check_1: The design weights are adding up to total population
     df = df.withColumn("check_1", F.sum(F.col(scaled_dweight_adjusted)).over(window))
     df = df.withColumn("check_1", F.when(F.col(total_population) != F.col("check_1"), 1))

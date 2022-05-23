@@ -50,4 +50,4 @@ def test_get_calibration_dfs(spark_session):
         country_column="country",
         age_column="age",
     )
-    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=False, ignore_nullable=True)
+    assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

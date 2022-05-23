@@ -12,8 +12,6 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pipeline.load import check_table_exists
-from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
@@ -47,12 +45,12 @@ def extract_validate_transform_input_data(
     dataset_name: str,
     id_column: str,
     resource_path: list,
-    variable_name_map: dict,
     datetime_map: dict,
     validation_schema: dict,
     transformation_functions: List[Callable],
     source_file_column: str,
     write_mode: str,
+    variable_name_map: dict = None,
     sep: str = ",",
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
@@ -64,7 +62,9 @@ def extract_validate_transform_input_data(
         extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
-    df = rename_column_names(df, variable_name_map)
+    if variable_name_map is not None:
+        df = rename_column_names(df, variable_name_map)
+
     df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
     if include_hadoop_read_write:
@@ -99,9 +99,3 @@ def extract_input_data(file_paths: Union[List[str], str], validation_schema: Uni
         ignoreTrailingWhiteSpace=True,
         sep=sep,
     )
-
-
-def extract_from_table(table_name: str) -> DataFrame:
-    spark_session = get_or_create_spark_session()
-    check_table_exists(table_name, raise_if_missing=True)
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")

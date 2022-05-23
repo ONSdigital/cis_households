@@ -66,16 +66,19 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         second_imputation_value="Male",
     )
 
-    # deduplicated_df = impute_and_flag(
-    #     deduplicated_df,
-    #     impute_by_k_nearest_neighbours,
-    #     reference_column="date_of_birth",
-    #     donor_group_columns=["region_code", "other_survey_household_size_group"], # "work_status_group",
-    #     log_file_path=log_directory,
-    # )
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="date_of_birth",
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+        log_file_path=log_directory,
+    )
 
     return deduplicated_df.select(
-        unique_id_column, *columns_to_fill, *[col for col in deduplicated_df.columns if "_imputation_method" in col]
+        unique_id_column,
+        *columns_to_fill,
+        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")]
     )
 
 
