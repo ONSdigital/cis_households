@@ -88,14 +88,14 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    # validate_design_weights_or_precal(
-    #     df=df,
-    #     num_households_by_cis_column="number_of_households_by_cis_area",
-    #     num_households_by_country_column="number_of_households_by_country",
-    #     swab_weight_column="scaled_design_weight_swab_nonadjusted",
-    #     antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-    #     group_by_columns=["cis_area_code_20"],
-    # )
+    validate_design_weights_or_precal(
+        df=df,
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_weight_column="scaled_design_weight_swab_nonadjusted",
+        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
+        group_by_columns=["cis_area_code_20"],
+    )
     return df
 
 
@@ -423,15 +423,14 @@ def validate_design_weights_or_precal(
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
     check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
     check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    print("CHECKS: ", check_1_a, check_1_s, check_2, check_3, check_4)  # functional
-    # if not (check_1_a or check_1_s):
-    #     raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
-    # if not check_2:
-    #     raise DesignWeightError("check_2: The design weights are NOT all are positive.")
-    # if not check_3:
-    #     raise DesignWeightError("check_3 There are no missing design weights.")
-    # if not check_4:
-    #     raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
+    if not (check_1_a or check_1_s):
+        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
+    if not check_2:
+        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
+    if not check_3:
+        raise DesignWeightError("check_3 There are no missing design weights.")
+    if not check_4:
+        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
 
 
 # 1167
