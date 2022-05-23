@@ -1207,7 +1207,7 @@ def assign_column_to_date_string(
     lower_case: bool = False,
 ) -> DataFrame:
     """
-    Assign a column with a TimeStampType to a formatted date string.
+    Assign a column with a TimeStampType to a formatted date string.gg
     Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
@@ -1225,8 +1225,6 @@ def assign_column_to_date_string(
     -------
     pyspark.sql.DataFrame
     """
-    if reference_column not in df.columns:
-        return df
     df = df.withColumn(column_name_to_assign, F.date_format(F.col(reference_column), time_format))
 
     if lower_case:
