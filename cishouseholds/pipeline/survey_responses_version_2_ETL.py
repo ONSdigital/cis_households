@@ -31,6 +31,8 @@ from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
+from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
@@ -88,17 +90,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
-        df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
+        df, "bad_email", reference_column="email_address", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    df = assign_consent_code(
-        df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-    )
+    if not all(col in df.columns for col in df.columns):
+        df = assign_consent_code(
+            df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+        )
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
-    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
         binary_reference_column="think_had_covid",
@@ -871,6 +874,7 @@ def union_dependent_derivations(df):
             "Attending university (including if temporarily absent)",
         ],
     )
+    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
     return df
 
 
@@ -918,6 +922,12 @@ def derive_people_in_household_count(df):
         "people_in_household_count",
         sum_within_row(household_participants),
     )
+    df = df.withColumn(
+        "people_in_household_count_group",
+        F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
+            F.col("people_in_household_count").cast("string")
+        ),
+    )
     return df
 
 
@@ -937,7 +947,7 @@ def create_formatted_datetime_string_columns(df):
         [
             "date_of_birth",
             "improved_visit_date",
-            "think_had_covid_date",
+            "think_had_covid_onset_date",
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_date_1",
             "cis_covid_vaccine_date_2",
@@ -992,14 +1002,6 @@ def create_formatted_datetime_string_columns(df):
 
 
 def fill_forwards_transformations(df):
-
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
         id="participant_id",
@@ -1017,16 +1019,6 @@ def fill_forwards_transformations(df):
             "work_health_care_v1_v2",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",
-        ],
-    )
-    df = fill_forward_only_to_nulls(
-        df=df,
-        id="participant_id",
-        date="visit_datetime",
-        list_fill_forward=[
-            "sex",
-            "date_of_birth",
-            "ethnicity",
         ],
     )
 
@@ -1071,6 +1063,7 @@ def fill_forwards_transformations(df):
         record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
+
     df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
@@ -1078,8 +1071,14 @@ def fill_forwards_transformations(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
-    return df
-
-
-def digital_specific_cleaning(df):
+    df = fill_forward_only_to_nulls(
+        df=df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "sex",
+            "date_of_birth",
+            "ethnicity",
+        ],
+    )
     return df
