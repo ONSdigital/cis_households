@@ -5,7 +5,7 @@ yes_no_none_choice = ["Yes", "No", None]
 yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
-times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know" "None", "Prefer not to say", None]
+times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know", "None", "Prefer not to say", None]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -985,7 +985,8 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             items=[
                 None,
                 "Both (work from home and work somewhere else)",
-                "From home (in the same grounds or building as your home)" "Somewhere else (not at your home)",
+                "From home (in the same grounds or building as your home)",
+                "Somewhere else (not at your home)",
                 "Somewhere else (not your home)",
             ],
         ),
@@ -1786,7 +1787,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "survey_not_completed_reason_code": _(
             "choice",
             items=[
-                "FNR - Full Non Response" "QNR - Questionnaire No Return",
+                "FNR - Full Non Response",
+                "QNR - Questionnaire No Return",
                 "TNR - Test Not Returned",
             ],
         ),  # TODO Check the picklist values on this one
@@ -1935,7 +1937,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Looking for paid work and able to start",
                 "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-                "Or retired?" "Retired",
+                "Or retired?",
+                "Retired",
             ],
         ),  # TODO Check pick list values for this one
         "work_status_education": _(
@@ -2009,7 +2012,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Bicycle",
                 "Bus or minibus or coach",
                 "Car or van",
-                "Motorbike or scooter or moped" "On foot",
+                "Motorbike or scooter or moped",
+                "On foot",
                 "Taxi or minicab",
                 "Train",
                 "Underound or Metro or Light Rail or Tram",
