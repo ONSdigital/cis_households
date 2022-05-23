@@ -12,7 +12,6 @@ from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.load import update_table
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
 from cishouseholds.weights.edit import join_on_existing
@@ -89,14 +88,14 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    # validate_design_weights_or_precal(
-    #     df=df,
-    #     num_households_by_cis_column="number_of_households_by_cis_area",
-    #     num_households_by_country_column="number_of_households_by_country",
-    #     swab_weight_column="scaled_design_weight_swab_nonadjusted",
-    #     antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-    #     group_by_columns=["cis_area_code_20"],
-    # )
+    validate_design_weights_or_precal(
+        df=df,
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_weight_column="scaled_design_weight_swab_nonadjusted",
+        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
+        group_by_columns=["cis_area_code_20"],
+    )
     return df
 
 
@@ -424,7 +423,6 @@ def validate_design_weights_or_precal(
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
     check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
     check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    update_table(df, "test_output", "overwrite")
     if not (check_1_a or check_1_s):
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2:
