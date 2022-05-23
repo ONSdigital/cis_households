@@ -94,7 +94,8 @@ def generate_weights(
         num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_swab_nonadjusted",
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-        group_by_columns=["cis_area_code_20"],
+        cis_area_column="cis_area_code_20",
+        country_column="country_code_12",
     )
     return df
 
@@ -388,7 +389,8 @@ def validate_design_weights_or_precal(
     num_households_by_country_column: str,
     swab_weight_column: str,
     antibody_weight_column: str,
-    group_by_columns: List[str],
+    cis_area_column: str,
+    country_column: str,
 ):
     """
     Validate the derived design weights by checking 3 conditions are true:
@@ -398,17 +400,24 @@ def validate_design_weights_or_precal(
     - dweights consistent by cis area
     """
     # import pdb; pdb.set_trace()
-    window = Window.partitionBy(F.lit(1))
+    cis_window = Window.partitionBy(cis_area_column)
+    country_window = Window.partitionBy(country_column)
+
     columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
     # check 1.1
     df = df.withColumn(
         "CHECK1s",
-        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_by_cis_column), 0).otherwise(1),
+        F.when(
+            F.round(F.sum(swab_weight_column).over(cis_window), 0) == F.col(num_households_by_cis_column), 0
+        ).otherwise(1),
     )
+
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_by_country_column), 0).otherwise(1),
+        F.when(
+            F.round(F.sum(antibody_weight_column).over(country_window), 0) == F.col(num_households_by_country_column), 0
+        ).otherwise(1),
     )
     # check 2
     df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
@@ -416,8 +425,9 @@ def validate_design_weights_or_precal(
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
     df = df.withColumn("CHECK3", F.when(F.col("NUM_NULLS") != 0, 1).otherwise(0)).drop("NUM_NULLS")
     # check 4
-    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
+    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, [cis_area_column])
     df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
+
     check_1_s = True if df.filter(F.col("CHECK1s") == 1).count() == 0 else False
     check_1_a = True if df.filter(F.col("CHECK1a") == 1).count() == 0 else False
     check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
