@@ -761,7 +761,7 @@ def union_dependent_derivations(df):
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
             "Asian or Asian British-Indian",
             "Asian or Asian British-Pakistani",
