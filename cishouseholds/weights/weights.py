@@ -88,14 +88,17 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    validate_design_weights_or_precal(
-        df=df,
-        num_households_by_cis_column="number_of_households_by_cis_area",
-        num_households_by_country_column="number_of_households_by_country",
-        swab_weight_column="scaled_design_weight_swab_nonadjusted",
-        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-        group_by_columns=["cis_area_code_20"],
-    )
+    try:
+        validate_design_weights_or_precal(
+            df=df,
+            num_households_by_cis_column="number_of_households_by_cis_area",
+            num_households_by_country_column="number_of_households_by_country",
+            swab_weight_column="scaled_design_weight_swab_nonadjusted",
+            antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
+            group_by_columns=["cis_area_code_20"],
+        )
+    except DesignWeightError as e:
+        print(e)  # functional
     return df
 
 
