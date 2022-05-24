@@ -5,7 +5,7 @@
   agreed_to_additional_consent_visit: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: null
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: NAMIBIA
   been_outside_uk_last_return_date: '2020-09-10 00:00:00.000000'
@@ -304,7 +304,7 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: JAMAICA
   been_outside_uk_last_return_date: '2021-01-25 00:00:00.000000'
@@ -605,7 +605,7 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: OMAN
   been_outside_uk_last_return_date: null
@@ -904,7 +904,7 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: VENEZUELA
   been_outside_uk_last_return_date: '2020-06-28 00:00:00.000000'
@@ -1211,7 +1211,7 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: PAKISTAN
   been_outside_uk_last_return_date: '2020-04-27 00:00:00.000000'
@@ -1515,7 +1515,7 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: JAMAICA
   been_outside_uk_last_return_date: '2020-09-20 00:00:00.000000'
@@ -1822,7 +1822,7 @@
   agreed_to_additional_consent_visit: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: NAMIBIA
   been_outside_uk_last_return_date: null
@@ -2126,7 +2126,7 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2020-12-04 00:00:00.000000'
@@ -2427,7 +2427,7 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: UGANDA
   been_outside_uk_last_return_date: null
@@ -2736,7 +2736,7 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: HONDURAS
   been_outside_uk_last_return_date: null

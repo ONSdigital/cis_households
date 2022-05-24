@@ -2,7 +2,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'No'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Gabon
   been_outside_uk_last_return_date: null
@@ -320,7 +320,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -631,7 +631,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -955,7 +955,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Pakistan
   been_outside_uk_last_return_date: '2021-11-16 00:00:00.000000'
@@ -1271,7 +1271,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Samoa
   been_outside_uk_last_return_date: '2020-11-09 00:00:00.000000'
@@ -1595,7 +1595,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Cambodia
   been_outside_uk_last_return_date: '2022-02-03 00:00:00.000000'
@@ -1914,7 +1914,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Bangladesh
   been_outside_uk_last_return_date: '2020-08-26 00:00:00.000000'
@@ -2235,7 +2235,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: '2021-03-09 00:00:00.000000'
@@ -2557,7 +2557,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: null
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Iceland
   been_outside_uk_last_return_date: '2021-03-07 00:00:00.000000'
@@ -2881,7 +2881,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'Yes'
-  bad_email_address: false
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Kenya
   been_outside_uk_last_return_date: null

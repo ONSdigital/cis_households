@@ -91,7 +91,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = assign_column_regex_match(
         df,
-        "bad_email_address",
+        "bad_email",
         reference_column="email_address",
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )

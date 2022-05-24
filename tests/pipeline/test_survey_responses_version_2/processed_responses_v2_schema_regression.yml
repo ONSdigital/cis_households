@@ -1096,7 +1096,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: bad_email_address
+  name: bad_email
   nullable: true
   type: boolean
 - metadata: {}
