@@ -96,6 +96,7 @@ def generate_weights(
         antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
+        group_by_columns=["cis_area_code_20"],
     )
     return df
 
@@ -391,6 +392,7 @@ def validate_design_weights_or_precal(
     antibody_weight_column: str,
     cis_area_column: str,
     country_column: str,
+    group_by_columns: List[str],
 ):
     """
     Validate the derived design weights by checking 3 conditions are true:
@@ -425,7 +427,7 @@ def validate_design_weights_or_precal(
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
     df = df.withColumn("CHECK3", F.when(F.col("NUM_NULLS") != 0, 1).otherwise(0)).drop("NUM_NULLS")
     # check 4
-    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, [cis_area_column])
+    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
     df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
 
     check_1_s = True if df.filter(F.col("CHECK1s") == 1).count() == 0 else False
