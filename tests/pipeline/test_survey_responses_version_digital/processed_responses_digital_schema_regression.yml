@@ -676,11 +676,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_1
+  name: cis_covid_vaccine_type_1
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_1
+  name: cis_covid_vaccine_type_other_1
   nullable: true
   type: string
 - metadata: {}
@@ -688,11 +688,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_2
+  name: cis_covid_vaccine_type_2
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_2
+  name: cis_covid_vaccine_type_other_2
   nullable: true
   type: string
 - metadata: {}
@@ -700,11 +700,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_3
+  name: cis_covid_vaccine_type_3
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_3
+  name: cis_covid_vaccine_type_other_3
   nullable: true
   type: string
 - metadata: {}
@@ -712,11 +712,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_4
+  name: cis_covid_vaccine_type_4
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_4
+  name: cis_covid_vaccine_type_other_4
   nullable: true
   type: string
 - metadata: {}
@@ -724,11 +724,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_5
+  name: cis_covid_vaccine_type_5
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_5
+  name: cis_covid_vaccine_type_other_5
   nullable: true
   type: string
 - metadata: {}
@@ -736,11 +736,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_6
+  name: cis_covid_vaccine_type_6
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other_6
+  name: cis_covid_vaccine_type_other_6
   nullable: true
   type: string
 - metadata: {}
@@ -1108,11 +1108,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type
+  name: cis_covid_vaccine_type
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type_other
+  name: cis_covid_vaccine_type_other
   nullable: true
   type: string
 - metadata: {}

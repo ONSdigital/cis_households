@@ -36,22 +36,22 @@
   cis_covid_vaccine_date_5: '2022-01-01'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: null
-  cis_covid_vacine_type_1: Sinovac
-  cis_covid_vacine_type_2: null
-  cis_covid_vacine_type_3: From a research study/trial
-  cis_covid_vacine_type_4: Oxford / AstraZeneca
-  cis_covid_vacine_type_5: From a research study/trial
-  cis_covid_vacine_type_6: Sputnik
-  cis_covid_vacine_type_other: Elementary, my dear Watson.
-  cis_covid_vacine_type_other_1: The only thing we have to fear is fear itself.
-  cis_covid_vacine_type_other_2: Those who refuse to learn from history are condemned
+  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type_1: Sinovac
+  cis_covid_vaccine_type_2: null
+  cis_covid_vaccine_type_3: From a research study/trial
+  cis_covid_vaccine_type_4: Oxford / AstraZeneca
+  cis_covid_vaccine_type_5: From a research study/trial
+  cis_covid_vaccine_type_6: Sputnik
+  cis_covid_vaccine_type_other: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other_2: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type_other_3: A census taker once tried to test me. I ate his liver
+  cis_covid_vaccine_type_other_3: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
-  cis_covid_vacine_type_other_4: Here's looking at you, kid.
-  cis_covid_vacine_type_other_5: Here's looking at you, kid.
-  cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
+  cis_covid_vaccine_type_other_4: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_5: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_flu_vaccine_received: 'Yes'
   city: null
@@ -353,22 +353,22 @@
   cis_covid_vaccine_date_5: '2022-01-05'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Sputnik
-  cis_covid_vacine_type_1: Sputnik
-  cis_covid_vacine_type_2: Sinopharm
-  cis_covid_vacine_type_3: I don't know the type
-  cis_covid_vacine_type_4: I don't know the type
-  cis_covid_vacine_type_5: Sinopharm
-  cis_covid_vacine_type_6: null
-  cis_covid_vacine_type_other: Frankly, my dear, I don't give a damn.
-  cis_covid_vacine_type_other_1: You're gonna need a bigger boat.
-  cis_covid_vacine_type_other_2: Let them eat cake.
-  cis_covid_vacine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vaccine_type: Sputnik
+  cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_3: I don't know the type
+  cis_covid_vaccine_type_4: I don't know the type
+  cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_6: null
+  cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
+  cis_covid_vaccine_type_other_1: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_2: Let them eat cake.
+  cis_covid_vaccine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vacine_type_other_4: Houston, we have a problem.
-  cis_covid_vacine_type_other_5: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type_other_4: Houston, we have a problem.
+  cis_covid_vaccine_type_other_5: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_6: Get your stinking paws off me, you damned dirty ape.
+  cis_covid_vaccine_type_other_6: Get your stinking paws off me, you damned dirty ape.
   cis_flu_vaccine_received: null
   city: Chichester
   completion_window_cadence: Weekly
@@ -665,22 +665,22 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Sputnik
-  cis_covid_vacine_type_1: I don't know the type
-  cis_covid_vacine_type_2: Sinopharm
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: I don't know the type
-  cis_covid_vacine_type_5: Oxford / AstraZeneca
-  cis_covid_vacine_type_6: Janssen / Johnson&Johnson
-  cis_covid_vacine_type_other: Elementary, my dear Watson.
-  cis_covid_vacine_type_other_1: Houston, we have a problem.
-  cis_covid_vacine_type_other_2: They call me *Mister* Tibbs!
-  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type: Sputnik
+  cis_covid_vaccine_type_1: I don't know the type
+  cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: I don't know the type
+  cis_covid_vaccine_type_5: Oxford / AstraZeneca
+  cis_covid_vaccine_type_6: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_other: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_1: Houston, we have a problem.
+  cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_4: Houston, we have a problem.
-  cis_covid_vacine_type_other_5: Those who refuse to learn from history are condemned
+  cis_covid_vaccine_type_other_4: Houston, we have a problem.
+  cis_covid_vaccine_type_other_5: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vaccine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   cis_flu_vaccine_received: 'Yes'
   city: null
@@ -989,22 +989,22 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Sinopharm
-  cis_covid_vacine_type_1: Valneva
-  cis_covid_vacine_type_2: null
-  cis_covid_vacine_type_3: Pfizer / BioNTech
-  cis_covid_vacine_type_4: Janssen / Johnson&Johnson
-  cis_covid_vacine_type_5: Novavax
-  cis_covid_vacine_type_6: Sinopharm
-  cis_covid_vacine_type_other: Get your stinking paws off me, you damned dirty ape.
-  cis_covid_vacine_type_other_1: Let them eat cake.
-  cis_covid_vacine_type_other_2: Ask not what your country can do for you; ask what
+  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_type_1: Valneva
+  cis_covid_vaccine_type_2: null
+  cis_covid_vaccine_type_3: Pfizer / BioNTech
+  cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_5: Novavax
+  cis_covid_vaccine_type_6: Sinopharm
+  cis_covid_vaccine_type_other: Get your stinking paws off me, you damned dirty ape.
+  cis_covid_vaccine_type_other_1: Let them eat cake.
+  cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type_other_3: Houston, we have a problem.
-  cis_covid_vacine_type_other_4: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vaccine_type_other_3: Houston, we have a problem.
+  cis_covid_vaccine_type_other_4: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_5: Here's looking at you, kid.
-  cis_covid_vacine_type_other_6: Houston, we have a problem.
+  cis_covid_vaccine_type_other_5: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_6: Houston, we have a problem.
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Weekly
@@ -1306,21 +1306,21 @@
   cis_covid_vaccine_date_5: '2022-01-07'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Sinopharm
-  cis_covid_vacine_type_1: Sputnik
-  cis_covid_vacine_type_2: Novavax
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: null
-  cis_covid_vacine_type_5: Valneva
-  cis_covid_vacine_type_6: Novavax
-  cis_covid_vacine_type_other: Let them eat cake.
-  cis_covid_vacine_type_other_1: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_2: Novavax
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: null
+  cis_covid_vaccine_type_5: Valneva
+  cis_covid_vaccine_type_6: Novavax
+  cis_covid_vaccine_type_other: Let them eat cake.
+  cis_covid_vaccine_type_other_1: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vacine_type_other_2: Here's looking at you, kid.
-  cis_covid_vacine_type_other_3: Elementary, my dear Watson.
-  cis_covid_vacine_type_other_4: Elementary, my dear Watson.
-  cis_covid_vacine_type_other_5: Houston, we have a problem.
-  cis_covid_vacine_type_other_6: Frankly, my dear, I don't give a damn.
+  cis_covid_vaccine_type_other_2: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_3: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_4: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_5: Houston, we have a problem.
+  cis_covid_vaccine_type_other_6: Frankly, my dear, I don't give a damn.
   cis_flu_vaccine_received: 'No'
   city: Barrhead
   completion_window_cadence: Monthly
@@ -1629,24 +1629,24 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Sinopharm
-  cis_covid_vacine_type_1: Sputnik
-  cis_covid_vacine_type_2: Sinopharm
-  cis_covid_vacine_type_3: I don't know the type
-  cis_covid_vacine_type_4: Janssen / Johnson&Johnson
-  cis_covid_vacine_type_5: Sinopharm
-  cis_covid_vacine_type_6: Sinopharm
-  cis_covid_vacine_type_other: Frankly, my dear, I don't give a damn.
-  cis_covid_vacine_type_other_1: Get your stinking paws off me, you damned dirty ape.
-  cis_covid_vacine_type_other_2: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_3: I don't know the type
+  cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_6: Sinopharm
+  cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
+  cis_covid_vaccine_type_other_1: Get your stinking paws off me, you damned dirty ape.
+  cis_covid_vaccine_type_other_2: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_4: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type_other_4: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_5: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vaccine_type_other_5: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_6: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_6: I'm gonna make him an offer he can't refuse.
   cis_flu_vaccine_received: null
   city: Newhaven
   completion_window_cadence: Weekly
@@ -1948,23 +1948,23 @@
   cis_covid_vaccine_date_5: '2022-01-02'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Moderna
-  cis_covid_vacine_type_1: Novavax
-  cis_covid_vacine_type_2: Pfizer / BioNTech
-  cis_covid_vacine_type_3: Another vaccine please specify
-  cis_covid_vacine_type_4: Sputnik
-  cis_covid_vacine_type_5: Novavax
-  cis_covid_vacine_type_6: Pfizer / BioNTech
-  cis_covid_vacine_type_other: '"You''ve got to ask yourself one question: ""Do I
+  cis_covid_vaccine_type: Moderna
+  cis_covid_vaccine_type_1: Novavax
+  cis_covid_vaccine_type_2: Pfizer / BioNTech
+  cis_covid_vaccine_type_3: Another vaccine please specify
+  cis_covid_vaccine_type_4: Sputnik
+  cis_covid_vaccine_type_5: Novavax
+  cis_covid_vaccine_type_6: Pfizer / BioNTech
+  cis_covid_vaccine_type_other: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_1: Ask not what your country can do for you; ask what
+  cis_covid_vaccine_type_other_1: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type_other_2: A census taker once tried to test me. I ate his liver
+  cis_covid_vaccine_type_other_2: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
-  cis_covid_vacine_type_other_3: They call me *Mister* Tibbs!
-  cis_covid_vacine_type_other_4: Elementary, my dear Watson.
-  cis_covid_vacine_type_other_5: You're gonna need a bigger boat.
-  cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
+  cis_covid_vaccine_type_other_3: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_4: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_5: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_flu_vaccine_received: null
   city: null
@@ -2271,23 +2271,23 @@
   cis_covid_vaccine_date_5: '2022-01-09'
   cis_covid_vaccine_number_of_doses: '3'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: Another vaccine please specify
-  cis_covid_vacine_type_1: Another vaccine please specify
-  cis_covid_vacine_type_2: Sinopharm
-  cis_covid_vacine_type_3: Sputnik
-  cis_covid_vacine_type_4: Another vaccine please specify
-  cis_covid_vacine_type_5: Sinopharm
-  cis_covid_vacine_type_6: Sinovac
-  cis_covid_vacine_type_other: Let them eat cake.
-  cis_covid_vacine_type_other_1: One morning I shot an elephant in my pajamas. How
+  cis_covid_vaccine_type: Another vaccine please specify
+  cis_covid_vaccine_type_1: Another vaccine please specify
+  cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_3: Sputnik
+  cis_covid_vaccine_type_4: Another vaccine please specify
+  cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_6: Sinovac
+  cis_covid_vaccine_type_other: Let them eat cake.
+  cis_covid_vaccine_type_other_1: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
-  cis_covid_vacine_type_other_2: I'm gonna make him an offer he can't refuse.
-  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type_other_2: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_4: Here's looking at you, kid.
-  cis_covid_vacine_type_other_5: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vaccine_type_other_4: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_5: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vacine_type_other_6: Houston, we have a problem.
+  cis_covid_vaccine_type_other_6: Houston, we have a problem.
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Monthly
@@ -2590,26 +2590,26 @@
   cis_covid_vaccine_date_5: '2022-01-08'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vacine_type: null
-  cis_covid_vacine_type_1: Another vaccine please specify
-  cis_covid_vacine_type_2: Valneva
-  cis_covid_vacine_type_3: Sputnik
-  cis_covid_vacine_type_4: Another vaccine please specify
-  cis_covid_vacine_type_5: Valneva
-  cis_covid_vacine_type_6: Oxford / AstraZeneca
-  cis_covid_vacine_type_other: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type_1: Another vaccine please specify
+  cis_covid_vaccine_type_2: Valneva
+  cis_covid_vaccine_type_3: Sputnik
+  cis_covid_vaccine_type_4: Another vaccine please specify
+  cis_covid_vaccine_type_5: Valneva
+  cis_covid_vaccine_type_6: Oxford / AstraZeneca
+  cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_1: A census taker once tried to test me. I ate his liver
+  cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
-  cis_covid_vacine_type_other_2: Mama always said life was like a box of chocolates.
+  cis_covid_vaccine_type_other_2: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_3: Ask not what your country can do for you; ask what
+  cis_covid_vaccine_type_other_3: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type_other_4: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vaccine_type_other_4: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_5: A census taker once tried to test me. I ate his liver
+  cis_covid_vaccine_type_other_5: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
-  cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
+  cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_flu_vaccine_received: 'No'
   city: Coatbridge
@@ -2914,21 +2914,21 @@
   cis_covid_vaccine_date_5: '2022-01-04'
   cis_covid_vaccine_number_of_doses: '4'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Sinovac
-  cis_covid_vacine_type_1: Sinopharm
-  cis_covid_vacine_type_2: Janssen / Johnson&Johnson
-  cis_covid_vacine_type_3: From a research study/trial
-  cis_covid_vacine_type_4: Pfizer / BioNTech
-  cis_covid_vacine_type_5: I don't know the type
-  cis_covid_vacine_type_6: null
-  cis_covid_vacine_type_other: Those who refuse to learn from history are condemned
+  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_type_1: Sinopharm
+  cis_covid_vaccine_type_2: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_3: From a research study/trial
+  cis_covid_vaccine_type_4: Pfizer / BioNTech
+  cis_covid_vaccine_type_5: I don't know the type
+  cis_covid_vaccine_type_6: null
+  cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type_other_1: They call me *Mister* Tibbs!
-  cis_covid_vacine_type_other_2: They call me *Mister* Tibbs!
-  cis_covid_vacine_type_other_3: The only thing we have to fear is fear itself.
-  cis_covid_vacine_type_other_4: You're gonna need a bigger boat.
-  cis_covid_vacine_type_other_5: Houston, we have a problem.
-  cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
+  cis_covid_vaccine_type_other_1: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_3: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other_4: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_5: Houston, we have a problem.
+  cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_flu_vaccine_received: null
   city: null

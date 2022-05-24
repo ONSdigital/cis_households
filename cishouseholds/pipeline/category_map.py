@@ -439,7 +439,7 @@ category_maps = {
             "Do not reinstate": 10,
             "SWCAP": 11,
         },
-        "cis_covid_vacine_type": {
+        "cis_covid_vaccine_type": {
             "Don't know type": 1,
             "From a research study/trial": 2,
             "Moderna": 3,
@@ -454,7 +454,7 @@ category_maps = {
             "Sinopharm": 12,
             "Sputnik": 13,
         },
-        "cis_covid_vacine_type_1": {
+        "cis_covid_vaccine_type_1": {
             "Don't know type": 1,
             "From a research study/trial": 2,
             "Moderna": 3,
@@ -469,7 +469,7 @@ category_maps = {
             "Sinopharm": 12,
             "Sputnik": 13,
         },
-        "cis_covid_vacine_type_2": {
+        "cis_covid_vaccine_type_2": {
             "Don't know type": 1,
             "From a research study/trial": 2,
             "Moderna": 3,
@@ -484,7 +484,7 @@ category_maps = {
             "Sinopharm": 12,
             "Sputnik": 13,
         },
-        "cis_covid_vacine_type_3": {
+        "cis_covid_vaccine_type_3": {
             "Don't know type": 1,
             "From a research study/trial": 2,
             "Moderna": 3,
@@ -499,7 +499,7 @@ category_maps = {
             "Sinopharm": 12,
             "Sputnik": 13,
         },
-        "cis_covid_vacine_type_4": {
+        "cis_covid_vaccine_type_4": {
             "Don't know type": 1,
             "From a research study/trial": 2,
             "Moderna": 3,

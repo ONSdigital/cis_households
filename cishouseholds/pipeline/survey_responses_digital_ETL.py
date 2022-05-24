@@ -37,9 +37,7 @@ def digital_specific_transformations(df):
     df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
     df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
-    df = concat_fields_if_true(
-        df, "think_have_long_covid_symptom_symptoms", "think_have_long_covid_symptom_symptom_", "Yes", ";"
-    )
+    df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
 
     df = derive_had_symptom_last_7days_from_digital(
         df,

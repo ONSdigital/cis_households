@@ -128,7 +128,7 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
-        "participant_withdrawal_reason": _(
+        "Withdrawal_reason": _(
             "choice",
             items=[
                 None,
@@ -219,8 +219,8 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
-        "No email_address Address": _("custom_random.random_integer", lower=0, upper=1),
+        "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
+        "No Email Address": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods Taken": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods Barcode 1": _(
             "discrete_distribution",
@@ -356,7 +356,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Participant_Visit_status": _(
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
-        "participant_withdrawal_reason": _(
+        "Withdrawal_reason": _(
             "choice",
             items=[
                 None,
@@ -403,23 +403,23 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         "Person_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person_8": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
-        "person_not_consenting_age_1": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_1_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person1_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_2": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_2_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person2_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_3": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_3_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person3_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_4": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_4_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person4_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_5": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_5_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person5_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_6_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person6_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_7_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person7_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_8": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_8_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person8_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_9": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
+        "Person_9_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person9_Reason_for_Not_Consenting": _("text.quote"),
         "Participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
         "Title": _("person.title"),
@@ -430,8 +430,8 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%Y-%m-%d", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
-        "No_email_address": _("custom_random.random_integer", lower=0, upper=1),
+        "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
+        "No_Email_address": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods_Taken": _("custom_random.random_integer", lower=0, upper=1),
         "bloods_barcode_1": _(
             "discrete_distribution",
@@ -614,7 +614,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
         + "Z",
         "Have_you_been_outside_UK_since_April": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _("choice", items=yes_no_none_choice),
-        "been_outside_uk_last_return_date": _(
+        "been_outside_uk_last_date": _(
             "custom_random.random_date",
             start=start_date_list,
             end=end_date_list,
@@ -648,7 +648,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             "choice", items=[None, "Cancelled", "Completed", "Patient did not attend", "Re-scheduled", "Scheduled"]
         ),
         "Participant_status": _("choice", items=["Active", "Completed", "Withdrawn"]),
-        "participant_withdrawal_reason": _(
+        "Withdrawal_reason": _(
             "choice",
             items=[
                 None,
@@ -761,23 +761,23 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Person_6": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person_7": _("custom_random.random_integer", lower=9, upper=100, null_percent=0.1),
         "Person_8": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
-        "person_not_consenting_age_1": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
+        "Person_1_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.1),
         "Person1_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_2": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.2),
+        "Person_2_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.2),
         "Person2_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_3": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.3),
+        "Person_3_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.3),
         "Person3_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_4": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.4),
+        "Person_4_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.4),
         "Person4_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_5": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
+        "Person_5_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
         "Person5_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_6": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
+        "Person_6_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.5),
         "Person6_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_7": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.6),
+        "Person_7_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.6),
         "Person7_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_8": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.7),
+        "Person_8_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.7),
         "Person8_Reason_for_Not_Consenting": _("text.quote"),
-        "person_not_consenting_age_9": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
+        "Person_9_Not_Consenting_Age": _("custom_random.random_integer", lower=9, upper=110, null_percent=0.8),
         "Person9_Reason_for_Not_Consenting": _("text.quote"),
         "Participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
         "Title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
@@ -790,13 +790,13 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
+        "Email": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "Have_landline_number": _("choice", items=yes_no_none_choice),
         "Have_mobile_number": _("choice", items=yes_no_none_choice),
         "Have_email_address": _("choice", items=yes_no_none_choice),
-        "voucher_type_preference": _("choice", items=["email_address", "Paper(Post)"]),
+        "Prefer_receive_vouchers": _("choice", items=["Email", "Paper(Post)"]),
         "Confirm_receive_vouchers": _("choice", items=["false", "true"]),
-        "No_email_address": _("custom_random.random_integer", lower=0, upper=1),
+        "No_Email_address": _("custom_random.random_integer", lower=0, upper=1),
         "Able_to_take_blood": _("choice", items=yes_no_none_choice),
         "No_Blood_reason_fingerprick": _(
             "choice",
@@ -1029,7 +1029,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Symptoms_7_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "Symptoms_7_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
-        "Symptoms_7_noisy_breathing": _("choice", items=yes_no_none_choice),
+        "Symptoms_7_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Chest_pain": _("choice", items=yes_no_none_choice),
         "Symptoms_7_Palpitations": _("choice", items=yes_no_none_choice),
@@ -1235,7 +1235,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
         "Previous_Symptoms_Loss_of_smell": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_More_trouble_sleeping_than_usual": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
-        "Previous_Symptoms_noisy_breathing": _("choice", items=yes_no_none_choice),
+        "Previous_Symptoms_Noisy_breathing_wheezing": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Loss_of_appetite_or_eating_less_than_usual": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Chest_pain": _("choice", items=yes_no_none_choice),
         "Previous_Symptoms_Palpitations": _("choice", items=yes_no_none_choice),
@@ -1305,11 +1305,9 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
             weights=[0.5, 0.5],
         ),
-        "think_have_long_covid": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_reduced_ability": _(
-            "choice", items=["Not at all", "Yes a little", "Yes a lot", None]
-        ),
-        "think_have_long_covid_symptom_Symptoms": _(
+        "Have_Long_Covid_Symptoms": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Reduce_Activities": _("choice", items=["Not at all", "Yes a little", "Yes a lot", None]),
+        "Long_Covid_Symptoms": _(
             "choice",
             items=[
                 "Fever ",
@@ -1338,29 +1336,29 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_Fever": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Weakness_tiredness": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Diarrhoea": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Loss_of_smell": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Shortness_of_breath": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Trouble_sleeping": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Headache": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Nausea_vomiting": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Loss_of_appetite": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Sore_throat": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Chest_pain": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Worry_anxiety": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Muscle_ache": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Abdominal_pain": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Loss_of_taste": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Cough": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Palpitations": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
-        "think_have_long_covid_symptom_Noisy_breathing": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Fever": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Weakness_tiredness": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Diarrhoea": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_smell": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Vertigo_dizziness": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Trouble_sleeping": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Headache": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Nausea_vomiting": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_appetite": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Sore_throat": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Chest_pain": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Worry_anxiety": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Muscle_ache": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Abdominal_pain": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Loss_of_taste": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Cough": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Palpitations": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Low_mood_not_enjoying_anything": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Difficulty_concentrating": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Runny_nose_sneezing": _("choice", items=yes_no_none_choice),
+        "Long_Covid_Noisy_breathing": _("choice", items=yes_no_none_choice),
         "Have_you_been_offered_a_vaccination": _("choice", items=yes_no_none_choice),
         "Vaccinated_Against_Covid": _("choice", items=yes_no_none_choice),
         "Type_Of_Vaccination": _(
@@ -1486,7 +1484,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "been_outside_uk_last_return_date": _(
+        "been_outside_uk_last_date": _(
             "discrete_distribution",
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2022), None],
             weights=[0.5, 0.5],
@@ -1624,7 +1622,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "custom_random.random_integer", lower=0, upper=99, null_percent=0.5
         ),
         "participant_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
-        "participant_participant_withdrawal_reason": _(
+        "participant_withdrawal_reason": _(
             "choice",
             items=[
                 "Moving Location",
@@ -1636,7 +1634,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "too many visits",
             ],
         ),
-        "participant_participant_withdrawal_type": _(
+        "participant_withdrawal_type": _(
             "choice",
             items=["Withdrawn", "Withdrawn – no future linkage", "Withdrawn – no future linkage or use of samples"],
         ),
@@ -1651,7 +1649,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.9, 0.1],
         ),
         "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
-        "voucher_type_preference": _("choice", items=["email_address", "Letter"]),
+        "voucher_type_preference": _("choice", items=["Email", "Letter"]),
         "household_completion_window_id": _(
             "random.custom_code", mask="############", digit="#"
         ),  # tbc what these ids will look like
@@ -2104,8 +2102,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "currently_smokes_or_vapes_description": _("choice", items=yes_no_prefer_not_to_say),
         "cis_covid_vaccine_received": _("choice", items=yes_no_choice),
         "cis_covid_vaccine_number_of_doses": _("choice", items=["1", "2", "3", "4", "5", "6 or more", None]),
-        "cis_covid_vacine_type_1": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_1": _("text.quote"),
+        "cis_covid_vaccine_type_1": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_1": _("text.quote"),
         "cis_covid_vaccine_date_1": _(
             "discrete_distribution",
             population=[
@@ -2114,8 +2112,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vacine_type_2": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_2": _("text.quote"),
+        "cis_covid_vaccine_type_2": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_2": _("text.quote"),
         "cis_covid_vaccine_date_2": _(
             "discrete_distribution",
             population=[
@@ -2124,8 +2122,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vacine_type_3": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_3": _("text.quote"),
+        "cis_covid_vaccine_type_3": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_3": _("text.quote"),
         # 201 to 250
         "cis_covid_vaccine_date_3": _(
             "discrete_distribution",
@@ -2135,8 +2133,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vacine_type_4": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_4": _("text.quote"),
+        "cis_covid_vaccine_type_4": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_4": _("text.quote"),
         "cis_covid_vaccine_date_4": _(
             "discrete_distribution",
             population=[
@@ -2145,8 +2143,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vacine_type_5": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_5": _("text.quote"),
+        "cis_covid_vaccine_type_5": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_5": _("text.quote"),
         "cis_covid_vaccine_date_5": _(
             "discrete_distribution",
             population=[
@@ -2155,8 +2153,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_covid_vacine_type_6": _("choice", items=type_of_vaccination),
-        "cis_covid_vacine_type_other_6": _("text.quote"),
+        "cis_covid_vaccine_type_6": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other_6": _("text.quote"),
         "cis_covid_vaccine_date_": _(
             "discrete_distribution",
             population=[
@@ -2288,36 +2286,30 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.5, 0.5],
         ),
         "think_have_long_covid": _("choice", items=["Yes", "No", None]),
-        "think_have_think_have_long_covid_symptom_symptom_reduced_ability": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_fever": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_headache": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_muscle_ache": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_fatigue": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_diarrhoea": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_sore_throat": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_cough": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_loss_of_appetite": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_chest_pain": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_palpitations": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_anxiety": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_low_mood": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping": _("choice", items=yes_no_none_choice),
-        "think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion": _(
-            "choice", items=yes_no_none_choice
-        ),
-        "think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating": _(
-            "choice", items=yes_no_none_choice
-        ),
-        "think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing": _(
-            "choice", items=yes_no_none_choice
-        ),
-        "think_have_think_have_long_covid_symptom_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_reduced_ability": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_fever": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_headache": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_muscle_ache": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_fatigue": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_diarrhoea": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_sore_throat": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_cough": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_loss_of_appetite": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_chest_pain": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_palpitations": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_anxiety": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_low_mood": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),
         "contact_known_positive_covid_last_28_days": _("choice", items=yes_no_choice),
         "last_covid_contact_date": _(
             "discrete_distribution",
@@ -2357,11 +2349,11 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "choice",
             items=times_count,
         ),
-        "times_socialising_last_7_days": _(
+        "times_socialise_last_7_days": _(
             "choice",
             items=times_count,
         ),
-        "face_covering_work_or_education_or_education": _(
+        "face_covering_work_or_education": _(
             "choice",
             items=[
                 "I am not going to my place of work or education",
@@ -2387,7 +2379,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "choice",
             items=type_of_vaccination,
         ),
-        "cis_covid_vacine_type_other": _("text.quote"),
+        "cis_covid_vaccine_type_other": _("text.quote"),
         "cis_covid_vaccine_date": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],

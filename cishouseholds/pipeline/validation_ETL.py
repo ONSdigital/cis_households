@@ -45,7 +45,7 @@ def validation_calls(SparkVal):
     SparkVal.validate_column(column_calls)
 
     vaccine_columns = []
-    for template in ["cis_covid_vacine_type_{}", "cis_covid_vacine_type_other_{}", "cis_covid_vaccine_date_{}"]:
+    for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
         for number in range(1, 5):
             vaccine_columns.append(template.format(number))
 
@@ -85,11 +85,11 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_udl(
         logic=(
-            ((F.col("cis_covid_vacine_type") == "Other / specify") & F.col("cis_covid_vacine_type_other").isNull())
-            | (F.col("cis_covid_vacine_type") != "Other / specify")
+            ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
+            | (F.col("cis_covid_vaccine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
-        columns=["cis_covid_vacine_type", "cis_covid_vacine_type_other"],
+        columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
 
     SparkVal.validate_udl(

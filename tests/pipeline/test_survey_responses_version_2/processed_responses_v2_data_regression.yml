@@ -22,16 +22,16 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: From a research study/trial
-  cis_covid_vacine_type_1: Oxford/AstraZeneca
-  cis_covid_vacine_type_2: Don't know type
-  cis_covid_vacine_type_3: Moderna
-  cis_covid_vacine_type_4: Oxford/AstraZeneca
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: From a research study/trial
+  cis_covid_vaccine_type_1: Oxford/AstraZeneca
+  cis_covid_vaccine_type_2: Don't know type
+  cis_covid_vaccine_type_3: Moderna
+  cis_covid_vaccine_type_4: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
   city: Marlow
   confirm_received_vouchers: 'false'
@@ -321,16 +321,16 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: null
-  cis_covid_vacine_type_1: Oxford/AstraZeneca
-  cis_covid_vacine_type_2: Pfizer/BioNTech
-  cis_covid_vacine_type_3: Moderna
-  cis_covid_vacine_type_4: Oxford/AstraZeneca
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type_1: Oxford/AstraZeneca
+  cis_covid_vaccine_type_2: Pfizer/BioNTech
+  cis_covid_vaccine_type_3: Moderna
+  cis_covid_vaccine_type_4: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'false'
@@ -622,16 +622,16 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Sinovac
-  cis_covid_vacine_type_1: Don't know type
-  cis_covid_vacine_type_2: Janssen/Johnson&Johnson
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: Don't know type
-  cis_covid_vacine_type_other: OtherVaxx
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: Don't know type
+  cis_covid_vaccine_type_other: OtherVaxx
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
@@ -921,16 +921,16 @@
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Valneva
-  cis_covid_vacine_type_1: Pfizer/BioNTech
-  cis_covid_vacine_type_2: Janssen/Johnson&Johnson
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: Oxford/AstraZeneca
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Valneva
+  cis_covid_vaccine_type_1: Pfizer/BioNTech
+  cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'true'
@@ -1228,16 +1228,16 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Moderna
-  cis_covid_vacine_type_1: null
-  cis_covid_vacine_type_2: Moderna
-  cis_covid_vacine_type_3: Don't know type
-  cis_covid_vacine_type_4: Moderna
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Moderna
+  cis_covid_vaccine_type_1: null
+  cis_covid_vaccine_type_2: Moderna
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_4: Moderna
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: null
   city: null
   confirm_received_vouchers: 'false'
@@ -1532,16 +1532,16 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Moderna
-  cis_covid_vacine_type_1: Don't know type
-  cis_covid_vacine_type_2: Janssen/Johnson&Johnson
-  cis_covid_vacine_type_3: Don't know type
-  cis_covid_vacine_type_4: Janssen/Johnson&Johnson
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Moderna
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_4: Janssen/Johnson&Johnson
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'true'
@@ -1839,16 +1839,16 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Sinopharm
-  cis_covid_vacine_type_1: Pfizer/BioNTech
-  cis_covid_vacine_type_2: Pfizer/BioNTech
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: Oxford/AstraZeneca
-  cis_covid_vacine_type_other: OtherVaxx
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_type_1: Pfizer/BioNTech
+  cis_covid_vaccine_type_2: Pfizer/BioNTech
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: OtherVaxx
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   confirm_received_vouchers: 'true'
@@ -2143,16 +2143,16 @@
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: From a research study/trial
-  cis_covid_vacine_type_1: Pfizer/BioNTech
-  cis_covid_vacine_type_2: Moderna
-  cis_covid_vacine_type_3: Pfizer/BioNTech
-  cis_covid_vacine_type_4: Don't know type
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: From a research study/trial
+  cis_covid_vaccine_type_1: Pfizer/BioNTech
+  cis_covid_vaccine_type_2: Moderna
+  cis_covid_vaccine_type_3: Pfizer/BioNTech
+  cis_covid_vaccine_type_4: Don't know type
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'Yes'
   city: null
   confirm_received_vouchers: 'false'
@@ -2444,16 +2444,16 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: From a research study/trial
-  cis_covid_vacine_type_1: Pfizer/BioNTech
-  cis_covid_vacine_type_2: null
-  cis_covid_vacine_type_3: Don't know type
-  cis_covid_vacine_type_4: Oxford/AstraZeneca
-  cis_covid_vacine_type_other: null
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: From a research study/trial
+  cis_covid_vaccine_type_1: Pfizer/BioNTech
+  cis_covid_vaccine_type_2: null
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_4: Oxford/AstraZeneca
+  cis_covid_vaccine_type_other: null
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
   city: Inverurie
   confirm_received_vouchers: 'true'
@@ -2753,16 +2753,16 @@
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vacine_type: Novavax
-  cis_covid_vacine_type_1: Oxford/AstraZeneca
-  cis_covid_vacine_type_2: Pfizer/BioNTech
-  cis_covid_vacine_type_3: null
-  cis_covid_vacine_type_4: null
-  cis_covid_vacine_type_other: OtherVaxx
-  cis_covid_vacine_type_other_1: null
-  cis_covid_vacine_type_other_2: null
-  cis_covid_vacine_type_other_3: null
-  cis_covid_vacine_type_other_4: null
+  cis_covid_vaccine_type: Novavax
+  cis_covid_vaccine_type_1: Oxford/AstraZeneca
+  cis_covid_vaccine_type_2: Pfizer/BioNTech
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: null
+  cis_covid_vaccine_type_other: OtherVaxx
+  cis_covid_vaccine_type_other_1: null
+  cis_covid_vaccine_type_other_2: null
+  cis_covid_vaccine_type_other_3: null
+  cis_covid_vaccine_type_other_4: null
   cis_flu_vaccine_received: 'No'
   city: null
   confirm_received_vouchers: 'false'

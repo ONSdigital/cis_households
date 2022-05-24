@@ -354,7 +354,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "face_covering_other_enclosed_places",
             "other_antibody_test_location",
             "participant_withdrawal_reason",
-            "cis_covid_vacine_type",
+            "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
             "times_shopping_last_7_days",
@@ -514,8 +514,8 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         [
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vacine_type",
-            "cis_covid_vacine_type_other",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
         ],
     )
     df = fill_forward_from_last_change(
@@ -523,8 +523,8 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         fill_forward_columns=[
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vacine_type",
-            "cis_covid_vacine_type_other",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
             "cis_covid_vaccine_received",
         ],
         participant_id_column="participant_id",
