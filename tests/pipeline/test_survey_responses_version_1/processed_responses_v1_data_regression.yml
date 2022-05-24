@@ -21,25 +21,27 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
+  currently_currently_smokes_or_vapes_description: Any element of a tuple can be accessed
+    in constant time.
   date_of_birth: '1988-12-04 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: mastiff1901@gsnail.ac.uk
   ethnicity: Any other Black background
   ethnicity_other: Do you come here often?
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
   first_name: Janyce
   gender: Prefer not to say
-  ever_smoked_regularly: 'Yes'
   hh_id: 021263322966
   hours_a_day_with_someone_else_at_home: '6'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
+  household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years: null
-  household_participants_not_consenting_count: null
   household_participants_not_consented_reason: Get your stinking paws off me, you
     damned dirty ape.
-  household_members_over_2_years_and_not_present_count: null
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Houston, we have a problem.
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: 'No'
@@ -51,70 +53,70 @@
   infant_age_months_6: 5.0
   infant_age_months_7: 3.0
   infant_age_months_8: null
-  self_isolating: 'No'
-  self_isolating_reason: Where are my pants?
   last_covid_contact_date: null
   last_covid_contact_type: Elementary, my dear Watson.
   last_name: Dickerson
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: A census taker once tried to test me. I ate
-    his liver with some fava beans and a nice Chianti.
+  last_suspected_covid_type: A census taker once tried to test me. I ate his liver
+    with some fava beans and a nice Chianti.
   no_email_address: 0.0
   ons_household_id: 021263322966
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: I'm gonna make him an offer he can't refuse.
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  other_covid_infection_test: 'No'
   outward_postcode: FN0F
   participant_id: DHR-942252583295
   participant_visit_status: Re-scheduled
-  person_not_consenting_age_1: 46.0
-  person_not_present_age_1: '91'
+  participant_withdrawal_reason: Moving location
+  participant_withdrawal_reason_raw: Moving location
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_2: 83.0
-  person_not_present_age_2: '89'
   person_2_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_not_consenting_age_3: 27.0
-  person_not_present_age_3: '1'
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_not_consenting_age_4: 56.0
-  person_not_present_age_4: '62'
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_5: 70.0
-  person_not_present_age_5: '24'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_6: 71.0
-  person_not_present_age_6: '10'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_not_consenting_age_7: 0.0
-  person_not_present_age_7: '41'
   person_7_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_8: 1.0
-  person_not_present_age_8: '80'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
-  person_not_consenting_age_9: 80.0
   person_9_reason_for_not_consenting: Elementary, my dear Watson.
+  person_not_consenting_age_1: 46.0
+  person_not_consenting_age_2: 83.0
+  person_not_consenting_age_3: 27.0
+  person_not_consenting_age_4: 56.0
+  person_not_consenting_age_5: 70.0
+  person_not_consenting_age_6: 71.0
+  person_not_consenting_age_7: 0.0
+  person_not_consenting_age_8: 1.0
+  person_not_consenting_age_9: 80.0
+  person_not_present_age_1: '91'
+  person_not_present_age_2: '89'
+  person_not_present_age_3: '1'
+  person_not_present_age_4: '62'
+  person_not_present_age_5: '24'
+  person_not_present_age_6: '10'
+  person_not_present_age_7: '41'
+  person_not_present_age_8: '80'
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'Yes'
   postcode: FN0F6OF
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Where are my pants?
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_nothing_now: 'Yes'
-  currently_currently_smokes_or_vapes_description: Any element of a tuple can be accessed in constant
-    time.
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 'Yes'
@@ -123,11 +125,32 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 0.0
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
+  think_had_covid_contacted_nhs: null
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_muscle_ache_myalgia: 'No'
+  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -143,44 +166,21 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: 'Yes'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
-  think_had_covid_symptom_fever: 'Yes'
-  think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: 'Yes'
-  think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
-  think_had_covid_symptom_shortness_of_breath: null
-  think_had_covid_symptom_sore_throat: null
-  think_had_covid: null
-  think_had_covid_admitted_to_hospital: null
-  think_had_covid_any_symptoms: 'No'
-  think_had_covid_any_symptoms_raw: 'No'
-  think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: '0'
   title: Mr.
-  transport_to_work_or_education: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  transport_to_work_or_education: One morning I shot an elephant in my pajamas. How
+    he got in my pajamas, I don't know.
   unique_participant_response_id: DHVF-2032298363-DHR-942252583295-2022-01-03 05:16:17
   visit_datetime: '2022-01-03 05:16:17.000000'
   visit_id: DHVF-2032298363
-  survey_response_type: First Visit
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
     and writing poetry.
-  participant_withdrawal_reason: Moving location
-  participant_withdrawal_reason_raw: Moving location
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: null
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
+  work_health_care_v0: null
   work_location: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   work_location_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this
     wall!
@@ -225,25 +225,28 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_currently_smokes_or_vapes_description: The Galactic Empire is nearing
+    completion of the Death Star, a space station with the power to destroy entire
+    planets.
   date_of_birth: '1982-12-15 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: null
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_smoked_regularly: null
   face_covering_outside_of_home: 'No'
   first_name: Tyrone
   gender: null
-  ever_smoked_regularly: null
   hh_id: '919192147365'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: null
+  household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years: 'No'
-  household_participants_not_consenting_count: null
   household_participants_not_consented_reason: Those who refuse to learn from history
     are condemned to repeat it.
-  household_members_over_2_years_and_not_present_count: null
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: A census taker once tried to test me.
     I ate his liver with some fava beans and a nice Chianti.
   illness_lasting_over_12_months: 'No'
@@ -256,70 +259,70 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 5.0
   infant_age_months_8: 8.0
-  self_isolating: 'No'
-  self_isolating_reason: Any element of a tuple can be accessed in constant time.
   last_covid_contact_date: null
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: David
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Those who refuse to learn from history are
-    condemned to repeat it.
+  last_suspected_covid_type: Those who refuse to learn from history are condemned
+    to repeat it.
   no_email_address: 1.0
   ons_household_id: '919192147365'
+  other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: You're gonna need a bigger boat.
   other_antibody_test_results: Negative
-  other_antibody_test: 'No'
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  other_covid_infection_test: 'No'
   outward_postcode: null
   participant_id: DHR-421496963502
   participant_visit_status: Cancelled
-  person_not_consenting_age_1: 72.0
-  person_not_present_age_1: '19'
+  participant_withdrawal_reason: Moving location
+  participant_withdrawal_reason_raw: Moving location
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_2: 60.0
-  person_not_present_age_2: '14'
   person_2_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_3: 39.0
-  person_not_present_age_3: '6'
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_not_consenting_age_4: 59.0
-  person_not_present_age_4: null
   person_4_reason_for_not_consenting: Elementary, my dear Watson.
-  person_not_consenting_age_5: 76.0
-  person_not_present_age_5: '54'
   person_5_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_not_consenting_age_6: null
-  person_not_present_age_6: '21'
   person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_not_consenting_age_7: 28.0
-  person_not_present_age_7: '64'
   person_7_reason_for_not_consenting: Let them eat cake.
-  person_not_consenting_age_8: 52.0
-  person_not_present_age_8: '63'
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_not_consenting_age_9: 11.0
   person_9_reason_for_not_consenting: Here's looking at you, kid.
+  person_not_consenting_age_1: 72.0
+  person_not_consenting_age_2: 60.0
+  person_not_consenting_age_3: 39.0
+  person_not_consenting_age_4: 59.0
+  person_not_consenting_age_5: 76.0
+  person_not_consenting_age_6: null
+  person_not_consenting_age_7: 28.0
+  person_not_consenting_age_8: 52.0
+  person_not_consenting_age_9: 11.0
+  person_not_present_age_1: '19'
+  person_not_present_age_2: '14'
+  person_not_present_age_3: '6'
+  person_not_present_age_4: null
+  person_not_present_age_5: '54'
+  person_not_present_age_6: '21'
+  person_not_present_age_7: '64'
+  person_not_present_age_8: '63'
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-01 08:36:35.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Any element of a tuple can be accessed in constant time.
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'No'
   smokes_nothing_now: 'Yes'
-  currently_currently_smokes_or_vapes_description: The Galactic Empire is nearing completion of the Death
-    Star, a space station with the power to destroy entire planets.
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 'Yes'
@@ -328,11 +331,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 0.0
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
+  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -348,44 +372,21 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
-  think_had_covid_symptom_fever: 'Yes'
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'Yes'
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid: null
-  think_had_covid_admitted_to_hospital: 'No'
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
   times_outside_shopping_or_socialising_last_7_days: '5'
   title: M.Des
-  transport_to_work_or_education: A census taker once tried to test me. I ate his liver
-    with some fava beans and a nice Chianti.
+  transport_to_work_or_education: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   unique_participant_response_id: DHVF-3063387334-DHR-421496963502-2022-01-02 08:13:36
   visit_datetime: '2022-01-02 08:13:36.000000'
   visit_id: DHVF-3063387334
-  survey_response_type: First Visit
   which_symptoms_last_7_days: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
-  participant_withdrawal_reason: Moving location
-  participant_withdrawal_reason_raw: Moving location
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: null
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
+  work_health_care_v0: null
   work_location: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
   work_location_raw: Mama always said life was like a box of chocolates. You never
@@ -435,6 +436,9 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
+  currently_currently_smokes_or_vapes_description: Atoms can contain any character
+    if they are enclosed within single quotes and an escape convention exists which
+    allows any character to be used within an atom.
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -442,18 +446,18 @@
   ethnicity: White-Irish
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
   first_name: Belkis
   gender: null
-  ever_smoked_regularly: 'Yes'
   hh_id: '955705581901'
   hours_a_day_with_someone_else_at_home: '12'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: null
-  household_members_under_2_years: 'No'
-  household_participants_not_consenting_count: null
-  household_participants_not_consented_reason: Houston, we have a problem.
   household_members_over_2_years_and_not_present_count: null
+  household_members_under_2_years: 'No'
+  household_participants_not_consented_reason: Houston, we have a problem.
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Ask not what your country can do for
     you; ask what you can do for your country.
   illness_lasting_over_12_months: 'Yes'
@@ -466,74 +470,73 @@
   infant_age_months_6: 6.0
   infant_age_months_7: 2.0
   infant_age_months_8: 0.0
-  self_isolating: 'No'
-  self_isolating_reason: Initially composing light-hearted and irreverent works,
-    he also wrote serious, sombre and religious pieces beginning in the 1930s.
   last_covid_contact_date: null
-  last_covid_contact_type: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
+    in my pajamas, I don't know.
   last_name: Nunez
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
+    never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '955705581901'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
   other_antibody_test_location: Frankly, my dear, I don't give a damn.
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  other_covid_infection_test: 'Yes'
   outward_postcode: null
   participant_id: DHR-049902298831
   participant_visit_status: Completed
-  person_not_consenting_age_1: 56.0
-  person_not_present_age_1: '70'
+  participant_withdrawal_reason: null
+  participant_withdrawal_reason_raw: null
   person_1_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_not_consenting_age_2: 46.0
-  person_not_present_age_2: '39'
   person_2_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_not_consenting_age_3: 50.0
-  person_not_present_age_3: '88'
   person_3_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_4: 68.0
-  person_not_present_age_4: '4'
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_not_consenting_age_5: 23.0
-  person_not_present_age_5: '78'
   person_5_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_not_consenting_age_6: 58.0
-  person_not_present_age_6: '73'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_not_consenting_age_7: 47.0
-  person_not_present_age_7: '90'
   person_7_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_8: 25.0
-  person_not_present_age_8: '87'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
-  person_not_consenting_age_9: null
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_not_consenting_age_1: 56.0
+  person_not_consenting_age_2: 46.0
+  person_not_consenting_age_3: 50.0
+  person_not_consenting_age_4: 68.0
+  person_not_consenting_age_5: 23.0
+  person_not_consenting_age_6: 58.0
+  person_not_consenting_age_7: 47.0
+  person_not_consenting_age_8: 25.0
+  person_not_consenting_age_9: null
+  person_not_present_age_1: '70'
+  person_not_present_age_2: '39'
+  person_not_present_age_3: '88'
+  person_not_present_age_4: '4'
+  person_not_present_age_5: '78'
+  person_not_present_age_6: '73'
+  person_not_present_age_7: '90'
+  person_not_present_age_8: '87'
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'Yes'
   postcode: null
   samples_taken_datetime: '2022-01-07 05:53:35.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Initially composing light-hearted and irreverent works, he
+    also wrote serious, sombre and religious pieces beginning in the 1930s.
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_nothing_now: 'No'
-  currently_currently_smokes_or_vapes_description: Atoms can contain any character if they are enclosed
-    within single quotes and an escape convention exists which allows any character
-    to be used within an atom.
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 'No'
@@ -542,11 +545,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'Yes'
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_muscle_ache_myalgia: 'No'
+  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -562,26 +586,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: 'Yes'
-  think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
-  think_had_covid_symptom_fever: 'Yes'
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: null
-  think_had_covid: 'No'
-  think_had_covid_admitted_to_hospital: 'Yes'
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: '3'
@@ -590,15 +594,12 @@
   unique_participant_response_id: DHVF-5927236237-DHR-049902298831-2022-01-08 08:46:46
   visit_datetime: '2022-01-08 08:46:46.000000'
   visit_id: DHVF-5927236237
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
     and writing poetry.
-  participant_withdrawal_reason: null
-  participant_withdrawal_reason_raw: null
   work_direct_contact_patients_or_clients: null
-  work_health_care_v0: 'No'
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
+  work_health_care_v0: 'No'
   work_location: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
     Well, do ya? Punk!"'
   work_location_raw: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
@@ -644,6 +645,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_currently_smokes_or_vapes_description: In 1989 the building was heavily
+    damaged by fire, but it has since been restored.
   date_of_birth: '1997-03-07 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -651,19 +654,19 @@
   ethnicity: Mixed-White & Asian
   ethnicity_other: The Galactic Empire is nearing completion of the Death Star, a
     space station with the power to destroy entire planets.
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
   first_name: Jae
   gender: null
-  ever_smoked_regularly: 'Yes'
   hh_id: '876960826911'
   hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: null
+  household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years: null
-  household_participants_not_consenting_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
     of chocolates. You never know what you're gonna get.
-  household_members_over_2_years_and_not_present_count: null
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: I'm gonna make him an offer he can't
     refuse.
   illness_lasting_over_12_months: null
@@ -676,8 +679,6 @@
   infant_age_months_6: 1.0
   infant_age_months_7: 0.0
   infant_age_months_8: 1.0
-  self_isolating: 'No'
-  self_isolating_reason: Ports are created with the built-in function open_port.
   last_covid_contact_date: null
   last_covid_contact_type: Let them eat cake.
   last_name: Hyde
@@ -685,59 +686,61 @@
   last_suspected_covid_type: Here's looking at you, kid.
   no_email_address: 0.0
   ons_household_id: '876960826911'
+  other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   other_antibody_test_results: Negative
-  other_antibody_test: null
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  other_covid_infection_test: 'No'
   outward_postcode: SE3Z
   participant_id: DHR-400895851138
   participant_visit_status: Scheduled
-  person_not_consenting_age_1: 87.0
-  person_not_present_age_1: '70'
+  participant_withdrawal_reason: Swab / blood process to distressing
+  participant_withdrawal_reason_raw: Swab / blood process to distressing
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_2: 1.0
-  person_not_present_age_2: '69'
   person_2_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_not_consenting_age_3: 11.0
-  person_not_present_age_3: '23'
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_4: 51.0
-  person_not_present_age_4: null
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_5: 64.0
-  person_not_present_age_5: null
   person_5_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_6: 15.0
-  person_not_present_age_6: '91'
   person_6_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_not_consenting_age_7: 68.0
-  person_not_present_age_7: '59'
   person_7_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_not_consenting_age_8: 75.0
-  person_not_present_age_8: '59'
   person_8_reason_for_not_consenting: Houston, we have a problem.
-  person_not_consenting_age_9: 9.0
   person_9_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
+  person_not_consenting_age_1: 87.0
+  person_not_consenting_age_2: 1.0
+  person_not_consenting_age_3: 11.0
+  person_not_consenting_age_4: 51.0
+  person_not_consenting_age_5: 64.0
+  person_not_consenting_age_6: 15.0
+  person_not_consenting_age_7: 68.0
+  person_not_consenting_age_8: 75.0
+  person_not_consenting_age_9: 9.0
+  person_not_present_age_1: '70'
+  person_not_present_age_2: '69'
+  person_not_present_age_3: '23'
+  person_not_present_age_4: null
+  person_not_present_age_5: null
+  person_not_present_age_6: '91'
+  person_not_present_age_7: '59'
+  person_not_present_age_8: '59'
   physical_contact_18_to_69_years: 'No'
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
   postcode: SE3Z6OR
   samples_taken_datetime: '2022-01-01 16:24:54.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Ports are created with the built-in function open_port.
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_nothing_now: 'Yes'
-  currently_currently_smokes_or_vapes_description: In 1989 the building was heavily damaged by fire, but
-    it has since been restored.
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: null
@@ -746,11 +749,32 @@
   street: Ballywatermoy
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 1.0
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_muscle_ache_myalgia: 'No'
+  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -766,26 +790,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  think_had_covid_symptom_abdominal_pain: null
-  think_had_covid_symptom_cough: null
-  think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
-  think_had_covid_symptom_fever: 'Yes'
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: null
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
-  think_had_covid_symptom_shortness_of_breath: null
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid: 'No'
-  think_had_covid_admitted_to_hospital: 'No'
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: 'Yes'
-  think_have_covid: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
   times_outside_shopping_or_socialising_last_7_days: '5'
@@ -794,14 +798,11 @@
   unique_participant_response_id: DHVF-8042076275-DHR-400895851138-2022-01-01 06:16:09
   visit_datetime: '2022-01-01 06:16:09.000000'
   visit_id: DHVF-8042076275
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
-  participant_withdrawal_reason: Swab / blood process to distressing
-  participant_withdrawal_reason_raw: Swab / blood process to distressing
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: 'No'
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
+  work_health_care_v0: 'No'
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
     I don't know.
   work_location_raw: One morning I shot an elephant in my pajamas. How he got in my
@@ -817,8 +818,8 @@
   work_not_from_home_days_per_week_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   work_nursing_or_residential_care_home: null
-  work_sector: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
+  work_sector: The sequential subset of Erlang supports eager evaluation, single assignment,
+    and dynamic typing.
   work_sector_other: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
   work_social_care: 'No'
@@ -853,24 +854,27 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_currently_smokes_or_vapes_description: Haskell is a standardized, general-purpose
+    purely functional programming language, with non-strict semantics and strong static
+    typing.
   date_of_birth: '2020-02-01 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: delage1844@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: Type classes first appeared in the Haskell programming language.
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
   first_name: Jenee
   gender: Female
-  ever_smoked_regularly: 'Yes'
   hh_id: '602276804025'
   hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'No'
-  household_members_under_2_years: null
-  household_participants_not_consenting_count: null
-  household_participants_not_consented_reason: Here's looking at you, kid.
   household_members_over_2_years_and_not_present_count: null
+  household_members_under_2_years: null
+  household_participants_not_consented_reason: Here's looking at you, kid.
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
   illness_lasting_over_12_months: 'Yes'
@@ -883,73 +887,72 @@
   infant_age_months_6: null
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
-  self_isolating: 'No'
-  self_isolating_reason: Atoms are used within a program to denote distinguished
-    values.
   last_covid_contact_date: null
-  last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I
-    feel lucky?"" Well, do ya? Punk!"'
+  last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
+    lucky?"" Well, do ya? Punk!"'
   last_name: Cardenas
   last_suspected_covid_contact_date: null
   last_suspected_covid_type: You're gonna need a bigger boat.
   no_email_address: 1.0
   ons_household_id: '602276804025'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  other_covid_infection_test: 'No'
   outward_postcode: null
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
-  person_not_consenting_age_1: 67.0
-  person_not_present_age_1: '74'
+  participant_withdrawal_reason: No longer wants to take part
+  participant_withdrawal_reason_raw: No longer wants to take part
   person_1_reason_for_not_consenting: Houston, we have a problem.
-  person_not_consenting_age_2: 89.0
-  person_not_present_age_2: null
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_3: 50.0
-  person_not_present_age_3: '64'
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_4: 56.0
-  person_not_present_age_4: '14'
   person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_5: 53.0
-  person_not_present_age_5: '30'
   person_5_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_6: 4.0
-  person_not_present_age_6: null
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_7: 26.0
-  person_not_present_age_7: null
   person_7_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_not_consenting_age_8: null
-  person_not_present_age_8: '55'
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_not_consenting_age_9: 9.0
   person_9_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
+  person_not_consenting_age_1: 67.0
+  person_not_consenting_age_2: 89.0
+  person_not_consenting_age_3: 50.0
+  person_not_consenting_age_4: 56.0
+  person_not_consenting_age_5: 53.0
+  person_not_consenting_age_6: 4.0
+  person_not_consenting_age_7: 26.0
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: 9.0
+  person_not_present_age_1: '74'
+  person_not_present_age_2: null
+  person_not_present_age_3: '64'
+  person_not_present_age_4: '14'
+  person_not_present_age_5: '30'
+  person_not_present_age_6: null
+  person_not_present_age_7: null
+  person_not_present_age_8: '55'
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Atoms are used within a program to denote distinguished values.
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'Yes'
   smokes_nothing_now: 'No'
-  currently_currently_smokes_or_vapes_description: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
@@ -958,11 +961,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 0.0
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_muscle_ache_myalgia: null
+  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -978,26 +1002,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
-  think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: null
-  think_had_covid_symptom_loss_of_smell: 'Yes'
-  think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'Yes'
-  think_had_covid_symptom_sore_throat: null
-  think_had_covid: 'No'
-  think_had_covid_admitted_to_hospital: 'No'
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
   times_outside_shopping_or_socialising_last_7_days: '7'
@@ -1006,14 +1010,11 @@
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
-  survey_response_type: First Visit
   which_symptoms_last_7_days: Do you have any idea why this is not working?
-  participant_withdrawal_reason: No longer wants to take part
-  participant_withdrawal_reason_raw: No longer wants to take part
   work_direct_contact_patients_or_clients: null
-  work_health_care_v0: null
   work_health_care_area: null
   work_health_care_area_raw: null
+  work_health_care_v0: null
   work_location: Those who refuse to learn from history are condemned to repeat it.
   work_location_raw: Those who refuse to learn from history are condemned to repeat
     it.
@@ -1064,24 +1065,26 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
+  currently_currently_smokes_or_vapes_description: He looked inquisitively at his
+    keyboard and wrote another sentence.
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   email_address: cortina2016@gsnail.ac.uk
   ethnicity: White-British
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
   first_name: Alan
   gender: Prefer not to say
-  ever_smoked_regularly: 'Yes'
   hh_id: 001674039598
   hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: null
-  household_members_under_2_years: 'Yes'
-  household_participants_not_consenting_count: null
-  household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
   household_members_over_2_years_and_not_present_count: '6'
+  household_members_under_2_years: 'Yes'
+  household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Mama always said life was like a box
     of chocolates. You never know what you're gonna get.
   illness_lasting_over_12_months: 'No'
@@ -1094,71 +1097,71 @@
   infant_age_months_6: 1.0
   infant_age_months_7: null
   infant_age_months_8: 3.0
-  self_isolating: 'No'
-  self_isolating_reason: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
-    are D1, D2, ... Dn.
   last_covid_contact_date: null
   last_covid_contact_type: Houston, we have a problem.
   last_name: Robbins
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
+    never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: 001674039598
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_location: Get your stinking paws off me, you damned dirty ape.
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  other_covid_infection_test: 'No'
   outward_postcode: null
   participant_id: DHR-757503098830
   participant_visit_status: Re-scheduled
-  person_not_consenting_age_1: 79.0
-  person_not_present_age_1: '67'
+  participant_withdrawal_reason: Moving location
+  participant_withdrawal_reason_raw: Moving location
   person_1_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_not_consenting_age_2: 4.0
-  person_not_present_age_2: '90'
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_3: 76.0
-  person_not_present_age_3: null
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_4: 85.0
-  person_not_present_age_4: '31'
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_5: 15.0
-  person_not_present_age_5: '22'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_not_consenting_age_6: 19.0
-  person_not_present_age_6: '41'
   person_6_reason_for_not_consenting: Houston, we have a problem.
-  person_not_consenting_age_7: 5.0
-  person_not_present_age_7: '25'
   person_7_reason_for_not_consenting: Let them eat cake.
-  person_not_consenting_age_8: 90.0
-  person_not_present_age_8: '84'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
-  person_not_consenting_age_9: 72.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_not_consenting_age_1: 79.0
+  person_not_consenting_age_2: 4.0
+  person_not_consenting_age_3: 76.0
+  person_not_consenting_age_4: 85.0
+  person_not_consenting_age_5: 15.0
+  person_not_consenting_age_6: 19.0
+  person_not_consenting_age_7: 5.0
+  person_not_consenting_age_8: 90.0
+  person_not_consenting_age_9: 72.0
+  person_not_present_age_1: '67'
+  person_not_present_age_2: '90'
+  person_not_present_age_3: null
+  person_not_present_age_4: '31'
+  person_not_present_age_5: '22'
+  person_not_present_age_6: '41'
+  person_not_present_age_7: '25'
+  person_not_present_age_8: '84'
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-02 09:26:10.000000'
+  self_isolating: 'No'
+  self_isolating_reason: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
+    are D1, D2, ... Dn.
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'No'
   smokes_nothing_now: null
-  currently_currently_smokes_or_vapes_description: He looked inquisitively at his keyboard and wrote another
-    sentence.
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 'No'
@@ -1167,11 +1170,32 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
+  think_had_covid: 'Yes'
+  think_had_covid_admitted_to_hospital: 'Yes'
+  think_had_covid_any_symptoms: 'Yes'
+  think_had_covid_any_symptoms_raw: 'Yes'
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_muscle_ache_myalgia: null
+  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: 'Yes'
+  think_had_covid_which_symptoms: 'No'
+  think_have_covid: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -1187,26 +1211,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: null
-  think_had_covid_symptom_cough: null
-  think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: null
-  think_had_covid_symptom_fever: 'Yes'
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'Yes'
-  think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'Yes'
-  think_had_covid_symptom_sore_throat: 'Yes'
-  think_had_covid: 'Yes'
-  think_had_covid_admitted_to_hospital: 'Yes'
-  think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_any_symptoms_raw: 'Yes'
-  think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: 'No'
-  think_have_covid: null
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'Yes'
   times_outside_shopping_or_socialising_last_7_days: '1'
@@ -1215,14 +1219,11 @@
   unique_participant_response_id: DVH-0765261449-DHR-757503098830-2022-01-06 16:19:05
   visit_datetime: '2022-01-06 16:19:05.000000'
   visit_id: DVH-0765261449
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
-  participant_withdrawal_reason: Moving location
-  participant_withdrawal_reason_raw: Moving location
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: null
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
+  work_health_care_v0: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
   work_main_job_changed: 'Yes'
@@ -1268,25 +1269,26 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Northamptonshire
+  currently_currently_smokes_or_vapes_description: Make me a sandwich.
   date_of_birth: '2021-12-18 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: predelinquent1840@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Atoms are used within a program to denote distinguished values.
+  ever_smoked_regularly: 'No'
   face_covering_outside_of_home: null
   first_name: Shaun
   gender: Female
-  ever_smoked_regularly: 'No'
   hh_id: 044476904382
   hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
+  household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years: null
-  household_participants_not_consenting_count: null
   household_participants_not_consented_reason: I'm gonna make him an offer he can't
     refuse.
-  household_members_over_2_years_and_not_present_count: null
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Frankly, my dear, I don't give a damn.
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: 'No'
@@ -1298,9 +1300,6 @@
   infant_age_months_6: 2.0
   infant_age_months_7: null
   infant_age_months_8: 2.0
-  self_isolating: 'No'
-  self_isolating_reason: The arguments can be primitive data types or compound
-    data types.
   last_covid_contact_date: null
   last_covid_contact_type: You're gonna need a bigger boat.
   last_name: Lynch
@@ -1308,61 +1307,65 @@
   last_suspected_covid_type: Let them eat cake.
   no_email_address: 1.0
   ons_household_id: 044476904382
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-05 00:00:00.000000'
   other_antibody_test_location: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  other_covid_infection_test: 'No'
   outward_postcode: null
   participant_id: DHR-392744995712
   participant_visit_status: Cancelled
-  person_not_consenting_age_1: 55.0
-  person_not_present_age_1: '88'
+  participant_withdrawal_reason: Bad experience with tester / survey
+  participant_withdrawal_reason_raw: Bad experience with tester / survey
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_2: 35.0
-  person_not_present_age_2: '59'
   person_2_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_3: 23.0
-  person_not_present_age_3: '90'
   person_3_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_not_consenting_age_4: 0.0
-  person_not_present_age_4: '86'
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_not_consenting_age_5: 49.0
-  person_not_present_age_5: '89'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_6: 68.0
-  person_not_present_age_6: '88'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_not_consenting_age_7: 33.0
-  person_not_present_age_7: '9'
   person_7_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_not_consenting_age_8: null
-  person_not_present_age_8: '67'
   person_8_reason_for_not_consenting: Let them eat cake.
-  person_not_consenting_age_9: 30.0
   person_9_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
+  person_not_consenting_age_1: 55.0
+  person_not_consenting_age_2: 35.0
+  person_not_consenting_age_3: 23.0
+  person_not_consenting_age_4: 0.0
+  person_not_consenting_age_5: 49.0
+  person_not_consenting_age_6: 68.0
+  person_not_consenting_age_7: 33.0
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: 30.0
+  person_not_present_age_1: '88'
+  person_not_present_age_2: '59'
+  person_not_present_age_3: '90'
+  person_not_present_age_4: '86'
+  person_not_present_age_5: '89'
+  person_not_present_age_6: '88'
+  person_not_present_age_7: '9'
+  person_not_present_age_8: '67'
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-04 14:55:06.000000'
+  self_isolating: 'No'
+  self_isolating_reason: The arguments can be primitive data types or compound data
+    types.
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'No'
   smokes_nothing_now: 'Yes'
-  currently_currently_smokes_or_vapes_description: Make me a sandwich.
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 'No'
@@ -1371,11 +1374,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 0.0
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: 'Yes'
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: null
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
+  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_which_symptoms: null
+  think_have_covid: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -1391,26 +1415,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
-  think_had_covid_symptom_fever: null
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: null
-  think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: null
-  think_had_covid_symptom_sore_throat: null
-  think_had_covid: 'No'
-  think_had_covid_admitted_to_hospital: 'Yes'
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: null
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: '7'
@@ -1419,15 +1423,12 @@
   unique_participant_response_id: DVH-1442294850-DHR-392744995712-2022-01-09 09:03:22
   visit_datetime: '2022-01-09 09:03:22.000000'
   visit_id: DVH-1442294850
-  survey_response_type: First Visit
   which_symptoms_last_7_days: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
-  participant_withdrawal_reason: Bad experience with tester / survey
-  participant_withdrawal_reason_raw: Bad experience with tester / survey
   work_direct_contact_patients_or_clients: null
-  work_health_care_v0: null
   work_health_care_area: null
   work_health_care_area_raw: null
+  work_health_care_v0: null
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1475,6 +1476,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_currently_smokes_or_vapes_description: Erlang is a general-purpose, concurrent,
+    functional programming language.
   date_of_birth: '1994-09-20 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1482,18 +1485,18 @@
   ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
   first_name: Maple
   gender: Female
-  ever_smoked_regularly: 'Yes'
   hh_id: '890407714528'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
-  household_members_under_2_years: 'No'
-  household_participants_not_consenting_count: null
-  household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
   household_members_over_2_years_and_not_present_count: null
+  household_members_under_2_years: 'No'
+  household_participants_not_consented_reason: Frankly, my dear, I don't give a damn.
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Mama always said life was like a box
     of chocolates. You never know what you're gonna get.
   illness_lasting_over_12_months: 'No'
@@ -1506,73 +1509,73 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 7.0
   infant_age_months_8: 3.0
-  self_isolating: 'No'
-  self_isolating_reason: Erlang is known for its designs that are well suited
-    for systems.
   last_covid_contact_date: null
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: Brock
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Ask not what your country can do for you;
-    ask what you can do for your country.
+  last_suspected_covid_type: Ask not what your country can do for you; ask what you
+    can do for your country.
   no_email_address: 0.0
   ons_household_id: '890407714528'
+  other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: The only thing we have to fear is fear itself.
   other_antibody_test_results: Negative
-  other_antibody_test: null
+  other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  other_covid_infection_test: 'No'
   outward_postcode: null
   participant_id: DHR-802621954781
   participant_visit_status: Cancelled
-  person_not_consenting_age_1: 55.0
-  person_not_present_age_1: '76'
+  participant_withdrawal_reason: Too many visits
+  participant_withdrawal_reason_raw: Too many visits
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_not_consenting_age_2: 18.0
-  person_not_present_age_2: '56'
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_not_consenting_age_3: 24.0
-  person_not_present_age_3: '60'
   person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_not_consenting_age_4: 83.0
-  person_not_present_age_4: null
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_not_consenting_age_5: 8.0
-  person_not_present_age_5: '27'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_6: 25.0
-  person_not_present_age_6: '86'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_not_consenting_age_7: null
-  person_not_present_age_7: '10'
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_not_consenting_age_8: 58.0
-  person_not_present_age_8: '50'
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_not_consenting_age_9: 68.0
   person_9_reason_for_not_consenting: The only thing we have to fear is fear itself.
+  person_not_consenting_age_1: 55.0
+  person_not_consenting_age_2: 18.0
+  person_not_consenting_age_3: 24.0
+  person_not_consenting_age_4: 83.0
+  person_not_consenting_age_5: 8.0
+  person_not_consenting_age_6: 25.0
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: 58.0
+  person_not_consenting_age_9: 68.0
+  person_not_present_age_1: '76'
+  person_not_present_age_2: '56'
+  person_not_present_age_3: '60'
+  person_not_present_age_4: null
+  person_not_present_age_5: '27'
+  person_not_present_age_6: '86'
+  person_not_present_age_7: '10'
+  person_not_present_age_8: '50'
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-05 21:50:51.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Erlang is known for its designs that are well suited for
+    systems.
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
   smokes_nothing_now: 'Yes'
-  currently_currently_smokes_or_vapes_description: Erlang is a general-purpose, concurrent, functional
-    programming language.
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 'Yes'
@@ -1581,11 +1584,32 @@
   street: Druminiskill
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 1.0
+  think_had_covid: 'No'
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_muscle_ache_myalgia: null
+  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1601,26 +1625,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: 'Yes'
-  think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: null
-  think_had_covid_symptom_fever: null
-  think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: null
-  think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'Yes'
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid: 'No'
-  think_had_covid_admitted_to_hospital: null
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'Yes'
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
   times_outside_shopping_or_socialising_last_7_days: '6'
@@ -1630,15 +1634,12 @@
   unique_participant_response_id: DVH-4257239645-DHR-802621954781-2022-01-02 20:07:11
   visit_datetime: '2022-01-02 20:07:11.000000'
   visit_id: DVH-4257239645
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: Tuples are containers for a fixed number of Erlang data
     types.
-  participant_withdrawal_reason: Too many visits
-  participant_withdrawal_reason_raw: Too many visits
   work_direct_contact_patients_or_clients: null
-  work_health_care_v0: 'No'
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
+  work_health_care_v0: 'No'
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1685,24 +1686,26 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
+  currently_currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes
+    a tuple whose arguments are D1, D2, ... Dn.
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: laylight1961@gsnail.ac.uk
   ethnicity: Any other ethnic group
   ethnicity_other: The arguments can be primitive data types or compound data types.
+  ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
   first_name: Ira
   gender: null
-  ever_smoked_regularly: 'No'
   hh_id: '456442497105'
   hours_a_day_with_someone_else_at_home: '0'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'Yes'
-  household_members_under_2_years: null
-  household_participants_not_consenting_count: null
-  household_participants_not_consented_reason: Houston, we have a problem.
   household_members_over_2_years_and_not_present_count: null
+  household_members_under_2_years: null
+  household_participants_not_consented_reason: Houston, we have a problem.
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: Let them eat cake.
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: 'No'
@@ -1714,72 +1717,71 @@
   infant_age_months_6: 4.0
   infant_age_months_7: 1.0
   infant_age_months_8: 6.0
-  self_isolating: 'No'
-  self_isolating_reason: Atoms are used within a program to denote distinguished
-    values.
   last_covid_contact_date: null
   last_covid_contact_type: Let them eat cake.
   last_name: Bernard
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: One morning I shot an elephant in my pajamas.
-    How he got in my pajamas, I don't know.
+  last_suspected_covid_type: One morning I shot an elephant in my pajamas. How he
+    got in my pajamas, I don't know.
   no_email_address: 1.0
   ons_household_id: '456442497105'
+  other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
-  other_antibody_test: null
+  other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  other_covid_infection_test: 'Yes'
   outward_postcode: null
   participant_id: DHR-771419502848
   participant_visit_status: Cancelled
-  person_not_consenting_age_1: 83.0
-  person_not_present_age_1: '69'
+  participant_withdrawal_reason: Bad experience with tester / survey
+  participant_withdrawal_reason_raw: Bad experience with tester / survey
   person_1_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_2: 10.0
-  person_not_present_age_2: '50'
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_3: 45.0
-  person_not_present_age_3: '40'
   person_3_reason_for_not_consenting: Let them eat cake.
-  person_not_consenting_age_4: 46.0
-  person_not_present_age_4: '11'
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_not_consenting_age_5: 76.0
-  person_not_present_age_5: '56'
   person_5_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_not_consenting_age_6: 22.0
-  person_not_present_age_6: '14'
   person_6_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_not_consenting_age_7: 35.0
-  person_not_present_age_7: '50'
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_8: 46.0
-  person_not_present_age_8: null
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_9: 79.0
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_not_consenting_age_1: 83.0
+  person_not_consenting_age_2: 10.0
+  person_not_consenting_age_3: 45.0
+  person_not_consenting_age_4: 46.0
+  person_not_consenting_age_5: 76.0
+  person_not_consenting_age_6: 22.0
+  person_not_consenting_age_7: 35.0
+  person_not_consenting_age_8: 46.0
+  person_not_consenting_age_9: 79.0
+  person_not_present_age_1: '69'
+  person_not_present_age_2: '50'
+  person_not_present_age_3: '40'
+  person_not_present_age_4: '11'
+  person_not_present_age_5: '56'
+  person_not_present_age_6: '14'
+  person_not_present_age_7: '50'
+  person_not_present_age_8: null
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-03 13:05:35.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Atoms are used within a program to denote distinguished values.
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'Yes'
   smokes_nothing_now: null
-  currently_currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
-    are D1, D2, ... Dn.
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
@@ -1788,11 +1790,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
   swabs_taken: 1.0
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: 'No'
+  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
+  think_had_covid_contacted_nhs: 'Yes'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_muscle_ache_myalgia: null
+  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: 'Yes'
+  think_had_covid_which_symptoms: 'Yes'
+  think_have_covid: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1808,44 +1831,21 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
-  think_had_covid_symptom_fever: null
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: null
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'Yes'
-  think_had_covid: null
-  think_had_covid_admitted_to_hospital: 'No'
-  think_had_covid_any_symptoms: 'No'
-  think_had_covid_any_symptoms_raw: 'No'
-  think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: 'Yes'
-  think_have_covid: null
   times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: '5'
   title: Miss
-  transport_to_work_or_education: '"You''ve got to ask yourself one question: ""Do I
-    feel lucky?"" Well, do ya? Punk!"'
+  transport_to_work_or_education: '"You''ve got to ask yourself one question: ""Do
+    I feel lucky?"" Well, do ya? Punk!"'
   unique_participant_response_id: DVH-6387621024-DHR-771419502848-2022-01-03 23:14:15
   visit_datetime: '2022-01-03 23:14:15.000000'
   visit_id: DVH-6387621024
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
-  participant_withdrawal_reason: Bad experience with tester / survey
-  participant_withdrawal_reason_raw: Bad experience with tester / survey
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: null
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
+  work_health_care_v0: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
   work_main_job_changed: 'Yes'
@@ -1858,8 +1858,8 @@
   work_not_from_home_days_per_week_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   work_nursing_or_residential_care_home: null
-  work_sector: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
+  work_sector: The sequential subset of Erlang supports eager evaluation, single assignment,
+    and dynamic typing.
   work_sector_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
@@ -1890,25 +1890,27 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
+  currently_currently_smokes_or_vapes_description: Erlang is known for its designs
+    that are well suited for systems.
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   email_address: balate1925@gsnail.ac.uk
   ethnicity: Any other Asian background
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
   first_name: Buck
   gender: Male
-  ever_smoked_regularly: 'No'
   hh_id: '788221784619'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'Yes'
+  household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years: null
-  household_participants_not_consenting_count: null
   household_participants_not_consented_reason: Mama always said life was like a box
     of chocolates. You never know what you're gonna get.
-  household_members_over_2_years_and_not_present_count: null
+  household_participants_not_consenting_count: null
   household_participants_not_present_reason: I'm gonna make him an offer he can't
     refuse.
   illness_lasting_over_12_months: null
@@ -1921,73 +1923,73 @@
   infant_age_months_6: 0.0
   infant_age_months_7: 1.0
   infant_age_months_8: 7.0
-  self_isolating: 'No'
-  self_isolating_reason: Do you have any idea why this is not working?
   last_covid_contact_date: null
   last_covid_contact_type: The only thing we have to fear is fear itself.
   last_name: Meyers
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
+    never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '788221784619'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: The only thing we have to fear is fear itself.
   other_antibody_test_results: Negative
-  other_antibody_test: 'Yes'
+  other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  other_covid_infection_test: 'Yes'
   outward_postcode: null
   participant_id: DHR-720138926395
   participant_visit_status: Scheduled
-  person_not_consenting_age_1: 63.0
-  person_not_present_age_1: '80'
+  participant_withdrawal_reason: Moving location
+  participant_withdrawal_reason_raw: Moving location
   person_1_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_not_consenting_age_2: 53.0
-  person_not_present_age_2: '25'
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_not_consenting_age_3: 48.0
-  person_not_present_age_3: null
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_4: 68.0
-  person_not_present_age_4: '7'
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_5: 64.0
-  person_not_present_age_5: '44'
   person_5_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_not_consenting_age_6: 23.0
-  person_not_present_age_6: '63'
   person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_not_consenting_age_7: 17.0
-  person_not_present_age_7: '45'
   person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_not_consenting_age_8: 49.0
-  person_not_present_age_8: '8'
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_not_consenting_age_9: 17.0
   person_9_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
+  person_not_consenting_age_1: 63.0
+  person_not_consenting_age_2: 53.0
+  person_not_consenting_age_3: 48.0
+  person_not_consenting_age_4: 68.0
+  person_not_consenting_age_5: 64.0
+  person_not_consenting_age_6: 23.0
+  person_not_consenting_age_7: 17.0
+  person_not_consenting_age_8: 49.0
+  person_not_consenting_age_9: 17.0
+  person_not_present_age_1: '80'
+  person_not_present_age_2: '25'
+  person_not_present_age_3: null
+  person_not_present_age_4: '7'
+  person_not_present_age_5: '44'
+  person_not_present_age_6: '63'
+  person_not_present_age_7: '45'
+  person_not_present_age_8: '8'
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'No'
   postcode: null
   samples_taken_datetime: '2022-01-01 21:42:49.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Do you have any idea why this is not working?
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_nothing_now: null
-  currently_currently_smokes_or_vapes_description: Erlang is known for its designs that are well suited
-    for systems.
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: null
@@ -1996,11 +1998,32 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: null
   swab_sample_barcode_edited_flag: 1.0
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
   swabs_taken: 0.0
+  think_had_covid: null
+  think_had_covid_admitted_to_hospital: null
+  think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
+  think_had_covid_contacted_nhs: 'No'
+  think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_muscle_ache_myalgia: null
+  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: 'Yes'
+  think_had_covid_which_symptoms: null
+  think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -2016,26 +2039,6 @@
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
-  think_had_covid_symptom_abdominal_pain: 'Yes'
-  think_had_covid_symptom_cough: null
-  think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
-  think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: null
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'Yes'
-  think_had_covid: null
-  think_had_covid_admitted_to_hospital: null
-  think_had_covid_any_symptoms: null
-  think_had_covid_any_symptoms_raw: null
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: null
-  think_had_covid_which_symptoms: null
-  think_have_covid: 'No'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: 'No'
   times_outside_shopping_or_socialising_last_7_days: '7'
@@ -2044,14 +2047,11 @@
   unique_participant_response_id: DVH-8988073988-DHR-720138926395-2022-01-08 06:34:15
   visit_datetime: '2022-01-08 06:34:15.000000'
   visit_id: DVH-8988073988
-  survey_response_type: Follow-up Visit
   which_symptoms_last_7_days: Make me a sandwich.
-  participant_withdrawal_reason: Moving location
-  participant_withdrawal_reason_raw: Moving location
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_v0: null
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
+  work_health_care_v0: null
   work_location: The only thing we have to fear is fear itself.
   work_location_raw: The only thing we have to fear is fear itself.
   work_main_job_changed: 'Yes'

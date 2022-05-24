@@ -219,7 +219,7 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email_address", domains=["gsnail.ac.uk"]), None]),
+        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "No email_address Address": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods Taken": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods Barcode 1": _(
@@ -430,7 +430,7 @@ def get_voyager_1_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%Y-%m-%d", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email_address", domains=["gsnail.ac.uk"]), None]),
+        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "No_email_address": _("custom_random.random_integer", lower=0, upper=1),
         "Bloods_Taken": _("custom_random.random_integer", lower=0, upper=1),
         "bloods_barcode_1": _(
@@ -790,7 +790,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             population=[_("datetime.formatted_datetime", fmt="%d/%m/%Y %H:%M", start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email_address", domains=["gsnail.ac.uk"]), None]),
+        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "Have_landline_number": _("choice", items=yes_no_none_choice),
         "Have_mobile_number": _("choice", items=yes_no_none_choice),
         "Have_email_address": _("choice", items=yes_no_none_choice),
@@ -1650,7 +1650,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
             weights=[0.9, 0.1],
         ),
-        "email_address": _("choice", items=[_("person.email_address", domains=["gsnail.ac.uk"]), None]),
+        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "voucher_type_preference": _("choice", items=["email_address", "Letter"]),
         "household_completion_window_id": _(
             "random.custom_code", mask="############", digit="#"

@@ -36,6 +36,7 @@
   cis_covid_vaccine_date_5: '2022-01-01'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'Yes'
+  cis_covid_vacine_type: null
   cis_covid_vacine_type_1: Sinovac
   cis_covid_vacine_type_2: null
   cis_covid_vacine_type_3: From a research study/trial
@@ -46,13 +47,12 @@
   cis_covid_vacine_type_other_1: The only thing we have to fear is fear itself.
   cis_covid_vacine_type_other_2: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type_other_3: A census taker once tried to test me. I ate his
-    liver with some fava beans and a nice Chianti.
+  cis_covid_vacine_type_other_3: A census taker once tried to test me. I ate his liver
+    with some fava beans and a nice Chianti.
   cis_covid_vacine_type_other_4: Here's looking at you, kid.
   cis_covid_vacine_type_other_5: Here's looking at you, kid.
   cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type: null
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Weekly
@@ -62,8 +62,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Bangladesh
-  currently_currently_smokes_or_vapes: Prefer not to say
   currently_currently_currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '2001-04-22 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -80,8 +80,8 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
-  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
-    religious or cultural reasons
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons
+    - for example  for religious or cultural reasons
   first_name: Shawnee
   hh_id: '441094840601'
   hospital_last_28_days: 'No'
@@ -130,9 +130,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-539176725448
   participant_invited_digital: 'Yes'
-  participant_status: Withdrawn
   participant_participant_withdrawal_reason: too many visits
   participant_participant_withdrawal_type: Withdrawn
+  participant_status: Withdrawn
   person_not_consenting_age_1: 291.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 702.0
@@ -353,6 +353,7 @@
   cis_covid_vaccine_date_5: '2022-01-05'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Sputnik
   cis_covid_vacine_type_1: Sputnik
   cis_covid_vacine_type_2: Sinopharm
   cis_covid_vacine_type_3: I don't know the type
@@ -367,9 +368,7 @@
   cis_covid_vacine_type_other_4: Houston, we have a problem.
   cis_covid_vacine_type_other_5: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_6: Get your stinking paws off me, you damned dirty
-    ape.
-  cis_covid_vacine_type: Sputnik
+  cis_covid_vacine_type_other_6: Get your stinking paws off me, you damned dirty ape.
   cis_flu_vaccine_received: null
   city: Chichester
   completion_window_cadence: Weekly
@@ -379,8 +378,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Iceland
-  currently_currently_smokes_or_vapes: 'No'
   currently_currently_currently_smokes_or_vapes_description: 'No'
+  currently_currently_smokes_or_vapes: 'No'
   date_of_birth: '2014-05-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -446,9 +445,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-190156218256
   participant_invited_digital: 'No'
-  participant_status: Active
   participant_participant_withdrawal_reason: No longer wants to take part
   participant_participant_withdrawal_type: Withdrawn – no future linkage
+  participant_status: Active
   person_not_consenting_age_1: 238.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 299.0
@@ -666,6 +665,7 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Sputnik
   cis_covid_vacine_type_1: I don't know the type
   cis_covid_vacine_type_2: Sinopharm
   cis_covid_vacine_type_3: null
@@ -682,7 +682,6 @@
     to repeat it.
   cis_covid_vacine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vacine_type: Sputnik
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Monthly
@@ -692,8 +691,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: null
-  currently_currently_smokes_or_vapes: Prefer not to say
   currently_currently_currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '1985-02-24 00:00:00.000000'
   days_since_think_had_covid: -9233.0
   days_since_think_had_covid_group: null
@@ -710,7 +709,8 @@
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: null
-  face_covering_work_or_education_or_education: I am not going to my place of work or education
+  face_covering_work_or_education_or_education: I am not going to my place of work
+    or education
   first_name: Clemmie
   hh_id: '420762754008'
   hospital_last_28_days: 'No'
@@ -759,9 +759,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-958511387882
   participant_invited_digital: 'No'
-  participant_status: Complete
   participant_participant_withdrawal_reason: Swab/blood process distressing
   participant_participant_withdrawal_type: Withdrawn – no future linkage
+  participant_status: Complete
   person_not_consenting_age_1: 154.0
   person_not_consenting_age_2: 864.0
   person_not_consenting_age_3: 810.0
@@ -989,6 +989,7 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Sinopharm
   cis_covid_vacine_type_1: Valneva
   cis_covid_vacine_type_2: null
   cis_covid_vacine_type_3: Pfizer / BioNTech
@@ -1004,7 +1005,6 @@
     I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vacine_type_other_5: Here's looking at you, kid.
   cis_covid_vacine_type_other_6: Houston, we have a problem.
-  cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Weekly
@@ -1014,8 +1014,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_currently_smokes_or_vapes: 'No'
   currently_currently_currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
   date_of_birth: '1994-02-02 00:00:00.000000'
   days_since_think_had_covid: -9234.0
   days_since_think_had_covid_group: null
@@ -1034,8 +1034,8 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
-    religious or cultural reasons
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons
+    - for example  for religious or cultural reasons
   first_name: Shaun
   hh_id: '736535270957'
   hospital_last_28_days: null
@@ -1084,9 +1084,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-763063387334
   participant_invited_digital: 'No'
-  participant_status: Active
   participant_participant_withdrawal_reason: Participant does not want to self swab
   participant_participant_withdrawal_type: Withdrawn
+  participant_status: Active
   person_not_consenting_age_1: 0.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -1306,6 +1306,7 @@
   cis_covid_vaccine_date_5: '2022-01-07'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Sinopharm
   cis_covid_vacine_type_1: Sputnik
   cis_covid_vacine_type_2: Novavax
   cis_covid_vacine_type_3: null
@@ -1320,7 +1321,6 @@
   cis_covid_vacine_type_other_4: Elementary, my dear Watson.
   cis_covid_vacine_type_other_5: Houston, we have a problem.
   cis_covid_vacine_type_other_6: Frankly, my dear, I don't give a damn.
-  cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: 'No'
   city: Barrhead
   completion_window_cadence: Monthly
@@ -1330,8 +1330,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Romania
-  currently_currently_smokes_or_vapes: 'Yes'
   currently_currently_currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'Yes'
   date_of_birth: '1997-08-21 00:00:00.000000'
   days_since_think_had_covid: -12972.0
   days_since_think_had_covid_group: null
@@ -1398,9 +1398,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-329500167403
   participant_invited_digital: 'Yes'
-  participant_status: Withdrawn
   participant_participant_withdrawal_reason: No longer convenient
   participant_participant_withdrawal_type: Withdrawn – no future linkage
+  participant_status: Withdrawn
   person_not_consenting_age_1: 529.0
   person_not_consenting_age_2: 860.0
   person_not_consenting_age_3: null
@@ -1629,6 +1629,7 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'Yes'
+  cis_covid_vacine_type: Sinopharm
   cis_covid_vacine_type_1: Sputnik
   cis_covid_vacine_type_2: Sinopharm
   cis_covid_vacine_type_3: I don't know the type
@@ -1636,8 +1637,7 @@
   cis_covid_vacine_type_5: Sinopharm
   cis_covid_vacine_type_6: Sinopharm
   cis_covid_vacine_type_other: Frankly, my dear, I don't give a damn.
-  cis_covid_vacine_type_other_1: Get your stinking paws off me, you damned dirty
-    ape.
+  cis_covid_vacine_type_other_1: Get your stinking paws off me, you damned dirty ape.
   cis_covid_vacine_type_other_2: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
@@ -1647,7 +1647,6 @@
   cis_covid_vacine_type_other_5: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vacine_type_other_6: I'm gonna make him an offer he can't refuse.
-  cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: null
   city: Newhaven
   completion_window_cadence: Weekly
@@ -1657,8 +1656,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Iceland
-  currently_currently_smokes_or_vapes: Prefer not to say
   currently_currently_currently_smokes_or_vapes_description: 'No'
+  currently_currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '1999-08-11 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1725,9 +1724,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-308127387209
   participant_invited_digital: 'Yes'
-  participant_status: Active
   participant_participant_withdrawal_reason: too many visits
   participant_participant_withdrawal_type: Withdrawn – no future linkage
+  participant_status: Active
   person_not_consenting_age_1: 425.0
   person_not_consenting_age_2: 330.0
   person_not_consenting_age_3: 270.0
@@ -1949,6 +1948,7 @@
   cis_covid_vaccine_date_5: '2022-01-02'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Moderna
   cis_covid_vacine_type_1: Novavax
   cis_covid_vacine_type_2: Pfizer / BioNTech
   cis_covid_vacine_type_3: Another vaccine please specify
@@ -1959,14 +1959,13 @@
     feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vacine_type_other_1: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type_other_2: A census taker once tried to test me. I ate his
-    liver with some fava beans and a nice Chianti.
+  cis_covid_vacine_type_other_2: A census taker once tried to test me. I ate his liver
+    with some fava beans and a nice Chianti.
   cis_covid_vacine_type_other_3: They call me *Mister* Tibbs!
   cis_covid_vacine_type_other_4: Elementary, my dear Watson.
   cis_covid_vacine_type_other_5: You're gonna need a bigger boat.
   cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type: Moderna
   cis_flu_vaccine_received: null
   city: null
   completion_window_cadence: Monthly
@@ -1976,8 +1975,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Romania
-  currently_currently_smokes_or_vapes: 'No'
   currently_currently_currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
   date_of_birth: '2007-03-09 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2043,9 +2042,10 @@
   participant_enrolment_datetime: null
   participant_id: DHR-867585874226
   participant_invited_digital: 'No'
-  participant_status: Complete
   participant_participant_withdrawal_reason: too many visits
-  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of
+    samples
+  participant_status: Complete
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 706.0
   person_not_consenting_age_3: null
@@ -2271,6 +2271,7 @@
   cis_covid_vaccine_date_5: '2022-01-09'
   cis_covid_vaccine_number_of_doses: '3'
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: Another vaccine please specify
   cis_covid_vacine_type_1: Another vaccine please specify
   cis_covid_vacine_type_2: Sinopharm
   cis_covid_vacine_type_3: Sputnik
@@ -2287,7 +2288,6 @@
   cis_covid_vacine_type_other_5: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   cis_covid_vacine_type_other_6: Houston, we have a problem.
-  cis_covid_vacine_type: Another vaccine please specify
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Monthly
@@ -2297,8 +2297,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Jamaica
-  currently_currently_smokes_or_vapes: 'No'
   currently_currently_currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'No'
   date_of_birth: null
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2366,9 +2366,10 @@
   participant_enrolment_datetime: null
   participant_id: DHR-352206298026
   participant_invited_digital: 'Yes'
-  participant_status: Complete
   participant_participant_withdrawal_reason: No longer convenient
-  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of
+    samples
+  participant_status: Complete
   person_not_consenting_age_1: 571.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 807.0
@@ -2589,6 +2590,7 @@
   cis_covid_vaccine_date_5: '2022-01-08'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'No'
+  cis_covid_vacine_type: null
   cis_covid_vacine_type_1: Another vaccine please specify
   cis_covid_vacine_type_2: Valneva
   cis_covid_vacine_type_3: Sputnik
@@ -2597,19 +2599,18 @@
   cis_covid_vacine_type_6: Oxford / AstraZeneca
   cis_covid_vacine_type_other: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vacine_type_other_1: A census taker once tried to test me. I ate his
-    liver with some fava beans and a nice Chianti.
+  cis_covid_vacine_type_other_1: A census taker once tried to test me. I ate his liver
+    with some fava beans and a nice Chianti.
   cis_covid_vacine_type_other_2: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vacine_type_other_3: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vacine_type_other_4: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vacine_type_other_5: A census taker once tried to test me. I ate his
-    liver with some fava beans and a nice Chianti.
+  cis_covid_vacine_type_other_5: A census taker once tried to test me. I ate his liver
+    with some fava beans and a nice Chianti.
   cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vacine_type: null
   cis_flu_vaccine_received: 'No'
   city: Coatbridge
   completion_window_cadence: Weekly
@@ -2619,8 +2620,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_currently_smokes_or_vapes: 'Yes'
   currently_currently_currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'Yes'
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2638,8 +2639,8 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
-    religious or cultural reasons
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons
+    - for example  for religious or cultural reasons
   first_name: Annika
   hh_id: '602276804025'
   hospital_last_28_days: null
@@ -2688,9 +2689,10 @@
   participant_enrolment_datetime: null
   participant_id: DHR-016525808631
   participant_invited_digital: 'No'
-  participant_status: Withdrawn
   participant_participant_withdrawal_reason: Participant does not want to self swab
-  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of
+    samples
+  participant_status: Withdrawn
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 336.0
   person_not_consenting_age_3: null
@@ -2912,6 +2914,7 @@
   cis_covid_vaccine_date_5: '2022-01-04'
   cis_covid_vaccine_number_of_doses: '4'
   cis_covid_vaccine_received: 'Yes'
+  cis_covid_vacine_type: Sinovac
   cis_covid_vacine_type_1: Sinopharm
   cis_covid_vacine_type_2: Janssen / Johnson&Johnson
   cis_covid_vacine_type_3: From a research study/trial
@@ -2927,7 +2930,6 @@
   cis_covid_vacine_type_other_5: Houston, we have a problem.
   cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vacine_type: Sinovac
   cis_flu_vaccine_received: null
   city: null
   completion_window_cadence: Monthly
@@ -2937,8 +2939,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   country: Ecuador
-  currently_currently_smokes_or_vapes: 'No'
   currently_currently_currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
   date_of_birth: '2014-01-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -3005,9 +3007,9 @@
   participant_enrolment_datetime: null
   participant_id: DHR-200593676791
   participant_invited_digital: 'Yes'
-  participant_status: Complete
   participant_participant_withdrawal_reason: Moving Location
   participant_participant_withdrawal_type: Withdrawn
+  participant_status: Complete
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 964.0
   person_not_consenting_age_3: null

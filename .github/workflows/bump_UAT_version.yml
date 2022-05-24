@@ -26,7 +26,7 @@ jobs:
       run: |
         pip3 install bump2version
         git config --global user.name 'CIS-DEV'
-        git config --global user.email_address 'CIS.DEV@ons.gov.uk'
+        git config --global user.email 'CIS.DEV@ons.gov.uk'
         bumpversion --verbose pre
         git push
         git push --tags
