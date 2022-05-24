@@ -47,6 +47,7 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: null
@@ -346,6 +347,7 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
@@ -647,6 +649,7 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: null
@@ -946,6 +949,7 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
@@ -1253,6 +1257,7 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
@@ -1557,6 +1562,7 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
@@ -1864,6 +1870,7 @@
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
@@ -2168,6 +2175,7 @@
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: null
@@ -2469,6 +2477,7 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
@@ -2778,6 +2787,7 @@
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
+  consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: null

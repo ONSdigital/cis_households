@@ -198,6 +198,10 @@ category_maps = {
             "Other ethnic group-Arab": 17,
             "Any other ethnic group": 18,
         },
+        "ethnicity_white": {
+            "Non-White": 0,
+            "White": 1,
+        },
         "illness_reduces_activity_or_ability": {"Not at all": 0, "Yes, a little": 1, "Yes, a lot": 2},
         "work_sector": {
             "Teaching and education": 1,
