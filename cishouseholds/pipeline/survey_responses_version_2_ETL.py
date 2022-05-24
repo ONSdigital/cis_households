@@ -73,7 +73,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "think_have_covid_symptom_any",
         "work_main_job_title",
         "work_main_job_role",
-        "work_health_care_v0",
+        "work_health_care_patient_facing",
         "work_health_care_area",
         "work_status_v1",
         "work_status_v2",
@@ -161,7 +161,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     )
     df = assign_work_health_care(
         df,
-        "work_health_care_v0",
+        "work_health_care_patient_facing",
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
     )
@@ -787,7 +787,7 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
     # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_v0"
+    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
     # )
     # df = update_work_facing_now_column(
     #     df,
@@ -1021,7 +1021,7 @@ def fill_forwards_transformations(df):
             "work_sector",
             "work_sector_other",
             "work_social_care",
-            "work_health_care_v0",
+            "work_health_care_patient_facing",
             "work_health_care_area",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",

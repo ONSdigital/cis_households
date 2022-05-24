@@ -179,7 +179,7 @@ column_name_maps = {
         "Main Job Responsibilities": "work_main_job_role",
         "Working Location": "work_location",
         "No. days a week working outside of home?": "work_not_from_home_days_per_week",
-        "Do you work in healthcare?": "work_health_care_v0",
+        "Do you work in healthcare?": "work_health_care_patient_facing",
         "Do you work in social care?": "work_social_care",
         "Do you have any of these symptoms Today?": "think_have_covid_symptom_any",
         "Symptoms today": "which_symptoms_last_7_days",

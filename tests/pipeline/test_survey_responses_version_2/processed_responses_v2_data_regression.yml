@@ -276,7 +276,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
@@ -575,7 +575,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care (e.g. hospital)
-  work_health_care_v0: Yes, secondary care, non-patient-facing
+  work_health_care_patient_facing: Yes, secondary care, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
@@ -877,7 +877,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: null
   work_health_care_area_raw: null
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
@@ -1177,7 +1177,7 @@
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: null
   work_health_care_area_raw: null
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
@@ -1484,7 +1484,7 @@
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care (e.g. hospital)
-  work_health_care_v0: Yes, secondary care, patient-facing
+  work_health_care_patient_facing: Yes, secondary care, patient-facing
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
@@ -1789,7 +1789,7 @@
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: null
   work_location_raw: null
@@ -2096,7 +2096,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -2398,7 +2398,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: null
   work_health_care_area_raw: null
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
@@ -2700,7 +2700,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
   work_location: From home (in the same grounds or building as your home)Somewhere
     else (not at your home)
@@ -3010,7 +3010,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)

@@ -180,7 +180,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   work_location_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this
     wall!
@@ -386,7 +386,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
   work_location_raw: Mama always said life was like a box of chocolates. You never
@@ -599,7 +599,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
-  work_health_care_v0: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
     Well, do ya? Punk!"'
   work_location_raw: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
@@ -802,7 +802,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
-  work_health_care_v0: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
     I don't know.
   work_location_raw: One morning I shot an elephant in my pajamas. How he got in my
@@ -1014,7 +1014,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: null
   work_health_care_area_raw: null
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: Those who refuse to learn from history are condemned to repeat it.
   work_location_raw: Those who refuse to learn from history are condemned to repeat
     it.
@@ -1223,7 +1223,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
   work_main_job_changed: 'Yes'
@@ -1428,7 +1428,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: null
   work_health_care_area_raw: null
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1639,7 +1639,7 @@
   work_direct_contact_patients_or_clients: null
   work_health_care_area: 'No'
   work_health_care_area_raw: 'No'
-  work_health_care_v0: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1845,7 +1845,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
   work_main_job_changed: 'Yes'
@@ -2051,7 +2051,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: 'Yes'
   work_health_care_area_raw: 'Yes'
-  work_health_care_v0: null
+  work_health_care_patient_facing: null
   work_location: The only thing we have to fear is fear itself.
   work_location_raw: The only thing we have to fear is fear itself.
   work_main_job_changed: 'Yes'

@@ -748,7 +748,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v0
+  name: work_health_care_patient_facing
   nullable: true
   type: string
 - metadata: {}

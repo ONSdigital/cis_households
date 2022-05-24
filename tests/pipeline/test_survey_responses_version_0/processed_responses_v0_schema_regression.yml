@@ -300,7 +300,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v0
+  name: work_health_care_patient_facing
   nullable: true
   type: string
 - metadata: {}
@@ -500,7 +500,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v0_raw
+  name: work_health_care_patient_facing_raw
   nullable: true
   type: string
 - metadata: {}
