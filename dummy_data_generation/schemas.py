@@ -1526,30 +1526,45 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         # added remaining cisd fields
-        "household_invited_to_digital": _("choice", items=yes_no_choice),
+        "household_invited_to_digital": _("choice", items=yes_no_none_choice),
         "household_digital_enrolment_invited_datetime": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
-        "existing_participant_digital_opt_in_window_start_datetime": _(
+        "household_digital_opt_in_window_start_datetime": _(  # TODO Check whether this is household or participant
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
-        "existing_participant_digital_opt_in_window_end_datetime": _(
+        "household_digital_opt_in_window_end_datetime": _(  # TODO Check whether this is household or participant
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
-        "existing_participant_digital_opted_in_datetime": _(
+        "household_digital_opted_in_datetime": _(  # TODO Check whether this is household or participant
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
         "household_digital_enrolment_datetime": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
         "street": _("choice", items=[None, _("address.street_name")]),
@@ -1599,7 +1614,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "household_participants_not_consenting_count": _(
             "custom_random.random_integer", lower=0, upper=99, null_percent=0.5
         ),
-        "participant_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
+        "participant_survey_status": _("choice", items=["Active", "Complete", "Withdrawn", None]),
         "participant_withdrawal_reason": _(
             "choice",
             items=[
@@ -1609,25 +1624,30 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Bad experience with tester/survey",
                 "Swab/blood process distressing",
                 "Participant does not want to self swab",
-                "too many visits",
+                "Too many visits",
+                None,
             ],
-        ),
+        ),  # TODO Need to check the picklist values on this one
         "participant_withdrawal_type": _(
             "choice",
             items=[
                 "Withdrawn",
                 "Withdrawn - no future linkage",
                 "Withdrawn - no future linkage or use of samples",
+                None,
             ],
         ),
-        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # TODO Also DHRF
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),
         "middle_name": _("person.first_name"),
         "last_name": _("person.last_name"),
         "date_of_birth": _(
             "discrete_distribution",
-            population=[_("datetime.formatted_datetime", fmt=digital_date_format, start=1980, end=2021), None],
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
             weights=[0.9, 0.1],
         ),
         "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
@@ -1640,29 +1660,36 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Mixed/Multiple Ethnic Groups",
                 "Other Ethnic Group",
                 "White",
+                None,
             ],
         ),  # TODO Need to check the picklist values on this one
         "ethnicity": _(
             "choice",
             items=[
+                "English",
+                "Welsh",
+                "Scottish",
+                "Northern Irish or British",
+                "Irish",
+                "Gypsy or Irish Traveller",
+                "Any other white",
+                "White and black Caribbean",
+                "White and Black African",
+                "White and Asian",
+                "Any other mixed/multiple background",
+                "Indian",
+                "Pakistani",
+                "Bangladeshi",
+                "Chinese",
                 "Any other Asian background",
-                "Any other Black background",
-                "Any other Mixed background",
+                "African",
+                "Caribbean",
+                "Any other Black",
+                "African",
+                "Caribbean or Black British",
                 "Any other ethnic group",
-                "Any other white background",
-                "Asian or Asian British-Bangladeshi",
-                "Asian or Asian British-Chinese",
-                "Asian or Asian British-Indian",
-                "Asian or Asian British-Pakistani",
-                "Black,Caribbean,African-African",
-                "Black,Caribbean,Afro-Caribbean",
-                "Mixed-White & Asian",
-                "Mixed-White & Black African",
-                "Mixed-White & Black Caribbean",
-                "Other ethnic group-Arab",
-                "White-British",
-                "White-Gypsy or Irish Traveller",
-                "White-Irish",
+                "Arab",
+                None,
             ],
         ),  # TODO Need to check the picklist values on this one
         "ethnicity_other": _("text.sentence"),
@@ -1673,42 +1700,78 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "participant_invited_to_digital": _("choice", items=yes_no_none_choice),
         "participant_enrolled_digital": _("choice", items=yes_no_none_choice),
         "participant_digital_enrolment_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "existing_participant_digital_opt_in_status": _(
             "choice",
             items=[
-                "Participant Opted In",
-                "Participant Opted Out",
+                "Digital Opted In",
+                "Digital Opted Out",
+                None,
             ],
         ),  # TODO Check picklist values on this one
         "existing_participant_digital_opt_in_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
-        "digital_survey_mode_preference": _("choice", items=["Online", "Telephone"]),
-        "digital_communication_preference": _("choice", items=["Email", "Letter"]),
-        "sample_return_preference": _("choice", items=["Post", "Courier"]),
-        "language_preference": _("choice", items=["English", "Welsh"]),
-        "digital_study_cohort": _("choice", items=["Swab Only", "Fingerprick and Swab"]),
-        "voucher_type_preference": _("choice", items=["Email", "Letter"]),
+        "digital_survey_mode_preference": _("choice", items=["Online", "Telephone", None]),
+        "digital_communication_preference": _("choice", items=["Email", "Letter", None]),
+        "sample_return_preference": _("choice", items=["Post", "Courier", None]),
+        "language_preference": _("choice", items=["English", "Welsh", None]),
+        "digital_study_cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
+        "voucher_type_preference": _("choice", items=["Email", "Letter", None]),
         "digital_entry_pack_sent_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "digital_entry_pack_status": _("text.sentence"),  # TODO Check this doesn't have picklist values
         "existing_participant_digital_opt_in_reminder_1_due_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "existing_participant_digital_opt_in_reminder_1_sent_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "existing_participant_digital_opt_in_reminder_1_status": _(
             "text.sentence"
         ),  # TODO Check this doesn't have picklist values
         "existing_participant_digital_opt_in_reminder_2_due_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "existing_participant_digital_opt_in_reminder_2_sent_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "existing_participant_digital_opt_in_reminder_2_status": _(
             "text.sentence"
@@ -1716,27 +1779,47 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "household_completion_window_id": _(
             "random.custom_code", mask="HW-##########", digit="#"
         ),  # TODO Check the code continues to match this pattern
-        "household_completion_window_status": _("choice", items=["New", "Open", "Closed"]),
-        "completion_window_cadence": _("choice", items=["Weekly", "Monthly"]),
+        "household_completion_window_status": _("choice", items=["New", "Open", "Closed", None]),
+        "completion_window_cadence": _("choice", items=["Weekly", "Monthly", None]),
         "participant_completion_window_id": _(
             "random.custom_code", mask="############", digit="#"
         ),  # TODO Check the code continues to match this pattern
-        "participant_completion_window_status": _("choice", items=["New", "Open", "Closed"]),
+        "participant_completion_window_status": _("choice", items=["New", "Open", "Closed", None]),
         "participant_completion_window_start_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "participant_completion_window_end_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "survey_type": _("choice", items=["First Survey", "Follow-up Survey"]),
         "sample_type": _("choice", items=["Swab Only", "Fingerprick and Swab"]),
-        "opted_out_of_next_window": _("choice", items=yes_no_choice),
+        "opted_out_of_next_window": _("choice", items=yes_no_none_choice),
         "opted_out_of_next_window_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
-        "opted_out_of_blood_next_window": _("choice", items=yes_no_choice),
+        "opted_out_of_blood_next_window": _("choice", items=yes_no_none_choice),
         "opted_out_of_blood_next_window_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "blood_sample_transport_status": _(
             "choice",
@@ -1746,6 +1829,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Arrived at Consolidation Hub",
                 "Arrived at Lab",
                 "Results Returned",
+                None,
             ],
         ),
         "swab_sample_transport_status": _(
@@ -1756,17 +1840,33 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Arrived at Consolidation Hub",
                 "Arrived at Lab",
                 "Results Returned",
+                None,
             ],
         ),
         "sample_kit_dispatched_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         # "sample_kit_not_dispatched_code": _(),  # Waiting for further info
         "sample_collection_courier_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "sample_collection_kit_received_delivery_partner_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "survey_completion_status": _(
             "choice",
@@ -1776,13 +1876,24 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Completed",
                 "Archived",
                 "Submitted",
+                None,
             ],
         ),
         "survey_last_modified_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "survey_completed_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "survey_not_completed_reason_code": _(
             "choice",
@@ -1790,6 +1901,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "FNR - Full Non Response",
                 "QNR - Questionnaire No Return",
                 "TNR - Test Not Returned",
+                None,
             ],
         ),  # TODO Check the picklist values on this one
         "swab_sample_barcode": _(
@@ -1813,18 +1925,38 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "text.sentence"
         ),  # Previously Blood_Barcode_Status_Error TODO check not pick list
         "swab_sample_received_consolidation_point_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "blood_sample_received_consolidation_point_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "swab_sample_received_lab_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "blood_sample_received_lab_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
-        "swab_taken": _("choice", items=yes_no_choice),
+        "swab_taken": _("choice", items=yes_no_none_choice),
         "swab_not_taken_reason": _(
             "choice",
             items=[
@@ -1834,6 +1966,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "The swab test kit arrived both damaged and with parts missing",
                 "The swab test kit arrived damaged",
                 "The swab test kit arrived with parts missing",
+                None,
             ],
         ),
         "swab_not_taken_damage_description": _("text.sentence"),
@@ -1847,21 +1980,37 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Sample box",
                 "Sample return bag with a return label on",
                 "Other please specify",
+                None,
             ],
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "swab_not_taken_other": _("text.sentence"),
-        "questionnaire_started_no_incentive": _("choice", items=yes_no_choice),
+        "questionnaire_started_no_incentive": _("choice", items=yes_no_none_choice),
         "swab_taken_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
-        "swab_returned": _("choice", items=yes_no_choice),
+        "swab_returned": _("choice", items=yes_no_none_choice),
         "swab_return_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "swab_return_future_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
-        "blood_taken": _("choice", items=yes_no_choice),
+        "blood_taken": _("choice", items=yes_no_none_choice),
         "blood_not_taken_reason": _(
             "choice",
             items=[
@@ -1872,6 +2021,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "The blood test kit arrived both damaged and with parts missing",
                 "The blood test kit arrived damaged",
                 "The blood test kit arrived with parts missing",
+                None,
             ],
         ),
         "blood_not_taken_damage_description": _("text.sentence"),
@@ -1890,6 +2040,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Sample box",
                 "Sample return bag with a return label on",
                 "Other please specify",
+                None,
             ],
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "blood_not_taken_other": _("text.sentence"),
@@ -1901,18 +2052,34 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "I had bruising or pain",
                 "I felt unwell",
                 "Other please specify",
+                None,
             ],
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_taken_datetime": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_datetime_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "blood_returned": _("choice", items=yes_no_none_choice),
         "blood_return_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_date", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "blood_return_future_date": _(
-            "custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format
+            "discrete_distribution",
+            population=[
+                _("datetime.formatted_date", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "work_status_digital": _(
             "choice",
@@ -1921,7 +2088,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "In education",
                 "Not in paid work. This includes being unemployed or doing voluntary work",
                 "Self-employed",
-                "Or are you in education?",
+                None,
             ],
         ),  # TODO Check pick list values for this one
         "work_status_employment": _(
@@ -1929,7 +2096,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                None,
             ],
         ),  # TODO Check pick list values for this one
         "work_status_unemployment": _(
@@ -1937,8 +2104,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Looking for paid work and able to start",
                 "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-                "Or retired?",
                 "Retired",
+                None,
             ],
         ),  # TODO Check pick list values for this one
         "work_status_education": _(
@@ -1950,7 +2117,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "A child below school age and not attending a nursery or pre-school or childminder",
                 "Attending a college or other further education provider including apprenticeships",
                 "Attending university",
-                "Or attending university?",
+                None,
             ],
         ),  # TODO Check pick list values for this one
         "work_in_additional_paid_employment": _("choice", items=yes_no_prefer_not_to_say),
@@ -1974,17 +2141,18 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Teaching and education",
                 "Transport. This includes storage and logistics",
                 "Other employment sector please specify",
+                None,
             ],
         ),
         "work_sector_other": _("text.sentence"),
         "work_health_care_area": _(
             "choice",
             items=[
-                None,
                 "Another type of healthcare - for example mental health services",
                 "Another type of healthcare - for example mental health services?"
                 "Primary care - for example in a GP or dentist",
                 "Secondary care - for example in a hospital",
+                None,
             ],
         ),  # TODO Check picklist values on this one
         "work_nursing_or_residential_care_home": _("choice", items=yes_no_prefer_not_to_say),
@@ -1992,10 +2160,10 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "where_are_you_mainly_working_now": _(
             "choice",
             items=[
-                None,
                 "Both from home and somewhere else",
                 "From home meaning in the same grounds or building as your home",
                 "Somewhere else meaning not at your home",
+                None,
             ],
         ),
         "work_not_from_home_days_per_week": _(
@@ -2018,6 +2186,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Train",
                 "Underound or Metro or Light Rail or Tram",
                 "Other method",
+                None,
             ],
         ),  # TODO Check picklist values on this one
         "ability_to_socially_distance_at_work_or_education": _(
@@ -2027,35 +2196,36 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",
                 "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
                 "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis",  # noqa: E501
+                None,
             ],
         ),
-        "think_have_covid_symptom_fever": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_headache": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_muscle_ache": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_fatigue": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_abdominal_pain": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_diarrhoea": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_sore_throat": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_cough": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_shortness_of_breath": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_loss_of_taste": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_loss_of_smell": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_loss_of_appetite": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_noisy_breathing": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_chest_pain": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_palpitations": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_anxiety": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_low_mood": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_choice),
-        "think_have_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_choice),
+        "think_have_covid_symptom_fever": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_headache": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_muscle_ache": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_fatigue": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_nausea_or_vomiting": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_abdominal_pain": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_diarrhoea": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_sore_throat": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_cough": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_shortness_of_breath": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_loss_of_taste": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_loss_of_smell": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_more_trouble_sleeping": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_loss_of_appetite": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_chest_pain": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_palpitations": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_vertigo_or_dizziness": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_anxiety": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_low_mood": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_memory_loss_or_confusion": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2070,6 +2240,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Yes a lot",
                 "Yes a little",
                 "Not at all",
+                None,
             ],
         ),
         "ever_smoked_regularly": _("choice", items=yes_no_prefer_not_to_say),
@@ -2078,15 +2249,10 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "choice",
             items=[
                 "Cigarettes",
-                "Cigarettes?",
                 "Cigars",
-                "Cigars?",
                 "Hookah or shisha pipes",
-                "Hookah or shisha pipes?",
                 "Pipe",
-                "Pipe?",
                 "Vape or E-cigarettes",
-                "Vape or E-cigarettes?",
             ],
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
@@ -2107,12 +2273,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_1": _(
             "discrete_distribution",
             population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=digital_datetime_format,
-                ),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2122,12 +2283,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_2": _(
             "discrete_distribution",
             population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=digital_datetime_format,
-                ),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2137,7 +2293,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_3": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2147,7 +2303,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_4": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2157,7 +2313,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_5": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2167,7 +2323,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_6": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2379,7 +2535,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "been_outside_uk_last_return_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2388,7 +2544,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_had_covid_onset_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2433,7 +2589,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_covid_infection_test_first_positive_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2441,7 +2597,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_covid_infection_test_last_negative_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2461,7 +2617,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_antibody_test_first_positive_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2469,7 +2625,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_antibody_test_last_negative_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2507,11 +2663,11 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_have_long_covid_symptom_difficulty_concentrating": _("choice", items=yes_no_none_choice),
         "think_have_long_covid_symptom_runny_nose_or_sneezing": _("choice", items=yes_no_none_choice),
         "think_have_long_covid_symptom_noisy_breathing": _("choice", items=yes_no_none_choice),
-        "contact_known_positive_covid_last_28_days": _("choice", items=yes_no_choice),
+        "contact_known_positive_covid_last_28_days": _("choice", items=yes_no_none_choice),
         "last_covid_contact_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2530,7 +2686,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "last_suspected_covid_contact_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2550,7 +2706,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
         "other_household_member_care_home_last_28_days": _("choice", items=yes_no_unknown_choice),
         "hours_a_day_with_someone_else_at_home": _(
-            "choice", items=[_("random.randints", amount=8, a=0, b=24), "Don't know", "Prefer not to say"]
+            "choice", items=[_("random.randints", amount=8, a=0, b=24), "Don't know", "Prefer not to say", None]
         ),
         "physical_contact_under_18_years": _("choice", items=people_count),
         "physical_contact_18_to_69_years": _("choice", items=people_count),
@@ -2592,7 +2748,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date": _(
             "discrete_distribution",
             population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
+                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.5, 0.5],

@@ -1020,10 +1020,10 @@ validation_schemas = {
         "ons_household_id": string_dict,
         "household_invited_to_digital": string_dict,
         "household_digital_enrolment_invited_datetime": string_dict,
-        "existing_participant_digital_opt_in_window_start_datetime": string_dict,
-        "existing_participant_digital_opt_in_window_end_datetime": string_dict,
-        "existing_participant_digital_opted_in_datetime": string_dict,
-        "household_digital_enrolment_datetime": string_dict,
+        "household_digital_opt_in_window_start_datetime": string_dict,  # TODO Check household or participant
+        "household_digital_opt_in_window_end_datetime": string_dict,  # TODO Check household or participant
+        "household_digital_opted_in_datetime": string_dict,  # TODO Check household or participant
+        "household_digital_enrolment_datetime": string_dict,  # TODO Check household or participant
         "street": string_dict,
         "city": string_dict,
         "country": string_dict,
@@ -1124,7 +1124,7 @@ validation_schemas = {
         "survey_completion_status": string_dict,
         "survey_last_modified_datetime": string_dict,
         "survey_completed_datetime": string_dict,
-        # "survey_not_completed_reason_code": string_dict, # Commented out in Dummy data
+        "survey_not_completed_reason_code": string_dict,
         "swab_sample_barcode": string_dict,
         "blood_sample_barcode": string_dict,
         "swab_sample_barcode_user_entered": string_dict,
