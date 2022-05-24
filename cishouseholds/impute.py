@@ -493,7 +493,6 @@ def merge_previous_imputed_values(
         for column in imputed_value_lookup_df.columns
         if column.endswith("_imputation_method")
     ]
-
     for value_column, status_column, method_column in columns_for_editing:
         fill_condition = F.col(value_column[1:]).isNull() & F.col(value_column).isNotNull()
         df = df.withColumn(status_column[1:], F.when(fill_condition, F.lit(1)).otherwise(F.lit(0)))

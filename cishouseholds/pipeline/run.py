@@ -9,6 +9,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.pyspark_utils import get_spark_application_id
 from cishouseholds.pyspark_utils import get_spark_ui_url
 
@@ -24,6 +25,9 @@ def run_from_config():
       run: True
       resource_path: "path_to.csv"
     """
+    spark = get_or_create_spark_session()
+    spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
+
     config = get_config()
     run_datetime = datetime.now()
     run_id = add_run_log_entry(run_datetime)

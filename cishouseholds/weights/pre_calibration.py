@@ -32,11 +32,6 @@ def pre_calibration_high_level(
         on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
-    # df = assign_ethnicity_white(
-    #     df=df,
-    #     column_name_to_assign="ethnicity_white",
-    #     ethnicity_group_column_name="ethnicity_group_corrected",
-    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],

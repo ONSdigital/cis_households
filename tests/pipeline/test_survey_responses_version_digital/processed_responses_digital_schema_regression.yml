@@ -389,7 +389,7 @@ fields:
   type: timestamp
 - metadata: {}
   name: swab_taken
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_reason
@@ -429,7 +429,7 @@ fields:
   type: timestamp
 - metadata: {}
   name: blood_taken
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_reason
@@ -1130,5 +1130,73 @@ fields:
 - metadata: {}
   name: survey_response_source_file
   nullable: false
+  type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
+- metadata: {}
+  name: visit_id
+  nullable: true
+  type: string
+- metadata: {}
+  name: visit_datetime
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_not_from_home_days_per_week_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: unique_participant_response_id
+  nullable: false
+  type: string
+- metadata: {}
+  name: bad_email
+  nullable: true
+  type: boolean
+- metadata: {}
+  name: outward_postcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: hh_id
+  nullable: true
   type: string
 type: struct

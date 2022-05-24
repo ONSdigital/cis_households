@@ -10,9 +10,9 @@ from cishouseholds.pipeline.survey_responses_version_1_ETL import clean_survey_r
 from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
 from cishouseholds.pipeline.survey_responses_version_2_ETL import clean_survey_responses_version_2
 from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
-from cishouseholds.pipeline.survey_responses_version_2_ETL import digital_specific_cleaning
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
+from cishouseholds.pipeline.survey_responses_version_digital_ETL import digital_specific_transformations
 from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
 from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
@@ -141,7 +141,7 @@ cis_digital_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
-    "transformation_functions": [digital_specific_cleaning],
+    "transformation_functions": [digital_specific_transformations],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "survey_response_source_file",
@@ -158,4 +158,4 @@ for parameters in [
     unassayed_blood_delta_parameters,
     historical_blood_parameters,
 ]:
-    generate_input_processing_function(**parameters)
+    generate_input_processing_function(**parameters)  # type:ignore
