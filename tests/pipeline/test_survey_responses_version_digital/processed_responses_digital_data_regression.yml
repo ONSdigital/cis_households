@@ -62,8 +62,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Bangladesh
-  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
-  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_smokes_or_vapes_description: Prefer not to say
+  currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '2001-04-22 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -378,8 +378,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Iceland
-  currently_currently_currently_smokes_or_vapes_description: 'No'
-  currently_currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: 'No'
+  currently_smokes_or_vapes: 'No'
   date_of_birth: '2014-05-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -691,8 +691,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: null
-  currently_currently_currently_smokes_or_vapes_description: 'Yes'
-  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_smokes_or_vapes_description: 'Yes'
+  currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '1985-02-24 00:00:00.000000'
   days_since_think_had_covid: -9233.0
   days_since_think_had_covid_group: null
@@ -1014,8 +1014,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
-  currently_currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: Prefer not to say
+  currently_smokes_or_vapes: 'No'
   date_of_birth: '1994-02-02 00:00:00.000000'
   days_since_think_had_covid: -9234.0
   days_since_think_had_covid_group: null
@@ -1330,8 +1330,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Romania
-  currently_currently_currently_smokes_or_vapes_description: 'Yes'
-  currently_currently_smokes_or_vapes: 'Yes'
+  currently_smokes_or_vapes_description: 'Yes'
+  currently_smokes_or_vapes: 'Yes'
   date_of_birth: '1997-08-21 00:00:00.000000'
   days_since_think_had_covid: -12972.0
   days_since_think_had_covid_group: null
@@ -1656,8 +1656,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Iceland
-  currently_currently_currently_smokes_or_vapes_description: 'No'
-  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_smokes_or_vapes_description: 'No'
+  currently_smokes_or_vapes: Prefer not to say
   date_of_birth: '1999-08-11 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1975,8 +1975,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Romania
-  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
-  currently_currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: Prefer not to say
+  currently_smokes_or_vapes: 'No'
   date_of_birth: '2007-03-09 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2297,8 +2297,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Jamaica
-  currently_currently_currently_smokes_or_vapes_description: 'Yes'
-  currently_currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: 'Yes'
+  currently_smokes_or_vapes: 'No'
   date_of_birth: null
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2620,8 +2620,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_currently_currently_smokes_or_vapes_description: 'Yes'
-  currently_currently_smokes_or_vapes: 'Yes'
+  currently_smokes_or_vapes_description: 'Yes'
+  currently_smokes_or_vapes: 'Yes'
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2939,8 +2939,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   country: Ecuador
-  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
-  currently_currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: Prefer not to say
+  currently_smokes_or_vapes: 'No'
   date_of_birth: '2014-01-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null

@@ -21,7 +21,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
-  currently_currently_smokes_or_vapes_description: Any element of a tuple can be accessed
+  currently_smokes_or_vapes_description: Any element of a tuple can be accessed
     in constant time.
   date_of_birth: '1988-12-04 00:00:00.000000'
   days_since_think_had_covid: null
@@ -225,7 +225,7 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: The Galactic Empire is nearing
+  currently_smokes_or_vapes_description: The Galactic Empire is nearing
     completion of the Death Star, a space station with the power to destroy entire
     planets.
   date_of_birth: '1982-12-15 00:00:00.000000'
@@ -436,7 +436,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
-  currently_currently_smokes_or_vapes_description: Atoms can contain any character
+  currently_smokes_or_vapes_description: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
   date_of_birth: '1997-01-25 00:00:00.000000'
@@ -645,7 +645,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: In 1989 the building was heavily
+  currently_smokes_or_vapes_description: In 1989 the building was heavily
     damaged by fire, but it has since been restored.
   date_of_birth: '1997-03-07 00:00:00.000000'
   days_since_think_had_covid: null
@@ -854,7 +854,7 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: Haskell is a standardized, general-purpose
+  currently_smokes_or_vapes_description: Haskell is a standardized, general-purpose
     purely functional programming language, with non-strict semantics and strong static
     typing.
   date_of_birth: '2020-02-01 00:00:00.000000'
@@ -1065,7 +1065,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_currently_smokes_or_vapes_description: He looked inquisitively at his
+  currently_smokes_or_vapes_description: He looked inquisitively at his
     keyboard and wrote another sentence.
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: null
@@ -1269,7 +1269,7 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Northamptonshire
-  currently_currently_smokes_or_vapes_description: Make me a sandwich.
+  currently_smokes_or_vapes_description: Make me a sandwich.
   date_of_birth: '2021-12-18 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1476,7 +1476,7 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: Erlang is a general-purpose, concurrent,
+  currently_smokes_or_vapes_description: Erlang is a general-purpose, concurrent,
     functional programming language.
   date_of_birth: '1994-09-20 00:00:00.000000'
   days_since_think_had_covid: null
@@ -1686,7 +1686,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes
+  currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes
     a tuple whose arguments are D1, D2, ... Dn.
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: null
@@ -1890,7 +1890,7 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
-  currently_currently_smokes_or_vapes_description: Erlang is known for its designs
+  currently_smokes_or_vapes_description: Erlang is known for its designs
     that are well suited for systems.
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: null

@@ -52,7 +52,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Northamptonshire
-  currently_currently_smokes_or_vapes_description: null
+  currently_smokes_or_vapes_description: null
   currently_smokes_or_vapes: Cigar
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
@@ -351,7 +351,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: null
-  currently_currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Cigar
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
@@ -652,7 +652,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: Derbyshire
-  currently_currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Vape/e-cigarettes
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
@@ -951,7 +951,7 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: North Yorkshire
-  currently_currently_smokes_or_vapes_description: Yes, pipe
+  currently_smokes_or_vapes_description: Yes, pipe
   currently_smokes_or_vapes: Cigarettes
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
@@ -1258,7 +1258,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Vape/e-cigarettes
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
@@ -1562,7 +1562,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_currently_smokes_or_vapes_description: Yes, pipe
+  currently_smokes_or_vapes_description: Yes, pipe
   currently_smokes_or_vapes: Cigarettes
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
@@ -1869,7 +1869,7 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: null
-  currently_currently_smokes_or_vapes_description: null
+  currently_smokes_or_vapes_description: null
   currently_smokes_or_vapes: Cigar
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
@@ -2173,7 +2173,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_currently_smokes_or_vapes_description: Yes,  cigarettes
+  currently_smokes_or_vapes_description: Yes,  cigarettes
   currently_smokes_or_vapes: null
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
@@ -2474,7 +2474,7 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
-  currently_currently_smokes_or_vapes_description: Yes, cigar
+  currently_smokes_or_vapes_description: Yes, cigar
   currently_smokes_or_vapes: Cigar
   date_of_birth: null
   days_since_think_had_covid: -3.0
@@ -2783,7 +2783,7 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
-  currently_currently_smokes_or_vapes_description: Yes, cigar
+  currently_smokes_or_vapes_description: Yes, cigar
   currently_smokes_or_vapes: Pipe
   date_of_birth: '2003-10-07 22:04:00.000000'
   days_since_think_had_covid: 4.0

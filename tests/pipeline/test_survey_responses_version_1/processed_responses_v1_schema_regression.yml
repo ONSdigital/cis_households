@@ -332,7 +332,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: currently_currently_smokes_or_vapes_description
+  name: currently_smokes_or_vapes_description
   nullable: true
   type: string
 - metadata: {}
