@@ -529,16 +529,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
-
-    df = edit_to_sum_or_max_value(
-        df=df,
-        column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
-        columns_to_sum=[
-            "times_shopping_last_7_days",
-            "times_socialise_last_7_days",
-        ],
-        max_value=7,
-    )
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",

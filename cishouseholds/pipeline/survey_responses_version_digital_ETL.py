@@ -10,6 +10,7 @@ def digital_specific_transformations(df):
     df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn("visit_datetime", F.col("digital_enrolment_invite_datetime"))
+    df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     df = transform_survey_responses_generic(df)
     df = edit_to_sum_or_max_value(
         df=df,
