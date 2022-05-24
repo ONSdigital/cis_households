@@ -6,10 +6,10 @@ from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
-from pyspark.sql import Window
 
 import pandas as pd
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
@@ -373,7 +373,7 @@ def validate_survey_responses(
     invalid_survey_responses_table: str,
     valid_validation_failures_table: str,
     invalid_validation_failures_table: str,
-    id_column:str
+    id_column: str,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -400,15 +400,17 @@ def validate_survey_responses(
     )
 
     validation_check_failures_valid_data_df = (
-        valid_survey_responses.select(id_column,validation_failure_flag_column).withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
+        valid_survey_responses.select(id_column, validation_failure_flag_column)
+        .withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
         .groupBy("validation_check_failures")
         .count()
-    ).withColumn("run_id",F.lit(get_run_id()))
+    ).withColumn("run_id", F.lit(get_run_id()))
     validation_check_failures_invalid_data_df = (
-        erroneous_survey_responses.select(id_column,validation_failure_flag_column).withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
+        erroneous_survey_responses.select(id_column, validation_failure_flag_column)
+        .withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
         .groupBy("validation_check_failures")
         .count()
-    ).withColumn("run_id",F.lit(get_run_id()))
+    ).withColumn("run_id", F.lit(get_run_id()))
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
@@ -862,7 +864,7 @@ def geography_and_imputation_dependent_processing(
 @register_pipeline_stage("report")
 def report(
     unique_id_column: str,
-    id_column_on_error_table:str,
+    id_column_on_error_table: str,
     validation_failure_flag_column: str,
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
@@ -897,17 +899,21 @@ def report(
     valid_df_errors = extract_from_table(valid_survey_responses_errors_table)
     invalid_df_errors = extract_from_table(invalid_survey_responses_errors_table)
 
-    head = valid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)   
-    if len(head) == 2:        
+    head = valid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)
+    if len(head) == 2:
         valid_df_errors_new = valid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         valid_df_errors_previous = valid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        valid_df_errors = valid_df_errors_previous.join(valid_df_errors_new,on=id_column_on_error_table,how="fullouter")
-    
+        valid_df_errors = valid_df_errors_previous.join(
+            valid_df_errors_new, on=id_column_on_error_table, how="fullouter"
+        )
+
     head = invalid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)
-    if len(head) == 2:        
+    if len(head) == 2:
         invalid_df_errors_new = invalid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         invalid_df_errors_previous = invalid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        invalid_df_errors = invalid_df_errors_previous.join(invalid_df_errors_new,on=id_column_on_error_table,how="fullouter")
+        invalid_df_errors = invalid_df_errors_previous.join(
+            invalid_df_errors_new, on=id_column_on_error_table, how="fullouter"
+        )
 
     valid_df_errors.show()
     processed_file_log = extract_from_table("processed_filenames")
@@ -931,7 +937,6 @@ def report(
             table_counts[table_name] = table.count()
         else:
             table_counts[table_name] = "Table not found"
-
 
     duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
         F.col(duplicate_count_column_name) > 1
