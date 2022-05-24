@@ -39,7 +39,7 @@ def pre_calibration_high_level(
         cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
         column_test_result_swab="pcr_result_classification",
         column_test_result_antibodies="antibody_test_result_classification",
-        column_test_result_longcovid="have_long_covid_symptoms",
+        column_test_result_longcovid="think_have_long_covid",
         patient_id_column="participant_id",
         visit_date_column="visit_date_string",
         age_column="age_at_visit",

@@ -14,11 +14,11 @@ def test_derive_people_in_household_count(spark_session):
             # fmt: on
         ],
         schema="""ons_household_id string, participant_id string,
-        household_participants_not_consented_count integer,
-        household_participants_not_present_count integer,
+        household_participants_not_consenting_count integer,
+        household_members_over_2_years_and_not_present_count integer,
 
-        infant_1_age integer, infant_2_age integer,
-        person_1_not_consenting_age integer, person_2_not_consenting_age integer, person_1_not_present_age integer, person_2_not_present_age integer,
+        infant_age_months_1 integer, infant_age_months_2 integer,
+        person_not_consenting_age_1 integer, person_not_consenting_age_2 integer, person_not_present_age_1 integer, person_not_present_age_2 integer,
         household_members_under_2_years string""",
     )
     expected_df = spark_session.createDataFrame(
@@ -31,14 +31,14 @@ def test_derive_people_in_household_count(spark_session):
             # fmt: on
         ],
         schema="""ons_household_id string, participant_id string,
-            household_participants_not_consented_count integer,
-            household_participants_not_present_count integer,
+            household_participants_not_consenting_count integer,
+            household_members_over_2_years_and_not_present_count integer,
 
-            infant_1_age integer, infant_2_age integer,
-            person_1_not_consenting_age integer, person_2_not_consenting_age integer,
-            person_1_not_present_age integer, person_2_not_present_age integer,
+            infant_age_months_1 integer, infant_age_months_2 integer,
+            person_not_consenting_age_1 integer, person_not_consenting_age_2 integer,
+            person_not_present_age_1 integer, person_not_present_age_2 integer,
             household_participant_count integer,
-            household_participants_under_2_count integer,
+            household_members_under_2_years_count integer,
             people_in_household_count integer,
             people_in_household_count_group string,
             household_members_under_2_years string""",

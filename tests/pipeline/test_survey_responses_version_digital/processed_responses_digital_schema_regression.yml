@@ -196,11 +196,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: participant_withdrawal_reason
+  name: participant_participant_withdrawal_reason
   nullable: true
   type: string
 - metadata: {}
-  name: participant_withdrawal_type
+  name: participant_participant_withdrawal_type
   nullable: true
   type: string
 - metadata: {}
@@ -660,11 +660,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: currently_smokes_or_vapes
+  name: currently_currently_smokes_or_vapes
   nullable: true
   type: string
 - metadata: {}
-  name: currently_smokes_or_vapes_description
+  name: currently_currently_currently_smokes_or_vapes_description
   nullable: true
   type: string
 - metadata: {}
@@ -676,11 +676,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_1
+  name: cis_covid_vacine_type_1
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_1
+  name: cis_covid_vacine_type_other_1
   nullable: true
   type: string
 - metadata: {}
@@ -688,11 +688,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_2
+  name: cis_covid_vacine_type_2
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_2
+  name: cis_covid_vacine_type_other_2
   nullable: true
   type: string
 - metadata: {}
@@ -700,11 +700,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_3
+  name: cis_covid_vacine_type_3
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_3
+  name: cis_covid_vacine_type_other_3
   nullable: true
   type: string
 - metadata: {}
@@ -712,11 +712,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_4
+  name: cis_covid_vacine_type_4
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_4
+  name: cis_covid_vacine_type_other_4
   nullable: true
   type: string
 - metadata: {}
@@ -724,11 +724,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_5
+  name: cis_covid_vacine_type_5
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_5
+  name: cis_covid_vacine_type_other_5
   nullable: true
   type: string
 - metadata: {}
@@ -736,11 +736,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_6
+  name: cis_covid_vacine_type_6
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other_6
+  name: cis_covid_vacine_type_other_6
   nullable: true
   type: string
 - metadata: {}
@@ -916,99 +916,99 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_reduced_ability
+  name: think_have_think_have_long_covid_symptom_symptom_reduced_ability
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_fever
+  name: think_have_think_have_long_covid_symptom_symptom_fever
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_headache
+  name: think_have_think_have_long_covid_symptom_symptom_headache
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_muscle_ache
+  name: think_have_think_have_long_covid_symptom_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_fatigue
+  name: think_have_think_have_long_covid_symptom_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_nausea_or_vomiting
+  name: think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_abdominal_pain
+  name: think_have_think_have_long_covid_symptom_symptom_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_diarrhoea
+  name: think_have_think_have_long_covid_symptom_symptom_diarrhoea
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_loss_of_taste
+  name: think_have_think_have_long_covid_symptom_symptom_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_loss_of_smell
+  name: think_have_think_have_long_covid_symptom_symptom_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_sore_throat
+  name: think_have_think_have_long_covid_symptom_symptom_sore_throat
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_cough
+  name: think_have_think_have_long_covid_symptom_symptom_cough
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_shortness_of_breath
+  name: think_have_think_have_long_covid_symptom_symptom_shortness_of_breath
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_loss_of_appetite
+  name: think_have_think_have_long_covid_symptom_symptom_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_chest_pain
+  name: think_have_think_have_long_covid_symptom_symptom_chest_pain
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_palpitations
+  name: think_have_think_have_long_covid_symptom_symptom_palpitations
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_vertigo_or_dizziness
+  name: think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_anxiety
+  name: think_have_think_have_long_covid_symptom_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_low_mood
+  name: think_have_think_have_long_covid_symptom_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_more_trouble_sleeping
+  name: think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_memory_loss_or_confusion
+  name: think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_difficulty_concentrating
+  name: think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_runny_nose_or_sneezing
+  name: think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_noisy_breathing
+  name: think_have_think_have_long_covid_symptom_symptom_noisy_breathing
   nullable: true
   type: string
 - metadata: {}
@@ -1092,11 +1092,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: times_socialise_last_7_days
+  name: times_socialising_last_7_days
   nullable: true
   type: string
 - metadata: {}
-  name: face_covering_work_or_education
+  name: face_covering_work_or_education_or_education
   nullable: true
   type: string
 - metadata: {}
@@ -1112,7 +1112,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_type_other
+  name: cis_covid_vacine_type_other
   nullable: true
   type: string
 - metadata: {}
@@ -1180,7 +1180,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: bad_email
+  name: bad_email_address
   nullable: true
   type: boolean
 - metadata: {}

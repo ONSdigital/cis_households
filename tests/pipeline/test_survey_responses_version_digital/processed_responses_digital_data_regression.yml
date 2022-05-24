@@ -2,7 +2,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'No'
-  bad_email: null
+  bad_email_address: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Gabon
   been_outside_uk_last_return_date: null
@@ -36,21 +36,21 @@
   cis_covid_vaccine_date_5: '2022-01-01'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type_1: Sinovac
-  cis_covid_vaccine_type_2: null
-  cis_covid_vaccine_type_3: From a research study/trial
-  cis_covid_vaccine_type_4: Oxford / AstraZeneca
-  cis_covid_vaccine_type_5: From a research study/trial
-  cis_covid_vaccine_type_6: Sputnik
-  cis_covid_vaccine_type_other: Elementary, my dear Watson.
-  cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
-  cis_covid_vaccine_type_other_2: Those who refuse to learn from history are condemned
+  cis_covid_vacine_type_1: Sinovac
+  cis_covid_vacine_type_2: null
+  cis_covid_vacine_type_3: From a research study/trial
+  cis_covid_vacine_type_4: Oxford / AstraZeneca
+  cis_covid_vacine_type_5: From a research study/trial
+  cis_covid_vacine_type_6: Sputnik
+  cis_covid_vacine_type_other: Elementary, my dear Watson.
+  cis_covid_vacine_type_other_1: The only thing we have to fear is fear itself.
+  cis_covid_vacine_type_other_2: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vaccine_type_other_3: A census taker once tried to test me. I ate his
+  cis_covid_vacine_type_other_3: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
-  cis_covid_vaccine_type_other_4: Here's looking at you, kid.
-  cis_covid_vaccine_type_other_5: Here's looking at you, kid.
-  cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
+  cis_covid_vacine_type_other_4: Here's looking at you, kid.
+  cis_covid_vacine_type_other_5: Here's looking at you, kid.
+  cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vacine_type: null
   cis_flu_vaccine_received: 'Yes'
@@ -62,8 +62,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Bangladesh
-  currently_smokes_or_vapes: Prefer not to say
-  currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2001-04-22 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -80,7 +80,7 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
-  face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shawnee
   hh_id: '441094840601'
@@ -131,8 +131,8 @@
   participant_id: DHR-539176725448
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
-  participant_withdrawal_reason: too many visits
-  participant_withdrawal_type: Withdrawn
+  participant_participant_withdrawal_reason: too many visits
+  participant_participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 291.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 702.0
@@ -263,34 +263,34 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_anxiety: 'No'
-  think_have_long_covid_symptom_chest_pain: 'Yes'
-  think_have_long_covid_symptom_cough: null
-  think_have_long_covid_symptom_diarrhoea: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_long_covid_symptom_fatigue: 'Yes'
-  think_have_long_covid_symptom_fever: null
-  think_have_long_covid_symptom_headache: 'Yes'
-  think_have_long_covid_symptom_loss_of_appetite: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'Yes'
-  think_have_long_covid_symptom_loss_of_taste: null
-  think_have_long_covid_symptom_low_mood: null
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: null
-  think_have_long_covid_symptom_noisy_breathing: 'No'
-  think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_reduced_ability: 'Yes'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'No'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_cough: null
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'No'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_fever: null
+  think_have_think_have_long_covid_symptom_symptom_headache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: null
+  think_have_think_have_long_covid_symptom_symptom_low_mood: null
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'No'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: null
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_shopping_last_7_days: '1'
-  times_socialise_last_7_days: '5'
+  times_socialising_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Train
   unique_participant_response_id: 045227746976-DHR-539176725448-1988-06-29
@@ -320,7 +320,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: false
+  bad_email_address: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -353,21 +353,21 @@
   cis_covid_vaccine_date_5: '2022-01-05'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Sputnik
-  cis_covid_vaccine_type_2: Sinopharm
-  cis_covid_vaccine_type_3: I don't know the type
-  cis_covid_vaccine_type_4: I don't know the type
-  cis_covid_vaccine_type_5: Sinopharm
-  cis_covid_vaccine_type_6: null
-  cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
-  cis_covid_vaccine_type_other_1: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_other_2: Let them eat cake.
-  cis_covid_vaccine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vacine_type_1: Sputnik
+  cis_covid_vacine_type_2: Sinopharm
+  cis_covid_vacine_type_3: I don't know the type
+  cis_covid_vacine_type_4: I don't know the type
+  cis_covid_vacine_type_5: Sinopharm
+  cis_covid_vacine_type_6: null
+  cis_covid_vacine_type_other: Frankly, my dear, I don't give a damn.
+  cis_covid_vacine_type_other_1: You're gonna need a bigger boat.
+  cis_covid_vacine_type_other_2: Let them eat cake.
+  cis_covid_vacine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vaccine_type_other_4: Houston, we have a problem.
-  cis_covid_vaccine_type_other_5: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_other_4: Houston, we have a problem.
+  cis_covid_vacine_type_other_5: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_6: Get your stinking paws off me, you damned dirty
+  cis_covid_vacine_type_other_6: Get your stinking paws off me, you damned dirty
     ape.
   cis_covid_vacine_type: Sputnik
   cis_flu_vaccine_received: null
@@ -379,8 +379,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Iceland
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: 'No'
+  currently_currently_smokes_or_vapes: 'No'
+  currently_currently_currently_smokes_or_vapes_description: 'No'
   date_of_birth: '2014-05-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -397,7 +397,7 @@
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
-  face_covering_work_or_education: null
+  face_covering_work_or_education_or_education: null
   first_name: Remedios
   hh_id: '571295570558'
   hospital_last_28_days: null
@@ -447,8 +447,8 @@
   participant_id: DHR-190156218256
   participant_invited_digital: 'No'
   participant_status: Active
-  participant_withdrawal_reason: No longer wants to take part
-  participant_withdrawal_type: Withdrawn – no future linkage
+  participant_participant_withdrawal_reason: No longer wants to take part
+  participant_participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 238.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 299.0
@@ -574,34 +574,34 @@
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_anxiety: null
-  think_have_long_covid_symptom_chest_pain: 'Yes'
-  think_have_long_covid_symptom_cough: null
-  think_have_long_covid_symptom_diarrhoea: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_long_covid_symptom_fatigue: 'No'
-  think_have_long_covid_symptom_fever: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_loss_of_appetite: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'Yes'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing: null
-  think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_reduced_ability: 'No'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: null
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_cough: null
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fever: 'No'
+  think_have_think_have_long_covid_symptom_symptom_headache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'No'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'No'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: null
+  think_have_think_have_long_covid_symptom_symptom_palpitations: null
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'No'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_shopping_last_7_days: '1'
-  times_socialise_last_7_days: '5'
+  times_socialising_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
   unique_participant_response_id: 049902298831-DHR-190156218256-2014-05-24
@@ -632,7 +632,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: null
+  bad_email_address: null
   been_outside_uk: null
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -666,21 +666,21 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: I don't know the type
-  cis_covid_vaccine_type_2: Sinopharm
-  cis_covid_vaccine_type_3: null
-  cis_covid_vaccine_type_4: I don't know the type
-  cis_covid_vaccine_type_5: Oxford / AstraZeneca
-  cis_covid_vaccine_type_6: Janssen / Johnson&Johnson
-  cis_covid_vaccine_type_other: Elementary, my dear Watson.
-  cis_covid_vaccine_type_other_1: Houston, we have a problem.
-  cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
-  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_1: I don't know the type
+  cis_covid_vacine_type_2: Sinopharm
+  cis_covid_vacine_type_3: null
+  cis_covid_vacine_type_4: I don't know the type
+  cis_covid_vacine_type_5: Oxford / AstraZeneca
+  cis_covid_vacine_type_6: Janssen / Johnson&Johnson
+  cis_covid_vacine_type_other: Elementary, my dear Watson.
+  cis_covid_vacine_type_other_1: Houston, we have a problem.
+  cis_covid_vacine_type_other_2: They call me *Mister* Tibbs!
+  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_4: Houston, we have a problem.
-  cis_covid_vaccine_type_other_5: Those who refuse to learn from history are condemned
+  cis_covid_vacine_type_other_4: Houston, we have a problem.
+  cis_covid_vacine_type_other_5: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vaccine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vacine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   cis_covid_vacine_type: Sputnik
   cis_flu_vaccine_received: 'Yes'
@@ -692,8 +692,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: null
-  currently_smokes_or_vapes: Prefer not to say
-  currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_currently_currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1985-02-24 00:00:00.000000'
   days_since_think_had_covid: -9233.0
   days_since_think_had_covid_group: null
@@ -710,7 +710,7 @@
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: null
-  face_covering_work_or_education: I am not going to my place of work or education
+  face_covering_work_or_education_or_education: I am not going to my place of work or education
   first_name: Clemmie
   hh_id: '420762754008'
   hospital_last_28_days: 'No'
@@ -760,8 +760,8 @@
   participant_id: DHR-958511387882
   participant_invited_digital: 'No'
   participant_status: Complete
-  participant_withdrawal_reason: Swab/blood process distressing
-  participant_withdrawal_type: Withdrawn – no future linkage
+  participant_participant_withdrawal_reason: Swab/blood process distressing
+  participant_participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 154.0
   person_not_consenting_age_2: 864.0
   person_not_consenting_age_3: 810.0
@@ -896,40 +896,40 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: 'No'
-  think_have_long_covid_symptom_abdominal_pain: 'Yes'
-  think_have_long_covid_symptom_anxiety: 'No'
-  think_have_long_covid_symptom_chest_pain: 'Yes'
-  think_have_long_covid_symptom_cough: null
-  think_have_long_covid_symptom_diarrhoea: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: null
-  think_have_long_covid_symptom_fatigue: 'No'
-  think_have_long_covid_symptom_fever: 'Yes'
-  think_have_long_covid_symptom_headache: 'Yes'
-  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
-  think_have_long_covid_symptom_loss_of_smell: 'Yes'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing: null
-  think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_reduced_ability: 'No'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: null
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'No'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_cough: null
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'No'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: null
+  think_have_think_have_long_covid_symptom_symptom_fatigue: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fever: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_headache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'No'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: null
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'No'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: null
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
   times_shopping_last_7_days: '3'
-  times_socialise_last_7_days: Prefer not to say
+  times_socialising_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Taxi or minicab
   unique_participant_response_id: 073988827188-DHR-958511387882-1996-09-25
   visit_datetime: '1996-09-25'
   visit_id: 073988827188
-  voucher_type_preference: Email
+  voucher_type_preference: email_address
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: 'No'
   work_in_additional_paid_employment: 'No'
@@ -955,7 +955,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
-  bad_email: false
+  bad_email_address: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Pakistan
   been_outside_uk_last_return_date: '2021-11-16 00:00:00.000000'
@@ -989,21 +989,21 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Valneva
-  cis_covid_vaccine_type_2: null
-  cis_covid_vaccine_type_3: Pfizer / BioNTech
-  cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
-  cis_covid_vaccine_type_5: Novavax
-  cis_covid_vaccine_type_6: Sinopharm
-  cis_covid_vaccine_type_other: Get your stinking paws off me, you damned dirty ape.
-  cis_covid_vaccine_type_other_1: Let them eat cake.
-  cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
+  cis_covid_vacine_type_1: Valneva
+  cis_covid_vacine_type_2: null
+  cis_covid_vacine_type_3: Pfizer / BioNTech
+  cis_covid_vacine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vacine_type_5: Novavax
+  cis_covid_vacine_type_6: Sinopharm
+  cis_covid_vacine_type_other: Get your stinking paws off me, you damned dirty ape.
+  cis_covid_vacine_type_other_1: Let them eat cake.
+  cis_covid_vacine_type_other_2: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vaccine_type_other_3: Houston, we have a problem.
-  cis_covid_vaccine_type_other_4: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vacine_type_other_3: Houston, we have a problem.
+  cis_covid_vacine_type_other_4: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vaccine_type_other_5: Here's looking at you, kid.
-  cis_covid_vaccine_type_other_6: Houston, we have a problem.
+  cis_covid_vacine_type_other_5: Here's looking at you, kid.
+  cis_covid_vacine_type_other_6: Houston, we have a problem.
   cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: 'Yes'
   city: null
@@ -1014,8 +1014,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
+  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '1994-02-02 00:00:00.000000'
   days_since_think_had_covid: -9234.0
   days_since_think_had_covid_group: null
@@ -1034,7 +1034,7 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shaun
   hh_id: '736535270957'
@@ -1085,8 +1085,8 @@
   participant_id: DHR-763063387334
   participant_invited_digital: 'No'
   participant_status: Active
-  participant_withdrawal_reason: Participant does not want to self swab
-  participant_withdrawal_type: Withdrawn
+  participant_participant_withdrawal_reason: Participant does not want to self swab
+  participant_participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 0.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -1214,34 +1214,34 @@
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: 'Yes'
-  think_have_long_covid_symptom_anxiety: null
-  think_have_long_covid_symptom_chest_pain: 'No'
-  think_have_long_covid_symptom_cough: null
-  think_have_long_covid_symptom_diarrhoea: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_long_covid_symptom_fatigue: null
-  think_have_long_covid_symptom_fever: 'No'
-  think_have_long_covid_symptom_headache: 'Yes'
-  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood: null
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping: null
-  think_have_long_covid_symptom_muscle_ache: null
-  think_have_long_covid_symptom_nausea_or_vomiting: null
-  think_have_long_covid_symptom_noisy_breathing: null
-  think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_reduced_ability: 'Yes'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: null
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_cough: null
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: null
+  think_have_think_have_long_covid_symptom_symptom_fever: 'No'
+  think_have_think_have_long_covid_symptom_symptom_headache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'No'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: null
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'No'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: null
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: null
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: null
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: null
+  think_have_think_have_long_covid_symptom_symptom_palpitations: null
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'No'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: 'No'
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
   times_shopping_last_7_days: 7 times or more
-  times_socialise_last_7_days: '3'
+  times_socialising_last_7_days: '3'
   title: Mr.
   transport_to_work_or_education: Bus, minibus or coach
   unique_participant_response_id: 456442497105-DHR-763063387334-1996-09-28
@@ -1271,7 +1271,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: null
+  bad_email_address: null
   been_outside_uk: null
   been_outside_uk_last_country: Samoa
   been_outside_uk_last_return_date: '2020-11-09 00:00:00.000000'
@@ -1306,20 +1306,20 @@
   cis_covid_vaccine_date_5: '2022-01-07'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Sputnik
-  cis_covid_vaccine_type_2: Novavax
-  cis_covid_vaccine_type_3: null
-  cis_covid_vaccine_type_4: null
-  cis_covid_vaccine_type_5: Valneva
-  cis_covid_vaccine_type_6: Novavax
-  cis_covid_vaccine_type_other: Let them eat cake.
-  cis_covid_vaccine_type_other_1: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vacine_type_1: Sputnik
+  cis_covid_vacine_type_2: Novavax
+  cis_covid_vacine_type_3: null
+  cis_covid_vacine_type_4: null
+  cis_covid_vacine_type_5: Valneva
+  cis_covid_vacine_type_6: Novavax
+  cis_covid_vacine_type_other: Let them eat cake.
+  cis_covid_vacine_type_other_1: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vaccine_type_other_2: Here's looking at you, kid.
-  cis_covid_vaccine_type_other_3: Elementary, my dear Watson.
-  cis_covid_vaccine_type_other_4: Elementary, my dear Watson.
-  cis_covid_vaccine_type_other_5: Houston, we have a problem.
-  cis_covid_vaccine_type_other_6: Frankly, my dear, I don't give a damn.
+  cis_covid_vacine_type_other_2: Here's looking at you, kid.
+  cis_covid_vacine_type_other_3: Elementary, my dear Watson.
+  cis_covid_vacine_type_other_4: Elementary, my dear Watson.
+  cis_covid_vacine_type_other_5: Houston, we have a problem.
+  cis_covid_vacine_type_other_6: Frankly, my dear, I don't give a damn.
   cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: 'No'
   city: Barrhead
@@ -1330,8 +1330,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   country: Romania
-  currently_smokes_or_vapes: 'Yes'
-  currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'Yes'
+  currently_currently_currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1997-08-21 00:00:00.000000'
   days_since_think_had_covid: -12972.0
   days_since_think_had_covid_group: null
@@ -1349,7 +1349,7 @@
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
   face_covering_outside_of_home: null
-  face_covering_work_or_education: Yes sometimes
+  face_covering_work_or_education_or_education: Yes sometimes
   first_name: Reiko
   hh_id: '836394225258'
   hospital_last_28_days: 'No'
@@ -1399,8 +1399,8 @@
   participant_id: DHR-329500167403
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
-  participant_withdrawal_reason: No longer convenient
-  participant_withdrawal_type: Withdrawn – no future linkage
+  participant_participant_withdrawal_reason: No longer convenient
+  participant_participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 529.0
   person_not_consenting_age_2: 860.0
   person_not_consenting_age_3: null
@@ -1531,34 +1531,34 @@
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_anxiety: 'Yes'
-  think_have_long_covid_symptom_chest_pain: null
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_diarrhoea: null
-  think_have_long_covid_symptom_difficulty_concentrating: null
-  think_have_long_covid_symptom_fatigue: null
-  think_have_long_covid_symptom_fever: null
-  think_have_long_covid_symptom_headache: null
-  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
-  think_have_long_covid_symptom_loss_of_smell: null
-  think_have_long_covid_symptom_loss_of_taste: null
-  think_have_long_covid_symptom_low_mood: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing: 'No'
-  think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_reduced_ability: 'Yes'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: null
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: null
+  think_have_think_have_long_covid_symptom_symptom_cough: 'No'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: null
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: null
+  think_have_think_have_long_covid_symptom_symptom_fatigue: null
+  think_have_think_have_long_covid_symptom_symptom_fever: null
+  think_have_think_have_long_covid_symptom_symptom_headache: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: null
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'No'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'No'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_palpitations: null
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: null
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'No'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_shopping_last_7_days: Don't knowNone
-  times_socialise_last_7_days: Prefer not to say
+  times_socialising_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Other method
   unique_participant_response_id: 498251982661-DHR-329500167403-1986-06-28
@@ -1595,7 +1595,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
-  bad_email: false
+  bad_email_address: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Cambodia
   been_outside_uk_last_return_date: '2022-02-03 00:00:00.000000'
@@ -1629,24 +1629,24 @@
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type_1: Sputnik
-  cis_covid_vaccine_type_2: Sinopharm
-  cis_covid_vaccine_type_3: I don't know the type
-  cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
-  cis_covid_vaccine_type_5: Sinopharm
-  cis_covid_vaccine_type_6: Sinopharm
-  cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
-  cis_covid_vaccine_type_other_1: Get your stinking paws off me, you damned dirty
+  cis_covid_vacine_type_1: Sputnik
+  cis_covid_vacine_type_2: Sinopharm
+  cis_covid_vacine_type_3: I don't know the type
+  cis_covid_vacine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vacine_type_5: Sinopharm
+  cis_covid_vacine_type_6: Sinopharm
+  cis_covid_vacine_type_other: Frankly, my dear, I don't give a damn.
+  cis_covid_vacine_type_other_1: Get your stinking paws off me, you damned dirty
     ape.
-  cis_covid_vaccine_type_other_2: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vacine_type_other_2: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_4: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_other_4: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_5: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vacine_type_other_5: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vaccine_type_other_6: I'm gonna make him an offer he can't refuse.
+  cis_covid_vacine_type_other_6: I'm gonna make him an offer he can't refuse.
   cis_covid_vacine_type: Sinopharm
   cis_flu_vaccine_received: null
   city: Newhaven
@@ -1657,8 +1657,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Iceland
-  currently_smokes_or_vapes: Prefer not to say
-  currently_smokes_or_vapes_description: 'No'
+  currently_currently_smokes_or_vapes: Prefer not to say
+  currently_currently_currently_smokes_or_vapes_description: 'No'
   date_of_birth: '1999-08-11 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1676,7 +1676,7 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education: null
+  face_covering_work_or_education_or_education: null
   first_name: Forest
   hh_id: '544728808246'
   hospital_last_28_days: null
@@ -1726,8 +1726,8 @@
   participant_id: DHR-308127387209
   participant_invited_digital: 'Yes'
   participant_status: Active
-  participant_withdrawal_reason: too many visits
-  participant_withdrawal_type: Withdrawn – no future linkage
+  participant_participant_withdrawal_reason: too many visits
+  participant_participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 425.0
   person_not_consenting_age_2: 330.0
   person_not_consenting_age_3: 270.0
@@ -1856,34 +1856,34 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_anxiety: null
-  think_have_long_covid_symptom_chest_pain: 'Yes'
-  think_have_long_covid_symptom_cough: 'Yes'
-  think_have_long_covid_symptom_diarrhoea: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_long_covid_symptom_fatigue: 'No'
-  think_have_long_covid_symptom_fever: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_loss_of_appetite: null
-  think_have_long_covid_symptom_loss_of_smell: null
-  think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood: null
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: null
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing: 'No'
-  think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_reduced_ability: 'Yes'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_long_covid_symptom_shortness_of_breath: null
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: null
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_cough: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fever: 'No'
+  think_have_think_have_long_covid_symptom_symptom_headache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: null
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: null
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'No'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: null
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
   times_shopping_last_7_days: '5'
-  times_socialise_last_7_days: '5'
+  times_socialising_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
   unique_participant_response_id: 545473722111-DHR-308127387209-1985-03-03
@@ -1915,7 +1915,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: false
+  bad_email_address: false
   been_outside_uk: null
   been_outside_uk_last_country: Bangladesh
   been_outside_uk_last_return_date: '2020-08-26 00:00:00.000000'
@@ -1949,22 +1949,22 @@
   cis_covid_vaccine_date_5: '2022-01-02'
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Novavax
-  cis_covid_vaccine_type_2: Pfizer / BioNTech
-  cis_covid_vaccine_type_3: Another vaccine please specify
-  cis_covid_vaccine_type_4: Sputnik
-  cis_covid_vaccine_type_5: Novavax
-  cis_covid_vaccine_type_6: Pfizer / BioNTech
-  cis_covid_vaccine_type_other: '"You''ve got to ask yourself one question: ""Do I
+  cis_covid_vacine_type_1: Novavax
+  cis_covid_vacine_type_2: Pfizer / BioNTech
+  cis_covid_vacine_type_3: Another vaccine please specify
+  cis_covid_vacine_type_4: Sputnik
+  cis_covid_vacine_type_5: Novavax
+  cis_covid_vacine_type_6: Pfizer / BioNTech
+  cis_covid_vacine_type_other: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vaccine_type_other_1: Ask not what your country can do for you; ask what
+  cis_covid_vacine_type_other_1: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vaccine_type_other_2: A census taker once tried to test me. I ate his
+  cis_covid_vacine_type_other_2: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
-  cis_covid_vaccine_type_other_3: They call me *Mister* Tibbs!
-  cis_covid_vaccine_type_other_4: Elementary, my dear Watson.
-  cis_covid_vaccine_type_other_5: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
+  cis_covid_vacine_type_other_3: They call me *Mister* Tibbs!
+  cis_covid_vacine_type_other_4: Elementary, my dear Watson.
+  cis_covid_vacine_type_other_5: You're gonna need a bigger boat.
+  cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vacine_type: Moderna
   cis_flu_vaccine_received: null
@@ -1976,8 +1976,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Romania
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
+  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2007-03-09 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1994,7 +1994,7 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: Yes always
   face_covering_outside_of_home: null
-  face_covering_work_or_education: null
+  face_covering_work_or_education_or_education: null
   first_name: Caron
   hh_id: '195028486959'
   hospital_last_28_days: 'No'
@@ -2044,8 +2044,8 @@
   participant_id: DHR-867585874226
   participant_invited_digital: 'No'
   participant_status: Complete
-  participant_withdrawal_reason: too many visits
-  participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_reason: too many visits
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 706.0
   person_not_consenting_age_3: null
@@ -2173,34 +2173,34 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: null
-  think_have_long_covid_symptom_anxiety: 'Yes'
-  think_have_long_covid_symptom_chest_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_diarrhoea: null
-  think_have_long_covid_symptom_difficulty_concentrating: null
-  think_have_long_covid_symptom_fatigue: null
-  think_have_long_covid_symptom_fever: 'Yes'
-  think_have_long_covid_symptom_headache: 'Yes'
-  think_have_long_covid_symptom_loss_of_appetite: null
-  think_have_long_covid_symptom_loss_of_smell: 'Yes'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: null
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing: 'No'
-  think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_reduced_ability: 'No'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: null
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: null
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_cough: 'No'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: null
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: null
+  think_have_think_have_long_covid_symptom_symptom_fatigue: null
+  think_have_think_have_long_covid_symptom_symptom_fever: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_headache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'No'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: null
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'No'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'No'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: null
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'No'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: 'No'
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_shopping_last_7_days: Prefer not to say
-  times_socialise_last_7_days: '6'
+  times_socialising_last_7_days: '6'
   title: Miss.
   transport_to_work_or_education: Bus, minibus or coach
   unique_participant_response_id: 704542495687-DHR-867585874226
@@ -2235,7 +2235,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: null
+  bad_email_address: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: '2021-03-09 00:00:00.000000'
@@ -2271,22 +2271,22 @@
   cis_covid_vaccine_date_5: '2022-01-09'
   cis_covid_vaccine_number_of_doses: '3'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Another vaccine please specify
-  cis_covid_vaccine_type_2: Sinopharm
-  cis_covid_vaccine_type_3: Sputnik
-  cis_covid_vaccine_type_4: Another vaccine please specify
-  cis_covid_vaccine_type_5: Sinopharm
-  cis_covid_vaccine_type_6: Sinovac
-  cis_covid_vaccine_type_other: Let them eat cake.
-  cis_covid_vaccine_type_other_1: One morning I shot an elephant in my pajamas. How
+  cis_covid_vacine_type_1: Another vaccine please specify
+  cis_covid_vacine_type_2: Sinopharm
+  cis_covid_vacine_type_3: Sputnik
+  cis_covid_vacine_type_4: Another vaccine please specify
+  cis_covid_vacine_type_5: Sinopharm
+  cis_covid_vacine_type_6: Sinovac
+  cis_covid_vacine_type_other: Let them eat cake.
+  cis_covid_vacine_type_other_1: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
-  cis_covid_vaccine_type_other_2: I'm gonna make him an offer he can't refuse.
-  cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_other_2: I'm gonna make him an offer he can't refuse.
+  cis_covid_vacine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_4: Here's looking at you, kid.
-  cis_covid_vaccine_type_other_5: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
+  cis_covid_vacine_type_other_4: Here's looking at you, kid.
+  cis_covid_vacine_type_other_5: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
-  cis_covid_vaccine_type_other_6: Houston, we have a problem.
+  cis_covid_vacine_type_other_6: Houston, we have a problem.
   cis_covid_vacine_type: Another vaccine please specify
   cis_flu_vaccine_received: 'Yes'
   city: null
@@ -2297,8 +2297,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   country: Jamaica
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'No'
+  currently_currently_currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: null
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2317,7 +2317,7 @@
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
   face_covering_outside_of_home: null
-  face_covering_work_or_education: Yes sometimes
+  face_covering_work_or_education_or_education: Yes sometimes
   first_name: Honey
   hh_id: '425723964512'
   hospital_last_28_days: 'No'
@@ -2367,8 +2367,8 @@
   participant_id: DHR-352206298026
   participant_invited_digital: 'Yes'
   participant_status: Complete
-  participant_withdrawal_reason: No longer convenient
-  participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_reason: No longer convenient
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: 571.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 807.0
@@ -2496,40 +2496,40 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: null
-  think_have_long_covid_symptom_anxiety: 'Yes'
-  think_have_long_covid_symptom_chest_pain: null
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_diarrhoea: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fatigue: null
-  think_have_long_covid_symptom_fever: 'No'
-  think_have_long_covid_symptom_headache: null
-  think_have_long_covid_symptom_loss_of_appetite: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: null
-  think_have_long_covid_symptom_low_mood: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: null
-  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing: null
-  think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_reduced_ability: null
-  think_have_long_covid_symptom_runny_nose_or_sneezing: null
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: null
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: null
+  think_have_think_have_long_covid_symptom_symptom_cough: 'No'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'No'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: null
+  think_have_think_have_long_covid_symptom_symptom_fever: 'No'
+  think_have_think_have_long_covid_symptom_symptom_headache: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: null
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: null
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'No'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'No'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: null
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'No'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: null
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'No'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: null
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: Prefer not to say
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
   times_shopping_last_7_days: '3'
-  times_socialise_last_7_days: '2'
+  times_socialising_last_7_days: '2'
   title: Miss.
   transport_to_work_or_education: Bicycle
   unique_participant_response_id: 769043821442-DHR-352206298026
   visit_datetime: null
   visit_id: '769043821442'
-  voucher_type_preference: Email
+  voucher_type_preference: email_address
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'Yes'
   work_in_additional_paid_employment: 'No'
@@ -2556,7 +2556,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
-  bad_email: null
+  bad_email_address: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Iceland
   been_outside_uk_last_return_date: '2021-03-07 00:00:00.000000'
@@ -2589,25 +2589,25 @@
   cis_covid_vaccine_date_5: '2022-01-08'
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type_1: Another vaccine please specify
-  cis_covid_vaccine_type_2: Valneva
-  cis_covid_vaccine_type_3: Sputnik
-  cis_covid_vaccine_type_4: Another vaccine please specify
-  cis_covid_vaccine_type_5: Valneva
-  cis_covid_vaccine_type_6: Oxford / AstraZeneca
-  cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_1: Another vaccine please specify
+  cis_covid_vacine_type_2: Valneva
+  cis_covid_vacine_type_3: Sputnik
+  cis_covid_vacine_type_4: Another vaccine please specify
+  cis_covid_vacine_type_5: Valneva
+  cis_covid_vacine_type_6: Oxford / AstraZeneca
+  cis_covid_vacine_type_other: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his
+  cis_covid_vacine_type_other_1: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
-  cis_covid_vaccine_type_other_2: Mama always said life was like a box of chocolates.
+  cis_covid_vacine_type_other_2: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  cis_covid_vaccine_type_other_3: Ask not what your country can do for you; ask what
+  cis_covid_vacine_type_other_3: Ask not what your country can do for you; ask what
     you can do for your country.
-  cis_covid_vaccine_type_other_4: '"You''ve got to ask yourself one question: ""Do
+  cis_covid_vacine_type_other_4: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
-  cis_covid_vaccine_type_other_5: A census taker once tried to test me. I ate his
+  cis_covid_vacine_type_other_5: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
-  cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
+  cis_covid_vacine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vacine_type: null
   cis_flu_vaccine_received: 'No'
@@ -2619,8 +2619,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
   country: Iceland
-  currently_smokes_or_vapes: 'Yes'
-  currently_smokes_or_vapes_description: 'Yes'
+  currently_currently_smokes_or_vapes: 'Yes'
+  currently_currently_currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2638,7 +2638,7 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
+  face_covering_work_or_education_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Annika
   hh_id: '602276804025'
@@ -2689,8 +2689,8 @@
   participant_id: DHR-016525808631
   participant_invited_digital: 'No'
   participant_status: Withdrawn
-  participant_withdrawal_reason: Participant does not want to self swab
-  participant_withdrawal_type: Withdrawn – no future linkage or use of samples
+  participant_participant_withdrawal_reason: Participant does not want to self swab
+  participant_participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 336.0
   person_not_consenting_age_3: null
@@ -2816,40 +2816,40 @@
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_anxiety: 'Yes'
-  think_have_long_covid_symptom_chest_pain: null
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_diarrhoea: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fatigue: 'No'
-  think_have_long_covid_symptom_fever: 'Yes'
-  think_have_long_covid_symptom_headache: null
-  think_have_long_covid_symptom_loss_of_appetite: null
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood: null
-  think_have_long_covid_symptom_memory_loss_or_confusion: null
-  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_muscle_ache: null
-  think_have_long_covid_symptom_nausea_or_vomiting: null
-  think_have_long_covid_symptom_noisy_breathing: null
-  think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_reduced_ability: null
-  think_have_long_covid_symptom_runny_nose_or_sneezing: null
-  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: 'Yes'
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_anxiety: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: null
+  think_have_think_have_long_covid_symptom_symptom_cough: 'No'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fever: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_headache: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'No'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: null
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: null
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: null
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: null
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: null
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'No'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: null
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_shopping_last_7_days: '2'
-  times_socialise_last_7_days: '2'
+  times_socialising_last_7_days: '2'
   title: Dr.
   transport_to_work_or_education: Underound, Metro, Light Rail or Tram
   unique_participant_response_id: 868570220212-DHR-016525808631-2020-02-01
   visit_datetime: '2020-02-01'
   visit_id: '868570220212'
-  voucher_type_preference: Email
+  voucher_type_preference: email_address
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: Prefer not to say
   work_in_additional_paid_employment: 'No'
@@ -2879,7 +2879,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'Yes'
-  bad_email: false
+  bad_email_address: false
   been_outside_uk: null
   been_outside_uk_last_country: Kenya
   been_outside_uk_last_return_date: null
@@ -2912,20 +2912,20 @@
   cis_covid_vaccine_date_5: '2022-01-04'
   cis_covid_vaccine_number_of_doses: '4'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type_1: Sinopharm
-  cis_covid_vaccine_type_2: Janssen / Johnson&Johnson
-  cis_covid_vaccine_type_3: From a research study/trial
-  cis_covid_vaccine_type_4: Pfizer / BioNTech
-  cis_covid_vaccine_type_5: I don't know the type
-  cis_covid_vaccine_type_6: null
-  cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
+  cis_covid_vacine_type_1: Sinopharm
+  cis_covid_vacine_type_2: Janssen / Johnson&Johnson
+  cis_covid_vacine_type_3: From a research study/trial
+  cis_covid_vacine_type_4: Pfizer / BioNTech
+  cis_covid_vacine_type_5: I don't know the type
+  cis_covid_vacine_type_6: null
+  cis_covid_vacine_type_other: Those who refuse to learn from history are condemned
     to repeat it.
-  cis_covid_vaccine_type_other_1: They call me *Mister* Tibbs!
-  cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
-  cis_covid_vaccine_type_other_3: The only thing we have to fear is fear itself.
-  cis_covid_vaccine_type_other_4: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_other_5: Houston, we have a problem.
-  cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
+  cis_covid_vacine_type_other_1: They call me *Mister* Tibbs!
+  cis_covid_vacine_type_other_2: They call me *Mister* Tibbs!
+  cis_covid_vacine_type_other_3: The only thing we have to fear is fear itself.
+  cis_covid_vacine_type_other_4: You're gonna need a bigger boat.
+  cis_covid_vacine_type_other_5: Houston, we have a problem.
+  cis_covid_vacine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vacine_type: Sinovac
   cis_flu_vaccine_received: null
@@ -2937,8 +2937,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   country: Ecuador
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: Prefer not to say
+  currently_currently_smokes_or_vapes: 'No'
+  currently_currently_currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2014-01-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2956,7 +2956,7 @@
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
   face_covering_outside_of_home: null
-  face_covering_work_or_education: Yes sometimes
+  face_covering_work_or_education_or_education: Yes sometimes
   first_name: Myung
   hh_id: 061403237378
   hospital_last_28_days: 'Yes'
@@ -3006,8 +3006,8 @@
   participant_id: DHR-200593676791
   participant_invited_digital: 'Yes'
   participant_status: Complete
-  participant_withdrawal_reason: Moving Location
-  participant_withdrawal_type: Withdrawn
+  participant_participant_withdrawal_reason: Moving Location
+  participant_participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 964.0
   person_not_consenting_age_3: null
@@ -3135,34 +3135,34 @@
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid: null
-  think_have_long_covid_symptom_abdominal_pain: null
-  think_have_long_covid_symptom_anxiety: null
-  think_have_long_covid_symptom_chest_pain: 'No'
-  think_have_long_covid_symptom_cough: 'Yes'
-  think_have_long_covid_symptom_diarrhoea: null
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fatigue: null
-  think_have_long_covid_symptom_fever: 'Yes'
-  think_have_long_covid_symptom_headache: null
-  think_have_long_covid_symptom_loss_of_appetite: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_or_vomiting: null
-  think_have_long_covid_symptom_noisy_breathing: 'No'
-  think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_reduced_ability: 'No'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: null
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_think_have_long_covid_symptom_symptom_abdominal_pain: null
+  think_have_think_have_long_covid_symptom_symptom_anxiety: null
+  think_have_think_have_long_covid_symptom_symptom_chest_pain: 'No'
+  think_have_think_have_long_covid_symptom_symptom_cough: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_diarrhoea: null
+  think_have_think_have_long_covid_symptom_symptom_difficulty_concentrating: 'No'
+  think_have_think_have_long_covid_symptom_symptom_fatigue: null
+  think_have_think_have_long_covid_symptom_symptom_fever: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_headache: null
+  think_have_think_have_long_covid_symptom_symptom_loss_of_appetite: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_smell: 'No'
+  think_have_think_have_long_covid_symptom_symptom_loss_of_taste: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_low_mood: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_memory_loss_or_confusion: 'No'
+  think_have_think_have_long_covid_symptom_symptom_more_trouble_sleeping: 'No'
+  think_have_think_have_long_covid_symptom_symptom_muscle_ache: 'Yes'
+  think_have_think_have_long_covid_symptom_symptom_nausea_or_vomiting: null
+  think_have_think_have_long_covid_symptom_symptom_noisy_breathing: 'No'
+  think_have_think_have_long_covid_symptom_symptom_palpitations: 'No'
+  think_have_think_have_long_covid_symptom_symptom_reduced_ability: 'No'
+  think_have_think_have_long_covid_symptom_symptom_runny_nose_or_sneezing: null
+  think_have_think_have_long_covid_symptom_symptom_shortness_of_breath: 'No'
+  think_have_think_have_long_covid_symptom_symptom_sore_throat: 'No'
+  think_have_think_have_long_covid_symptom_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
   times_shopping_last_7_days: 7 times or more
-  times_socialise_last_7_days: '1'
+  times_socialising_last_7_days: '1'
   title: Miss.
   transport_to_work_or_education: Train
   unique_participant_response_id: 891036937066-DHR-200593676791-2014-01-03

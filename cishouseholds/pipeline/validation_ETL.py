@@ -45,7 +45,7 @@ def validation_calls(SparkVal):
     SparkVal.validate_column(column_calls)
 
     vaccine_columns = []
-    for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
+    for template in ["cis_covid_vacine_type_{}", "cis_covid_vacine_type_other_{}", "cis_covid_vaccine_date_{}"]:
         for number in range(1, 5):
             vaccine_columns.append(template.format(number))
 
@@ -69,13 +69,13 @@ def validation_calls(SparkVal):
                 "null_columns": [
                     "work_main_job_title",
                     "work_main_job_role",
-                    "work_sectors",
-                    "work_sectors_other",
+                    "work_sector",
+                    "work_sector_other",
                     "work_location",
                 ],
             },
             {
-                "condition": F.col("visit_type") != "First Visit",
+                "condition": F.col("survey_response_type") != "First Visit",
                 "null_columns": vaccine_columns,
             },
         ],
@@ -85,11 +85,11 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_udl(
         logic=(
-            ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
-            | (F.col("cis_covid_vaccine_type") != "Other / specify")
+            ((F.col("cis_covid_vacine_type") == "Other / specify") & F.col("cis_covid_vacine_type_other").isNull())
+            | (F.col("cis_covid_vacine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
-        columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
+        columns=["cis_covid_vacine_type", "cis_covid_vacine_type_other"],
     )
 
     SparkVal.validate_udl(
@@ -98,25 +98,36 @@ def validation_calls(SparkVal):
                 (F.col("work_social_care") == "Yes")
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_patients_clients") == "Yes")
+                    | (F.col("work_direct_contact_patients_or_clients") == "Yes")
                 )
             )
             | (F.col("work_social_care") == "No")
         ),
         error_message="work social care should be 'No' if not working in care homes or in direct contact",
-        columns=["work_social_care", "work_nursing_or_residential_care_home", "work_direct_contact_patients_clients"],
+        columns=[
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_or_clients",
+        ],
     )
 
     SparkVal.validate_udl(
         logic=(
             (
-                (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
+                (
+                    F.col("face_covering_other_enclosed_places").isNotNull()
+                    | F.col("face_covering_work_or_education").isNotNull()
+                )
                 & (F.col("face_covering_outside_of_home").isNull())
             )
             | (F.col("face_covering_outside_of_home").isNotNull())
         ),
         error_message="face covering is null when face covering at work and other places are null",
-        columns=["face_covering_other_enclosed_places", "face_covering_work", "face_covering_outside_of_home"],
+        columns=[
+            "face_covering_other_enclosed_places",
+            "face_covering_work_or_education",
+            "face_covering_outside_of_home",
+        ],
     )
 
     SparkVal.validate_udl(  # Sample_taken_out_of_range

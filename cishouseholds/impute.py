@@ -166,12 +166,12 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
     df
     id
     date
-    visit_type
+    survey_response_type
     dataset
     changed
     list_fill_forward
     changed_positive_value
-    visit_type_value
+    survey_response_type_value
     """
     window = Window.partitionBy(id).orderBy(date)
 
