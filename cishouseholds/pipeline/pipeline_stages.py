@@ -1317,10 +1317,7 @@ def sample_file_ETL(
     country_lookup,
     lsoa_cis_lookup,
 ):
-    first_run = True if check_table_exists(design_weight_table) else False
-
-    if check_table_exists(design_weight_table):
-        first_run = False
+    first_run = not check_table_exists(design_weight_table)
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
