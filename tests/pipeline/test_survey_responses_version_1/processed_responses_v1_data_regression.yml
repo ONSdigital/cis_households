@@ -21,8 +21,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
-  currently_smokes_or_vapes_description: Any element of a tuple can be accessed
-    in constant time.
+  currently_smokes_or_vapes_description: Any element of a tuple can be accessed in
+    constant time.
   date_of_birth: '1988-12-04 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -96,14 +96,14 @@
   person_not_consenting_age_7: 0.0
   person_not_consenting_age_8: 1.0
   person_not_consenting_age_9: 80.0
-  person_not_present_age_1: '91'
-  person_not_present_age_2: '89'
-  person_not_present_age_3: '1'
-  person_not_present_age_4: '62'
-  person_not_present_age_5: '24'
-  person_not_present_age_6: '10'
-  person_not_present_age_7: '41'
-  person_not_present_age_8: '80'
+  person_not_present_age_1: 91.0
+  person_not_present_age_2: 89.0
+  person_not_present_age_3: 1.0
+  person_not_present_age_4: 62.0
+  person_not_present_age_5: 24.0
+  person_not_present_age_6: 10.0
+  person_not_present_age_7: 41.0
+  person_not_present_age_8: 80.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'Yes'
@@ -225,9 +225,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes_description: The Galactic Empire is nearing
-    completion of the Death Star, a space station with the power to destroy entire
-    planets.
+  currently_smokes_or_vapes_description: The Galactic Empire is nearing completion
+    of the Death Star, a space station with the power to destroy entire planets.
   date_of_birth: '1982-12-15 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -302,14 +301,14 @@
   person_not_consenting_age_7: 28.0
   person_not_consenting_age_8: 52.0
   person_not_consenting_age_9: 11.0
-  person_not_present_age_1: '19'
-  person_not_present_age_2: '14'
-  person_not_present_age_3: '6'
+  person_not_present_age_1: 19.0
+  person_not_present_age_2: 14.0
+  person_not_present_age_3: 6.0
   person_not_present_age_4: null
-  person_not_present_age_5: '54'
-  person_not_present_age_6: '21'
-  person_not_present_age_7: '64'
-  person_not_present_age_8: '63'
+  person_not_present_age_5: 54.0
+  person_not_present_age_6: 21.0
+  person_not_present_age_7: 64.0
+  person_not_present_age_8: 63.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
@@ -436,9 +435,9 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
-  currently_smokes_or_vapes_description: Atoms can contain any character
-    if they are enclosed within single quotes and an escape convention exists which
-    allows any character to be used within an atom.
+  currently_smokes_or_vapes_description: Atoms can contain any character if they are
+    enclosed within single quotes and an escape convention exists which allows any
+    character to be used within an atom.
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -515,14 +514,14 @@
   person_not_consenting_age_7: 47.0
   person_not_consenting_age_8: 25.0
   person_not_consenting_age_9: null
-  person_not_present_age_1: '70'
-  person_not_present_age_2: '39'
-  person_not_present_age_3: '88'
-  person_not_present_age_4: '4'
-  person_not_present_age_5: '78'
-  person_not_present_age_6: '73'
-  person_not_present_age_7: '90'
-  person_not_present_age_8: '87'
+  person_not_present_age_1: 70.0
+  person_not_present_age_2: 39.0
+  person_not_present_age_3: 88.0
+  person_not_present_age_4: 4.0
+  person_not_present_age_5: 78.0
+  person_not_present_age_6: 73.0
+  person_not_present_age_7: 90.0
+  person_not_present_age_8: 87.0
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'Yes'
@@ -645,8 +644,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes_description: In 1989 the building was heavily
-    damaged by fire, but it has since been restored.
+  currently_smokes_or_vapes_description: In 1989 the building was heavily damaged
+    by fire, but it has since been restored.
   date_of_birth: '1997-03-07 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -720,14 +719,14 @@
   person_not_consenting_age_7: 68.0
   person_not_consenting_age_8: 75.0
   person_not_consenting_age_9: 9.0
-  person_not_present_age_1: '70'
-  person_not_present_age_2: '69'
-  person_not_present_age_3: '23'
+  person_not_present_age_1: 70.0
+  person_not_present_age_2: 69.0
+  person_not_present_age_3: 23.0
   person_not_present_age_4: null
   person_not_present_age_5: null
-  person_not_present_age_6: '91'
-  person_not_present_age_7: '59'
-  person_not_present_age_8: '59'
+  person_not_present_age_6: 91.0
+  person_not_present_age_7: 59.0
+  person_not_present_age_8: 59.0
   physical_contact_18_to_69_years: 'No'
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
@@ -932,14 +931,14 @@
   person_not_consenting_age_7: 26.0
   person_not_consenting_age_8: null
   person_not_consenting_age_9: 9.0
-  person_not_present_age_1: '74'
+  person_not_present_age_1: 74.0
   person_not_present_age_2: null
-  person_not_present_age_3: '64'
-  person_not_present_age_4: '14'
-  person_not_present_age_5: '30'
+  person_not_present_age_3: 64.0
+  person_not_present_age_4: 14.0
+  person_not_present_age_5: 30.0
   person_not_present_age_6: null
   person_not_present_age_7: null
-  person_not_present_age_8: '55'
+  person_not_present_age_8: 55.0
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
@@ -1065,8 +1064,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_smokes_or_vapes_description: He looked inquisitively at his
-    keyboard and wrote another sentence.
+  currently_smokes_or_vapes_description: He looked inquisitively at his keyboard and
+    wrote another sentence.
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -1140,14 +1139,14 @@
   person_not_consenting_age_7: 5.0
   person_not_consenting_age_8: 90.0
   person_not_consenting_age_9: 72.0
-  person_not_present_age_1: '67'
-  person_not_present_age_2: '90'
+  person_not_present_age_1: 67.0
+  person_not_present_age_2: 90.0
   person_not_present_age_3: null
-  person_not_present_age_4: '31'
-  person_not_present_age_5: '22'
-  person_not_present_age_6: '41'
-  person_not_present_age_7: '25'
-  person_not_present_age_8: '84'
+  person_not_present_age_4: 31.0
+  person_not_present_age_5: 22.0
+  person_not_present_age_6: 41.0
+  person_not_present_age_7: 25.0
+  person_not_present_age_8: 84.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
@@ -1344,14 +1343,14 @@
   person_not_consenting_age_7: 33.0
   person_not_consenting_age_8: null
   person_not_consenting_age_9: 30.0
-  person_not_present_age_1: '88'
-  person_not_present_age_2: '59'
-  person_not_present_age_3: '90'
-  person_not_present_age_4: '86'
-  person_not_present_age_5: '89'
-  person_not_present_age_6: '88'
-  person_not_present_age_7: '9'
-  person_not_present_age_8: '67'
+  person_not_present_age_1: 88.0
+  person_not_present_age_2: 59.0
+  person_not_present_age_3: 90.0
+  person_not_present_age_4: 86.0
+  person_not_present_age_5: 89.0
+  person_not_present_age_6: 88.0
+  person_not_present_age_7: 9.0
+  person_not_present_age_8: 67.0
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
@@ -1554,14 +1553,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: 58.0
   person_not_consenting_age_9: 68.0
-  person_not_present_age_1: '76'
-  person_not_present_age_2: '56'
-  person_not_present_age_3: '60'
+  person_not_present_age_1: 76.0
+  person_not_present_age_2: 56.0
+  person_not_present_age_3: 60.0
   person_not_present_age_4: null
-  person_not_present_age_5: '27'
-  person_not_present_age_6: '86'
-  person_not_present_age_7: '10'
-  person_not_present_age_8: '50'
+  person_not_present_age_5: 27.0
+  person_not_present_age_6: 86.0
+  person_not_present_age_7: 10.0
+  person_not_present_age_8: 50.0
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
@@ -1686,8 +1685,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes
-    a tuple whose arguments are D1, D2, ... Dn.
+  currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes a tuple
+    whose arguments are D1, D2, ... Dn.
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1761,13 +1760,13 @@
   person_not_consenting_age_7: 35.0
   person_not_consenting_age_8: 46.0
   person_not_consenting_age_9: 79.0
-  person_not_present_age_1: '69'
-  person_not_present_age_2: '50'
-  person_not_present_age_3: '40'
-  person_not_present_age_4: '11'
-  person_not_present_age_5: '56'
-  person_not_present_age_6: '14'
-  person_not_present_age_7: '50'
+  person_not_present_age_1: 69.0
+  person_not_present_age_2: 50.0
+  person_not_present_age_3: 40.0
+  person_not_present_age_4: 11.0
+  person_not_present_age_5: 56.0
+  person_not_present_age_6: 14.0
+  person_not_present_age_7: 50.0
   person_not_present_age_8: null
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: null
@@ -1890,8 +1889,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
-  currently_smokes_or_vapes_description: Erlang is known for its designs
-    that are well suited for systems.
+  currently_smokes_or_vapes_description: Erlang is known for its designs that are
+    well suited for systems.
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1969,14 +1968,14 @@
   person_not_consenting_age_7: 17.0
   person_not_consenting_age_8: 49.0
   person_not_consenting_age_9: 17.0
-  person_not_present_age_1: '80'
-  person_not_present_age_2: '25'
+  person_not_present_age_1: 80.0
+  person_not_present_age_2: 25.0
   person_not_present_age_3: null
-  person_not_present_age_4: '7'
-  person_not_present_age_5: '44'
-  person_not_present_age_6: '63'
-  person_not_present_age_7: '45'
-  person_not_present_age_8: '8'
+  person_not_present_age_4: 7.0
+  person_not_present_age_5: 44.0
+  person_not_present_age_6: 63.0
+  person_not_present_age_7: 45.0
+  person_not_present_age_8: 8.0
   physical_contact_18_to_69_years: 'Yes'
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'No'

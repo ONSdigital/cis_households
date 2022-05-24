@@ -75,13 +75,13 @@
   person_not_consenting_age_8: 56.0
   person_not_consenting_age_9: 70.0
   person_not_present_age_1: null
-  person_not_present_age_2: '57'
-  person_not_present_age_3: '38'
+  person_not_present_age_2: 57.0
+  person_not_present_age_3: 38.0
   person_not_present_age_4: null
-  person_not_present_age_5: '91'
-  person_not_present_age_6: '89'
-  person_not_present_age_7: '1'
-  person_not_present_age_8: '62'
+  person_not_present_age_5: 91.0
+  person_not_present_age_6: 89.0
+  person_not_present_age_7: 1.0
+  person_not_present_age_8: 62.0
   phase: Those who refuse to learn from history are condemned to repeat it.
   postcode: null
   received_shielding_letter: 'Yes'
@@ -225,14 +225,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: 43.0
   person_not_consenting_age_9: 6.0
-  person_not_present_age_1: '62'
-  person_not_present_age_2: '56'
-  person_not_present_age_3: '50'
+  person_not_present_age_1: 62.0
+  person_not_present_age_2: 56.0
+  person_not_present_age_3: 50.0
   person_not_present_age_4: null
-  person_not_present_age_5: '39'
-  person_not_present_age_6: '60'
-  person_not_present_age_7: '40'
-  person_not_present_age_8: '43'
+  person_not_present_age_5: 39.0
+  person_not_present_age_6: 60.0
+  person_not_present_age_7: 40.0
+  person_not_present_age_8: 43.0
   phase: Houston, we have a problem.
   postcode: null
   received_shielding_letter: null
@@ -376,13 +376,13 @@
   person_not_consenting_age_7: 41.0
   person_not_consenting_age_8: 25.0
   person_not_consenting_age_9: 84.0
-  person_not_present_age_1: '79'
+  person_not_present_age_1: 79.0
   person_not_present_age_2: null
-  person_not_present_age_3: '61'
-  person_not_present_age_4: '12'
-  person_not_present_age_5: '52'
-  person_not_present_age_6: '72'
-  person_not_present_age_7: '17'
+  person_not_present_age_3: 61.0
+  person_not_present_age_4: 12.0
+  person_not_present_age_5: 52.0
+  person_not_present_age_6: 72.0
+  person_not_present_age_7: 17.0
   person_not_present_age_8: null
   phase: Houston, we have a problem.
   postcode: TE4H2TC
@@ -534,14 +534,14 @@
   person_not_consenting_age_7: 88.0
   person_not_consenting_age_8: 76.0
   person_not_consenting_age_9: 40.0
-  person_not_present_age_1: '75'
-  person_not_present_age_2: '9'
+  person_not_present_age_1: 75.0
+  person_not_present_age_2: 9.0
   person_not_present_age_3: null
-  person_not_present_age_4: '62'
-  person_not_present_age_5: '36'
-  person_not_present_age_6: '6'
-  person_not_present_age_7: '57'
-  person_not_present_age_8: '71'
+  person_not_present_age_4: 62.0
+  person_not_present_age_5: 36.0
+  person_not_present_age_6: 6.0
+  person_not_present_age_7: 57.0
+  person_not_present_age_8: 71.0
   phase: You're gonna need a bigger boat.
   postcode: null
   received_shielding_letter: 'Yes'
@@ -687,14 +687,14 @@
   person_not_consenting_age_7: 26.0
   person_not_consenting_age_8: null
   person_not_consenting_age_9: 9.0
-  person_not_present_age_1: '74'
+  person_not_present_age_1: 74.0
   person_not_present_age_2: null
-  person_not_present_age_3: '64'
-  person_not_present_age_4: '14'
-  person_not_present_age_5: '30'
+  person_not_present_age_3: 64.0
+  person_not_present_age_4: 14.0
+  person_not_present_age_5: 30.0
   person_not_present_age_6: null
   person_not_present_age_7: null
-  person_not_present_age_8: '55'
+  person_not_present_age_8: 55.0
   phase: Here's looking at you, kid.
   postcode: null
   received_shielding_letter: 'No'
@@ -841,14 +841,14 @@
   person_not_consenting_age_7: 73.0
   person_not_consenting_age_8: 2.0
   person_not_consenting_age_9: 30.0
-  person_not_present_age_1: '22'
-  person_not_present_age_2: '71'
-  person_not_present_age_3: '37'
-  person_not_present_age_4: '14'
-  person_not_present_age_5: '79'
-  person_not_present_age_6: '74'
-  person_not_present_age_7: '2'
-  person_not_present_age_8: '30'
+  person_not_present_age_1: 22.0
+  person_not_present_age_2: 71.0
+  person_not_present_age_3: 37.0
+  person_not_present_age_4: 14.0
+  person_not_present_age_5: 79.0
+  person_not_present_age_6: 74.0
+  person_not_present_age_7: 2.0
+  person_not_present_age_8: 30.0
   phase: Frankly, my dear, I don't give a damn.
   postcode: null
   received_shielding_letter: 'Yes'
@@ -994,13 +994,13 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: 29.0
   person_not_consenting_age_9: 8.0
-  person_not_present_age_1: '64'
-  person_not_present_age_2: '63'
-  person_not_present_age_3: '72'
-  person_not_present_age_4: '60'
-  person_not_present_age_5: '39'
-  person_not_present_age_6: '59'
-  person_not_present_age_7: '76'
+  person_not_present_age_1: 64.0
+  person_not_present_age_2: 63.0
+  person_not_present_age_3: 72.0
+  person_not_present_age_4: 60.0
+  person_not_present_age_5: 39.0
+  person_not_present_age_6: 59.0
+  person_not_present_age_7: 76.0
   person_not_present_age_8: null
   phase: Elementary, my dear Watson.
   postcode: NC0C6UK
@@ -1147,14 +1147,14 @@
   person_not_consenting_age_7: 20.0
   person_not_consenting_age_8: 2.0
   person_not_consenting_age_9: 62.0
-  person_not_present_age_1: '49'
-  person_not_present_age_2: '21'
-  person_not_present_age_3: '64'
+  person_not_present_age_1: 49.0
+  person_not_present_age_2: 21.0
+  person_not_present_age_3: 64.0
   person_not_present_age_4: null
-  person_not_present_age_5: '49'
-  person_not_present_age_6: '19'
-  person_not_present_age_7: '83'
-  person_not_present_age_8: '63'
+  person_not_present_age_5: 49.0
+  person_not_present_age_6: 19.0
+  person_not_present_age_7: 83.0
+  person_not_present_age_8: 63.0
   phase: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   postcode: null
   received_shielding_letter: 'No'
@@ -1296,14 +1296,14 @@
   person_not_consenting_age_7: 56.0
   person_not_consenting_age_8: 60.0
   person_not_consenting_age_9: null
-  person_not_present_age_1: '54'
-  person_not_present_age_2: '38'
-  person_not_present_age_3: '48'
-  person_not_present_age_4: '18'
-  person_not_present_age_5: '21'
-  person_not_present_age_6: '61'
-  person_not_present_age_7: '29'
-  person_not_present_age_8: '6'
+  person_not_present_age_1: 54.0
+  person_not_present_age_2: 38.0
+  person_not_present_age_3: 48.0
+  person_not_present_age_4: 18.0
+  person_not_present_age_5: 21.0
+  person_not_present_age_6: 61.0
+  person_not_present_age_7: 29.0
+  person_not_present_age_8: 6.0
   phase: Houston, we have a problem.
   postcode: null
   received_shielding_letter: 'No'
@@ -1449,14 +1449,14 @@
   person_not_consenting_age_7: 11.0
   person_not_consenting_age_8: 45.0
   person_not_consenting_age_9: 52.0
-  person_not_present_age_1: '68'
-  person_not_present_age_2: '64'
-  person_not_present_age_3: '23'
-  person_not_present_age_4: '17'
-  person_not_present_age_5: '49'
-  person_not_present_age_6: '17'
-  person_not_present_age_7: '44'
-  person_not_present_age_8: '89'
+  person_not_present_age_1: 68.0
+  person_not_present_age_2: 64.0
+  person_not_present_age_3: 23.0
+  person_not_present_age_4: 17.0
+  person_not_present_age_5: 49.0
+  person_not_present_age_6: 17.0
+  person_not_present_age_7: 44.0
+  person_not_present_age_8: 89.0
   phase: Mama always said life was like a box of chocolates. You never know what you're
     gonna get.
   postcode: null

@@ -126,35 +126,35 @@ fields:
 - metadata: {}
   name: person_not_present_age_1
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_2
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_3
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_4
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_5
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_6
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_7
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_present_age_8
   nullable: true
-  type: string
+  type: double
 - metadata: {}
   name: person_not_consenting_age_1
   nullable: true

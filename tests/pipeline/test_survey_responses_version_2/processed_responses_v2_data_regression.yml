@@ -52,8 +52,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Northamptonshire
-  currently_smokes_or_vapes_description: null
   currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
@@ -141,14 +141,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '76'
-  person_not_present_age_2: '56'
-  person_not_present_age_3: '60'
+  person_not_present_age_1: 76.0
+  person_not_present_age_2: 56.0
+  person_not_present_age_3: 60.0
   person_not_present_age_4: null
-  person_not_present_age_5: '27'
-  person_not_present_age_6: '86'
-  person_not_present_age_7: '10'
-  person_not_present_age_8: '56'
+  person_not_present_age_5: 27.0
+  person_not_present_age_6: 86.0
+  person_not_present_age_7: 10.0
+  person_not_present_age_8: 56.0
   physical_contact_18_to_69_years: Participant Would Not/Could Not Answer
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: 21 or more
@@ -271,7 +271,7 @@
   visit_datetime: '2022-01-07 10:41:50.000000'
   visit_id: DHVF-0156218256
   visit_order: Month 13
-  voucher_type_preference: email_address
+  voucher_type_preference: Email
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -351,8 +351,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: null
-  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
@@ -441,14 +441,14 @@
   person_not_consenting_age_7: 87.0
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '70'
-  person_not_present_age_2: '43'
-  person_not_present_age_3: '24'
-  person_not_present_age_4: '38'
-  person_not_present_age_5: '49'
-  person_not_present_age_6: '18'
-  person_not_present_age_7: '91'
-  person_not_present_age_8: '44'
+  person_not_present_age_1: 70.0
+  person_not_present_age_2: 43.0
+  person_not_present_age_3: 24.0
+  person_not_present_age_4: 38.0
+  person_not_present_age_5: 49.0
+  person_not_present_age_6: 18.0
+  person_not_present_age_7: 91.0
+  person_not_present_age_8: 44.0
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
@@ -652,8 +652,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: Derbyshire
-  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
@@ -743,14 +743,14 @@
   person_not_consenting_age_7: 70.0
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '40'
-  person_not_present_age_2: '24'
-  person_not_present_age_3: '76'
+  person_not_present_age_1: 40.0
+  person_not_present_age_2: 24.0
+  person_not_present_age_3: 76.0
   person_not_present_age_4: null
-  person_not_present_age_5: '22'
-  person_not_present_age_6: '56'
-  person_not_present_age_7: '2'
-  person_not_present_age_8: '18'
+  person_not_present_age_5: 22.0
+  person_not_present_age_6: 56.0
+  person_not_present_age_7: 2.0
+  person_not_present_age_8: 18.0
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 1-5
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
@@ -951,8 +951,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: North Yorkshire
-  currently_smokes_or_vapes_description: Yes, pipe
   currently_smokes_or_vapes: Cigarettes
+  currently_smokes_or_vapes_description: Yes, pipe
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1043,14 +1043,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: 16.0
-  person_not_present_age_1: '85'
-  person_not_present_age_2: '15'
-  person_not_present_age_3: '19'
-  person_not_present_age_4: '5'
-  person_not_present_age_5: '90'
-  person_not_present_age_6: '72'
-  person_not_present_age_7: '38'
-  person_not_present_age_8: '101'
+  person_not_present_age_1: 85.0
+  person_not_present_age_2: 15.0
+  person_not_present_age_3: 19.0
+  person_not_present_age_4: 5.0
+  person_not_present_age_5: 90.0
+  person_not_present_age_6: 72.0
+  person_not_present_age_7: 38.0
+  person_not_present_age_8: 101.0
   physical_contact_18_to_69_years: '0'
   physical_contact_over_70_years: 1-5
   physical_contact_under_18_years: 6-10
@@ -1258,8 +1258,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   currently_smokes_or_vapes: Vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1350,14 +1350,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: 98.0
   person_not_consenting_age_9: null
-  person_not_present_age_1: '23'
+  person_not_present_age_1: 23.0
   person_not_present_age_2: null
   person_not_present_age_3: null
-  person_not_present_age_4: '91'
-  person_not_present_age_5: '59'
-  person_not_present_age_6: '59'
-  person_not_present_age_7: '87'
-  person_not_present_age_8: '2'
+  person_not_present_age_4: 91.0
+  person_not_present_age_5: 59.0
+  person_not_present_age_6: 59.0
+  person_not_present_age_7: 87.0
+  person_not_present_age_8: 2.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
@@ -1562,8 +1562,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
-  currently_smokes_or_vapes_description: Yes, pipe
   currently_smokes_or_vapes: Cigarettes
+  currently_smokes_or_vapes_description: Yes, pipe
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
@@ -1655,14 +1655,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '22'
-  person_not_present_age_2: '24'
-  person_not_present_age_3: '82'
-  person_not_present_age_4: '20'
-  person_not_present_age_5: '46'
+  person_not_present_age_1: 22.0
+  person_not_present_age_2: 24.0
+  person_not_present_age_3: 82.0
+  person_not_present_age_4: 20.0
+  person_not_present_age_5: 46.0
   person_not_present_age_6: null
   person_not_present_age_7: null
-  person_not_present_age_8: '63'
+  person_not_present_age_8: 63.0
   physical_contact_18_to_69_years: 1-5
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
@@ -1784,7 +1784,7 @@
   visit_datetime: '2022-01-06 18:14:23.000000'
   visit_id: DHVF-6394225258
   visit_order: Month 11
-  voucher_type_preference: email_address
+  voucher_type_preference: Email
   which_symptoms_last_7_days: Weakness/tiredness
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Primary care (e.g. GP, dentist)
@@ -1869,8 +1869,8 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: null
-  currently_smokes_or_vapes_description: null
   currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: null
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1961,14 +1961,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: 7.0
-  person_not_present_age_1: '50'
+  person_not_present_age_1: 50.0
   person_not_present_age_2: null
-  person_not_present_age_3: '39'
-  person_not_present_age_4: '60'
-  person_not_present_age_5: '40'
-  person_not_present_age_6: '43'
-  person_not_present_age_7: '73'
-  person_not_present_age_8: '8'
+  person_not_present_age_3: 39.0
+  person_not_present_age_4: 60.0
+  person_not_present_age_5: 40.0
+  person_not_present_age_6: 43.0
+  person_not_present_age_7: 73.0
+  person_not_present_age_8: 8.0
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: null
@@ -2091,7 +2091,7 @@
   visit_datetime: '2022-01-04 06:40:18.000000'
   visit_id: DHVF-8828437201
   visit_order: Month 18
-  voucher_type_preference: email_address
+  voucher_type_preference: Email
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -2173,8 +2173,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes_description: Yes,  cigarettes
   currently_smokes_or_vapes: null
+  currently_smokes_or_vapes_description: Yes,  cigarettes
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2263,14 +2263,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '74'
+  person_not_present_age_1: 74.0
   person_not_present_age_2: null
-  person_not_present_age_3: '64'
-  person_not_present_age_4: '14'
-  person_not_present_age_5: '30'
+  person_not_present_age_3: 64.0
+  person_not_present_age_4: 14.0
+  person_not_present_age_5: 30.0
   person_not_present_age_6: null
   person_not_present_age_7: null
-  person_not_present_age_8: '61'
+  person_not_present_age_8: 61.0
   physical_contact_18_to_69_years: 6-10
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
@@ -2474,8 +2474,8 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
-  currently_smokes_or_vapes_description: Yes, cigar
   currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: Yes, cigar
   date_of_birth: null
   days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
@@ -2565,14 +2565,14 @@
   person_not_consenting_age_7: null
   person_not_consenting_age_8: null
   person_not_consenting_age_9: null
-  person_not_present_age_1: '58'
-  person_not_present_age_2: '47'
-  person_not_present_age_3: '25'
+  person_not_present_age_1: 58.0
+  person_not_present_age_2: 47.0
+  person_not_present_age_3: 25.0
   person_not_present_age_4: null
-  person_not_present_age_5: '24'
-  person_not_present_age_6: '49'
-  person_not_present_age_7: '21'
-  person_not_present_age_8: '72'
+  person_not_present_age_5: 24.0
+  person_not_present_age_6: 49.0
+  person_not_present_age_7: 21.0
+  person_not_present_age_8: 72.0
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: '0'
   physical_contact_under_18_years: 21 or more
@@ -2783,8 +2783,8 @@
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
-  currently_smokes_or_vapes_description: Yes, cigar
   currently_smokes_or_vapes: Pipe
+  currently_smokes_or_vapes_description: Yes, cigar
   date_of_birth: '2003-10-07 22:04:00.000000'
   days_since_think_had_covid: 4.0
   days_since_think_had_covid_group: 0-14
@@ -2876,14 +2876,14 @@
   person_not_consenting_age_7: 11.0
   person_not_consenting_age_8: 18.0
   person_not_consenting_age_9: 27.0
-  person_not_present_age_1: '30'
-  person_not_present_age_2: '73'
-  person_not_present_age_3: '74'
-  person_not_present_age_4: '72'
-  person_not_present_age_5: '80'
-  person_not_present_age_6: '20'
-  person_not_present_age_7: '42'
-  person_not_present_age_8: '81'
+  person_not_present_age_1: 30.0
+  person_not_present_age_2: 73.0
+  person_not_present_age_3: 74.0
+  person_not_present_age_4: 72.0
+  person_not_present_age_5: 80.0
+  person_not_present_age_6: 20.0
+  person_not_present_age_7: 42.0
+  person_not_present_age_8: 81.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
   physical_contact_under_18_years: 21 or more
