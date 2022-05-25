@@ -258,7 +258,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_outside_shopping_or_socialising_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: 3
   times_shopping_last_7_days: '6'
   times_socialise_last_7_days: '0'
   title: Dr.
@@ -557,7 +557,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: '3'
   title: Prof.
@@ -859,7 +859,7 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '4'
+  times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '2'
   times_socialise_last_7_days: null
   title: Miss.
@@ -1159,7 +1159,7 @@
   think_have_covid_symptoms: 'No'
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: null
   title: Mr.
@@ -1466,7 +1466,7 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: null
   times_socialise_last_7_days: '1'
   title: null
@@ -1771,7 +1771,7 @@
   think_have_covid_symptoms: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: '2'
   title: Miss.
@@ -2078,7 +2078,7 @@
   think_have_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
-  times_outside_shopping_or_socialising_last_7_days: '6'
+  times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '6'
   times_socialise_last_7_days: '2'
   title: Mr.
@@ -2380,7 +2380,7 @@
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
     Not Answer
-  times_outside_shopping_or_socialising_last_7_days: '5'
+  times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '4'
   times_socialise_last_7_days: '2'
   title: Prof.
@@ -2682,7 +2682,7 @@
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
     Not Answer
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
   times_socialise_last_7_days: null
   title: Prof.
@@ -2993,7 +2993,7 @@
   think_have_covid_symptoms: Participant Would Not/Could Not Answer
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
-  times_outside_shopping_or_socialising_last_7_days: '0'
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '5'
   times_socialise_last_7_days: null
   title: Ms.
