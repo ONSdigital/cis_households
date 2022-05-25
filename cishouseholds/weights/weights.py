@@ -409,16 +409,14 @@ def validate_design_weights_or_precal(
     # check 1.1
     df = df.withColumn(
         "CHECK1s",
-        F.when(
-            F.round(F.sum(swab_weight_column).over(cis_window), 0) == F.col(num_households_by_cis_column), 0
-        ).otherwise(1),
+        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), 0).otherwise(1),
     )
 
     # check 1.2
     df = df.withColumn(
         "CHECK1a",
         F.when(
-            F.round(F.sum(antibody_weight_column).over(country_window), 0) == F.col(num_households_by_country_column), 0
+            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), 0
         ).otherwise(1),
     )
     # check 2
