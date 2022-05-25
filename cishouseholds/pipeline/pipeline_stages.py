@@ -899,20 +899,35 @@ def report(
     valid_df_errors = extract_from_table(valid_survey_responses_errors_table)
     invalid_df_errors = extract_from_table(invalid_survey_responses_errors_table)
 
-    head = valid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)
+    head = valid_df_errors.select("run_id").orderBy(F.col("run_id").desc()).distinct().head(2)
     if len(head) == 2:
         valid_df_errors_new = valid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         valid_df_errors_previous = valid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        valid_df_errors = valid_df_errors_previous.join(
-            valid_df_errors_new, on=validation_failure_flag_column, how="fullouter"
+        valid_df_errors = (
+            valid_df_errors_previous.withColumnRenamed("count", "count_previous")
+            .withColumnRenamed("run_id", "run_id_previous")
+            .join(
+                valid_df_errors_new.withColumnRenamed("count", "count_current").withColumnRenamed(
+                    "run_id", "run_id_current"
+                ),
+                on=validation_failure_flag_column,
+                how="fullouter",
+            )
         )
-
-    head = invalid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)
+    head = invalid_df_errors.select("run_id").orderBy(F.col("run_id").desc()).distinct().head(2)
     if len(head) == 2:
         invalid_df_errors_new = invalid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         invalid_df_errors_previous = invalid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        invalid_df_errors = invalid_df_errors_previous.join(
-            invalid_df_errors_new, on=validation_failure_flag_column, how="fullouter"
+        invalid_df_errors = (
+            invalid_df_errors_previous.withColumnRenamed("count", "count_previous")
+            .withColumnRenamed("run_id", "run_id_previous")
+            .join(
+                invalid_df_errors_new.withColumnRenamed("count", "count_current").withColumnRenamed(
+                    "run_id", "run_id_current"
+                ),
+                on=validation_failure_flag_column,
+                how="fullouter",
+            )
         )
 
     processed_file_log = extract_from_table("processed_filenames")
