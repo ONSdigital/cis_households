@@ -1535,7 +1535,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opt_in_window_start_datetime": _(  # TODO Check whether this is household or participant
+        # TODO Check whether this is household or participant
+        "existing_participant_digital_opt_in_window_start_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1543,7 +1544,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opt_in_window_end_datetime": _(  # TODO Check whether this is household or participant
+        # TODO Check whether this is household or participant
+        "existing_participant_digital_opt_in_window_end_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1551,7 +1553,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opted_in_datetime": _(  # TODO Check whether this is household or participant
+        "existing_participant_digital_opted_in_datetime": _(  # TODO Check whether this is household or participant
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1801,8 +1803,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "survey_type": _("choice", items=["First Survey", "Follow-up Survey"]),
-        "sample_type": _("choice", items=["Swab Only", "Fingerprick and Swab"]),
+        "survey_response_type": _("choice", items=["First Survey", "Follow-up Survey"]),
+        "study_cohort": _("choice", items=["Swab Only", "Fingerprick and Swab"]),
         "opted_out_of_next_window": _("choice", items=yes_no_none_choice),
         "opted_out_of_next_window_datetime": _(
             "discrete_distribution",
