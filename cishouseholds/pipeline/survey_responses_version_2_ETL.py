@@ -895,17 +895,17 @@ def derive_people_in_household_count(df):
     df = update_person_count_from_ages(
         df,
         column_name_to_assign="household_participants_not_consenting_count",
-        column_pattern=r"person_[1-9]_not_consenting_age",
+        column_pattern=r"person_not_consenting_age_[1-9]",
     )
     df = update_person_count_from_ages(
         df,
         column_name_to_assign="household_members_over_2_years_and_not_present_count",
-        column_pattern=r"person_[1-8]_not_present_age",
+        column_pattern=r"person_not_present_age_[1-8]",
     )
     df = assign_household_under_2_count(
         df,
         column_name_to_assign="household_members_under_2_years_count",
-        column_pattern=r"infant_[1-8]_age",
+        column_pattern=r"infant_age_months_[1-9]",
         condition_column="household_members_under_2_years",
     )
     household_window = Window.partitionBy("ons_household_id")
