@@ -1101,24 +1101,24 @@ validation_schemas = {
         "participant_enrolment_datetime": string_dict,
         "swab_sample_transport_status": string_dict,
         "sample_kit_dispatched_datetime": string_dict,
-        "sample_kit_not_dispatched_code": string_dict,
+        #    "sample_kit_not_dispatched_code": string_dict,       Commented out in Dummy Data
         "sample_collection_courier_datetime": string_dict,
         "sample_collection_kit_received_delivery_partner_datetime": string_dict,
         "survey_completion_status": string_dict,
         "survey_last_modified_datetime": string_dict,
         "survey_completed_datetime": string_dict,
-        "survey_not_completed_reason_code": string_dict,
+        # "survey_not_completed_reason_code": string_dict,        Commented out in Dummy data
         "swab_sample_barcode": string_dict,
         "blood_sample_barcode": string_dict,
         "swab_sample_barcode_user_entered": string_dict,
         "blood_sample_barcode_user_entered": string_dict,
-        "Swab_Barcode_Status_Error": string_dict,
-        "Blood_Barcode_Status_Error": string_dict,
+        # "Swab_Barcode_Status_Error": string_dict,        Commented out in Dummy data
+        # "Blood_Barcode_Status_Error": string_dict,        Commented out in Dummy data
         "swab_sample_received_consolidation_point_datetime": string_dict,
         "blood_sample_received_consolidation_point_datetime": string_dict,
         "swab_sample_received_lab_datetime": string_dict,
         "blood_sample_received_lab_datetime": string_dict,
-        "digital_survey_mode_preference": string_dict,
+        # "digital_type_preference": string_dict,        Commented out in Dummy data
         "swab_taken": string_dict,
         "swab_not_taken_reason": string_dict,
         "swab_not_taken_damage_description": string_dict,
@@ -1299,7 +1299,7 @@ validation_schemas = {
         "face_covering_work_or_education": string_dict,
         "face_covering_other_enclosed_places": string_dict,
         "work_main_job_changed": string_dict,
-        "cis_covid_vaccine_type": string_dict,
+        "cis_covid_vacine_type": string_dict,
         "cis_covid_vaccine_type_other": string_dict,
         "cis_covid_vaccine_date": string_dict,
         "swab_sample_barcode_correct": string_dict,
