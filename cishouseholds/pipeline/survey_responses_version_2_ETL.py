@@ -94,10 +94,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    if not all(col in df.columns for col in df.columns):
-        df = assign_consent_code(
-            df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-        )
+
+    consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    if all(col in df.columns for col in consent_cols):
+        df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 

@@ -88,14 +88,17 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    validate_design_weights_or_precal(
-        df=df,
-        num_households_by_cis_column="number_of_households_by_cis_area",
-        num_households_by_country_column="number_of_households_by_country",
-        swab_weight_column="scaled_design_weight_swab_nonadjusted",
-        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-        group_by_columns=["cis_area_code_20"],
-    )
+    try:
+        validate_design_weights_or_precal(
+            df=df,
+            num_households_by_cis_column="number_of_households_by_cis_area",
+            num_households_by_country_column="number_of_households_by_country",
+            swab_weight_column="scaled_design_weight_swab_nonadjusted",
+            antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
+            group_by_columns=["cis_area_code_20"],
+        )
+    except DesignWeightError as e:
+        print(e)  # functional
     return df
 
 
@@ -113,7 +116,7 @@ def join_and_process_lookups(
     Add data from the additional lookup files to main dataset
     """
     master_sample_df = clean_postcode(master_sample_df, "postcode").withColumn(
-        "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"[^\d]{1,}", "")
+        "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"\D", "")
     )
 
     postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
@@ -121,18 +124,7 @@ def join_and_process_lookups(
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
     old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
-
-    new_sample_df = new_sample_df.join(
-        master_sample_df.select("ons_household_id", "sample_type").withColumn(
-            "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"^.{4}", "")
-        ),
-        on="ons_household_id",
-        how="left",
-    ).withColumn("date_sample_created", F.lit("2021/12/06"))
-
-    new_sample_df = new_sample_df.withColumn(
-        "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
-    )
+    new_sample_df = new_sample_df.withColumn("date_sample_created", F.lit("2021/12/06"))
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
@@ -141,10 +133,13 @@ def join_and_process_lookups(
         df = new_sample_df
 
     df = df.join(
-        master_sample_df.select("postcode", "ons_household_id"),
+        master_sample_df.select("ons_household_id", "postcode", "sample_type"),
         on="ons_household_id",
         how="left",
     )
+    df = df.withColumn(
+        "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
+    ).withColumn("batch_number", F.lit(1))
 
     df = df.join(
         lsoa_cis_lookup_df.select("lower_super_output_area_code_11", "cis_area_code_20"),
@@ -161,11 +156,10 @@ def join_and_process_lookups(
     df = df.join(
         country_lookup_df.select("country_code_12", "country_name_12").distinct(), on="country_code_12", how="left"
     )
-    df = df.withColumn("batch_number", F.lit(1))
-    if first_run:
-        return df
+    if not first_run:
+        df = union_multiple_tables([old_sample_df, df])
 
-    return union_multiple_tables([old_sample_df, df])
+    return df
 
 
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
