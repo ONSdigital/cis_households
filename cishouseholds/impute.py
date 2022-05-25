@@ -811,14 +811,7 @@ def impute_latest_date_flag(
     contact_any_covid_date_column: str,
 ) -> DataFrame:
     """
-    Parameters
-    ----------
-    df
-    participant_id_column
-    visit_date_column
-    visit_id_column
-    contact_any_covid_column
-    contact_any_covid_date_column
+    derive a flag based on latest date and im values associated with rows where this flag is 1
     """
     window = Window.partitionBy(participant_id_column).orderBy(
         F.desc(contact_any_covid_date_column),
