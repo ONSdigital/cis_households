@@ -1199,4 +1199,32 @@ fields:
   name: hh_id
   nullable: true
   type: string
+- metadata: {}
+  name: work_in_additional_paid_employment_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: illness_lasting_over_12_months_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: ever_smoked_regularly_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: currently_smokes_or_vapes_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: hours_a_day_with_someone_else_at_home_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_work_or_education_raw
+  nullable: true
+  type: string
 type: struct
