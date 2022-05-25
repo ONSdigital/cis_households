@@ -132,6 +132,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 291.0
   person_not_consenting_age_2: null
@@ -449,6 +450,7 @@
   participant_invited_digital: 'No'
   participant_status: Active
   participant_withdrawal_reason: No longer wants to take part
+  participant_withdrawal_reason_raw: No longer wants to take part
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 238.0
   person_not_consenting_age_2: null
@@ -763,6 +765,7 @@
   participant_invited_digital: 'No'
   participant_status: Complete
   participant_withdrawal_reason: Swab/blood process distressing
+  participant_withdrawal_reason_raw: Swab/blood process distressing
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 154.0
   person_not_consenting_age_2: 864.0
@@ -1089,6 +1092,7 @@
   participant_invited_digital: 'No'
   participant_status: Active
   participant_withdrawal_reason: Participant does not want to self swab
+  participant_withdrawal_reason_raw: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 0.0
   person_not_consenting_age_2: null
@@ -1404,6 +1408,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
   participant_withdrawal_reason: No longer convenient
+  participant_withdrawal_reason_raw: No longer convenient
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 529.0
   person_not_consenting_age_2: 860.0
@@ -1732,6 +1737,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Active
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 425.0
   person_not_consenting_age_2: 330.0
@@ -2051,6 +2057,7 @@
   participant_invited_digital: 'No'
   participant_status: Complete
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 706.0
@@ -2375,6 +2382,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Complete
   participant_withdrawal_reason: No longer convenient
+  participant_withdrawal_reason_raw: No longer convenient
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: 571.0
   person_not_consenting_age_2: null
@@ -2698,6 +2706,7 @@
   participant_invited_digital: 'No'
   participant_status: Withdrawn
   participant_withdrawal_reason: Participant does not want to self swab
+  participant_withdrawal_reason_raw: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 336.0
@@ -3016,6 +3025,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Complete
   participant_withdrawal_reason: Moving Location
+  participant_withdrawal_reason_raw: Moving Location
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 964.0
