@@ -94,10 +94,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    if not all(col in df.columns for col in df.columns):
-        df = assign_consent_code(
-            df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-        )
+
+    consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    if all(col in df.columns for col in consent_cols):
+        df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -962,42 +962,45 @@ def create_formatted_datetime_string_columns(df):
             "been_outside_uk_last_date",
             "symptoms_last_7_days_onset_date",
         ]
-        # TODO: Add back in once digital data is being included or make backwards compatible
-        # + cis_digital_datetime_map["yyyy-MM-dd"]
+        + cis_digital_datetime_map["yyyy-MM-dd"]
     )
+
     for column_name_to_assign in date_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=date_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=date_format_dict[column_name_to_assign],
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
     for column_name_to_assign in date_format_string_list:
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign + "_string",
-            reference_column=column_name_to_assign,
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign + "_string",
+                reference_column=column_name_to_assign,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
     for column_name_to_assign in datetime_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=datetime_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy HH:mm:ss",
-            lower_case=True,
-        )
-    # TODO: Add back in once digital data is being included or make backwards compatible
-    # for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
-    #     df = assign_column_to_date_string(
-    #         df=df,
-    #         column_name_to_assign=column_name_to_assign + "_string",
-    #         reference_column=column_name_to_assign,
-    #         time_format="ddMMMyyyy HH:mm:ss",
-    #         lower_case=True,
-    #     )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=datetime_format_dict[column_name_to_assign],
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
+    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign + "_string",
+                reference_column=column_name_to_assign,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
     return df
 
 
