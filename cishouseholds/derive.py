@@ -16,6 +16,20 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def concat_fields_if_true(
+    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
+):
+    """
+    concat the names of fields where a given condition is met to form a new column
+    """
+    columns = [col for col in df.columns if re.match(column_name_pattern, col)]
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
+    )
+    return df
+
+
 def derive_had_symptom_last_7days_from_digital(
     df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
 ):
@@ -28,14 +42,14 @@ def derive_had_symptom_last_7days_from_digital(
     df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
     df = df.withColumn(
         column_name_to_assign,
-        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") == len(symptom_columns), "No"),
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
     )
-    return df.drop("NUM_NULL", "NUM_YES", "NUM_NO")
+    return df.drop("NUM_YES", "NUM_NO")
 
 
 def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
     """
-    Count number of visits of each pariticipant in a given day
+    Count number of visits of each participant in a given day
     Parameters
     ----------
     """
@@ -48,7 +62,7 @@ def count_barcode_cleaned(
     df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
 ):
     """
-    Count occurances of barcode
+    Count occurrences of barcode
     Parameters
     ----------
     df
@@ -1170,7 +1184,7 @@ def assign_column_regex_match(
         Name of column that will be matched
     pattern
         Regular expression pattern as a string
-        Needs to be a raw string literal (preceeded by r"")
+        Needs to be a raw string literal (preceded by r"")
 
     Returns
     -------
@@ -1224,7 +1238,7 @@ def assign_column_to_date_string(
     lower_case: bool = False,
 ) -> DataFrame:
     """
-    Assign a column with a TimeStampType to a formatted date string.
+    Assign a column with a TimeStampType to a formatted date string.gg
     Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters

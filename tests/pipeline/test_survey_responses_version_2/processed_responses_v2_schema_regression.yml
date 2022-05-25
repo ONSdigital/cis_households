@@ -252,7 +252,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: email
+  name: email_address
   nullable: true
   type: string
 - metadata: {}
@@ -816,7 +816,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_date
+  name: think_had_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}

@@ -32,6 +32,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
@@ -89,17 +90,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
-        df, "bad_email", reference_column="email", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
+        df, "bad_email", reference_column="email_address", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    df = assign_consent_code(
-        df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-    )
+
+    consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    if all(col in df.columns for col in consent_cols):
+        df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
-    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_date", "visit_datetime")
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
         binary_reference_column="think_had_covid",
@@ -945,7 +947,7 @@ def create_formatted_datetime_string_columns(df):
         [
             "date_of_birth",
             "improved_visit_date",
-            "think_had_covid_date",
+            "think_had_covid_onset_date",
             "cis_covid_vaccine_date",
             "cis_covid_vaccine_date_1",
             "cis_covid_vaccine_date_2",
@@ -960,54 +962,49 @@ def create_formatted_datetime_string_columns(df):
             "been_outside_uk_last_date",
             "symptoms_last_7_days_onset_date",
         ]
-        # TODO: Add back in once digital data is being included or make backwards compatible
-        # + cis_digital_datetime_map["yyyy-MM-dd"]
+        + cis_digital_datetime_map["yyyy-MM-dd"]
     )
+
     for column_name_to_assign in date_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=date_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=date_format_dict[column_name_to_assign],
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
     for column_name_to_assign in date_format_string_list:
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign + "_string",
-            reference_column=column_name_to_assign,
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign + "_string",
+                reference_column=column_name_to_assign,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
     for column_name_to_assign in datetime_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=datetime_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy HH:mm:ss",
-            lower_case=True,
-        )
-    # TODO: Add back in once digital data is being included or make backwards compatible
-    # for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
-    #     df = assign_column_to_date_string(
-    #         df=df,
-    #         column_name_to_assign=column_name_to_assign + "_string",
-    #         reference_column=column_name_to_assign,
-    #         time_format="ddMMMyyyy HH:mm:ss",
-    #         lower_case=True,
-    #     )
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=datetime_format_dict[column_name_to_assign],
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
+    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        if column_name_to_assign in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign + "_string",
+                reference_column=column_name_to_assign,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
     return df
 
 
 def fill_forwards_transformations(df):
-
-    df = fill_backwards_overriding_not_nulls(
-        df=df,
-        column_identity="participant_id",
-        ordering_column="visit_datetime",
-        dataset_column="survey_response_dataset_major_version",
-        column_list=["sex", "date_of_birth", "ethnicity"],
-    )
     df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
         id="participant_id",
@@ -1025,16 +1022,6 @@ def fill_forwards_transformations(df):
             "work_health_care_v1_v2",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_clients",
-        ],
-    )
-    df = fill_forward_only_to_nulls(
-        df=df,
-        id="participant_id",
-        date="visit_datetime",
-        list_fill_forward=[
-            "sex",
-            "date_of_birth",
-            "ethnicity",
         ],
     )
 
@@ -1079,6 +1066,7 @@ def fill_forwards_transformations(df):
         record_changed_column="been_outside_uk_since_last_visit",
         record_changed_value="Yes",
     )
+
     df = fill_backwards_overriding_not_nulls(
         df=df,
         column_identity="participant_id",
@@ -1086,8 +1074,14 @@ def fill_forwards_transformations(df):
         dataset_column="survey_response_dataset_major_version",
         column_list=["sex", "date_of_birth", "ethnicity"],
     )
-    return df
-
-
-def digital_specific_cleaning(df):
+    df = fill_forward_only_to_nulls(
+        df=df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "sex",
+            "date_of_birth",
+            "ethnicity",
+        ],
+    )
     return df

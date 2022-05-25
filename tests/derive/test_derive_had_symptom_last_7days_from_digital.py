@@ -10,6 +10,7 @@ def test_derive_had_symptom_last_7days_from_digital(spark_session):
             ("No", "No", "No", "No"),
             ("Yes", None, "Yes", "No"),
             (None, None, None, None),
+            ("No", None, "No", None),
         ],
         schema="result string, s1 string, s2 string, s3 string",
     )

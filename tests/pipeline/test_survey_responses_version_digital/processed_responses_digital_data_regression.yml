@@ -2,6 +2,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'No'
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Gabon
   been_outside_uk_last_return_date: null
@@ -18,6 +19,7 @@
   blood_returned: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_raw: null
   blood_sample_barcode_user_entered: ONS13752166
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -63,6 +65,8 @@
   currently_smokes_or_vapes: Prefer not to say
   currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2001-04-22 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '2015-03-09'
   digital_enrolment_invite_datetime: '1988-06-29'
   digital_opt_in_window_end_datetime: '2021-09-01'
@@ -75,9 +79,11 @@
   ethnicity_other: I don't even care.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shawnee
+  hh_id: '441094840601'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: '[22, 12, 11, 1, 0, 10, 7, 6]'
   household_completion_window_id: '936679226110'
@@ -115,6 +121,7 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: Don't know
+  outward_postcode: DD7O
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 045227746976
   participant_completion_window_start_datetime: null
@@ -146,7 +153,7 @@
   physical_contact_18_to_69_years: 11 to 20
   physical_contact_over_70_years: '0'
   physical_contact_under_18_years: Don't know
-  postcode: DD7O 7LP
+  postcode: DD7O7LP
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
     for systems.
@@ -173,6 +180,7 @@
   self_isolating: Erlang is known for its designs that are well suited for systems.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Female
+  sex_raw: Female
   social_distance_contact_18_to_69_years: 1 to 5
   social_distance_contact_over_70_years: Don't know
   social_distance_contact_under_18_years: Don't know
@@ -180,6 +188,7 @@
   survey_completed_datetime: null
   survey_completion_status: Archived
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: First Survey
   swab_not_taken_damage_description: Ports are used to communicate with the external
     world.
@@ -192,15 +201,17 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: null
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS69456980
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
   swab_sample_transport_status: Arrived at Sorting Office
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swab_taken_datetime: null
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: 'No'
@@ -282,6 +293,9 @@
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Train
+  unique_participant_response_id: 045227746976-DHR-539176725448-1988-06-29
+  visit_datetime: '1988-06-29'
+  visit_id: 045227746976
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'No'
@@ -289,8 +303,11 @@
   work_in_healthcare: Other healthcare (e.g. mental health)
   work_main_job_changed: 'Yes'
   work_main_job_role: Do you have any idea why this is not working?
+  work_main_job_role_raw: Do you have any idea why this is not working?
   work_main_job_title: Do you have any idea why this is not working?
+  work_main_job_title_raw: Do you have any idea why this is not working?
   work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
   work_sector: Information technology and communication
   work_sector_other: Ports are used to communicate with the external world.
@@ -303,6 +320,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -318,11 +336,12 @@
   blood_returned: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'Yes'
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS69111526
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
   blood_sample_transport_status: Arrived at Sorting Office
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   blood_taken_datetime: null
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -363,6 +382,8 @@
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: 'No'
   date_of_birth: '2014-05-25 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   digital_enrolment_datetime: '2013-05-18'
   digital_enrolment_invite_datetime: '2014-05-24'
   digital_opt_in_window_end_datetime: '1983-02-05'
@@ -375,8 +396,10 @@
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Remedios
+  hh_id: '571295570558'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   household_completion_window_id: '455927236237'
@@ -414,6 +437,7 @@
   other_covid_infection_test_results: All tests failed
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 049902298831
   participant_completion_window_start_datetime: null
@@ -469,6 +493,7 @@
   self_isolating: Erlang is known for its designs that are well suited for systems.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Female
+  sex_raw: Female
   social_distance_contact_18_to_69_years: 6 to 10
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_under_18_years: 1 to 5
@@ -476,6 +501,7 @@
   survey_completed_datetime: null
   survey_completion_status: In Progress
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: I don't even care.
   swab_not_taken_missing_parts: Swab stick
@@ -486,6 +512,7 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: null
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS87696082
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -495,6 +522,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: null
@@ -576,6 +604,9 @@
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
+  unique_participant_response_id: 049902298831-DHR-190156218256-2014-05-24
+  visit_datetime: '2014-05-24'
+  visit_id: 049902298831
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'No'
@@ -584,8 +615,12 @@
   work_main_job_changed: 'No'
   work_main_job_role: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
+  work_main_job_role_raw: '"Messages can be sent to and received from ports, but these
+    messages must obey the so-called ""port protocol."""'
   work_main_job_title: It is also a garbage-collected runtime system.
+  work_main_job_title_raw: It is also a garbage-collected runtime system.
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: Prefer not to say
   work_sector: Retail sector. This includes wholesale
   work_sector_other: Make me a sandwich.
@@ -597,6 +632,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Qatar
   been_outside_uk_last_return_date: null
@@ -613,6 +649,7 @@
   blood_returned: null
   blood_sample_barcode: null
   blood_sample_barcode_correct: null
+  blood_sample_barcode_raw: null
   blood_sample_barcode_user_entered: ONS38926395
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -658,6 +695,8 @@
   currently_smokes_or_vapes: Prefer not to say
   currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1985-02-24 00:00:00.000000'
+  days_since_think_had_covid: -9233.0
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: null
   digital_enrolment_invite_datetime: '1996-09-25'
   digital_opt_in_window_end_datetime: '1989-06-25'
@@ -670,8 +709,10 @@
   ethnicity_other: Do you have any idea why this is not working?
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: I am not going to my place of work or education
   first_name: Clemmie
+  hh_id: '420762754008'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: Don't know
   household_completion_window_id: '217846198988'
@@ -709,6 +750,7 @@
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: Don't know
+  outward_postcode: OV6W
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 073988827188
   participant_completion_window_start_datetime: null
@@ -740,7 +782,7 @@
   physical_contact_18_to_69_years: 1 to 5
   physical_contact_over_70_years: 11 to 20
   physical_contact_under_18_years: '0'
-  postcode: OV6W 5SB
+  postcode: OV6W5SB
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
     for systems.
@@ -770,6 +812,7 @@
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
   sex: Male
+  sex_raw: Male
   social_distance_contact_18_to_69_years: 21 or more
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: 11 to 20
@@ -777,6 +820,7 @@
   survey_completed_datetime: null
   survey_completion_status: Submitted
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: He looked inquisitively at his keyboard and wrote
     another sentence.
@@ -790,15 +834,17 @@
   swab_returned: 'Yes'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: 'No'
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS28437201
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
   swab_sample_transport_status: Arrived at Lab
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swab_taken_datetime: null
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
@@ -880,6 +926,9 @@
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Taxi or minicab
+  unique_participant_response_id: 073988827188-DHR-958511387882-1996-09-25
+  visit_datetime: '1996-09-25'
+  visit_id: 073988827188
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: 'No'
@@ -887,9 +936,13 @@
   work_in_healthcare: Other healthcare (e.g. mental health)
   work_main_job_changed: 'Yes'
   work_main_job_role: Where are my pants?
+  work_main_job_role_raw: Where are my pants?
   work_main_job_title: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
+  work_main_job_title_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
+    are D1, D2, ... Dn.
   work_not_from_home_days_per_week: '4'
+  work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Social Care
   work_sector_other: Any element of a tuple can be accessed in constant time.
@@ -902,6 +955,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Pakistan
   been_outside_uk_last_return_date: '2021-11-16 00:00:00.000000'
@@ -918,11 +972,12 @@
   blood_returned: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS24804616
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
   blood_sample_transport_status: Dispatched
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   blood_taken_datetime: null
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
@@ -962,6 +1017,8 @@
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '1994-02-02 00:00:00.000000'
+  days_since_think_had_covid: -9234.0
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '2017-04-01'
   digital_enrolment_invite_datetime: '1996-09-28'
   digital_opt_in_window_end_datetime: '2021-06-15'
@@ -976,9 +1033,11 @@
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Shaun
+  hh_id: '736535270957'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: '[11, 5, 15, 0, 18, 18, 2, 10]'
   household_completion_window_id: '421496963502'
@@ -1016,6 +1075,7 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: null
+  outward_postcode: ZW8J
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '456442497105'
   participant_completion_window_start_datetime: null
@@ -1047,7 +1107,7 @@
   physical_contact_18_to_69_years: Prefer not to say
   physical_contact_over_70_years: 11 to 20
   physical_contact_under_18_years: 11 to 20
-  postcode: ZW8J 4VE
+  postcode: ZW8J4VE
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
     for systems.
@@ -1073,6 +1133,7 @@
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Female
+  sex_raw: Female
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_over_70_years: Don't know
   social_distance_contact_under_18_years: Prefer not to say
@@ -1080,6 +1141,7 @@
   survey_completed_datetime: null
   survey_completion_status: Completed
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: First Survey
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
@@ -1090,6 +1152,7 @@
   swab_returned: 'No'
   swab_sample_barcode: null
   swab_sample_barcode_correct: null
+  swab_sample_barcode_raw: null
   swab_sample_barcode_user_entered: ONS63876210
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -1099,6 +1162,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
@@ -1180,6 +1244,9 @@
   times_socialise_last_7_days: '3'
   title: Mr.
   transport_to_work_or_education: Bus, minibus or coach
+  unique_participant_response_id: 456442497105-DHR-763063387334-1996-09-28
+  visit_datetime: '1996-09-28'
+  visit_id: '456442497105'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: Prefer not to say
@@ -1187,8 +1254,11 @@
   work_in_healthcare: Primary care (e.g. GP, dentist)
   work_main_job_changed: 'Yes'
   work_main_job_role: Type classes first appeared in the Haskell programming language.
+  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: Do you come here often?
+  work_main_job_title_raw: Do you come here often?
   work_not_from_home_days_per_week: '6'
+  work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: 'No'
   work_sector: Teaching and education
   work_sector_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
@@ -1201,6 +1271,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Samoa
   been_outside_uk_last_return_date: '2020-11-09 00:00:00.000000'
@@ -1218,11 +1289,12 @@
   blood_returned: null
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: null
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS88308904
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
   blood_sample_transport_status: Arrived at Consolidation Hub
-  blood_taken: 'No'
+  blood_taken: 'Yes'
   blood_taken_datetime: null
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
@@ -1261,6 +1333,8 @@
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1997-08-21 00:00:00.000000'
+  days_since_think_had_covid: -12972.0
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '1994-05-03'
   digital_enrolment_invite_datetime: '1986-06-28'
   digital_opt_in_window_end_datetime: '1985-09-10'
@@ -1274,8 +1348,10 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Reiko
+  hh_id: '836394225258'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: Prefer not to say
   household_completion_window_id: '959807652614'
@@ -1313,6 +1389,7 @@
   other_covid_infection_test_results: null
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: AF5A
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '498251982661'
   participant_completion_window_start_datetime: null
@@ -1344,7 +1421,7 @@
   physical_contact_18_to_69_years: 6 to 10
   physical_contact_over_70_years: Don't know
   physical_contact_under_18_years: 21 or more
-  postcode: AF5A 1QO
+  postcode: AF5A1QO
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Any element of a tuple can be accessed in constant
     time.
@@ -1370,6 +1447,7 @@
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Female
+  sex_raw: Female
   social_distance_contact_18_to_69_years: 11 to 20
   social_distance_contact_over_70_years: Don't know
   social_distance_contact_under_18_years: 1 to 5
@@ -1377,6 +1455,7 @@
   survey_completed_datetime: null
   survey_completion_status: New
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: First Survey
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
@@ -1390,15 +1469,17 @@
   swab_returned: 'No'
   swab_sample_barcode: null
   swab_sample_barcode_correct: 'Yes'
+  swab_sample_barcode_raw: null
   swab_sample_barcode_user_entered: ONS75750309
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
   swab_sample_transport_status: Arrived at Sorting Office
-  swab_taken: 'Yes'
+  swab_taken: 'No'
   swab_taken_datetime: null
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
@@ -1480,6 +1561,9 @@
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Other method
+  unique_participant_response_id: 498251982661-DHR-329500167403-1986-06-28
+  visit_datetime: '1986-06-28'
+  visit_id: '498251982661'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: 'No'
@@ -1489,9 +1573,15 @@
   work_main_job_role: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
+  work_main_job_role_raw: Atoms can contain any character if they are enclosed within
+    single quotes and an escape convention exists which allows any character to be
+    used within an atom.
   work_main_job_title: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
+  work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
+    has since been restored.
   work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: Prefer not to say
   work_sector: Healthcare
   work_sector_other: Its main implementation is the Glasgow Haskell Compiler.
@@ -1505,6 +1595,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'No'
+  bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Cambodia
   been_outside_uk_last_return_date: '2022-02-03 00:00:00.000000'
@@ -1521,6 +1612,7 @@
   blood_returned: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_raw: null
   blood_sample_barcode_user_entered: ONS21121052
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -1568,6 +1660,8 @@
   currently_smokes_or_vapes: Prefer not to say
   currently_smokes_or_vapes_description: 'No'
   date_of_birth: '1999-08-11 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '2000-04-09'
   digital_enrolment_invite_datetime: '1985-03-03'
   digital_opt_in_window_end_datetime: '1982-10-03'
@@ -1581,8 +1675,10 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Forest
+  hh_id: '544728808246'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   household_completion_window_id: '074766470263'
@@ -1620,6 +1716,7 @@
   other_covid_infection_test_results: One or more negative tests but none positive
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '545473722111'
   participant_completion_window_start_datetime: null
@@ -1678,6 +1775,7 @@
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
   sex: null
+  sex_raw: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: 6 to 10
@@ -1685,6 +1783,7 @@
   survey_completed_datetime: null
   survey_completion_status: In Progress
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample return bag with a return label on
@@ -1695,6 +1794,7 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: 'Yes'
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS57124795
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -1704,6 +1804,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: 'No'
@@ -1785,6 +1886,9 @@
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
+  unique_participant_response_id: 545473722111-DHR-308127387209-1985-03-03
+  visit_datetime: '1985-03-03'
+  visit_id: '545473722111'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'Yes'
@@ -1792,8 +1896,12 @@
   work_in_healthcare: null
   work_main_job_changed: 'No'
   work_main_job_role: Erlang is known for its designs that are well suited for systems.
+  work_main_job_role_raw: Erlang is known for its designs that are well suited for
+    systems.
   work_main_job_title: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_title_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Other employment sector please specify
   work_sector_other: Erlang is known for its designs that are well suited for systems.
@@ -1807,6 +1915,7 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Bangladesh
   been_outside_uk_last_return_date: '2020-08-26 00:00:00.000000'
@@ -1823,6 +1932,7 @@
   blood_returned: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS56224036
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -1869,6 +1979,8 @@
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2007-03-09 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: null
   digital_enrolment_invite_datetime: null
   digital_opt_in_window_end_datetime: '2007-07-15'
@@ -1881,8 +1993,10 @@
   ethnicity_other: Ports are created with the built-in function open_port.
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   first_name: Caron
+  hh_id: '195028486959'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: Prefer not to say
   household_completion_window_id: '756202235126'
@@ -1920,6 +2034,7 @@
   other_covid_infection_test_results: One or more negative tests but none positive
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: RS6B
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '704542495687'
   participant_completion_window_start_datetime: null
@@ -1951,7 +2066,7 @@
   physical_contact_18_to_69_years: Prefer not to say
   physical_contact_over_70_years: Don't know
   physical_contact_under_18_years: 21 or more
-  postcode: RS6B 6NG
+  postcode: RS6B6NG
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Its main implementation is the Glasgow Haskell Compiler.
   reason_for_not_consenting_2: They are written as strings of consecutive alphanumeric
@@ -1975,6 +2090,7 @@
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
   sex: Male
+  sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 1 to 5
@@ -1982,6 +2098,7 @@
   survey_completed_datetime: null
   survey_completion_status: Archived
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
@@ -1994,6 +2111,7 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: null
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS30378947
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -2003,6 +2121,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
@@ -2084,6 +2203,9 @@
   times_socialise_last_7_days: '6'
   title: Miss.
   transport_to_work_or_education: Bus, minibus or coach
+  unique_participant_response_id: 704542495687-DHR-867585874226
+  visit_datetime: null
+  visit_id: '704542495687'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: Prefer not to say
@@ -2092,8 +2214,12 @@
   work_main_job_changed: null
   work_main_job_role: They are written as strings of consecutive alphanumeric characters,
     the first character being lowercase.
+  work_main_job_role_raw: They are written as strings of consecutive alphanumeric
+    characters, the first character being lowercase.
   work_main_job_title: Where are my pants?
+  work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Food production and agriculture. This includes farming
   work_sector_other: She spent her earliest years reading classic literature, and
@@ -2109,6 +2235,7 @@
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: '2021-03-09 00:00:00.000000'
@@ -2127,6 +2254,7 @@
   blood_returned: null
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS99814240
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -2172,6 +2300,8 @@
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: null
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   digital_enrolment_datetime: '1997-02-07'
   digital_enrolment_invite_datetime: null
   digital_opt_in_window_end_datetime: null
@@ -2186,8 +2316,10 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Honey
+  hh_id: '425723964512'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: '[9, 23, 6, 18, 10, 10, 22, 23]'
   household_completion_window_id: '219547810444'
@@ -2225,6 +2357,7 @@
   other_covid_infection_test_results: null
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '769043821442'
   participant_completion_window_start_datetime: null
@@ -2281,6 +2414,7 @@
     been restored.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: null
+  sex_raw: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 11 to 20
   social_distance_contact_under_18_years: null
@@ -2288,6 +2422,7 @@
   survey_completed_datetime: null
   survey_completion_status: Archived
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
@@ -2299,6 +2434,7 @@
   swab_returned: 'Yes'
   swab_sample_barcode: null
   swab_sample_barcode_correct: null
+  swab_sample_barcode_raw: null
   swab_sample_barcode_user_entered: ONS29485098
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -2308,6 +2444,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: 'No'
@@ -2389,6 +2526,9 @@
   times_socialise_last_7_days: '2'
   title: Miss.
   transport_to_work_or_education: Bicycle
+  unique_participant_response_id: 769043821442-DHR-352206298026
+  visit_datetime: null
+  visit_id: '769043821442'
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'Yes'
@@ -2396,9 +2536,13 @@
   work_in_healthcare: null
   work_main_job_changed: null
   work_main_job_role: I don't even care.
+  work_main_job_role_raw: I don't even care.
   work_main_job_title: Haskell features a type system with type inference and lazy
     evaluation.
+  work_main_job_title_raw: Haskell features a type system with type inference and
+    lazy evaluation.
   work_not_from_home_days_per_week: '2'
+  work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'No'
   work_sector: Hospitality - for example hotels or restaurants or cafe
   work_sector_other: Erlang is known for its designs that are well suited for systems.
@@ -2412,6 +2556,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
+  bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Iceland
   been_outside_uk_last_return_date: '2021-03-07 00:00:00.000000'
@@ -2427,6 +2572,7 @@
   blood_returned: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'Yes'
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS17139656
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -2476,6 +2622,8 @@
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: 'Yes'
   date_of_birth: '1997-01-25 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '2021-12-18'
   digital_enrolment_invite_datetime: '2020-02-01'
   digital_opt_in_window_end_datetime: '1985-10-14'
@@ -2489,9 +2637,11 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
   first_name: Annika
+  hh_id: '602276804025'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   household_completion_window_id: '930086875935'
@@ -2529,6 +2679,7 @@
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '868570220212'
   participant_completion_window_start_datetime: null
@@ -2584,6 +2735,7 @@
   self_isolating_reason: I haven't had any symptoms but I live with someone who has
     or has had symptoms or a positive test
   sex: Male
+  sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
   social_distance_contact_over_70_years: '0'
   social_distance_contact_under_18_years: 21 or more
@@ -2591,6 +2743,7 @@
   survey_completed_datetime: null
   survey_completion_status: In Progress
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: First Survey
   swab_not_taken_damage_description: I don't even care.
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
@@ -2601,6 +2754,7 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: 'Yes'
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS63322966
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
@@ -2610,6 +2764,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: null
@@ -2691,6 +2846,9 @@
   times_socialise_last_7_days: '2'
   title: Dr.
   transport_to_work_or_education: Underound, Metro, Light Rail or Tram
+  unique_participant_response_id: 868570220212-DHR-016525808631-2020-02-01
+  visit_datetime: '2020-02-01'
+  visit_id: '868570220212'
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: Prefer not to say
@@ -2699,9 +2857,14 @@
   work_main_job_changed: null
   work_main_job_role: Haskell features a type system with type inference and lazy
     evaluation.
+  work_main_job_role_raw: Haskell features a type system with type inference and lazy
+    evaluation.
   work_main_job_title: The arguments can be primitive data types or compound data
     types.
+  work_main_job_title_raw: The arguments can be primitive data types or compound data
+    types.
   work_not_from_home_days_per_week: '2'
+  work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: Prefer not to say
   work_sector: Healthcare
   work_sector_other: Haskell is a standardized, general-purpose purely functional
@@ -2716,6 +2879,7 @@
     metres apart
   any_household_members_over_2_years_and_not_present: 'No'
   any_household_members_under_2_years: 'Yes'
+  bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Kenya
   been_outside_uk_last_return_date: null
@@ -2731,6 +2895,7 @@
   blood_returned: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: null
+  blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS43538819
   blood_sample_received_consolidation_point_datetime: null
   blood_sample_received_lab_datetime: null
@@ -2775,6 +2940,8 @@
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Prefer not to say
   date_of_birth: '2014-01-24 00:00:00.000000'
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   digital_enrolment_datetime: '2011-03-07'
   digital_enrolment_invite_datetime: '2014-01-03'
   digital_opt_in_window_end_datetime: '2004-01-13'
@@ -2788,8 +2955,10 @@
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   first_name: Myung
+  hh_id: 061403237378
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
   household_completion_window_id: '011652671671'
@@ -2827,6 +2996,7 @@
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: 'Yes'
+  outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '891036937066'
   participant_completion_window_start_datetime: null
@@ -2883,6 +3053,7 @@
   self_isolating: Type classes first appeared in the Haskell programming language.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
   sex: Male
+  sex_raw: Male
   social_distance_contact_18_to_69_years: Don't know
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: '0'
@@ -2890,6 +3061,7 @@
   survey_completed_datetime: null
   survey_completion_status: In Progress
   survey_last_modified_datetime: null
+  survey_response_dataset_major_version: 3
   survey_type: Follow-up Survey
   swab_not_taken_damage_description: Haskell features a type system with type inference
     and lazy evaluation.
@@ -2901,15 +3073,17 @@
   swab_returned: 'No'
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_correct: 'Yes'
+  swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS17861973
   swab_sample_received_consolidation_point_datetime: null
   swab_sample_received_lab_datetime: null
   swab_sample_transport_status: Arrived at Lab
-  swab_taken: 'No'
+  swab_taken: 'Yes'
   swab_taken_datetime: null
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
+  think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: null
@@ -2991,6 +3165,9 @@
   times_socialise_last_7_days: '1'
   title: Miss.
   transport_to_work_or_education: Train
+  unique_participant_response_id: 891036937066-DHR-200593676791-2014-01-03
+  visit_datetime: '2014-01-03'
+  visit_id: '891036937066'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: From home meaning in the same grounds or building
     as your home
@@ -2999,8 +3176,11 @@
   work_in_healthcare: null
   work_main_job_changed: 'No'
   work_main_job_role: Ports are used to communicate with the external world.
+  work_main_job_role_raw: Ports are used to communicate with the external world.
   work_main_job_title: Make me a sandwich.
+  work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Manufacturing or construction
   work_sector_other: She spent her earliest years reading classic literature, and
