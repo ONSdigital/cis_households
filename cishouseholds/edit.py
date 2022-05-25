@@ -187,7 +187,7 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
     Parameters
