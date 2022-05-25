@@ -11,6 +11,7 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -163,6 +164,7 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '1'
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
@@ -314,6 +316,7 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
+  consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -468,6 +471,7 @@
   consent_5_visits: '1'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -623,6 +627,7 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -776,6 +781,7 @@
   consent_5_visits: '0'
   consent_blood_test: '0'
   consent_contact_extra_research: '0'
+  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
@@ -929,6 +935,7 @@
   consent_5_visits: '1'
   consent_blood_test: '0'
   consent_contact_extra_research: '1'
+  consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
@@ -1084,6 +1091,7 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
+  consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
@@ -1236,6 +1244,7 @@
   consent_5_visits: '1'
   consent_blood_test: '1'
   consent_contact_extra_research: '0'
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
@@ -1387,6 +1396,7 @@
   consent_5_visits: '0'
   consent_blood_test: '1'
   consent_contact_extra_research: '1'
+  consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'No'
