@@ -128,7 +128,7 @@ def test_longcovid_dataset(spark_session):
         schema="""
             patient_id integer,
             visit_date string,
-            long_covid_have_symptoms string,
+            think_have_long_covid_symptom_have_symptoms string,
             age integer,
             longcovid integer
             """,
@@ -137,7 +137,7 @@ def test_longcovid_dataset(spark_session):
 
     output_df = dataset_flag_generation_evernever_OR_longcovid(
         df=input_df,
-        column_test_result="long_covid_have_symptoms",
+        column_test_result="think_have_long_covid_symptom_have_symptoms",
         patient_id_column="patient_id",
         visit_date_column="visit_date",
         age_column="age",
@@ -167,7 +167,7 @@ def test_all_dataset_generation(spark_session):
             visit_date string,
             swab_result string,
             antibodies_result string,
-            long_covid_have_symptoms string,
+            think_have_long_covid_symptom_have_symptoms string,
             age integer,
 
             ever_never_swab integer,
@@ -197,7 +197,7 @@ def test_all_dataset_generation(spark_session):
         cutoff_date_longcovid="2022-02-20",
         column_test_result_swab="swab_result",
         column_test_result_antibodies="antibodies_result",
-        column_test_result_longcovid="long_covid_have_symptoms",
+        column_test_result_longcovid="think_have_long_covid_symptom_have_symptoms",
         patient_id_column="patient_id",
         visit_date_column="visit_date",
         age_column="age",
