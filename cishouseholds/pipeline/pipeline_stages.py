@@ -9,7 +9,6 @@ from typing import Union
 
 import pandas as pd
 from pyspark.sql import functions as F
-from pyspark.sql import Window
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
@@ -405,6 +404,7 @@ def validate_survey_responses(
         .groupBy("validation_check_failures")
         .count()
     ).withColumn("run_id", F.lit(get_run_id()))
+
     validation_check_failures_invalid_data_df = (
         erroneous_survey_responses.select(id_column, validation_failure_flag_column)
         .withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
@@ -904,7 +904,7 @@ def report(
         valid_df_errors_new = valid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         valid_df_errors_previous = valid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
         valid_df_errors = valid_df_errors_previous.join(
-            valid_df_errors_new, on=id_column_on_error_table, how="fullouter"
+            valid_df_errors_new, on=validation_failure_flag_column, how="fullouter"
         )
 
     head = invalid_df_errors.select("run_id").orderBy("run_id").distinct().head(2)
@@ -912,10 +912,9 @@ def report(
         invalid_df_errors_new = invalid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
         invalid_df_errors_previous = invalid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
         invalid_df_errors = invalid_df_errors_previous.join(
-            invalid_df_errors_new, on=id_column_on_error_table, how="fullouter"
+            invalid_df_errors_new, on=validation_failure_flag_column, how="fullouter"
         )
 
-    valid_df_errors.show()
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
