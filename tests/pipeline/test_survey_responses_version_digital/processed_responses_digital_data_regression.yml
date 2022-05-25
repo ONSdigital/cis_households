@@ -290,6 +290,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -602,6 +603,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -925,6 +927,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '3'
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
@@ -1244,6 +1247,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: 7 times or more
   times_socialise_last_7_days: '3'
   title: Mr.
@@ -1562,6 +1566,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: Don't knowNone
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
@@ -1888,6 +1893,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '5'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -2206,6 +2212,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: Prefer not to say
   times_socialise_last_7_days: '6'
   title: Miss.
@@ -2530,6 +2537,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: Prefer not to say
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '3'
   times_socialise_last_7_days: '2'
   title: Miss.
@@ -2851,6 +2859,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '2'
   times_socialise_last_7_days: '2'
   title: Dr.
@@ -3171,6 +3180,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: 7 times or more
   times_socialise_last_7_days: '1'
   title: Miss.
