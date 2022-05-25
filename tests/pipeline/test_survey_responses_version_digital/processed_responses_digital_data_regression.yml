@@ -308,7 +308,7 @@
   work_main_job_role_raw: Do you have any idea why this is not working?
   work_main_job_title: Do you have any idea why this is not working?
   work_main_job_title_raw: Do you have any idea why this is not working?
-  work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
   work_sector: Information technology and communication
@@ -1912,7 +1912,7 @@
     systems.
   work_main_job_title: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Other employment sector please specify
@@ -3199,7 +3199,7 @@
   work_main_job_role_raw: Ports are used to communicate with the external world.
   work_main_job_title: Make me a sandwich.
   work_main_job_title_raw: Make me a sandwich.
-  work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Manufacturing or construction
