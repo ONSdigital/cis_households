@@ -124,9 +124,9 @@ def join_and_process_lookups(
     postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
 
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
-    old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit(F.unix_timestamp("2021-11-30", "yyyy-MM-dd")))
+    old_sample_df = old_sample_df.withColumn("date_sample_created", F.unix_timestamp(F.lit("2021-11-30"), "yyyy-MM-dd"))
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
-    new_sample_df = new_sample_df.withColumn("date_sample_created", F.lit(F.unix_timestamp("2021/12/06", "yyyy-MM-dd")))
+    new_sample_df = new_sample_df.withColumn("date_sample_created", F.unix_timestamp(F.lit("2021-12-06"), "yyyy-MM-dd"))
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
