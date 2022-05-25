@@ -1168,6 +1168,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: participant_withdrawal_reason_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: blood_sample_barcode_raw
   nullable: true
   type: string
