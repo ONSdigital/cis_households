@@ -3,6 +3,8 @@ from functools import reduce
 from itertools import chain
 from operator import add
 from operator import and_
+from operator import or_
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -17,21 +19,26 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_column_value_from_multiple_column_map(df: DataFrame, column_name_to_assign: str, column_name_to_map: dict):
-    """ """
-    df.show()
-    # for col, map in column_name_to_map.items():
-    #    df = assign_from_map(df,column_name_to_assign,col,map)
+def assign_column_value_from_multiple_column_map(
+    df: DataFrame, column_name_to_assign: str, column_name_to_map: List[List[Any]], column_names: List[str]
+):
+    """
+    assign column value based on values of any number of columns in a dictionary
+    """
     df = df.withColumn(column_name_to_assign, F.lit(None))
-    df.show()
-    for mapped_value, option in column_name_to_map.items():
+    for row in column_name_to_map:
+        mapped_value = row[0]
+        values = row[1]
+        logic = []
+        for col, val in zip(column_names, values):
+            if type(val) == list:
+                logic.append(reduce(or_, [F.col(col).eqNullSafe(option) for option in val]))
+            else:
+                logic.append(F.col(col).eqNullSafe(val))
         df = df.withColumn(
             column_name_to_assign,
-            F.when(reduce(and_, [F.col(col).eqNullSafe(val) for col, val in option.items()]), mapped_value).otherwise(
-                F.col(column_name_to_assign)
-            ),
+            F.when(reduce(and_, logic), mapped_value).otherwise(F.col(column_name_to_assign)),
         )
-        df.show()
     return df
 
 
