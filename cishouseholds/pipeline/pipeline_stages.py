@@ -51,6 +51,7 @@ from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccinat
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
+from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
@@ -399,18 +400,24 @@ def validate_survey_responses(
     )
 
     validation_check_failures_valid_data_df = (
-        valid_survey_responses.select(id_column, validation_failure_flag_column)
-        .withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
-        .groupBy("validation_check_failures")
-        .count()
-    ).withColumn("run_id", F.lit(get_run_id()))
+        (
+            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
 
     validation_check_failures_invalid_data_df = (
-        erroneous_survey_responses.select(id_column, validation_failure_flag_column)
-        .withColumn("validation_check_failures", F.explode(validation_failure_flag_column))
-        .groupBy("validation_check_failures")
-        .count()
-    ).withColumn("run_id", F.lit(get_run_id()))
+        (
+            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
@@ -864,7 +871,6 @@ def geography_and_imputation_dependent_processing(
 @register_pipeline_stage("report")
 def report(
     unique_id_column: str,
-    id_column_on_error_table: str,
     validation_failure_flag_column: str,
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
@@ -873,6 +879,7 @@ def report(
     invalid_survey_responses_errors_table: str,
     output_directory: str,
     tables_to_count: List[str],
+    error_priority_map: dict = {},
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -896,39 +903,13 @@ def report(
     """
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
-    valid_df_errors = extract_from_table(valid_survey_responses_errors_table)
-    invalid_df_errors = extract_from_table(invalid_survey_responses_errors_table)
 
-    head = valid_df_errors.select("run_id").orderBy(F.col("run_id").desc()).distinct().head(2)
-    if len(head) == 2:
-        valid_df_errors_new = valid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
-        valid_df_errors_previous = valid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        valid_df_errors = (
-            valid_df_errors_previous.withColumnRenamed("count", "count_previous")
-            .withColumnRenamed("run_id", "run_id_previous")
-            .join(
-                valid_df_errors_new.withColumnRenamed("count", "count_current").withColumnRenamed(
-                    "run_id", "run_id_current"
-                ),
-                on=validation_failure_flag_column,
-                how="fullouter",
-            )
-        )
-    head = invalid_df_errors.select("run_id").orderBy(F.col("run_id").desc()).distinct().head(2)
-    if len(head) == 2:
-        invalid_df_errors_new = invalid_df_errors.filter(F.col("run_id") == head[0].asDict()["run_id"])
-        invalid_df_errors_previous = invalid_df_errors.filter(F.col("run_id") == head[-1].asDict()["run_id"])
-        invalid_df_errors = (
-            invalid_df_errors_previous.withColumnRenamed("count", "count_previous")
-            .withColumnRenamed("run_id", "run_id_previous")
-            .join(
-                invalid_df_errors_new.withColumnRenamed("count", "count_current").withColumnRenamed(
-                    "run_id", "run_id_current"
-                ),
-                on=validation_failure_flag_column,
-                how="fullouter",
-            )
-        )
+    valid_df_errors = generate_error_table(
+        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+    invalid_df_errors = generate_error_table(
+        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
 
     processed_file_log = extract_from_table("processed_filenames")
 
@@ -989,9 +970,9 @@ def report(
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
-    write_string_to_file(
-        output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
-    )
+    # write_string_to_file(
+    #    output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    # )
 
 
 @register_pipeline_stage("report_iqvia")

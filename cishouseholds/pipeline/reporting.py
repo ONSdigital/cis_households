@@ -6,7 +6,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.load import extract_from_table
 
 
 def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]):
@@ -51,3 +53,25 @@ def unmatching_antibody_to_swab_viceversa(swab_df, antibody_df, column_list):
 
     df = union_multiple_tables(tables=[unmatched_swab_df, unmatched_antibody_df])
     return df
+
+
+def generate_error_table(table_name: str, error_priority_map: dict, validation_failure_flag_column: str):
+    df = extract_from_table(table_name)
+    df = df.withColumn("order", F.col("validation_check_failures"))
+    df = update_column_values_from_map(df, "order", error_priority_map, default_value=9999).orderBy("order")
+    head = df.select("run_id").orderBy(F.col("run_id").desc()).distinct().head(2)
+    if len(head) == 2:
+        df_new = df.filter(F.col("run_id") == head[0].asDict()["run_id"]).groupBy("validation_check_failures").count()
+        df_previous = (
+            df.filter(F.col("run_id") == head[-1].asDict()["run_id"]).groupBy("validation_check_failures").count()
+        )
+        df = (
+            df_previous.withColumnRenamed("count", "count_previous")
+            .withColumnRenamed("run_id", "run_id_previous")
+            .join(
+                df_new.withColumnRenamed("count", "count_current").withColumnRenamed("run_id", "run_id_current"),
+                on=validation_failure_flag_column,
+                how="fullouter",
+            )
+        )
+    return df.drop("order")
