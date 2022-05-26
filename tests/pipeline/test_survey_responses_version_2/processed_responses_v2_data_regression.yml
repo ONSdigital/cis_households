@@ -566,11 +566,7 @@
   times_shopping_last_7_days: '0'
   times_socialising_last_7_days: '3'
   title: Prof.
-<<<<<<< HEAD
-  transport_to_work_or_school: Car or van
-=======
-  transport_to_work_or_education: Other method
->>>>>>> origin/main
+  transport_to_work_or_education: Car or van
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-08 00:10:59.000000'
@@ -1603,19 +1599,6 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-<<<<<<< HEAD
-  infant_1_age: 7.0
-  infant_2_age: 2.0
-  infant_3_age: null
-  infant_4_age: 2.0
-  infant_5_age: 8.0
-  infant_6_age: 2.0
-  infant_7_age: 3.0
-  infant_8_age: 4.0
-  is_regularly_lateral_flow_testing: null
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: 'No'
-=======
   infant_age_months_1: 7.0
   infant_age_months_2: 2.0
   infant_age_months_3: null
@@ -1624,7 +1607,6 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 3.0
   infant_age_months_8: 4.0
->>>>>>> origin/main
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
   last_name: Brady
@@ -1694,8 +1676,8 @@
   reconsented_blood: 'True'
   regularly_lateral_flow_testing: null
   samples_taken_datetime: null
-  self_isolating: null
-  self_isolating_reason: null
+  self_isolating: 'No'
+  self_isolating_reason: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1713,58 +1695,6 @@
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-<<<<<<< HEAD
-  symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: 'Yes'
-  symptoms_last_7_days_any_raw: 'Yes'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: 'Yes'
-  symptoms_last_7_days_diarrhoea: 'No'
-  symptoms_last_7_days_difficulty_concentrating: 'Yes'
-  symptoms_last_7_days_fatigue_weakness: 'Yes'
-  symptoms_last_7_days_fever: 'No'
-  symptoms_last_7_days_headache: 'No'
-  symptoms_last_7_days_loss_of_appetite: null
-  symptoms_last_7_days_loss_of_smell: 'No'
-  symptoms_last_7_days_loss_of_taste: 'No'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: 'No'
-  symptoms_last_7_days_more_trouble_sleeping: 'No'
-  symptoms_last_7_days_muscle_ache_myalgia: 'No'
-  symptoms_last_7_days_nausea_vomiting: 'Yes'
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-09 00:00:00.000000'
-  symptoms_last_7_days_palpitations: null
-  symptoms_last_7_days_runny_nose_sneezing: null
-  symptoms_last_7_days_shortness_of_breath: 'Yes'
-  symptoms_last_7_days_sore_throat: 'No'
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'Yes'
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: 'No'
-  symptoms_since_last_visit_cough: 'No'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'Yes'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: 'No'
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: 'Yes'
-  symptoms_since_last_visit_loss_of_smell: 'No'
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: null
-  symptoms_since_last_visit_more_trouble_sleeping: 'No'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'Yes'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'No'
-  symptoms_since_last_visit_shortness_of_breath: 'Yes'
-  symptoms_since_last_visit_sore_throat: null
-  symptoms_since_last_visit_vertigo_dizziness: null
-  symptoms_since_last_visit_worry_anxiety: 'Yes'
-=======
->>>>>>> origin/main
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
@@ -1797,30 +1727,30 @@
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'No'
-  think_have_covid_symptom_any: 'No'
-  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
   think_have_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue_weakness: 'Yes'
   think_have_covid_symptom_fever: 'No'
-  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'No'
-  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_covid_symptom_more_trouble_sleeping: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache_myalgia: 'No'
+  think_have_covid_symptom_nausea_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
-  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_sneezing: null
-  think_have_covid_symptom_shortness_of_breath: 'No'
-  think_have_covid_symptom_sore_throat: 'Yes'
-  think_have_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'No'
+  think_have_covid_symptom_vertigo_dizziness: 'No'
   think_have_covid_symptom_worry_anxiety: 'Yes'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
@@ -1854,11 +1784,7 @@
   times_shopping_last_7_days: '0'
   times_socialising_last_7_days: '2'
   title: Miss.
-<<<<<<< HEAD
-  transport_to_work_or_school: null
-=======
-  transport_to_work_or_education: Bus, minibus, coach
->>>>>>> origin/main
+  transport_to_work_or_education: null
   unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
