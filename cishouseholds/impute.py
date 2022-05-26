@@ -125,13 +125,6 @@ def fill_forward_only_to_nulls(
 ) -> DataFrame:
     """
     Fill forward to not nulls for the whole dataset.
-
-    Parameters
-    ----------
-    df
-    id
-    date
-    list_fill_forward
     """
 
     window = Window.partitionBy(id).orderBy(date)
@@ -160,18 +153,6 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
     This function will carry forward values windowed by an id ordered by date.
     ONLY will fill into NULLs not filling forward to not nulls regardless of whether
     there is a change=Yes or dataset=2 values. It will NOT fill forward Null values.
-
-    Parameters
-    ----------
-    df
-    id
-    date
-    visit_type
-    dataset
-    changed
-    list_fill_forward
-    changed_positive_value
-    visit_type_value
     """
     window = Window.partitionBy(id).orderBy(date)
 
@@ -207,16 +188,6 @@ def fill_backwards_work_status_v2(
     """
     This function fills backwards as long as it is within upper and lower date defined by list daterange.
     And requires a condition column to have specific values only apart from nulls.
-
-    Parameters
-    ----------
-    df
-    date
-    id
-    fill_backward_column
-    condition_column
-    condition_values
-    date_range
     """
     df = df.withColumn("COND_value", F.lit(None))
     df = df.withColumn("COND_not_fill", F.lit(None))
@@ -840,14 +811,7 @@ def impute_latest_date_flag(
     contact_any_covid_date_column: str,
 ) -> DataFrame:
     """
-    Parameters
-    ----------
-    df
-    participant_id_column
-    visit_date_column
-    visit_id_column
-    contact_any_covid_column
-    contact_any_covid_date_column
+    derive a flag based on latest date and im values associated with rows where this flag is 1
     """
     window = Window.partitionBy(participant_id_column).orderBy(
         F.desc(contact_any_covid_date_column),
