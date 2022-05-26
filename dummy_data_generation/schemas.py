@@ -1722,7 +1722,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "consent_blood_samples_if_positive_yn": _("choice", items=yes_no_none_choice),
         "participant_invited_to_digital": _("choice", items=yes_no_none_choice),
         "participant_enrolled_digital": _("choice", items=yes_no_none_choice),
-        "participant_digital_enrolment_date": _(
+        "participant_digital_enrolment_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1738,7 +1738,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),  # TODO Check picklist values on this one
-        "existing_participant_digital_opt_in_date": _(
+        "existing_participant_digital_opt_in_datetime": _(
             "discrete_distribution",
             population=[
                 _(
