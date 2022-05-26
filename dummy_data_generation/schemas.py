@@ -1535,7 +1535,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opt_in_window_start_datetime": _(  # TODO Check whether this is household or participant
+        "existing_participant_digital_opt_in_window_start_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1543,7 +1543,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opt_in_window_end_datetime": _(  # TODO Check whether this is household or participant
+        "existing_participant_digital_opt_in_window_end_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1551,7 +1551,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "household_digital_opted_in_datetime": _(  # TODO Check whether this is household or participant
+        "existing_participant_digital_opted_in_datetime": _(
             "discrete_distribution",
             population=[
                 _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
@@ -1571,9 +1571,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "city": _("choice", items=[None, _("address.city")]),
         "county": _("choice", items=[None, _("address.province")]),
         "postcode": _("choice", items=[None, _("address.postal_code")]),
-        "household_members_under_2_years_count": _(
-            "custom_random.random_integer", lower=0, upper=99, null_percent=0.5
-        ),  # TODO Check this has changed to count rather than choice
+        "household_members_under_2_years_count": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "infant_age_months_1": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "infant_age_months_2": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "infant_age_months_3": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
@@ -1584,7 +1582,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "infant_age_months_8": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "household_members_over_2_years_and_not_present_count": _(
             "custom_random.random_integer", lower=0, upper=99, null_percent=0.5
-        ),  # TODO Check this has changed to count rather than choice
+        ),
         "person_not_present_age_1": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "person_not_present_age_2": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
         "person_not_present_age_3": _("custom_random.random_integer", lower=0, upper=99, null_percent=0.5),
@@ -1627,7 +1625,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Too many visits",
                 None,
             ],
-        ),  # TODO Need to check the picklist values on this one
+        ),
         "participant_withdrawal_type": _(
             "choice",
             items=[
@@ -1637,7 +1635,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 None,
             ],
         ),
-        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # TODO Also DHRF
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),
         "middle_name": _("person.first_name"),
@@ -1727,7 +1725,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "digital_communication_preference": _("choice", items=["Email", "Letter", None]),
         "sample_return_preference": _("choice", items=["Post", "Courier", None]),
         "language_preference": _("choice", items=["English", "Welsh", None]),
-        "digital_study_cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         "voucher_type_preference": _("choice", items=["Email", "Letter", None]),
         "digital_entry_pack_sent_datetime": _(
             "discrete_distribution",
@@ -1801,8 +1798,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "survey_type": _("choice", items=["First Survey", "Follow-up Survey"]),
-        "sample_type": _("choice", items=["Swab Only", "Fingerprick and Swab"]),
+        "survey_response_type": _("choice", items=["First Survey", "Follow-up Survey", None]),
+        "study_cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         "opted_out_of_next_window": _("choice", items=yes_no_none_choice),
         "opted_out_of_next_window_datetime": _(
             "discrete_distribution",
@@ -1851,7 +1848,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        # "sample_kit_not_dispatched_code": _(),  # Waiting for further info
+        "sample_kit_not_dispatched_code": _("choice", items=yes_no_none_choice),  # TODO Check pick list values
         "sample_collection_courier_datetime": _(
             "discrete_distribution",
             population=[
@@ -2090,7 +2087,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Self-employed",
                 None,
             ],
-        ),  # TODO Check pick list values for this one
+        ),
         "work_status_employment": _(
             "choice",
             items=[
@@ -2098,7 +2095,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                 None,
             ],
-        ),  # TODO Check pick list values for this one
+        ),
         "work_status_unemployment": _(
             "choice",
             items=[
@@ -2107,7 +2104,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Retired",
                 None,
             ],
-        ),  # TODO Check pick list values for this one
+        ),
         "work_status_education": _(
             "choice",
             items=[
@@ -2119,7 +2116,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Attending university",
                 None,
             ],
-        ),  # TODO Check pick list values for this one
+        ),
         "work_in_additional_paid_employment": _("choice", items=yes_no_prefer_not_to_say),
         "work_main_job_title": _("text.sentence"),
         "work_main_job_role": _("text.sentence"),
@@ -2149,15 +2146,14 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             "choice",
             items=[
                 "Another type of healthcare - for example mental health services",
-                "Another type of healthcare - for example mental health services?"
                 "Primary care - for example in a GP or dentist",
                 "Secondary care - for example in a hospital",
                 None,
             ],
-        ),  # TODO Check picklist values on this one
+        ),
         "work_nursing_or_residential_care_home": _("choice", items=yes_no_prefer_not_to_say),
         "work_direct_contact_patients_or_clients": _("choice", items=yes_no_prefer_not_to_say),
-        "where_are_you_mainly_working_now": _(
+        "work_location": _(
             "choice",
             items=[
                 "Both from home and somewhere else",
@@ -2188,7 +2184,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
                 "Other method",
                 None,
             ],
-        ),  # TODO Check picklist values on this one
+        ),
         "ability_to_socially_distance_at_work_or_education": _(
             "choice",
             items=[
@@ -2232,7 +2228,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "self_isolating": _("choice", items=yes_no_prefer_not_to_say),
         "self_isolating_reason": _("choice", items=self_isolating_reasons),
-        "think_have_covid": _(),  # TODO Check as marked TBC in extract
+        "think_have_covid": _("choice", items=yes_no_none_choice),  # TODO Check as marked TBC in extract
         "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
         "illness_reduces_activity_or_ability": _(
             "choice",
@@ -2328,7 +2324,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "cis_flu_vaccine_received": _("choice", items=yes_no_none_choice),  # TODO Check as marked TBC in extract
+        "cis_flu_vaccine_received": _("choice", items=yes_no_none_choice),
         "been_outside_uk": _("choice", items=yes_no_none_choice),
         "been_outside_uk_last_country": _(
             "choice",
@@ -2717,7 +2713,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "times_hour_or_longer_another_home_last_7_days": _("choice", items=times_count),
         "times_hour_or_longer_another_person_your_home_last_7_days": _("choice", items=times_count),
         "times_shopping_last_7_days": _("choice", items=times_count),
-        "times_socialising_last_7_days": _("choice", items=times_count),  # TODO Check that this has been updated
+        "times_socialising_last_7_days": _("choice", items=times_count),
         "face_covering_work_or_education": _(
             "choice",
             items=[
