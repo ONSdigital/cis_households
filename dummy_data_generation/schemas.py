@@ -1668,7 +1668,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "date_of_birth": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", start=1980, end=2021, format=digital_datetime_format),
+                _("datetime.formatted_datetime", start=1980, end=2021, fmt=digital_datetime_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1741,12 +1741,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_datetime": _(
             "discrete_distribution",
             population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=digital_datetime_format,
-                ),
+                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
                 None,
             ],
             weights=[0.9, 0.1],
