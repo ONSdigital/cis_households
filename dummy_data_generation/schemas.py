@@ -1530,7 +1530,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "household_digital_enrolment_invited_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1538,7 +1543,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_window_start_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1546,7 +1556,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_window_end_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1554,7 +1569,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opted_in_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1562,7 +1582,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "household_digital_enrolment_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1643,7 +1668,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "date_of_birth": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("datetime.formatted_datetime", start=1980, end=2021, format=digital_datetime_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1716,7 +1741,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1729,7 +1759,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "digital_entry_pack_sent_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1738,7 +1773,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_reminder_1_due_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1746,7 +1786,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_reminder_1_sent_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1757,7 +1802,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_reminder_2_due_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1765,7 +1815,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "existing_participant_digital_opt_in_reminder_2_sent_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1804,7 +1859,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "opted_out_of_next_window_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1813,7 +1873,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "opted_out_of_blood_next_window_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1843,7 +1908,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "sample_kit_dispatched_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1852,7 +1922,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "sample_collection_courier_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1860,7 +1935,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "sample_collection_kit_received_delivery_partner_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1879,7 +1959,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "survey_last_modified_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1887,7 +1972,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "survey_completed_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1924,7 +2014,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "swab_sample_received_consolidation_point_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1932,7 +2027,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_sample_received_consolidation_point_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1940,7 +2040,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "swab_sample_received_lab_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1948,7 +2053,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_sample_received_lab_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1985,7 +2095,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "swab_taken_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -1994,7 +2109,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "swab_return_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -2002,7 +2117,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "swab_return_future_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -2056,7 +2171,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_taken_datetime": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -2065,7 +2180,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_return_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_date", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -2073,7 +2188,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_return_future_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_date", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.9, 0.1],
@@ -2221,7 +2336,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2269,7 +2384,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_1": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2279,7 +2399,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_2": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2289,7 +2414,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_3": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2299,7 +2429,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_4": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2309,7 +2444,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_5": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2319,7 +2459,12 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date_6": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_datetime_format, start=start_date_list, end=end_date_list),
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2531,7 +2676,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "been_outside_uk_last_return_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2540,7 +2685,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_had_covid_onset_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2585,7 +2730,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_covid_infection_test_first_positive_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2593,7 +2738,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_covid_infection_test_last_negative_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2613,7 +2758,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_antibody_test_first_positive_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2621,7 +2766,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_antibody_test_last_negative_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2663,7 +2808,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "last_covid_contact_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2682,7 +2827,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "last_suspected_covid_contact_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
@@ -2744,7 +2889,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "cis_covid_vaccine_date": _(
             "discrete_distribution",
             population=[
-                _("datetime.formatted_datetime", fmt=digital_date_format, start=start_date_list, end=end_date_list),
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=digital_date_format),
                 None,
             ],
             weights=[0.5, 0.5],
