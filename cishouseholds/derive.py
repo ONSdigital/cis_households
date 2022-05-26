@@ -1,7 +1,7 @@
 import re
 from functools import reduce
 from itertools import chain
-from operator import add
+from operator import add, and_
 from typing import List
 from typing import Optional
 from typing import Union
@@ -14,6 +14,21 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+def assign_column_value_from_multiple_column_map(df:DataFrame, column_name_to_assign:str, column_name_to_map:dict):
+    """
+    
+    """
+    df.show()
+    #for col, map in column_name_to_map.items():
+    #    df = assign_from_map(df,column_name_to_assign,col,map)
+    df = df.withColumn(column_name_to_assign,F.lit(None))
+    df.show()
+    for mapped_value,option in column_name_to_map.items():
+        df = df.withColumn(column_name_to_assign,F.when(reduce(and_,[F.col(col).eqNullSafe(val) for col,val in option.items()]),mapped_value).otherwise(F.col(column_name_to_assign)))
+        df.show()
+    return df
+    
 
 
 def concat_fields_if_true(
