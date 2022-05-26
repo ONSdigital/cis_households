@@ -1,6 +1,7 @@
 import pyspark.sql.functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 
@@ -12,6 +13,8 @@ def digital_specific_transformations(df):
     df = df.withColumn("visit_datetime", F.col("digital_enrolment_invite_datetime"))
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     df = transform_survey_responses_generic(df)
+    df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
+    df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
     df = edit_to_sum_or_max_value(
         df=df,
         column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
