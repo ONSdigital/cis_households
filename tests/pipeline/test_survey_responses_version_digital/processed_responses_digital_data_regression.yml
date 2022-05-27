@@ -100,6 +100,7 @@
   infant_age_months_6: 99.0
   infant_age_months_7: null
   infant_age_months_8: 60.0
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Waters
@@ -180,6 +181,8 @@
   sample_kit_dispatched_datetime: null
   self_isolating: Erlang is known for its designs that are well suited for systems.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 1 to 5
@@ -318,6 +321,8 @@
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
@@ -418,6 +423,7 @@
   infant_age_months_6: 15.0
   infant_age_months_7: 8.0
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Cervantes
@@ -495,6 +501,8 @@
   sample_kit_dispatched_datetime: null
   self_isolating: Erlang is known for its designs that are well suited for systems.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 6 to 10
@@ -633,6 +641,8 @@
   work_status_employment: Currently working. This includes if you are on sick or other
     leave for less than 4 weeks
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
@@ -733,6 +743,7 @@
   infant_age_months_6: 83.0
   infant_age_months_7: 14.0
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: null
   last_name: Gross
@@ -816,6 +827,8 @@
     language.
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 21 or more
@@ -957,6 +970,8 @@
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
@@ -1060,6 +1075,7 @@
   infant_age_months_6: 71.0
   infant_age_months_7: null
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I do not live with
   last_name: Bolton
@@ -1139,6 +1155,8 @@
     D2, ... Dn.
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: '0'
@@ -1276,6 +1294,8 @@
   work_status_employment: Currently working. This includes if you are on sick or other
     leave for less than 4 weeks
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
@@ -1376,6 +1396,7 @@
   infant_age_months_6: 89.0
   infant_age_months_7: null
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I do not live with
   last_name: Brady
@@ -1455,6 +1476,8 @@
   self_isolating: Type classes first appeared in the Haskell programming language.
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 11 to 20
@@ -1601,6 +1624,8 @@
     leave for less than 4 weeks
   work_status_unemployment: Not looking for paid work. This includes looking after
     the home or family or not wanting a job or being long-term sick or disabled
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away
   any_household_members_over_2_years_and_not_present: 'No'
@@ -1705,6 +1730,7 @@
   infant_age_months_6: 70.0
   infant_age_months_7: null
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Meyers
@@ -1785,6 +1811,8 @@
   self_isolating: Type classes first appeared in the Haskell programming language.
   self_isolating_reason: Due to increased risk of getting COVID-19 such as having
     been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: null
   sex_raw: null
   social_distance_contact_18_to_69_years: null
@@ -1924,6 +1952,8 @@
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
   any_household_members_under_2_years: 'Yes'
@@ -2025,6 +2055,7 @@
   infant_age_months_6: 47.0
   infant_age_months_7: null
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Romero
@@ -2102,6 +2133,8 @@
   self_isolating: Where are my pants?
   self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
     into hospital or shielding
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
@@ -2245,6 +2278,8 @@
     leave for less than 4 weeks
   work_status_unemployment: Not looking for paid work. This includes looking after
     the home or family or not wanting a job or being long-term sick or disabled
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away
   any_household_members_over_2_years_and_not_present: 'Yes'
@@ -2350,6 +2385,7 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: 23.0
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: null
   last_name: Hunt
@@ -2428,6 +2464,8 @@
   self_isolating: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: null
   sex_raw: null
   social_distance_contact_18_to_69_years: null
@@ -2568,6 +2606,8 @@
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Relatively easy to maintain 2
     metres apart
   any_household_members_over_2_years_and_not_present: 'Yes'
@@ -2674,6 +2714,7 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: null
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Day
@@ -2751,6 +2792,8 @@
   self_isolating: Type classes first appeared in the Haskell programming language.
   self_isolating_reason: I haven't had any symptoms but I live with someone who has
     or has had symptoms or a positive test
+  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
@@ -2893,6 +2936,8 @@
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Relatively easy to maintain 2
     metres apart
   any_household_members_over_2_years_and_not_present: 'No'
@@ -2993,6 +3038,7 @@
   infant_age_months_6: 78.0
   infant_age_months_7: 75.0
   infant_age_months_8: 19.0
+  is_self_isolating_detailed: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I live with
   last_name: Mosley
@@ -3071,6 +3117,8 @@
   sample_kit_dispatched_datetime: null
   self_isolating: Type classes first appeared in the Haskell programming language.
   self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: Don't know
@@ -3211,3 +3259,5 @@
   work_status_employment: Currently working. This includes if you are on sick or other
     leave for less than 4 weeks
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
