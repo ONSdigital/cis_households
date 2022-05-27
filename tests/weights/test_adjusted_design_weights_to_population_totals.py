@@ -7,8 +7,8 @@ from cishouseholds.weights.pre_calibration import adjusted_design_weights_to_pop
 def test_adjusted_design_weights_to_population_totals(spark_session):
     schema_expected = """country_name_12 string,
                          response_indicator integer,
-                         household_level_designweight_adjusted_swab double,
-                         household_level_designweight_adjusted_antibodies double,
+                         household_level_design_weight_adjusted_swab double,
+                         household_level_design_weight_adjusted_antibodies double,
                          population_country_swab integer,
                          population_country_antibodies integer,
                          sum_adjusted_design_weight_swab double,
