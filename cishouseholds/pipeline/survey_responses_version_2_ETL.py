@@ -508,8 +508,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = update_column_values_from_map(
+    df = assign_from_map(
         df,
+        "self_isolating_reason_digital",
         "self_isolating_reason",
         {
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
@@ -517,7 +518,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
             "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
             "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
         },
-        default_value=None,
     )
     df = update_to_value_if_any_not_null(
         df,
