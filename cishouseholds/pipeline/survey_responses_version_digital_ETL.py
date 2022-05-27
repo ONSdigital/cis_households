@@ -12,7 +12,10 @@ def digital_specific_transformations(df):
     df = df.withColumn(
         "visit_datetime",
         F.coalesce(
-            F.col("swab_taken_datetime"), F.col("blood_taken_datetime"), F.col("survey_completed_datetime"), F.col("")
+            F.col("swab_taken_datetime"),
+            F.col("blood_taken_datetime"),
+            F.col("survey_completed_datetime"),
+            F.col("sample_kit_dispatched_datetime"),
         ),
     )  # Placeholder for 2199
 
