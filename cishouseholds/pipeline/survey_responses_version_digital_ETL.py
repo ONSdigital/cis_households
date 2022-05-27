@@ -21,7 +21,7 @@ def digital_specific_transformations(df):
         column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
         columns_to_sum=[
             "times_shopping_last_7_days",
-            "times_socialise_last_7_days",
+            "times_socialising_last_7_days",
         ],
         max_value=7,
     )
