@@ -372,7 +372,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: ability_to_socially_distance_at_work_or_school
+  name: ability_to_socially_distance_at_work_or_education
   nullable: true
   type: string
 - metadata: {}

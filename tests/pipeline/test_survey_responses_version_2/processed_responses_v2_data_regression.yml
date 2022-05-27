@@ -1,4 +1,4 @@
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -184,6 +184,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_chest_pain: 'No'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'Yes'
@@ -205,10 +206,10 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
-  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: null
@@ -233,9 +234,9 @@
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   think_have_covid_symptom_vertigo_or_dizziness: null
-  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: null
   think_have_long_covid_symptom_chest_pain: 'No'
   think_have_long_covid_symptom_cough: null
   think_have_long_covid_symptom_diarrhoea: 'No'
@@ -258,7 +259,6 @@
   think_have_long_covid_symptom_trouble_sleeping: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_anxiety: null
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -298,7 +298,7 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -484,6 +484,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_chest_pain: 'No'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
@@ -505,10 +506,10 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
-  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: Maybe
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_chest_pain: null
@@ -533,9 +534,9 @@
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
   think_have_long_covid_symptom_cough: null
   think_have_long_covid_symptom_diarrhoea: null
@@ -558,7 +559,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
@@ -599,8 +599,8 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
@@ -787,6 +787,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'Yes'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
@@ -808,10 +809,10 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
-  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: null
@@ -836,9 +837,9 @@
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
-  think_have_covid_symptom_anxiety: null
   think_have_long_covid: null
   think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: 'No'
   think_have_long_covid_symptom_chest_pain: 'No'
   think_have_long_covid_symptom_cough: 'No'
   think_have_long_covid_symptom_diarrhoea: null
@@ -861,7 +862,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_anxiety: 'No'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
@@ -900,7 +900,7 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -1088,6 +1088,7 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_chest_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
@@ -1109,10 +1110,10 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
-  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
@@ -1137,9 +1138,9 @@
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: 'No'
   think_have_long_covid_symptom_chest_pain: null
   think_have_long_covid_symptom_cough: 'Yes'
   think_have_long_covid_symptom_diarrhoea: 'No'
@@ -1162,7 +1163,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_anxiety: 'No'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
@@ -1207,8 +1207,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: 'Yes'
@@ -1396,6 +1396,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: null
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: null
@@ -1417,10 +1418,10 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
-  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'Yes'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_chest_pain: null
@@ -1445,9 +1446,9 @@
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'No'
   think_have_long_covid_symptom_cough: 'Yes'
   think_have_long_covid_symptom_diarrhoea: null
@@ -1470,7 +1471,6 @@
   think_have_long_covid_symptom_trouble_sleeping: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Not at all
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
@@ -1512,8 +1512,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
-    be 1m
+- ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
+    can be 1m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -1702,6 +1702,7 @@
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
@@ -1723,10 +1724,10 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: null
-  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: null
@@ -1751,9 +1752,9 @@
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
   think_have_long_covid_symptom_cough: null
   think_have_long_covid_symptom_diarrhoea: 'No'
@@ -1776,7 +1777,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
@@ -1820,8 +1820,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
-    be 1m
+- ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
+    can be 1m
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: null
@@ -2010,6 +2010,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'Yes'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
@@ -2031,10 +2032,10 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
-  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
   think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_chest_pain: 'Yes'
@@ -2059,9 +2060,9 @@
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
   think_have_long_covid_symptom_cough: 'No'
   think_have_long_covid_symptom_diarrhoea: 'Yes'
@@ -2084,7 +2085,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
@@ -2124,7 +2124,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -2310,6 +2310,7 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: null
   think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: 'Yes'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
@@ -2331,10 +2332,10 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
-  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: Participant Would Not/Could Not Answer
   think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_chest_pain: 'No'
@@ -2359,9 +2360,9 @@
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: 'Yes'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: null
   think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: null
   think_have_long_covid_symptom_cough: 'Yes'
   think_have_long_covid_symptom_diarrhoea: 'No'
@@ -2384,7 +2385,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
@@ -2426,7 +2426,7 @@
   work_status_v1: 5y and older in full-time education
   work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
-- ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -2613,6 +2613,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: null
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'Yes'
@@ -2634,10 +2635,10 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
-  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_chest_pain: null
@@ -2662,9 +2663,9 @@
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
   think_have_long_covid_symptom_chest_pain: null
   think_have_long_covid_symptom_cough: 'No'
   think_have_long_covid_symptom_diarrhoea: 'No'
@@ -2687,7 +2688,6 @@
   think_have_long_covid_symptom_trouble_sleeping: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_anxiety: null
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
@@ -2733,8 +2733,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -2923,6 +2923,7 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: null
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
@@ -2944,10 +2945,10 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
-  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: Participant Would Not/Could Not Answer
   think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_chest_pain: null
@@ -2972,9 +2973,9 @@
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   think_have_covid_symptom_vertigo_or_dizziness: 'No'
-  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_long_covid_symptom_chest_pain: null
   think_have_long_covid_symptom_cough: 'No'
   think_have_long_covid_symptom_diarrhoea: null
@@ -2997,7 +2998,6 @@
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
