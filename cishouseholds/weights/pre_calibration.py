@@ -491,18 +491,18 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_swab",
+        "household_level_design_weight_adjusted_swab",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("household_level_design_weight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_antibodies",
+        "household_level_design_weight_adjusted_antibodies",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("household_level_design_weight_antibodies") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
@@ -528,7 +528,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
             "sum_adjusted_design_weight_" + test_type,
             F.when(
                 F.col("response_indicator") == 1,
-                F.round(F.sum(F.col(f"household_level_designweight_adjusted_{test_type}")).over(w_country), 1),
+                F.round(F.sum(F.col(f"household_level_design_weight_adjusted_{test_type}")).over(w_country), 1),
             ),
         )
 
@@ -547,7 +547,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
                 F.col("response_indicator") == 1,
                 F.round(
                     F.col(f"scaling_factor_adjusted_design_weight_{test_type}")
-                    * F.col(f"household_level_designweight_adjusted_{test_type}"),
+                    * F.col(f"household_level_design_weight_adjusted_{test_type}"),
                     1,
                 ),
             ),

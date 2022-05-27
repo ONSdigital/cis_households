@@ -24,7 +24,7 @@ def test_calculate_combined_dweight_swabs(spark_session):
            window integer,
            sum_combined_design_weight_swab long,
            scaling_factor_combined_design_weight_swab double,
-           scaled_design_weight_swab_nonadjusted double
+           scaled_design_weight_swab_non_adjusted double
         """,
     )
     window = Window.partitionBy("window")
