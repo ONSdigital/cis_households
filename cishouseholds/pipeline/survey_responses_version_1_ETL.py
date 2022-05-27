@@ -22,7 +22,7 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
             "survey_response_type",
             "self_isolating_reason",
             "illness_reduces_activity_or_ability",
-            "ability_to_socially_distance_at_work_or_school",
+            "ability_to_socially_distance_at_work_or_education",
             "transport_to_work_or_education",
             "face_covering_outside_of_home",
             "other_antibody_test_location",
