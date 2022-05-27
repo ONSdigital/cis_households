@@ -1020,10 +1020,10 @@ validation_schemas = {
         "ons_household_id": string_dict,
         "household_invited_to_digital": string_dict,
         "household_digital_enrolment_invited_datetime": string_dict,
-        "household_digital_opt_in_window_start_datetime": string_dict,  # TODO Check household or participant
-        "household_digital_opt_in_window_end_datetime": string_dict,  # TODO Check household or participant
-        "household_digital_opted_in_datetime": string_dict,  # TODO Check household or participant
-        "household_digital_enrolment_datetime": string_dict,  # TODO Check household or participant
+        "existing_participant_digital_opt_in_window_start_datetime": string_dict,
+        "existing_participant_digital_opt_in_window_end_datetime": string_dict,
+        "existing_participant_digital_opted_in_datetime": string_dict,
+        "household_digital_enrolment_datetime": string_dict,
         "street": string_dict,
         "city": string_dict,
         "county": string_dict,
@@ -1092,6 +1092,7 @@ validation_schemas = {
         "digital_communication_preference": string_dict,
         "sample_return_preference": string_dict,
         "language_preference": string_dict,
+        "study_cohort": string_dict,
         "voucher_type_preference": string_dict,
         "digital_entry_pack_sent_datetime": string_dict,
         "digital_entry_pack_status": string_dict,
@@ -1109,7 +1110,6 @@ validation_schemas = {
         "participant_completion_window_start_datetime": string_dict,
         "participant_completion_window_end_datetime": string_dict,
         "survey_response_type": string_dict,
-        "study_cohort": string_dict,
         "opted_out_of_next_window": string_dict,
         "opted_out_of_next_window_datetime": string_dict,
         "opted_out_of_blood_next_window": string_dict,

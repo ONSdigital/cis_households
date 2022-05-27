@@ -50,7 +50,7 @@ def validation_calls(SparkVal):
             vaccine_columns.append(template.format(number))
 
     dataset_calls = {
-        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
+        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
         "duplicated": [
             {"check_columns": SparkVal.dataframe.columns},
             {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
