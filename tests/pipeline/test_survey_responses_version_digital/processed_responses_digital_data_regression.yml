@@ -132,6 +132,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 291.0
   person_not_consenting_age_2: null
@@ -289,6 +290,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -306,7 +308,7 @@
   work_main_job_role_raw: Do you have any idea why this is not working?
   work_main_job_title: Do you have any idea why this is not working?
   work_main_job_title_raw: Do you have any idea why this is not working?
-  work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
   work_sector: Information technology and communication
@@ -448,6 +450,7 @@
   participant_invited_digital: 'No'
   participant_status: Active
   participant_withdrawal_reason: No longer wants to take part
+  participant_withdrawal_reason_raw: No longer wants to take part
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 238.0
   person_not_consenting_age_2: null
@@ -600,6 +603,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -761,6 +765,7 @@
   participant_invited_digital: 'No'
   participant_status: Complete
   participant_withdrawal_reason: Swab/blood process distressing
+  participant_withdrawal_reason_raw: Swab/blood process distressing
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 154.0
   person_not_consenting_age_2: 864.0
@@ -922,6 +927,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '3'
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
@@ -1086,6 +1092,7 @@
   participant_invited_digital: 'No'
   participant_status: Active
   participant_withdrawal_reason: Participant does not want to self swab
+  participant_withdrawal_reason_raw: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: 0.0
   person_not_consenting_age_2: null
@@ -1240,6 +1247,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: 7 times or more
   times_socialise_last_7_days: '3'
   title: Mr.
@@ -1400,6 +1408,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Withdrawn
   participant_withdrawal_reason: No longer convenient
+  participant_withdrawal_reason_raw: No longer convenient
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 529.0
   person_not_consenting_age_2: 860.0
@@ -1557,6 +1566,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: Don't knowNone
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
@@ -1727,6 +1737,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Active
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn – no future linkage
   person_not_consenting_age_1: 425.0
   person_not_consenting_age_2: 330.0
@@ -1882,6 +1893,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '5'
   times_socialise_last_7_days: '5'
   title: Ms.
@@ -1900,7 +1912,7 @@
     systems.
   work_main_job_title: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Other employment sector please specify
@@ -2045,6 +2057,7 @@
   participant_invited_digital: 'No'
   participant_status: Complete
   participant_withdrawal_reason: too many visits
+  participant_withdrawal_reason_raw: too many visits
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 706.0
@@ -2199,6 +2212,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: Prefer not to say
   times_socialise_last_7_days: '6'
   title: Miss.
@@ -2368,6 +2382,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Complete
   participant_withdrawal_reason: No longer convenient
+  participant_withdrawal_reason_raw: No longer convenient
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: 571.0
   person_not_consenting_age_2: null
@@ -2522,6 +2537,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: Prefer not to say
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '3'
   times_socialise_last_7_days: '2'
   title: Miss.
@@ -2690,6 +2706,7 @@
   participant_invited_digital: 'No'
   participant_status: Withdrawn
   participant_withdrawal_reason: Participant does not want to self swab
+  participant_withdrawal_reason_raw: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn – no future linkage or use of samples
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 336.0
@@ -2842,6 +2859,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '2'
   times_socialise_last_7_days: '2'
   title: Dr.
@@ -3007,6 +3025,7 @@
   participant_invited_digital: 'Yes'
   participant_status: Complete
   participant_withdrawal_reason: Moving Location
+  participant_withdrawal_reason_raw: Moving Location
   participant_withdrawal_type: Withdrawn
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 964.0
@@ -3161,6 +3180,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: 7 times or more
   times_socialise_last_7_days: '1'
   title: Miss.
@@ -3179,7 +3199,7 @@
   work_main_job_role_raw: Ports are used to communicate with the external world.
   work_main_job_title: Make me a sandwich.
   work_main_job_title_raw: Make me a sandwich.
-  work_not_from_home_days_per_week: '1'
+  work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Manufacturing or construction

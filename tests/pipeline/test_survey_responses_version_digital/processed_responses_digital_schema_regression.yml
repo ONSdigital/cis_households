@@ -1148,6 +1148,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: times_outside_shopping_or_socialising_last_7_days
+  nullable: true
+  type: integer
+- metadata: {}
   name: think_had_covid_any_symptoms_raw
   nullable: true
   type: string
@@ -1165,6 +1169,10 @@ fields:
   type: string
 - metadata: {}
   name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_withdrawal_reason_raw
   nullable: true
   type: string
 - metadata: {}
