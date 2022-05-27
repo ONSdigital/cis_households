@@ -161,7 +161,7 @@ def assign_tranche_factor(
     )
 
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
-        F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
+        F.col(tranche_column) == F.max(tranche_column)
     )
     df = count_distinct_in_filtered_df(
         df=df,
