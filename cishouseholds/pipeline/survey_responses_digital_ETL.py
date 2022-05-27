@@ -16,7 +16,7 @@ def digital_specific_cleaning(df):
             "ever_smoked_regularly",
             "currently_smokes_or_vapes",
             "hours_a_day_with_someone_else_at_home",
-            "face_covering_work_or_education_or_education",
+            "face_covering_work_or_education",
         ],
     )
     df = apply_value_map_multiple_columns(
@@ -28,7 +28,7 @@ def digital_specific_cleaning(df):
             "ever_smoked_regularly": {"prefer_not_to_say": None},
             "currently_smokes_or_vapes": {"prefer_not_to_say": None},
             "hours_a_day_with_someone_else_at_home": {"prefer_not_to_say": None},
-            "face_covering_work_or_education_or_education": {"prefer_not_to_say": None},
+            "face_covering_work_or_education": {"prefer_not_to_say": None},
         },
     )
 
@@ -45,8 +45,8 @@ def digital_specific_transformations(df):
         "think_have_covid_symptom_",
         [
             "fever",
-            "muscle_ache_myalgia",
-            "fatigue_weakness",
+            "muscle_ache",
+            "fatigue",
             "sore_throat",
             "cough",
             "shortness_of_breath",

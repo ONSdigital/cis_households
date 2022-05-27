@@ -188,7 +188,7 @@
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'Yes'
   think_had_covid_symptom_difficulty_concentrating: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: 'No'
@@ -197,15 +197,15 @@
   think_had_covid_symptom_low_mood: 'No'
   think_had_covid_symptom_memory_loss_or_confusion: null
   think_had_covid_symptom_more_trouble_sleeping: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_noisy_breathing: null
   think_had_covid_symptom_palpitations: 'Yes'
-  think_had_covid_symptom_runny_nose_sneezing: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'Yes'
-  think_had_covid_symptom_vertigo_dizziness: 'No'
-  think_had_covid_symptom_worry_anxiety: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -215,25 +215,25 @@
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'No'
   think_have_covid_symptom_difficulty_concentrating: null
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_covid_symptom_more_trouble_sleeping: null
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'Yes'
-  think_have_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  think_have_covid_symptom_vertigo_dizziness: null
-  think_have_covid_symptom_worry_anxiety: null
+  think_have_covid_symptom_vertigo_or_dizziness: null
+  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: 'No'
   think_have_long_covid_symptom_chest_pain: 'No'
@@ -248,17 +248,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_runny_nose_sneezing: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: null
   think_have_long_covid_symptom_trouble_sleeping: null
-  think_have_long_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_worry_anxiety: null
+  think_have_long_covid_symptom_anxiety: null
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
@@ -488,7 +488,7 @@
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: null
@@ -497,15 +497,15 @@
   think_had_covid_symptom_low_mood: 'No'
   think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_had_covid_symptom_more_trouble_sleeping: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_noisy_breathing: null
   think_had_covid_symptom_palpitations: 'Yes'
-  think_had_covid_symptom_runny_nose_sneezing: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
-  think_had_covid_symptom_vertigo_dizziness: 'Yes'
-  think_had_covid_symptom_worry_anxiety: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: Maybe
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -515,25 +515,25 @@
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'Yes'
   think_have_covid_symptom_difficulty_concentrating: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: null
   think_have_covid_symptom_more_trouble_sleeping: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
-  think_have_covid_symptom_runny_nose_sneezing: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
@@ -548,17 +548,17 @@
   think_have_long_covid_symptom_low_mood: 'Yes'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: 'Yes'
   think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_long_covid_symptom_shortness_of_breath: 'No'
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: Difficulty concentrating
   think_have_long_covid_symptom_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_vertigo_dizziness: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
@@ -791,7 +791,7 @@
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
   think_had_covid_symptom_difficulty_concentrating: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_appetite: 'No'
@@ -800,15 +800,15 @@
   think_had_covid_symptom_low_mood: 'Yes'
   think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_had_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_noisy_breathing: null
   think_had_covid_symptom_palpitations: 'No'
-  think_had_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_vertigo_dizziness: 'Yes'
-  think_had_covid_symptom_worry_anxiety: 'Yes'
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: null
@@ -818,25 +818,25 @@
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
   think_have_covid_symptom_difficulty_concentrating: null
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_appetite: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: null
+  think_have_covid_symptom_low_mood: null
   think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
-  think_have_covid_symptom_runny_nose_sneezing: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'Yes'
-  think_have_covid_symptom_vertigo_dizziness: 'Yes'
-  think_have_covid_symptom_worry_anxiety: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_covid_symptom_anxiety: null
   think_have_long_covid: null
   think_have_long_covid_symptom_abdominal_pain: null
   think_have_long_covid_symptom_chest_pain: 'No'
@@ -851,17 +851,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_vomiting: 'No'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_runny_nose_sneezing: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: 'No'
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_symptoms: Shortness of breath
   think_have_long_covid_symptom_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_worry_anxiety: 'No'
+  think_have_long_covid_symptom_anxiety: 'No'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
@@ -1092,7 +1092,7 @@
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: 'No'
@@ -1101,15 +1101,15 @@
   think_had_covid_symptom_low_mood: 'Yes'
   think_had_covid_symptom_memory_loss_or_confusion: 'No'
   think_had_covid_symptom_more_trouble_sleeping: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_noisy_breathing: 'Yes'
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'No'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
-  think_had_covid_symptom_vertigo_dizziness: 'No'
-  think_had_covid_symptom_worry_anxiety: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_symptom_anxiety: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
   think_have_covid_symptom_abdominal_pain: null
@@ -1119,25 +1119,25 @@
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'Yes'
   think_have_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_appetite: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: null
   think_have_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
-  think_have_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'Yes'
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'No'
   think_have_long_covid_symptom_chest_pain: null
@@ -1152,17 +1152,17 @@
   think_have_long_covid_symptom_low_mood: 'Yes'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: 'No'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: null
   think_have_long_covid_symptom_trouble_sleeping: 'No'
-  think_have_long_covid_symptom_vertigo_dizziness: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_worry_anxiety: 'No'
+  think_have_long_covid_symptom_anxiety: 'No'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
@@ -1400,7 +1400,7 @@
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: 'No'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_appetite: null
@@ -1409,15 +1409,15 @@
   think_had_covid_symptom_low_mood: 'Yes'
   think_had_covid_symptom_memory_loss_or_confusion: 'No'
   think_had_covid_symptom_more_trouble_sleeping: null
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_noisy_breathing: 'Yes'
   think_had_covid_symptom_palpitations: 'No'
-  think_had_covid_symptom_runny_nose_sneezing: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_vertigo_dizziness: null
-  think_had_covid_symptom_worry_anxiety: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -1427,25 +1427,25 @@
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
   think_have_covid_symptom_difficulty_concentrating: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'No'
+  think_have_covid_symptom_low_mood: 'No'
   think_have_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
-  think_have_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: null
   think_have_long_covid_symptom_chest_pain: 'No'
@@ -1460,17 +1460,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_long_covid_symptom_shortness_of_breath: null
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: Shortness of breath
   think_have_long_covid_symptom_trouble_sleeping: null
-  think_have_long_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Not at all
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
@@ -1706,7 +1706,7 @@
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: 'Yes'
@@ -1715,15 +1715,15 @@
   think_had_covid_symptom_low_mood: 'Yes'
   think_had_covid_symptom_memory_loss_or_confusion: null
   think_had_covid_symptom_more_trouble_sleeping: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_noisy_breathing: 'Yes'
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'No'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
-  think_had_covid_symptom_vertigo_dizziness: null
-  think_had_covid_symptom_worry_anxiety: 'Yes'
+  think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -1733,25 +1733,25 @@
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
   think_have_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
-  think_have_covid_symptom_runny_nose_sneezing: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
@@ -1766,17 +1766,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: 'Yes'
   think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_runny_nose_sneezing: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: Palpitations
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_vertigo_dizziness: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: null
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
@@ -2014,7 +2014,7 @@
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_appetite: 'Yes'
@@ -2023,15 +2023,15 @@
   think_had_covid_symptom_low_mood: null
   think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_had_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_noisy_breathing: 'No'
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
-  think_had_covid_symptom_vertigo_dizziness: 'Yes'
-  think_had_covid_symptom_worry_anxiety: 'Yes'
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
   think_have_covid_symptom_abdominal_pain: 'No'
@@ -2041,25 +2041,25 @@
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
   think_have_covid_symptom_difficulty_concentrating: null
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_appetite: 'Yes'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
-  think_have_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
   think_have_long_covid_symptom_chest_pain: 'Yes'
@@ -2074,17 +2074,17 @@
   think_have_long_covid_symptom_low_mood: 'Yes'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-  think_have_long_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_symptoms: Low mood/not enjoying anything
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'Yes'
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
@@ -2314,7 +2314,7 @@
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
   think_had_covid_symptom_difficulty_concentrating: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: null
@@ -2323,15 +2323,15 @@
   think_had_covid_symptom_low_mood: null
   think_had_covid_symptom_memory_loss_or_confusion: 'No'
   think_had_covid_symptom_more_trouble_sleeping: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_noisy_breathing: null
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_vertigo_dizziness: null
-  think_had_covid_symptom_worry_anxiety: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: Participant Would Not/Could Not Answer
   think_have_covid_symptom_abdominal_pain: null
@@ -2341,25 +2341,25 @@
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: null
   think_have_covid_symptom_difficulty_concentrating: null
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_appetite: 'Yes'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: null
   think_have_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
   think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
-  think_have_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: 'Yes'
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
   think_have_long_covid: null
   think_have_long_covid_symptom_abdominal_pain: 'No'
   think_have_long_covid_symptom_chest_pain: null
@@ -2374,17 +2374,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: null
   think_have_long_covid_symptom_muscle_ache: 'No'
-  think_have_long_covid_symptom_nausea_vomiting: 'No'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
   think_have_long_covid_symptom_noisy_breathing: 'Yes'
   think_have_long_covid_symptom_palpitations: 'No'
-  think_have_long_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_long_covid_symptom_shortness_of_breath: null
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: Worry/anxiety
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_vertigo_dizziness: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: null
   think_have_long_covid_symptom_weakness_tiredness: null
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
@@ -2617,7 +2617,7 @@
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'Yes'
   think_had_covid_symptom_difficulty_concentrating: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_appetite: 'No'
@@ -2626,15 +2626,15 @@
   think_had_covid_symptom_low_mood: null
   think_had_covid_symptom_memory_loss_or_confusion: null
   think_had_covid_symptom_more_trouble_sleeping: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_noisy_breathing: 'Yes'
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'No'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_symptom_vertigo_dizziness: null
-  think_had_covid_symptom_worry_anxiety: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
@@ -2644,25 +2644,25 @@
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: null
   think_have_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_appetite: 'No'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
   think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_covid_symptom_more_trouble_sleeping: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
-  think_have_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: 'No'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: null
   think_have_long_covid_symptom_chest_pain: null
@@ -2677,17 +2677,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_long_covid_symptom_muscle_ache: null
-  think_have_long_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_symptoms: Nausea/vomiting
   think_have_long_covid_symptom_trouble_sleeping: null
-  think_have_long_covid_symptom_vertigo_dizziness: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_worry_anxiety: null
+  think_have_long_covid_symptom_anxiety: null
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
@@ -2927,7 +2927,7 @@
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_difficulty_concentrating: 'No'
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_appetite: 'Yes'
@@ -2936,15 +2936,15 @@
   think_had_covid_symptom_low_mood: 'Yes'
   think_had_covid_symptom_memory_loss_or_confusion: null
   think_had_covid_symptom_more_trouble_sleeping: null
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_noisy_breathing: 'No'
   think_had_covid_symptom_palpitations: null
-  think_had_covid_symptom_runny_nose_sneezing: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
-  think_had_covid_symptom_vertigo_dizziness: 'Yes'
-  think_had_covid_symptom_worry_anxiety: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_symptom_anxiety: 'No'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: Participant Would Not/Could Not Answer
   think_have_covid_symptom_abdominal_pain: null
@@ -2954,25 +2954,25 @@
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
   think_have_covid_symptom_difficulty_concentrating: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_appetite: 'No'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: null
+  think_have_covid_symptom_low_mood: null
   think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
   think_have_covid_symptom_more_trouble_sleeping: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
-  think_have_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  think_have_covid_symptom_vertigo_dizziness: 'No'
-  think_have_covid_symptom_worry_anxiety: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_covid_symptom_anxiety: null
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
   think_have_long_covid_symptom_chest_pain: null
@@ -2987,17 +2987,17 @@
   think_have_long_covid_symptom_low_mood: 'No'
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_muscle_ache: null
-  think_have_long_covid_symptom_nausea_vomiting: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_palpitations: null
-  think_have_long_covid_symptom_runny_nose_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_symptoms: Sore  Throat
   think_have_long_covid_symptom_trouble_sleeping: 'Yes'
-  think_have_long_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_have_long_covid_symptom_weakness_tiredness: 'No'
-  think_have_long_covid_symptom_worry_anxiety: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
   think_have_think_have_long_covid_symptom_symptom_reduced_ability: Yes a little
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'

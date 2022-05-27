@@ -141,13 +141,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
@@ -157,13 +157,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
@@ -347,13 +347,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
@@ -363,13 +363,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
@@ -562,13 +562,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
@@ -578,13 +578,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
@@ -767,13 +767,13 @@
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: 'Yes'
@@ -783,13 +783,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
@@ -980,13 +980,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
@@ -996,13 +996,13 @@
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'Yes'
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
@@ -1190,13 +1190,13 @@
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'No'
@@ -1206,13 +1206,13 @@
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
@@ -1395,13 +1395,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
@@ -1411,13 +1411,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
@@ -1606,13 +1606,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
@@ -1622,13 +1622,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
@@ -1813,13 +1813,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
@@ -1829,13 +1829,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
@@ -2022,13 +2022,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: null
@@ -2038,13 +2038,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
