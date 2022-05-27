@@ -47,7 +47,7 @@ from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_person_count_from_ages
-from cishouseholds.edit import update_symptoms_last_7_days_any
+from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.expressions import sum_within_row
@@ -70,18 +70,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     """
     raw_copy_list = [
         "think_had_covid_any_symptoms",
-        "symptoms_last_7_days_any",
+        "think_have_covid_symptom_any",
         "work_main_job_title",
         "work_main_job_role",
-        "work_health_care_v0",
-        "work_health_care_v1_v2",
+        "work_health_care_patient_facing",
+        "work_health_care_area",
         "work_status_v1",
         "work_status_v2",
         "work_social_care",
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
-        "withdrawal_reason",
+        "participant_withdrawal_reason",
         "blood_sample_barcode",
         "swab_sample_barcode",
     ]
@@ -90,14 +90,17 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_column_regex_match(
-        df, "bad_email", reference_column="email_address", pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i"
+        df,
+        "bad_email",
+        reference_column="email_address",
+        pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-    if not all(col in df.columns for col in df.columns):
-        df = assign_consent_code(
-            df, "consent_summary", reference_columns=["consent_16_visits", "consent_5_visits", "consent_1_visit"]
-        )
+
+    consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    if all(col in df.columns for col in consent_cols):
+        df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
@@ -123,7 +126,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
     df = update_column_values_from_map(
         df=df,
-        column="is_self_isolating_detailed",
+        column="self_isolating_reason",
         map={
             "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
             "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
@@ -137,8 +140,8 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     )
     df = assign_isin_list(
         df=df,
-        column_name_to_assign="is_self_isolating",
-        reference_column="is_self_isolating_detailed",
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
         values_list=[
             "Yes, for other reasons (e.g. going into hospital, quarantining)",
             "Yes, you have/have had symptoms",
@@ -152,15 +155,15 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     df = assign_work_social_column(
         df,
         "work_social_care",
-        "work_sectors",
+        "work_sector",
         "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
+        "work_direct_contact_patients_or_clients",
     )
     df = assign_work_health_care(
         df,
-        "work_health_care_v0",
-        direct_contact_column="work_direct_contact_patients_clients",
-        health_care_column="work_health_care_v1_v2",
+        "work_health_care_patient_facing",
+        direct_contact_column="work_direct_contact_patients_or_clients",
+        health_care_column="work_health_care_area",
     )
 
     return df
@@ -334,28 +337,28 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
         value="Participant Would Not/Could Not Answer",
         column_list=[
             "ethnicity",
-            "work_sectors",
-            "work_health_care_v1_v2",
+            "work_sector",
+            "work_health_care_area",
             "work_status_v2",
             "work_location",
-            "work_direct_contact_patients_clients",
+            "work_direct_contact_patients_or_clients",
             "work_nursing_or_residential_care_home",
-            "visit_type",
+            "survey_response_type",
             "household_visit_status",
             "participant_survey_status",
-            "is_self_isolating_detailed",
-            "ability_to_socially_distance_at_work_or_school",
-            "transport_to_work_or_school",
+            "self_isolating_reason",
+            "ability_to_socially_distance_at_work_or_education",
+            "transport_to_work_or_education",
             "face_covering_outside_of_home",
-            "face_covering_work",
+            "face_covering_work_or_education",
             "face_covering_other_enclosed_places",
             "other_antibody_test_location",
-            "withdrawal_reason",
+            "participant_withdrawal_reason",
             "cis_covid_vaccine_type",
             "cis_covid_vaccine_number_of_doses",
             "work_not_from_home_days_per_week",
             "times_shopping_last_7_days",
-            "times_socialise_last_7_days",
+            "times_socialising_last_7_days",
         ],
     )
     times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
@@ -373,8 +376,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
         },
         "times_outside_shopping_or_socialising_last_7_days": times_value_map,
         "times_shopping_last_7_days": times_value_map,
-        "times_socialise_last_7_days": times_value_map,
-        "work_sectors": {
+        "times_socialising_last_7_days": times_value_map,
+        "work_sector": {
             "Social Care": "Social care",
             "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
             "Transport (incl. storage and logistic)": "Transport (incl. storage, logistic)",
@@ -394,7 +397,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Other employment sector (specify)": "Other occupation sector",
             "Other occupation sector (specify)": "Other occupation sector",
         },
-        "work_health_care_v1_v2": {
+        "work_health_care_area": {
             "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
             "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
             "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
@@ -420,7 +423,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
         },
-        "face_covering_work": {
+        "face_covering_work_or_education": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
             "Yes always": "Yes, always",
             "Yes sometimes": "Yes, sometimes",
@@ -435,7 +438,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Home Test": "Home test",
             "In the NHS (e.g. GP or hospital)": "In the NHS (e.g. GP, hospital)",
         },
-        "other_pcr_test_results": {
+        "other_covid_infection_test_results": {
             "One or more negative tests but none positive": "Any tests negative, but none positive",
             "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
@@ -449,7 +452,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Participant Would Not/Could Not Answer": None,
         },
         "participant_visit_status": {"Participant did not attend": "Patient did not attend", "Canceled": "Cancelled"},
-        "is_self_isolating_detailed": {
+        "self_isolating_reason": {
             "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
             "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
             "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",
@@ -459,7 +462,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
         },
-        "ability_to_socially_distance_at_work_or_school": {
+        "ability_to_socially_distance_at_work_or_education": {
             "Difficult to maintain 2 meters - but I can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
             "Difficult to maintain 2m - but you can usually be at least 1m from other people": "Difficult to maintain 2m, but can be 1m",
             "Easy to maintain 2 meters - it is not a problem to stay this far away from other people": "Easy to maintain 2m",
@@ -469,7 +472,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Very difficult to be more than 1 meter away as my work means I am in close contact with others on a regular basis": "Very difficult to be more than 1m away",
             "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
         },
-        "transport_to_work_or_school": {
+        "transport_to_work_or_education": {
             "Bus or Minibus or Coach": "Bus, minibus, coach",
             "Bus or minibus or coach": "Bus, minibus, coach",
             "Bus": "Bus, minibus, coach",
@@ -481,11 +484,11 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
             "Other Method": "Other method",
         },
-        "last_covid_contact_location": {
+        "last_covid_contact_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
-        "last_suspected_covid_contact_location": {
+        "last_suspected_covid_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
@@ -535,7 +538,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
         columns_to_sum=[
             "times_shopping_last_7_days",
-            "times_socialise_last_7_days",
+            "times_socialising_last_7_days",
         ],
         max_value=7,
     )
@@ -543,13 +546,13 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
         individual_response_column="care_home_last_28_days",
-        household_response_column="care_home_last_28_days_other_household_member",
+        household_response_column="other_household_member_care_home_last_28_days",
     )
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_hospital_last_28_days",
         individual_response_column="hospital_last_28_days",
-        household_response_column="hospital_last_28_days_other_household_member",
+        household_response_column="other_household_member_hospital_last_28_days",
     )
     df = derive_work_status_columns(df)
     return df
@@ -558,82 +561,82 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
 def symptom_column_transformations(df):
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
-        column_name_to_assign="symptoms_last_7_days_symptom_count",
+        column_name_to_assign="think_have_covid_symptom_symptom_count",
         selection_columns=[
-            "symptoms_last_7_days_fever",
-            "symptoms_last_7_days_muscle_ache_myalgia",
-            "symptoms_last_7_days_fatigue_weakness",
-            "symptoms_last_7_days_sore_throat",
-            "symptoms_last_7_days_cough",
-            "symptoms_last_7_days_shortness_of_breath",
-            "symptoms_last_7_days_headache",
-            "symptoms_last_7_days_nausea_vomiting",
-            "symptoms_last_7_days_abdominal_pain",
-            "symptoms_last_7_days_diarrhoea",
-            "symptoms_last_7_days_loss_of_taste",
-            "symptoms_last_7_days_loss_of_smell",
-            "symptoms_last_7_days_more_trouble_sleeping",
-            "symptoms_last_7_days_chest_pain",
-            "symptoms_last_7_days_palpitations",
-            "symptoms_last_7_days_vertigo_dizziness",
-            "symptoms_last_7_days_worry_anxiety",
-            "symptoms_last_7_days_low_mood_not_enjoying_anything",
-            "symptoms_last_7_days_memory_loss_or_confusion",
-            "symptoms_last_7_days_difficulty_concentrating",
-            "symptoms_last_7_days_runny_nose_sneezing",
-            "symptoms_last_7_days_noisy_breathing_wheezing",
-            "symptoms_last_7_days_loss_of_appetite",
+            "think_have_covid_symptom_fever",
+            "think_have_covid_symptom_muscle_ache",
+            "think_have_covid_symptom_fatigue",
+            "think_have_covid_symptom_sore_throat",
+            "think_have_covid_symptom_cough",
+            "think_have_covid_symptom_shortness_of_breath",
+            "think_have_covid_symptom_headache",
+            "think_have_covid_symptom_nausea_or_vomiting",
+            "think_have_covid_symptom_abdominal_pain",
+            "think_have_covid_symptom_diarrhoea",
+            "think_have_covid_symptom_loss_of_taste",
+            "think_have_covid_symptom_loss_of_smell",
+            "think_have_covid_symptom_more_trouble_sleeping",
+            "think_have_covid_symptom_chest_pain",
+            "think_have_covid_symptom_palpitations",
+            "think_have_covid_symptom_vertigo_or_dizziness",
+            "think_have_covid_symptom_anxiety",
+            "think_have_covid_symptom_low_mood",
+            "think_have_covid_symptom_memory_loss_or_confusion",
+            "think_have_covid_symptom_difficulty_concentrating",
+            "think_have_covid_symptom_runny_nose_or_sneezing",
+            "think_have_covid_symptom_noisy_breathing",
+            "think_have_covid_symptom_loss_of_appetite",
         ],
         count_if_value="Yes",
     )
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
-        column_name_to_assign="symptoms_since_last_visit_count",
+        column_name_to_assign="think_had_covid_symptom_count",
         selection_columns=[
-            "symptoms_since_last_visit_fever",
-            "symptoms_since_last_visit_muscle_ache_myalgia",
-            "symptoms_since_last_visit_fatigue_weakness",
-            "symptoms_since_last_visit_sore_throat",
-            "symptoms_since_last_visit_cough",
-            "symptoms_since_last_visit_shortness_of_breath",
-            "symptoms_since_last_visit_headache",
-            "symptoms_since_last_visit_nausea_vomiting",
-            "symptoms_since_last_visit_abdominal_pain",
-            "symptoms_since_last_visit_diarrhoea",
-            "symptoms_since_last_visit_loss_of_taste",
-            "symptoms_since_last_visit_loss_of_smell",
-            "symptoms_since_last_visit_more_trouble_sleeping",
-            "symptoms_since_last_visit_chest_pain",
-            "symptoms_since_last_visit_palpitations",
-            "symptoms_since_last_visit_vertigo_dizziness",
-            "symptoms_since_last_visit_worry_anxiety",
-            "symptoms_since_last_visit_low_mood_or_not_enjoying_anything",
-            "symptoms_since_last_visit_memory_loss_or_confusion",
-            "symptoms_since_last_visit_difficulty_concentrating",
-            "symptoms_since_last_visit_runny_nose_sneezing",
-            "symptoms_since_last_visit_noisy_breathing_wheezing",
-            "symptoms_since_last_visit_loss_of_appetite",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_muscle_ache",
+            "think_had_covid_symptom_fatigue",
+            "think_had_covid_symptom_sore_throat",
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_shortness_of_breath",
+            "think_had_covid_symptom_headache",
+            "think_had_covid_symptom_nausea_or_vomiting",
+            "think_had_covid_symptom_abdominal_pain",
+            "think_had_covid_symptom_diarrhoea",
+            "think_had_covid_symptom_loss_of_taste",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_more_trouble_sleeping",
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_anxiety",
+            "think_had_covid_symptom_low_mood",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_loss_of_appetite",
         ],
         count_if_value="Yes",
     )
     # TODO - not needed until later release
-    # df = update_symptoms_last_7_days_any(
+    # df = update_think_have_covid_symptom_any(
     #     df=df,
-    #     column_name_to_update="symptoms_last_7_days_any",
-    #     count_reference_column="symptoms_last_7_days_symptom_count",
+    #     column_name_to_update="think_have_covid_symptom_any",
+    #     count_reference_column="think_have_covid_symptom_symptom_count",
     # )
 
     # df = assign_true_if_any(
     #     df=df,
-    #     column_name_to_assign="any_symptoms_last_7_days_or_now",
-    #     reference_columns=["symptoms_last_7_days_any", "think_have_covid_symptoms"],
+    #     column_name_to_assign="any_think_have_covid_symptom_or_now",
+    #     reference_columns=["think_have_covid_symptom_any", "think_have_covid"],
     #     true_false_values=["Yes", "No"],
     # )
 
     # df = assign_any_symptoms_around_visit(
     #     df=df,
     #     column_name_to_assign="any_symptoms_around_visit",
-    #     symptoms_bool_column="any_symptoms_last_7_days_or_now",
+    #     symptoms_bool_column="any_think_have_covid_symptom_or_now",
     #     id_column="participant_id",
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
@@ -641,12 +644,12 @@ def symptom_column_transformations(df):
 
     # df = assign_true_if_any(
     #     df=df,
-    #     column_name_to_assign="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     column_name_to_assign="think_have_covid_symptom_cghfevamn_symptom_group",
     #     reference_columns=[
-    #         "symptoms_last_7_days_cough",
-    #         "symptoms_last_7_days_fever",
-    #         "symptoms_last_7_days_loss_of_smell",
-    #         "symptoms_last_7_days_loss_of_taste",
+    #         "think_have_covid_symptom_cough",
+    #         "think_have_covid_symptom_fever",
+    #         "think_have_covid_symptom_loss_of_smell",
+    #         "think_have_covid_symptom_loss_of_taste",
     #     ],
     #     true_false_values=["Yes", "No"],
     # )
@@ -654,10 +657,10 @@ def symptom_column_transformations(df):
     #     df=df,
     #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
     #     reference_columns=[
-    #         "symptoms_since_last_visit_cough",
-    #         "symptoms_since_last_visit_fever",
-    #         "symptoms_since_last_visit_loss_of_smell",
-    #         "symptoms_since_last_visit_loss_of_taste",
+    #         "think_had_covid_symptom_cough",
+    #         "think_had_covid_symptom_fever",
+    #         "think_had_covid_symptom_loss_of_smell",
+    #         "think_had_covid_symptom_loss_of_taste",
     #     ],
     #     true_false_values=["Yes", "No"],
     # )
@@ -665,10 +668,10 @@ def symptom_column_transformations(df):
     #     df=df,
     #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
     #     reference_columns=[
-    #         "symptoms_since_last_visit_cough",
-    #         "symptoms_since_last_visit_fever",
-    #         "symptoms_since_last_visit_loss_of_smell",
-    #         "symptoms_since_last_visit_loss_of_taste",
+    #         "think_had_covid_symptom_cough",
+    #         "think_had_covid_symptom_fever",
+    #         "think_had_covid_symptom_loss_of_smell",
+    #         "think_had_covid_symptom_loss_of_taste",
     #     ],
     #     true_false_values=["Yes", "No"],
     # )
@@ -676,7 +679,7 @@ def symptom_column_transformations(df):
     #     df=df,
     #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
     #     id_column="participant_id",
-    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     symptoms_bool_column="think_have_covid_symptom_cghfevamn_symptom_group",
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
@@ -704,7 +707,7 @@ def union_dependent_cleaning(df):
             "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
             "Arab": "Other ethnic group-Arab",
         },
-        "withdrawal_reason": {
+        "participant_withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
@@ -745,7 +748,7 @@ def union_dependent_cleaning(df):
         df=df,
         column_name_to_update="face_covering_outside_of_home",
         covered_enclosed_column="face_covering_other_enclosed_places",
-        covered_work_column="face_covering_work",
+        covered_work_column="face_covering_work_or_education",
     )
 
     return df
@@ -784,7 +787,7 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
     # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_v0"
+    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
     # )
     # df = update_work_facing_now_column(
     #     df,
@@ -844,7 +847,7 @@ def union_dependent_derivations(df):
     # df = assign_any_symptoms_around_visit(
     #     df=df,
     #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-    #     symptoms_bool_column="symptoms_last_7_days_cghfevamn_symptom_group",
+    #     symptoms_bool_column="think_have_covid_symptom_cghfevamn_symptom_group",
     #     id_column="participant_id",
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
@@ -854,7 +857,7 @@ def union_dependent_derivations(df):
         df=df,
         column="smokes_nothing_now",
         map={"Yes": "No", "No": "Yes"},
-        condition_column="smokes_or_vapes",
+        condition_column="currently_smokes_or_vapes",
     )
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
@@ -891,27 +894,27 @@ def derive_people_in_household_count(df):
     )
     df = update_person_count_from_ages(
         df,
-        column_name_to_assign="household_participants_not_consented_count",
-        column_pattern=r"person_[1-9]_not_consenting_age",
+        column_name_to_assign="household_participants_not_consenting_count",
+        column_pattern=r"person_not_consenting_age_[1-9]",
     )
     df = update_person_count_from_ages(
         df,
-        column_name_to_assign="household_participants_not_present_count",
-        column_pattern=r"person_[1-8]_not_present_age",
+        column_name_to_assign="household_members_over_2_years_and_not_present_count",
+        column_pattern=r"person_not_present_age_[1-8]",
     )
     df = assign_household_under_2_count(
         df,
-        column_name_to_assign="household_participants_under_2_count",
-        column_pattern=r"infant_[1-8]_age",
+        column_name_to_assign="household_members_under_2_years_count",
+        column_pattern=r"infant_age_months_[1-9]",
         condition_column="household_members_under_2_years",
     )
     household_window = Window.partitionBy("ons_household_id")
 
     household_participants = [
         "household_participant_count",
-        "household_participants_not_consented_count",
-        "household_participants_not_present_count",
-        "household_participants_under_2_count",
+        "household_participants_not_consenting_count",
+        "household_members_over_2_years_and_not_present_count",
+        "household_members_under_2_years_count",
     ]
     for household_participant_type in household_participants:
         df = df.withColumn(
@@ -955,49 +958,52 @@ def create_formatted_datetime_string_columns(df):
             "cis_covid_vaccine_date_4",
             "last_suspected_covid_contact_date",
             "last_covid_contact_date",
-            "other_pcr_test_first_positive_date",
+            "other_covid_infection_test_first_positive_date",
             "other_antibody_test_last_negative_date",
             "other_antibody_test_first_positive_date",
-            "other_pcr_test_last_negative_date",
-            "been_outside_uk_last_date",
-            "symptoms_last_7_days_onset_date",
+            "other_covid_infection_test_last_negative_date",
+            "been_outside_uk_last_return_date",
+            "think_have_covid_onset_date",
         ]
-        # TODO: Add back in once digital data is being included or make backwards compatible
-        # + cis_digital_datetime_map["yyyy-MM-dd"]
+        + cis_digital_datetime_map["yyyy-MM-dd"]
     )
-    for column_name_to_assign in date_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=date_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
-    for column_name_to_assign in date_format_string_list:
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign + "_string",
-            reference_column=column_name_to_assign,
-            time_format="ddMMMyyyy",
-            lower_case=True,
-        )
-    for column_name_to_assign in datetime_format_dict.keys():
-        df = assign_column_to_date_string(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_column=datetime_format_dict[column_name_to_assign],
-            time_format="ddMMMyyyy HH:mm:ss",
-            lower_case=True,
-        )
-    # TODO: Add back in once digital data is being included or make backwards compatible
-    # for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
-    #     df = assign_column_to_date_string(
-    #         df=df,
-    #         column_name_to_assign=column_name_to_assign + "_string",
-    #         reference_column=column_name_to_assign,
-    #         time_format="ddMMMyyyy HH:mm:ss",
-    #         lower_case=True,
-    #     )
+
+    for column_name_to_assign, timestamp_column in date_format_dict.items():
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
+    for timestamp_column in date_format_string_list:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
+    for column_name_to_assign, timestamp_column in datetime_format_dict.items():
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
     return df
 
 
@@ -1012,13 +1018,13 @@ def fill_forwards_transformations(df):
         list_fill_forward=[
             "work_main_job_title",
             "work_main_job_role",
-            "work_sectors",
-            "work_sectors_other",
+            "work_sector",
+            "work_sector_other",
             "work_social_care",
-            "work_health_care_v0",
-            "work_health_care_v1_v2",
+            "work_health_care_patient_facing",
+            "work_health_care_area",
             "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_clients",
+            "work_direct_contact_patients_or_clients",
         ],
     )
 
@@ -1047,20 +1053,20 @@ def fill_forwards_transformations(df):
     #    )
     df = update_to_value_if_any_not_null(
         df=df,
-        column_name_to_assign="been_outside_uk_since_last_visit",
+        column_name_to_assign="been_outside_uk",
         value_to_assign="Yes",
-        column_list=["been_outside_uk_last_country", "been_outside_uk_last_date"],
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
     )
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
             "been_outside_uk_last_country",
-            "been_outside_uk_last_date",
-            "been_outside_uk_since_last_visit",
+            "been_outside_uk_last_return_date",
+            "been_outside_uk",
         ],
         participant_id_column="participant_id",
         visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk_since_last_visit",
+        record_changed_column="been_outside_uk",
         record_changed_value="Yes",
     )
 

@@ -48,14 +48,12 @@ def generate_weights(
         first_run,
     )
 
-    # transform sample files
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
 
     if tranche_df is not None:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
 
-        # df = df.join(tranche_df, on="ons_household_id", how="leftouter").drop("UAC")
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
         df = assign_tranche_factor(
             df=df,
@@ -67,8 +65,8 @@ def generate_weights(
         )
     else:
         df = df.withColumn("tranche_eligible_households", F.lit("No"))
-        df = df.withColumn("number_eligible_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
-        df = df.withColumn("number_sampled_households_tranche_bystrata_enrolment", F.lit(None).cast("integer"))
+        df = df.withColumn("number_eligible_households_tranche_by_strata_enrolment", F.lit(None).cast("integer"))
+        df = df.withColumn("number_sampled_households_tranche_by_strata_enrolment", F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
     df = swab_weight_wrapper(
@@ -78,8 +76,8 @@ def generate_weights(
         df=df,
         tranche_eligible_indicator="tranche_eligible_households",
         eligibility_pct_column="eligibility_pct",
-        n_eligible_hh_tranche_bystrata_column="number_eligible_households_tranche_bystrata_enrolment",
-        n_sampled_hh_tranche_bystrata_column="number_sampled_households_tranche_bystrata_enrolment",
+        n_eligible_hh_tranche_by_strata_column="number_eligible_households_tranche_by_strata_enrolment",
+        n_sampled_hh_tranche_by_strata_column="number_sampled_households_tranche_by_strata_enrolment",
     )
     df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
     df = carry_forward_design_weights(
@@ -88,14 +86,19 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    validate_design_weights_or_precal(
-        df=df,
-        num_households_by_cis_column="number_of_households_by_cis_area",
-        num_households_by_country_column="number_of_households_by_country",
-        swab_weight_column="scaled_design_weight_swab_nonadjusted",
-        antibody_weight_column="scaled_design_weight_antibodies_nonadjusted",
-        group_by_columns=["cis_area_code_20"],
-    )
+    try:
+        validate_design_weights_or_precal(
+            df=df,
+            num_households_by_cis_column="number_of_households_by_cis_area",
+            num_households_by_country_column="number_of_households_by_country",
+            swab_weight_column="scaled_design_weight_swab_non_adjusted",
+            antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
+            cis_area_column="cis_area_code_20",
+            country_column="country_code_12",
+            group_by_columns=["cis_area_code_20"],
+        )
+    except DesignWeightError as e:
+        print(e)  # functional
     return df
 
 
@@ -113,25 +116,18 @@ def join_and_process_lookups(
     Add data from the additional lookup files to main dataset
     """
     master_sample_df = clean_postcode(master_sample_df, "postcode").withColumn(
-        "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"[^\d]{1,}", "")
+        "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"\D", "")
     )
 
     postcode_lookup_df = clean_postcode(postcode_lookup_df, "postcode")
 
     old_sample_df = recode_columns(old_sample_df, new_sample_df, household_level_populations_df)
-    old_sample_df = old_sample_df.withColumn("date_sample_created", F.lit("2021/11/30"))
+    old_sample_df = old_sample_df.withColumn(
+        "date_sample_created", F.to_timestamp(F.lit("2021-11-30"), format="yyyy-MM-dd")
+    )
     new_sample_df = assign_filename_column(new_sample_df, "sample_source_file")
-
-    new_sample_df = new_sample_df.join(
-        master_sample_df.select("ons_household_id", "sample_type").withColumn(
-            "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"^.{4}", "")
-        ),
-        on="ons_household_id",
-        how="left",
-    ).withColumn("date_sample_created", F.lit("2021/12/06"))
-
     new_sample_df = new_sample_df.withColumn(
-        "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
+        "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
 
     if first_run:
@@ -141,10 +137,13 @@ def join_and_process_lookups(
         df = new_sample_df
 
     df = df.join(
-        master_sample_df.select("postcode", "ons_household_id"),
+        master_sample_df.select("ons_household_id", "postcode", "sample_type"),
         on="ons_household_id",
         how="left",
     )
+    df = df.withColumn(
+        "sample_addressbase_indicator", F.when(F.col("sample_type").isin(["AB", "AB-Trial"]), 1).otherwise(0)
+    ).withColumn("batch_number", F.lit(1))
 
     df = df.join(
         lsoa_cis_lookup_df.select("lower_super_output_area_code_11", "cis_area_code_20"),
@@ -161,11 +160,10 @@ def join_and_process_lookups(
     df = df.join(
         country_lookup_df.select("country_code_12", "country_name_12").distinct(), on="country_code_12", how="left"
     )
-    df = df.withColumn("batch_number", F.lit(1))
-    if first_run:
-        return df
+    if not first_run:
+        df = union_multiple_tables([old_sample_df, df])
 
-    return union_multiple_tables([old_sample_df, df])
+    return df
 
 
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
@@ -213,12 +211,10 @@ def household_level_populations(
     return df
 
 
-# Wrapper
 def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame, cis_window: Window):
     """
     Wrapper function to calculate swab design weights
     """
-    # Swab weights
     df = calculate_dweight_swabs(
         df=df,
         household_level_populations_df=household_level_populations_df,
@@ -226,7 +222,7 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
         sample_type_column="sample_new_previous",
         group_by_columns=["cis_area_code_20", "sample_new_previous"],
         barcode_column="ons_household_id",
-        previous_dweight_column="household_level_designweight_swab",
+        previous_dweight_column="household_level_design_weight_swab",
     )
     df = calculate_generic_dweight_variables(
         df=df,
@@ -245,17 +241,15 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
     return df
 
 
-# Wrapper
 def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "A"):
-    # Antibody weights
     if scenario in "AB":
         design_weight_column = "raw_design_weight_antibodies_ab"
         df = calculate_scenario_ab_antibody_dweights(
             df=df,
             column_name_to_assign=design_weight_column,
-            hh_dweight_antibodies_column="household_level_designweight_antibodies",
+            hh_dweight_antibodies_column="household_level_design_weight_antibodies",
             sample_new_previous_column="sample_new_previous",
-            scaled_dweight_swab_nonadjusted_column="scaled_design_weight_swab_nonadjusted",
+            scaled_design_weight_swab_non_adjusted_column="scaled_design_weight_swab_non_adjusted",
         )
     elif scenario == "C":
         design_weight_column = "raw_design_weight_antibodies_c"
@@ -264,10 +258,10 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "
             column_name_to_assign=design_weight_column,
             sample_new_previous_column="sample_new_previous",
             tranche_eligible_column="tranche_eligible_households",
-            tranche_num_column="tranche",
-            design_weight_column="scaled_design_weight_swab_nonadjusted",
+            tranche_number_column="tranche",
+            swab_design_weight_column="scaled_design_weight_swab_non_adjusted",
             tranche_factor_column="tranche_factor",
-            household_dweight_column="household_level_designweight_antibodies",
+            previous_design_weight_column="household_level_design_weight_antibodies",
         )
     df = calculate_generic_dweight_variables(
         df=df,
@@ -293,7 +287,6 @@ def calculate_dweight_swabs(
     Assign design weight for swabs sample by applying the ratio between number_of_households_population_by_cis and
     number_eligible_household_sample when the sample type is "new"
     """
-    window = Window.partitionBy(*group_by_columns)
     df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
             "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
@@ -301,7 +294,12 @@ def calculate_dweight_swabs(
         on="cis_area_code_20",
         how="left",
     )
-    df = df.withColumn("number_eligible_household_sample", F.approx_count_distinct(barcode_column).over(window))
+    df = assign_distinct_count_in_group(
+        df,
+        "number_eligible_household_sample",
+        count_distinct_columns=[barcode_column],
+        group_by_columns=group_by_columns,
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.when(
@@ -312,7 +310,6 @@ def calculate_dweight_swabs(
     return df
 
 
-# 1166
 def calculate_generic_dweight_variables(
     df: DataFrame,
     design_weight_column: str,
@@ -358,7 +355,6 @@ def calculate_generic_dweight_variables(
     return df
 
 
-# 1166
 def calculate_combined_dweight_swabs(
     df: DataFrame, design_weight_column: str, num_households_column: str, cis_window: Window
 ) -> DataFrame:
@@ -371,7 +367,7 @@ def calculate_combined_dweight_swabs(
         F.col(num_households_column) / F.col("sum_combined_design_weight_swab"),
     )
     df = df.withColumn(
-        "scaled_design_weight_swab_nonadjusted",
+        "scaled_design_weight_swab_non_adjusted",
         F.col("scaling_factor_combined_design_weight_swab") * F.col(design_weight_column),
     )
     return df
@@ -381,66 +377,78 @@ class DesignWeightError(Exception):
     pass
 
 
-# 1166
 def validate_design_weights_or_precal(
     df: DataFrame,
     num_households_by_cis_column: str,
     num_households_by_country_column: str,
     swab_weight_column: str,
     antibody_weight_column: str,
+    cis_area_column: str,
+    country_column: str,
     group_by_columns: List[str],
 ):
     """
-    Validate the derived design weights by checking 3 conditions are true:
+    Validate the derived design weights by checking 4 conditions are true:
     - design weights add to household population total
     - no design weights are negative
     - no design weights are missing
-    - dweights consistent by cis area
+    - design weights consistent by group
     """
-    # import pdb; pdb.set_trace()
-    window = Window.partitionBy(F.lit(1))
-    columns = [col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"]
-    # check 1.1
+    cis_window = Window.partitionBy(cis_area_column)
+    country_window = Window.partitionBy(country_column)
+
+    design_weight_columns = [
+        col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"
+    ]
     df = df.withColumn(
-        "CHECK1s",
-        F.when(F.sum(swab_weight_column).over(window) == F.col(num_households_by_cis_column), 0).otherwise(1),
+        "CHECK1_swab",
+        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), True).otherwise(
+            False
+        ),
     )
-    # check 1.2
     df = df.withColumn(
-        "CHECK1a",
-        F.when(F.sum(antibody_weight_column).over(window) == F.col(num_households_by_country_column), 0).otherwise(1),
+        "CHECK1_antibody",
+        F.when(
+            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), 0
+        ).otherwise(1),
     )
-    # check 2
-    df = df.withColumn("CHECK2", F.when(F.least(*columns) < 0, 1).otherwise(0))
-    # check 3
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NULLS", columns, None)
-    df = df.withColumn("CHECK3", F.when(F.col("NUM_NULLS") != 0, 1).otherwise(0)).drop("NUM_NULLS")
-    # check 4
-    df = assign_distinct_count_in_group(df, "TEMP_DISTINCT_COUNT", columns, group_by_columns)
-    df = df.withColumn("CHECK4", F.when(F.col("TEMP_DISTINCT_COUNT") != 1, 1).otherwise(0)).drop("TEMP_DISTINCT_COUNT")
-    check_1_s = True if df.filter(F.col("CHECK1s") == 1).count() == 0 else False
-    check_1_a = True if df.filter(F.col("CHECK1a") == 1).count() == 0 else False
-    check_2 = True if df.filter(F.col("CHECK2") == 1).count() == 0 else False
-    check_3 = True if df.filter(F.col("CHECK3") == 1).count() == 0 else False
-    check_4 = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    if not (check_1_a or check_1_s):
-        raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
-    if not check_2:
-        raise DesignWeightError("check_2: The design weights are NOT all are positive.")
-    if not check_3:
-        raise DesignWeightError("check_3 There are no missing design weights.")
-    if not check_4:
-        raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NULL_DESIGN_WEIGHT_COUNT", design_weight_columns, None)
+    df = df.withColumn("CHECK3", F.when(F.col("NULL_DESIGN_WEIGHT_COUNT") != 0, 1).otherwise(0)).drop(
+        "NULL_DESIGN_WEIGHT_COUNT"
+    )
+
+    df = assign_distinct_count_in_group(df, "DISTINCT_DESIGN_WEIGHT_BY_GROUP", design_weight_columns, group_by_columns)
+    df = df.withColumn("CHECK4", F.when(F.col("DISTINCT_DESIGN_WEIGHT_BY_GROUP") != 1, 1).otherwise(0)).drop(
+        "DISTINCT_DESIGN_WEIGHT_BY_GROUP"
+    )
+
+    swab_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_swab")).count() == 0 else False
+    antibody_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_antibody")).count() == 0 else False
+    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0, True).count() == 0 else False
+    design_weights_null = False if df.filter(F.col("CHECK3") == 1).count() == 0 else True
+    design_weights_consistent_within_group = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
+    df.drop("CHECK1s", "CHECK1a", "CHECK3", "CHECK4")
+    error_string = ""
+    if not (antibody_design_weights_sum_to_population or swab_design_weights_sum_to_population):
+        error_string += "Design weights do not sum to population totals.\n"
+    if not design_weights_positive:
+        error_string += "Design weights are not all positive.\n"
+    if design_weights_null:
+        error_string += "There are missing design weights.\n"
+    if not design_weights_consistent_within_group:
+        error_string += "Design weights are not consistent within groups.\n"
+
+    if error_string:
+        raise DesignWeightError(error_string)
 
 
-# 1167
 def chose_scenario_of_dweight_for_antibody_different_household(
     df: DataFrame,
     eligibility_pct_column: str,
     tranche_eligible_indicator: str,
-    # household_samples_dataframe: List[str],
-    n_eligible_hh_tranche_bystrata_column,
-    n_sampled_hh_tranche_bystrata_column,
+    n_eligible_hh_tranche_by_strata_column,
+    n_sampled_hh_tranche_by_strata_column,
 ) -> Union[str, None]:
     """
     Decide what scenario to use for calculation of the design weights
@@ -450,26 +458,26 @@ def chose_scenario_of_dweight_for_antibody_different_household(
     df
     tranche_eligible_indicator
     household_samples_dataframe
-    n_eligible_hh_tranche_bystrata_column
-    n_sampled_hh_tranche_bystrata_column
+    n_eligible_hh_tranche_by_strata_column
+    n_sampled_hh_tranche_by_strata_column
     """
-    if tranche_eligible_indicator not in df.columns:  # TODO: not in household_samples_dataframe?
+    if tranche_eligible_indicator not in df.columns:
         return "A"
     df = df.withColumn(
         eligibility_pct_column,
         F.when(
-            F.col(n_eligible_hh_tranche_bystrata_column).isNull()
-            & F.col(n_sampled_hh_tranche_bystrata_column).isNull(),
+            F.col(n_eligible_hh_tranche_by_strata_column).isNull()
+            & F.col(n_sampled_hh_tranche_by_strata_column).isNull(),
             0,
         )
         .when(
-            F.col(n_eligible_hh_tranche_bystrata_column).isNotNull()
-            & F.col(n_sampled_hh_tranche_bystrata_column).isNotNull()
-            & (F.col(n_sampled_hh_tranche_bystrata_column) > 0),
+            F.col(n_eligible_hh_tranche_by_strata_column).isNotNull()
+            & F.col(n_sampled_hh_tranche_by_strata_column).isNotNull()
+            & (F.col(n_sampled_hh_tranche_by_strata_column) > 0),
             (
                 100
-                * (F.col(n_eligible_hh_tranche_bystrata_column) - F.col(n_sampled_hh_tranche_bystrata_column))
-                / F.col(n_sampled_hh_tranche_bystrata_column)
+                * (F.col(n_eligible_hh_tranche_by_strata_column) - F.col(n_sampled_hh_tranche_by_strata_column))
+                / F.col(n_sampled_hh_tranche_by_strata_column)
             ),
         )
         .otherwise(None),  # TODO: check this
@@ -482,30 +490,21 @@ def chose_scenario_of_dweight_for_antibody_different_household(
         return "C"
 
 
-# 1168
 def calculate_scenario_ab_antibody_dweights(
     df: DataFrame,
     column_name_to_assign: str,
     hh_dweight_antibodies_column: str,
     sample_new_previous_column: str,
-    scaled_dweight_swab_nonadjusted_column: str,
+    scaled_design_weight_swab_non_adjusted_column: str,
 ) -> DataFrame:
-    """
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    hh_dweight_antibodies_column
-    sample_new_previous_column
-    scaled_dweight_swab_nonadjusted_column
-    """
+    """ """
 
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(hh_dweight_antibodies_column).isNotNull()) & (F.col(sample_new_previous_column) == "previous"),
+            F.col(sample_new_previous_column) == "previous",
             F.col(hh_dweight_antibodies_column),
-        ).otherwise(F.col(scaled_dweight_swab_nonadjusted_column)),
+        ).otherwise(F.col(scaled_design_weight_swab_non_adjusted_column)),
     )
     return df
 
@@ -516,10 +515,10 @@ def calculate_scenario_c_antibody_dweights(
     column_name_to_assign: str,
     sample_new_previous_column: str,
     tranche_eligible_column: str,
-    tranche_num_column: str,
-    design_weight_column: str,
+    tranche_number_column: str,
+    swab_design_weight_column: str,
     tranche_factor_column: str,
-    household_dweight_column: str,
+    previous_design_weight_column: str,
 ) -> DataFrame:
     """
     1 step: for cases with sample_new_previous = "previous" AND tranche_eligible_households=yes(1)
@@ -530,35 +529,22 @@ def calculate_scenario_c_antibody_dweights(
     previous dweight antibodies
     3 step: for cases with sample_new_previous = new, calculate  raw design weights antibodies
     by using  design weights for swab
-
-    Parameters
-    ----------
-    df,
-    column_name_to_assign,
-    sample_new_previous_column,
-    tranche_eligible_column,
-    tranche_num_column,
-    design_weight_column,
-    tranche_factor_column,
-    household_dweight_column,
     """
-    max_value = df.agg({tranche_num_column: "max"}).first()[0]
+    max_tranche_number = df.agg({tranche_number_column: "max"}).first()[0]
 
     df = df.withColumn(
         column_name_to_assign,
         F.when(
             (F.col(sample_new_previous_column) == "previous")
             & (F.col(tranche_eligible_column) == "Yes")
-            & (F.col(tranche_num_column) == max_value),
-            F.col(design_weight_column) * F.col(tranche_factor_column),
-        )
-        .when(
-            (F.col(sample_new_previous_column) == "previous")
-            & (F.col(tranche_num_column) != max_value)
-            & (F.col(tranche_eligible_column) != "Yes"),
-            F.col(household_dweight_column),
-        )
-        .when((F.col(sample_new_previous_column) == "new"), F.col(design_weight_column)),
+            & (F.col(tranche_number_column) == max_tranche_number),
+            F.col(swab_design_weight_column) * F.col(tranche_factor_column),
+        ).otherwise(
+            F.when(
+                F.col(sample_new_previous_column) == "previous",
+                F.col(previous_design_weight_column),
+            ).otherwise(F.col(swab_design_weight_column))
+        ),
     )
     return df
 
@@ -583,7 +569,7 @@ def carry_forward_design_weights(df: DataFrame, scenario: str, groupby_column: s
         F.col(household_population_column) / F.col("sum_carryforward_design_weight_antibodies"),
     )
     df = df.withColumn(
-        "scaled_design_weight_antibodies_nonadjusted",
+        "scaled_design_weight_antibodies_non_adjusted",
         F.col("scaling_factor_carryforward_design_weight_antibodies") * F.col("carryforward_design_weight_antibodies"),
     )
     return df
