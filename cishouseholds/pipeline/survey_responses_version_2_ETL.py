@@ -504,25 +504,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-    df = assign_column_value_from_multiple_column_map(
-        df,
-        "work_status_v2",
-        [
-            [1, [1, 1, None, None]],
-            [2, [1, 2, None, None]],
-            [3, [2, 1, None, None]],
-            [4, [2, 2, None, None]],
-            [5, [3, None, 1, None]],
-            [6, [3, None, 2, None]],
-            [7, [3, None, 3, None]],
-            [8, [4, None, None, 1]],
-            [9, [4, None, None, 2]],
-            [10, [4, None, None, [3, 4]]],
-            [11, [4, None, None, 5]],
-            [12, [4, None, None, 6]],
-        ],
-        ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"],
-    )
+
     df = update_to_value_if_any_not_null(
         df,
         "cis_covid_vaccine_received",
