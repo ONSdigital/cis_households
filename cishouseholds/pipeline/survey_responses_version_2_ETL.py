@@ -963,7 +963,7 @@ def create_formatted_datetime_string_columns(df):
             "other_antibody_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
             "been_outside_uk_last_return_date",
-            "think_have_covid_symptom_onset_date",
+            "think_have_covid_onset_date",
         ]
         + cis_digital_datetime_map["yyyy-MM-dd"]
     )

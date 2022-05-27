@@ -102,12 +102,12 @@ category_maps = {
         "been_outside_uk": _yes_no_categories,
         "think_have_long_covid": _yes_no_categories,
         "think_have_long_covid_symptom_fever": _yes_no_categories,
-        "think_have_long_covid_symptom_weakness_tiredness": _yes_no_categories,
+        "think_have_long_covid_symptom_fatigue": _yes_no_categories,
         "think_have_long_covid_symptom_diarrhoea": _yes_no_categories,
         "think_have_long_covid_symptom_loss_of_smell": _yes_no_categories,
         "think_have_long_covid_symptom_shortness_of_breath": _yes_no_categories,
         "think_have_long_covid_symptom_vertigo_or_dizziness": _yes_no_categories,
-        "think_have_long_covid_symptom_trouble_sleeping": _yes_no_categories,
+        "think_have_long_covid_symptom_more_trouble_sleeping": _yes_no_categories,
         "think_have_long_covid_symptom_headache": _yes_no_categories,
         "think_have_long_covid_symptom_nausea_or_vomiting": _yes_no_categories,
         "think_have_long_covid_symptom_loss_of_appetite": _yes_no_categories,
@@ -361,7 +361,7 @@ category_maps = {
             "All Tests failed": 9,
         },
         "other_antibody_test_location": {"In the NHS (e.g. GP, hospital)": 1, "Private lab": 2, "Home test": 3},
-        "think_have_think_have_long_covid_symptom_symptom_reduced_ability": {
+        "think_have_long_covid_symptom_reduced_ability": {
             "Not at all": 4,
             "Yes a little": 5,
             "Yes a lot": 6,

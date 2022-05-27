@@ -868,11 +868,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_think_have_long_covid_symptom_symptom_reduced_ability
+  name: think_have_long_covid_symptom_reduced_ability
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_symptoms
+  name: think_have_long_covid_symptoms
   nullable: true
   type: string
 - metadata: {}
@@ -880,7 +880,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_weakness_tiredness
+  name: think_have_long_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
@@ -900,7 +900,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_trouble_sleeping
+  name: think_have_long_covid_symptom_more_trouble_sleeping
   nullable: true
   type: string
 - metadata: {}
