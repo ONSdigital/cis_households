@@ -1312,7 +1312,13 @@ def tables_to_csv(
     config_file = get_secondary_config(tables_to_csv_config_file)
 
     for table in config_file["create_tables"]:
-        df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
+        df = extract_from_table(table["table_name"])
+        columns_to_select = [element for element in table["column_name_map"].keys()]
+        missing_columns = set(columns_to_select) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+
+        df = df.select(*columns_to_select)
         df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
@@ -1340,10 +1346,7 @@ def sample_file_ETL(
     country_lookup,
     lsoa_cis_lookup,
 ):
-    first_run = True if check_table_exists(design_weight_table) else False
-
-    if check_table_exists(design_weight_table):
-        first_run = False
+    first_run = not check_table_exists(design_weight_table)
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
