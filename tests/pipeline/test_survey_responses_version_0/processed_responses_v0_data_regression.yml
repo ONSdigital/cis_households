@@ -106,13 +106,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: Do you come here often?
@@ -122,13 +122,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
   unique_participant_response_id: DHVF-0322983639-DHR-422525832950-2022-01-09 11:40:06
@@ -258,13 +258,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: 'Yes'
+  think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: null
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
@@ -275,13 +275,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: 'Yes'
   unique_participant_response_id: DHVF-3623704990-DHR-229883187696-2022-01-09 07:55:27
@@ -410,13 +410,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
@@ -427,13 +427,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'Yes'
   unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-02 21:44:54
@@ -569,13 +569,13 @@
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: Haskell features a type system with type inference
@@ -586,13 +586,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: null
+  think_have_covid_symptom_fatigue: null
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   unique_participant_response_id: DHVF-8437201389-DHR-263959191921-2022-01-09 23:58:48
@@ -723,13 +723,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: 'No'
+  think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: He looked inquisitively at his keyboard and wrote
@@ -740,13 +740,13 @@
   think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
@@ -878,13 +878,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: Make me a sandwich.
@@ -894,13 +894,13 @@
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'Yes'
   unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-07 16:06:21
@@ -1032,13 +1032,13 @@
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'No'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
@@ -1049,13 +1049,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: null
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: null
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   unique_participant_response_id: DVH-4804616426-DHR-848695986758-2022-01-09 21:50:48
@@ -1186,13 +1186,13 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: In 1989 the building was heavily damaged by fire,
@@ -1203,13 +1203,13 @@
   think_have_covid_symptom_any_raw: null
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'No'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: null
   think_have_covid_symptom_loss_of_taste: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'No'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
   unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-09 00:32:52
@@ -1336,13 +1336,13 @@
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache_myalgia: null
-  think_had_covid_symptom_nausea_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
@@ -1353,13 +1353,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: null
   think_have_covid_symptom_loss_of_smell: 'Yes'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
   unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-02 09:26:10
@@ -1491,13 +1491,13 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue_weakness: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: null
-  think_had_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_had_covid_symptom_nausea_vomiting: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
@@ -1508,13 +1508,13 @@
   think_have_covid_symptom_any_raw: 'No'
   think_have_covid_symptom_cough: null
   think_have_covid_symptom_diarrhoea: null
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue: 'No'
   think_have_covid_symptom_fever: 'Yes'
   think_have_covid_symptom_headache: 'Yes'
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache_myalgia: null
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
   unique_participant_response_id: DVH-7630633873-DHR-350245644249-2022-01-07 07:27:20
