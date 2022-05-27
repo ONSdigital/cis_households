@@ -970,9 +970,9 @@ def report(
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
 
-    # write_string_to_file(
-    #    output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
-    # )
+    write_string_to_file(
+        output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    )
 
 
 @register_pipeline_stage("report_iqvia")
