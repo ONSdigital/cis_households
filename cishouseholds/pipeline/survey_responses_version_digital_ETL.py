@@ -26,8 +26,7 @@ def digital_specific_transformations(df):
     )
     mapping_dict = {
         "Prefer not to say": None,
-        "Don&#39;t Know": None,
-        "Don&amp;#39;t Know": None,
+        "Don't Know": None,
     }
     df = apply_value_map_multiple_columns(
         df,
