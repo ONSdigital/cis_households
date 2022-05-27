@@ -10,7 +10,7 @@ def test_fill_forward_from_last_change(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            # TODO: incorporate visit_type, not fill forward None
+            # TODO: incorporate survey_response_type, not fill forward None
             ## understand how change column is derived
                 (1, "2020-11-11",   "Yes",      1,      1,      1), # id 1, 2 should not be modified
 

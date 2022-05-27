@@ -1,15 +1,15 @@
 survey_responses_v2_datetime_map = {
     "dd/MM/yyyy": [
-        "symptoms_last_7_days_onset_date",
+        "think_have_covid_symptom_onset_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
-        "other_pcr_test_first_positive_date",
-        "other_pcr_test_last_negative_date",
+        "other_covid_infection_test_first_positive_date",
+        "other_covid_infection_test_last_negative_date",
         "other_antibody_test_first_positive_date",
         "other_antibody_test_last_negative_date",
         "cis_covid_vaccine_date",
-        "been_outside_uk_last_date",
+        "been_outside_uk_last_return_date",
         "improved_visit_date",
         "cis_covid_vaccine_date_1",
         "cis_covid_vaccine_date_2",
@@ -22,14 +22,14 @@ survey_responses_v2_datetime_map = {
 
 survey_responses_v1_datetime_map = {
     "dd/MM/yyyy": [
-        "symptoms_last_7_days_onset_date",
+        "think_have_covid_symptom_onset_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
-        "other_pcr_test_first_positive_date",
-        "other_pcr_test_last_negative_date",
+        "other_covid_infection_test_first_positive_date",
+        "other_covid_infection_test_last_negative_date",
         "cis_covid_vaccine_date",
-        "been_outside_uk_last_date",
+        "been_outside_uk_last_return_date",
     ],
     "yyyy-MM-dd": [
         "date_of_birth",
@@ -41,7 +41,7 @@ survey_responses_v1_datetime_map = {
 
 survey_responses_v0_datetime_map = {
     "dd/MM/yyyy": [
-        "symptoms_last_7_days_onset_date",
+        "think_have_covid_symptom_onset_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
