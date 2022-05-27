@@ -492,7 +492,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: ability_to_socially_distance_at_work_or_school
+  name: ability_to_socially_distance_at_work_or_education
   nullable: true
   type: string
 - metadata: {}
@@ -512,11 +512,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_muscle_ache_myalgia
+  name: think_have_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_fatigue_weakness
+  name: think_have_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
@@ -536,7 +536,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_nausea_vomiting
+  name: think_have_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
@@ -560,7 +560,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_runny_nose_sneezing
+  name: think_have_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
@@ -580,15 +580,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_vertigo_dizziness
+  name: think_have_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_worry_anxiety
+  name: think_have_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_low_mood_not_enjoying_anything
+  name: think_have_covid_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
@@ -728,11 +728,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_muscle_ache_myalgia
+  name: think_had_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_fatigue_weakness
+  name: think_had_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
@@ -752,7 +752,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_nausea_vomiting
+  name: think_had_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
@@ -776,7 +776,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_runny_nose_sneezing
+  name: think_had_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
@@ -796,11 +796,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_vertigo_dizziness
+  name: think_had_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_worry_anxiety
+  name: think_had_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
@@ -896,7 +896,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_vertigo_dizziness
+  name: think_have_long_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
@@ -908,7 +908,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_nausea_vomiting
+  name: think_have_long_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
@@ -924,7 +924,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_worry_anxiety
+  name: think_have_long_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
@@ -960,7 +960,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_runny_nose_sneezing
+  name: think_have_long_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}

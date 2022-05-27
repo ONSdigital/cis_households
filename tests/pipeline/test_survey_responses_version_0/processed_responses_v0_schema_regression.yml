@@ -320,11 +320,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_muscle_ache_myalgia
+  name: think_have_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_fatigue_weakness
+  name: think_have_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
@@ -344,7 +344,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_nausea_vomiting
+  name: think_have_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
@@ -420,11 +420,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_muscle_ache_myalgia
+  name: think_had_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_fatigue_weakness
+  name: think_had_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
@@ -444,7 +444,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_nausea_vomiting
+  name: think_had_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
