@@ -566,7 +566,7 @@
   times_shopping_last_7_days: '0'
   times_socialising_last_7_days: '3'
   title: Prof.
-  transport_to_work_or_education: Other method
+  transport_to_work_or_education: Car or van
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-08 00:10:59.000000'
@@ -588,8 +588,8 @@
     evaluation.
   work_main_job_title_raw: Haskell features a type system with type inference and
     lazy evaluation.
-  work_not_from_home_days_per_week: '4'
-  work_not_from_home_days_per_week_raw: '4'
+  work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Food production, agriculture, farming
   work_sector_other: Any element of a tuple can be accessed in constant time.
@@ -883,7 +883,7 @@
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
@@ -1184,7 +1184,7 @@
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: 'No'
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
@@ -1676,8 +1676,8 @@
   reconsented_blood: 'True'
   regularly_lateral_flow_testing: null
   samples_taken_datetime: null
-  self_isolating: null
-  self_isolating_reason: null
+  self_isolating: 'No'
+  self_isolating_reason: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1727,30 +1727,30 @@
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
   think_have_covid_symptom_abdominal_pain: 'No'
-  think_have_covid_symptom_any: 'No'
-  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
   think_have_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_symptom_fatigue_weakness: 'No'
+  think_have_covid_symptom_fatigue_weakness: 'Yes'
   think_have_covid_symptom_fever: 'No'
-  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_headache: 'No'
   think_have_covid_symptom_loss_of_appetite: null
   think_have_covid_symptom_loss_of_smell: 'No'
   think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_low_mood_not_enjoying_anything: 'No'
-  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_covid_symptom_more_trouble_sleeping: null
-  think_have_covid_symptom_muscle_ache_myalgia: 'Yes'
-  think_have_covid_symptom_nausea_vomiting: 'No'
+  think_have_covid_symptom_low_mood_not_enjoying_anything: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache_myalgia: 'No'
+  think_have_covid_symptom_nausea_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
   think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
-  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_sneezing: null
-  think_have_covid_symptom_shortness_of_breath: 'No'
-  think_have_covid_symptom_sore_throat: 'Yes'
-  think_have_covid_symptom_vertigo_dizziness: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'No'
+  think_have_covid_symptom_vertigo_dizziness: 'No'
   think_have_covid_symptom_worry_anxiety: 'Yes'
   think_have_long_covid: 'No'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
@@ -1784,7 +1784,7 @@
   times_shopping_last_7_days: '0'
   times_socialising_last_7_days: '2'
   title: Miss.
-  transport_to_work_or_education: Bus, minibus, coach
+  transport_to_work_or_education: null
   unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
@@ -1797,8 +1797,8 @@
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
-  work_location: null
-  work_location_raw: null
+  work_location: Working somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
@@ -1810,8 +1810,8 @@
     types.
   work_main_job_title_raw: The arguments can be primitive data types or compound data
     types.
-  work_not_from_home_days_per_week: '0'
-  work_not_from_home_days_per_week_raw: '0'
+  work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: null
   work_sector_other: Atoms are used within a program to denote distinguished values.
@@ -2105,10 +2105,8 @@
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
-  work_location: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
-  work_location_raw: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
+  work_location: Working from home
+  work_location_raw: From home (in the same grounds or building as your home)
   work_main_job_changed: 'No'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
@@ -2711,10 +2709,8 @@
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
-  work_location: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
-  work_location_raw: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
+  work_location: Working from home
+  work_location_raw: From home (in the same grounds or building as your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
@@ -3023,7 +3019,7 @@
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: null
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
