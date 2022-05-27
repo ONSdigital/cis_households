@@ -968,39 +968,39 @@ def create_formatted_datetime_string_columns(df):
         + cis_digital_datetime_map["yyyy-MM-dd"]
     )
 
-    for column_name_to_assign in date_format_dict.keys():
-        if column_name_to_assign in df.columns:
+    for column_name_to_assign, timestamp_column in date_format_dict.items():
+        if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
                 column_name_to_assign=column_name_to_assign,
-                reference_column=date_format_dict[column_name_to_assign],
+                reference_column=timestamp_column,
                 time_format="ddMMMyyyy",
                 lower_case=True,
             )
-    for column_name_to_assign in date_format_string_list:
-        if column_name_to_assign in df.columns:
+    for timestamp_column in date_format_string_list:
+        if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
-                column_name_to_assign=column_name_to_assign + "_string",
-                reference_column=column_name_to_assign,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
                 time_format="ddMMMyyyy",
                 lower_case=True,
             )
-    for column_name_to_assign in datetime_format_dict.keys():
-        if column_name_to_assign in df.columns:
+    for column_name_to_assign, timestamp_column in datetime_format_dict.items():
+        if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
                 column_name_to_assign=column_name_to_assign,
-                reference_column=datetime_format_dict[column_name_to_assign],
+                reference_column=timestamp_column,
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    for column_name_to_assign in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
-        if column_name_to_assign in df.columns:
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+        if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
-                column_name_to_assign=column_name_to_assign + "_string",
-                reference_column=column_name_to_assign,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
