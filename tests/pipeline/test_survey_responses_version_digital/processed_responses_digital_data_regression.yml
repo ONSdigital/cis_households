@@ -37,11 +37,17 @@
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type_1: Sinovac
+  cis_covid_vaccine_type_1_raw: Sinovac
   cis_covid_vaccine_type_2: null
+  cis_covid_vaccine_type_2_raw: null
   cis_covid_vaccine_type_3: From a research study/trial
+  cis_covid_vaccine_type_3_raw: From a research study/trial
   cis_covid_vaccine_type_4: Oxford / AstraZeneca
+  cis_covid_vaccine_type_4_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_5: From a research study/trial
+  cis_covid_vaccine_type_5_raw: From a research study/trial
   cis_covid_vaccine_type_6: Sputnik
+  cis_covid_vaccine_type_6_raw: Sputnik
   cis_covid_vaccine_type_other: Elementary, my dear Watson.
   cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_2: Those who refuse to learn from history are condemned
@@ -53,6 +59,7 @@
   cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vacine_type: null
+  cis_covid_vacine_type_raw: null
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Weekly
@@ -81,6 +88,7 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   face_covering_other_enclosed_places: null
+  face_covering_other_enclosed_places_raw: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
@@ -126,7 +134,9 @@
   other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: DD7O
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 045227746976
@@ -157,8 +167,11 @@
   person_not_present_age_7: null
   person_not_present_age_8: null
   physical_contact_18_to_69_years: 11 to 20
+  physical_contact_18_to_69_years_raw: 11 to 20
   physical_contact_over_70_years: '0'
+  physical_contact_over_70_years_raw: '0'
   physical_contact_under_18_years: Don't know
+  physical_contact_under_18_years_raw: Don't know
   postcode: DD7O7LP
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
@@ -189,8 +202,11 @@
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 1 to 5
+  social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: Don't know
+  social_distance_contact_over_70_years_raw: Don't know
   social_distance_contact_under_18_years: Don't know
+  social_distance_contact_under_18_years_raw: Don't know
   street: Kingarve
   survey_completed_datetime: null
   survey_completion_status: Archived
@@ -295,8 +311,11 @@
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '3'
+  times_hour_or_longer_another_home_last_7_days_raw: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '3'
   times_shopping_last_7_days: '1'
+  times_shopping_last_7_days_raw: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Train
@@ -306,6 +325,7 @@
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
   work_in_healthcare: Other healthcare (e.g. mental health)
@@ -317,6 +337,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Information technology and communication
   work_sector_other: Ports are used to communicate with the external world.
   work_status_digital: Employed
@@ -362,11 +383,17 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_1_raw: Sputnik
   cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_2_raw: Sinopharm
   cis_covid_vaccine_type_3: I don't know the type
+  cis_covid_vaccine_type_3_raw: I don't know the type
   cis_covid_vaccine_type_4: I don't know the type
+  cis_covid_vaccine_type_4_raw: I don't know the type
   cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_5_raw: Sinopharm
   cis_covid_vaccine_type_6: null
+  cis_covid_vaccine_type_6_raw: null
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_other_1: You're gonna need a bigger boat.
   cis_covid_vaccine_type_other_2: Let them eat cake.
@@ -378,6 +405,7 @@
   cis_covid_vaccine_type_other_6: Get your stinking paws off me, you damned dirty
     ape.
   cis_covid_vacine_type: Sputnik
+  cis_covid_vacine_type_raw: Sputnik
   cis_flu_vaccine_received: null
   city: Chichester
   completion_window_cadence: Weekly
@@ -406,6 +434,7 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   face_covering_other_enclosed_places: null
+  face_covering_other_enclosed_places_raw: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
@@ -449,7 +478,9 @@
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: All tests failed
   other_household_member_care_home_last_28_days: 'No'
+  other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 049902298831
@@ -480,8 +511,11 @@
   person_not_present_age_7: 52.0
   person_not_present_age_8: 20.0
   physical_contact_18_to_69_years: Don't know
+  physical_contact_18_to_69_years_raw: Don't know
   physical_contact_over_70_years: 6 to 10
+  physical_contact_over_70_years_raw: 6 to 10
   physical_contact_under_18_years: 21 or more
+  physical_contact_under_18_years_raw: 21 or more
   postcode: null
   questionnaire_started_no_incentive: 'No'
   reason_for_not_consenting_1: Where are my pants?
@@ -509,8 +543,11 @@
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 6 to 10
+  social_distance_contact_18_to_69_years_raw: 6 to 10
   social_distance_contact_over_70_years: 21 or more
+  social_distance_contact_over_70_years_raw: 21 or more
   social_distance_contact_under_18_years: 1 to 5
+  social_distance_contact_under_18_years_raw: 1 to 5
   street: null
   survey_completed_datetime: null
   survey_completion_status: In Progress
@@ -613,8 +650,11 @@
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '2'
+  times_hour_or_longer_another_home_last_7_days_raw: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
   times_shopping_last_7_days: '1'
+  times_shopping_last_7_days_raw: '1'
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
@@ -624,6 +664,7 @@
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -636,7 +677,8 @@
   work_main_job_title_raw: It is also a garbage-collected runtime system.
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Retail sector. This includes wholesale
   work_sector_other: Make me a sandwich.
   work_status_digital: Education
@@ -682,11 +724,17 @@
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: I don't know the type
+  cis_covid_vaccine_type_1_raw: I don't know the type
   cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_2_raw: Sinopharm
   cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_3_raw: null
   cis_covid_vaccine_type_4: I don't know the type
+  cis_covid_vaccine_type_4_raw: I don't know the type
   cis_covid_vaccine_type_5: Oxford / AstraZeneca
+  cis_covid_vaccine_type_5_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_6: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_6_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_other: Elementary, my dear Watson.
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
@@ -698,6 +746,7 @@
   cis_covid_vaccine_type_other_6: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   cis_covid_vacine_type: Sputnik
+  cis_covid_vacine_type_raw: Sputnik
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Monthly
@@ -726,6 +775,7 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   face_covering_other_enclosed_places: Yes always
+  face_covering_other_enclosed_places_raw: Yes always
   face_covering_outside_of_home: null
   face_covering_work_or_education: I am not going to my place of work or education
   face_covering_work_or_education_raw: I am not going to my place of work or education
@@ -769,7 +819,9 @@
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: OV6W
   participant_completion_window_end_datetime: null
   participant_completion_window_id: 073988827188
@@ -800,8 +852,11 @@
   person_not_present_age_7: 88.0
   person_not_present_age_8: null
   physical_contact_18_to_69_years: 1 to 5
+  physical_contact_18_to_69_years_raw: 1 to 5
   physical_contact_over_70_years: 11 to 20
+  physical_contact_over_70_years_raw: 11 to 20
   physical_contact_under_18_years: '0'
+  physical_contact_under_18_years_raw: '0'
   postcode: OV6W5SB
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
@@ -836,8 +891,11 @@
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 21 or more
+  social_distance_contact_18_to_69_years_raw: 21 or more
   social_distance_contact_over_70_years: 1 to 5
+  social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: 11 to 20
+  social_distance_contact_under_18_years_raw: 11 to 20
   street: null
   survey_completed_datetime: null
   survey_completion_status: Submitted
@@ -943,8 +1001,11 @@
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '3'
+  times_hour_or_longer_another_home_last_7_days_raw: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '4'
   times_shopping_last_7_days: '3'
+  times_shopping_last_7_days_raw: '3'
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Taxi or minicab
@@ -954,6 +1015,7 @@
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
   work_in_healthcare: Other healthcare (e.g. mental health)
@@ -967,6 +1029,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Social Care
   work_sector_other: Any element of a tuple can be accessed in constant time.
   work_status_digital: Education
@@ -1013,11 +1076,17 @@
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Valneva
+  cis_covid_vaccine_type_1_raw: Valneva
   cis_covid_vaccine_type_2: null
+  cis_covid_vaccine_type_2_raw: null
   cis_covid_vaccine_type_3: Pfizer / BioNTech
+  cis_covid_vaccine_type_3_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_4_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_5: Novavax
+  cis_covid_vaccine_type_5_raw: Novavax
   cis_covid_vaccine_type_6: Sinopharm
+  cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: Get your stinking paws off me, you damned dirty ape.
   cis_covid_vaccine_type_other_1: Let them eat cake.
   cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
@@ -1028,6 +1097,7 @@
   cis_covid_vaccine_type_other_5: Here's looking at you, kid.
   cis_covid_vaccine_type_other_6: Houston, we have a problem.
   cis_covid_vacine_type: Sinopharm
+  cis_covid_vacine_type_raw: Sinopharm
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Weekly
@@ -1058,6 +1128,8 @@
   ever_smoked_regularly_raw: Prefer not to say
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_other_enclosed_places_raw: I am not going to other enclosed public
+    spaces or using public transport
   face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
@@ -1103,7 +1175,9 @@
   other_covid_infection_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: null
+  other_household_member_hospital_last_28_days_raw: null
   outward_postcode: ZW8J
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '456442497105'
@@ -1133,9 +1207,12 @@
   person_not_present_age_6: 67.0
   person_not_present_age_7: 61.0
   person_not_present_age_8: null
-  physical_contact_18_to_69_years: Prefer not to say
+  physical_contact_18_to_69_years: null
+  physical_contact_18_to_69_years_raw: Prefer not to say
   physical_contact_over_70_years: 11 to 20
+  physical_contact_over_70_years_raw: 11 to 20
   physical_contact_under_18_years: 11 to 20
+  physical_contact_under_18_years_raw: 11 to 20
   postcode: ZW8J4VE
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Erlang is known for its designs that are well suited
@@ -1166,8 +1243,11 @@
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: '0'
+  social_distance_contact_18_to_69_years_raw: '0'
   social_distance_contact_over_70_years: Don't know
-  social_distance_contact_under_18_years: Prefer not to say
+  social_distance_contact_over_70_years_raw: Don't know
+  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years_raw: Prefer not to say
   street: Cloghinny
   survey_completed_datetime: null
   survey_completion_status: Completed
@@ -1270,8 +1350,11 @@
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
+  times_hour_or_longer_another_home_last_7_days_raw: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: 7 times or more
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: 7 times or more
   times_shopping_last_7_days: 7 times or more
+  times_shopping_last_7_days_raw: 7 times or more
   times_socialise_last_7_days: '3'
   title: Mr.
   transport_to_work_or_education: Bus, minibus or coach
@@ -1280,7 +1363,8 @@
   visit_id: '456442497105'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
-  work_direct_contact_patients_or_clients: Prefer not to say
+  work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -1292,6 +1376,7 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Teaching and education
   work_sector_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
@@ -1339,11 +1424,17 @@
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_1_raw: Sputnik
   cis_covid_vaccine_type_2: Novavax
+  cis_covid_vaccine_type_2_raw: Novavax
   cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_3_raw: null
   cis_covid_vaccine_type_4: null
+  cis_covid_vaccine_type_4_raw: null
   cis_covid_vaccine_type_5: Valneva
+  cis_covid_vaccine_type_5_raw: Valneva
   cis_covid_vaccine_type_6: Novavax
+  cis_covid_vaccine_type_6_raw: Novavax
   cis_covid_vaccine_type_other: Let them eat cake.
   cis_covid_vaccine_type_other_1: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
@@ -1353,6 +1444,7 @@
   cis_covid_vaccine_type_other_5: Houston, we have a problem.
   cis_covid_vaccine_type_other_6: Frankly, my dear, I don't give a damn.
   cis_covid_vacine_type: Sinopharm
+  cis_covid_vacine_type_raw: Sinopharm
   cis_flu_vaccine_received: 'No'
   city: Barrhead
   completion_window_cadence: Monthly
@@ -1382,6 +1474,8 @@
   ever_smoked_regularly_raw: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_other_enclosed_places_raw: I cover my face for other reasons - for
+    example for religious or cultural reasons
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   face_covering_work_or_education_raw: Yes sometimes
@@ -1425,7 +1519,9 @@
   other_covid_infection_test_last_negative_date: '2022-01-05 00:00:00.000000'
   other_covid_infection_test_results: null
   other_household_member_care_home_last_28_days: 'No'
+  other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: AF5A
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '498251982661'
@@ -1456,8 +1552,11 @@
   person_not_present_age_7: null
   person_not_present_age_8: null
   physical_contact_18_to_69_years: 6 to 10
+  physical_contact_18_to_69_years_raw: 6 to 10
   physical_contact_over_70_years: Don't know
+  physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: 21 or more
+  physical_contact_under_18_years_raw: 21 or more
   postcode: AF5A1QO
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Any element of a tuple can be accessed in constant
@@ -1487,8 +1586,11 @@
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 11 to 20
+  social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: Don't know
+  social_distance_contact_over_70_years_raw: Don't know
   social_distance_contact_under_18_years: 1 to 5
+  social_distance_contact_under_18_years_raw: 1 to 5
   street: null
   survey_completed_datetime: null
   survey_completion_status: New
@@ -1594,8 +1696,11 @@
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '5'
+  times_hour_or_longer_another_home_last_7_days_raw: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '3'
   times_shopping_last_7_days: Don't knowNone
+  times_shopping_last_7_days_raw: Don't knowNone
   times_socialise_last_7_days: Prefer not to say
   title: Prof.
   transport_to_work_or_education: Other method
@@ -1605,6 +1710,7 @@
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
   work_in_healthcare: null
@@ -1621,7 +1727,8 @@
     has since been restored.
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Healthcare
   work_sector_other: Its main implementation is the Glasgow Haskell Compiler.
   work_status_digital: Education
@@ -1669,11 +1776,17 @@
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type_1: Sputnik
+  cis_covid_vaccine_type_1_raw: Sputnik
   cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_2_raw: Sinopharm
   cis_covid_vaccine_type_3: I don't know the type
+  cis_covid_vaccine_type_3_raw: I don't know the type
   cis_covid_vaccine_type_4: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_4_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_5_raw: Sinopharm
   cis_covid_vaccine_type_6: Sinopharm
+  cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_other_1: Get your stinking paws off me, you damned dirty
     ape.
@@ -1687,6 +1800,7 @@
     I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_6: I'm gonna make him an offer he can't refuse.
   cis_covid_vacine_type: Sinopharm
+  cis_covid_vacine_type_raw: Sinopharm
   cis_flu_vaccine_received: null
   city: Newhaven
   completion_window_cadence: Weekly
@@ -1716,6 +1830,8 @@
   ever_smoked_regularly_raw: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_other_enclosed_places_raw: I am not going to other enclosed public
+    spaces or using public transport
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
@@ -1759,7 +1875,9 @@
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: One or more negative tests but none positive
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '545473722111'
@@ -1790,8 +1908,11 @@
   person_not_present_age_7: 30.0
   person_not_present_age_8: 47.0
   physical_contact_18_to_69_years: Don't know
+  physical_contact_18_to_69_years_raw: Don't know
   physical_contact_over_70_years: Don't know
+  physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: null
+  physical_contact_under_18_years_raw: null
   postcode: null
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: The sequential subset of Erlang supports eager evaluation,
@@ -1822,8 +1943,11 @@
   sex: null
   sex_raw: null
   social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 1 to 5
+  social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: 6 to 10
+  social_distance_contact_under_18_years_raw: 6 to 10
   street: null
   survey_completed_datetime: null
   survey_completion_status: In Progress
@@ -1926,8 +2050,11 @@
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: Don't knowNone
+  times_hour_or_longer_another_home_last_7_days_raw: Don't knowNone
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: Don't knowNone
   times_shopping_last_7_days: '5'
+  times_shopping_last_7_days_raw: '5'
   times_socialise_last_7_days: '5'
   title: Ms.
   transport_to_work_or_education: Taxi or minicab
@@ -1937,6 +2064,7 @@
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
   work_in_healthcare: null
@@ -1949,6 +2077,7 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Other employment sector please specify
   work_sector_other: Erlang is known for its designs that are well suited for systems.
   work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
@@ -1996,11 +2125,17 @@
   cis_covid_vaccine_number_of_doses: 6 or more
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Novavax
+  cis_covid_vaccine_type_1_raw: Novavax
   cis_covid_vaccine_type_2: Pfizer / BioNTech
+  cis_covid_vaccine_type_2_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_3: Another vaccine please specify
+  cis_covid_vaccine_type_3_raw: Another vaccine please specify
   cis_covid_vaccine_type_4: Sputnik
+  cis_covid_vaccine_type_4_raw: Sputnik
   cis_covid_vaccine_type_5: Novavax
+  cis_covid_vaccine_type_5_raw: Novavax
   cis_covid_vaccine_type_6: Pfizer / BioNTech
+  cis_covid_vaccine_type_6_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_other: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_1: Ask not what your country can do for you; ask what
@@ -2013,6 +2148,7 @@
   cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vacine_type: Moderna
+  cis_covid_vacine_type_raw: Moderna
   cis_flu_vaccine_received: null
   city: null
   completion_window_cadence: Monthly
@@ -2041,6 +2177,7 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   face_covering_other_enclosed_places: Yes always
+  face_covering_other_enclosed_places_raw: Yes always
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
@@ -2084,7 +2221,9 @@
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: One or more negative tests but none positive
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: RS6B
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '704542495687'
@@ -2114,9 +2253,12 @@
   person_not_present_age_6: null
   person_not_present_age_7: null
   person_not_present_age_8: 13.0
-  physical_contact_18_to_69_years: Prefer not to say
+  physical_contact_18_to_69_years: null
+  physical_contact_18_to_69_years_raw: Prefer not to say
   physical_contact_over_70_years: Don't know
+  physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: 21 or more
+  physical_contact_under_18_years_raw: 21 or more
   postcode: RS6B6NG
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Its main implementation is the Glasgow Haskell Compiler.
@@ -2144,8 +2286,11 @@
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
+  social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: null
+  social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: 1 to 5
+  social_distance_contact_under_18_years_raw: 1 to 5
   street: Downings
   survey_completed_datetime: null
   survey_completion_status: Archived
@@ -2250,8 +2395,11 @@
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: '1'
+  times_hour_or_longer_another_home_last_7_days_raw: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: null
-  times_shopping_last_7_days: Prefer not to say
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
+  times_shopping_last_7_days: null
+  times_shopping_last_7_days_raw: Prefer not to say
   times_socialise_last_7_days: '6'
   title: Miss.
   transport_to_work_or_education: Bus, minibus or coach
@@ -2260,7 +2408,8 @@
   visit_id: '704542495687'
   voucher_type_preference: Letter
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
-  work_direct_contact_patients_or_clients: Prefer not to say
+  work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
   work_in_healthcare: Primary care (e.g. GP, dentist)
@@ -2274,6 +2423,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Food production and agriculture. This includes farming
   work_sector_other: She spent her earliest years reading classic literature, and
     writing poetry.
@@ -2325,11 +2475,17 @@
   cis_covid_vaccine_number_of_doses: '3'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Another vaccine please specify
+  cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sinopharm
+  cis_covid_vaccine_type_2_raw: Sinopharm
   cis_covid_vaccine_type_3: Sputnik
+  cis_covid_vaccine_type_3_raw: Sputnik
   cis_covid_vaccine_type_4: Another vaccine please specify
+  cis_covid_vaccine_type_4_raw: Another vaccine please specify
   cis_covid_vaccine_type_5: Sinopharm
+  cis_covid_vaccine_type_5_raw: Sinopharm
   cis_covid_vaccine_type_6: Sinovac
+  cis_covid_vaccine_type_6_raw: Sinovac
   cis_covid_vaccine_type_other: Let them eat cake.
   cis_covid_vaccine_type_other_1: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
@@ -2341,6 +2497,7 @@
     down this wall!
   cis_covid_vaccine_type_other_6: Houston, we have a problem.
   cis_covid_vacine_type: Another vaccine please specify
+  cis_covid_vacine_type_raw: Another vaccine please specify
   cis_flu_vaccine_received: 'Yes'
   city: null
   completion_window_cadence: Monthly
@@ -2371,6 +2528,8 @@
   ever_smoked_regularly_raw: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_other_enclosed_places_raw: I cover my face for other reasons - for
+    example for religious or cultural reasons
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   face_covering_work_or_education_raw: Yes sometimes
@@ -2414,7 +2573,9 @@
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '769043821442'
@@ -2445,8 +2606,11 @@
   person_not_present_age_7: 21.0
   person_not_present_age_8: null
   physical_contact_18_to_69_years: Don't know
+  physical_contact_18_to_69_years_raw: Don't know
   physical_contact_over_70_years: null
-  physical_contact_under_18_years: Prefer not to say
+  physical_contact_over_70_years_raw: null
+  physical_contact_under_18_years: null
+  physical_contact_under_18_years_raw: Prefer not to say
   postcode: null
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: '"Messages can be sent to and received from ports,
@@ -2476,8 +2640,11 @@
   sex: null
   sex_raw: null
   social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 11 to 20
+  social_distance_contact_over_70_years_raw: 11 to 20
   social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years_raw: null
   street: null
   survey_completed_datetime: null
   survey_completion_status: Archived
@@ -2580,9 +2747,12 @@
   think_have_long_covid_symptom_shortness_of_breath: 'No'
   think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_vertigo_or_dizziness: null
-  times_hour_or_longer_another_home_last_7_days: Prefer not to say
+  times_hour_or_longer_another_home_last_7_days: null
+  times_hour_or_longer_another_home_last_7_days_raw: Prefer not to say
   times_hour_or_longer_another_person_your_home_last_7_days: Don't knowNone
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: Don't knowNone
   times_shopping_last_7_days: '3'
+  times_shopping_last_7_days_raw: '3'
   times_socialise_last_7_days: '2'
   title: Miss.
   transport_to_work_or_education: Bicycle
@@ -2592,6 +2762,7 @@
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Both from home and somewhere else
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
   work_in_healthcare: null
@@ -2605,6 +2776,7 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Hospitality - for example hotels or restaurants or cafe
   work_sector_other: Erlang is known for its designs that are well suited for systems.
   work_status_digital: Self-employed
@@ -2651,11 +2823,17 @@
   cis_covid_vaccine_number_of_doses: '2'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type_1: Another vaccine please specify
+  cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Valneva
+  cis_covid_vaccine_type_2_raw: Valneva
   cis_covid_vaccine_type_3: Sputnik
+  cis_covid_vaccine_type_3_raw: Sputnik
   cis_covid_vaccine_type_4: Another vaccine please specify
+  cis_covid_vaccine_type_4_raw: Another vaccine please specify
   cis_covid_vaccine_type_5: Valneva
+  cis_covid_vaccine_type_5_raw: Valneva
   cis_covid_vaccine_type_6: Oxford / AstraZeneca
+  cis_covid_vaccine_type_6_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his
@@ -2671,6 +2849,7 @@
   cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vacine_type: null
+  cis_covid_vacine_type_raw: null
   cis_flu_vaccine_received: 'No'
   city: Coatbridge
   completion_window_cadence: Weekly
@@ -2700,6 +2879,8 @@
   ever_smoked_regularly_raw: 'No'
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
+  face_covering_other_enclosed_places_raw: I am not going to other enclosed public
+    spaces or using public transport
   face_covering_outside_of_home: null
   face_covering_work_or_education: NeverI cover my face for other reasons - for example  for
     religious or cultural reasons
@@ -2745,7 +2926,9 @@
   other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '868570220212'
@@ -2776,8 +2959,11 @@
   person_not_present_age_7: 69.0
   person_not_present_age_8: null
   physical_contact_18_to_69_years: 1 to 5
+  physical_contact_18_to_69_years_raw: 1 to 5
   physical_contact_over_70_years: Don't know
+  physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: '0'
+  physical_contact_under_18_years_raw: '0'
   postcode: null
   questionnaire_started_no_incentive: 'Yes'
   reason_for_not_consenting_1: Where are my pants?
@@ -2805,8 +2991,11 @@
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 11 to 20
+  social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: '0'
+  social_distance_contact_over_70_years_raw: '0'
   social_distance_contact_under_18_years: 21 or more
+  social_distance_contact_under_18_years_raw: 21 or more
   street: null
   survey_completed_datetime: null
   survey_completion_status: In Progress
@@ -2909,8 +3098,11 @@
   think_have_long_covid_symptom_sore_throat: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   times_hour_or_longer_another_home_last_7_days: '4'
+  times_hour_or_longer_another_home_last_7_days_raw: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
   times_shopping_last_7_days: '2'
+  times_shopping_last_7_days_raw: '2'
   times_socialise_last_7_days: '2'
   title: Dr.
   transport_to_work_or_education: Underound, Metro, Light Rail or Tram
@@ -2919,7 +3111,8 @@
   visit_id: '868570220212'
   voucher_type_preference: Email
   where_are_you_mainly_working_now: Somewhere else meaning not at your home
-  work_direct_contact_patients_or_clients: Prefer not to say
+  work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
   work_in_healthcare: Secondary care (e.g. hospital)
@@ -2934,7 +3127,8 @@
     types.
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Healthcare
   work_sector_other: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
@@ -2982,11 +3176,17 @@
   cis_covid_vaccine_number_of_doses: '4'
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type_1: Sinopharm
+  cis_covid_vaccine_type_1_raw: Sinopharm
   cis_covid_vaccine_type_2: Janssen / Johnson&Johnson
+  cis_covid_vaccine_type_2_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_3: From a research study/trial
+  cis_covid_vaccine_type_3_raw: From a research study/trial
   cis_covid_vaccine_type_4: Pfizer / BioNTech
+  cis_covid_vaccine_type_4_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_5: I don't know the type
+  cis_covid_vaccine_type_5_raw: I don't know the type
   cis_covid_vaccine_type_6: null
+  cis_covid_vaccine_type_6_raw: null
   cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vaccine_type_other_1: They call me *Mister* Tibbs!
@@ -2997,6 +3197,7 @@
   cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vacine_type: Sinovac
+  cis_covid_vacine_type_raw: Sinovac
   cis_flu_vaccine_received: null
   city: null
   completion_window_cadence: Monthly
@@ -3026,6 +3227,8 @@
   ever_smoked_regularly_raw: 'No'
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
+  face_covering_other_enclosed_places_raw: I cover my face for other reasons - for
+    example for religious or cultural reasons
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes sometimes
   face_covering_work_or_education_raw: Yes sometimes
@@ -3069,7 +3272,9 @@
   other_covid_infection_test_last_negative_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: 'Yes'
+  other_household_member_care_home_last_28_days_raw: 'Yes'
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '891036937066'
@@ -3100,8 +3305,11 @@
   person_not_present_age_7: null
   person_not_present_age_8: 74.0
   physical_contact_18_to_69_years: Don't know
+  physical_contact_18_to_69_years_raw: Don't know
   physical_contact_over_70_years: 6 to 10
+  physical_contact_over_70_years_raw: 6 to 10
   physical_contact_under_18_years: 1 to 5
+  physical_contact_under_18_years_raw: 1 to 5
   postcode: null
   questionnaire_started_no_incentive: 'No'
   reason_for_not_consenting_1: Do you come here often?
@@ -3130,8 +3338,11 @@
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: Don't know
+  social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 1 to 5
+  social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: '0'
+  social_distance_contact_under_18_years_raw: '0'
   street: Forestbrook
   survey_completed_datetime: null
   survey_completion_status: In Progress
@@ -3235,8 +3446,11 @@
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   times_hour_or_longer_another_home_last_7_days: 7 times or more
+  times_hour_or_longer_another_home_last_7_days_raw: 7 times or more
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '6'
   times_shopping_last_7_days: 7 times or more
+  times_shopping_last_7_days_raw: 7 times or more
   times_socialise_last_7_days: '1'
   title: Miss.
   transport_to_work_or_education: Train
@@ -3247,6 +3461,7 @@
   where_are_you_mainly_working_now: From home meaning in the same grounds or building
     as your home
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
   work_in_healthcare: null
@@ -3258,6 +3473,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Manufacturing or construction
   work_sector_other: She spent her earliest years reading classic literature, and
     writing poetry.
