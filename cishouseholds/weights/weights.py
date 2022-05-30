@@ -23,6 +23,7 @@ def generate_weights(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     tranche_df: DataFrame,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
@@ -35,6 +36,7 @@ def generate_weights(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
@@ -100,6 +102,7 @@ def join_and_process_lookups(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
@@ -122,6 +125,7 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
+    new_sample_df = new_sample_df.withColumn("sample_source_name", new_sample_source_name)
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
