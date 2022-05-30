@@ -93,6 +93,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: Never
   face_covering_work_or_education: Prefer not to say
+  file_date: null
   first_name: Caron
   hh_id: '763063387334'
   hospital_last_28_days: null
@@ -439,6 +440,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: Prefer not to say
   face_covering_work_or_education: Prefer not to say
+  file_date: null
   first_name: Forest
   hh_id: '414160350614'
   hospital_last_28_days: 'Yes'
@@ -784,6 +786,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: Yes sometimes
   face_covering_work_or_education: Yes sometimes
+  file_date: null
   first_name: Honey
   hh_id: 030988308904
   hospital_last_28_days: 'No'
@@ -1134,6 +1137,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: Yes always
   face_covering_work_or_education: Prefer not to say
+  file_date: null
   first_name: Shawnee
   hh_id: '734353881968'
   hospital_last_28_days: null
@@ -1482,6 +1486,7 @@
     or using public transport
   face_covering_work_or_education: I cover my face for other reasons - for example
     for religious or cultural reasons
+  file_date: null
   first_name: Annika
   hh_id: '602276804025'
   hospital_last_28_days: null
@@ -1831,6 +1836,7 @@
   face_covering_other_enclosed_places: I cover my face for other reasons - for example
     for religious or cultural reasons
   face_covering_work_or_education: Prefer not to say
+  file_date: null
   first_name: Shaun
   hh_id: '822178461989'
   hospital_last_28_days: null
@@ -2178,6 +2184,7 @@
   face_covering_other_enclosed_places: I am not going to other enclosed public spaces
     or using public transport
   face_covering_work_or_education: Yes sometimes
+  file_date: null
   first_name: Clemmie
   hh_id: '623704990229'
   hospital_last_28_days: null
@@ -2525,6 +2532,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: Yes always
   face_covering_work_or_education: Yes always
+  file_date: null
   first_name: Myung
   hh_id: '502848695986'
   hospital_last_28_days: 'No'
@@ -2872,6 +2880,7 @@
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: null
   face_covering_work_or_education: Yes sometimes
+  file_date: null
   first_name: Remedios
   hh_id: '821442294850'
   hospital_last_28_days: null
@@ -3226,6 +3235,7 @@
   face_covering_other_enclosed_places: Prefer not to say
   face_covering_work_or_education: I cover my face for other reasons - for example
     for religious or cultural reasons
+  file_date: null
   first_name: Reiko
   hh_id: '568720322983'
   hospital_last_28_days: 'No'
