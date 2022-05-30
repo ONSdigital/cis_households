@@ -9,16 +9,16 @@ def test_precalibration_checkpoints(spark_session):
                 country string,
                 groupby double,
                 sample_group string,
-                scaled_dweight_adjusted double,
-                dweight_1 double,
-                dweight_2 double,
+                scaled_design_weight_adjusted double,
+                design_weight_1 double,
+                design_weight_2 double,
                 not_positive_or_null integer
             """
     expected_df_not_pass = spark_session.createDataFrame(
         data=[
             # fmt: off
-            #   country           groupby     sample_group   scaled_dweight_adjusted_swab
-            #                                                       dweight_1   dweight_2   not_positive_or_null
+            #   country           groupby     sample_group   scaled_design_weight_adjusted_swab
+            #                                                       design_weight_1   design_weight_2   not_positive_or_null
                 ('england',       2.0,       'new',          1.0,    2.5,        1.0,        1),
                 ('england',       2.0,       'new',          1.0,    -1.5,       1.2,        None),
                 ('england',       2.0,       'new',          1.0,    -1.5,       None,       None),
@@ -37,16 +37,16 @@ def test_precalibration_checkpoints(spark_session):
             df=input_df_not_pass,
             country_col="country",
             grouping_list=["groupby", "sample_group"],
-            scaled_dweight_adjusted="scaled_dweight_adjusted",
+            scaled_design_weight_adjusted="scaled_design_weight_adjusted",
             total_population="groupby",
-            dweight_list=["dweight_1", "dweight_2"],
+            design_weight_list=["design_weight_1", "design_weight_2"],
         )
 
     expected_df_pass = spark_session.createDataFrame(
         data=[
             # fmt: off
-            #   country           groupby     sample_group   scaled_dweight_adjusted_swab
-            #                                                       dweight_1   dweight_2   not_positive_or_null
+            #   country           groupby     sample_group   scaled_design_weight_adjusted_swab
+            #                                                       design_weight_1   design_weight_2   not_positive_or_null
                 ('england',       3.0,       'new',          1.0,   7.0,         3.0,        None),
                 ('england',       3.0,       'new',          1.0,   7.0,         3.0,        None),
                 ('england',       3.0,       'new',          1.0,   7.0,         3.0,        None),
@@ -64,9 +64,9 @@ def test_precalibration_checkpoints(spark_session):
         df=input_df_pass,
         country_col="country",
         grouping_list=["groupby", "sample_group"],
-        scaled_dweight_adjusted="scaled_dweight_adjusted",
+        scaled_design_weight_adjusted="scaled_design_weight_adjusted",
         total_population="groupby",
-        dweight_list=["dweight_1", "dweight_2"],
+        design_weight_list=["design_weight_1", "design_weight_2"],
     )
     assert check_1 is True
     assert check_2 is True
