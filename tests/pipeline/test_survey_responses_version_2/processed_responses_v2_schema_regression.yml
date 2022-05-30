@@ -1144,6 +1144,10 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
+  name: self_isolating_reason_digital
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_date
   nullable: true
   type: timestamp
