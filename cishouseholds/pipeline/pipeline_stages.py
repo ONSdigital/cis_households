@@ -51,6 +51,7 @@ from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccinat
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
+from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
@@ -370,6 +371,9 @@ def validate_survey_responses(
     validation_failure_flag_column: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_validation_failures_table: str,
+    invalid_validation_failures_table: str,
+    id_column: str,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -394,6 +398,29 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
+
+    validation_check_failures_valid_data_df = (
+        (
+            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    validation_check_failures_invalid_data_df = (
+        (
+            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
+    update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
@@ -848,8 +875,11 @@ def report(
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_survey_responses_errors_table: str,
+    invalid_survey_responses_errors_table: str,
     output_directory: str,
     tables_to_count: List[str],
+    error_priority_map: dict = {},
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -874,6 +904,13 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
+    valid_df_errors = generate_error_table(
+        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+    invalid_df_errors = generate_error_table(
+        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -895,20 +932,6 @@ def report(
             table_counts[table_name] = table.count()
         else:
             table_counts[table_name] = "Table not found"
-
-    valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
-    invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
-
-    valid_df_errors = (
-        valid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
-    invalid_df_errors = (
-        invalid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
 
     duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
         F.col(duplicate_count_column_name) > 1
