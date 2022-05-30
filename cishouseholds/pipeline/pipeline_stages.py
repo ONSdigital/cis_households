@@ -1467,7 +1467,7 @@ def pre_calibration(
 
     df_for_calibration = pre_calibration_high_level(
         df_survey=survey_response,
-        df_dweights=household_level_with_design_weights,
+        df_design_weights=household_level_with_design_weights,
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )
