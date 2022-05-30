@@ -41,7 +41,7 @@ def digital_specific_transformations(df):
         # "times_socialising_last_7_days",
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
-        "cis_covid_vacine_type",
+        # "cis_covid_vacine_type",
     ]
     df = assign_raw_copies(df, dont_know_columns)
     mapping_dict = {

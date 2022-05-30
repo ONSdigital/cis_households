@@ -1288,7 +1288,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-<<<<<<< HEAD
   name: work_in_additional_paid_employment_raw
   nullable: true
   type: string
@@ -1396,13 +1395,4 @@ fields:
   name: face_covering_other_enclosed_places_raw
   nullable: true
   type: string
-- metadata: {}
-  name: cis_covid_vacine_type_raw
-  nullable: true
-  type: string
-=======
-  name: times_outside_shopping_or_socialising_last_7_days
-  nullable: true
-  type: integer
->>>>>>> origin/main
 type: struct
