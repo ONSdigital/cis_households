@@ -1322,6 +1322,7 @@ def sample_file_ETL(
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
+    sample_source,
 ):
     first_run = not check_table_exists(design_weight_table)
 
@@ -1337,6 +1338,7 @@ def sample_file_ETL(
         column_name_maps["new_sample_file_column_map"],
         True,
     )
+    new_sample_df = new_sample_df.withColumn("sample_source", F.lit(sample_source))
     tranche_df = None
     if tranche is not None:
         tranche_df = extract_lookup_csv(
