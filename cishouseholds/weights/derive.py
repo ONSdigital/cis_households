@@ -103,19 +103,21 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     return joined_df
 
 
-def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_column: str, batch_colum: str):
+def assign_sample_new_previous(df: DataFrame, column_name_to_assign: str, date_column: str, batch_number_column: str):
     """
-    Assign column by checking for highest batch number in most recent date where new is value if true
-    and previous otherwise
+    Assign as new sample where date and batch number are highest in the dataset, otherwise assign as previous.
     """
+    false_window = Window.partitionBy(F.lit(0))
+    df = df.withColumn("MAX_DATE", F.max(date_column).over(false_window))
+    df = df.withColumn("MAX_BATCH_NUMBER", F.max(batch_number_column).over(false_window))
     df = df.withColumn(
-        colum_name_to_assign,
+        column_name_to_assign,
         F.when(
-            ((F.col(date_column) == F.max(F.col(date_column))) & (F.col(batch_colum) == F.max(F.col(batch_colum)))),
+            ((F.col(date_column) == F.col("MAX_DATE")) & (F.col(batch_number_column) == F.col("MAX_BATCH_NUMBER"))),
             "new",
         ).otherwise("previous"),
     )
-    return df
+    return df.drop("MAX_DATE", "MAX_BATCH_NUMBER")
 
 
 def count_distinct_in_filtered_df(
@@ -161,8 +163,9 @@ def assign_tranche_factor(
         group_by_columns=group_by_columns,
     )
 
+    df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
-        F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
+        F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER")
     )
     df = count_distinct_in_filtered_df(
         df=df,
@@ -179,4 +182,4 @@ def assign_tranche_factor(
             / F.col("number_sampled_households_tranche_by_strata_enrolment"),
         ).otherwise("missing"),
     )
-    return df.drop(barcode_ref_column)
+    return df.drop(barcode_ref_column, "MAX_TRANCHE_NUMBER")
