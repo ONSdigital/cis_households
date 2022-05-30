@@ -292,8 +292,8 @@ validation_schemas = {
         "sample_direct": string_dict,
         "tranche": string_dict,
         "interim_id": string_dict,
-        "design_weight_HH": string_dict,
-        "design_weight_hh_atb": string_dict,
+        "dweight_HH": string_dict,
+        "dweight_hh_atb": string_dict,
     },
     "new_sample_file_schema": {
         "UAC": string_dict,
