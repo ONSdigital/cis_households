@@ -20,10 +20,10 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     """
     Populate a pyspark date column with the date contained in the filename column
     """
-    date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{4})?[.](csv|txt)", 1)
+    date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 1)
     time = F.when(
-        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{4})?[.](csv|txt)", 2) == "", "_000000"
-    ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{4})?[.](csv|txt)", 2))
+        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "", "_000000"
+    ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
     df = df.withColumn(column_name_to_assign, F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"))
     return df
 
