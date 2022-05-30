@@ -125,7 +125,7 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
-    new_sample_df = new_sample_df.withColumn("sample_source", new_sample_source_name)
+    new_sample_df = new_sample_df.withColumn("sample_source_name", new_sample_source_name)
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
