@@ -1,10 +1,10 @@
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.weights import calculate_combined_dweight_swabs
+from cishouseholds.weights.weights import calculate_combined_design_weight_swabs
 
 
-def test_calculate_combined_dweight_swabs(spark_session):
+def test_calculate_combined_design_weight_swabs(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             (1, 1, 1),
@@ -28,7 +28,7 @@ def test_calculate_combined_dweight_swabs(spark_session):
         """,
     )
     window = Window.partitionBy("window")
-    output_df = calculate_combined_dweight_swabs(
+    output_df = calculate_combined_design_weight_swabs(
         df=input_df,
         design_weight_column="combined_design_weight_swab",
         num_households_column="number_of_households_by_cis_area",
