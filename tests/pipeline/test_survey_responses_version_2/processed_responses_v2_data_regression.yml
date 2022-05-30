@@ -1,4 +1,4 @@
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -6,15 +6,14 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: null
   bad_email: false
+  been_outside_uk: null
   been_outside_uk_last_country: NAMIBIA
-  been_outside_uk_last_date: '2020-09-10 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: null
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
-  care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -41,19 +40,21 @@
   consent_5_visits: 'Yes'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: null
+  consent_blood_samples_if_positive_yn: null
   consent_blood_test: 'No'
   consent_contact_extra_research: 'Yes'
-  consent_contact_extra_researchyn: 'No'
+  consent_contact_extra_research_yn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
-  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Northamptonshire
+  currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: null
   date_of_birth: '1982-12-15 17:07:00.000000'
   days_since_think_had_covid: 6.0
   days_since_think_had_covid_group: 0-14
@@ -62,19 +63,17 @@
   ethnic_group: Asian or Asian British
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: I don't even care.
+  ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: null
-  face_covering_work: Never
+  face_covering_work_or_education: Never
   first_name: Clemmie
   gender: Prefer not to say
   have_email_address: null
-  have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'No'
-  have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
   hh_id: '392744995712'
   hospital_last_28_days: 'Yes'
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No I haven’t, but someone else in my household
     has
@@ -85,110 +84,87 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   improved_visit_date: null
-  infant_1_age: 6.0
-  infant_2_age: 2.0
-  infant_3_age: 0.0
-  infant_4_age: 8.0
-  infant_5_age: 0.0
-  infant_6_age: 2.0
-  infant_7_age: 7.0
-  infant_8_age: 3.0
-  is_regularly_lateral_flow_testing: null
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: Yes for other reasons related to reducing your risk
-    of getting COVID-19 (e.g. going into hospital orshielding)
+  infant_age_months_1: 6.0
+  infant_age_months_2: 2.0
+  infant_age_months_3: 0.0
+  infant_age_months_4: 8.0
+  infant_age_months_5: 0.0
+  infant_age_months_6: 2.0
+  infant_age_months_7: 7.0
+  infant_age_months_8: 3.0
   last_covid_contact_date: null
-  last_covid_contact_location: Living in your own home
+  last_covid_contact_type: Living in your own home
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_location: Living in your own home
-  long_covid_abdominal_pain: 'No'
-  long_covid_chest_pain: 'No'
-  long_covid_cough: null
-  long_covid_diarrhoea: 'No'
-  long_covid_difficulty_concentrating: 'Yes'
-  long_covid_fever: 'No'
-  long_covid_headache: null
-  long_covid_loss_of_appetite: 'Yes'
-  long_covid_loss_of_smell: 'Yes'
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'Yes'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: null
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: 'No'
-  long_covid_reduce_activities: null
-  long_covid_runny_nose_sneezing: null
-  long_covid_shortness_of_breath: 'Yes'
-  long_covid_sore_throat: null
-  long_covid_symptoms: null
-  long_covid_trouble_sleeping: null
-  long_covid_vertigo_dizziness: 'Yes'
-  long_covid_weakness_tiredness: null
-  long_covid_worry_anxiety: null
+  last_suspected_covid_type: Living in your own home
   middle_name: Clarence
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
   no_venous_blood_taken_reason: Participant dehydrated
   not_attended_reason: Doctor Appointment
   ons_household_id: '392744995712'
+  other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
   other_antibody_test_results: All Tests failed
-  other_antibody_test_since_last_visit: 'No'
-  other_pcr_test_first_positive_date: '2022-01-08 00:00:00.000000'
-  other_pcr_test_last_negative_date: null
-  other_pcr_test_results: One or more positive test(s)
-  other_pcr_test_since_last_visit: null
+  other_covid_infection_test: null
+  other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: null
+  other_covid_infection_test_results: One or more positive test(s)
+  other_household_member_care_home_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: PS0F
   participant_id: DHR-455927236237
   participant_survey_status: Active
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: null
-  person_1_not_consenting_age: 61.0
-  person_1_not_present_age: '76'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
+  participant_withdrawal_type: On Holiday
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_not_consenting_age: 20.0
-  person_2_not_present_age: '56'
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_not_consenting_age: 26.0
-  person_3_not_present_age: '60'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_not_consenting_age: 92.0
-  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Let them eat cake.
-  person_5_not_consenting_age: 9.0
-  person_5_not_present_age: '27'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_not_consenting_age: null
-  person_6_not_present_age: '86'
   person_6_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_7_not_consenting_age: null
-  person_7_not_present_age: '10'
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '56'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
+  person_not_consenting_age_1: 61.0
+  person_not_consenting_age_2: 20.0
+  person_not_consenting_age_3: 26.0
+  person_not_consenting_age_4: 92.0
+  person_not_consenting_age_5: 9.0
+  person_not_consenting_age_6: null
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 76.0
+  person_not_present_age_2: 56.0
+  person_not_present_age_3: 60.0
+  person_not_present_age_4: null
+  person_not_present_age_5: 27.0
+  person_not_present_age_6: 86.0
+  person_not_present_age_7: 10.0
+  person_not_present_age_8: 56.0
   physical_contact_18_to_69_years: Participant Would Not/Could Not Answer
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: 21 or more
   postcode: PS0F2CG
-  prefer_receive_vouchers: Email
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: null
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Yes for other reasons related to reducing your risk of getting
+    COVID-19 (e.g. going into hospital orshielding)
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
-  smokes_or_vapes: Cigar
-  smokes_or_vapes_description: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 1-5
@@ -197,87 +173,111 @@
   street: Harford
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: 'Yes'
-  symptoms_last_7_days_any_raw: 'Yes'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: null
-  symptoms_last_7_days_diarrhoea: 'No'
-  symptoms_last_7_days_difficulty_concentrating: null
-  symptoms_last_7_days_fatigue_weakness: 'No'
-  symptoms_last_7_days_fever: 'Yes'
-  symptoms_last_7_days_headache: 'Yes'
-  symptoms_last_7_days_loss_of_appetite: null
-  symptoms_last_7_days_loss_of_smell: 'No'
-  symptoms_last_7_days_loss_of_taste: 'No'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: null
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: 'No'
-  symptoms_last_7_days_onset_date: null
-  symptoms_last_7_days_palpitations: 'Yes'
-  symptoms_last_7_days_runny_nose_sneezing: 'No'
-  symptoms_last_7_days_shortness_of_breath: null
-  symptoms_last_7_days_sore_throat: null
-  symptoms_last_7_days_vertigo_dizziness: null
-  symptoms_last_7_days_worry_anxiety: null
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: 'No'
-  symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_diarrhoea: 'Yes'
-  symptoms_since_last_visit_difficulty_concentrating: 'No'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: 'No'
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: 'No'
-  symptoms_since_last_visit_loss_of_smell: 'No'
-  symptoms_since_last_visit_loss_of_taste: 'Yes'
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'No'
-  symptoms_since_last_visit_memory_loss_or_confusion: null
-  symptoms_since_last_visit_more_trouble_sleeping: null
-  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
-  symptoms_since_last_visit_nausea_vomiting: 'Yes'
-  symptoms_since_last_visit_noisy_breathing_wheezing: null
-  symptoms_since_last_visit_palpitations: 'Yes'
-  symptoms_since_last_visit_runny_nose_sneezing: null
-  symptoms_since_last_visit_shortness_of_breath: 'Yes'
-  symptoms_since_last_visit_sore_throat: 'Yes'
-  symptoms_since_last_visit_vertigo_dizziness: 'No'
-  symptoms_since_last_visit_worry_anxiety: null
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_chest_pain: 'No'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_difficulty_concentrating: 'No'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: 'No'
+  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_low_mood: 'No'
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_palpitations: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: 'Yes'
+  think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: 'No'
+  think_have_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'No'
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: 'No'
+  think_have_covid_symptom_fever: 'Yes'
+  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: 'No'
+  think_have_covid_symptom_loss_of_taste: 'No'
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: 'No'
+  think_have_covid_symptom_onset_date: null
+  think_have_covid_symptom_palpitations: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_covid_symptom_vertigo_or_dizziness: null
+  think_have_long_covid: 'Yes'
+  think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_chest_pain: 'No'
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: 'No'
+  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: 'No'
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_long_covid_symptom_loss_of_smell: 'Yes'
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: 'No'
+  think_have_long_covid_symptom_reduced_ability: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
   times_outside_shopping_or_socialising_last_7_days: 3
   times_shopping_last_7_days: '6'
-  times_socialise_last_7_days: '0'
+  times_socialising_last_7_days: '0'
   title: Dr.
-  transport_to_work_or_school: Bus, minibus, coach
+  transport_to_work_or_education: Bus, minibus, coach
   unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-07 10:41:50
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-07 10:41:50.000000'
   visit_id: DHVF-0156218256
   visit_order: Month 13
-  visit_type: First Visit
+  voucher_type_preference: Email
   which_symptoms_last_7_days: Fever
-  withdrawal_reason: Withdrawn_no_future_linkage
-  withdrawal_reason_raw: Withdrawn_no_future_linkage
-  withdrawal_type: On Holiday
-  work_direct_contact_patients_clients: 'No'
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
-  work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
-  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
+  work_direct_contact_patients_or_clients: 'No'
+  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Other healthcare (e.g. mental health)
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
@@ -291,14 +291,14 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_sectors: Retail sector (incl. wholesale)
-  work_sectors_other: I don't even care.
+  work_sector: Retail sector (incl. wholesale)
+  work_sector_other: I don't even care.
   work_social_care: 'No'
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -306,15 +306,14 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
+  been_outside_uk: null
   been_outside_uk_last_country: JAMAICA
-  been_outside_uk_last_date: '2021-01-25 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-01-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: null
   blood_sample_barcode: null
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   care_home_last_28_days: null
-  care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: '2022-01-07 00:00:00.000000'
@@ -341,19 +340,21 @@
   consent_5_visits: 'Yes'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_samples_if_positive_yn: 'Yes'
   consent_blood_test: 'Yes'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
-  consent_use_of_surplus_blood_samplesyn: 'No'
+  consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: null
+  currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '2021-12-18 13:14:00.000000'
   days_since_think_had_covid: 0.0
   days_since_think_had_covid_group: 0-14
@@ -363,19 +364,17 @@
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ever_smoked_regularly: null
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: null
-  face_covering_work: Never
+  face_covering_work_or_education: Never
   first_name: Honey
   gender: Female
   have_email_address: 'No'
-  have_ever_smoked_regularly: null
   have_landline_number: null
-  have_long_covid_symptoms: 'No'
   have_mobile_number: 'Yes'
   hh_id: '261449825198'
   hospital_last_28_days: null
-  hospital_last_28_days_other_household_member: 'No'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No, no one in my household has
@@ -385,110 +384,87 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  infant_1_age: null
-  infant_2_age: 0.0
-  infant_3_age: 7.0
-  infant_4_age: 2.0
-  infant_5_age: null
-  infant_6_age: 8.0
-  infant_7_age: null
-  infant_8_age: 0.0
-  is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: null
+  infant_age_months_2: 0.0
+  infant_age_months_3: 7.0
+  infant_age_months_4: 2.0
+  infant_age_months_5: null
+  infant_age_months_6: 8.0
+  infant_age_months_7: null
+  infant_age_months_8: 0.0
   last_covid_contact_date: null
-  last_covid_contact_location: Living in your own home
+  last_covid_contact_type: Living in your own home
   last_name: Hunt
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_location: Outside your home
-  long_covid_abdominal_pain: 'Yes'
-  long_covid_chest_pain: 'Yes'
-  long_covid_cough: null
-  long_covid_diarrhoea: null
-  long_covid_difficulty_concentrating: null
-  long_covid_fever: null
-  long_covid_headache: 'Yes'
-  long_covid_loss_of_appetite: null
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'Yes'
-  long_covid_memory_loss_or_confusion: 'No'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: 'Yes'
-  long_covid_noisy_breathing: 'Yes'
-  long_covid_palpitations: 'No'
-  long_covid_reduce_activities: null
-  long_covid_runny_nose_sneezing: 'Yes'
-  long_covid_shortness_of_breath: 'No'
-  long_covid_sore_throat: null
-  long_covid_symptoms: Difficulty concentrating
-  long_covid_trouble_sleeping: 'No'
-  long_covid_vertigo_dizziness: 'No'
-  long_covid_weakness_tiredness: 'Yes'
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: Outside your home
   middle_name: Gale
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
   no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
   not_attended_reason: Phone not answered
   ons_household_id: '261449825198'
+  other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Home test
   other_antibody_test_results: Waiting for all results
-  other_antibody_test_since_last_visit: 'No'
-  other_pcr_test_first_positive_date: null
-  other_pcr_test_last_negative_date: null
-  other_pcr_test_results: Any tests negative, but none positive
-  other_pcr_test_since_last_visit: 'Yes'
+  other_covid_infection_test: 'Yes'
+  other_covid_infection_test_first_positive_date: null
+  other_covid_infection_test_last_negative_date: null
+  other_covid_infection_test_results: Any tests negative, but none positive
+  other_household_member_care_home_last_28_days: 'No'
+  other_household_member_hospital_last_28_days: 'No'
   outward_postcode: TE4H
   participant_id: DHR-077145284257
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_not_consenting_age: 12.0
-  person_1_not_present_age: '70'
+  participant_withdrawal_reason: null
+  participant_withdrawal_reason_raw: null
+  participant_withdrawal_type: Phone not answered
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_2_not_consenting_age: 34.0
-  person_2_not_present_age: '43'
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_not_consenting_age: 23.0
-  person_3_not_present_age: '24'
   person_3_reason_for_not_consenting: Here's looking at you, kid.
-  person_4_not_consenting_age: null
-  person_4_not_present_age: '38'
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_not_consenting_age: null
-  person_5_not_present_age: '49'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_not_consenting_age: 23.0
-  person_6_not_present_age: '18'
   person_6_reason_for_not_consenting: Here's looking at you, kid.
-  person_7_not_consenting_age: 87.0
-  person_7_not_present_age: '91'
   person_7_reason_for_not_consenting: Elementary, my dear Watson.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '44'
   person_8_reason_for_not_consenting: Elementary, my dear Watson.
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Houston, we have a problem.
+  person_not_consenting_age_1: 12.0
+  person_not_consenting_age_2: 34.0
+  person_not_consenting_age_3: 23.0
+  person_not_consenting_age_4: null
+  person_not_consenting_age_5: null
+  person_not_consenting_age_6: 23.0
+  person_not_consenting_age_7: 87.0
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 70.0
+  person_not_present_age_2: 43.0
+  person_not_present_age_3: 24.0
+  person_not_present_age_4: 38.0
+  person_not_present_age_5: 49.0
+  person_not_present_age_6: 18.0
+  person_not_present_age_7: 91.0
+  person_not_present_age_8: 44.0
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: TE4H2TC
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
+  regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: null
+  self_isolating: null
+  self_isolating_reason: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
-  smokes_or_vapes: Cigar
-  smokes_or_vapes_description: Yes, vape/e-cigarettes
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: '0'
@@ -497,87 +473,111 @@
   street: Invergourie
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: 'No'
-  symptoms_last_7_days_any_raw: 'No'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: 'Yes'
-  symptoms_last_7_days_diarrhoea: 'Yes'
-  symptoms_last_7_days_difficulty_concentrating: 'No'
-  symptoms_last_7_days_fatigue_weakness: 'No'
-  symptoms_last_7_days_fever: null
-  symptoms_last_7_days_headache: 'Yes'
-  symptoms_last_7_days_loss_of_appetite: null
-  symptoms_last_7_days_loss_of_smell: null
-  symptoms_last_7_days_loss_of_taste: null
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: null
-  symptoms_last_7_days_more_trouble_sleeping: null
-  symptoms_last_7_days_muscle_ache_myalgia: 'Yes'
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-09 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'Yes'
-  symptoms_last_7_days_runny_nose_sneezing: null
-  symptoms_last_7_days_shortness_of_breath: 'No'
-  symptoms_last_7_days_sore_throat: null
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'No'
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: 'No'
-  symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'Yes'
-  symptoms_since_last_visit_fatigue_weakness: 'No'
-  symptoms_since_last_visit_fever: 'No'
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: null
-  symptoms_since_last_visit_loss_of_smell: 'No'
-  symptoms_since_last_visit_loss_of_taste: 'Yes'
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'No'
-  symptoms_since_last_visit_memory_loss_or_confusion: 'Yes'
-  symptoms_since_last_visit_more_trouble_sleeping: null
-  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
-  symptoms_since_last_visit_nausea_vomiting: null
-  symptoms_since_last_visit_noisy_breathing_wheezing: null
-  symptoms_since_last_visit_palpitations: 'Yes'
-  symptoms_since_last_visit_runny_nose_sneezing: null
-  symptoms_since_last_visit_shortness_of_breath: null
-  symptoms_since_last_visit_sore_throat: null
-  symptoms_since_last_visit_vertigo_dizziness: 'Yes'
-  symptoms_since_last_visit_worry_anxiety: null
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_chest_pain: 'No'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'Yes'
+  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_low_mood: 'No'
+  think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_palpitations: 'Yes'
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: Maybe
-  think_have_covid_symptoms: 'No'
+  think_have_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'No'
+  think_have_covid_symptom_any: 'No'
+  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: 'Yes'
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: 'No'
+  think_have_covid_symptom_fatigue: 'No'
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_symptom_palpitations: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: 'No'
+  think_have_covid_symptom_sore_throat: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'No'
+  think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: 'Yes'
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: 'Yes'
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: 'Yes'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'Yes'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_long_covid_symptom_noisy_breathing: 'Yes'
+  think_have_long_covid_symptom_palpitations: 'No'
+  think_have_long_covid_symptom_reduced_ability: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_long_covid_symptom_shortness_of_breath: 'No'
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid_symptoms: Difficulty concentrating
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
-  times_socialise_last_7_days: '3'
+  times_socialising_last_7_days: '3'
   title: Prof.
-  transport_to_work_or_school: Other method
+  transport_to_work_or_education: Car or van
   unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-08 00:10:59.000000'
   visit_id: DHVF-0988308904
   visit_order: Month 6
-  visit_type: First Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
-  withdrawal_reason: null
-  withdrawal_reason_raw: null
-  withdrawal_type: Phone not answered
-  work_direct_contact_patients_clients: 'No'
-  work_health_care_v0: Yes, secondary care, non-patient-facing
-  work_health_care_v1_v2: Yes, in secondary care, e.g. hospital
-  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
+  work_direct_contact_patients_or_clients: 'No'
+  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_raw: Secondary care (e.g. hospital)
+  work_health_care_patient_facing: Yes, secondary care, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
@@ -588,19 +588,19 @@
     evaluation.
   work_main_job_title_raw: Haskell features a type system with type inference and
     lazy evaluation.
-  work_not_from_home_days_per_week: '4'
-  work_not_from_home_days_per_week_raw: '4'
+  work_not_from_home_days_per_week: '5'
+  work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
-  work_sectors: Food production, agriculture, farming
-  work_sectors_other: Any element of a tuple can be accessed in constant time.
+  work_sector: Food production, agriculture, farming
+  work_sector_other: Any element of a tuple can be accessed in constant time.
   work_social_care: 'No'
   work_status_v0: Employed
   work_status_v1: Employed and currently working
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
@@ -608,15 +608,14 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: null
+  been_outside_uk: 'Yes'
   been_outside_uk_last_country: OMAN
-  been_outside_uk_last_date: null
+  been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: null
-  care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_1: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -643,19 +642,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: null
+  consent_blood_samples_if_positive_yn: null
   consent_blood_test: 'No'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
-  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: null
   county: Derbyshire
+  currently_smokes_or_vapes: Vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '1997-02-07 18:56:00.000000'
   days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
@@ -664,19 +665,17 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Mixed-White & Black African
   ethnicity_other: Make me a sandwich.
+  ever_smoked_regularly: null
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered
-  face_covering_work: Yes, sometimes
+  face_covering_work_or_education: Yes, sometimes
   first_name: Shawnee
   gender: Prefer not to say
   have_email_address: 'No'
-  have_ever_smoked_regularly: null
   have_landline_number: 'Yes'
-  have_long_covid_symptoms: null
   have_mobile_number: 'Yes'
   hh_id: '704542495687'
   hospital_last_28_days: null
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No I haven’t, but someone else in my household
@@ -687,111 +686,88 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  infant_1_age: 4.0
-  infant_2_age: 7.0
-  infant_3_age: 0.0
-  infant_4_age: 5.0
-  infant_5_age: 6.0
-  infant_6_age: 6.0
-  infant_7_age: 2.0
-  infant_8_age: 4.0
-  is_regularly_lateral_flow_testing: null
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: 4.0
+  infant_age_months_2: 7.0
+  infant_age_months_3: 0.0
+  infant_age_months_4: 5.0
+  infant_age_months_5: 6.0
+  infant_age_months_6: 6.0
+  infant_age_months_7: 2.0
+  infant_age_months_8: 4.0
   last_covid_contact_date: null
-  last_covid_contact_location: null
+  last_covid_contact_type: null
   last_name: Waters
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_location: null
-  long_covid_abdominal_pain: null
-  long_covid_chest_pain: 'No'
-  long_covid_cough: 'No'
-  long_covid_diarrhoea: null
-  long_covid_difficulty_concentrating: 'Yes'
-  long_covid_fever: 'No'
-  long_covid_headache: 'No'
-  long_covid_loss_of_appetite: null
-  long_covid_loss_of_smell: 'No'
-  long_covid_loss_of_taste: 'No'
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'Yes'
-  long_covid_muscle_ache: 'No'
-  long_covid_nausea_vomiting: 'No'
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: null
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: null
-  long_covid_shortness_of_breath: 'No'
-  long_covid_sore_throat: 'No'
-  long_covid_symptoms: Shortness of breath
-  long_covid_trouble_sleeping: 'No'
-  long_covid_vertigo_dizziness: 'Yes'
-  long_covid_weakness_tiredness: 'Yes'
-  long_covid_worry_anxiety: 'No'
+  last_suspected_covid_type: null
   middle_name: Isaac
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Participant refused
   not_attended_reason: On Holiday
   ons_household_id: '704542495687'
+  other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Home test
   other_antibody_test_results: Any tests negative, but none negative
-  other_antibody_test_since_last_visit: 'No'
-  other_pcr_test_first_positive_date: '2022-01-05 00:00:00.000000'
-  other_pcr_test_last_negative_date: null
-  other_pcr_test_results: Waiting for all results
-  other_pcr_test_since_last_visit: 'No'
+  other_covid_infection_test: 'No'
+  other_covid_infection_test_first_positive_date: '2022-01-05 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: null
+  other_covid_infection_test_results: Waiting for all results
+  other_household_member_care_home_last_28_days: null
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: null
   participant_id: DHR-603506140323
   participant_survey_status: Withdrawn
   participant_testing_group: null
   participant_visit_status: Re-scheduled
-  person_1_not_consenting_age: 81.0
-  person_1_not_present_age: '40'
+  participant_withdrawal_reason: Withdrawn
+  participant_withdrawal_reason_raw: Withdrawn
+  participant_withdrawal_type: At School
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_not_consenting_age: 89.0
-  person_2_not_present_age: '24'
   person_2_reason_for_not_consenting: Houston, we have a problem.
-  person_3_not_consenting_age: 28.0
-  person_3_not_present_age: '76'
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_4_not_consenting_age: null
-  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Here's looking at you, kid.
-  person_5_not_consenting_age: 8.0
-  person_5_not_present_age: '22'
   person_5_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_6_not_consenting_age: 49.0
-  person_6_not_present_age: '56'
   person_6_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_7_not_consenting_age: 70.0
-  person_7_not_present_age: '2'
   person_7_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '18'
   person_8_reason_for_not_consenting: Let them eat cake.
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
+  person_not_consenting_age_1: 81.0
+  person_not_consenting_age_2: 89.0
+  person_not_consenting_age_3: 28.0
+  person_not_consenting_age_4: null
+  person_not_consenting_age_5: 8.0
+  person_not_consenting_age_6: 49.0
+  person_not_consenting_age_7: 70.0
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 40.0
+  person_not_present_age_2: 24.0
+  person_not_present_age_3: 76.0
+  person_not_present_age_4: null
+  person_not_present_age_5: 22.0
+  person_not_present_age_6: 56.0
+  person_not_present_age_7: 2.0
+  person_not_present_age_8: 18.0
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 1-5
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: null
   samples_taken_datetime: null
+  self_isolating: null
+  self_isolating_reason: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: 'No'
-  smokes_or_vapes: Vape/e-cigarettes
-  smokes_or_vapes_description: Yes, vape/e-cigarettes
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 6-10
@@ -800,90 +776,114 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
-  symptoms_last_7_days_any_raw: 'Yes'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: null
-  symptoms_last_7_days_diarrhoea: 'Yes'
-  symptoms_last_7_days_difficulty_concentrating: null
-  symptoms_last_7_days_fatigue_weakness: null
-  symptoms_last_7_days_fever: 'No'
-  symptoms_last_7_days_headache: null
-  symptoms_last_7_days_loss_of_appetite: 'Yes'
-  symptoms_last_7_days_loss_of_smell: 'No'
-  symptoms_last_7_days_loss_of_taste: 'No'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: null
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: 'Yes'
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: 'Yes'
-  symptoms_last_7_days_noisy_breathing_wheezing: 'No'
-  symptoms_last_7_days_onset_date: null
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: null
-  symptoms_last_7_days_shortness_of_breath: null
-  symptoms_last_7_days_sore_throat: 'Yes'
-  symptoms_last_7_days_vertigo_dizziness: 'Yes'
-  symptoms_last_7_days_worry_anxiety: null
-  symptoms_since_last_visit_abdominal_pain: null
-  symptoms_since_last_visit_chest_pain: 'Yes'
-  symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_diarrhoea: 'No'
-  symptoms_since_last_visit_difficulty_concentrating: 'No'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: 'Yes'
-  symptoms_since_last_visit_headache: null
-  symptoms_since_last_visit_loss_of_appetite: 'No'
-  symptoms_since_last_visit_loss_of_smell: 'Yes'
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: 'Yes'
-  symptoms_since_last_visit_more_trouble_sleeping: 'Yes'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: null
-  symptoms_since_last_visit_palpitations: 'No'
-  symptoms_since_last_visit_runny_nose_sneezing: 'Yes'
-  symptoms_since_last_visit_shortness_of_breath: 'Yes'
-  symptoms_since_last_visit_sore_throat: 'No'
-  symptoms_since_last_visit_vertigo_dizziness: 'Yes'
-  symptoms_since_last_visit_worry_anxiety: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'Yes'
+  think_had_covid_symptom_chest_pain: 'Yes'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_difficulty_concentrating: 'No'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: 'No'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_palpitations: 'No'
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: 'Yes'
+  think_have_covid: 'Yes'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: 'No'
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_covid_symptom_loss_of_smell: 'No'
+  think_have_covid_symptom_loss_of_taste: 'No'
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_covid_symptom_noisy_breathing: 'No'
+  think_have_covid_symptom_onset_date: null
+  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid: null
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: 'No'
+  think_have_long_covid_symptom_chest_pain: 'No'
+  think_have_long_covid_symptom_cough: 'No'
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_long_covid_symptom_fatigue: 'Yes'
+  think_have_long_covid_symptom_fever: 'No'
+  think_have_long_covid_symptom_headache: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: 'No'
+  think_have_long_covid_symptom_loss_of_taste: 'No'
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_long_covid_symptom_muscle_ache: 'No'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: null
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: 'No'
+  think_have_long_covid_symptom_sore_throat: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid_symptoms: Shortness of breath
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '2'
-  times_socialise_last_7_days: null
+  times_socialising_last_7_days: null
   title: Miss.
-  transport_to_work_or_school: Bicycle
+  transport_to_work_or_education: Bicycle
   unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-04 02:59:45.000000'
   visit_id: DHVF-2240364141
   visit_order: Month 12
-  visit_type: First Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: null
-  withdrawal_reason: Withdrawn
-  withdrawal_reason_raw: Withdrawn
-  withdrawal_type: At School
-  work_direct_contact_patients_clients: 'No'
-  work_health_care_v0: null
-  work_health_care_v1_v2: null
-  work_health_care_v1_v2_raw: null
+  work_direct_contact_patients_or_clients: 'No'
+  work_health_care_area: null
+  work_health_care_area_raw: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
@@ -893,14 +893,14 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
-  work_sectors: Armed forces
-  work_sectors_other: Ports are created with the built-in function open_port.
+  work_sector: Armed forces
+  work_sector_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Easy to maintain 2m
+- ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -908,15 +908,14 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: null
+  been_outside_uk: null
   been_outside_uk_last_country: VENEZUELA
-  been_outside_uk_last_date: '2020-06-28 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  been_outside_uk_since_last_visit: null
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
-  care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: null
@@ -943,19 +942,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: null
+  consent_blood_samples_if_positive_yn: null
   consent_blood_test: 'No'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'No'
+  consent_contact_extra_research_yn: 'No'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
-  consent_use_of_surplus_blood_samplesyn: 'No'
+  consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: North Yorkshire
+  currently_smokes_or_vapes: Cigarettes
+  currently_smokes_or_vapes_description: Yes, pipe
   date_of_birth: '1997-03-07 10:06:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -965,19 +966,17 @@
   ethnicity: Mixed-White & Asian
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: My face is already covered
-  face_covering_work: Yes, always
+  face_covering_work_or_education: Yes, always
   first_name: Remedios
   gender: null
   have_email_address: 'Yes'
-  have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'No'
-  have_long_covid_symptoms: 'No'
   have_mobile_number: 'Yes'
   hh_id: '352206298026'
   hospital_last_28_days: null
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No I haven’t, but someone else in my household
@@ -988,111 +987,88 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  infant_1_age: 7.0
-  infant_2_age: 1.0
-  infant_3_age: 3.0
-  infant_4_age: 2.0
-  infant_5_age: 3.0
-  infant_6_age: 4.0
-  infant_7_age: null
-  infant_8_age: 7.0
-  is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: 'Yes'
-  is_self_isolating_detailed: Yes, someone you live with had symptoms
+  infant_age_months_1: 7.0
+  infant_age_months_2: 1.0
+  infant_age_months_3: 3.0
+  infant_age_months_4: 2.0
+  infant_age_months_5: 3.0
+  infant_age_months_6: 4.0
+  infant_age_months_7: null
+  infant_age_months_8: 7.0
   last_covid_contact_date: null
-  last_covid_contact_location: Living in your own home
+  last_covid_contact_type: Living in your own home
   last_name: Cervantes
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_contact_location: null
-  long_covid_abdominal_pain: 'No'
-  long_covid_chest_pain: null
-  long_covid_cough: 'Yes'
-  long_covid_diarrhoea: 'No'
-  long_covid_difficulty_concentrating: 'No'
-  long_covid_fever: null
-  long_covid_headache: 'Yes'
-  long_covid_loss_of_appetite: null
-  long_covid_loss_of_smell: 'Yes'
-  long_covid_loss_of_taste: 'No'
-  long_covid_low_mood: 'Yes'
-  long_covid_memory_loss_or_confusion: 'No'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: 'No'
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: 'No'
-  long_covid_reduce_activities: null
-  long_covid_runny_nose_sneezing: 'No'
-  long_covid_shortness_of_breath: 'Yes'
-  long_covid_sore_throat: null
-  long_covid_symptoms: null
-  long_covid_trouble_sleeping: 'No'
-  long_covid_vertigo_dizziness: 'No'
-  long_covid_weakness_tiredness: 'No'
-  long_covid_worry_anxiety: 'No'
+  last_suspected_covid_type: null
   middle_name: Jae
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Two attempts made
   not_attended_reason: On Holiday
   ons_household_id: '352206298026'
+  other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Private lab
   other_antibody_test_results: Waiting for all results
-  other_antibody_test_since_last_visit: null
-  other_pcr_test_first_positive_date: null
-  other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_pcr_test_results: Any tests negative, but none positive
-  other_pcr_test_since_last_visit: null
+  other_covid_infection_test: null
+  other_covid_infection_test_first_positive_date: null
+  other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_results: Any tests negative, but none positive
+  other_household_member_care_home_last_28_days: 'No'
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: null
   participant_id: DHR-144229485098
   participant_survey_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Completed
-  person_1_not_consenting_age: 73.0
-  person_1_not_present_age: '85'
+  participant_withdrawal_reason: null
+  participant_withdrawal_reason_raw: null
+  participant_withdrawal_type: Other
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_not_consenting_age: null
-  person_2_not_present_age: '15'
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_3_not_consenting_age: null
-  person_3_not_present_age: '19'
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_4_not_consenting_age: 59.0
-  person_4_not_present_age: '5'
   person_4_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
-  person_5_not_consenting_age: 76.0
-  person_5_not_present_age: '90'
   person_5_reason_for_not_consenting: Elementary, my dear Watson.
-  person_6_not_consenting_age: null
-  person_6_not_present_age: '72'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_7_not_consenting_age: null
-  person_7_not_present_age: '38'
   person_7_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '101'
   person_8_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_9_not_consenting_age: 16.0
   person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
+  person_not_consenting_age_1: 73.0
+  person_not_consenting_age_2: null
+  person_not_consenting_age_3: null
+  person_not_consenting_age_4: 59.0
+  person_not_consenting_age_5: 76.0
+  person_not_consenting_age_6: null
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: 16.0
+  person_not_present_age_1: 85.0
+  person_not_present_age_2: 15.0
+  person_not_present_age_3: 19.0
+  person_not_present_age_4: 5.0
+  person_not_present_age_5: 90.0
+  person_not_present_age_6: 72.0
+  person_not_present_age_7: 38.0
+  person_not_present_age_8: 101.0
   physical_contact_18_to_69_years: '0'
   physical_contact_over_70_years: 1-5
   physical_contact_under_18_years: 6-10
   postcode: null
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
+  regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: null
+  self_isolating: 'Yes'
+  self_isolating_reason: Yes, someone you live with had symptoms
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'Yes'
-  smokes_or_vapes: Cigarettes
-  smokes_or_vapes_description: Yes, pipe
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 6-10
@@ -1101,90 +1077,114 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'Yes'
-  symptoms_last_7_days_any_raw: 'Yes'
-  symptoms_last_7_days_chest_pain: 'Yes'
-  symptoms_last_7_days_cough: 'No'
-  symptoms_last_7_days_diarrhoea: 'Yes'
-  symptoms_last_7_days_difficulty_concentrating: 'Yes'
-  symptoms_last_7_days_fatigue_weakness: null
-  symptoms_last_7_days_fever: 'Yes'
-  symptoms_last_7_days_headache: null
-  symptoms_last_7_days_loss_of_appetite: 'Yes'
-  symptoms_last_7_days_loss_of_smell: 'Yes'
-  symptoms_last_7_days_loss_of_taste: 'Yes'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: null
-  symptoms_last_7_days_more_trouble_sleeping: 'Yes'
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: 'Yes'
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-06 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'Yes'
-  symptoms_last_7_days_runny_nose_sneezing: 'Yes'
-  symptoms_last_7_days_shortness_of_breath: 'Yes'
-  symptoms_last_7_days_sore_throat: 'Yes'
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: null
-  symptoms_since_last_visit_abdominal_pain: null
-  symptoms_since_last_visit_chest_pain: 'No'
-  symptoms_since_last_visit_cough: 'No'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'Yes'
-  symptoms_since_last_visit_fatigue_weakness: 'No'
-  symptoms_since_last_visit_fever: null
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: 'No'
-  symptoms_since_last_visit_loss_of_smell: 'Yes'
-  symptoms_since_last_visit_loss_of_taste: 'No'
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: 'No'
-  symptoms_since_last_visit_more_trouble_sleeping: 'No'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
-  symptoms_since_last_visit_nausea_vomiting: 'Yes'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'Yes'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'No'
-  symptoms_since_last_visit_shortness_of_breath: null
-  symptoms_since_last_visit_sore_throat: null
-  symptoms_since_last_visit_vertigo_dizziness: 'No'
-  symptoms_since_last_visit_worry_anxiety: null
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_chest_pain: 'No'
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'Yes'
+  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: 'No'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: 'No'
+  think_had_covid_symptom_more_trouble_sleeping: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_had_covid_symptom_noisy_breathing: 'Yes'
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: 'No'
+  think_have_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
+  think_have_covid_symptom_chest_pain: 'Yes'
+  think_have_covid_symptom_cough: 'No'
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: 'Yes'
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_covid_symptom_loss_of_smell: 'Yes'
+  think_have_covid_symptom_loss_of_taste: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_symptom_palpitations: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'No'
+  think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: 'No'
+  think_have_long_covid_symptom_chest_pain: null
+  think_have_long_covid_symptom_cough: 'Yes'
+  think_have_long_covid_symptom_diarrhoea: 'No'
+  think_have_long_covid_symptom_difficulty_concentrating: 'No'
+  think_have_long_covid_symptom_fatigue: 'No'
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: 'Yes'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: 'Yes'
+  think_have_long_covid_symptom_loss_of_taste: 'No'
+  think_have_long_covid_symptom_low_mood: 'Yes'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: 'No'
+  think_have_long_covid_symptom_reduced_ability: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid_symptoms: null
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
-  times_socialise_last_7_days: null
+  times_socialising_last_7_days: null
   title: Mr.
-  transport_to_work_or_school: On foot
+  transport_to_work_or_education: On foot
   unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-01 21:15:29.000000'
   visit_id: DHVF-4476904382
   visit_order: Month 14
-  visit_type: Follow-up Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Weakness/tiredness
-  withdrawal_reason: null
-  withdrawal_reason_raw: null
-  withdrawal_type: Other
-  work_direct_contact_patients_clients: 'Yes'
-  work_health_care_v0: null
-  work_health_care_v1_v2: null
-  work_health_care_v1_v2_raw: null
+  work_direct_contact_patients_or_clients: 'Yes'
+  work_health_care_area: null
+  work_health_care_area_raw: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: 'No'
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
@@ -1195,8 +1195,8 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'No'
-  work_sectors: Armed forces
-  work_sectors_other: The Galactic Empire is nearing completion of the Death Star,
+  work_sector: Armed forces
+  work_sector_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_social_care: 'No'
   work_status_v0: Attending university (including if temporarily absent)Self-employed
@@ -1207,8 +1207,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: 'Yes'
@@ -1216,15 +1216,14 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
+  been_outside_uk: 'No'
   been_outside_uk_last_country: PAKISTAN
-  been_outside_uk_last_date: '2020-04-27 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: null
-  care_home_last_28_days_other_household_member: 'No'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-06 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -1251,19 +1250,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
-  consent_blood_samples_if_positiveyn: 'No'
+  consent_blood_samples_if_positive_yn: 'No'
   consent_blood_test: 'No'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: null
+  consent_contact_extra_research_yn: null
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: 'No'
+  consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_smokes_or_vapes: Vape/e-cigarettes
+  currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '2015-04-22 10:53:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1273,19 +1274,17 @@
   ethnicity: Other ethnic group-Arab
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ever_smoked_regularly: null
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, at work/school only
-  face_covering_work: Yes, always
+  face_covering_work_or_education: Yes, always
   first_name: Forest
   gender: Male
   have_email_address: 'Yes'
-  have_ever_smoked_regularly: null
   have_landline_number: 'Yes'
-  have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
   hh_id: '248046164260'
   hospital_last_28_days: 'No'
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No I haven’t, but someone else in my household
@@ -1296,111 +1295,88 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
-  infant_1_age: null
-  infant_2_age: 5.0
-  infant_3_age: null
-  infant_4_age: 1.0
-  infant_5_age: 0.0
-  infant_6_age: 1.0
-  infant_7_age: 6.0
-  infant_8_age: 6.0
-  is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: null
+  infant_age_months_2: 5.0
+  infant_age_months_3: null
+  infant_age_months_4: 1.0
+  infant_age_months_5: 0.0
+  infant_age_months_6: 1.0
+  infant_age_months_7: 6.0
+  infant_age_months_8: 6.0
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_covid_contact_location: null
+  last_covid_contact_type: null
   last_name: Meyers
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_contact_location: Living in your own home
-  long_covid_abdominal_pain: null
-  long_covid_chest_pain: 'No'
-  long_covid_cough: 'Yes'
-  long_covid_diarrhoea: null
-  long_covid_difficulty_concentrating: 'Yes'
-  long_covid_fever: 'Yes'
-  long_covid_headache: 'No'
-  long_covid_loss_of_appetite: 'Yes'
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'Yes'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: null
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: null
-  long_covid_reduce_activities: Not at all
-  long_covid_runny_nose_sneezing: 'No'
-  long_covid_shortness_of_breath: null
-  long_covid_sore_throat: null
-  long_covid_symptoms: Shortness of breath
-  long_covid_trouble_sleeping: null
-  long_covid_vertigo_dizziness: 'Yes'
-  long_covid_weakness_tiredness: null
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: Living in your own home
   middle_name: Buck
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
   no_venous_blood_taken_reason: null
   not_attended_reason: Doctor Appointment
   ons_household_id: '248046164260'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
   other_antibody_test_results: Any tests negative, but none negative
-  other_antibody_test_since_last_visit: 'Yes'
-  other_pcr_test_first_positive_date: null
-  other_pcr_test_last_negative_date: '2022-01-06 00:00:00.000000'
-  other_pcr_test_results: One or more positive test(s)
-  other_pcr_test_since_last_visit: 'No'
+  other_covid_infection_test: 'No'
+  other_covid_infection_test_first_positive_date: null
+  other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
+  other_covid_infection_test_results: One or more positive test(s)
+  other_household_member_care_home_last_28_days: 'No'
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: null
   participant_id: DHR-858742267562
   participant_survey_status: Active
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Patient did not attend
-  person_1_not_consenting_age: 12.0
-  person_1_not_present_age: '23'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
+  participant_withdrawal_type: Doctor Appointment
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_not_consenting_age: 57.0
-  person_2_not_present_age: null
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_not_consenting_age: null
-  person_3_not_present_age: null
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_4_not_consenting_age: 78.0
-  person_4_not_present_age: '91'
   person_4_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_5_not_consenting_age: null
-  person_5_not_present_age: '59'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_not_consenting_age: 76.0
-  person_6_not_present_age: '59'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_not_consenting_age: null
-  person_7_not_present_age: '87'
   person_7_reason_for_not_consenting: Let them eat cake.
-  person_8_not_consenting_age: 98.0
-  person_8_not_present_age: '2'
   person_8_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Houston, we have a problem.
+  person_not_consenting_age_1: 12.0
+  person_not_consenting_age_2: 57.0
+  person_not_consenting_age_3: null
+  person_not_consenting_age_4: 78.0
+  person_not_consenting_age_5: null
+  person_not_consenting_age_6: 76.0
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: 98.0
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 23.0
+  person_not_present_age_2: null
+  person_not_present_age_3: null
+  person_not_present_age_4: 91.0
+  person_not_present_age_5: 59.0
+  person_not_present_age_6: 59.0
+  person_not_present_age_7: 87.0
+  person_not_present_age_8: 2.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: null
+  self_isolating: null
+  self_isolating_reason: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: null
-  smokes_or_vapes: Vape/e-cigarettes
-  smokes_or_vapes_description: Yes, vape/e-cigarettes
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: Participant Would Not/Could Not Answer
@@ -1409,87 +1385,111 @@
   street: Glendon
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
-  symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: null
-  symptoms_last_7_days_any_raw: null
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: null
-  symptoms_last_7_days_diarrhoea: 'Yes'
-  symptoms_last_7_days_difficulty_concentrating: 'No'
-  symptoms_last_7_days_fatigue_weakness: 'Yes'
-  symptoms_last_7_days_fever: 'Yes'
-  symptoms_last_7_days_headache: null
-  symptoms_last_7_days_loss_of_appetite: null
-  symptoms_last_7_days_loss_of_smell: null
-  symptoms_last_7_days_loss_of_taste: 'Yes'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'No'
-  symptoms_last_7_days_memory_loss_or_confusion: 'No'
-  symptoms_last_7_days_more_trouble_sleeping: 'No'
-  symptoms_last_7_days_muscle_ache_myalgia: 'No'
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-09 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'Yes'
-  symptoms_last_7_days_runny_nose_sneezing: 'No'
-  symptoms_last_7_days_shortness_of_breath: 'Yes'
-  symptoms_last_7_days_sore_throat: 'No'
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'No'
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: null
-  symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'No'
-  symptoms_since_last_visit_fatigue_weakness: 'Yes'
-  symptoms_since_last_visit_fever: null
-  symptoms_since_last_visit_headache: null
-  symptoms_since_last_visit_loss_of_appetite: null
-  symptoms_since_last_visit_loss_of_smell: null
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: 'No'
-  symptoms_since_last_visit_more_trouble_sleeping: null
-  symptoms_since_last_visit_muscle_ache_myalgia: null
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'Yes'
-  symptoms_since_last_visit_palpitations: 'No'
-  symptoms_since_last_visit_runny_nose_sneezing: null
-  symptoms_since_last_visit_shortness_of_breath: 'No'
-  symptoms_since_last_visit_sore_throat: 'No'
-  symptoms_since_last_visit_vertigo_dizziness: null
-  symptoms_since_last_visit_worry_anxiety: 'No'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'No'
+  think_had_covid_symptom_chest_pain: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'No'
+  think_had_covid_symptom_fatigue: 'Yes'
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: 'No'
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_noisy_breathing: 'Yes'
+  think_had_covid_symptom_palpitations: 'No'
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: 'Yes'
+  think_have_covid: 'Yes'
+  think_have_covid_symptom_abdominal_pain: 'Yes'
+  think_have_covid_symptom_anxiety: 'No'
+  think_have_covid_symptom_any: null
+  think_have_covid_symptom_any_raw: null
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: 'No'
+  think_have_covid_symptom_fatigue: 'Yes'
+  think_have_covid_symptom_fever: 'Yes'
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: 'Yes'
+  think_have_covid_symptom_low_mood: 'No'
+  think_have_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_symptom_palpitations: 'Yes'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'Yes'
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: 'No'
+  think_have_long_covid_symptom_cough: 'Yes'
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: 'Yes'
+  think_have_long_covid_symptom_headache: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: null
+  think_have_long_covid_symptom_reduced_ability: Not at all
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid_symptoms: Shortness of breath
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: null
-  times_socialise_last_7_days: '1'
+  times_socialising_last_7_days: '1'
   title: null
-  transport_to_work_or_school: Bicycle
+  transport_to_work_or_education: Bicycle
   unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-02 03:34:03.000000'
   visit_id: DHVF-4869598675
   visit_order: Month 18
-  visit_type: First Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
-  withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
-  withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
-  withdrawal_type: Doctor Appointment
-  work_direct_contact_patients_clients: 'Yes'
-  work_health_care_v0: Yes, secondary care, patient-facing
-  work_health_care_v1_v2: Yes, in secondary care, e.g. hospital
-  work_health_care_v1_v2_raw: Secondary care (e.g. hospital)
+  work_direct_contact_patients_or_clients: 'Yes'
+  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_raw: Secondary care (e.g. hospital)
+  work_health_care_patient_facing: Yes, secondary care, patient-facing
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
@@ -1505,15 +1505,15 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
-  work_sectors: Arts,Entertainment or Recreation
-  work_sectors_other: I don't even care.
+  work_sector: Arts,Entertainment or Recreation
+  work_sector_other: I don't even care.
   work_social_care: 'No'
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
-    be 1m
+- ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
+    can be 1m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
@@ -1521,15 +1521,14 @@
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
+  been_outside_uk: 'Yes'
   been_outside_uk_last_country: JAMAICA
-  been_outside_uk_last_date: '2020-09-20 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
-  care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: '2022-01-02 00:00:00.000000'
@@ -1556,19 +1555,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'False'
-  consent_blood_samples_if_positiveyn: null
+  consent_blood_samples_if_positive_yn: null
   consent_blood_test: 'Yes'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'No'
+  consent_contact_extra_research_yn: 'No'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: 'No'
+  consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
+  currently_smokes_or_vapes: Cigarettes
+  currently_smokes_or_vapes_description: Yes, pipe
   date_of_birth: '1985-10-14 01:01:00.000000'
   days_since_think_had_covid: 1.0
   days_since_think_had_covid_group: 0-14
@@ -1577,19 +1578,17 @@
   ethnic_group: White
   ethnicity: White-British
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
-  face_covering_work: null
+  face_covering_work_or_education: null
   first_name: Reiko
   gender: Male
   have_email_address: 'Yes'
-  have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'Yes'
-  have_long_covid_symptoms: 'No'
   have_mobile_number: 'No'
   hh_id: '296617139656'
   hospital_last_28_days: null
-  hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No I haven’t, but someone else in my household
     has
@@ -1600,113 +1599,90 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   improved_visit_date: null
-  infant_1_age: 7.0
-  infant_2_age: 2.0
-  infant_3_age: null
-  infant_4_age: 2.0
-  infant_5_age: 8.0
-  infant_6_age: 2.0
-  infant_7_age: 3.0
-  infant_8_age: 4.0
-  is_regularly_lateral_flow_testing: null
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: 7.0
+  infant_age_months_2: 2.0
+  infant_age_months_3: null
+  infant_age_months_4: 2.0
+  infant_age_months_5: 8.0
+  infant_age_months_6: 2.0
+  infant_age_months_7: 3.0
+  infant_age_months_8: 4.0
   last_covid_contact_date: null
-  last_covid_contact_location: Outside your home
+  last_covid_contact_type: Outside your home
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_location: Living in your own home
-  long_covid_abdominal_pain: 'Yes'
-  long_covid_chest_pain: 'Yes'
-  long_covid_cough: null
-  long_covid_diarrhoea: 'No'
-  long_covid_difficulty_concentrating: 'No'
-  long_covid_fever: null
-  long_covid_headache: null
-  long_covid_loss_of_appetite: 'No'
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'No'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: null
-  long_covid_noisy_breathing: 'Yes'
-  long_covid_palpitations: 'Yes'
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: null
-  long_covid_shortness_of_breath: null
-  long_covid_sore_throat: null
-  long_covid_symptoms: Palpitations
-  long_covid_trouble_sleeping: 'Yes'
-  long_covid_vertigo_dizziness: null
-  long_covid_weakness_tiredness: null
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: Living in your own home
   middle_name: Argentina
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
   no_venous_blood_taken_reason: Other
   not_attended_reason: Living Away
   ons_household_id: '296617139656'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
   other_antibody_test_results: Any tests negative, but none negative
-  other_antibody_test_since_last_visit: 'Yes'
-  other_pcr_test_first_positive_date: null
-  other_pcr_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_pcr_test_results: Any tests negative, but none positive
-  other_pcr_test_since_last_visit: 'Yes'
+  other_covid_infection_test: 'Yes'
+  other_covid_infection_test_first_positive_date: null
+  other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  other_covid_infection_test_results: Any tests negative, but none positive
+  other_household_member_care_home_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days: null
   outward_postcode: null
   participant_id: DHR-329500167403
   participant_survey_status: Withdrawn
   participant_testing_group: Blood and Swab
   participant_visit_status: Scheduled
-  person_1_not_consenting_age: 43.0
-  person_1_not_present_age: '22'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
+  participant_withdrawal_type: Living Away - For Education
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
-  person_2_not_consenting_age: null
-  person_2_not_present_age: '24'
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_not_consenting_age: 101.0
-  person_3_not_present_age: '82'
   person_3_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_4_not_consenting_age: 99.0
-  person_4_not_present_age: '20'
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_not_consenting_age: 1.0
-  person_5_not_present_age: '46'
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_not_consenting_age: 69.0
-  person_6_not_present_age: null
   person_6_reason_for_not_consenting: Let them eat cake.
-  person_7_not_consenting_age: null
-  person_7_not_present_age: null
   person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '63'
   person_8_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: You're gonna need a bigger boat.
+  person_not_consenting_age_1: 43.0
+  person_not_consenting_age_2: null
+  person_not_consenting_age_3: 101.0
+  person_not_consenting_age_4: 99.0
+  person_not_consenting_age_5: 1.0
+  person_not_consenting_age_6: 69.0
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 22.0
+  person_not_present_age_2: 24.0
+  person_not_present_age_3: 82.0
+  person_not_present_age_4: 20.0
+  person_not_present_age_5: 46.0
+  person_not_present_age_6: null
+  person_not_present_age_7: null
+  person_not_present_age_8: 63.0
   physical_contact_18_to_69_years: 1-5
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
   postcode: null
-  prefer_receive_vouchers: Email
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: null
   samples_taken_datetime: null
+  self_isolating: 'No'
+  self_isolating_reason: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
-  smokes_or_vapes: Cigarettes
-  smokes_or_vapes_description: Yes, pipe
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: null
@@ -1715,90 +1691,114 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: 'No'
-  symptoms_last_7_days_any_raw: 'No'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: 'Yes'
-  symptoms_last_7_days_diarrhoea: 'No'
-  symptoms_last_7_days_difficulty_concentrating: 'Yes'
-  symptoms_last_7_days_fatigue_weakness: 'No'
-  symptoms_last_7_days_fever: 'No'
-  symptoms_last_7_days_headache: 'Yes'
-  symptoms_last_7_days_loss_of_appetite: null
-  symptoms_last_7_days_loss_of_smell: 'No'
-  symptoms_last_7_days_loss_of_taste: 'No'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'No'
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: null
-  symptoms_last_7_days_muscle_ache_myalgia: 'Yes'
-  symptoms_last_7_days_nausea_vomiting: 'No'
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-09 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: null
-  symptoms_last_7_days_shortness_of_breath: 'No'
-  symptoms_last_7_days_sore_throat: 'Yes'
-  symptoms_last_7_days_vertigo_dizziness: 'Yes'
-  symptoms_last_7_days_worry_anxiety: 'Yes'
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: 'No'
-  symptoms_since_last_visit_cough: 'No'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'Yes'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: 'No'
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: 'Yes'
-  symptoms_since_last_visit_loss_of_smell: 'No'
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: null
-  symptoms_since_last_visit_more_trouble_sleeping: 'No'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'Yes'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'No'
-  symptoms_since_last_visit_shortness_of_breath: 'Yes'
-  symptoms_since_last_visit_sore_throat: null
-  symptoms_since_last_visit_vertigo_dizziness: null
-  symptoms_since_last_visit_worry_anxiety: 'Yes'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
+  think_had_covid_symptom_chest_pain: 'No'
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'Yes'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: 'Yes'
+  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: 'No'
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_noisy_breathing: 'Yes'
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_symptoms: 'Yes'
+  think_have_covid: 'Yes'
+  think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
+  think_have_covid_symptom_any_raw: 'Yes'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: 'Yes'
+  think_have_covid_symptom_diarrhoea: 'No'
+  think_have_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_covid_symptom_fatigue: 'Yes'
+  think_have_covid_symptom_fever: 'No'
+  think_have_covid_symptom_headache: 'No'
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: 'No'
+  think_have_covid_symptom_loss_of_taste: 'No'
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_symptom_palpitations: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'No'
+  think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: 'Yes'
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: 'No'
+  think_have_long_covid_symptom_difficulty_concentrating: 'No'
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_loss_of_appetite: 'No'
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: 'Yes'
+  think_have_long_covid_symptom_palpitations: 'Yes'
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: null
+  think_have_long_covid_symptoms: Palpitations
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
-  times_socialise_last_7_days: '2'
+  times_socialising_last_7_days: '2'
   title: Miss.
-  transport_to_work_or_school: Bus, minibus, coach
+  transport_to_work_or_education: null
   unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
   visit_id: DHVF-6394225258
   visit_order: Month 11
-  visit_type: First Visit
+  voucher_type_preference: Email
   which_symptoms_last_7_days: Weakness/tiredness
-  withdrawal_reason: Withdrawn_no_future_linkage
-  withdrawal_reason_raw: Withdrawn_no_future_linkage
-  withdrawal_type: Living Away - For Education
-  work_direct_contact_patients_clients: 'Yes'
-  work_health_care_v0: null
-  work_health_care_v1_v2: Primary care (e.g. GP, dentist)
-  work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
+  work_direct_contact_patients_or_clients: 'Yes'
+  work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_raw: Primary care (e.g. GP, dentist)
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
-  work_location: null
-  work_location_raw: null
+  work_location: Working somewhere else (not your home)
+  work_location_raw: Somewhere else (not your home)
   work_main_job_changed: null
   work_main_job_role: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
@@ -1810,18 +1810,18 @@
     types.
   work_main_job_title_raw: The arguments can be primitive data types or compound data
     types.
-  work_not_from_home_days_per_week: '0'
-  work_not_from_home_days_per_week_raw: '0'
+  work_not_from_home_days_per_week: null
+  work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
-  work_sectors: null
-  work_sectors_other: Atoms are used within a program to denote distinguished values.
+  work_sector: null
+  work_sector_other: Atoms are used within a program to denote distinguished values.
   work_social_care: null
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
-- ability_to_socially_distance_at_work_or_school: Difficult to maintain 2m, but can
-    be 1m
+- ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
+    can be 1m
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: null
@@ -1829,15 +1829,14 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: false
+  been_outside_uk: 'No'
   been_outside_uk_last_country: NAMIBIA
-  been_outside_uk_last_date: null
+  been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'No'
-  been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
-  care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -1864,19 +1863,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_samples_if_positive_yn: 'Yes'
   consent_blood_test: 'Yes'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'No'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: 'No'
+  consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: null
   county: null
+  currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: null
   date_of_birth: '1997-08-21 11:10:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1886,19 +1887,17 @@
   ethnicity: Black,Caribbean,African-African
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: My face is already covered
-  face_covering_work: Yes, always
+  face_covering_work_or_education: Yes, always
   first_name: Caron
   gender: Male
   have_email_address: null
-  have_ever_smoked_regularly: 'No'
   have_landline_number: null
-  have_long_covid_symptoms: 'Yes'
   have_mobile_number: 'Yes'
   hh_id: '217846198988'
   hospital_last_28_days: null
-  hospital_last_28_days_other_household_member: null
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No, no one in my household has
@@ -1908,113 +1907,90 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: null
   improved_visit_date: null
-  infant_1_age: 2.0
-  infant_2_age: 7.0
-  infant_3_age: 2.0
-  infant_4_age: 3.0
-  infant_5_age: 2.0
-  infant_6_age: 3.0
-  infant_7_age: 6.0
-  infant_8_age: 5.0
-  is_regularly_lateral_flow_testing: 'No'
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: Yes because you live with someone who has/has had symptoms
-    or a positive test but you haven't hadsymptoms yourself
+  infant_age_months_1: 2.0
+  infant_age_months_2: 7.0
+  infant_age_months_3: 2.0
+  infant_age_months_4: 3.0
+  infant_age_months_5: 2.0
+  infant_age_months_6: 3.0
+  infant_age_months_7: 6.0
+  infant_age_months_8: 5.0
   last_covid_contact_date: null
-  last_covid_contact_location: Outside your home
+  last_covid_contact_type: Outside your home
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_contact_location: null
-  long_covid_abdominal_pain: 'Yes'
-  long_covid_chest_pain: 'Yes'
-  long_covid_cough: 'No'
-  long_covid_diarrhoea: 'Yes'
-  long_covid_difficulty_concentrating: null
-  long_covid_fever: 'No'
-  long_covid_headache: 'No'
-  long_covid_loss_of_appetite: null
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'Yes'
-  long_covid_memory_loss_or_confusion: 'No'
-  long_covid_muscle_ache: 'Yes'
-  long_covid_nausea_vomiting: 'Yes'
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: null
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: 'Yes'
-  long_covid_shortness_of_breath: 'Yes'
-  long_covid_sore_throat: 'No'
-  long_covid_symptoms: Low mood/not enjoying anything
-  long_covid_trouble_sleeping: 'Yes'
-  long_covid_vertigo_dizziness: 'Yes'
-  long_covid_weakness_tiredness: 'Yes'
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: null
   middle_name: Jessika
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Two attempts made
   not_attended_reason: Other
   ons_household_id: '217846198988'
+  other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-07 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: null
   other_antibody_test_results: All Tests failed
-  other_antibody_test_since_last_visit: null
-  other_pcr_test_first_positive_date: '2022-01-01 00:00:00.000000'
-  other_pcr_test_last_negative_date: '2022-01-07 00:00:00.000000'
-  other_pcr_test_results: Any tests negative, but none positive
-  other_pcr_test_since_last_visit: 'No'
+  other_covid_infection_test: 'No'
+  other_covid_infection_test_first_positive_date: '2022-01-01 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_covid_infection_test_results: Any tests negative, but none positive
+  other_household_member_care_home_last_28_days: null
+  other_household_member_hospital_last_28_days: null
   outward_postcode: SE3Z
   participant_id: DHR-389263959191
   participant_survey_status: Completed
   participant_testing_group: Fingerprick and Swab
   participant_visit_status: Cancelled
-  person_1_not_consenting_age: 64.0
-  person_1_not_present_age: '50'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
+  participant_withdrawal_type: Other
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_2_not_consenting_age: 83.0
-  person_2_not_present_age: null
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_3_not_consenting_age: 68.0
-  person_3_not_present_age: '39'
   person_3_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_4_not_consenting_age: null
-  person_4_not_present_age: '60'
   person_4_reason_for_not_consenting: Houston, we have a problem.
-  person_5_not_consenting_age: null
-  person_5_not_present_age: '40'
   person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_6_not_consenting_age: null
-  person_6_not_present_age: '43'
   person_6_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_7_not_consenting_age: null
-  person_7_not_present_age: '73'
   person_7_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '8'
   person_8_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
-  person_9_not_consenting_age: 7.0
   person_9_reason_for_not_consenting: The only thing we have to fear is fear itself.
+  person_not_consenting_age_1: 64.0
+  person_not_consenting_age_2: 83.0
+  person_not_consenting_age_3: 68.0
+  person_not_consenting_age_4: null
+  person_not_consenting_age_5: null
+  person_not_consenting_age_6: null
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: 7.0
+  person_not_present_age_1: 50.0
+  person_not_present_age_2: null
+  person_not_present_age_3: 39.0
+  person_not_present_age_4: 60.0
+  person_not_present_age_5: 40.0
+  person_not_present_age_6: 43.0
+  person_not_present_age_7: 73.0
+  person_not_present_age_8: 8.0
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: null
   postcode: SE3Z6OR
-  prefer_receive_vouchers: Email
   reconsented_blood: 'False'
+  regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
+  self_isolating: 'No'
+  self_isolating_reason: Yes because you live with someone who has/has had symptoms
+    or a positive test but you haven't hadsymptoms yourself
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
-  smokes_or_vapes: Cigar
-  smokes_or_vapes_description: null
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
   social_distance_contact_18_to_69_years: 1-5
@@ -2023,92 +1999,114 @@
   street: Ballywatermoy
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: 'No'
-  symptoms_last_7_days_any: 'No'
-  symptoms_last_7_days_any_raw: 'No'
-  symptoms_last_7_days_chest_pain: 'Yes'
-  symptoms_last_7_days_cough: 'Yes'
-  symptoms_last_7_days_diarrhoea: null
-  symptoms_last_7_days_difficulty_concentrating: null
-  symptoms_last_7_days_fatigue_weakness: 'No'
-  symptoms_last_7_days_fever: null
-  symptoms_last_7_days_headache: 'Yes'
-  symptoms_last_7_days_loss_of_appetite: 'Yes'
-  symptoms_last_7_days_loss_of_smell: null
-  symptoms_last_7_days_loss_of_taste: 'No'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: 'No'
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: 'Yes'
-  symptoms_last_7_days_onset_date: null
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: 'Yes'
-  symptoms_last_7_days_shortness_of_breath: null
-  symptoms_last_7_days_sore_throat: null
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'Yes'
-  symptoms_since_last_visit_abdominal_pain: 'Yes'
-  symptoms_since_last_visit_chest_pain: 'Yes'
-  symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: null
-  symptoms_since_last_visit_fatigue_weakness: 'No'
-  symptoms_since_last_visit_fever: 'Yes'
-  symptoms_since_last_visit_headache: 'Yes'
-  symptoms_since_last_visit_loss_of_appetite: 'Yes'
-  symptoms_since_last_visit_loss_of_smell: null
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: null
-  symptoms_since_last_visit_memory_loss_or_confusion: 'Yes'
-  symptoms_since_last_visit_more_trouble_sleeping: 'Yes'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
-  symptoms_since_last_visit_nausea_vomiting: null
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'No'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'Yes'
-  symptoms_since_last_visit_shortness_of_breath: 'No'
-  symptoms_since_last_visit_sore_throat: 'Yes'
-  symptoms_since_last_visit_vertigo_dizziness: 'Yes'
-  symptoms_since_last_visit_worry_anxiety: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: 'Yes'
+  think_had_covid_symptom_chest_pain: 'Yes'
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fever: 'Yes'
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_appetite: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: 'No'
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_sore_throat: 'Yes'
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'No'
-  think_have_covid_symptoms: null
+  think_have_covid: null
+  think_have_covid_symptom_abdominal_pain: 'No'
+  think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'No'
+  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_chest_pain: 'Yes'
+  think_have_covid_symptom_cough: 'Yes'
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: 'No'
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: 'No'
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: 'Yes'
+  think_have_covid_symptom_onset_date: null
+  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'Yes'
+  think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: 'Yes'
+  think_have_long_covid_symptom_cough: 'No'
+  think_have_long_covid_symptom_diarrhoea: 'Yes'
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: 'Yes'
+  think_have_long_covid_symptom_fever: 'No'
+  think_have_long_covid_symptom_headache: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'Yes'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_long_covid_symptom_muscle_ache: 'Yes'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: null
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_long_covid_symptom_sore_throat: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid_symptoms: Low mood/not enjoying anything
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_outside_shopping_or_socialising_last_7_days: 6
   times_shopping_last_7_days: '6'
-  times_socialise_last_7_days: '2'
+  times_socialising_last_7_days: '2'
   title: Mr.
-  transport_to_work_or_school: Other method
+  transport_to_work_or_education: Other method
   unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-04 06:40:18
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-04 06:40:18.000000'
   visit_id: DHVF-8828437201
   visit_order: Month 18
-  visit_type: First Visit
+  voucher_type_preference: Email
   which_symptoms_last_7_days: null
-  withdrawal_reason: Withdrawn_no_future_linkage
-  withdrawal_reason_raw: Withdrawn_no_future_linkage
-  withdrawal_type: Other
-  work_direct_contact_patients_clients: null
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
-  work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
-  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
+  work_direct_contact_patients_or_clients: null
+  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Other healthcare (e.g. mental health)
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
-  work_location: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
-  work_location_raw: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
+  work_location: Working from home
+  work_location_raw: From home (in the same grounds or building as your home)
   work_main_job_changed: 'No'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
@@ -2117,8 +2115,8 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: null
-  work_sectors: Transport (incl. storage, logistic)
-  work_sectors_other: Erlang is a general-purpose, concurrent, functional programming
+  work_sector: Transport (incl. storage, logistic)
+  work_sector_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_social_care: 'No'
   work_status_v0: Employed
@@ -2126,7 +2124,7 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -2134,15 +2132,14 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
+  been_outside_uk: 'Yes'
   been_outside_uk_last_country: null
-  been_outside_uk_last_date: '2020-12-04 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  been_outside_uk_since_last_visit: 'Yes'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: 'No'
-  care_home_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_2: '2022-01-02 00:00:00.000000'
@@ -2169,19 +2166,21 @@
   consent_5_visits: 'Yes'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_samples_if_positive_yn: 'Yes'
   consent_blood_test: 'No'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
   consent_extend_study_under_16_b1_b3: null
   consent_finger_prick_a1_a3: 'No'
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: null
+  consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
+  currently_smokes_or_vapes: null
+  currently_smokes_or_vapes_description: Yes,  cigarettes
   date_of_birth: '2020-02-01 23:17:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2190,19 +2189,17 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: Yes, usually both Work/school/other
-  face_covering_work: null
+  face_covering_work_or_education: null
   first_name: Annika
   gender: Male
   have_email_address: null
-  have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'Yes'
-  have_long_covid_symptoms: null
   have_mobile_number: 'No'
   hh_id: '602276804025'
   hospital_last_28_days: 'No'
-  hospital_last_28_days_other_household_member: Participant Would Not/Could Not Answer
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: No, no one in my household has
@@ -2212,111 +2209,88 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a little
   improved_visit_date: null
-  infant_1_age: 2.0
-  infant_2_age: 6.0
-  infant_3_age: 0.0
-  infant_4_age: 0.0
-  infant_5_age: 4.0
-  infant_6_age: null
-  infant_7_age: 5.0
-  infant_8_age: 1.0
-  is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: 2.0
+  infant_age_months_2: 6.0
+  infant_age_months_3: 0.0
+  infant_age_months_4: 0.0
+  infant_age_months_5: 4.0
+  infant_age_months_6: null
+  infant_age_months_7: 5.0
+  infant_age_months_8: 1.0
   last_covid_contact_date: null
-  last_covid_contact_location: Outside your home
+  last_covid_contact_type: Outside your home
   last_name: Day
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_location: null
-  long_covid_abdominal_pain: 'No'
-  long_covid_chest_pain: null
-  long_covid_cough: 'Yes'
-  long_covid_diarrhoea: 'No'
-  long_covid_difficulty_concentrating: 'Yes'
-  long_covid_fever: 'Yes'
-  long_covid_headache: 'Yes'
-  long_covid_loss_of_appetite: 'Yes'
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: 'Yes'
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: null
-  long_covid_muscle_ache: 'No'
-  long_covid_nausea_vomiting: 'No'
-  long_covid_noisy_breathing: 'Yes'
-  long_covid_palpitations: 'No'
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: 'Yes'
-  long_covid_shortness_of_breath: null
-  long_covid_sore_throat: null
-  long_covid_symptoms: Worry/anxiety
-  long_covid_trouble_sleeping: 'Yes'
-  long_covid_vertigo_dizziness: null
-  long_covid_weakness_tiredness: null
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: null
   middle_name: Hank
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Participant time constraints
   no_venous_blood_taken_reason: Participant felt unwell/fainted
   not_attended_reason: At School
   ons_household_id: '602276804025'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_location: null
   other_antibody_test_results: null
-  other_antibody_test_since_last_visit: 'Yes'
-  other_pcr_test_first_positive_date: '2022-01-03 00:00:00.000000'
-  other_pcr_test_last_negative_date: null
-  other_pcr_test_results: One or more positive test(s)
-  other_pcr_test_since_last_visit: 'Yes'
+  other_covid_infection_test: 'Yes'
+  other_covid_infection_test_first_positive_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: null
+  other_covid_infection_test_results: One or more positive test(s)
+  other_household_member_care_home_last_28_days: Participant Would Not/Could Not Answer
+  other_household_member_hospital_last_28_days: Participant Would Not/Could Not Answer
   outward_postcode: null
   participant_id: DHR-593586857022
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: Scheduled
-  person_1_not_consenting_age: 74.0
-  person_1_not_present_age: '74'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
+  participant_withdrawal_type: On Holiday
   person_1_reason_for_not_consenting: Here's looking at you, kid.
-  person_2_not_consenting_age: 99.0
-  person_2_not_present_age: null
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_3_not_consenting_age: 56.0
-  person_3_not_present_age: '64'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_not_consenting_age: 63.0
-  person_4_not_present_age: '14'
   person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_5_not_consenting_age: 58.0
-  person_5_not_present_age: '30'
   person_5_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_6_not_consenting_age: 4.0
-  person_6_not_present_age: null
   person_6_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_7_not_consenting_age: null
-  person_7_not_present_age: null
   person_7_reason_for_not_consenting: Here's looking at you, kid.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '61'
   person_8_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
+  person_not_consenting_age_1: 74.0
+  person_not_consenting_age_2: 99.0
+  person_not_consenting_age_3: 56.0
+  person_not_consenting_age_4: 63.0
+  person_not_consenting_age_5: 58.0
+  person_not_consenting_age_6: 4.0
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 74.0
+  person_not_present_age_2: null
+  person_not_present_age_3: 64.0
+  person_not_present_age_4: 14.0
+  person_not_present_age_5: 30.0
+  person_not_present_age_6: null
+  person_not_present_age_7: null
+  person_not_present_age_8: 61.0
   physical_contact_18_to_69_years: 6-10
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
+  self_isolating: null
+  self_isolating_reason: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
   smokes_cigar: 'No'
   smokes_hookah_shisha_pipes: 'No'
-  smokes_or_vapes: null
-  smokes_or_vapes_description: Yes,  cigarettes
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6-10
@@ -2325,88 +2299,112 @@
   street: null
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: null
   swab_sample_barcode_raw: null
   swab_taken: 'No'
-  symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: null
-  symptoms_last_7_days_any_raw: null
-  symptoms_last_7_days_chest_pain: 'No'
-  symptoms_last_7_days_cough: 'No'
-  symptoms_last_7_days_diarrhoea: null
-  symptoms_last_7_days_difficulty_concentrating: null
-  symptoms_last_7_days_fatigue_weakness: 'Yes'
-  symptoms_last_7_days_fever: null
-  symptoms_last_7_days_headache: 'No'
-  symptoms_last_7_days_loss_of_appetite: 'Yes'
-  symptoms_last_7_days_loss_of_smell: null
-  symptoms_last_7_days_loss_of_taste: 'Yes'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: null
-  symptoms_last_7_days_more_trouble_sleeping: 'No'
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: 'Yes'
-  symptoms_last_7_days_onset_date: '2022-01-06 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: 'Yes'
-  symptoms_last_7_days_shortness_of_breath: 'No'
-  symptoms_last_7_days_sore_throat: 'Yes'
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'Yes'
-  symptoms_since_last_visit_abdominal_pain: null
-  symptoms_since_last_visit_chest_pain: 'Yes'
-  symptoms_since_last_visit_cough: null
-  symptoms_since_last_visit_diarrhoea: 'No'
-  symptoms_since_last_visit_difficulty_concentrating: 'Yes'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: null
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: null
-  symptoms_since_last_visit_loss_of_smell: 'No'
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: null
-  symptoms_since_last_visit_memory_loss_or_confusion: 'No'
-  symptoms_since_last_visit_more_trouble_sleeping: null
-  symptoms_since_last_visit_muscle_ache_myalgia: 'Yes'
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: null
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'Yes'
-  symptoms_since_last_visit_shortness_of_breath: 'Yes'
-  symptoms_since_last_visit_sore_throat: 'No'
-  symptoms_since_last_visit_vertigo_dizziness: null
-  symptoms_since_last_visit_worry_anxiety: 'No'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'No'
+  think_had_covid_symptom_chest_pain: 'Yes'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_difficulty_concentrating: 'Yes'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: 'No'
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: 'Yes'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: 'Yes'
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: null
+  think_have_covid_symptom_any_raw: null
+  think_have_covid_symptom_chest_pain: 'No'
+  think_have_covid_symptom_cough: 'No'
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: 'Yes'
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: 'No'
+  think_have_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: 'Yes'
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: 'Yes'
+  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: 'No'
+  think_have_covid_symptom_sore_throat: 'Yes'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: null
+  think_have_long_covid_symptom_abdominal_pain: 'No'
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: null
+  think_have_long_covid_symptom_cough: 'Yes'
+  think_have_long_covid_symptom_diarrhoea: 'No'
+  think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: 'Yes'
+  think_have_long_covid_symptom_headache: 'Yes'
+  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: 'Yes'
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_long_covid_symptom_muscle_ache: 'No'
+  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
+  think_have_long_covid_symptom_noisy_breathing: 'Yes'
+  think_have_long_covid_symptom_palpitations: 'No'
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: null
+  think_have_long_covid_symptoms: Worry/anxiety
   times_hour_or_longer_another_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
     Not Answer
   times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '4'
-  times_socialise_last_7_days: '2'
+  times_socialising_last_7_days: '2'
   title: Prof.
-  transport_to_work_or_school: Car or van
+  transport_to_work_or_education: Car or van
   unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   visit_order: Month 6
-  visit_type: First Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
-  withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
-  withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
-  withdrawal_type: On Holiday
-  work_direct_contact_patients_clients: null
-  work_health_care_v0: null
-  work_health_care_v1_v2: null
-  work_health_care_v1_v2_raw: null
+  work_direct_contact_patients_or_clients: null
+  work_health_care_area: null
+  work_health_care_area_raw: null
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
@@ -2420,15 +2418,15 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
-  work_sectors: Transport (incl. storage, logistic)
-  work_sectors_other: The sequential subset of Erlang supports eager evaluation, single
+  work_sector: Transport (incl. storage, logistic)
+  work_sector_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_social_care: 'No'
   work_status_v0: Student
   work_status_v1: 5y and older in full-time education
   work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
-- ability_to_socially_distance_at_work_or_school: null
+- ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
@@ -2436,15 +2434,14 @@
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
+  been_outside_uk: 'No'
   been_outside_uk_last_country: UGANDA
-  been_outside_uk_last_date: null
+  been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'Yes'
-  been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: Participant Would Not/Could Not Answer
-  care_home_last_28_days_other_household_member: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -2471,19 +2468,21 @@
   consent_5_visits: 'No'
   consent_april_22: 'No'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: 'Yes'
+  consent_blood_samples_if_positive_yn: 'Yes'
   consent_blood_test: 'No'
   consent_contact_extra_research: 'Yes'
-  consent_contact_extra_researchyn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: 'Yes'
   consent_fingerprick_blood_samples: 'False'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: Buckinghamshire
+  currently_smokes_or_vapes: Cigar
+  currently_smokes_or_vapes_description: Yes, cigar
   date_of_birth: null
   days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
@@ -2492,19 +2491,17 @@
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
+  ever_smoked_regularly: null
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: 'No'
-  face_covering_work: Yes, sometimes
+  face_covering_work_or_education: Yes, sometimes
   first_name: Myung
   gender: Female
   have_email_address: 'Yes'
-  have_ever_smoked_regularly: null
   have_landline_number: 'No'
-  have_long_covid_symptoms: 'No'
   have_mobile_number: 'No'
   hh_id: '352709577630'
   hospital_last_28_days: 'Yes'
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: Yes, I have
@@ -2514,112 +2511,89 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a little
   improved_visit_date: null
-  infant_1_age: 7.0
-  infant_2_age: 8.0
-  infant_3_age: 8.0
-  infant_4_age: 5.0
-  infant_5_age: 4.0
-  infant_6_age: 4.0
-  infant_7_age: 6.0
-  infant_8_age: 2.0
-  is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: null
-  is_self_isolating_detailed: null
+  infant_age_months_1: 7.0
+  infant_age_months_2: 8.0
+  infant_age_months_3: 8.0
+  infant_age_months_4: 5.0
+  infant_age_months_5: 4.0
+  infant_age_months_6: 4.0
+  infant_age_months_7: 6.0
+  infant_age_months_8: 2.0
   last_covid_contact_date: null
-  last_covid_contact_location: Living in your own home
+  last_covid_contact_type: Living in your own home
   last_name: Mosley
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_contact_location: null
-  long_covid_abdominal_pain: null
-  long_covid_chest_pain: null
-  long_covid_cough: 'No'
-  long_covid_diarrhoea: 'No'
-  long_covid_difficulty_concentrating: null
-  long_covid_fever: 'No'
-  long_covid_headache: 'No'
-  long_covid_loss_of_appetite: 'Yes'
-  long_covid_loss_of_smell: 'Yes'
-  long_covid_loss_of_taste: null
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'Yes'
-  long_covid_muscle_ache: null
-  long_covid_nausea_vomiting: 'Yes'
-  long_covid_noisy_breathing: 'No'
-  long_covid_palpitations: 'Yes'
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: 'Yes'
-  long_covid_shortness_of_breath: 'Yes'
-  long_covid_sore_throat: 'No'
-  long_covid_symptoms: Nausea/vomiting
-  long_covid_trouble_sleeping: null
-  long_covid_vertigo_dizziness: 'No'
-  long_covid_weakness_tiredness: 'No'
-  long_covid_worry_anxiety: null
+  last_suspected_covid_type: null
   middle_name: Quinn
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Participant time constraints
   no_venous_blood_taken_reason: Participant refused
   not_attended_reason: At Work
   ons_household_id: '352709577630'
+  other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
   other_antibody_test_results: All Tests failed
-  other_antibody_test_since_last_visit: 'Yes'
-  other_pcr_test_first_positive_date: null
-  other_pcr_test_last_negative_date: '2022-01-02 00:00:00.000000'
-  other_pcr_test_results: Waiting for all results
-  other_pcr_test_since_last_visit: 'No'
+  other_covid_infection_test: 'No'
+  other_covid_infection_test_first_positive_date: null
+  other_covid_infection_test_last_negative_date: '2022-01-02 00:00:00.000000'
+  other_covid_infection_test_results: Waiting for all results
+  other_household_member_care_home_last_28_days: null
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: UK0X
   participant_id: DHR-456442497105
   participant_survey_status: Completed
   participant_testing_group: Blood and Swab
   participant_visit_status: Scheduled
-  person_1_not_consenting_age: null
-  person_1_not_present_age: '58'
+  participant_withdrawal_reason: null
+  participant_withdrawal_reason_raw: null
+  participant_withdrawal_type: Phone not answered
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_2_not_consenting_age: 55.0
-  person_2_not_present_age: '47'
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_3_not_consenting_age: 21.0
-  person_3_not_present_age: '25'
   person_3_reason_for_not_consenting: Houston, we have a problem.
-  person_4_not_consenting_age: 92.0
-  person_4_not_present_age: null
   person_4_reason_for_not_consenting: Those who refuse to learn from history are condemned
     to repeat it.
-  person_5_not_consenting_age: 70.0
-  person_5_not_present_age: '24'
   person_5_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_6_not_consenting_age: 78.0
-  person_6_not_present_age: '49'
   person_6_reason_for_not_consenting: Elementary, my dear Watson.
-  person_7_not_consenting_age: null
-  person_7_not_present_age: '21'
   person_7_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_8_not_consenting_age: null
-  person_8_not_present_age: '72'
   person_8_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_9_not_consenting_age: null
   person_9_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
+  person_not_consenting_age_1: null
+  person_not_consenting_age_2: 55.0
+  person_not_consenting_age_3: 21.0
+  person_not_consenting_age_4: 92.0
+  person_not_consenting_age_5: 70.0
+  person_not_consenting_age_6: 78.0
+  person_not_consenting_age_7: null
+  person_not_consenting_age_8: null
+  person_not_consenting_age_9: null
+  person_not_present_age_1: 58.0
+  person_not_present_age_2: 47.0
+  person_not_present_age_3: 25.0
+  person_not_present_age_4: null
+  person_not_present_age_5: 24.0
+  person_not_present_age_6: 49.0
+  person_not_present_age_7: 21.0
+  person_not_present_age_8: 72.0
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: '0'
   physical_contact_under_18_years: 21 or more
   postcode: UK0X5SF
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'True'
+  regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
+  self_isolating: null
+  self_isolating_reason: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'Yes'
-  smokes_or_vapes: Cigar
-  smokes_or_vapes_description: Yes, cigar
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 1-5
@@ -2628,93 +2602,115 @@
   street: Ballynafey
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
+  survey_response_type: First Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: 'Yes'
-  symptoms_last_7_days_any: 'No'
-  symptoms_last_7_days_any_raw: 'No'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: null
-  symptoms_last_7_days_diarrhoea: null
-  symptoms_last_7_days_difficulty_concentrating: 'Yes'
-  symptoms_last_7_days_fatigue_weakness: null
-  symptoms_last_7_days_fever: 'Yes'
-  symptoms_last_7_days_headache: null
-  symptoms_last_7_days_loss_of_appetite: 'No'
-  symptoms_last_7_days_loss_of_smell: null
-  symptoms_last_7_days_loss_of_taste: null
-  symptoms_last_7_days_low_mood_not_enjoying_anything: 'Yes'
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: 'No'
-  symptoms_last_7_days_muscle_ache_myalgia: 'No'
-  symptoms_last_7_days_nausea_vomiting: null
-  symptoms_last_7_days_noisy_breathing_wheezing: 'Yes'
-  symptoms_last_7_days_onset_date: null
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: 'Yes'
-  symptoms_last_7_days_shortness_of_breath: null
-  symptoms_last_7_days_sore_throat: null
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: 'No'
-  symptoms_since_last_visit_abdominal_pain: 'No'
-  symptoms_since_last_visit_chest_pain: null
-  symptoms_since_last_visit_cough: 'No'
-  symptoms_since_last_visit_diarrhoea: 'Yes'
-  symptoms_since_last_visit_difficulty_concentrating: 'No'
-  symptoms_since_last_visit_fatigue_weakness: null
-  symptoms_since_last_visit_fever: 'No'
-  symptoms_since_last_visit_headache: 'No'
-  symptoms_since_last_visit_loss_of_appetite: 'No'
-  symptoms_since_last_visit_loss_of_smell: 'Yes'
-  symptoms_since_last_visit_loss_of_taste: null
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: null
-  symptoms_since_last_visit_memory_loss_or_confusion: null
-  symptoms_since_last_visit_more_trouble_sleeping: 'No'
-  symptoms_since_last_visit_muscle_ache_myalgia: 'No'
-  symptoms_since_last_visit_nausea_vomiting: 'No'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'Yes'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'No'
-  symptoms_since_last_visit_shortness_of_breath: null
-  symptoms_since_last_visit_sore_throat: 'No'
-  symptoms_since_last_visit_vertigo_dizziness: null
-  symptoms_since_last_visit_worry_anxiety: 'No'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_anxiety: 'No'
+  think_had_covid_symptom_chest_pain: null
+  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_difficulty_concentrating: 'No'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_loss_of_appetite: 'No'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: 'No'
+  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_noisy_breathing: 'Yes'
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
-  think_have_covid_symptoms: null
+  think_have_covid: null
+  think_have_covid_symptom_abdominal_pain: 'Yes'
+  think_have_covid_symptom_anxiety: 'No'
+  think_have_covid_symptom_any: 'No'
+  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: 'Yes'
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: 'No'
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: 'Yes'
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: 'No'
+  think_have_covid_symptom_muscle_ache: 'No'
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: 'Yes'
+  think_have_covid_symptom_onset_date: null
+  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'No'
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_chest_pain: null
+  think_have_long_covid_symptom_cough: 'No'
+  think_have_long_covid_symptom_diarrhoea: 'No'
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: 'No'
+  think_have_long_covid_symptom_fever: 'No'
+  think_have_long_covid_symptom_headache: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: 'Yes'
+  think_have_long_covid_symptom_loss_of_smell: 'Yes'
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_long_covid_symptom_noisy_breathing: 'No'
+  think_have_long_covid_symptom_palpitations: 'Yes'
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_long_covid_symptom_sore_throat: 'No'
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid_symptoms: Nausea/vomiting
   times_hour_or_longer_another_home_last_7_days: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
     Not Answer
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
-  times_socialise_last_7_days: null
+  times_socialising_last_7_days: null
   title: Prof.
-  transport_to_work_or_school: Car or van
+  transport_to_work_or_education: Car or van
   unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-03 05:49:36.000000'
   visit_id: DVH-6338733442
   visit_order: Follow-up 1
-  visit_type: First Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
-  withdrawal_reason: null
-  withdrawal_reason_raw: null
-  withdrawal_type: Phone not answered
-  work_direct_contact_patients_clients: null
-  work_health_care_v0: Yes, other healthcare, non-patient-facing
-  work_health_care_v1_v2: Yes, in other healthcare settings, e.g. mental health
-  work_health_care_v1_v2_raw: Other healthcare (e.g. mental health)
+  work_direct_contact_patients_or_clients: null
+  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Other healthcare (e.g. mental health)
+  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
-  work_location: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
-  work_location_raw: From home (in the same grounds or building as your home)Somewhere
-    else (not at your home)
+  work_location: Working from home
+  work_location_raw: From home (in the same grounds or building as your home)
   work_main_job_changed: 'Yes'
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
@@ -2726,9 +2722,8 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'No'
-  work_sectors: Other occupation sector
-  work_sectors_other: Haskell features a type system with type inference and lazy
-    evaluation.
+  work_sector: Other occupation sector
+  work_sector_other: Haskell features a type system with type inference and lazy evaluation.
   work_social_care: 'No'
   work_status_v0: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
@@ -2738,8 +2733,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
-- ability_to_socially_distance_at_work_or_school: Very difficult to be more than 1m
-    away
+- ability_to_socially_distance_at_work_or_education: Very difficult to be more than
+    1m away
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
@@ -2747,15 +2742,14 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
   bad_email: false
+  been_outside_uk: 'No'
   been_outside_uk_last_country: HONDURAS
-  been_outside_uk_last_date: null
+  been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'No'
-  been_outside_uk_since_last_visit: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   care_home_last_28_days: null
-  care_home_last_28_days_other_household_member: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: null
@@ -2782,19 +2776,21 @@
   consent_5_visits: 'Yes'
   consent_april_22: 'Yes'
   consent_blood_samples_if_positive: 'True'
-  consent_blood_samples_if_positiveyn: 'No'
+  consent_blood_samples_if_positive_yn: 'No'
   consent_blood_test: 'Yes'
   consent_contact_extra_research: 'No'
-  consent_contact_extra_researchyn: null
+  consent_contact_extra_research_yn: null
   consent_extend_study_under_16_b1_b3: 'Yes'
   consent_finger_prick_a1_a3: null
   consent_fingerprick_blood_samples: 'True'
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
-  consent_use_of_surplus_blood_samplesyn: null
+  consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: null
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
+  currently_smokes_or_vapes: Pipe
+  currently_smokes_or_vapes_description: Yes, cigar
   date_of_birth: '2003-10-07 22:04:00.000000'
   days_since_think_had_covid: 4.0
   days_since_think_had_covid_group: 0-14
@@ -2804,19 +2800,17 @@
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, in other situations only
-  face_covering_work: Yes, sometimes
+  face_covering_work_or_education: Yes, sometimes
   first_name: Shaun
   gender: Female
   have_email_address: null
-  have_ever_smoked_regularly: 'Yes'
   have_landline_number: 'No'
-  have_long_covid_symptoms: 'No'
   have_mobile_number: 'No'
   hh_id: '883187696082'
   hospital_last_28_days: 'No'
-  hospital_last_28_days_other_household_member: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   household_been_care_home_last_28_days: No I haven’t, but someone else in my household
     has
@@ -2828,111 +2822,88 @@
   illness_lasting_over_12_months: null
   illness_reduces_activity_or_ability: Not at all
   improved_visit_date: null
-  infant_1_age: 1.0
-  infant_2_age: 0.0
-  infant_3_age: 7.0
-  infant_4_age: 5.0
-  infant_5_age: 8.0
-  infant_6_age: 8.0
-  infant_7_age: 7.0
-  infant_8_age: null
-  is_regularly_lateral_flow_testing: 'Yes'
-  is_self_isolating: 'No'
-  is_self_isolating_detailed: 'No'
+  infant_age_months_1: 1.0
+  infant_age_months_2: 0.0
+  infant_age_months_3: 7.0
+  infant_age_months_4: 5.0
+  infant_age_months_5: 8.0
+  infant_age_months_6: 8.0
+  infant_age_months_7: 7.0
+  infant_age_months_8: null
   last_covid_contact_date: null
-  last_covid_contact_location: null
+  last_covid_contact_type: null
   last_name: Bolton
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_contact_location: Living in your own home
-  long_covid_abdominal_pain: 'Yes'
-  long_covid_chest_pain: null
-  long_covid_cough: 'No'
-  long_covid_diarrhoea: null
-  long_covid_difficulty_concentrating: 'No'
-  long_covid_fever: null
-  long_covid_headache: 'Yes'
-  long_covid_loss_of_appetite: 'No'
-  long_covid_loss_of_smell: null
-  long_covid_loss_of_taste: 'Yes'
-  long_covid_low_mood: 'No'
-  long_covid_memory_loss_or_confusion: 'No'
-  long_covid_muscle_ache: null
-  long_covid_nausea_vomiting: null
-  long_covid_noisy_breathing: null
-  long_covid_palpitations: null
-  long_covid_reduce_activities: Yes a little
-  long_covid_runny_nose_sneezing: 'No'
-  long_covid_shortness_of_breath: 'Yes'
-  long_covid_sore_throat: null
-  long_covid_symptoms: Sore  Throat
-  long_covid_trouble_sleeping: 'Yes'
-  long_covid_vertigo_dizziness: 'Yes'
-  long_covid_weakness_tiredness: 'No'
-  long_covid_worry_anxiety: 'Yes'
+  last_suspected_covid_type: Living in your own home
   middle_name: My
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Other
   no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
   not_attended_reason: Phone not answered
   ons_household_id: '883187696082'
+  other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
   other_antibody_test_results: Any tests negative, but none negative
-  other_antibody_test_since_last_visit: 'No'
-  other_pcr_test_first_positive_date: '2022-01-06 00:00:00.000000'
-  other_pcr_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_pcr_test_results: All Tests failed
-  other_pcr_test_since_last_visit: 'No'
+  other_covid_infection_test: 'No'
+  other_covid_infection_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_results: All Tests failed
+  other_household_member_care_home_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days: 'Yes'
   outward_postcode: LV1J
   participant_id: DHR-627540089585
   participant_survey_status: Completed
   participant_testing_group: null
   participant_visit_status: null
-  person_1_not_consenting_age: 2.0
-  person_1_not_present_age: '30'
+  participant_withdrawal_reason: Withdrawn_no_future_linkage
+  participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
+  participant_withdrawal_type: At Work
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_2_not_consenting_age: null
-  person_2_not_present_age: '73'
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_3_not_consenting_age: 88.0
-  person_3_not_present_age: '74'
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_4_not_consenting_age: 28.0
-  person_4_not_present_age: '72'
   person_4_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_5_not_consenting_age: 40.0
-  person_5_not_present_age: '80'
   person_5_reason_for_not_consenting: Let them eat cake.
-  person_6_not_consenting_age: 54.0
-  person_6_not_present_age: '20'
   person_6_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
-  person_7_not_consenting_age: 11.0
-  person_7_not_present_age: '42'
   person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_not_consenting_age: 18.0
-  person_8_not_present_age: '81'
   person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
-  person_9_not_consenting_age: 27.0
   person_9_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
+  person_not_consenting_age_1: 2.0
+  person_not_consenting_age_2: null
+  person_not_consenting_age_3: 88.0
+  person_not_consenting_age_4: 28.0
+  person_not_consenting_age_5: 40.0
+  person_not_consenting_age_6: 54.0
+  person_not_consenting_age_7: 11.0
+  person_not_consenting_age_8: 18.0
+  person_not_consenting_age_9: 27.0
+  person_not_present_age_1: 30.0
+  person_not_present_age_2: 73.0
+  person_not_present_age_3: 74.0
+  person_not_present_age_4: 72.0
+  person_not_present_age_5: 80.0
+  person_not_present_age_6: 20.0
+  person_not_present_age_7: 42.0
+  person_not_present_age_8: 81.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
   physical_contact_under_18_years: 21 or more
   postcode: LV1J6SR
-  prefer_receive_vouchers: Paper(Post)
   reconsented_blood: 'False'
+  regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
+  self_isolating: 'No'
+  self_isolating_reason: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'No'
-  smokes_or_vapes: Pipe
-  smokes_or_vapes_description: Yes, cigar
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: null
@@ -2941,90 +2912,114 @@
   street: null
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
+  survey_response_type: Follow-up Visit
   swab_sample_barcode: ONS00000000
   swab_sample_barcode_raw: ONS00000000
   swab_taken: 'Yes'
-  symptoms_last_7_days_abdominal_pain: null
-  symptoms_last_7_days_any: 'No'
-  symptoms_last_7_days_any_raw: 'No'
-  symptoms_last_7_days_chest_pain: null
-  symptoms_last_7_days_cough: 'No'
-  symptoms_last_7_days_diarrhoea: 'No'
-  symptoms_last_7_days_difficulty_concentrating: 'No'
-  symptoms_last_7_days_fatigue_weakness: 'No'
-  symptoms_last_7_days_fever: null
-  symptoms_last_7_days_headache: null
-  symptoms_last_7_days_loss_of_appetite: 'No'
-  symptoms_last_7_days_loss_of_smell: 'No'
-  symptoms_last_7_days_loss_of_taste: 'Yes'
-  symptoms_last_7_days_low_mood_not_enjoying_anything: null
-  symptoms_last_7_days_memory_loss_or_confusion: 'Yes'
-  symptoms_last_7_days_more_trouble_sleeping: 'Yes'
-  symptoms_last_7_days_muscle_ache_myalgia: null
-  symptoms_last_7_days_nausea_vomiting: 'Yes'
-  symptoms_last_7_days_noisy_breathing_wheezing: null
-  symptoms_last_7_days_onset_date: '2022-01-03 00:00:00.000000'
-  symptoms_last_7_days_palpitations: 'No'
-  symptoms_last_7_days_runny_nose_sneezing: 'No'
-  symptoms_last_7_days_shortness_of_breath: 'Yes'
-  symptoms_last_7_days_sore_throat: 'No'
-  symptoms_last_7_days_vertigo_dizziness: 'No'
-  symptoms_last_7_days_worry_anxiety: null
-  symptoms_since_last_visit_abdominal_pain: null
-  symptoms_since_last_visit_chest_pain: null
-  symptoms_since_last_visit_cough: 'Yes'
-  symptoms_since_last_visit_diarrhoea: null
-  symptoms_since_last_visit_difficulty_concentrating: 'No'
-  symptoms_since_last_visit_fatigue_weakness: 'No'
-  symptoms_since_last_visit_fever: null
-  symptoms_since_last_visit_headache: 'Yes'
-  symptoms_since_last_visit_loss_of_appetite: 'Yes'
-  symptoms_since_last_visit_loss_of_smell: 'Yes'
-  symptoms_since_last_visit_loss_of_taste: 'No'
-  symptoms_since_last_visit_low_mood_or_not_enjoying_anything: 'Yes'
-  symptoms_since_last_visit_memory_loss_or_confusion: null
-  symptoms_since_last_visit_more_trouble_sleeping: null
-  symptoms_since_last_visit_muscle_ache_myalgia: null
-  symptoms_since_last_visit_nausea_vomiting: 'Yes'
-  symptoms_since_last_visit_noisy_breathing_wheezing: 'No'
-  symptoms_since_last_visit_palpitations: null
-  symptoms_since_last_visit_runny_nose_sneezing: 'Yes'
-  symptoms_since_last_visit_shortness_of_breath: null
-  symptoms_since_last_visit_sore_throat: null
-  symptoms_since_last_visit_vertigo_dizziness: 'Yes'
-  symptoms_since_last_visit_worry_anxiety: 'No'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-04 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'No'
+  think_had_covid_symptom_chest_pain: null
+  think_had_covid_symptom_cough: 'Yes'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'No'
+  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_appetite: 'Yes'
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_had_covid_symptom_noisy_breathing: 'No'
+  think_had_covid_symptom_palpitations: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
+  think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid_symptoms: Participant Would Not/Could Not Answer
+  think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'No'
+  think_have_covid_symptom_any_raw: 'No'
+  think_have_covid_symptom_chest_pain: null
+  think_have_covid_symptom_cough: 'No'
+  think_have_covid_symptom_diarrhoea: 'No'
+  think_have_covid_symptom_difficulty_concentrating: 'No'
+  think_have_covid_symptom_fatigue: 'No'
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: 'No'
+  think_have_covid_symptom_loss_of_smell: 'No'
+  think_have_covid_symptom_loss_of_taste: 'Yes'
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_onset_date: '2022-01-03 00:00:00.000000'
+  think_have_covid_symptom_palpitations: 'No'
+  think_have_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_covid_symptom_sore_throat: 'No'
+  think_have_covid_symptom_vertigo_or_dizziness: 'No'
+  think_have_long_covid: 'No'
+  think_have_long_covid_symptom_abdominal_pain: 'Yes'
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_chest_pain: null
+  think_have_long_covid_symptom_cough: 'No'
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: 'No'
+  think_have_long_covid_symptom_fatigue: 'No'
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: 'Yes'
+  think_have_long_covid_symptom_loss_of_appetite: 'No'
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: 'Yes'
+  think_have_long_covid_symptom_low_mood: 'No'
+  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_palpitations: null
+  think_have_long_covid_symptom_reduced_ability: Yes a little
+  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_shortness_of_breath: 'Yes'
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_have_long_covid_symptoms: Sore  Throat
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: '5'
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '5'
-  times_socialise_last_7_days: null
+  times_socialising_last_7_days: null
   title: Ms.
-  transport_to_work_or_school: On foot
+  transport_to_work_or_education: On foot
   unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-08 03:57:44.000000'
   visit_id: DVH-6911152672
   visit_order: Month 5
-  visit_type: Follow-up Visit
+  voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Muscle ache
-  withdrawal_reason: Withdrawn_no_future_linkage
-  withdrawal_reason_raw: Withdrawn_no_future_linkage
-  withdrawal_type: At Work
-  work_direct_contact_patients_clients: null
-  work_health_care_v0: null
-  work_health_care_v1_v2: Primary care (e.g. GP, dentist)
-  work_health_care_v1_v2_raw: Primary care (e.g. GP, dentist)
+  work_direct_contact_patients_or_clients: null
+  work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_raw: Primary care (e.g. GP, dentist)
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
-  work_location_raw: Somewhere else (not your home)
+  work_location_raw: Somewhere else (not at your home)
   work_main_job_changed: null
   work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
@@ -3037,9 +3032,8 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
-  work_sectors: Civil service or Local Government
-  work_sectors_other: Haskell features a type system with type inference and lazy
-    evaluation.
+  work_sector: Civil service or Local Government
+  work_sector_other: Haskell features a type system with type inference and lazy evaluation.
   work_social_care: 'No'
   work_status_v0: Employed
   work_status_v1: Employed and currently working

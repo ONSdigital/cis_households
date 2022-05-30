@@ -10,18 +10,18 @@ def test_carry_forward_design_weights(spark_session):
             groupby integer,
             raw_design_weight_antibodies_ab double,
             num_hh integer,
-            scaled_design_weight_antibodies_nonadjusted double,
-            scaling_factor_carryforward_design_weight_antibodies double,
-            sum_carryforward_design_weight_antibodies double,
-            carryforward_design_weight_antibodies double
+            scaled_design_weight_antibodies_non_adjusted double,
+            scaling_factor_carry_forward_design_weight_antibodies double,
+            sum_carry_forward_design_weight_antibodies double,
+            carry_forward_design_weight_antibodies double
             """,
     )
     output_df = carry_forward_design_weights(
         df=expected_df.drop(
-            "carryforward_design_weight_antibodies",
-            "sum_carryforward_design_weight_antibodies",
-            "scaling_factor_carryforward_design_weight_antibodies",
-            "scaled_design_weight_antibodies_nonadjusted",
+            "carry_forward_design_weight_antibodies",
+            "sum_carry_forward_design_weight_antibodies",
+            "scaling_factor_carry_forward_design_weight_antibodies",
+            "scaled_design_weight_antibodies_non_adjusted",
         ),
         scenario="A",
         groupby_column="groupby",
