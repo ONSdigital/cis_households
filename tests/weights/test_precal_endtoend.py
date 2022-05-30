@@ -11,7 +11,7 @@
 # from cishouseholds.weights.pre_calibration import survey_extraction_household_data_response_factor
 # # from cishouseholds.weights.pre_calibration import precalibration_checkpoints
 # def test_precal_end_to_end(spark_session):
-#     csv_file_path = "tests/weights/test_files/test_data_dweights_calibration.csv"
+#     csv_file_path = "tests/weights/test_files/test_data_design_weights_calibration.csv"
 #     schema = """
 #         ons_household_id integer,
 #         participant_id integer,
@@ -23,8 +23,8 @@
 #         country_name_12 string,
 #         region_code string,
 #         cis_area_code_20 integer,
-#         household_level_design_weight_swab double,
-#         household_level_design_weight_antibodies double,
+#         scaled_design_weight_swab_non_adjusted double,
+#         scaled_design_weight_antibodies_non_adjusted double,
 #         check_if_missing integer,
 #         ever_never_swab integer,
 #         ever_never_antibodies integer,
