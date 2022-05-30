@@ -125,7 +125,7 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
-    new_sample_df = new_sample_df.withColumn("sample_source_name", new_sample_source_name)
+    new_sample_df = new_sample_df.withColumn("sample_source_name", F.lit(new_sample_source_name))
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
@@ -427,7 +427,7 @@ def validate_design_weights_or_precal(
     antibody_design_weights_sum_to_population = (
         True if df.filter(F.col("ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
     )
-    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0, True).count() == 0 else False
+    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0).count() == 0 else False
     design_weights_null = False if df.filter(F.col("NULL_DESIGN_WEIGHT_CHECK_FAILED")).count() == 0 else True
     design_weights_consistent_within_group = (
         True if df.filter(F.col("DISTINCT_WITHIN_GROUP_CHECK_FAILED")).count() == 0 else False
