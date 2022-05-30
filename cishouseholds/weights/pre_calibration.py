@@ -32,11 +32,6 @@ def pre_calibration_high_level(
         on=df_survey.ons_household_id == df_dweights.ons_household_id,
         how="left",
     )
-    # df = assign_ethnicity_white(
-    #     df=df,
-    #     column_name_to_assign="ethnicity_white",
-    #     ethnicity_group_column_name="ethnicity_group_corrected",
-    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
@@ -44,7 +39,7 @@ def pre_calibration_high_level(
         cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
         column_test_result_swab="pcr_result_classification",
         column_test_result_antibodies="antibody_test_result_classification",
-        column_test_result_longcovid="have_long_covid_symptoms",
+        column_test_result_longcovid="think_have_long_covid",
         patient_id_column="participant_id",
         visit_date_column="visit_date_string",
         age_column="age_at_visit",
@@ -69,6 +64,8 @@ def pre_calibration_high_level(
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
         group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
+        cis_area_column="cis_area_code_20",
+        country_column="country_code_12",
     )
     return df
 
@@ -494,18 +491,18 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_swab",
+        "household_level_design_weight_adjusted_swab",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("household_level_design_weight_swab") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_antibodies",
+        "household_level_design_weight_adjusted_antibodies",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("household_level_design_weight_antibodies") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
@@ -531,7 +528,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
             "sum_adjusted_design_weight_" + test_type,
             F.when(
                 F.col("response_indicator") == 1,
-                F.round(F.sum(F.col(f"household_level_designweight_adjusted_{test_type}")).over(w_country), 1),
+                F.round(F.sum(F.col(f"household_level_design_weight_adjusted_{test_type}")).over(w_country), 1),
             ),
         )
 
@@ -550,7 +547,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
                 F.col("response_indicator") == 1,
                 F.round(
                     F.col(f"scaling_factor_adjusted_design_weight_{test_type}")
-                    * F.col(f"household_level_designweight_adjusted_{test_type}"),
+                    * F.col(f"household_level_design_weight_adjusted_{test_type}"),
                     1,
                 ),
             ),
