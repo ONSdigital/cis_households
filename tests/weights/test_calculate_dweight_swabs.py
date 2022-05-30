@@ -1,10 +1,10 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.weights.weights import calculate_dweight_swabs
+from cishouseholds.weights.weights import calculate_design_weight_swabs
 
 
-def test_calculate_dweight_swabs(spark_session):
+def test_calculate_design_weight_swabs(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             ("A", "new", "A", 1, 2),
@@ -47,18 +47,18 @@ def test_calculate_dweight_swabs(spark_session):
             previous_weight integer,
             number_of_households_by_cis_area integer,
             number_of_households_by_country integer,
-            number_eligible_household_sample long,
+            number_eligible_household_sample integer,
             weight double
             """,
     )
-    output_df = calculate_dweight_swabs(
+    output_df = calculate_design_weight_swabs(
         df=input_df,
         household_level_populations_df=household_df,
         column_name_to_assign="weight",
         sample_type_column="sample_type",
         group_by_columns=["groupby"],
         barcode_column="id",
-        previous_dweight_column="previous_weight",
+        previous_design_weight_column="previous_weight",
     )
 
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
