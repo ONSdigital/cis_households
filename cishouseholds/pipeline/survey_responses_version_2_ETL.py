@@ -561,7 +561,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
 def symptom_column_transformations(df):
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
-        column_name_to_assign="think_have_covid_symptom_symptom_count",
+        column_name_to_assign="think_have_covid_symptom_count",
         selection_columns=[
             "think_have_covid_symptom_fever",
             "think_have_covid_symptom_muscle_ache",
@@ -623,7 +623,7 @@ def symptom_column_transformations(df):
     # df = update_think_have_covid_symptom_any(
     #     df=df,
     #     column_name_to_update="think_have_covid_symptom_any",
-    #     count_reference_column="think_have_covid_symptom_symptom_count",
+    #     count_reference_column="think_have_covid_symptom_count",
     # )
 
     # df = assign_true_if_any(
@@ -644,7 +644,7 @@ def symptom_column_transformations(df):
 
     # df = assign_true_if_any(
     #     df=df,
-    #     column_name_to_assign="think_have_covid_symptom_cghfevamn_symptom_group",
+    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
     #     reference_columns=[
     #         "think_have_covid_symptom_cough",
     #         "think_have_covid_symptom_fever",
@@ -679,7 +679,7 @@ def symptom_column_transformations(df):
     #     df=df,
     #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
     #     id_column="participant_id",
-    #     symptoms_bool_column="think_have_covid_symptom_cghfevamn_symptom_group",
+    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
     # )
@@ -855,7 +855,7 @@ def union_dependent_derivations(df):
     # df = assign_any_symptoms_around_visit(
     #     df=df,
     #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-    #     symptoms_bool_column="think_have_covid_symptom_cghfevamn_symptom_group",
+    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
     #     id_column="participant_id",
     #     visit_date_column="visit_datetime",
     #     visit_id_column="visit_id",
