@@ -24,6 +24,14 @@ def assign_column_value_from_multiple_column_map(
 ):
     """
     assign column value based on values of any number of columns in a dictionary
+    Parameters
+    ----------
+    column_name_to_assign
+    column_name_to_map
+        a list of column value options to map to each resultant value in the 'column_name_to_assign'.
+        multiple sublists are optional within this input and denote the option to have multiple optional values.
+    column_names
+        a list of column names in the same order as the values expressed in the 'column_name_to_map' input
     """
     df = df.withColumn(column_name_to_assign, F.lit(None))
     for row in column_name_to_map:
