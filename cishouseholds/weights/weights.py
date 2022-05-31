@@ -23,6 +23,7 @@ def generate_weights(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     tranche_df: DataFrame,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
@@ -35,6 +36,7 @@ def generate_weights(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
@@ -100,6 +102,7 @@ def join_and_process_lookups(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
@@ -122,6 +125,7 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
+    new_sample_df = new_sample_df.withColumn("sample_source_name", F.lit(new_sample_source_name))
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
@@ -394,34 +398,46 @@ def validate_design_weights_or_precal(
         col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"
     ]
     df = df.withColumn(
-        "CHECK1_swab",
-        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), True).otherwise(
-            False
+        "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), False).otherwise(
+            True
         ),
     )
     df = df.withColumn(
-        "CHECK1_antibody",
+        "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
-            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), 0
-        ).otherwise(1),
+            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), False
+        ).otherwise(True),
     )
 
     df = count_value_occurrences_in_column_subset_row_wise(df, "NULL_DESIGN_WEIGHT_COUNT", design_weight_columns, None)
-    df = df.withColumn("CHECK3", F.when(F.col("NULL_DESIGN_WEIGHT_COUNT") != 0, 1).otherwise(0)).drop(
-        "NULL_DESIGN_WEIGHT_COUNT"
-    )
+    df = df.withColumn(
+        "NULL_DESIGN_WEIGHT_CHECK_FAILED", F.when(F.col("NULL_DESIGN_WEIGHT_COUNT") != 0, False).otherwise(True)
+    ).drop("NULL_DESIGN_WEIGHT_COUNT")
 
     df = assign_distinct_count_in_group(df, "DISTINCT_DESIGN_WEIGHT_BY_GROUP", design_weight_columns, group_by_columns)
-    df = df.withColumn("CHECK4", F.when(F.col("DISTINCT_DESIGN_WEIGHT_BY_GROUP") != 1, 1).otherwise(0)).drop(
-        "DISTINCT_DESIGN_WEIGHT_BY_GROUP"
-    )
+    df = df.withColumn(
+        "DISTINCT_WITHIN_GROUP_CHECK_FAILED",
+        F.when(F.col("DISTINCT_DESIGN_WEIGHT_BY_GROUP") != 1, False).otherwise(True),
+    ).drop("DISTINCT_DESIGN_WEIGHT_BY_GROUP")
 
-    swab_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_swab")).count() == 0 else False
-    antibody_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_antibody")).count() == 0 else False
-    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0, True).count() == 0 else False
-    design_weights_null = False if df.filter(F.col("CHECK3") == 1).count() == 0 else True
-    design_weights_consistent_within_group = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    df.drop("CHECK1s", "CHECK1a", "CHECK3", "CHECK4")
+    swab_design_weights_sum_to_population = (
+        True if df.filter(F.col("SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
+    )
+    antibody_design_weights_sum_to_population = (
+        True if df.filter(F.col("ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
+    )
+    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0).count() == 0 else False
+    design_weights_null = False if df.filter(F.col("NULL_DESIGN_WEIGHT_CHECK_FAILED")).count() == 0 else True
+    design_weights_consistent_within_group = (
+        True if df.filter(F.col("DISTINCT_WITHIN_GROUP_CHECK_FAILED")).count() == 0 else False
+    )
+    df.drop(
+        "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        "NULL_DESIGN_WEIGHT_CHECK_FAILED",
+        "DISTINCT_WITHIN_GROUP_CHECK_FAILED",
+    )
     error_string = ""
     if not (antibody_design_weights_sum_to_population or swab_design_weights_sum_to_population):
         error_string += "Design weights do not sum to population totals.\n"
