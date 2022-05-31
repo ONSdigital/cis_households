@@ -700,7 +700,7 @@ column_name_maps = {
         "RGN19CD": "region_code_19",
     },
     "cis_phase_lookup_column_map": {
-        "phase_sample": "sample_source",
+        "phase_sample": "sample_source_name",
         "country": "country_name_12",
         "issued_wc": "date_sample_created",
     },
