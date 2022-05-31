@@ -9,7 +9,6 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
@@ -23,6 +22,7 @@ def generate_weights(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     tranche_df: DataFrame,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
@@ -35,6 +35,7 @@ def generate_weights(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
@@ -80,7 +81,7 @@ def generate_weights(
         household_population_column="number_of_households_by_cis_area",
     )
     try:
-        validate_design_weights_or_precal(
+        validate_design_weights(
             df=df,
             num_households_by_cis_column="number_of_households_by_cis_area",
             num_households_by_country_column="number_of_households_by_country",
@@ -88,7 +89,8 @@ def generate_weights(
             antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
             cis_area_column="cis_area_code_20",
             country_column="country_code_12",
-            group_by_columns=["cis_area_code_20"],
+            swab_group_by_columns=["cis_area_code_20"],
+            antibody_group_by_columns=["country_code_12"],
         )
     except DesignWeightError as e:
         print(e)  # functional
@@ -100,6 +102,7 @@ def join_and_process_lookups(
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
     new_sample_df: DataFrame,
+    new_sample_source_name: str,
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
@@ -122,6 +125,7 @@ def join_and_process_lookups(
     new_sample_df = new_sample_df.withColumn(
         "date_sample_created", F.to_timestamp(F.lit("2021-12-06"), format="yyyy-MM-dd")
     )
+    new_sample_df = new_sample_df.withColumn("sample_source_name", F.lit(new_sample_source_name))
 
     if first_run:
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
@@ -370,7 +374,7 @@ class DesignWeightError(Exception):
     pass
 
 
-def validate_design_weights_or_precal(
+def validate_design_weights(
     df: DataFrame,
     num_households_by_cis_column: str,
     num_households_by_country_column: str,
@@ -378,7 +382,8 @@ def validate_design_weights_or_precal(
     antibody_weight_column: str,
     cis_area_column: str,
     country_column: str,
-    group_by_columns: List[str],
+    swab_group_by_columns: List[str],
+    antibody_group_by_columns: List[str],
 ):
     """
     Validate the derived design weights by checking 4 conditions are true:
@@ -387,51 +392,63 @@ def validate_design_weights_or_precal(
     - no design weights are missing
     - design weights consistent by group
     """
-    cis_window = Window.partitionBy(cis_area_column)
+    cis_area_window = Window.partitionBy(cis_area_column)
     country_window = Window.partitionBy(country_column)
 
-    design_weight_columns = [
-        col for col in df.columns if "weight" in col and list(df.select(col).dtypes[0])[1] == "double"
-    ]
     df = df.withColumn(
-        "CHECK1_swab",
-        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), True).otherwise(
-            False
+        "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        F.when(F.sum(swab_weight_column).over(cis_area_window) == F.col(num_households_by_cis_column), False).otherwise(
+            True
         ),
     )
     df = df.withColumn(
-        "CHECK1_antibody",
+        "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
-            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), 0
-        ).otherwise(1),
+            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), False
+        ).otherwise(True),
+    )
+    swab_design_weights_sum_to_population = (
+        True if df.filter(F.col("SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
+    )
+    antibody_design_weights_sum_to_population = (
+        True if df.filter(F.col("ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
     )
 
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NULL_DESIGN_WEIGHT_COUNT", design_weight_columns, None)
-    df = df.withColumn("CHECK3", F.when(F.col("NULL_DESIGN_WEIGHT_COUNT") != 0, 1).otherwise(0)).drop(
-        "NULL_DESIGN_WEIGHT_COUNT"
+    positive_design_weights = df.filter(F.least(swab_weight_column, antibody_weight_column) < 0).count()
+    null_design_weights = df.filter(F.col(swab_weight_column).isNull() | F.col(antibody_weight_column).isNull()).count()
+
+    df = assign_distinct_count_in_group(
+        df, "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], swab_group_by_columns
+    )
+    df = assign_distinct_count_in_group(
+        df, "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], antibody_group_by_columns
+    )
+    swab_design_weights_inconsistent_within_group = (
+        False if df.filter((F.col("SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
+    )
+    antibody_design_weights_inconsistent_within_group = (
+        False if df.filter((F.col("ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
     )
 
-    df = assign_distinct_count_in_group(df, "DISTINCT_DESIGN_WEIGHT_BY_GROUP", design_weight_columns, group_by_columns)
-    df = df.withColumn("CHECK4", F.when(F.col("DISTINCT_DESIGN_WEIGHT_BY_GROUP") != 1, 1).otherwise(0)).drop(
-        "DISTINCT_DESIGN_WEIGHT_BY_GROUP"
+    df.drop(
+        "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
+        "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
+        "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
     )
-
-    swab_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_swab")).count() == 0 else False
-    antibody_design_weights_sum_to_population = True if df.filter(F.col("CHECK1_antibody")).count() == 0 else False
-    design_weights_positive = True if df.filter(F.least(*design_weight_columns) < 0, True).count() == 0 else False
-    design_weights_null = False if df.filter(F.col("CHECK3") == 1).count() == 0 else True
-    design_weights_consistent_within_group = True if df.filter(F.col("CHECK4") == 1).count() == 0 else False
-    df.drop("CHECK1s", "CHECK1a", "CHECK3", "CHECK4")
     error_string = ""
-    if not (antibody_design_weights_sum_to_population or swab_design_weights_sum_to_population):
-        error_string += "Design weights do not sum to population totals.\n"
-    if not design_weights_positive:
-        error_string += "Design weights are not all positive.\n"
-    if design_weights_null:
-        error_string += "There are missing design weights.\n"
-    if not design_weights_consistent_within_group:
-        error_string += "Design weights are not consistent within groups.\n"
-
+    if not antibody_design_weights_sum_to_population:
+        error_string += "Antibody design weights do not sum to country population totals.\n"
+    if not swab_design_weights_sum_to_population:
+        error_string += "Swab design weights do not sum to cis area population totals.\n"
+    if not positive_design_weights:
+        error_string += f"{positive_design_weights} records have negative design weights.\n"
+    if null_design_weights > 0:
+        error_string += f"There are {null_design_weights} records with null swab or antibody design weights.\n"
+    if swab_design_weights_inconsistent_within_group:
+        error_string += "Swab design weights are not consistent within CIS area population groups.\n"
+    if antibody_design_weights_inconsistent_within_group:
+        error_string += "Antibody design weights are not consistent within country population groups.\n"
     if error_string:
         raise DesignWeightError(error_string)
 
