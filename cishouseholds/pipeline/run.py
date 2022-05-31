@@ -58,10 +58,15 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
     for n, stage_config in enumerate(pipeline_stage_list):
+        spark = get_or_create_spark_session()
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
         stage_name = stage_config.pop("function")
+        stage_description = stage_name
+        for key, val in stage_config.items():
+            stage_description += f"{key}:{val}, "
+        spark.sparkContext.setJobDescription(stage_description.rstrip(", "))
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
         print(stage_text)  # functional
         while not stage_success and attempt < retry_count + 1:
