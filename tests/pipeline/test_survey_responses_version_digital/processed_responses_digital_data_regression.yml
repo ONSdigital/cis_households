@@ -115,7 +115,6 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: null
-  is_self_isolating_detailed: null
   language_preference: null
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_type: Someone you do not live with
@@ -197,7 +196,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Courier
   self_isolating: Prefer not to say
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: null
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Female
@@ -466,7 +465,6 @@
   infant_age_months_6: 30.0
   infant_age_months_7: 11.0
   infant_age_months_8: 60.0
-  is_self_isolating_detailed: null
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone I do not live with
@@ -549,8 +547,7 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
   self_isolating: 'No'
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: 'No'
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
@@ -816,7 +813,6 @@
   infant_age_months_6: 80.0
   infant_age_months_7: null
   infant_age_months_8: null
-  is_self_isolating_detailed: Yes, someone you live with had symptoms
   language_preference: Welsh
   last_covid_contact_date: '2022-01-09 00:00:00.000000'
   last_covid_contact_type: Someone you live with
@@ -898,8 +894,7 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: Post
   self_isolating: 'Yes'
-  self_isolating_reason: I haven't had any symptoms but I live with someone who has
-    or has had symptoms or a positive test
+  self_isolating_reason: null
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
@@ -1171,7 +1166,6 @@
   infant_age_months_6: 85.0
   infant_age_months_7: null
   infant_age_months_8: 28.0
-  is_self_isolating_detailed: null
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: Someone you do not live with
@@ -1250,8 +1244,7 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Male
@@ -1524,7 +1517,6 @@
   infant_age_months_6: 2.0
   infant_age_months_7: null
   infant_age_months_8: 54.0
-  is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining),
   language_preference: null
   last_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_covid_contact_type: Someone you do not live with
@@ -1604,8 +1596,7 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
   self_isolating: 'Yes'
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
@@ -1878,7 +1869,6 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: 7.0
-  is_self_isolating_detailed: null
   language_preference: English
   last_covid_contact_date: null
   last_covid_contact_type: Someone you do not live with
@@ -1957,8 +1947,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Male
@@ -2230,7 +2219,6 @@
   infant_age_months_6: 85.0
   infant_age_months_7: null
   infant_age_months_8: 46.0
-  is_self_isolating_detailed: null
   language_preference: Welsh
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: Someone you live with
@@ -2309,8 +2297,7 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: null
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Male
@@ -2582,7 +2569,6 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: 26.0
-  is_self_isolating_detailed: Yes, for other reasons (e.g. going into hospital, quarantining),
   language_preference: English
   last_covid_contact_date: null
   last_covid_contact_type: Someone I do not live with
@@ -2663,8 +2649,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'Yes'
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: null
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Male
@@ -2934,7 +2919,6 @@
   infant_age_months_6: 7.0
   infant_age_months_7: null
   infant_age_months_8: 99.0
-  is_self_isolating_detailed: null
   language_preference: null
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: Someone you do not live with
@@ -3016,7 +3000,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Post
   self_isolating: 'No'
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: 'No'
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Female
@@ -3293,7 +3277,6 @@
   infant_age_months_6: 79.0
   infant_age_months_7: null
   infant_age_months_8: null
-  is_self_isolating_detailed: null
   language_preference: English
   last_covid_contact_date: null
   last_covid_contact_type: Someone you live with
@@ -3376,7 +3359,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Post
   self_isolating: 'No'
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: 'No'
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Female
