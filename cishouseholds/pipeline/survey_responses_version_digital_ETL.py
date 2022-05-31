@@ -211,7 +211,7 @@ def digital_specific_transformations(df):
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "is_self_isolating_detailed",
+        "self_isolating_reason",
         [
             ["No", ["No", None]],
             [
