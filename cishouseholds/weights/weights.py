@@ -89,8 +89,8 @@ def generate_weights(
             antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
             cis_area_column="cis_area_code_20",
             country_column="country_code_12",
-            swab_group_by_columns=["cis_area_code_20"],
-            antibody_group_by_columns=["country_code_12"],
+            swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
+            antibody_group_by_columns=["country_code_12", "sample_source_name"],
         )
     except DesignWeightError as e:
         print(e)  # functional
