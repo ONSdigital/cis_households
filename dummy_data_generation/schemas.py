@@ -652,15 +652,6 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
             "choice",
             items=[
                 None,
-                "Withdrawn_no_future_linkage_or_use of samples",
-                "Withdrawn_no_future_linkage",
-                "Withdrawn",
-            ],
-        ),
-        "Withdrawn_Type": _(
-            "choice",
-            items=[
-                None,
                 "Phone not answered",
                 "At School",
                 "On Holiday",
@@ -668,6 +659,15 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 "At Work",
                 "Doctor Appointment",
                 "Living Away - For Education",
+            ],
+        ),
+        "Withdrawn_Type": _(
+            "choice",
+            items=[
+                None,
+                "Withdrawn_no_future_linkage_or_use of samples",
+                "Withdrawn_no_future_linkage",
+                "Withdrawn",
             ],
         ),
         "NotAttendReason": _(
