@@ -170,7 +170,10 @@ def _create_run_log_entry(run_datetime: datetime, run_id: int, version: str, pip
 
 
 def add_run_status(
-    run_id: int, run_status: str, error_stage: str = None, run_error: str = None, stage_description: str = None
+    run_id: int,
+    run_status: str,
+    error_stage: str = None,
+    run_error: str = None,
 ):
     """Append new record to run status table, with run status and any error messages"""
     schema = """
@@ -187,7 +190,6 @@ def add_run_status(
 
     df = spark_session.createDataFrame(run_status_entry, schema)
     df.write.mode("append").saveAsTable(run_status_table)  # Always append
-    spark_session.sparkContext.setJobDescription(stage_description)
 
 
 def update_table_and_log_source_files(
