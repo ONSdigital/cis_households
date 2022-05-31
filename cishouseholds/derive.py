@@ -16,13 +16,85 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def concat_fields_if_true(
+    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
+):
+    """
+    concat the names of fields where a given condition is met to form a new column
+    """
+    columns = [col for col in df.columns if re.match(column_name_pattern, col)]
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
+    )
+    return df
+
+
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
+    """
+    Derive symptoms in v2 format from digital file
+    """
+    symptom_columns = [f"{symptom_column_prefix}{symptom}" for symptom in symptoms]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
+    )
+    return df.drop("NUM_YES", "NUM_NO")
+
+
+def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
+    """
+    Count number of visits of each participant in a given day
+    Parameters
+    ----------
+    """
+    window = Window.partitionBy(participant_id_column, F.to_date(visit_date_column))
+    df = df.withColumn(column_name_to_assign, F.sum(F.lit(1)).over(window))
+    return df
+
+
+def count_barcode_cleaned(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+):
+    """
+    Count occurrences of barcode
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    barcode_column
+    """
+    window = Window.partitionBy(barcode_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(
+                (F.col(barcode_column).isNotNull())
+                & (F.col(barcode_column) != "ONS00000000")
+                & (F.datediff(F.col(visit_datetime_colum), F.col(date_taken_column)) <= 14),
+                1,
+            ).otherwise(0)
+        ).over(window),
+    )
+    return df
+
+
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Derive an incremental id from a reference column containing an id
     """
-    window = Window.orderBy(reference_column)
-    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
-    return df
+    df_unique_id = df.select(reference_column).distinct()
+    df_unique_id = df_unique_id.withColumn("TEMP", F.lit(1))
+    window = Window.partitionBy(F.col("TEMP")).orderBy(reference_column)
+    df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
+
+    df = df.join(df_unique_id, on=reference_column, how="left")
+    return df.drop("TEMP")
 
 
 def assign_distinct_count_in_group(
@@ -47,7 +119,7 @@ def assign_distinct_count_in_group(
     return df
 
 
-def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_columns: List[str]):
     """
     Window-based count of all rows by group
 
@@ -1112,7 +1184,7 @@ def assign_column_regex_match(
         Name of column that will be matched
     pattern
         Regular expression pattern as a string
-        Needs to be a raw string literal (preceeded by r"")
+        Needs to be a raw string literal (preceded by r"")
 
     Returns
     -------
@@ -1166,7 +1238,7 @@ def assign_column_to_date_string(
     lower_case: bool = False,
 ) -> DataFrame:
     """
-    Assign a column with a TimeStampType to a formatted date string.
+    Assign a column with a TimeStampType to a formatted date string.gg
     Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
@@ -1430,6 +1502,27 @@ def assign_work_health_care(df, column_name_to_assign, direct_contact_column, he
         F.concat(value_map[F.col(health_care_column)], patient_facing_text),
     ).otherwise(F.col(health_care_column))
     df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
+    return df
+
+
+def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
+    """
+    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
+    Results in groups of:
+    - Unknown (null)
+    - Student
+    - Employed
+    - Not working (unemployed, retired, long term sick etc)
+    """
+    df = df.withColumn(
+        colum_name_to_assign,
+        F.when(
+            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
+            "Employed",
+        )
+        .when(F.col(reference_column).isNull(), "Unknown")
+        .otherwise(F.col(reference_column)),
+    )
     return df
 
 

@@ -21,8 +21,8 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
             "ethnicity",
             "work_status_v0",
             "work_location",
-            "visit_type",
-            "withdrawal_reason",
+            "survey_response_type",
+            "participant_withdrawal_reason",
             "work_not_from_home_days_per_week",
         ],
     )
@@ -34,15 +34,15 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
             "Working Outside of your Home": "Working somewhere else (not your home)",
             "Not applicable": "Not applicable, not currently working",
         },
-        "last_covid_contact_location": {
+        "last_covid_contact_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
-        "last_suspected_covid_contact_location": {
+        "last_suspected_covid_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
-        "other_pcr_test_results": {
+        "other_covid_infection_test_results": {
             "Positive": "One or more positive test(s)",
         },
     }

@@ -12,8 +12,6 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
-from cishouseholds.pipeline.load import check_table_exists
-from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
@@ -101,9 +99,3 @@ def extract_input_data(file_paths: Union[List[str], str], validation_schema: Uni
         ignoreTrailingWhiteSpace=True,
         sep=sep,
     )
-
-
-def extract_from_table(table_name: str) -> DataFrame:
-    spark_session = get_or_create_spark_session()
-    check_table_exists(table_name, raise_if_missing=True)
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
