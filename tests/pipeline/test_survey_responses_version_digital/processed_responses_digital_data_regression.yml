@@ -196,7 +196,9 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Courier
   self_isolating: Prefer not to say
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: null
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 1 to 5
@@ -340,6 +342,8 @@
   work_status_employment: null
   work_status_unemployment: Not looking for paid work. This includes looking after
     the home or family or not wanting a job or being long-term sick or disabled
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart.
     It is not a problem to stay this far away from other people
   allocated_blood_barcode_not_used_reason: Make me a sandwich.
@@ -543,8 +547,9 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
   self_isolating: 'No'
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: 'No'
+  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 6 to 10
@@ -687,6 +692,8 @@
     or childminder
   work_status_employment: null
   work_status_unemployment: null
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart.
     It is not a problem to stay this far away from other people
   allocated_blood_barcode_not_used_reason: Any element of a tuple can be accessed
@@ -887,8 +894,9 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: Post
   self_isolating: 'Yes'
-  self_isolating_reason: I haven't had any symptoms but I live with someone who has
-    or has had symptoms or a positive test
+  self_isolating_reason: null
+  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: null
@@ -1035,6 +1043,8 @@
     or childminder
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2 metres
     apart. But you can usually be at least 1 metre away from other people
   allocated_blood_barcode_not_used_reason: Its main implementation is the Glasgow
@@ -1234,8 +1244,9 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: 1 to 5
@@ -1383,6 +1394,8 @@
     such as maternity or paternity for longer than 4 weeksCurrently working. This
     includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2 metres
     apart. But you can usually be at least 1 metre away from other people
   allocated_blood_barcode_not_used_reason: Do you have any idea why this is not working?
@@ -1583,8 +1596,9 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
   self_isolating: 'Yes'
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: Don't know
@@ -1730,6 +1744,8 @@
     such as maternity or paternity for longer than 4 weeksCurrently working. This
     includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
     basis
@@ -1931,8 +1947,9 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to reducing my risk of getting COVID-19 such as going
-    into hospital or shielding
+  self_isolating_reason: null
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: Prefer not to say
@@ -2076,6 +2093,8 @@
     apprenticeships
   work_status_employment: null
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: null
   allocated_blood_barcode_not_used_reason: Ports are used to communicate with the
     external world.
@@ -2278,8 +2297,9 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
   self_isolating: Prefer not to say
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: null
+  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: '0'
@@ -2426,6 +2446,8 @@
     or childminder
   work_status_employment: null
   work_status_unemployment: Retired
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart.
     It is not a problem to stay this far away from other people
   allocated_blood_barcode_not_used_reason: Where are my pants?
@@ -2627,8 +2649,9 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'Yes'
-  self_isolating_reason: Due to increased risk of getting COVID-19 such as having
-    been in contact with a known case or quarantining after travel abroad
+  self_isolating_reason: null
+  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
   social_distance_contact_18_to_69_years: Prefer not to say
@@ -2774,6 +2797,8 @@
     or childminder
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2 metres apart.
     It is not a problem to stay this far away from other people
   allocated_blood_barcode_not_used_reason: Initially composing light-hearted and irreverent
@@ -2975,7 +3000,9 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Post
   self_isolating: 'No'
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: 'No'
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 11 to 20
@@ -3124,6 +3151,8 @@
   work_status_employment: null
   work_status_unemployment: Not looking for paid work. This includes looking after
     the home or family or not wanting a job or being long-term sick or disabled
+  work_status_v0: null
+  work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
     basis
@@ -3330,7 +3359,9 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: Post
   self_isolating: 'No'
-  self_isolating_reason: I have or have had symptoms of COVID-19 or a positive test
+  self_isolating_reason: 'No'
+  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+    test
   sex: Female
   sex_raw: Female
   social_distance_contact_18_to_69_years: 6 to 10
@@ -3479,3 +3510,5 @@
     such as maternity or paternity for longer than 4 weeksCurrently working. This
     includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
+  work_status_v0: null
+  work_status_v2: null

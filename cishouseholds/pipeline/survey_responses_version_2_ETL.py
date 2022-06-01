@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ethnicity_white
@@ -37,6 +38,7 @@ from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
+from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
@@ -506,7 +508,17 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
-
+    df = assign_from_map(
+        df,
+        "self_isolating_reason_digital",
+        "self_isolating_reason",
+        {
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
+        },
+    )
     df = update_to_value_if_any_not_null(
         df,
         "cis_covid_vaccine_received",
