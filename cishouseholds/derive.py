@@ -16,6 +16,22 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict):
+    """
+    map column containing multiple value options to new columns containing true/false based on if their
+    value is chosen as the option.
+    Parameters
+    df
+    reference_column
+        column containing option values
+    value_column_name_map
+        mapping expression of column names to assign and options within reference column
+    """
+    for val, col in value_column_name_map.items():
+        df = df.withColumn(col, F.when(F.col(reference_column) == val, "Yes"))
+    return df
+
+
 def concat_fields_if_true(
     df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
 ):
