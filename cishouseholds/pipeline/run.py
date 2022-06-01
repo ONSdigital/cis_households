@@ -61,6 +61,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
+        complete_status = "sucsessfully"
         stage_name = stage_config.pop("function")
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
         print(stage_text)  # functional
@@ -75,18 +76,20 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
                 add_run_status(run_id, "success", stage_text, "")
             except Exception:
                 attempt_run_time = (datetime.now() - attempt_start).total_seconds()
-                print(f"Error: {traceback.format_exc()}")  # functional
+                print(f"    Error: {traceback.format_exc()}")  # functional
                 print(
                     f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
                 )  # functional
                 add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
             attempt += 1
             time.sleep(retry_wait_time)
+
         if not stage_success:
             pipeline_error_count += 1
+            complete_status = "unsucessfully"
         stage_run_time = (datetime.now() - stage_start).total_seconds()
         print(  # add completed successfully or errored to ouput
-            f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
+            f"    - completed {complete_status} in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
         )  # functional
     return pipeline_error_count
 
