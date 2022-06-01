@@ -210,6 +210,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -230,7 +231,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: null
@@ -511,6 +511,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: Maybe
   think_have_covid: 'No'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
@@ -531,7 +532,6 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -815,6 +815,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -835,7 +836,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: null
@@ -1117,6 +1117,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -1137,7 +1138,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -1426,6 +1426,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: null
@@ -1446,7 +1447,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -1733,6 +1733,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'Yes'
@@ -1753,7 +1754,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -2043,6 +2043,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'No'
@@ -2063,7 +2064,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
@@ -2344,6 +2344,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: null
@@ -2364,7 +2365,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2648,6 +2648,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
@@ -2668,7 +2669,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
@@ -2959,6 +2959,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'No'
@@ -2979,7 +2980,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
