@@ -85,7 +85,7 @@ def run_pipeline_stages(pipeline_stage_list: list, run_id: int, retry_count: int
         if not stage_success:
             pipeline_error_count += 1
         stage_run_time = (datetime.now() - stage_start).total_seconds()
-        print(
+        print(  # add completed successfully or errored to ouput
             f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
         )  # functional
     return pipeline_error_count
