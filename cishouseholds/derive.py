@@ -2,6 +2,9 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import and_
+from operator import or_
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -14,6 +17,54 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_column_value_from_multiple_column_map(
+    df: DataFrame, column_name_to_assign: str, value_to_condition_map: List[List[Any]], column_names: List[str]
+):
+    """
+    assign column value based on values of any number of columns in a dictionary
+    Parameters
+    ----------
+    column_name_to_assign
+    value_to_condition_map
+        a list of column value options to map to each resultant value in the 'column_name_to_assign'.
+        multiple sublists are optional within this input and denote the option to have multiple optional values.
+    column_names
+        a list of column names in the same order as the values expressed in the 'value_to_condition_map' input
+    Example
+    -------
+    A | B
+    1 | 0
+    1 | 1
+    0 | 0
+    value_to_condition_map = [
+        [Yes,[1,0]],
+        [No,[1,1]]
+    ]
+    column_names = [A,B]
+    ~ with a value of 1 and 0 in columns A and B respectively the result column C would be set to Yes and with
+    1 and 1 in the same columns the result would b No and an unmapped result yields None. ~
+    A | B | C
+    1 | 0 | Yes
+    1 | 1 | No
+    0 | 0 |
+    """
+    df = df.withColumn(column_name_to_assign, F.lit(None))
+    for row in value_to_condition_map:
+        mapped_value = row[0]
+        values = row[1]
+        logic = []
+        for col, val in zip(column_names, values):
+            if type(val) == list:
+                logic.append(reduce(or_, [F.col(col).eqNullSafe(option) for option in val]))
+            else:
+                logic.append(F.col(col).eqNullSafe(val))
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(reduce(and_, logic), mapped_value).otherwise(F.col(column_name_to_assign)),
+        )
+    return df
 
 
 def concat_fields_if_true(
