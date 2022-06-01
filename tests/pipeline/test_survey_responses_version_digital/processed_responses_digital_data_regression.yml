@@ -201,6 +201,11 @@
     test
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 1 to 5
   social_distance_contact_over_70_years: Prefer not to say
   social_distance_contact_under_18_years: Don't know
@@ -552,6 +557,11 @@
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6 to 10
   social_distance_contact_over_70_years: 6 to 10
   social_distance_contact_under_18_years: 11 to 20
@@ -899,6 +909,11 @@
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 6 to 10
   social_distance_contact_under_18_years: 11 to 20
@@ -1249,6 +1264,11 @@
     as going into hospital or shielding
   sex: Male
   sex_raw: Male
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 1 to 5
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: Don't know
@@ -1601,6 +1621,11 @@
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: Don't know
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: '0'
@@ -1952,6 +1977,11 @@
     as going into hospital or shielding
   sex: Male
   sex_raw: Male
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: Prefer not to say
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: Don't know
@@ -2302,6 +2332,11 @@
     having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: 21 or more
@@ -2654,6 +2689,11 @@
     having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: Prefer not to say
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: 1 to 5
@@ -3005,6 +3045,11 @@
     test
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 11 to 20
   social_distance_contact_over_70_years: 1 to 5
   social_distance_contact_under_18_years: Prefer not to say
@@ -3364,6 +3409,11 @@
     test
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6 to 10
   social_distance_contact_over_70_years: Don't know
   social_distance_contact_under_18_years: 21 or more
