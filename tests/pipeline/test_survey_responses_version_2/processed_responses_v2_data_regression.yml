@@ -160,6 +160,8 @@
   self_isolating: 'No'
   self_isolating_reason: Yes for other reasons related to reducing your risk of getting
     COVID-19 (e.g. going into hospital orshielding)
+  self_isolating_reason_digital: Yes for other reasons related to reducing your risk
+    of getting COVID-19 (e.g. going into hospital orshielding)
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -460,6 +462,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -763,6 +766,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1064,6 +1068,7 @@
   samples_taken_datetime: null
   self_isolating: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
+  self_isolating_reason_digital: Yes, someone you live with had symptoms
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -1372,6 +1377,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1678,6 +1684,7 @@
   samples_taken_datetime: null
   self_isolating: 'No'
   self_isolating_reason: 'No'
+  self_isolating_reason_digital: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1986,6 +1993,8 @@
   self_isolating: 'No'
   self_isolating_reason: Yes because you live with someone who has/has had symptoms
     or a positive test but you haven't hadsymptoms yourself
+  self_isolating_reason_digital: Yes because you live with someone who has/has had
+    symptoms or a positive test but you haven't hadsymptoms yourself
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -2286,6 +2295,7 @@
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
@@ -2589,6 +2599,7 @@
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2899,6 +2910,7 @@
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
   self_isolating: 'No'
   self_isolating_reason: 'No'
+  self_isolating_reason_digital: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
