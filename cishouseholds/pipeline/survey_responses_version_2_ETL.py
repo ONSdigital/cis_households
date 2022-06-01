@@ -792,11 +792,11 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    df = df.witColumn(
+    df = df.withColumn(
         "swab_sample_barcode_combined",
         F.coalesce(F.col("swab_sample_barcode"), F.col("swab_sample_barcode_user_entered")),
     )
-    df = df.witColumn(
+    df = df.withColumn(
         "blood_sample_barcode_combined",
         F.coalesce(F.col("blood_sample_barcode"), F.col("blood_sample_barcode_user_entered")),
     )
