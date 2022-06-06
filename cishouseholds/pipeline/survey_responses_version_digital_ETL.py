@@ -2,9 +2,9 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.edit import apply_value_map_multiple_columns
-from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
