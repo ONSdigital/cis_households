@@ -2783,7 +2783,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "last_suspected_covid_type": _(
+        "last_suspected_covid_contact_type": _(
             "choice",
             items=[
                 "Someone I do not live with",

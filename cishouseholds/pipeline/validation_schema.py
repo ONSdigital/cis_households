@@ -1295,7 +1295,7 @@ validation_schemas = {
         "last_covid_contact_type": string_dict,
         "contact_suspected_positive_covid_last_28_days": string_dict,
         "last_suspected_covid_contact_date": string_dict,
-        "last_suspected_covid_type": string_dict,
+        "last_suspected_covid_contact_type": string_dict,
         "hospital_last_28_days": string_dict,
         "other_household_member_hospital_last_28_days": string_dict,
         "care_home_last_28_days": string_dict,

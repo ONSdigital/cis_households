@@ -120,7 +120,7 @@
   last_covid_contact_type: Someone you do not live with
   last_name: Romero
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Someone you do not live with
+  last_suspected_covid_contact_type: Someone you do not live with
   middle_name: Jessika
   ons_household_id: '763063387334'
   opted_out_of_blood_next_window: null
@@ -470,7 +470,7 @@
   last_covid_contact_type: Someone I do not live with
   last_name: Meyers
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Buck
   ons_household_id: '414160350614'
   opted_out_of_blood_next_window: null
@@ -818,7 +818,7 @@
   last_covid_contact_type: Someone you live with
   last_name: Hunt
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: Someone I do not live with
+  last_suspected_covid_contact_type: Someone I do not live with
   middle_name: Gale
   ons_household_id: 030988308904
   opted_out_of_blood_next_window: null
@@ -1171,7 +1171,7 @@
   last_covid_contact_type: Someone you do not live with
   last_name: Waters
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Isaac
   ons_household_id: '734353881968'
   opted_out_of_blood_next_window: null
@@ -1522,7 +1522,7 @@
   last_covid_contact_type: Someone you do not live with
   last_name: Day
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Someone I live with
+  last_suspected_covid_contact_type: Someone I live with
   middle_name: Hank
   ons_household_id: '602276804025'
   opted_out_of_blood_next_window: 'No'
@@ -1874,7 +1874,7 @@
   last_covid_contact_type: Someone you do not live with
   last_name: Bolton
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
-  last_suspected_covid_type: Someone you do not live with
+  last_suspected_covid_contact_type: Someone you do not live with
   middle_name: My
   ons_household_id: '822178461989'
   opted_out_of_blood_next_window: 'No'
@@ -2224,7 +2224,7 @@
   last_covid_contact_type: Someone you live with
   last_name: Gross
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Clarence
   ons_household_id: '623704990229'
   opted_out_of_blood_next_window: 'Yes'
@@ -2574,7 +2574,7 @@
   last_covid_contact_type: Someone I do not live with
   last_name: Mosley
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Someone you live with
+  last_suspected_covid_contact_type: Someone you live with
   middle_name: Quinn
   ons_household_id: '502848695986'
   opted_out_of_blood_next_window: null
@@ -2924,7 +2924,7 @@
   last_covid_contact_type: Someone you do not live with
   last_name: Cervantes
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Someone I live with
+  last_suspected_covid_contact_type: Someone I live with
   middle_name: Jae
   ons_household_id: '821442294850'
   opted_out_of_blood_next_window: 'No'
@@ -3282,7 +3282,7 @@
   last_covid_contact_type: Someone you live with
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Someone you do not live with
+  last_suspected_covid_contact_type: Someone you do not live with
   middle_name: Argentina
   ons_household_id: '568720322983'
   opted_out_of_blood_next_window: 'Yes'
