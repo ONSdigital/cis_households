@@ -258,7 +258,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "survey_response_type",
         "work_sector",
         "illness_reduces_activity_or_ability",
-        "work_location",
+        # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
         "last_suspected_covid_type",
