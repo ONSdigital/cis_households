@@ -503,8 +503,8 @@
   last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
     in my pajamas, I don't know.
   last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '846198988073'
   other_covid_infection_test: 'Yes'
@@ -659,8 +659,8 @@
   last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
     lucky?"" Well, do ya? Punk!"'
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his liver
-    with some fava beans and a nice Chianti.
+  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   no_email_address: 1.0
   ons_household_id: '602276804025'
   other_covid_infection_test: 'No'
@@ -812,8 +812,8 @@
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '769043821442'
   other_covid_infection_test: 'Yes'
@@ -966,8 +966,8 @@
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Frankly, my dear, I don't give a damn.
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '105638762102'
   other_covid_infection_test: 'No'
@@ -1122,8 +1122,8 @@
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_type: Houston, we have a problem.
   last_suspected_covid_contact_date: '2022-01-01 00:00:00.000000'
-  last_suspected_covid_contact_type: Ask not what your country can do for you; ask what you
-    can do for your country.
+  last_suspected_covid_contact_type: Ask not what your country can do for you; ask
+    what you can do for your country.
   no_email_address: 0.0
   ons_household_id: '826911152672'
   other_covid_infection_test: 'No'
@@ -1275,7 +1275,8 @@
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
-  last_suspected_covid_contact_type: Get your stinking paws off me, you damned dirty ape.
+  last_suspected_covid_contact_type: Get your stinking paws off me, you damned dirty
+    ape.
   no_email_address: 0.0
   ons_household_id: '407714528425'
   other_covid_infection_test: 'No'
@@ -1428,8 +1429,8 @@
   last_covid_contact_type: A census taker once tried to test me. I ate his liver with
     some fava beans and a nice Chianti.
   last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   no_email_address: 0.0
   ons_household_id: '736535270957'
   other_covid_infection_test: null
