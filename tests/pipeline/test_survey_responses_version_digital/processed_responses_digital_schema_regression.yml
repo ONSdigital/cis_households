@@ -1288,6 +1288,18 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: self_isolating_reason_digital
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
+- metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
   nullable: true
   type: integer

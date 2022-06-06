@@ -152,6 +152,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -164,7 +165,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -358,6 +358,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -370,7 +371,6 @@
   think_have_covid_symptom_loss_of_taste: 'No'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: null
@@ -573,6 +573,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -585,7 +586,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -778,6 +778,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -790,7 +791,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -991,6 +991,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -1003,7 +1004,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1201,6 +1201,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -1213,7 +1214,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1406,6 +1406,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -1418,7 +1419,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1617,6 +1617,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1629,7 +1630,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1824,6 +1824,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1836,7 +1837,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -2033,6 +2033,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -2045,7 +2046,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: null

@@ -6,8 +6,8 @@ from cishouseholds.weights.pre_calibration import adjust_design_weight_by_non_re
 
 def test_adjust_design_weight_by_non_response_factor(spark_session):
     schema_expected = """response_indicator integer,
-                        household_level_design_weight_swab double,
-                        household_level_design_weight_antibodies double,
+                        scaled_design_weight_swab_non_adjusted double,
+                        scaled_design_weight_antibodies_non_adjusted double,
                         bounded_non_response_factor double,
                         household_level_design_weight_adjusted_swab double,
                         household_level_design_weight_adjusted_antibodies double"""
