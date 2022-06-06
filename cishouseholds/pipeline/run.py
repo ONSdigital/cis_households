@@ -2,6 +2,7 @@ import time
 import traceback
 from contextlib import contextmanager
 from datetime import datetime
+from typing import Dict
 from typing import List
 
 import cishouseholds.pipeline.input_file_stages  # noqa: F401
@@ -24,6 +25,16 @@ def spark_description_set(description):
         yield
     finally:
         spark.sparkContext.setJobDescription(None)
+
+
+def check_conditions(stage_responses: dict, stage_config: dict):
+    if "when" not in stage_config:
+        return True
+    elif stage_config["when"]["operator"] == "all":
+        return all(stage_responses[stage] == status for stage, status in stage_config["when"]["conditions"].items())
+    elif stage_config["when"]["operator"] == "any":
+        return any(stage_responses[stage] == status for stage, status in stage_config["when"]["conditions"].items())
+    return False
 
 
 def run_from_config():
@@ -74,6 +85,7 @@ def run_pipeline_stages(pipeline_stage_list: List[dict], run_id: int, retry_coun
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
+    stage_responses: Dict[str, str] = {}
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
         stage_success = False
@@ -84,34 +96,38 @@ def run_pipeline_stages(pipeline_stage_list: List[dict], run_id: int, retry_coun
             stage_description += f"{key}:{val}, "
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
         print(stage_text)  # functional
-        while not stage_success and attempt < retry_count + 1:
-            # TODO: log the retry event with run status and no traceback
-            if attempt != 0:
-                with spark_description_set("adding run status"):
-                    add_run_status(run_id, "retry", stage_text, "")
-            attempt_start = datetime.now()
-            try:
-                with spark_description_set(stage_description):
-                    pipeline_stages[stage_name](**stage_config)
-                stage_success = True
-                with spark_description_set("adding run status"):
-                    add_run_status(run_id, "success", stage_text, "")
-            except Exception:
-                attempt_run_time = (datetime.now() - attempt_start).total_seconds()
-                print(f"Error: {traceback.format_exc()}")  # functional
-                print(
-                    f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
-                )  # functional
-                with spark_description_set("adding run status"):
-                    add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
-            attempt += 1
-            time.sleep(retry_wait_time)
-        if not stage_success:
-            pipeline_error_count += 1
-        stage_run_time = (datetime.now() - stage_start).total_seconds()
-        print(
-            f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
-        )  # functional
+        if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
+            stage_config.pop("when", None)
+            while not stage_success and attempt < retry_count + 1:
+                # TODO: log the retry event with run status and no traceback
+                if attempt != 0:
+                    with spark_description_set("adding run status"):
+                        add_run_status(run_id, "retry", stage_text, "")
+                attempt_start = datetime.now()
+                try:
+                    with spark_description_set(stage_description):
+                        stage_responses[stage_name] = pipeline_stages[stage_name](**stage_config)
+                    stage_success = True
+                    with spark_description_set("adding run status"):
+                        add_run_status(run_id, "success", stage_text, "")
+                except Exception:
+                    attempt_run_time = (datetime.now() - attempt_start).total_seconds()
+                    print(f"Error: {traceback.format_exc()}")  # functional
+                    print(
+                        f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
+                    )  # functional
+                    with spark_description_set("adding run status"):
+                        add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
+                attempt += 1
+                time.sleep(retry_wait_time)
+            if not stage_success:
+                pipeline_error_count += 1
+            stage_run_time = (datetime.now() - stage_start).total_seconds()
+            print(
+                f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
+            )  # functional
+        else:
+            print("    - stage not run")  # functional
     return pipeline_error_count
 
 
