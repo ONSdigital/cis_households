@@ -18,16 +18,16 @@ def test_assign_tranche_factor(spark_session):
             groupby string,
             tranche integer,
             tranche_eligible_households string,
-            number_eligible_households_tranche_bystrata_enrolment integer,
-            number_sampled_households_tranche_bystrata_enrolment integer,
+            number_eligible_households_tranche_by_strata_enrolment integer,
+            number_sampled_households_tranche_by_strata_enrolment integer,
             tranche_factor string""",
     )
     output_df = assign_tranche_factor(
         df=expected_df.drop(
             "tranche_factor",
             "tranche_eligible_households",
-            "number_eligible_households_tranche_bystrata_enrolment",
-            "number_sampled_households_tranche_bystrata_enrolment",
+            "number_eligible_households_tranche_by_strata_enrolment",
+            "number_sampled_households_tranche_by_strata_enrolment",
         ),
         column_name_to_assign="tranche_factor",
         barcode_column="barcode",

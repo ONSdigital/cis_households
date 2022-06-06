@@ -172,8 +172,8 @@ class SparkValidate:
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
-    def valid_vaccination(error_message, visit_type_column, check_columns):
-        return (F.col(visit_type_column) != "First Visit") | (
+    def valid_vaccination(error_message, survey_response_type_column, check_columns):
+        return (F.col(survey_response_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
 

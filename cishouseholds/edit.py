@@ -187,7 +187,7 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
     Parameters
@@ -245,6 +245,14 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
+def clean_barcode_simple(df: DataFrame, barcode_column: str):
+    """
+    clean barcode by converting to upper an removing whitespace
+    """
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
+    return df
+
+
 def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
@@ -258,8 +266,7 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
         signifies if updating was performed on row
     """
     df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
-    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
-    df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
 
     suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
     prefix = F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", "")

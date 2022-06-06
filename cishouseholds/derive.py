@@ -2,6 +2,9 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import and_
+from operator import or_
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -26,6 +29,54 @@ def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, v
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
     visit_order_map = {v: k for k, v in category_maps["iqvia_raw_category_map"]["visit_order"].items()}
     df = update_column_values_from_map(df, column_name_to_assign, visit_order_map)
+    return df
+
+
+def assign_column_value_from_multiple_column_map(
+    df: DataFrame, column_name_to_assign: str, value_to_condition_map: List[List[Any]], column_names: List[str]
+):
+    """
+    assign column value based on values of any number of columns in a dictionary
+    Parameters
+    ----------
+    column_name_to_assign
+    value_to_condition_map
+        a list of column value options to map to each resultant value in the 'column_name_to_assign'.
+        multiple sublists are optional within this input and denote the option to have multiple optional values.
+    column_names
+        a list of column names in the same order as the values expressed in the 'value_to_condition_map' input
+    Example
+    -------
+    A | B
+    1 | 0
+    1 | 1
+    0 | 0
+    value_to_condition_map = [
+        [Yes,[1,0]],
+        [No,[1,1]]
+    ]
+    column_names = [A,B]
+    ~ with a value of 1 and 0 in columns A and B respectively the result column C would be set to Yes and with
+    1 and 1 in the same columns the result would b No and an unmapped result yields None. ~
+    A | B | C
+    1 | 0 | Yes
+    1 | 1 | No
+    0 | 0 |
+    """
+    df = df.withColumn(column_name_to_assign, F.lit(None))
+    for row in value_to_condition_map:
+        mapped_value = row[0]
+        values = row[1]
+        logic = []
+        for col, val in zip(column_names, values):
+            if type(val) == list:
+                logic.append(reduce(or_, [F.col(col).eqNullSafe(option) for option in val]))
+            else:
+                logic.append(F.col(col).eqNullSafe(val))
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(reduce(and_, logic), mapped_value).otherwise(F.col(column_name_to_assign)),
+        )
     return df
 
 
@@ -75,7 +126,7 @@ def count_barcode_cleaned(
     df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
 ):
     """
-    Count occurances of barcode
+    Count occurrences of barcode
     Parameters
     ----------
     df
@@ -1197,7 +1248,7 @@ def assign_column_regex_match(
         Name of column that will be matched
     pattern
         Regular expression pattern as a string
-        Needs to be a raw string literal (preceeded by r"")
+        Needs to be a raw string literal (preceded by r"")
 
     Returns
     -------
@@ -1251,7 +1302,7 @@ def assign_column_to_date_string(
     lower_case: bool = False,
 ) -> DataFrame:
     """
-    Assign a column with a TimeStampType to a formatted date string.
+    Assign a column with a TimeStampType to a formatted date string.gg
     Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
