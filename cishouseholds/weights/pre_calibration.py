@@ -4,12 +4,17 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
+from pyspark.sql.types import DecimalType
+from pyspark.sql.types import StructField
+from pyspark.sql.types import StructType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.weights.weights import DesignWeightError
 from cishouseholds.weights.weights import validate_design_weights_or_precal
+
+# from decimal import Decimal
 
 # from cishouseholds.derive import assign_ethnicity_white
 
@@ -609,6 +614,12 @@ def precalibration_checkpoints(
         df = df.withColumn("temp", F.when(F.col(design_weight) != F.col("temp"), 1).otherwise(None))
         check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
+        df = df.withColumn("15_DECIMALS_CHECK_FAILED", F.col(design_weight).cast("string"))
+
+        schema = StructType([StructField("amount", DecimalType(38, 10)), StructField("fx", DecimalType(38, 10))])
+        
+        check_5_passed = check_5_passed and (False not in df.select("temp").toPandas()["temp"].values.tolist())
+
     if not check_1_passed:
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2_passed:
@@ -617,9 +628,11 @@ def precalibration_checkpoints(
         raise DesignWeightError("check_3 There are no missing design weights.")
     if not check_4_passed:
         raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
+    if not check_5_passed:
+        raise DesignWeightError("check_5: There are floats with different than 15 decimals.")
 
     df = df.drop("not_positive", "not_null", "temp")
-    return check_1_passed, check_2_passed, check_3_passed, check_4_passed
+    return check_1_passed, check_2_passed, check_3_passed, check_4_passed, check_5_passed
 
 
 # 1180

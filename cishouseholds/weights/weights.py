@@ -421,6 +421,15 @@ def validate_design_weights_or_precal(
         F.when(F.col("DISTINCT_DESIGN_WEIGHT_BY_GROUP") != 1, False).otherwise(True),
     ).drop("DISTINCT_DESIGN_WEIGHT_BY_GROUP")
 
+    df = df.withColumn(
+        "DESIGN_WEIGHT_15_DECIMALS_SWAB_CHECK_FAILED",
+        F.when(F.col(swab_weight_column).cast("string")[::-1].find(".") == 15, True),
+    )
+    df = df.withColumn(
+        "DESIGN_WEIGHT_15_DECIMALS_ANTIBODY_CHECK_FAILED",
+        F.when(F.col(antibody_weight_column).cast("string")[::-1].find(".") == 15, True),
+    )
+
     swab_design_weights_sum_to_population = (
         True if df.filter(F.col("SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
     )
@@ -432,13 +441,24 @@ def validate_design_weights_or_precal(
     design_weights_consistent_within_group = (
         True if df.filter(F.col("DISTINCT_WITHIN_GROUP_CHECK_FAILED")).count() == 0 else False
     )
+
+    design_weights_swab_decimal_consistent = (
+        True if df.filter(F.col("DESIGN_WEIGHT_15_DECIMALS_SWAB_CHECK_FAILED")).count() == 0 else False
+    )
+    design_weights_antibody_decimal_consistent = (
+        True if df.filter(F.col("DESIGN_WEIGHT_15_DECIMALS_ANTIBODY_CHECK_FAILED")).count() == 0 else False
+    )
+
     df.drop(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "NULL_DESIGN_WEIGHT_CHECK_FAILED",
         "DISTINCT_WITHIN_GROUP_CHECK_FAILED",
+        "DESIGN_WEIGHT_15_DECIMALS_SWAB_CHECK_FAILED",
+        "DESIGN_WEIGHT_15_DECIMALS_ANTIBODY_CHECK_FAILED",
     )
     error_string = ""
+
     if not (antibody_design_weights_sum_to_population or swab_design_weights_sum_to_population):
         error_string += "Design weights do not sum to population totals.\n"
     if not design_weights_positive:
@@ -447,6 +467,11 @@ def validate_design_weights_or_precal(
         error_string += "There are missing design weights.\n"
     if not design_weights_consistent_within_group:
         error_string += "Design weights are not consistent within groups.\n"
+
+    if not design_weights_swab_decimal_consistent:
+        error_string += "Swab Design weights are not consistent within groups.\n"
+    if not design_weights_antibody_decimal_consistent:
+        error_string += "Antibody Design weights are not consistent within groups.\n"
 
     if error_string:
         raise DesignWeightError(error_string)
