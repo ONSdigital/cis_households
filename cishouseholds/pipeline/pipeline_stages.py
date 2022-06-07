@@ -1307,7 +1307,7 @@ def tables_to_csv(
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-    category_map_dictionary = category_maps[category_map]
+    category_map_dictionary = category_maps.get(category_map)
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
@@ -1319,7 +1319,8 @@ def tables_to_csv(
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
 
         df = df.select(*columns_to_select)
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        if category_map_dictionary is not None:
+            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)

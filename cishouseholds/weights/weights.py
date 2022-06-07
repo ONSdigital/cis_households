@@ -89,8 +89,8 @@ def generate_weights(
             antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
             cis_area_column="cis_area_code_20",
             country_column="country_code_12",
-            swab_group_by_columns=["cis_area_code_20"],
-            antibody_group_by_columns=["country_code_12"],
+            swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
+            antibody_group_by_columns=["country_code_12", "sample_source_name"],
         )
     except DesignWeightError as e:
         print(e)  # functional
@@ -441,7 +441,7 @@ def validate_design_weights(
         error_string += "Antibody design weights do not sum to country population totals.\n"
     if not swab_design_weights_sum_to_population:
         error_string += "Swab design weights do not sum to cis area population totals.\n"
-    if not positive_design_weights:
+    if positive_design_weights > 0:
         error_string += f"{positive_design_weights} records have negative design weights.\n"
     if null_design_weights > 0:
         error_string += f"There are {null_design_weights} records with null swab or antibody design weights.\n"
