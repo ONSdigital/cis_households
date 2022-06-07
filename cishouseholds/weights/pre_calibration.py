@@ -9,7 +9,7 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.weights.weights import DesignWeightError
-from cishouseholds.weights.weights import validate_design_weights_or_precal
+from cishouseholds.weights.weights import validate_design_weights
 
 # from cishouseholds.derive import assign_ethnicity_white
 
@@ -57,7 +57,7 @@ def pre_calibration_high_level(
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
 
-    validate_design_weights_or_precal(
+    validate_design_weights(
         df=df,
         num_households_by_cis_column="number_of_households_by_cis_area",
         num_households_by_country_column="number_of_households_by_country",
@@ -65,7 +65,8 @@ def pre_calibration_high_level(
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
-        group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
+        swab_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
+        antibody_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 

@@ -504,7 +504,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_onset_date
+  name: think_have_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}
@@ -1143,6 +1143,10 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: self_isolating_reason_digital
+  nullable: true
+  type: string
 - metadata: {}
   name: cis_covid_vaccine_date
   nullable: true
