@@ -1284,6 +1284,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
+    ignore_missing_columns=False,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
@@ -1315,7 +1316,7 @@ def tables_to_csv(
         df = extract_from_table(table["table_name"])
         columns_to_select = [element for element in table["column_name_map"].keys()]
         missing_columns = set(columns_to_select) - set(df.columns)
-        if missing_columns:
+        if missing_columns and not ignore_missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
 
         df = df.select(*columns_to_select)
