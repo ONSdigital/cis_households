@@ -4,6 +4,7 @@ from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql.types import DecimalType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_count_by_group
@@ -221,6 +222,10 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
         barcode_column="ons_household_id",
         previous_design_weight_column="scaled_design_weight_swab_non_adjusted",
     )
+    df = df.withColumn(
+        "scaled_design_weight_swab_non_adjusted",
+        F.col("scaled_design_weight_swab_non_adjusted").cast(DecimalType(38, 20)),
+    )
     df = calculate_generic_design_weight_variables(
         df=df,
         design_weight_column="raw_design_weights_swab",
@@ -260,6 +265,10 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "
             tranche_factor_column="tranche_factor",
             previous_design_weight_column="scaled_design_weight_antibodies_non_adjusted",
         )
+    df = df.withColumn(
+        "scaled_design_weight_antibodies_non_adjusted",
+        F.col("scaled_design_weight_antibodies_non_adjusted").cast(DecimalType(38, 20)),
+    )
     df = calculate_generic_design_weight_variables(
         df=df,
         design_weight_column=design_weight_column,
@@ -383,6 +392,7 @@ def validate_design_weights_or_precal(
     cis_area_column: str,
     country_column: str,
     group_by_columns: List[str],
+    rounding_value: float = 18,
 ):
     """
     Validate the derived design weights by checking 4 conditions are true:
@@ -399,14 +409,18 @@ def validate_design_weights_or_precal(
     ]
     df = df.withColumn(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
-        F.when(F.sum(swab_weight_column).over(cis_window) == F.col(num_households_by_cis_column), False).otherwise(
-            True
-        ),
+        F.when(
+            F.round(F.sum(swab_weight_column).over(cis_window), rounding_value)
+            == F.round(F.col(num_households_by_cis_column).cast(DecimalType(38, 20)), rounding_value),
+            False,
+        ).otherwise(True),
     )
     df = df.withColumn(
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
-            F.sum(antibody_weight_column).over(country_window) == F.col(num_households_by_country_column), False
+            F.round(F.sum(antibody_weight_column).over(country_window), rounding_value)
+            == F.round(F.col(num_households_by_country_column).cast(DecimalType(38, 20)), rounding_value),
+            False,
         ).otherwise(True),
     )
 

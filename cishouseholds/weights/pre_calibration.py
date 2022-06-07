@@ -63,9 +63,9 @@ def pre_calibration_high_level(
         num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
-        group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
+        group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 
@@ -86,7 +86,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
     """
     This function will carry forward last observation of antibodies,
     swab or longcovid result prioritising positive cases and age of patient.
-
     Parameters
     ----------
     df
@@ -146,7 +145,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
 def cutoff_day_to_ever_never(df, days, cutoff_date):
     """
     This function will flag the visit_dates coming after a cutoff_date provided after days
-
     Parameters
     ----------
     df
@@ -183,7 +181,6 @@ def dataset_generation(
         - antibodies 28 days
         - long covid 28 days
         - long covid 42 days
-
     Parameters
     ----------
     df
@@ -300,7 +297,6 @@ def survey_extraction_household_data_response_factor(
     required_extracts_column_list
     mandatory_extracts_column_list
     population_join_column: Only swab/antibodies
-
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
@@ -556,10 +552,6 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
-from decimal import Decimal
-from pyspark.sql.types import DecimalType, StructType, StructField
-
-
 def precalibration_checkpoints(
     df: DataFrame,
     scaled_design_weight_adjusted: str,
@@ -613,15 +605,6 @@ def precalibration_checkpoints(
         df = df.withColumn("temp", F.when(F.col(design_weight) != F.col("temp"), 1).otherwise(None))
         check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
-        df = df.withColumn("15_DECIMALS_CHECK_FAILED", F.col(design_weight).cast("string"))
-
-        schema = StructType([StructField("amount", DecimalType(38, 10)), StructField("fx", DecimalType(38, 10))])
-        import pdb
-
-        pdb.set_trace()
-
-        check_5_passed = check_5_passed and (False not in df.select("temp").toPandas()["temp"].values.tolist())
-
     if not check_1_passed:
         raise DesignWeightError("check_1: The design weights are NOT adding up to total population.")
     if not check_2_passed:
@@ -630,11 +613,9 @@ def precalibration_checkpoints(
         raise DesignWeightError("check_3 There are no missing design weights.")
     if not check_4_passed:
         raise DesignWeightError("check_4: There are weights that are NOT the same across sample groups.")
-    if not check_5_passed:
-        raise DesignWeightError("check_5: There are floats with different than 15 decimals.")
 
     df = df.drop("not_positive", "not_null", "temp")
-    return check_1_passed, check_2_passed, check_3_passed, check_4_passed, check_5_passed
+    return check_1_passed, check_2_passed, check_3_passed, check_4_passed
 
 
 # 1180
