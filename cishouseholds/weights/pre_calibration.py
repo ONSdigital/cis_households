@@ -4,17 +4,12 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
-from pyspark.sql.types import DecimalType
-from pyspark.sql.types import StructField
-from pyspark.sql.types import StructType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.weights.weights import DesignWeightError
 from cishouseholds.weights.weights import validate_design_weights_or_precal
-
-# from decimal import Decimal
 
 # from cishouseholds.derive import assign_ethnicity_white
 
@@ -561,6 +556,10 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
     return df
 
 
+from decimal import Decimal
+from pyspark.sql.types import DecimalType, StructType, StructField
+
+
 def precalibration_checkpoints(
     df: DataFrame,
     scaled_design_weight_adjusted: str,
@@ -617,7 +616,10 @@ def precalibration_checkpoints(
         df = df.withColumn("15_DECIMALS_CHECK_FAILED", F.col(design_weight).cast("string"))
 
         schema = StructType([StructField("amount", DecimalType(38, 10)), StructField("fx", DecimalType(38, 10))])
-        
+        import pdb
+
+        pdb.set_trace()
+
         check_5_passed = check_5_passed and (False not in df.select("temp").toPandas()["temp"].values.tolist())
 
     if not check_1_passed:
