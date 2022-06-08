@@ -407,8 +407,8 @@ def validate_design_weights(
     country_window = Window.partitionBy(country_column)
 
     # check that dweights are decimal type with specific count.
-    swab_weight_column_type = StructField(swab_group_by_columns, DecimalType(38, 20), True) in df.schema
-    antibody_weight_column_type = StructField(antibody_group_by_columns, DecimalType(38, 20), True) in df.schema
+    swab_weight_column_type = StructField(swab_weight_column, DecimalType(38, 20), True) in df.schema
+    antibody_weight_column_type = StructField(antibody_weight_column, DecimalType(38, 20), True) in df.schema
 
     df = df.withColumn(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
