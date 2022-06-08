@@ -19,7 +19,7 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict):
+def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
     """
     map column containing multiple value options to new columns containing true/false based on if their
     value is chosen as the option.
@@ -30,9 +30,10 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
     value_column_name_map
         mapping expression of column names to assign and options within reference column
     """
+    df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
     for val, col in value_column_name_map.items():
-        df = df.withColumn(col, F.when(F.col(reference_column) == val, "Yes"))
-    return df
+        df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
+    return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 
 def assign_column_value_from_multiple_column_map(
