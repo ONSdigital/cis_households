@@ -1360,7 +1360,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: last_suspected_covid_type_raw
+  name: last_suspected_covid_contact_type_raw
   nullable: true
   type: string
 - metadata: {}

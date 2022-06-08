@@ -261,7 +261,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
-        "last_suspected_covid_type",
+        "last_suspected_covid_contact_type",
         "physical_contact_under_18_years",
         "physical_contact_18_to_69_years",
         "physical_contact_over_70_years",
@@ -366,7 +366,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
-        "last_suspected_covid_type": {
+        "last_suspected_covid_contact_type": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
