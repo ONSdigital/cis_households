@@ -2783,16 +2783,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "last_suspected_covid_type": _(
-            "choice",
-            items=[
-                "Someone I do not live with",
-                "Someone I live with",
-                "Someone you do not live with",
-                "Someone you live with",
-                None,
-            ],
-        ),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "other_household_member_hospital_last_28_days": _("choice", items=yes_no_unknown_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
@@ -2847,4 +2837,25 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
+        "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "other_covid_infection_test_positive_date": _(
+            "datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021
+        ),
+        "think_had_covid_symptoms": _("choice", items=yes_no_none_choice),
+        "last_suspected_covid_contact_type": _(
+            "choice",
+            items=[
+                "Someone I do not live with",
+                "Someone I live with",
+                "Someone you do not live with",
+                "Someone you live with",
+                None,
+            ],
+        ),
+        "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "think_had_covid_symptom_onset_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "digital_survey_collection_mode": _("choice", items=["Online", "Telephone", None]),
+        "other_covid_infection_test_negative_date": _(
+            "datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021
+        ),
     }
