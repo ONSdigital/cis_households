@@ -2770,8 +2770,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Someone I do not live with",
                 "Someone I live with",
-                "Someone you do not live with",
-                "Someone you live with",
                 None,
             ],
         ),
