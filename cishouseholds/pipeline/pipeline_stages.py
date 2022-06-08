@@ -51,6 +51,7 @@ from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccinat
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
+from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
@@ -291,12 +292,12 @@ def generate_input_processing_function(
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
-            return
+            return "No files"
 
         valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {resource_path}.")  # functional
-            return
+            return "Error"
 
         df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
@@ -316,6 +317,7 @@ def generate_input_processing_function(
             update_table_and_log_source_files(
                 df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
+            return "updated"
         return df
 
     _inner_function.__name__ = stage_name
@@ -370,6 +372,9 @@ def validate_survey_responses(
     validation_failure_flag_column: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_validation_failures_table: str,
+    invalid_validation_failures_table: str,
+    id_column: str,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -394,6 +399,29 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
+
+    validation_check_failures_valid_data_df = (
+        (
+            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    validation_check_failures_invalid_data_df = (
+        (
+            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
+    update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
@@ -848,8 +876,11 @@ def report(
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_survey_responses_errors_table: str,
+    invalid_survey_responses_errors_table: str,
     output_directory: str,
     tables_to_count: List[str],
+    error_priority_map: dict = {},
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -874,6 +905,13 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
+    valid_df_errors = generate_error_table(
+        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+    invalid_df_errors = generate_error_table(
+        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -895,20 +933,6 @@ def report(
             table_counts[table_name] = table.count()
         else:
             table_counts[table_name] = "Table not found"
-
-    valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
-    invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
-
-    valid_df_errors = (
-        valid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
-    invalid_df_errors = (
-        invalid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
 
     duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
         F.col(duplicate_count_column_name) > 1
@@ -1284,7 +1308,7 @@ def tables_to_csv(
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-    category_map_dictionary = category_maps[category_map]
+    category_map_dictionary = category_maps.get(category_map)
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
@@ -1296,7 +1320,8 @@ def tables_to_csv(
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
 
         df = df.select(*columns_to_select)
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        if category_map_dictionary is not None:
+            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)
@@ -1316,6 +1341,7 @@ def sample_file_ETL(
     household_level_populations_table,
     old_sample_file,
     new_sample_file,
+    new_sample_source_name,
     tranche,
     postcode_lookup,
     master_sample_file,
@@ -1349,6 +1375,7 @@ def sample_file_ETL(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         tranche_df,
         postcode_lookup_df,
         country_lookup_df,
