@@ -16,7 +16,15 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
-    df = df.withColumn("visit_datetime", F.lit(None).cast("timestamp"))  # Placeholder for 2199
+    df = df.withColumn(
+        "visit_datetime",
+        F.coalesce(
+            F.col("swab_taken_datetime"),
+            F.col("blood_taken_datetime"),
+            F.col("survey_completed_datetime"),
+            F.col("sample_kit_dispatched_datetime"),
+        ),
+    )  # Placeholder for 2199
 
     df = transform_survey_responses_generic(df)
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
