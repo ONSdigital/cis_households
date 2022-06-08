@@ -16,7 +16,15 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
-    df = df.withColumn("visit_datetime", F.lit(None).cast("timestamp"))  # Placeholder for 2199
+    df = df.withColumn(
+        "visit_datetime",
+        F.coalesce(
+            F.col("swab_taken_datetime"),
+            F.col("blood_taken_datetime"),
+            F.col("survey_completed_datetime"),
+            F.col("sample_kit_dispatched_datetime"),
+        ),
+    )  # Placeholder for 2199
 
     df = transform_survey_responses_generic(df)
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
@@ -261,7 +269,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
-        "last_suspected_covid_type",
+        "last_suspected_covid_contact_type",
         "physical_contact_under_18_years",
         "physical_contact_18_to_69_years",
         "physical_contact_over_70_years",
@@ -366,7 +374,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
-        "last_suspected_covid_type": {
+        "last_suspected_covid_contact_type": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
