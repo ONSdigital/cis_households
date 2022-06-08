@@ -1322,6 +1322,7 @@ validation_schemas = {
         "blood_sample_barcode_correct": string_dict,
         "think_have_covid_symptom_onset_date": string_dict,
         "think_have_covid_symptoms": string_dict,
+
         "other_covid_infection_test_positive_date": string_dict,
         "other_covid_infection_test_negative_date": string_dict,
         "other_antibody_test_positive_date": string_dict,
