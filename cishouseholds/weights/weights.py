@@ -428,7 +428,7 @@ def validate_design_weights(
         True if df.filter(F.col("ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
     )
 
-    positive_design_weights = df.filter(F.least(swab_weight_column, antibody_weight_column) < 0).count()
+    negative_design_weights = df.filter(F.least(swab_weight_column, antibody_weight_column) < 0).count()
     null_design_weights = df.filter(F.col(swab_weight_column).isNull() | F.col(antibody_weight_column).isNull()).count()
 
     df = assign_distinct_count_in_group(
@@ -455,16 +455,33 @@ def validate_design_weights(
         error_string += "Antibody design weights do not sum to country population totals.\n"
     if not swab_design_weights_sum_to_population:
         error_string += "Swab design weights do not sum to cis area population totals.\n"
-    if positive_design_weights > 0:
-        error_string += f"{positive_design_weights} records have negative design weights.\n"
+    if negative_design_weights > 0:
+        error_string += f"{negative_design_weights} records have negative design weights.\n"
+        check_negative_design_weights = True
+    else:
+        check_negative_design_weights = False
+
     if null_design_weights > 0:
         error_string += f"There are {null_design_weights} records with null swab or antibody design weights.\n"
+        check_null_design_weights = True
+    else:
+        check_null_design_weights = False
+
     if swab_design_weights_inconsistent_within_group:
         error_string += "Swab design weights are not consistent within CIS area population groups.\n"
     if antibody_design_weights_inconsistent_within_group:
         error_string += "Antibody design weights are not consistent within country population groups.\n"
     if error_string:
         raise DesignWeightError(error_string)
+
+    return (
+        antibody_design_weights_sum_to_population,
+        swab_design_weights_sum_to_population,
+        check_negative_design_weights,
+        check_null_design_weights,
+        swab_design_weights_inconsistent_within_group,
+        antibody_design_weights_inconsistent_within_group,
+    )
 
 
 def chose_scenario_of_design_weight_for_antibody_different_household(
