@@ -1212,11 +1212,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_onset_date
+  name: think_have_covid_symptom_onset_date
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptoms
+  name: think_have_covid_symptoms
   nullable: true
   type: string
 - metadata: {}
