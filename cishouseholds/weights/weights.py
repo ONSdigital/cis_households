@@ -5,6 +5,7 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
+from pyspark.sql.types import StructField
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_count_by_group
@@ -405,6 +406,10 @@ def validate_design_weights(
     cis_area_window = Window.partitionBy(cis_area_column)
     country_window = Window.partitionBy(country_column)
 
+    # check that dweights are decimal type with specific count.
+    swab_weight_column_type = StructField(swab_group_by_columns, DecimalType(38, 20), True) in df.schema
+    antibody_weight_column_type = StructField(antibody_group_by_columns, DecimalType(38, 20), True) in df.schema
+
     df = df.withColumn(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
@@ -451,6 +456,12 @@ def validate_design_weights(
         "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
     )
     error_string = ""
+
+    if not swab_weight_column_type:
+        error_string += "Swab design weights are not DecimalType"
+    if not antibody_weight_column_type:
+        error_string += "Antibody design weights are not DecimalType"
+
     if not antibody_design_weights_sum_to_population:
         error_string += "Antibody design weights do not sum to country population totals.\n"
     if not swab_design_weights_sum_to_population:
@@ -475,6 +486,8 @@ def validate_design_weights(
         raise DesignWeightError(error_string)
 
     return (
+        swab_weight_column_type,
+        antibody_weight_column_type,
         antibody_design_weights_sum_to_population,
         swab_design_weights_sum_to_population,
         check_negative_design_weights,

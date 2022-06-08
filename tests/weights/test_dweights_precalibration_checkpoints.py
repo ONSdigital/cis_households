@@ -79,43 +79,46 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         expected_df_pass = expected_df_pass.withColumn(column, F.col(column).cast(DecimalType(38, 20)))
     input_df_pass = expected_df_pass.drop("not_positive_or_null")
 
-    with pytest.raises(DesignWeightError):
-        validate_design_weights(
-            df=input_df_pass,
-            num_households_by_cis_column="num_households",
-            num_households_by_country_column="num_households",
-            swab_weight_column="design_weight_1",
-            antibody_weight_column="design_weight_2",
-            cis_area_column="country",
-            country_column="country",
-            swab_group_by_columns=["country", "groupby"],
-            antibody_group_by_columns=["country", "groupby"],
-            rounding_value=18,
-        )
-        import pdb
-
-        pdb.set_trace()
-
-    # (
-    #     antibody_design_weights_sum_to_population,
-    #     swab_design_weights_sum_to_population,
-    #     check_negative_design_weights,
-    #     check_null_design_weights,
-    #     swab_design_weights_inconsistent_within_group,
-    #     antibody_design_weights_inconsistent_within_group,
-
-    # ) = validate_design_weights(
+    # with pytest.raises(DesignWeightError):
+    #     validate_design_weights(
     #         df=input_df_pass,
-    #         num_households_by_cis_column='num_households',
-    #         num_households_by_country_column='num_households',
-    #         swab_weight_column='design_weight_1',
-    #         antibody_weight_column='design_weight_2',
-    #         cis_area_column='country',
-    #         country_column='country',
-    #         swab_group_by_columns=['country', 'groupby'],
-    #         antibody_group_by_columns=['country', 'groupby'],
+    #         num_households_by_cis_column="num_households",
+    #         num_households_by_country_column="num_households",
+    #         swab_weight_column="design_weight_1",
+    #         antibody_weight_column="design_weight_2",
+    #         cis_area_column="country",
+    #         country_column="country",
+    #         swab_group_by_columns=["country", "groupby"],
+    #         antibody_group_by_columns=["country", "groupby"],
     #         rounding_value=18,
     #     )
+
+    # 
+
+    (
+        swab_weight_column_type,
+        antibody_weight_column_type,
+        antibody_design_weights_sum_to_population,
+        swab_design_weights_sum_to_population,
+        check_negative_design_weights,
+        check_null_design_weights,
+        swab_design_weights_inconsistent_within_group,
+        antibody_design_weights_inconsistent_within_group,
+
+    ) = validate_design_weights(
+            df=input_df_pass,
+            num_households_by_cis_column='num_households',
+            num_households_by_country_column='num_households',
+            swab_weight_column='design_weight_1',
+            antibody_weight_column='design_weight_2',
+            cis_area_column='country',
+            country_column='country',
+            swab_group_by_columns=['country', 'groupby'],
+            antibody_group_by_columns=['country', 'groupby'],
+            rounding_value=18,
+        )
+
+    import pdb; pdb.set_trace()
 
     # assert antibody_design_weights_sum_to_population is True
     # assert swab_design_weights_sum_to_population is True
