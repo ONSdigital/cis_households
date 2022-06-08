@@ -2846,8 +2846,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "think_had_covid_symptom_onset_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
-        "think_had_covid_symptoms": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_onset_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "think_have_covid_symptoms": _("choice", items=yes_no_none_choice),
         "other_covid_infection_test_positive_date": _(
             "datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021
         ),
