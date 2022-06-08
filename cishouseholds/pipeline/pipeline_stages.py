@@ -398,6 +398,9 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
+    valid_survey_responses.select(validation_failure_flag_column).toPandas().to_csv(
+        "/home/cdsw/cis_households/cishouseholds/pipeline/temp.csv", index=False
+    )
 
     validation_check_failures_valid_data_df = (
         (
