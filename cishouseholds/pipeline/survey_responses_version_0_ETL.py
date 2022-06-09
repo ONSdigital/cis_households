@@ -38,7 +38,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
-        "last_suspected_covid_type": {
+        "last_suspected_covid_contact_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },

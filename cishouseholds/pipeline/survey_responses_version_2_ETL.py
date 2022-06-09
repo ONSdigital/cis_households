@@ -491,7 +491,7 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
-        "last_suspected_covid_type": {
+        "last_suspected_covid_contact_type": {
             "In your own household": "Living in your own home",
             "Outside your household": "Outside your home",
         },
@@ -779,6 +779,7 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
+    df = df.withColumn("combined visit_status", F.coalesce(F.col("visit_status"), F.col("survey_completion_status")))
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
