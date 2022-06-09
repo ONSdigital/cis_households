@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
@@ -16,7 +17,15 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
-    df = df.withColumn("visit_datetime", F.lit(None).cast("timestamp"))  # Placeholder for 2199
+    df = df.withColumn(
+        "visit_datetime",
+        F.coalesce(
+            F.col("swab_taken_datetime"),
+            F.col("blood_taken_datetime"),
+            F.col("survey_completed_datetime"),
+            F.col("sample_kit_dispatched_datetime"),
+        ),
+    )  # Placeholder for 2199
 
     df = transform_survey_responses_generic(df)
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
@@ -247,7 +256,18 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
-
+    df = map_options_to_bool_columns(
+        df,
+        "currently_smokes_or_vapes_description",
+        {
+            "cigarettes": "smoke_cigarettes",
+            "cigars": "smokes_cigar",
+            "pipe": "smokes_pipe",
+            "vape/E-cigarettes": "smokes_vape_e_cigarettes",
+            "Hookah/shisha pipes": "smokes_hookah_shisha_pipes",
+        },
+        ";",
+    )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     """
     Create copies of all digital specific variables to be remapped
@@ -261,7 +281,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
-        "last_suspected_covid_type",
+        "last_suspected_covid_contact_type",
         "physical_contact_under_18_years",
         "physical_contact_18_to_69_years",
         "physical_contact_over_70_years",
@@ -366,7 +386,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
-        "last_suspected_covid_type": {
+        "last_suspected_covid_contact_type": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
@@ -435,4 +455,5 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         F.greatest("work_not_from_home_days_per_week", "education_in_person_days_per_week"),
     )
+    #
     return df

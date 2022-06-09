@@ -468,6 +468,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: digital_survey_collection_mode
+  nullable: true
+  type: string
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1112,7 +1116,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -1208,6 +1212,30 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: think_have_covid_symptom_onset_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_covid_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_positive_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_negative_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_positive_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_negative_date
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
@@ -1300,6 +1328,26 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: smoke_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_cigar
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_pipe
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_vape_e_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_hookah_shisha_pipes
+  nullable: true
+  type: string
+- metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
   nullable: true
   type: integer
@@ -1332,7 +1380,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: last_suspected_covid_type_raw
+  name: last_suspected_covid_contact_type_raw
   nullable: true
   type: string
 - metadata: {}

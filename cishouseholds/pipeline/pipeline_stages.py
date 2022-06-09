@@ -292,12 +292,12 @@ def generate_input_processing_function(
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
-            return
+            return "No files"
 
         valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {resource_path}.")  # functional
-            return
+            return "Error"
 
         df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
@@ -317,6 +317,7 @@ def generate_input_processing_function(
             update_table_and_log_source_files(
                 df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
+            return "updated"
         return df
 
     _inner_function.__name__ = stage_name
