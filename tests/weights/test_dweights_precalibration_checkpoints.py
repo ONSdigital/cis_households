@@ -38,9 +38,7 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         schema=schema,
     )
     for column in ["design_weight_1", "design_weight_2"]:
-        expected_df_not_pass = expected_df_not_pass.withColumn(
-            column, F.col(column).cast(DecimalType(38, 20))
-        )
+        expected_df_not_pass = expected_df_not_pass.withColumn(column, F.col(column).cast(DecimalType(38, 20)))
     input_df_not_pass = expected_df_not_pass.drop("not_positive_or_null")
 
     with pytest.raises(DesignWeightError):
@@ -94,7 +92,7 @@ def test_precal_and_design_weights_checkpoints(spark_session):
     #         antibody_group_by_columns=["country", "groupby"],
     #         rounding_value=18,
     #     )
-    # 
+    #
 
     (
         swab_weight_column_type,
@@ -118,7 +116,9 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         rounding_value=18,
     )
 
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()
 
     # assert antibody_design_weights_sum_to_population is True
     # assert swab_design_weights_sum_to_population is True
