@@ -40,7 +40,14 @@ def digital_specific_transformations(df):
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
     df = update_column_values_from_map(
-        df, "survey_completion_status", {"In Progress": "Partially Completed", "Submitted": "Completed"}
+        df,
+        "survey_completion_status",
+        {
+            "In Progress": "Partially Completed",
+            "IN PROGRESS": "Partially Completed",
+            "Submitted": "Completed",
+            "SUBMITTED": "Completed",
+        },
     )
     df = derive_had_symptom_last_7days_from_digital(
         df,
