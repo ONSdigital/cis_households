@@ -969,6 +969,32 @@ def create_formatted_datetime_string_columns(df):
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
+        "household_digital_enrolment_invited_datetime_string": "household_digital_enrolment_invited_datetime",
+        "existing_participant_digital_opt_in_window_start_datetime_string": "existing_participant_digital_opt_in_window_start_datetime",
+        "existing_participant_digital_opt_in_window_end_datetime_string": "existing_participant_digital_opt_in_window_end_datetime",
+        "existing_participant_digital_opted_in_datetime_string": "existing_participant_digital_opted_in_datetime",
+        "household_digital_enrolment_datetime_string": "household_digital_enrolment_datetime",
+        "date_of_birth_string": "date_of_birth",
+        "participant_digital_enrolment_datetime_string": "participant_digital_enrolment_datetime",
+        "existing_participant_digital_opt_in_datetime_string": "existing_participant_digital_opt_in_datetime",
+        "digital_entry_pack_sent_datetime_string": "digital_entry_pack_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_1_due_datetime_string": "existing_participant_digital_opt_in_reminder_1_due_datetime",
+        "existing_participant_digital_opt_in_reminder_1_sent_datetime_string": "existing_participant_digital_opt_in_reminder_1_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_2_due_datetime_string": "existing_participant_digital_opt_in_reminder_2_due_datetime",
+        "existing_participant_digital_opt_in_reminder_2_sent_datetime_string": "existing_participant_digital_opt_in_reminder_2_sent_datetime",
+        "participant_completion_window_start_datetime_string": "participant_completion_window_start_datetime",
+        "participant_completion_window_end_datetime_string": "participant_completion_window_end_datetime",
+        "opted_out_of_next_window_datetime_string": "opted_out_of_next_window_datetime",
+        "opted_out_of_blood_next_window_datetime_string": "opted_out_of_blood_next_window_datetime",
+        "sample_kit_dispatched_datetime_string": "sample_kit_dispatched_datetime",
+        "sample_collection_courier_datetime_string": "sample_collection_courier_datetime",
+        "sample_collection_kit_received_delivery_partner_datetime_string": "sample_collection_kit_received_delivery_partner_datetime",
+        "survey_last_modified_datetime_string": "survey_last_modified_datetime",
+        "survey_completed_datetime_string": "survey_completed_datetime",
+        "swab_sample_received_consolidation_point_datetime_string": "swab_sample_received_consolidation_point_datetime",
+        "blood_sample_received_consolidation_point_datetime_string": "blood_sample_received_consolidation_point_datetime",
+        "swab_sample_received_lab_datetime_string": "swab_sample_received_lab_datetime",
+        "blood_sample_received_lab_datetime_string": "blood_sample_received_lab_datetime",
     }
     date_format_string_list = set(
         [
@@ -988,6 +1014,18 @@ def create_formatted_datetime_string_columns(df):
             "other_covid_infection_test_last_negative_date",
             "been_outside_uk_last_return_date",
             "think_have_covid_onset_date",
+            "swab_return_date",
+            "swab_return_future_date",
+            "blood_return_date",
+            "blood_return_future_date",
+            "cis_covid_vaccine_date_5",
+            "cis_covid_vaccine_date_6",
+            "cis_covid_vaccine_date",
+            "think_have_covid_symptom_onset_date",  # tempvar
+            "other_covid_infection_test_positive_date",  # tempvar
+            "other_covid_infection_test_negative_date",  # tempvar
+            "other_antibody_test_positive_date",  # tempvar
+            "other_antibody_test_negative_date",  # tempvar
         ]
         + cis_digital_datetime_map["yyyy-MM-dd"]
     )
