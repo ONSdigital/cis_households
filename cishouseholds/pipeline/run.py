@@ -90,6 +90,7 @@ def run_pipeline_stages(pipeline_stage_list: List[dict], run_id: int, retry_coun
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
+        complete_status = "sucsessfully"
         stage_name = stage_config.pop("function")
         stage_description = stage_name
         for key, val in stage_config.items():
@@ -122,9 +123,10 @@ def run_pipeline_stages(pipeline_stage_list: List[dict], run_id: int, retry_coun
                 time.sleep(retry_wait_time)
             if not stage_success:
                 pipeline_error_count += 1
+                complete_status = "unsucessfully"
             stage_run_time = (datetime.now() - stage_start).total_seconds()
             print(
-                f"    - completed in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
+                f"    - completed {complete_status} in: {stage_run_time//60:.0f} minute(s) and {stage_run_time%60:.1f} second(s) in {attempt} attempt(s)"  # noqa:E501
             )  # functional
         else:
             print("    - stage not run")  # functional
