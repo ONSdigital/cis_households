@@ -28,6 +28,7 @@ from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
+from cishouseholds.derive import assign_visit_order_from_digital
 from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
@@ -774,12 +775,13 @@ def union_dependent_derivations(df):
     Transformations that must be carried out after the union of the different survey response schemas.
     """
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
+    df = assign_visit_order_from_digital(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     df = df.withColumn("combined visit_status", F.coalesce(F.col("visit_status"), F.col("survey_completion_status")))
     ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
             "Asian or Asian British-Indian",
             "Asian or Asian British-Pakistani",
