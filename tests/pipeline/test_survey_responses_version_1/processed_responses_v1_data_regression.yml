@@ -58,8 +58,8 @@
   last_covid_contact_type: Elementary, my dear Watson.
   last_name: Dickerson
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: A census taker once tried to test me. I ate his liver
-    with some fava beans and a nice Chianti.
+  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   no_email_address: 0.0
   ons_household_id: 021263322966
   other_antibody_test: 'Yes'
@@ -264,7 +264,7 @@
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: David
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Those who refuse to learn from history are condemned
+  last_suspected_covid_contact_type: Those who refuse to learn from history are condemned
     to repeat it.
   no_email_address: 1.0
   ons_household_id: '919192147365'
@@ -477,8 +477,8 @@
     in my pajamas, I don't know.
   last_name: Nunez
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '955705581901'
   other_antibody_test: 'Yes'
@@ -686,7 +686,7 @@
   last_covid_contact_type: Let them eat cake.
   last_name: Hyde
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Here's looking at you, kid.
+  last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 0.0
   ons_household_id: '876960826911'
   other_antibody_test: null
@@ -896,7 +896,7 @@
     lucky?"" Well, do ya? Punk!"'
   last_name: Cardenas
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: You're gonna need a bigger boat.
+  last_suspected_covid_contact_type: You're gonna need a bigger boat.
   no_email_address: 1.0
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
@@ -1106,8 +1106,8 @@
   last_covid_contact_type: Houston, we have a problem.
   last_name: Robbins
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: 001674039598
   other_antibody_test: 'Yes'
@@ -1310,7 +1310,7 @@
   last_covid_contact_type: You're gonna need a bigger boat.
   last_name: Lynch
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Let them eat cake.
+  last_suspected_covid_contact_type: Let them eat cake.
   no_email_address: 1.0
   ons_household_id: 044476904382
   other_antibody_test: 'Yes'
@@ -1520,8 +1520,8 @@
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: Brock
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Ask not what your country can do for you; ask what you
-    can do for your country.
+  last_suspected_covid_contact_type: Ask not what your country can do for you; ask
+    what you can do for your country.
   no_email_address: 0.0
   ons_household_id: '890407714528'
   other_antibody_test: null
@@ -1729,8 +1729,8 @@
   last_covid_contact_type: Let them eat cake.
   last_name: Bernard
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   no_email_address: 1.0
   ons_household_id: '456442497105'
   other_antibody_test: null
@@ -1936,8 +1936,8 @@
   last_covid_contact_type: The only thing we have to fear is fear itself.
   last_name: Meyers
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '788221784619'
   other_antibody_test: 'Yes'

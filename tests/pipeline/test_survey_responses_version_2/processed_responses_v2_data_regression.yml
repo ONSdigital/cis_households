@@ -96,7 +96,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Clarence
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -398,7 +398,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Hunt
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Outside your home
+  last_suspected_covid_contact_type: Outside your home
   middle_name: Gale
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
@@ -701,7 +701,7 @@
   last_covid_contact_type: null
   last_name: Waters
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Isaac
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -1003,7 +1003,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Cervantes
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Jae
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -1312,7 +1312,7 @@
   last_covid_contact_type: null
   last_name: Meyers
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Buck
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
@@ -1617,7 +1617,7 @@
   last_covid_contact_type: Outside your home
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Argentina
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -1926,7 +1926,7 @@
   last_covid_contact_type: Outside your home
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Jessika
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -2230,7 +2230,7 @@
   last_covid_contact_type: Outside your home
   last_name: Day
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Hank
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Participant time constraints
@@ -2533,7 +2533,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Mosley
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Quinn
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Participant time constraints
@@ -2845,7 +2845,7 @@
   last_covid_contact_type: null
   last_name: Bolton
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: My
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Other
