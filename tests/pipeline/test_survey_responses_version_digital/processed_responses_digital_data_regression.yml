@@ -227,23 +227,17 @@
     test
   sex: Female
   sex_raw: Female
-<<<<<<< HEAD
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: 1 to 5
-  social_distance_contact_over_70_years: Prefer not to say
-  social_distance_contact_under_18_years: Don't know
-=======
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
->>>>>>> origin/main
   street: Ballywatermoy
   study_cohort: null
   survey_completed_datetime: null
@@ -626,23 +620,17 @@
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
-<<<<<<< HEAD
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: 6 to 10
-  social_distance_contact_over_70_years: 6 to 10
-  social_distance_contact_under_18_years: 11 to 20
-=======
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_18_to_69_years_raw: 6 to 10
   social_distance_contact_over_70_years: 6-10
   social_distance_contact_over_70_years_raw: 6 to 10
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
->>>>>>> origin/main
   street: Glendon
   study_cohort: null
   survey_completed_datetime: null
@@ -1417,23 +1405,17 @@
     as going into hospital or shielding
   sex: Male
   sex_raw: Male
-<<<<<<< HEAD
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: 1 to 5
-  social_distance_contact_over_70_years: 1 to 5
-  social_distance_contact_under_18_years: Don't know
-=======
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
->>>>>>> origin/main
   street: Drumagrove
   study_cohort: null
   survey_completed_datetime: null
@@ -1820,17 +1802,13 @@
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
-<<<<<<< HEAD
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: Don't know
-=======
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
->>>>>>> origin/main
   social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: '0'
@@ -2206,24 +2184,6 @@
   sample_collection_courier_datetime: null
   sample_collection_kit_received_delivery_partner_datetime: null
   sample_kit_dispatched_datetime: null
-<<<<<<< HEAD
-  sample_kit_not_dispatched_code: null
-  sample_return_preference: null
-  self_isolating: Prefer not to say
-  self_isolating_reason: null
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
-    as going into hospital or shielding
-  sex: Male
-  sex_raw: Male
-  smoke_cigarettes: null
-  smokes_cigar: null
-  smokes_hookah_shisha_pipes: null
-  smokes_pipe: null
-  smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: Prefer not to say
-  social_distance_contact_over_70_years: null
-  social_distance_contact_under_18_years: Don't know
-=======
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: 'No'
@@ -2232,13 +2192,17 @@
     test
   sex: Female
   sex_raw: Female
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_over_70_years_raw: 11 to 20
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: null
->>>>>>> origin/main
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: null
@@ -2620,18 +2584,13 @@
   self_isolating_reason: null
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
-<<<<<<< HEAD
-  sex: Male
-  sex_raw: Male
+  sex: Female
+  sex_raw: Female
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-=======
-  sex: Female
-  sex_raw: Female
->>>>>>> origin/main
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_18_to_69_years_raw: '0'
   social_distance_contact_over_70_years: 1-5
@@ -3023,23 +2982,17 @@
     having been in contact with a known case or quarantining after travel abroad
   sex: Male
   sex_raw: Male
-<<<<<<< HEAD
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: Prefer not to say
-  social_distance_contact_over_70_years: 1 to 5
-  social_distance_contact_under_18_years: 1 to 5
-=======
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: 1-5
   social_distance_contact_under_18_years_raw: 1 to 5
->>>>>>> origin/main
   street: Ballynafey
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: null
@@ -3419,22 +3372,13 @@
   self_isolating_reason: 'No'
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
-<<<<<<< HEAD
-  sex: Female
-  sex_raw: Female
+  sex: Male
+  sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: 11 to 20
-  social_distance_contact_over_70_years: 1 to 5
-  social_distance_contact_under_18_years: Prefer not to say
-  street: Druminiskill
-  study_cohort: null
-=======
-  sex: Male
-  sex_raw: Male
   social_distance_contact_18_to_69_years: 11-20
   social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: 1-5
@@ -3443,7 +3387,6 @@
   social_distance_contact_under_18_years_raw: Prefer not to say
   street: null
   study_cohort: Fingerprick and Swab
->>>>>>> origin/main
   survey_completed_datetime: null
   survey_completion_status: SUBMITTED
   survey_last_modified_datetime: null
@@ -3827,25 +3770,15 @@
   sample_return_preference: null
   self_isolating: 'No'
   self_isolating_reason: 'No'
-<<<<<<< HEAD
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
-    test
-  sex: Female
-  sex_raw: Female
+  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+    as going into hospital or shielding
+  sex: Male
+  sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: 6 to 10
-  social_distance_contact_over_70_years: Don't know
-  social_distance_contact_under_18_years: 21 or more
-  street: Ballydoonan
-=======
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
-    as going into hospital or shielding
-  sex: Male
-  sex_raw: Male
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 21 or more
@@ -3853,7 +3786,6 @@
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
   street: null
->>>>>>> origin/main
   study_cohort: Swab Only
   survey_completed_datetime: null
   survey_completion_status: SUBMITTED
