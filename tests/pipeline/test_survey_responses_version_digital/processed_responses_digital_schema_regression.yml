@@ -1332,30 +1332,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: smoke_cigarettes
-  nullable: true
-  type: string
-- metadata: {}
-  name: smokes_cigar
-  nullable: true
-  type: string
-- metadata: {}
-  name: smokes_pipe
-  nullable: true
-  type: string
-- metadata: {}
-  name: smokes_vape_e_cigarettes
-  nullable: true
-  type: string
-- metadata: {}
-  name: smokes_hookah_shisha_pipes
-  nullable: true
-  type: string
-- metadata: {}
-  name: times_outside_shopping_or_socialising_last_7_days
-  nullable: true
-  type: string
-- metadata: {}
   name: illness_lasting_over_12_months_raw
   nullable: true
   type: string
@@ -1457,6 +1433,26 @@ fields:
   type: string
 - metadata: {}
   name: work_status_v0
+  nullable: true
+  type: string
+- metadata: {}
+  name: smoke_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_cigar
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_pipe
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_vape_e_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_hookah_shisha_pipes
   nullable: true
   type: string
 - metadata: {}
