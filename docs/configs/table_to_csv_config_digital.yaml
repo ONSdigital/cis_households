@@ -239,14 +239,14 @@ create_tables:
       household_digital_enrolment_invited_datetime: d_hh_digital_enrol_inv_datet
       existing_participant_digital_opt_in_window_start_datetime: d_parpnt_opt_in_win_strt_datet
       existing_participant_digital_opt_in_window_end_datetime: d_parpnt_opt_in_win_end_datet
-      existing_participant_digital_opted_in_datetime: d_parpnt_opted_in_datetim
+      existing_participant_digital_opted_in_datetime: d_parpnt_opted_in_datet
       household_digital_enrolment_datetime: d_hh_digital_enrolment_datet
       consent_nhs_data_share_yn: d_consent_nhs_data_share_yn
       participant_invited_to_digital: d_parpnt_invited_to_digital
       participant_enrolled_digital: d_parpnt_enrolled_digital
-      participant_digital_enrolment_datetime: d_parpnt_dig_enrol_datetime
+      participant_digital_enrolment_datetime: d_parpnt_dig_enrol_datet
       existing_participant_digital_opt_in_status: d_parpnt_opt_in_status
-      existing_participant_digital_opt_in_datetime: d_parpnt_opt_in_datetime
+      existing_participant_digital_opt_in_datetime: d_parpnt_opt_in_datet
       digital_survey_mode_preference: d_survey_mode_preference
       digital_communication_preference: d_communication_preference
       sample_return_preference: d_sample_return_preference
@@ -257,7 +257,7 @@ create_tables:
       existing_participant_digital_opt_in_reminder_1_sent_datetime: d_opt_in_reminder_1_sent_datet
       existing_participant_digital_opt_in_reminder_1_status: d_opt_in_reminder_1_status
       existing_participant_digital_opt_in_reminder_2_due_datetime: d_opt_in_reminder_2_due_datet
-      existing_participant_digital_opt_in_reminder_2_sent_datetime: dig_opt_in_reminder_2_sent_datet
+      existing_participant_digital_opt_in_reminder_2_sent_datetime: d_opt_in_reminder_2_sent_datet
       existing_participant_digital_opt_in_reminder_2_status: d_opt_in_reminder_2_status
       household_completion_window_id: d_hh_comp_win_id
       household_completion_window_status: d_hh_comp_win_status
