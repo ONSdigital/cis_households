@@ -704,10 +704,12 @@ def union_dependent_cleaning(df):
             "African": "Black,Caribbean,African-African",
             "Caribbean": "Black,Caribbean,Afro-Caribbean",
             "Any other Black or African or Caribbean background": "Any other Black background",
+            "Any other Black| African| Carribbean": "Any other Black background",
             "Any other Mixed/Multiple background": "Any other Mixed background",
             "Bangladeshi": "Asian or Asian British-Bangladeshi",
             "Chinese": "Asian or Asian British-Chinese",
             "English, Welsh, Scottish, Northern Irish or British": "White-British",
+            "English| Welsh| Scottish| Northern Irish or British": "White-British",
             "Indian": "Asian or Asian British-Indian",
             "Irish": "White-Irish",
             "Pakistani": "Asian or Asian British-Pakistani",
@@ -718,6 +720,7 @@ def union_dependent_cleaning(df):
             "White-Roma": "White-Gypsy or Irish Traveller",
             "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
             "Arab": "Other ethnic group-Arab",
+            "Any other white": "Any other white background",
         },
         "participant_withdrawal_reason": {
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
@@ -774,6 +777,7 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
+    df = df.withColumn("combined visit_status", F.coalesce(F.col("visit_status"), F.col("survey_completion_status")))
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
