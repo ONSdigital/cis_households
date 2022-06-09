@@ -403,8 +403,8 @@ def validate_design_weights(
     - no design weights are missing
     - design weights consistent by group
     """
-    cis_area_window = Window.partitionBy(cis_area_column)
-    country_window = Window.partitionBy(country_column)
+    cis_area_window = Window.partitionBy(list(set(swab_group_by_columns + [cis_area_column])))
+    country_window = Window.partitionBy(list(set(antibody_group_by_columns + [country_column])))
 
     # check that dweights are decimal type with specific count.
     swab_weight_column_type = StructField(swab_weight_column, DecimalType(38, 20), True) in df.schema
@@ -414,7 +414,9 @@ def validate_design_weights(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
             F.round(F.sum(swab_weight_column).over(cis_area_window), rounding_value)
-            == F.round(F.col(num_households_by_cis_column).cast(DecimalType(38, 20)), rounding_value),
+            == F.col(
+                num_households_by_cis_column
+            ),  # == F.round(F.col(num_households_by_cis_column).cast(DecimalType(38, 20)), rounding_value),
             False,
         ).otherwise(True),
     )
@@ -422,7 +424,9 @@ def validate_design_weights(
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
             F.round(F.sum(antibody_weight_column).over(country_window), rounding_value)
-            == F.round(F.col(num_households_by_country_column).cast(DecimalType(38, 20)), rounding_value),
+            == F.col(
+                num_households_by_country_column
+            ),  # == F.round(F.col(num_households_by_country_column).cast(DecimalType(38, 20)), rounding_value),
             False,
         ).otherwise(True),
     )
@@ -440,7 +444,7 @@ def validate_design_weights(
         df, "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], swab_group_by_columns
     )
     df = assign_distinct_count_in_group(
-        df, "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], antibody_group_by_columns
+        df, "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [antibody_weight_column], antibody_group_by_columns
     )
     swab_design_weights_inconsistent_within_group = (
         False if df.filter((F.col("SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
@@ -448,7 +452,6 @@ def validate_design_weights(
     antibody_design_weights_inconsistent_within_group = (
         False if df.filter((F.col("ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
     )
-
     df.drop(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
@@ -458,33 +461,35 @@ def validate_design_weights(
     error_string = ""
 
     if not swab_weight_column_type:
-        error_string += "Swab design weights are not DecimalType"
+        error_string += "\n- Swab design weights are not DecimalType."
     if not antibody_weight_column_type:
-        error_string += "Antibody design weights are not DecimalType"
+        error_string += "\n- Antibody design weights are not DecimalType."
 
     if not antibody_design_weights_sum_to_population:
-        error_string += "Antibody design weights do not sum to country population totals.\n"
+        error_string += "\n- Antibody design weights do not sum to country population totals."
     if not swab_design_weights_sum_to_population:
-        error_string += "Swab design weights do not sum to cis area population totals.\n"
+        error_string += "\n- Swab design weights do not sum to cis area population totals."
     if negative_design_weights > 0:
-        error_string += f"{negative_design_weights} records have negative design weights.\n"
+        error_string += f"\n- {negative_design_weights} records have negative design weights."
         check_negative_design_weights = True
     else:
         check_negative_design_weights = False
 
     if null_design_weights > 0:
-        error_string += f"There are {null_design_weights} records with null swab or antibody design weights.\n"
+        error_string += f"\n- There are {null_design_weights} records with null swab or antibody design weights."
         check_null_design_weights = True
     else:
         check_null_design_weights = False
 
     if swab_design_weights_inconsistent_within_group:
-        error_string += "Swab design weights are not consistent within CIS area population groups.\n"
+        error_string += "\n- Swab design weights are not consistent within CIS area population groups."
     if antibody_design_weights_inconsistent_within_group:
-        error_string += "Antibody design weights are not consistent within country population groups.\n"
+        error_string += "\n- Antibody design weights are not consistent within country population groups."
+
+    if error_string:
+        error_string += "\n"
     if error_string:
         raise DesignWeightError(error_string)
-
     return (
         swab_weight_column_type,
         antibody_weight_column_type,
