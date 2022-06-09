@@ -14,9 +14,39 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+    """
+    assign an incremental count to each participants visit
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    df = df.withColumn(column_name_to_assign, F.row_number().over(window))
+    visit_order_map = {v: k for k, v in category_maps["iqvia_raw_category_map"]["visit_order"].items()}
+    df = update_column_values_from_map(df, column_name_to_assign, visit_order_map)
+    return df
+
+
+def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
+    """
+    map column containing multiple value options to new columns containing true/false based on if their
+    value is chosen as the option.
+    Parameters
+    df
+    reference_column
+        column containing option values
+    value_column_name_map
+        mapping expression of column names to assign and options within reference column
+    """
+    df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
+    for val, col in value_column_name_map.items():
+        df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
+    return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 
 def assign_column_value_from_multiple_column_map(
