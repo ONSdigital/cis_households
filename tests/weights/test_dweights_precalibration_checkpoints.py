@@ -105,19 +105,18 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         check_null_design_weights,
         swab_design_weights_inconsistent_within_group,
         antibody_design_weights_inconsistent_within_group,
-
     ) = validate_design_weights(
-            df=input_df_pass,
-            num_households_by_cis_column='num_households',
-            num_households_by_country_column='num_households',
-            swab_weight_column='design_weight_1',
-            antibody_weight_column='design_weight_2',
-            cis_area_column='country',
-            country_column='country',
-            swab_group_by_columns=['country', 'groupby'],
-            antibody_group_by_columns=['country', 'groupby'],
-            rounding_value=18,
-        )
+        df=input_df_pass,
+        num_households_by_cis_column="num_households",
+        num_households_by_country_column="num_households",
+        swab_weight_column="design_weight_1",
+        antibody_weight_column="design_weight_2",
+        cis_area_column="country",
+        country_column="country",
+        swab_group_by_columns=["country", "groupby"],
+        antibody_group_by_columns=["country", "groupby"],
+        rounding_value=18,
+    )
 
     import pdb; pdb.set_trace()
 
