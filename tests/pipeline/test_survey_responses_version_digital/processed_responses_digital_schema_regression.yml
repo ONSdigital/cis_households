@@ -468,6 +468,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: digital_survey_collection_mode
+  nullable: true
+  type: string
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string
@@ -1112,7 +1116,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -1205,6 +1209,30 @@ fields:
   type: string
 - metadata: {}
   name: blood_sample_barcode_correct
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_covid_symptom_onset_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_covid_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_positive_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_negative_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_positive_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_negative_date
   nullable: true
   type: string
 - metadata: {}
@@ -1303,4 +1331,124 @@ fields:
   name: times_outside_shopping_or_socialising_last_7_days
   nullable: true
   type: integer
+- metadata: {}
+  name: participant_survey_status_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_withdrawal_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: survey_response_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_sector_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: illness_reduces_activity_or_ability_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: ability_to_socially_distance_at_work_or_education_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_covid_contact_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_suspected_covid_contact_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_person_your_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_shopping_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_socialising_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_work_or_education_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_other_enclosed_places_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_results_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_results_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_3_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_4_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_5_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_6_raw
+  nullable: true
+  type: string
 type: struct
