@@ -2014,6 +2014,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
+        "digital_survey_collection_mode": _("choice", items=["Online", "Telephone", None]),
         "swab_taken": _("choice", items=yes_no_none_choice),
         "swab_not_taken_reason": _(
             "choice",
@@ -2769,8 +2770,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Someone I do not live with",
                 "Someone I live with",
-                "Someone you do not live with",
-                "Someone you live with",
                 None,
             ],
         ),
@@ -2783,7 +2782,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.5, 0.5],
         ),
-        "last_suspected_covid_type": _(
+        "last_suspected_covid_contact_type": _(
             "choice",
             items=[
                 "Someone I do not live with",
@@ -2847,4 +2846,14 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
+        "think_have_covid_symptom_onset_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "think_have_covid_symptoms": _("choice", items=yes_no_none_choice),
+        "other_covid_infection_test_positive_date": _(
+            "datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021
+        ),
+        "other_covid_infection_test_negative_date": _(
+            "datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021
+        ),
+        "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
     }
