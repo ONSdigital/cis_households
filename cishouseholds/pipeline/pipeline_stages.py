@@ -340,6 +340,22 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
+@register_pipeline_stage("replace_design_weights")
+def replace_design_weights(
+    design_weight_lookup_table: str,
+    survey_responses_table: str,
+    weighted_survey_responses_table: str,
+    design_weight_columns: List[str],
+):
+    design_weight_lookup = extract_from_table(design_weight_lookup_table)
+    survey_responses = extract_from_table(survey_responses_table)
+    survey_responses = survey_responses.drop(*design_weight_columns)
+    survey_responses = survey_responses.join(
+        design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
+    )
+    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
+
+
 @register_pipeline_stage("union_dependent_transformations")
 def execute_union_dependent_transformations(unioned_survey_table: str, transformed_table: str):
     """
