@@ -340,8 +340,8 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
-@register_pipeline_stage("temp_join_dweights")
-def temp_join_dweights(
+@register_pipeline_stage("replace_design_weights")
+def replace_design_weights(
     design_weight_lookup_table: str,
     survey_responses_table: str,
     weighted_survey_responses_table: str,
