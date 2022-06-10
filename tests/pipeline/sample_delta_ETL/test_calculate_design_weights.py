@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.sample_delta_ETL import calculate_design_weights
+from cishouseholds.pipeline.high_level_transformations import calculate_design_weights
 
 
 def test_calculate_design_weights(spark_session):

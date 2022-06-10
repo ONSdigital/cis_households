@@ -1,7 +1,7 @@
 import pytest
 
+from cishouseholds.weights.design_weights import DesignWeightError
 from cishouseholds.weights.pre_calibration import precalibration_checkpoints
-from cishouseholds.weights.weights import DesignWeightError
 
 
 def test_precalibration_checkpoints(spark_session):

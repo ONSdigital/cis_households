@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.weights import carry_forward_design_weights
+from cishouseholds.weights.design_weights import carry_forward_design_weights
 
 
 def test_carry_forward_design_weights(spark_session):
