@@ -45,8 +45,8 @@
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
-  cis_covid_vaccine_type_3: Don't know type
-  cis_covid_vaccine_type_3_raw: I don't know the type
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_3_raw: null
   cis_covid_vaccine_type_4: Novavax
   cis_covid_vaccine_type_4_raw: Novavax
   cis_covid_vaccine_type_5: Valneva
@@ -73,6 +73,7 @@
   county: null
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Hookah or shisha pipes
+  currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '1986-12-18 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -88,6 +89,7 @@
   ethnicity: Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -104,11 +106,12 @@
   face_covering_other_enclosed_places: Never
   face_covering_other_enclosed_places_raw: Never
   face_covering_work_or_education: null
-  face_covering_work_or_education_raw: Prefer not to say
+  face_covering_work_or_education_raw: null
   first_name: Caron
   hh_id: '763063387334'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: '[15, 0, 18, 18, 2, 10, 4, 22]'
+  hours_a_day_with_someone_else_at_home_raw: '[15, 0, 18, 18, 2, 10, 4, 22]'
   household_completion_window_id: HW-4564424971
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: null
@@ -118,6 +121,7 @@
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: 75.0
   illness_lasting_over_12_months: 'No'
+  illness_lasting_over_12_months_raw: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   illness_reduces_activity_or_ability_raw: Yes a little
   infant_age_months_1: null
@@ -158,7 +162,9 @@
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: SE3Z
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '0563'
@@ -194,7 +200,7 @@
   physical_contact_18_to_69_years: 11-20
   physical_contact_18_to_69_years_raw: 11 to 20
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Prefer not to say
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 6-10
   physical_contact_under_18_years_raw: 6 to 10
   postcode: SE3Z6OR
@@ -221,7 +227,8 @@
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: null
   sample_return_preference: Courier
-  self_isolating: Prefer not to say
+  self_isolating: null
+  self_isolating_raw: Prefer not to say
   self_isolating_reason: null
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
@@ -235,7 +242,7 @@
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: null
-  social_distance_contact_over_70_years_raw: Prefer not to say
+  social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
   street: Ballywatermoy
@@ -361,10 +368,12 @@
   visit_id: '0563'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
   work_in_additional_paid_employment: 'No'
+  work_in_additional_paid_employment_raw: 'No'
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: null
@@ -376,6 +385,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Armed forces
   work_sector_other: Make me a sandwich.
   work_sector_raw: Armed forces
@@ -466,6 +476,7 @@
   county: Suffolk
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: Pipe
+  currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2014-11-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -480,6 +491,7 @@
   ethnicity: Any other Mixed/Multiple background
   ethnicity_other: I don't even care.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -494,13 +506,14 @@
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-05T05:23:23Z'
   existing_participant_digital_opted_in_datetime: null
   face_covering_other_enclosed_places: null
-  face_covering_other_enclosed_places_raw: Prefer not to say
+  face_covering_other_enclosed_places_raw: null
   face_covering_work_or_education: null
-  face_covering_work_or_education_raw: Prefer not to say
+  face_covering_work_or_education_raw: null
   first_name: Forest
   hh_id: '414160350614'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-9367679101
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: null
@@ -509,7 +522,8 @@
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: 'No'
   household_participants_not_consenting_count: null
-  illness_lasting_over_12_months: Prefer not to say
+  illness_lasting_over_12_months: null
+  illness_lasting_over_12_months_raw: Prefer not to say
   illness_reduces_activity_or_ability: Not at all
   illness_reduces_activity_or_ability_raw: Not at all
   infant_age_months_1: 47.0
@@ -549,7 +563,9 @@
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
+  other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '1652'
@@ -614,7 +630,8 @@
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
-  self_isolating: Prefer not to say
+  self_isolating: null
+  self_isolating_raw: Prefer not to say
   self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
@@ -753,9 +770,11 @@
   visit_id: '1652'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: 'No'
+  work_in_additional_paid_employment_raw: 'No'
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: null
@@ -768,6 +787,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Other occupation sector
   work_sector_other: The arguments can be primitive data types or compound data types.
   work_sector_raw: Other employment sector please specify
@@ -858,6 +878,7 @@
   county: Avon
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Hookah or shisha pipes
+  currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2003-04-05 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -873,6 +894,7 @@
   ethnicity: Indian
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -893,7 +915,8 @@
   first_name: Honey
   hh_id: 030988308904
   hospital_last_28_days: 'No'
-  hours_a_day_with_someone_else_at_home: Prefer not to say
+  hours_a_day_with_someone_else_at_home: null
+  hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-2396451235
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
@@ -903,6 +926,7 @@
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: 92.0
   illness_lasting_over_12_months: 'No'
+  illness_lasting_over_12_months_raw: 'No'
   illness_reduces_activity_or_ability: Not at all
   illness_reduces_activity_or_ability_raw: Not at all
   infant_age_months_1: null
@@ -942,7 +966,9 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '2206'
@@ -1007,6 +1033,7 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: Post
   self_isolating: 'Yes'
+  self_isolating_raw: 'Yes'
   self_isolating_reason: null
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
@@ -1145,11 +1172,13 @@
   visit_datetime: null
   visit_id: '2206'
   voucher_type_preference: null
-  work_direct_contact_patients_or_clients: Prefer not to say
+  work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
   work_in_additional_paid_employment: 'Yes'
+  work_in_additional_paid_employment_raw: 'Yes'
   work_location: null
   work_location_raw: null
   work_main_job_changed: null
@@ -1163,6 +1192,7 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Information technology and communication
   work_sector_other: I don't even care.
   work_sector_raw: Information technology and communication
@@ -1225,10 +1255,10 @@
   cis_covid_vaccine_type_2_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_3: Other / specify
   cis_covid_vaccine_type_3_raw: Another vaccine please specify
-  cis_covid_vaccine_type_4: Don't know type
-  cis_covid_vaccine_type_4_raw: I don't know the type
-  cis_covid_vaccine_type_5: Don't know type
-  cis_covid_vaccine_type_5_raw: I don't know the type
+  cis_covid_vaccine_type_4: null
+  cis_covid_vaccine_type_4_raw: null
+  cis_covid_vaccine_type_5: null
+  cis_covid_vaccine_type_5_raw: null
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Another vaccine please specify
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
@@ -1250,8 +1280,9 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes: Prefer not to say
+  currently_smokes_or_vapes: null
   currently_smokes_or_vapes_description: Pipe
+  currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1992-03-01 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1267,6 +1298,7 @@
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: 'No'
+  ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -1285,11 +1317,12 @@
   face_covering_other_enclosed_places: Yes, always
   face_covering_other_enclosed_places_raw: Yes always
   face_covering_work_or_education: null
-  face_covering_work_or_education_raw: Prefer not to say
+  face_covering_work_or_education_raw: null
   first_name: Shawnee
   hh_id: '734353881968'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-8082463081
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
@@ -1298,7 +1331,8 @@
   household_members_over_2_years_and_not_present_count: 'No'
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: null
-  illness_lasting_over_12_months: Prefer not to say
+  illness_lasting_over_12_months: null
+  illness_lasting_over_12_months_raw: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
   infant_age_months_1: 63.0
@@ -1339,7 +1373,9 @@
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
+  other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: null
+  other_household_member_hospital_last_28_days_raw: null
   outward_postcode: NC0C
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '2738'
@@ -1399,7 +1435,8 @@
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
-  self_isolating: Prefer not to say
+  self_isolating: null
+  self_isolating_raw: Prefer not to say
   self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
@@ -1541,9 +1578,11 @@
   visit_id: '2738'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
-  work_in_additional_paid_employment: Prefer not to say
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
   work_location: null
   work_location_raw: null
   work_main_job_changed: 'Yes'
@@ -1557,6 +1596,7 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Healthcare
   work_sector_other: It is also a garbage-collected runtime system.
   work_sector_raw: Healthcare
@@ -1649,6 +1689,7 @@
   county: Borders
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Cigarettes
+  currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2020-02-01 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -1662,7 +1703,8 @@
   ethnic_group: Asian or Asian British
   ethnicity: Gypsy or Irish Traveller
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
-  ever_smoked_regularly: Prefer not to say
+  ever_smoked_regularly: null
+  ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -1686,6 +1728,7 @@
   hh_id: '602276804025'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-9300868759
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
@@ -1695,6 +1738,7 @@
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: null
   illness_lasting_over_12_months: 'No'
+  illness_lasting_over_12_months_raw: 'No'
   illness_reduces_activity_or_ability: Yes, a little
   illness_reduces_activity_or_ability_raw: Yes a little
   infant_age_months_1: 89.0
@@ -1735,7 +1779,9 @@
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '3586'
@@ -1797,6 +1843,7 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
   self_isolating: 'Yes'
+  self_isolating_raw: 'Yes'
   self_isolating_reason: null
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
@@ -1937,9 +1984,11 @@
   visit_id: '3586'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
-  work_in_additional_paid_employment: Prefer not to say
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: 'Yes'
@@ -1950,7 +1999,8 @@
     systems.
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: null
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Personal services (e.g. hairdressers)
   work_sector_other: Do you come here often?
   work_sector_raw: Personal Services - for example hairdressers or tattooists
@@ -2041,6 +2091,7 @@
   county: Humberside
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Vape or E-cigarettes
+  currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2012-09-06 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2056,6 +2107,7 @@
   ethnicity: Indian
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -2077,6 +2129,7 @@
   hh_id: '822178461989'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
+  hours_a_day_with_someone_else_at_home_raw: null
   household_completion_window_id: HW-8828437201
   household_completion_window_status: New
   household_digital_enrolment_datetime: null
@@ -2086,6 +2139,7 @@
   household_members_under_2_years_count: 'No'
   household_participants_not_consenting_count: 83.0
   illness_lasting_over_12_months: 'No'
+  illness_lasting_over_12_months_raw: 'No'
   illness_reduces_activity_or_ability: Not at all
   illness_reduces_activity_or_ability_raw: Not at all
   infant_age_months_1: null
@@ -2125,7 +2179,9 @@
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: null
+  other_household_member_hospital_last_28_days_raw: null
   outward_postcode: LV1J
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '3892'
@@ -2161,7 +2217,7 @@
   physical_contact_18_to_69_years: null
   physical_contact_18_to_69_years_raw: Don't know
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Prefer not to say
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Don't know
   postcode: LV1J6SR
@@ -2187,6 +2243,7 @@
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: 'No'
+  self_isolating_raw: 'No'
   self_isolating_reason: 'No'
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
@@ -2313,7 +2370,7 @@
   times_hour_or_longer_another_home_last_7_days: '4'
   times_hour_or_longer_another_home_last_7_days_raw: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: Prefer not to say
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
   times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '7'
   times_shopping_last_7_days_raw: 7 times or more
@@ -2326,9 +2383,11 @@
   visit_id: '3892'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
-  work_in_additional_paid_employment: Prefer not to say
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working from home
   work_location_raw: From home meaning in the same grounds or building as your home
   work_main_job_changed: 'No'
@@ -2339,7 +2398,8 @@
   work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '6'
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Armed forces
   work_sector_other: Ports are created with the built-in function open_port.
   work_sector_raw: Armed forces
@@ -2396,16 +2456,16 @@
   cis_covid_vaccine_number_of_doses_raw: 1 dose
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_1: Don't know type
-  cis_covid_vaccine_type_1_raw: I don't know the type
+  cis_covid_vaccine_type_1: null
+  cis_covid_vaccine_type_1_raw: null
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_3: Sinovac
   cis_covid_vaccine_type_3_raw: Sinovac
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: Don't know type
-  cis_covid_vaccine_type_5_raw: I don't know the type
+  cis_covid_vaccine_type_5: null
+  cis_covid_vaccine_type_5_raw: null
   cis_covid_vaccine_type_6: Sinopharm
   cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: Houston, we have a problem.
@@ -2432,6 +2492,7 @@
   county: Northamptonshire
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Hookah or shisha pipes
+  currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2009-12-02 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
@@ -2448,6 +2509,7 @@
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: 'No'
+  ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -2471,6 +2533,7 @@
   hh_id: '623704990229'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
+  hours_a_day_with_someone_else_at_home_raw: null
   household_completion_window_id: HW-6911152672
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
@@ -2479,7 +2542,8 @@
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: null
   household_participants_not_consenting_count: 25.0
-  illness_lasting_over_12_months: Prefer not to say
+  illness_lasting_over_12_months: null
+  illness_lasting_over_12_months_raw: Prefer not to say
   illness_reduces_activity_or_ability: null
   illness_reduces_activity_or_ability_raw: null
   infant_age_months_1: null
@@ -2519,7 +2583,9 @@
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: null
+  other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: 'No'
+  other_household_member_hospital_last_28_days_raw: 'No'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '6249'
@@ -2555,7 +2621,7 @@
   physical_contact_18_to_69_years: 21 or more
   physical_contact_18_to_69_years_raw: 21 or more
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Prefer not to say
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: null
   postcode: null
@@ -2580,7 +2646,8 @@
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Courier
-  self_isolating: Prefer not to say
+  self_isolating: null
+  self_isolating_raw: Prefer not to say
   self_isolating_reason: null
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
@@ -2721,10 +2788,12 @@
   visit_id: '6249'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
-  work_in_additional_paid_employment: Prefer not to say
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: 'Yes'
@@ -2736,7 +2805,8 @@
     language.
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '2'
-  work_nursing_or_residential_care_home: Prefer not to say
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Manufacturing or construction
   work_sector_other: It is also a garbage-collected runtime system.
   work_sector_raw: Manufacturing or construction
@@ -2789,16 +2859,16 @@
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinopharm
-  cis_covid_vaccine_type_1: Don't know type
-  cis_covid_vaccine_type_1_raw: I don't know the type
+  cis_covid_vaccine_type_1: null
+  cis_covid_vaccine_type_1_raw: null
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
   cis_covid_vaccine_type_3: Sinopharm
   cis_covid_vaccine_type_3_raw: Sinopharm
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: Don't know type
-  cis_covid_vaccine_type_5_raw: I don't know the type
+  cis_covid_vaccine_type_5: null
+  cis_covid_vaccine_type_5_raw: null
   cis_covid_vaccine_type_6: Moderna
   cis_covid_vaccine_type_6_raw: Moderna
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
@@ -2826,6 +2896,7 @@
   county: null
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: Hookah or shisha pipes
+  currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '1990-03-29 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -2842,6 +2913,7 @@
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -2864,7 +2936,8 @@
   first_name: Myung
   hh_id: '502848695986'
   hospital_last_28_days: 'No'
-  hours_a_day_with_someone_else_at_home: Prefer not to say
+  hours_a_day_with_someone_else_at_home: null
+  hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-6202235126
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
@@ -2873,7 +2946,8 @@
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: null
-  illness_lasting_over_12_months: Prefer not to say
+  illness_lasting_over_12_months: null
+  illness_lasting_over_12_months_raw: Prefer not to say
   illness_reduces_activity_or_ability: Not at all
   illness_reduces_activity_or_ability_raw: Not at all
   infant_age_months_1: 82.0
@@ -2914,7 +2988,9 @@
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: UK0X
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '7045'
@@ -2977,6 +3053,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'Yes'
+  self_isolating_raw: 'Yes'
   self_isolating_reason: null
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
@@ -3116,10 +3193,12 @@
   visit_id: '7045'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
   work_in_additional_paid_employment: 'No'
+  work_in_additional_paid_employment_raw: 'No'
   work_location: Working from home
   work_location_raw: From home meaning in the same grounds or building as your home
   work_main_job_changed: null
@@ -3132,6 +3211,7 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Hospitality (e.g. hotel, restaurant)
   work_sector_other: Type classes first appeared in the Haskell programming language.
   work_sector_raw: Hospitality - for example hotels or restaurants or cafe
@@ -3217,8 +3297,9 @@
   contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
-  currently_smokes_or_vapes: Prefer not to say
+  currently_smokes_or_vapes: null
   currently_smokes_or_vapes_description: Vape or E-cigarettes
+  currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1985-02-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -3235,6 +3316,7 @@
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: 'No'
+  ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -3256,6 +3338,7 @@
   hh_id: '821442294850'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: '[10, 14, 12, 22, 4, 17, 5, 9]'
+  hours_a_day_with_someone_else_at_home_raw: '[10, 14, 12, 22, 4, 17, 5, 9]'
   household_completion_window_id: HW-2744995712
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: null
@@ -3265,6 +3348,7 @@
   household_members_under_2_years_count: 'Yes'
   household_participants_not_consenting_count: 26.0
   illness_lasting_over_12_months: 'No'
+  illness_lasting_over_12_months_raw: 'No'
   illness_reduces_activity_or_ability: null
   illness_reduces_activity_or_ability_raw: null
   infant_age_months_1: null
@@ -3304,7 +3388,9 @@
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '9557'
@@ -3340,7 +3426,7 @@
   physical_contact_18_to_69_years: 21 or more
   physical_contact_18_to_69_years_raw: 21 or more
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Prefer not to say
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
   postcode: null
@@ -3369,6 +3455,7 @@
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'No'
+  self_isolating_raw: 'No'
   self_isolating_reason: 'No'
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
@@ -3384,7 +3471,7 @@
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: null
-  social_distance_contact_under_18_years_raw: Prefer not to say
+  social_distance_contact_under_18_years_raw: null
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: null
@@ -3495,7 +3582,7 @@
   think_have_long_covid_symptom_sore_throat: 'Yes'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
-  times_hour_or_longer_another_home_last_7_days_raw: Prefer not to say
+  times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days_raw: null
   times_outside_shopping_or_socialising_last_7_days: 6
@@ -3510,9 +3597,11 @@
   visit_id: '9557'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: 'No'
+  work_in_additional_paid_employment_raw: 'No'
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: 'No'
@@ -3524,6 +3613,7 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Civil service or Local Government
   work_sector_other: Atoms can contain any character if they are enclosed within single
     quotes and an escape convention exists which allows any character to be used within
@@ -3616,6 +3706,7 @@
   county: null
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: Pipe
+  currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '1994-05-03 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
@@ -3633,6 +3724,7 @@
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: 'Yes'
+  ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: null
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
@@ -3653,7 +3745,8 @@
   first_name: Reiko
   hh_id: '568720322983'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Prefer not to say
+  hours_a_day_with_someone_else_at_home: null
+  hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-9500167403
   household_completion_window_status: New
   household_digital_enrolment_datetime: null
@@ -3663,6 +3756,7 @@
   household_members_under_2_years_count: null
   household_participants_not_consenting_count: 53.0
   illness_lasting_over_12_months: 'Yes'
+  illness_lasting_over_12_months_raw: 'Yes'
   illness_reduces_activity_or_ability: null
   illness_reduces_activity_or_ability_raw: null
   infant_age_months_1: null
@@ -3703,7 +3797,9 @@
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
   other_household_member_care_home_last_28_days: 'No'
+  other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
+  other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: FN0F
   participant_completion_window_end_datetime: null
   participant_completion_window_id: '9598'
@@ -3769,6 +3865,7 @@
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
   self_isolating: 'No'
+  self_isolating_raw: 'No'
   self_isolating_reason: 'No'
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
@@ -3909,9 +4006,11 @@
   visit_id: '9598'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
   work_health_care_area_raw: null
   work_in_additional_paid_employment: 'No'
+  work_in_additional_paid_employment_raw: 'No'
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: null
@@ -3926,6 +4025,7 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Social care
   work_sector_other: Make me a sandwich.
   work_sector_raw: Social Care

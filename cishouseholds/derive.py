@@ -14,9 +14,22 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+    """
+    assign an incremental count to each participants visit
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    df = df.withColumn(column_name_to_assign, F.row_number().over(window))
+    visit_order_map = {v: k for k, v in category_maps["iqvia_raw_category_map"]["visit_order"].items()}
+    df = update_column_values_from_map(df, column_name_to_assign, visit_order_map)
+    return df
 
 
 def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):

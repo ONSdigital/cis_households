@@ -468,7 +468,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}

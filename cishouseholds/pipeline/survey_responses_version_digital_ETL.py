@@ -28,6 +28,43 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     )  # Placeholder for 2199
 
     df = transform_survey_responses_generic(df)
+    dont_know_columns = [
+        "work_in_additional_paid_employment",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "self_isolating",
+        "illness_lasting_over_12_months",
+        "ever_smoked_regularly",
+        "currently_smokes_or_vapes",
+        "cis_covid_vaccine_type_1",
+        "cis_covid_vaccine_type_2",
+        "cis_covid_vaccine_type_3",
+        "cis_covid_vaccine_type_4",
+        "cis_covid_vaccine_type_5",
+        "cis_covid_vaccine_type_6",
+        "other_household_member_hospital_last_28_days",
+        "other_household_member_care_home_last_28_days",
+        "hours_a_day_with_someone_else_at_home",
+        "physical_contact_under_18_years",
+        "physical_contact_18_to_69_years",
+        "physical_contact_over_70_years",
+        "social_distance_contact_under_18_years",
+        "social_distance_contact_18_to_69_years",
+        "social_distance_contact_over_70_years",
+        "times_hour_or_longer_another_home_last_7_days",
+        "times_hour_or_longer_another_person_your_home_last_7_days",
+        "times_shopping_last_7_days",
+        # "times_socialising_last_7_days",
+        "face_covering_work_or_education",
+        "face_covering_other_enclosed_places",
+        # "cis_covid_vacine_type",
+    ]
+    df = assign_raw_copies(df, dont_know_columns)
+    dont_know_mapping_dict = {"Prefer not to say": None, "Don't Know": None, "I don't know the type": None}
+    df = apply_value_map_multiple_columns(
+        df,
+        {k: dont_know_mapping_dict for k in dont_know_columns},
+    )
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
@@ -455,5 +492,4 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         F.greatest("work_not_from_home_days_per_week", "education_in_person_days_per_week"),
     )
-    #
     return df
