@@ -779,7 +779,9 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
-    df = df.withColumn("combined visit_status", F.coalesce(F.col("visit_status"), F.col("survey_completion_status")))
+    df = df.withColumn(
+        "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
+    )
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
