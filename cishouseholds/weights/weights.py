@@ -91,7 +91,7 @@ def generate_weights(
             antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
             cis_area_column="cis_area_code_20",
             country_column="country_code_12",
-            swab_group_by_columns=["cis_area_code_20","sample_source_name"],
+            swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
             antibody_group_by_columns=["cis_area_code_20"],
         )
     except DesignWeightError as e:
@@ -133,8 +133,7 @@ def join_and_process_lookups(
         old_sample_df = assign_filename_column(old_sample_df, "sample_source_file")
         df = union_multiple_tables([old_sample_df, new_sample_df])
     else:
-        df = new_sample_df\
-
+        df = new_sample_df
     df = df.join(
         master_sample_df.select("ons_household_id", "postcode", "sample_type"),
         on="ons_household_id",
@@ -407,9 +406,7 @@ def validate_design_weights(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
             F.round(F.sum(swab_weight_column).over(cis_area_window), rounding_value)
-            == F.col(
-                num_households_by_cis_column
-            ), 
+            == F.col(num_households_by_cis_column),
             False,
         ).otherwise(True),
     )
@@ -417,9 +414,7 @@ def validate_design_weights(
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
             F.round(F.sum(antibody_weight_column).over(country_window), rounding_value)
-            == F.col(
-                num_households_by_country_column
-            ), 
+            == F.col(num_households_by_country_column),
             False,
         ).otherwise(True),
     )
@@ -451,7 +446,8 @@ def validate_design_weights(
         "sample_source_name",
         antibody_weight_column,
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
-        "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP").distinct().show(100)
+        "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
+    ).distinct().show(100)
     df.drop(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
@@ -622,7 +618,9 @@ def scale_antibody_design_weights(df: DataFrame, scenario: str, groupby_column: 
     )
     df = df.withColumn(
         "scaled_design_weight_antibodies_non_adjusted",
-        (F.col("scaling_factor_carry_forward_design_weight_antibodies")
-        * F.col("carry_forward_design_weight_antibodies")).cast(DecimalType(38, 20))
+        (
+            F.col("scaling_factor_carry_forward_design_weight_antibodies")
+            * F.col("carry_forward_design_weight_antibodies")
+        ).cast(DecimalType(38, 20)),
     )
     return df
