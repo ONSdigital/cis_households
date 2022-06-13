@@ -16,7 +16,7 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 
 
-def apply_lower_case_to_columns(df: DataFrame, columns: List[str]):
+def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
     """
     apply lower case to all but first letter of string in list of columns
     """

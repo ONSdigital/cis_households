@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import apply_lower_case_to_columns
+from cishouseholds.edit import update_strings_to_sentence_case
 
 
-def test_apply_lower_case_to_columns(spark_session):
+def test_update_strings_to_sentence_case(spark_session):
 
     input_df = spark_session.createDataFrame(
         data=[
@@ -25,6 +25,6 @@ def test_apply_lower_case_to_columns(spark_session):
 
     columns_list = ["col1", "col2"]
 
-    output_df = apply_lower_case_to_columns(input_df, columns_list)
+    output_df = update_strings_to_sentence_case(input_df, columns_list)
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)
