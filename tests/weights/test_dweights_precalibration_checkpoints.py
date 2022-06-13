@@ -49,7 +49,6 @@ def test_precal_and_design_weights_checkpoints(spark_session):
             cis_area_column="country",
             country_column="country",
             swab_group_by_columns=["country", "groupby"],
-            antibody_group_by_columns=["country", "groupby"],
             rounding_value=18,
         )
 
