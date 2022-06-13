@@ -1,6 +1,5 @@
 import re
 from typing import List
-from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -74,10 +73,10 @@ def generate_weights(
         n_eligible_hh_tranche_by_strata_column="number_eligible_households_tranche_by_strata_enrolment",
         n_sampled_hh_tranche_by_strata_column="number_sampled_households_tranche_by_strata_enrolment",
     )
-    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)  # type: ignore
+    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
     df = scale_antibody_design_weights(
         df=df,
-        scenario=scenario_string,  # type: ignore
+        scenario=scenario_string,
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
@@ -472,7 +471,7 @@ def chose_scenario_of_design_weight_for_antibody_different_household(
     tranche_eligible_indicator: str,
     n_eligible_hh_tranche_by_strata_column,
     n_sampled_hh_tranche_by_strata_column,
-) -> Union[str, None]:
+) -> str:
     """
     Decide what scenario to use for calculation of the design weights
     for antibodies for different households
