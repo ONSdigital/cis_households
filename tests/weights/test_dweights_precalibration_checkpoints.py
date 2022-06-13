@@ -96,8 +96,6 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         cis_area_column="country",
         country_column="country",
         swab_group_by_columns=["country", "groupby", "sample_group"],
-        antibody_group_by_columns=["country", "groupby", "sample_group"],
-        rounding_value=18,
     )
 
     assert swab_weight_column_type is True
