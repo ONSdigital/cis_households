@@ -5,7 +5,6 @@ from typing import Union
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
-from pyspark.sql.types import StructField
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_count_by_group
@@ -92,7 +91,6 @@ def generate_weights(
             cis_area_column="cis_area_code_20",
             country_column="country_code_12",
             swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
-            antibody_group_by_columns=["cis_area_code_20"],
         )
     except DesignWeightError as e:
         print(e)  # functional
@@ -389,7 +387,6 @@ def validate_design_weights(
     cis_area_column: str,
     country_column: str,
     swab_group_by_columns: List[str],
-    antibody_group_by_columns: List[str],
     rounding_value: float = 9,
 ):
     """
@@ -431,23 +428,9 @@ def validate_design_weights(
     df = assign_distinct_count_in_group(
         df, "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], swab_group_by_columns
     )
-    df = assign_distinct_count_in_group(
-        df, "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [antibody_weight_column], antibody_group_by_columns
-    )
     swab_design_weights_inconsistent_within_group = (
         False if df.filter((F.col("SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
     )
-    antibody_design_weights_inconsistent_within_group = (
-        False if df.filter((F.col("ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
-    )
-    df.filter(F.col("ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1).select(
-        cis_area_column,
-        "tranche_factor",
-        "sample_source_name",
-        antibody_weight_column,
-        "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
-        "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
-    ).distinct().show(100)
     df.drop(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
@@ -474,20 +457,15 @@ def validate_design_weights(
 
     if swab_design_weights_inconsistent_within_group:
         error_string += "\n- Swab design weights are not consistent within CIS area population groups."
-    if antibody_design_weights_inconsistent_within_group:
-        error_string += "\n- Antibody design weights are not consistent within country population groups."
 
     if error_string:
-        error_string += "\n"
-    if error_string:
-        raise DesignWeightError(error_string)
+        raise DesignWeightError(error_string + "\n")
     return (
         antibody_design_weights_sum_to_population,
         swab_design_weights_sum_to_population,
         check_negative_design_weights,
         check_null_design_weights,
         swab_design_weights_inconsistent_within_group,
-        antibody_design_weights_inconsistent_within_group,
     )
 
 

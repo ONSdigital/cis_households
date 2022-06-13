@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.weights import carry_forward_design_weights
+from cishouseholds.weights.weights import scale_antibody_design_weights
 
 
 def test_carry_forward_design_weights(spark_session):
@@ -16,7 +16,7 @@ def test_carry_forward_design_weights(spark_session):
             carry_forward_design_weight_antibodies double
             """,
     )
-    output_df = carry_forward_design_weights(
+    output_df = scale_antibody_design_weights(
         df=expected_df.drop(
             "carry_forward_design_weight_antibodies",
             "sum_carry_forward_design_weight_antibodies",
