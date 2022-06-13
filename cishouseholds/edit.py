@@ -41,7 +41,7 @@ def update_column_in_time_window(
         column_name_to_update,
         F.when(
             (F.col(time_column) > F.to_timestamp(F.lit(time_window[0])))
-            & (F.col(time_column) > F.to_timestamp(F.lit(time_window[0]))),
+            & (F.col(time_column) < F.to_timestamp(F.lit(time_window[1]))),
             new_value,
         ).otherwise(F.col(column_name_to_update)),
     )
