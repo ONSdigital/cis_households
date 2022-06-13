@@ -81,19 +81,16 @@ def generate_weights(
         groupby_column="cis_area_code_20",
         household_population_column="number_of_households_by_cis_area",
     )
-    try:
-        validate_design_weights(
-            df=df,
-            num_households_by_cis_column="number_of_households_by_cis_area",
-            num_households_by_country_column="number_of_households_by_country",
-            swab_weight_column="scaled_design_weight_swab_non_adjusted",
-            antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
-            cis_area_column="cis_area_code_20",
-            country_column="country_code_12",
-            swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
-        )
-    except DesignWeightError as e:
-        print(e)  # functional
+    validate_design_weights(
+        df=df,
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_weight_column="scaled_design_weight_swab_non_adjusted",
+        antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
+        cis_area_column="cis_area_code_20",
+        country_column="country_code_12",
+        swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
+    )
     return df
 
 
