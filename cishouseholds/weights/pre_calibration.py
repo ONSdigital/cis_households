@@ -66,7 +66,6 @@ def pre_calibration_high_level(
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
         swab_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
-        antibody_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 
@@ -87,7 +86,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
     """
     This function will carry forward last observation of antibodies,
     swab or longcovid result prioritising positive cases and age of patient.
-
     Parameters
     ----------
     df
@@ -147,7 +145,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
 def cutoff_day_to_ever_never(df, days, cutoff_date):
     """
     This function will flag the visit_dates coming after a cutoff_date provided after days
-
     Parameters
     ----------
     df
@@ -184,7 +181,6 @@ def dataset_generation(
         - antibodies 28 days
         - long covid 28 days
         - long covid 42 days
-
     Parameters
     ----------
     df
@@ -301,7 +297,6 @@ def survey_extraction_household_data_response_factor(
     required_extracts_column_list
     mandatory_extracts_column_list
     population_join_column: Only swab/antibodies
-
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
