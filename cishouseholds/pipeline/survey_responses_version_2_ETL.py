@@ -129,31 +129,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
     Transformations specific to the v1 and v2 survey responses.
     """
-    df = update_column_values_from_map(
-        df=df,
-        column="self_isolating_reason",
-        map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="self_isolating",
-        reference_column="self_isolating_reason",
-        values_list=[
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, you have/have had symptoms",
-            "Yes, someone you live with had symptoms",
-        ],
-        true_false_values=["Yes", "No"],
-    )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
     df = df.withColumn("been_outside_uk_last_country", F.upper(F.col("been_outside_uk_last_country")))
 
@@ -511,17 +486,50 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
+
+    # Derive from final V2 values, not raw
     df = assign_from_map(
         df,
         "self_isolating_reason_digital",
         "self_isolating_reason",
         {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
         },
     )
+    # Edits to final V2 values, which differ from raw
+    df = update_column_values_from_map(
+        df=df,
+        column="self_isolating_reason",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+
     df = update_to_value_if_any_not_null(
         df,
         "cis_covid_vaccine_received",

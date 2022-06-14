@@ -40,7 +40,7 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: null
-  cis_covid_vaccine_type: Don't know type
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Other / specify
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sputnik
@@ -60,7 +60,7 @@
   cis_covid_vaccine_type_other_4: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_5: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_6: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_raw: I don't know the type
+  cis_covid_vaccine_type_raw: null
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   completion_window_cadence: Weekly
