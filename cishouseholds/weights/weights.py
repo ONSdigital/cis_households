@@ -166,15 +166,12 @@ def derive_country_code(df, column_name_to_assign: str, region_code_column: str)
     """Derive country code from region code starting character."""
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            F.col(region_code_column)
-            .startswith("E", "E92000001")
-            .when(F.col(region_code_column).startswith("N", "N92000002"))
-            .when(F.col(region_code_column).startswith("S", "S92000003"))
-            .when(F.col(region_code_column).startswith("W", "W92000004"))
-            .when(F.col(region_code_column).startswith("L", "L93000001"))
-            .when(F.col(region_code_column).startswith("M", "M83000003"))
-        ),
+        F.when(F.col(region_code_column).startswith("E"), "E92000001")
+        .when(F.col(region_code_column).startswith("N"), "N92000002")
+        .when(F.col(region_code_column).startswith("S"), "S92000003")
+        .when(F.col(region_code_column).startswith("W"), "W92000004")
+        .when(F.col(region_code_column).startswith("L"), "L93000001")
+        .when(F.col(region_code_column).startswith("M"), "M83000003"),
     )
     return df
 
