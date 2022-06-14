@@ -3,6 +3,7 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_datetime_from_group
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
@@ -17,15 +18,19 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
-    df = df.withColumn(
-        "visit_datetime",
-        F.coalesce(
-            F.col("swab_taken_datetime"),
-            F.col("blood_taken_datetime"),
-            F.col("survey_completed_datetime"),
-            F.col("sample_kit_dispatched_datetime"),
-        ),
-    )  # Placeholder for 2199
+    df = assign_datetime_from_group(
+        df,
+        column_name_to_assign="visit_datetime",
+        ordered_columns=[
+            "swab_taken_datetime",
+            "blood_taken_datetime",
+            "survey_completed_datetime",
+            "sample_kit_dispatched_datetime",
+        ],
+        date_format="yyyy-MM-dd",
+        time_format="HH:mm:ss",
+        default_timestamp="12:00:00",
+    )
     df = transform_survey_responses_generic(df)
     dont_know_columns = [
         "work_in_additional_paid_employment",
