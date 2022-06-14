@@ -26,7 +26,6 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             F.col("sample_kit_dispatched_datetime"),
         ),
     )  # Placeholder for 2199
-
     df = transform_survey_responses_generic(df)
     dont_know_columns = [
         "work_in_additional_paid_employment",

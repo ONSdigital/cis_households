@@ -21,6 +21,30 @@ from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_datetime_from_group(
+    df: DataFrame,
+    column_name_to_assign: str,
+    ordered_columns: List[str],
+    date_format: str,
+    time_format: str,
+    default_timestamp: str,
+):
+    """
+    Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
+    """
+    for col in ordered_columns:
+        check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
+                F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
+            ).otherwise(F.col(col)),
+        )
+    df = df.withColumn(column_name_to_assign, F.coalesce(*ordered_columns))
+    return df
+
+
 def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
     """
     assign an incremental count to each participants visit
