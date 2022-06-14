@@ -308,7 +308,7 @@ category_maps = {
             "Yes, for other reasons (e.g. going into hospital, quarantining)": 3,
         },
         "last_covid_contact_type": {"Living in your own home": 1, "Outside your home": 2},
-        "last_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
+        "last_suspected_covid_contact_type": {"Living in your own home": 1, "Outside your home": 2},
         "household_been_hospital_last_28_days": {
             "No, no one in my household has": 0,
             "Yes, I have": 1,
@@ -1047,5 +1047,19 @@ category_maps = {
             "J06000233": 133,
         },
         "people_in_household_count_group": {"1": 1, "2": 2, "3": 3, "4": 4, "5+": 5},
+        "region_code": {
+            "E12000001": 1,
+            "E12000002": 2,
+            "E12000003": 3,
+            "E12000004": 4,
+            "E12000005": 5,
+            "E12000006": 6,
+            "E12000007": 7,
+            "E12000008": 8,
+            "E12000009": 9,
+            "N99999999": 10,
+            "S99999999": 11,
+            "W99999999": 12,
+        },
     }
 }

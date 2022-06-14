@@ -32,6 +32,7 @@
   ethnicity_other: Do you come here often?
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
+  file_date: null
   first_name: Janyce
   gender: Prefer not to say
   hh_id: 021263322966
@@ -58,8 +59,8 @@
   last_covid_contact_type: Elementary, my dear Watson.
   last_name: Dickerson
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: A census taker once tried to test me. I ate his liver
-    with some fava beans and a nice Chianti.
+  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   no_email_address: 0.0
   ons_household_id: 021263322966
   other_antibody_test: 'Yes'
@@ -152,6 +153,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -164,7 +166,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -237,6 +238,7 @@
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ever_smoked_regularly: null
   face_covering_outside_of_home: 'No'
+  file_date: null
   first_name: Tyrone
   gender: null
   hh_id: '919192147365'
@@ -264,7 +266,7 @@
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: David
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Those who refuse to learn from history are condemned
+  last_suspected_covid_contact_type: Those who refuse to learn from history are condemned
     to repeat it.
   no_email_address: 1.0
   ons_household_id: '919192147365'
@@ -358,6 +360,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -370,7 +373,6 @@
   think_have_covid_symptom_loss_of_taste: 'No'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: null
@@ -450,6 +452,7 @@
     must obey the so-called ""port protocol."""'
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
+  file_date: null
   first_name: Belkis
   gender: null
   hh_id: '955705581901'
@@ -477,8 +480,8 @@
     in my pajamas, I don't know.
   last_name: Nunez
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '955705581901'
   other_antibody_test: 'Yes'
@@ -573,6 +576,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -585,7 +589,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'Yes'
@@ -659,6 +662,7 @@
     space station with the power to destroy entire planets.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
+  file_date: null
   first_name: Jae
   gender: null
   hh_id: '876960826911'
@@ -686,7 +690,7 @@
   last_covid_contact_type: Let them eat cake.
   last_name: Hyde
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Here's looking at you, kid.
+  last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 0.0
   ons_household_id: '876960826911'
   other_antibody_test: null
@@ -778,6 +782,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -790,7 +795,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -869,6 +873,7 @@
   ethnicity_other: Type classes first appeared in the Haskell programming language.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
+  file_date: null
   first_name: Jenee
   gender: Female
   hh_id: '602276804025'
@@ -896,7 +901,7 @@
     lucky?"" Well, do ya? Punk!"'
   last_name: Cardenas
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: You're gonna need a bigger boat.
+  last_suspected_covid_contact_type: You're gonna need a bigger boat.
   no_email_address: 1.0
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
@@ -991,6 +996,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -1003,7 +1009,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1080,6 +1085,7 @@
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
+  file_date: null
   first_name: Alan
   gender: Prefer not to say
   hh_id: 001674039598
@@ -1106,8 +1112,8 @@
   last_covid_contact_type: Houston, we have a problem.
   last_name: Robbins
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: 001674039598
   other_antibody_test: 'Yes'
@@ -1201,6 +1207,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: null
   think_have_covid_symptom_any_raw: null
@@ -1213,7 +1220,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1284,6 +1290,7 @@
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: null
+  file_date: null
   first_name: Shaun
   gender: Female
   hh_id: 044476904382
@@ -1310,7 +1317,7 @@
   last_covid_contact_type: You're gonna need a bigger boat.
   last_name: Lynch
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Let them eat cake.
+  last_suspected_covid_contact_type: Let them eat cake.
   no_email_address: 1.0
   ons_household_id: 044476904382
   other_antibody_test: 'Yes'
@@ -1406,6 +1413,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: null
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_any_raw: 'Yes'
@@ -1418,7 +1426,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1494,6 +1501,7 @@
     D2, ... Dn.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
+  file_date: null
   first_name: Maple
   gender: Female
   hh_id: '890407714528'
@@ -1520,8 +1528,8 @@
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: Brock
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Ask not what your country can do for you; ask what you
-    can do for your country.
+  last_suspected_covid_contact_type: Ask not what your country can do for you; ask
+    what you can do for your country.
   no_email_address: 0.0
   ons_household_id: '890407714528'
   other_antibody_test: null
@@ -1617,6 +1625,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1629,7 +1638,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1704,6 +1712,7 @@
   ethnicity_other: The arguments can be primitive data types or compound data types.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
+  file_date: null
   first_name: Ira
   gender: null
   hh_id: '456442497105'
@@ -1729,8 +1738,8 @@
   last_covid_contact_type: Let them eat cake.
   last_name: Bernard
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   no_email_address: 1.0
   ons_household_id: '456442497105'
   other_antibody_test: null
@@ -1824,6 +1833,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -1836,7 +1846,6 @@
   think_have_covid_symptom_loss_of_taste: 'Yes'
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
   times_hour_or_longer_another_home_last_7_days: 'No'
@@ -1909,6 +1918,7 @@
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
+  file_date: null
   first_name: Buck
   gender: Male
   hh_id: '788221784619'
@@ -1936,8 +1946,8 @@
   last_covid_contact_type: The only thing we have to fear is fear itself.
   last_name: Meyers
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 0.0
   ons_household_id: '788221784619'
   other_antibody_test: 'Yes'
@@ -2033,6 +2043,7 @@
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_any: 'No'
   think_have_covid_symptom_any_raw: 'No'
@@ -2045,7 +2056,6 @@
   think_have_covid_symptom_loss_of_taste: null
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: null

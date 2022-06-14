@@ -396,7 +396,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -535,6 +535,10 @@ fields:
   name: unique_participant_response_id
   nullable: false
   type: string
+- metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: bad_email
   nullable: true
