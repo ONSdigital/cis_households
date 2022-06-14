@@ -12,6 +12,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
+from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_fake_id
@@ -92,6 +93,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = assign_column_regex_match(
         df,
         "bad_email",
