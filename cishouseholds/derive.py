@@ -32,16 +32,19 @@ def assign_datetime_from_group(
     """
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
     """
+    coalesce_columns = []
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
-        df = df.withColumn(
-            col,
-            F.when(
-                (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
-                F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
-            ).otherwise(F.col(col)),
+        coalesce_columns.append(
+            F.to_timestamp(
+                F.when(
+                    (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
+                    F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
+                ).otherwise(F.col(col)),
+                format=f"{date_format} {time_format}",
+            )
         )
-    df = df.withColumn(column_name_to_assign, F.coalesce(*ordered_columns))
+    df = df.withColumn(column_name_to_assign, F.coalesce(*coalesce_columns))
     return df
 
 
