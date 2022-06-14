@@ -921,12 +921,8 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
-    valid_df_errors = generate_error_table(
-        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
-    invalid_df_errors = generate_error_table(
-        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
+    valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
+    invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
 
     processed_file_log = extract_from_table("processed_filenames")
 
