@@ -2,6 +2,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import map_column_values_to_null
@@ -14,19 +15,19 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         value="Participant Would Not/Could Not Answer",
         column_list=[
             "ethnicity",
-            "work_sectors",
-            "work_health_care_v1_v2",
+            "work_sector",
+            "work_health_care_area",
             "work_status_v1",
             "work_location",
-            "work_direct_contact_patients_clients",
-            "visit_type",
-            "is_self_isolating_detailed",
+            "work_direct_contact_patients_or_clients",
+            "survey_response_type",
+            "self_isolating_reason",
             "illness_reduces_activity_or_ability",
-            "ability_to_socially_distance_at_work_or_school",
-            "transport_to_work_or_school",
+            "ability_to_socially_distance_at_work_or_education",
+            "transport_to_work_or_education",
             "face_covering_outside_of_home",
             "other_antibody_test_location",
-            "withdrawal_reason",
+            "participant_withdrawal_reason",
             "work_not_from_home_days_per_week",
         ],
     )
@@ -35,11 +36,11 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     fill_forward_columns = [
         "work_main_job_title",
         "work_main_job_role",
-        "work_sectors",
-        "work_sectors_other",
-        "work_health_care_v1_v2",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
         "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_clients",
+        "work_direct_contact_patients_or_clients",
     ]
     df = update_to_value_if_any_not_null(
         df=df,
@@ -91,6 +92,18 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
             "7 times or more": 7,
         },
     }
+
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
+        ],
+        true_false_values=["Yes", "No"],
+    )
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")

@@ -9,14 +9,14 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.weights.weights import DesignWeightError
-from cishouseholds.weights.weights import validate_design_weights_or_precal
+from cishouseholds.weights.weights import validate_design_weights
 
 # from cishouseholds.derive import assign_ethnicity_white
 
 
 def pre_calibration_high_level(
     df_survey: DataFrame,
-    df_dweights: DataFrame,
+    df_design_weights: DataFrame,
     df_country: DataFrame,
     pre_calibration_config: dict,
 ) -> DataFrame:
@@ -24,19 +24,14 @@ def pre_calibration_high_level(
     Parameters
     ----------
     df_survey
-    df_dweights
+    df_design_weights
     df_country
     """
     df = df_survey.join(
-        df_dweights,
-        on=df_survey.ons_household_id == df_dweights.ons_household_id,
+        df_design_weights,
+        on=df_survey.ons_household_id == df_design_weights.ons_household_id,
         how="left",
     )
-    # df = assign_ethnicity_white(
-    #     df=df,
-    #     column_name_to_assign="ethnicity_white",
-    #     ethnicity_group_column_name="ethnicity_group_corrected",
-    # )
     df = dataset_generation(
         df=df,
         cutoff_date_swab=pre_calibration_config["cut_off_dates"]["cutoff_date_swab"],
@@ -44,7 +39,7 @@ def pre_calibration_high_level(
         cutoff_date_longcovid=pre_calibration_config["cut_off_dates"]["cutoff_date_longcovid"],
         column_test_result_swab="pcr_result_classification",
         column_test_result_antibodies="antibody_test_result_classification",
-        column_test_result_longcovid="have_long_covid_symptoms",
+        column_test_result_longcovid="think_have_long_covid",
         patient_id_column="participant_id",
         visit_date_column="visit_date_string",
         age_column="age_at_visit",
@@ -62,13 +57,15 @@ def pre_calibration_high_level(
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
 
-    validate_design_weights_or_precal(
+    validate_design_weights(
         df=df,
         num_households_by_cis_column="number_of_households_by_cis_area",
         num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
-        group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
+        cis_area_column="cis_area_code_20",
+        country_column="country_code_12",
+        swab_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 
@@ -89,7 +86,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
     """
     This function will carry forward last observation of antibodies,
     swab or longcovid result prioritising positive cases and age of patient.
-
     Parameters
     ----------
     df
@@ -149,7 +145,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
 def cutoff_day_to_ever_never(df, days, cutoff_date):
     """
     This function will flag the visit_dates coming after a cutoff_date provided after days
-
     Parameters
     ----------
     df
@@ -186,7 +181,6 @@ def dataset_generation(
         - antibodies 28 days
         - long covid 28 days
         - long covid 42 days
-
     Parameters
     ----------
     df
@@ -303,7 +297,6 @@ def survey_extraction_household_data_response_factor(
     required_extracts_column_list
     mandatory_extracts_column_list
     population_join_column: Only swab/antibodies
-
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))
@@ -494,18 +487,18 @@ def adjust_design_weight_by_non_response_factor(df: DataFrame) -> DataFrame:
     """
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_swab",
+        "household_level_design_weight_adjusted_swab",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_swab") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("scaled_design_weight_swab_non_adjusted") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
     df = df.withColumn(
-        "household_level_designweight_adjusted_antibodies",
+        "household_level_design_weight_adjusted_antibodies",
         F.when(
             F.col("response_indicator") == 1,
-            F.round(F.col("household_level_designweight_antibodies") * F.col("bounded_non_response_factor"), 1),
+            F.round(F.col("scaled_design_weight_antibodies_non_adjusted") * F.col("bounded_non_response_factor"), 1),
         ),
     )
 
@@ -531,7 +524,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
             "sum_adjusted_design_weight_" + test_type,
             F.when(
                 F.col("response_indicator") == 1,
-                F.round(F.sum(F.col(f"household_level_designweight_adjusted_{test_type}")).over(w_country), 1),
+                F.round(F.sum(F.col(f"household_level_design_weight_adjusted_{test_type}")).over(w_country), 1),
             ),
         )
 
@@ -550,7 +543,7 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
                 F.col("response_indicator") == 1,
                 F.round(
                     F.col(f"scaling_factor_adjusted_design_weight_{test_type}")
-                    * F.col(f"household_level_designweight_adjusted_{test_type}"),
+                    * F.col(f"household_level_design_weight_adjusted_{test_type}"),
                     1,
                 ),
             ),
@@ -561,8 +554,8 @@ def adjusted_design_weights_to_population_totals(df: DataFrame) -> DataFrame:
 
 def precalibration_checkpoints(
     df: DataFrame,
-    scaled_dweight_adjusted: str,
-    dweight_list: List[str],
+    scaled_design_weight_adjusted: str,
+    design_weight_list: List[str],
     grouping_list: List[str],
     country_col: Union[str, None] = None,
     total_population: str = "number_of_households_by_cis_area",
@@ -572,7 +565,7 @@ def precalibration_checkpoints(
     ----------
     df
     population_totals
-    dweight_list
+    design_weight_list
     """
     if isinstance(country_col, str):
         window = Window.partitionBy(country_col, *grouping_list)
@@ -580,36 +573,36 @@ def precalibration_checkpoints(
         window = Window.partitionBy(*grouping_list)
 
     # check_1: The design weights are adding up to total population
-    df = df.withColumn("check_1", F.sum(F.col(scaled_dweight_adjusted)).over(window))
+    df = df.withColumn("check_1", F.sum(F.col(scaled_design_weight_adjusted)).over(window))
     df = df.withColumn("check_1", F.when(F.col(total_population) != F.col("check_1"), 1))
     check_1_passed = 1 not in df.select("check_1").toPandas()["check_1"].values.tolist()
 
     # check_2: The  design weights are all are positive
     df = df.withColumn("not_positive", F.lit(None))
-    for dweight in dweight_list:
+    for design_weight in design_weight_list:
         df = df.withColumn(
             "not_positive",
-            F.when(F.col(dweight) < 0, 1).otherwise(F.col("not_positive")),
+            F.when(F.col(design_weight) < 0, 1).otherwise(F.col("not_positive")),
         )
     check_2_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
     # check_3: check there are no missing design weights
     df = df.withColumn("not_null", F.lit(None))
-    for dweight in dweight_list:
+    for design_weight in design_weight_list:
         df = df.withColumn(
             "not_null",
-            F.when(F.col(dweight).isNull(), 1).otherwise(F.col("not_null")),
+            F.when(F.col(design_weight).isNull(), 1).otherwise(F.col("not_null")),
         )
     check_3_passed = 0 == len(df.distinct().where(F.col("not_positive") == 1).select("not_positive").collect())
 
     # check_4: if they are the same across cis_area_code_20 by sample groups (by sample_source)
     # TODO: testdata - create a column done for sampling then filter out to extract the singular samplings.
-    # These should have the same dweights when window function is applied.
+    # These should have the same design_weights when window function is applied.
     window = Window.partitionBy(*grouping_list)
     check_4_passed = True
-    for dweight in dweight_list:
-        df = df.withColumn("temp", F.first(dweight).over(window))
-        df = df.withColumn("temp", F.when(F.col(dweight) != F.col("temp"), 1).otherwise(None))
+    for design_weight in design_weight_list:
+        df = df.withColumn("temp", F.first(design_weight).over(window))
+        df = df.withColumn("temp", F.when(F.col(design_weight) != F.col("temp"), 1).otherwise(None))
         check_4_passed = check_4_passed and (1 not in df.select("temp").toPandas()["temp"].values.tolist())
 
     if not check_1_passed:

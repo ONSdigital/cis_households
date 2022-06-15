@@ -1,6 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
+from functools import reduce
 from io import BytesIO
+from itertools import chain
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -10,8 +12,6 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
-from cishouseholds.derive import assign_column_from_mapped_list_key
-from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
@@ -27,12 +27,13 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.input_file_processing import extract_from_table
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
+from cishouseholds.pipeline.load import delete_tables
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
@@ -50,6 +51,7 @@ from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccinat
 from cishouseholds.pipeline.post_merge_processing import impute_key_columns
 from cishouseholds.pipeline.post_merge_processing import nims_transformations
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
+from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
@@ -120,7 +122,7 @@ def csv_to_table(file_operations: list):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -136,39 +138,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
     pattern
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
-    spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
-
-    if table_names is not None:
-        if type(table_names) != list:
-            table_names = [table_names]  # type:ignore
-        for table_name in table_names:
-            print(
-                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )  # functional
-            spark_session.sql(
-                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )
-    if pattern is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
-    if prefix is not None:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+    delete_tables(prefix, table_names, pattern)
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -322,12 +292,12 @@ def generate_input_processing_function(
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
-            return
+            return "No files"
 
         valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {resource_path}.")  # functional
-            return
+            return "Error"
 
         df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
@@ -347,6 +317,7 @@ def generate_input_processing_function(
             update_table_and_log_source_files(
                 df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
+            return "updated"
         return df
 
     _inner_function.__name__ = stage_name
@@ -367,6 +338,22 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     df_list = [extract_from_table(table) for table in tables_to_union]
 
     union_dataframes_to_hive(unioned_survey_responses_table, df_list)
+
+
+@register_pipeline_stage("replace_design_weights")
+def replace_design_weights(
+    design_weight_lookup_table: str,
+    survey_responses_table: str,
+    weighted_survey_responses_table: str,
+    design_weight_columns: List[str],
+):
+    design_weight_lookup = extract_from_table(design_weight_lookup_table)
+    survey_responses = extract_from_table(survey_responses_table)
+    survey_responses = survey_responses.drop(*design_weight_columns)
+    survey_responses = survey_responses.join(
+        design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
+    )
+    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -401,6 +388,9 @@ def validate_survey_responses(
     validation_failure_flag_column: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_validation_failures_table: str,
+    invalid_validation_failures_table: str,
+    id_column: str,
 ):
     """
     Populate error column with outcomes of specific validation checks against fully
@@ -425,6 +415,29 @@ def validate_survey_responses(
         validation_check_failure_column_name=validation_failure_flag_column,
         duplicate_count_column_name=duplicate_count_column_name,
     )
+
+    validation_check_failures_valid_data_df = (
+        (
+            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    validation_check_failures_invalid_data_df = (
+        (
+            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
+    update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
@@ -482,14 +495,16 @@ def lookup_based_editing(
         "new_cohort", "old_cohort"
     )
     df = df.join(
-        F.broadcast(travel_countries_lookup),
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
         how="left",
         on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
     )
     df = df.withColumn(
         "been_outside_uk_last_country",
-        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
 
     if "lower_super_output_area_code_11" in df.columns:
         df = df.join(
@@ -761,28 +776,29 @@ def impute_demographic_columns(
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table)
+        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+
     df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
     )
-    # imputed_values_df = key_columns_imputed_df.filter(
-    #     reduce(
-    #         lambda col_1, col_2: col_1 | col_2,
-    #         (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-    #     )
-    # )
+    imputed_values_df = key_columns_imputed_df.filter(
+        reduce(
+            lambda col_1, col_2: col_1 | col_2,
+            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+        )
+    )
 
-    # lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    # imputed_values = imputed_values_df.select(
-    #     "participant_id",
-    #     *lookup_columns,
-    # )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    imputed_values = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
     df_with_imputed_values = df.drop(*key_columns).join(
         F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
     )
 
-    # update_table(imputed_values, imputed_values_table)
+    update_table(imputed_values, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
@@ -859,46 +875,15 @@ def geography_and_imputation_dependent_processing(
     """
     df_with_imputed_values = extract_from_table(imputed_responses_table)
 
-    ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
-        "Asian": [
-            "Asian or Asian British-Indian",
-            "Asian or Asian British-Pakistani",
-            "Asian or Asian British-Bangladeshi",
-            "Asian or Asian British-Chinese",
-            "Any other Asian background",
-        ],
-        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
-        "Mixed": [
-            "Mixed-White & Black Caribbean",
-            "Mixed-White & Black African",
-            "Mixed-White & Asian",
-            "Any other Mixed background",
-        ],
-        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
-    }
-
-    df_with_imputed_values = assign_column_from_mapped_list_key(
-        df=df_with_imputed_values,
-        column_name_to_assign="ethnicity_group_corrected",
-        reference_column="ethnicity",
-        map=ethnicity_map,
-    )
-    df_with_imputed_values = assign_ethnicity_white(
-        df_with_imputed_values,
-        column_name_to_assign="ethnicity_white_corrected",
-        ethnicity_group_column_name="ethnicity_group_corrected",
-    )
-
     df_with_imputed_values = assign_multigeneration(
         df=df_with_imputed_values,
-        column_name_to_assign="multigen",
+        column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
         visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
-    )
+    )  # Includes school year derivation
     update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
 
 
@@ -909,8 +894,11 @@ def report(
     duplicate_count_column_name: str,
     valid_survey_responses_table: str,
     invalid_survey_responses_table: str,
+    valid_survey_responses_errors_table: str,
+    invalid_survey_responses_errors_table: str,
     output_directory: str,
     tables_to_count: List[str],
+    error_priority_map: dict = {},
 ):
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
@@ -920,10 +908,10 @@ def report(
     unique_id_column
         column that should hold unique id for each row in responses file
     validation_failure_flag_column
-        name of the column containing the previously created to containt validation error messages
+        name of the column containing the previously created to contain validation error messages
         name should match that created in validate_survey_responses stage
     duplicate_count_column_name
-        name of the column containing the previously created to containt count of rows that repeat
+        name of the column containing the previously created to contain count of rows that repeat
         on the responses table. name should match that created in validate_survey_responses stage
     valid_survey_responses_table
         table name of hdfs table of survey responses passing validation checks
@@ -934,6 +922,13 @@ def report(
     """
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
+
+    valid_df_errors = generate_error_table(
+        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
+    invalid_df_errors = generate_error_table(
+        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
+    )
 
     processed_file_log = extract_from_table("processed_filenames")
 
@@ -956,20 +951,6 @@ def report(
             table_counts[table_name] = table.count()
         else:
             table_counts[table_name] = "Table not found"
-
-    valid_df_errors = valid_df.select(unique_id_column, validation_failure_flag_column)
-    invalid_df_errors = invalid_df.select(unique_id_column, validation_failure_flag_column)
-
-    valid_df_errors = (
-        valid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
-    invalid_df_errors = (
-        invalid_df_errors.withColumn("Validation check failures", F.explode(validation_failure_flag_column))
-        .groupBy("Validation check failures")
-        .count()
-    )
 
     duplicated_df = valid_df.select(unique_id_column, duplicate_count_column_name).filter(
         F.col(duplicate_count_column_name) > 1
@@ -1345,13 +1326,20 @@ def tables_to_csv(
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-    category_map_dictionary = category_maps[category_map]
+    category_map_dictionary = category_maps.get(category_map)
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
     for table in config_file["create_tables"]:
-        df = extract_from_table(table["table_name"]).select(*[element for element in table["column_name_map"].keys()])
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        df = extract_from_table(table["table_name"])
+        columns_to_select = [element for element in table["column_name_map"].keys()]
+        missing_columns = set(columns_to_select) - set(df.columns)
+        if missing_columns:
+            raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+
+        df = df.select(*columns_to_select)
+        if category_map_dictionary is not None:
+            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)
@@ -1371,6 +1359,7 @@ def sample_file_ETL(
     household_level_populations_table,
     old_sample_file,
     new_sample_file,
+    new_sample_source_name,
     tranche,
     postcode_lookup,
     master_sample_file,
@@ -1378,10 +1367,7 @@ def sample_file_ETL(
     country_lookup,
     lsoa_cis_lookup,
 ):
-    first_run = True if check_table_exists(design_weight_table) else False
-
-    if check_table_exists(design_weight_table):
-        first_run = False
+    first_run = not check_table_exists(design_weight_table)
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
@@ -1407,6 +1393,7 @@ def sample_file_ETL(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         tranche_df,
         postcode_lookup_df,
         country_lookup_df,
@@ -1502,7 +1489,7 @@ def pre_calibration(
 
     df_for_calibration = pre_calibration_high_level(
         df_survey=survey_response,
-        df_dweights=household_level_with_design_weights,
+        df_design_weights=household_level_with_design_weights,
         df_country=population_by_country,
         pre_calibration_config=pre_calibration_config,
     )

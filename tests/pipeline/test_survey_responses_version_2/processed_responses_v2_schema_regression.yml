@@ -20,11 +20,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: withdrawal_reason
+  name: participant_withdrawal_reason
   nullable: true
   type: string
 - metadata: {}
-  name: withdrawal_type
+  name: participant_withdrawal_type
   nullable: true
   type: string
 - metadata: {}
@@ -32,7 +32,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: visit_type
+  name: survey_response_type
   nullable: true
   type: string
 - metadata: {}
@@ -88,35 +88,35 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: infant_1_age
+  name: infant_age_months_1
   nullable: true
   type: double
 - metadata: {}
-  name: infant_2_age
+  name: infant_age_months_2
   nullable: true
   type: double
 - metadata: {}
-  name: infant_3_age
+  name: infant_age_months_3
   nullable: true
   type: double
 - metadata: {}
-  name: infant_4_age
+  name: infant_age_months_4
   nullable: true
   type: double
 - metadata: {}
-  name: infant_5_age
+  name: infant_age_months_5
   nullable: true
   type: double
 - metadata: {}
-  name: infant_6_age
+  name: infant_age_months_6
   nullable: true
   type: double
 - metadata: {}
-  name: infant_7_age
+  name: infant_age_months_7
   nullable: true
   type: double
 - metadata: {}
-  name: infant_8_age
+  name: infant_age_months_8
   nullable: true
   type: double
 - metadata: {}
@@ -124,39 +124,39 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_1_not_present_age
+  name: person_not_present_age_1
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_2_not_present_age
+  name: person_not_present_age_2
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_3_not_present_age
+  name: person_not_present_age_3
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_4_not_present_age
+  name: person_not_present_age_4
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_5_not_present_age
+  name: person_not_present_age_5
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_6_not_present_age
+  name: person_not_present_age_6
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_7_not_present_age
+  name: person_not_present_age_7
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_8_not_present_age
+  name: person_not_present_age_8
   nullable: true
-  type: string
+  type: double
 - metadata: {}
-  name: person_1_not_consenting_age
+  name: person_not_consenting_age_1
   nullable: true
   type: double
 - metadata: {}
@@ -164,7 +164,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_2_not_consenting_age
+  name: person_not_consenting_age_2
   nullable: true
   type: double
 - metadata: {}
@@ -172,7 +172,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_3_not_consenting_age
+  name: person_not_consenting_age_3
   nullable: true
   type: double
 - metadata: {}
@@ -180,7 +180,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_4_not_consenting_age
+  name: person_not_consenting_age_4
   nullable: true
   type: double
 - metadata: {}
@@ -188,7 +188,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_5_not_consenting_age
+  name: person_not_consenting_age_5
   nullable: true
   type: double
 - metadata: {}
@@ -196,7 +196,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_6_not_consenting_age
+  name: person_not_consenting_age_6
   nullable: true
   type: double
 - metadata: {}
@@ -204,7 +204,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_7_not_consenting_age
+  name: person_not_consenting_age_7
   nullable: true
   type: double
 - metadata: {}
@@ -212,7 +212,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_8_not_consenting_age
+  name: person_not_consenting_age_8
   nullable: true
   type: double
 - metadata: {}
@@ -220,7 +220,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: person_9_not_consenting_age
+  name: person_not_consenting_age_9
   nullable: true
   type: double
 - metadata: {}
@@ -252,7 +252,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: email
+  name: email_address
   nullable: true
   type: string
 - metadata: {}
@@ -268,7 +268,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: prefer_receive_vouchers
+  name: voucher_type_preference
   nullable: true
   type: string
 - metadata: {}
@@ -356,7 +356,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent_contact_extra_researchyn
+  name: consent_contact_extra_research_yn
   nullable: true
   type: string
 - metadata: {}
@@ -364,7 +364,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent_use_of_surplus_blood_samplesyn
+  name: consent_use_of_surplus_blood_samples_yn
   nullable: true
   type: string
 - metadata: {}
@@ -376,7 +376,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent_blood_samples_if_positiveyn
+  name: consent_blood_samples_if_positive_yn
   nullable: true
   type: string
 - metadata: {}
@@ -408,11 +408,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_sectors
+  name: work_sector
   nullable: true
   type: string
 - metadata: {}
-  name: work_sectors_other
+  name: work_sector_other
   nullable: true
   type: string
 - metadata: {}
@@ -420,11 +420,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v1_v2
+  name: work_health_care_area
   nullable: true
   type: string
 - metadata: {}
-  name: work_direct_contact_patients_clients
+  name: work_direct_contact_patients_or_clients
   nullable: true
   type: string
 - metadata: {}
@@ -436,15 +436,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: have_ever_smoked_regularly
+  name: ever_smoked_regularly
   nullable: true
   type: string
 - metadata: {}
-  name: smokes_or_vapes_description
+  name: currently_smokes_or_vapes_description
   nullable: true
   type: string
 - metadata: {}
-  name: smokes_or_vapes
+  name: currently_smokes_or_vapes
   nullable: true
   type: string
 - metadata: {}
@@ -488,15 +488,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: transport_to_work_or_school
+  name: transport_to_work_or_education
   nullable: true
   type: string
 - metadata: {}
-  name: ability_to_socially_distance_at_work_or_school
+  name: ability_to_socially_distance_at_work_or_education
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_any
+  name: think_have_covid_symptom_any
   nullable: true
   type: string
 - metadata: {}
@@ -504,107 +504,107 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_onset_date
+  name: think_have_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: symptoms_last_7_days_fever
+  name: think_have_covid_symptom_fever
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_muscle_ache_myalgia
+  name: think_have_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_fatigue_weakness
+  name: think_have_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_sore_throat
+  name: think_have_covid_symptom_sore_throat
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_cough
+  name: think_have_covid_symptom_cough
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_shortness_of_breath
+  name: think_have_covid_symptom_shortness_of_breath
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_headache
+  name: think_have_covid_symptom_headache
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_nausea_vomiting
+  name: think_have_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_abdominal_pain
+  name: think_have_covid_symptom_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_diarrhoea
+  name: think_have_covid_symptom_diarrhoea
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_loss_of_taste
+  name: think_have_covid_symptom_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_loss_of_smell
+  name: think_have_covid_symptom_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_more_trouble_sleeping
+  name: think_have_covid_symptom_more_trouble_sleeping
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_runny_nose_sneezing
+  name: think_have_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_noisy_breathing_wheezing
+  name: think_have_covid_symptom_noisy_breathing
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_loss_of_appetite
+  name: think_have_covid_symptom_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_chest_pain
+  name: think_have_covid_symptom_chest_pain
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_palpitations
+  name: think_have_covid_symptom_palpitations
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_vertigo_dizziness
+  name: think_have_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_worry_anxiety
+  name: think_have_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_low_mood_not_enjoying_anything
+  name: think_have_covid_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_memory_loss_or_confusion
+  name: think_have_covid_symptom_memory_loss_or_confusion
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_difficulty_concentrating
+  name: think_have_covid_symptom_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
-  name: is_self_isolating_detailed
+  name: self_isolating_reason
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptoms
+  name: think_have_covid
   nullable: true
   type: string
 - metadata: {}
@@ -616,7 +616,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_covid_contact_location
+  name: last_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -628,7 +628,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_contact_location
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -636,7 +636,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: hospital_last_28_days_other_household_member
+  name: other_household_member_hospital_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -644,7 +644,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: care_home_last_28_days_other_household_member
+  name: other_household_member_care_home_last_28_days
   nullable: true
   type: string
 - metadata: {}
@@ -692,11 +692,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: times_socialise_last_7_days
+  name: times_socialising_last_7_days
   nullable: true
   type: string
 - metadata: {}
-  name: is_regularly_lateral_flow_testing
+  name: regularly_lateral_flow_testing
   nullable: true
   type: string
 - metadata: {}
@@ -704,7 +704,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: face_covering_work
+  name: face_covering_work_or_education
   nullable: true
   type: string
 - metadata: {}
@@ -724,99 +724,99 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_fever
+  name: think_had_covid_symptom_fever
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_muscle_ache_myalgia
+  name: think_had_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_fatigue_weakness
+  name: think_had_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_sore_throat
+  name: think_had_covid_symptom_sore_throat
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_cough
+  name: think_had_covid_symptom_cough
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_shortness_of_breath
+  name: think_had_covid_symptom_shortness_of_breath
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_headache
+  name: think_had_covid_symptom_headache
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_nausea_vomiting
+  name: think_had_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_abdominal_pain
+  name: think_had_covid_symptom_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_diarrhoea
+  name: think_had_covid_symptom_diarrhoea
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_loss_of_taste
+  name: think_had_covid_symptom_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_loss_of_smell
+  name: think_had_covid_symptom_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_more_trouble_sleeping
+  name: think_had_covid_symptom_more_trouble_sleeping
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_runny_nose_sneezing
+  name: think_had_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_noisy_breathing_wheezing
+  name: think_had_covid_symptom_noisy_breathing
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_loss_of_appetite
+  name: think_had_covid_symptom_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_chest_pain
+  name: think_had_covid_symptom_chest_pain
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_palpitations
+  name: think_had_covid_symptom_palpitations
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_vertigo_dizziness
+  name: think_had_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_worry_anxiety
+  name: think_had_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_low_mood_or_not_enjoying_anything
+  name: think_had_covid_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_memory_loss_or_confusion
+  name: think_had_covid_symptom_memory_loss_or_confusion
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_since_last_visit_difficulty_concentrating
+  name: think_had_covid_symptom_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_date
+  name: think_had_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}
@@ -828,23 +828,23 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: other_pcr_test_since_last_visit
+  name: other_covid_infection_test
   nullable: true
   type: string
 - metadata: {}
-  name: other_pcr_test_results
+  name: other_covid_infection_test_results
   nullable: true
   type: string
 - metadata: {}
-  name: other_pcr_test_first_positive_date
+  name: other_covid_infection_test_first_positive_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: other_pcr_test_last_negative_date
+  name: other_covid_infection_test_last_negative_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: other_antibody_test_since_last_visit
+  name: other_antibody_test
   nullable: true
   type: string
 - metadata: {}
@@ -864,107 +864,107 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: have_long_covid_symptoms
+  name: think_have_long_covid
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_reduce_activities
+  name: think_have_long_covid_symptom_reduced_ability
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_symptoms
+  name: think_have_long_covid_symptoms
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_fever
+  name: think_have_long_covid_symptom_fever
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_weakness_tiredness
+  name: think_have_long_covid_symptom_fatigue
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_diarrhoea
+  name: think_have_long_covid_symptom_diarrhoea
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_loss_of_smell
+  name: think_have_long_covid_symptom_loss_of_smell
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_shortness_of_breath
+  name: think_have_long_covid_symptom_shortness_of_breath
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_vertigo_dizziness
+  name: think_have_long_covid_symptom_vertigo_or_dizziness
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_trouble_sleeping
+  name: think_have_long_covid_symptom_more_trouble_sleeping
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_headache
+  name: think_have_long_covid_symptom_headache
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_nausea_vomiting
+  name: think_have_long_covid_symptom_nausea_or_vomiting
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_loss_of_appetite
+  name: think_have_long_covid_symptom_loss_of_appetite
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_sore_throat
+  name: think_have_long_covid_symptom_sore_throat
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_chest_pain
+  name: think_have_long_covid_symptom_chest_pain
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_worry_anxiety
+  name: think_have_long_covid_symptom_anxiety
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_memory_loss_or_confusion
+  name: think_have_long_covid_symptom_memory_loss_or_confusion
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_muscle_ache
+  name: think_have_long_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_abdominal_pain
+  name: think_have_long_covid_symptom_abdominal_pain
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_loss_of_taste
+  name: think_have_long_covid_symptom_loss_of_taste
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_cough
+  name: think_have_long_covid_symptom_cough
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_palpitations
+  name: think_have_long_covid_symptom_palpitations
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_low_mood
+  name: think_have_long_covid_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_difficulty_concentrating
+  name: think_have_long_covid_symptom_difficulty_concentrating
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_runny_nose_sneezing
+  name: think_have_long_covid_symptom_runny_nose_or_sneezing
   nullable: true
   type: string
 - metadata: {}
-  name: long_covid_noisy_breathing
+  name: think_have_long_covid_symptom_noisy_breathing
   nullable: true
   type: string
 - metadata: {}
@@ -1032,11 +1032,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: been_outside_uk_last_date
+  name: been_outside_uk_last_return_date
   nullable: true
   type: timestamp
 - metadata: {}
-  name: been_outside_uk_since_last_visit
+  name: been_outside_uk
   nullable: true
   type: string
 - metadata: {}
@@ -1048,7 +1048,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: symptoms_last_7_days_any_raw
+  name: think_have_covid_symptom_any_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1060,7 +1060,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v1_v2_raw
+  name: work_health_care_area_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1080,7 +1080,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: withdrawal_reason_raw
+  name: participant_withdrawal_reason_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1095,6 +1095,10 @@ fields:
   name: unique_participant_response_id
   nullable: false
   type: string
+- metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: bad_email
   nullable: true
@@ -1128,21 +1132,25 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: is_self_isolating
-  nullable: true
-  type: string
-- metadata: {}
   name: work_social_care
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_v0
+  name: work_health_care_patient_facing
   nullable: true
   type: string
 - metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: self_isolating_reason_digital
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating
+  nullable: true
+  type: string
 - metadata: {}
   name: cis_covid_vaccine_date
   nullable: true
