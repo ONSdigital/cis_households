@@ -19,7 +19,6 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-
 def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filename_column: str):
     """
     Populate a pyspark date column with the date contained in the filename column
