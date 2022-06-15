@@ -495,14 +495,16 @@ def lookup_based_editing(
         "new_cohort", "old_cohort"
     )
     df = df.join(
-        F.broadcast(travel_countries_lookup),
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
         how="left",
         on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
     )
     df = df.withColumn(
         "been_outside_uk_last_country",
-        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
 
     if "lower_super_output_area_code_11" in df.columns:
         df = df.join(
@@ -906,10 +908,10 @@ def report(
     unique_id_column
         column that should hold unique id for each row in responses file
     validation_failure_flag_column
-        name of the column containing the previously created to containt validation error messages
+        name of the column containing the previously created to contain validation error messages
         name should match that created in validate_survey_responses stage
     duplicate_count_column_name
-        name of the column containing the previously created to containt count of rows that repeat
+        name of the column containing the previously created to contain count of rows that repeat
         on the responses table. name should match that created in validate_survey_responses stage
     valid_survey_responses_table
         table name of hdfs table of survey responses passing validation checks
