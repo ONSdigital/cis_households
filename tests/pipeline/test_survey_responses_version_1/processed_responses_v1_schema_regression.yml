@@ -748,10 +748,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating
-  nullable: true
-  type: string
-- metadata: {}
   name: work_social_care
   nullable: true
   type: string
@@ -769,6 +765,10 @@ fields:
   type: string
 - metadata: {}
   name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating
   nullable: true
   type: string
 - metadata: {}
