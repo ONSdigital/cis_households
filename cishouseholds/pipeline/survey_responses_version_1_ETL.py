@@ -2,6 +2,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_isin_list
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import map_column_values_to_null
@@ -91,6 +92,18 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
             "7 times or more": 7,
         },
     }
+
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
+        ],
+        true_false_values=["Yes", "No"],
+    )
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")

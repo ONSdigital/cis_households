@@ -67,6 +67,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
+  file_date: null
   first_name: Clemmie
   gender: Prefer not to say
   have_email_address: null
@@ -370,6 +371,7 @@
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
+  file_date: null
   first_name: Honey
   gender: Female
   have_email_address: 'No'
@@ -672,6 +674,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Shawnee
   gender: Prefer not to say
   have_email_address: 'No'
@@ -974,6 +977,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Remedios
   gender: null
   have_email_address: 'Yes'
@@ -1283,6 +1287,7 @@
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, at work/school only
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Forest
   gender: Male
   have_email_address: 'Yes'
@@ -1588,6 +1593,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
+  file_date: null
   first_name: Reiko
   gender: Male
   have_email_address: 'Yes'
@@ -1898,6 +1904,7 @@
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Caron
   gender: Male
   have_email_address: null
@@ -2202,6 +2209,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: Yes, usually both Work/school/other
   face_covering_work_or_education: null
+  file_date: null
   first_name: Annika
   gender: Male
   have_email_address: null
@@ -2505,6 +2513,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: 'No'
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Myung
   gender: Female
   have_email_address: 'Yes'
@@ -2815,6 +2824,7 @@
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, in other situations only
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Shaun
   gender: Female
   have_email_address: null

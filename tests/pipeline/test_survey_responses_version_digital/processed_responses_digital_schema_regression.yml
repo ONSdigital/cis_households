@@ -1296,6 +1296,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: bad_email
   nullable: true
   type: boolean
@@ -1416,11 +1420,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: times_socialising_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: face_covering_work_or_education_raw
   nullable: true
   type: string
 - metadata: {}
   name: face_covering_other_enclosed_places_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1492,19 +1504,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: times_socialising_last_7_days_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: other_covid_infection_test_results_raw
   nullable: true
   type: string
 - metadata: {}
   name: other_antibody_test_results_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_raw
   nullable: true
   type: string
 - metadata: {}

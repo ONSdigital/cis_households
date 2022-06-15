@@ -66,7 +66,6 @@ def pre_calibration_high_level(
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
         swab_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
-        antibody_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 
