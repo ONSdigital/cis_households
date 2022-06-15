@@ -789,9 +789,10 @@ def union_dependent_derivations(df):
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
-    df = df.withColumn(
-        "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
-    )
+    if "survey_completion_status" in df.columns:
+        df = df.withColumn(
+            "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
+        )
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
@@ -1072,7 +1073,7 @@ def create_formatted_datetime_string_columns(df):
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
         if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
