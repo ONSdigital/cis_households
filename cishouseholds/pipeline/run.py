@@ -53,7 +53,6 @@ def run_from_config():
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
 
     config = get_config()
-    splunk_logger = SplunkLogger(config["splunk_log_directory"])
     run_datetime = datetime.now()
     with spark_description_set("adding run log entry"):
         run_id = add_run_log_entry(run_datetime)
@@ -64,6 +63,7 @@ def run_from_config():
     try:
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
+        splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
@@ -73,8 +73,14 @@ def run_from_config():
             config.get("retry_wait_time_seconds", 0),
         )
     except Exception as e:
+        exception_text = traceback.format_exc()
         with spark_description_set("adding run status"):
-            add_run_status(run_id, "errored", "run_from_config", "\n".join(traceback.format_exc()))
+            add_run_status(run_id, "errored", "run_from_config", exception_text)
+        splunk_logger.log(
+            status="error",
+            error_stage="run_from_config",
+            error_message=repr(e),
+        )
         raise e
     run_time = (datetime.now() - run_datetime).total_seconds()
     print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
@@ -125,18 +131,21 @@ def run_pipeline_stages(
                     stage_success = True
                     with spark_description_set("adding run status"):
                         add_run_status(run_id, "success", stage_text, "")
-                except Exception:
+                except Exception as e:
+                    exception_text = traceback.format_exc()
                     attempt_run_time = (datetime.now() - attempt_start).total_seconds()
-                    print(f"Error: {traceback.format_exc()}")  # functional
+                    print(exception_text)  # functional
                     print(
                         f"    - attempt {attempt} ran for {attempt_run_time//60:.0f} minute(s) and {attempt_run_time%60:.1f} second(s)"  # noqa:E501
                     )  # functional
+
+                    print(exception_text)  # functional
                     with spark_description_set("adding run status"):
-                        add_run_status(run_id, "errored", stage_text, "\n".join(traceback.format_exc()))
+                        add_run_status(run_id, "errored", stage_text, exception_text)
                     splunk_logger.log(
                         status="error",
                         error_stage=stage_name,
-                        error_message_start="\n".join(traceback.format_exc()[:100]),
+                        error_message=repr(e),
                     )
 
                 attempt += 1
