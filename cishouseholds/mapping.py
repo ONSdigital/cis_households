@@ -1,3 +1,5 @@
+from typing import Dict
+
 _times_in_last_7_day_categories = {
     "None": 0,
     "1": 1,
@@ -1063,9 +1065,6 @@ category_maps = {
         },
     }
 }
-
-
-from typing import Dict
 
 
 column_name_maps: Dict[str, Dict[str, str]]
