@@ -17,11 +17,6 @@ def pushToPyPiArtifactoryRepo(String projectName, String sourceDist = 'dist/*', 
 }
 
 pipeline {
-    libraries {
-            // Useful library from ONS internal GitLab
-            lib('jenkins-pipeline-shared')
-        }
-
     // Define env variables
     environment {
         PROJECT_NAME = 'cishouseholds'
@@ -34,10 +29,10 @@ pipeline {
         skipDefaultCheckout true
     }
 
-    // Agent must always be set at the top level of the pipeline
+    // Driver Agent must always be set at the top level of the pipeline
     // We're not picky
     agent any
-    // Keep getting intermittent network errors, so retry whole pipeline
+    // Keep getting intermittent network errors, so retry each stage
     stages {
             // Checkout stage to fetch code from  GitLab
         stage("Checkout") {
@@ -45,7 +40,7 @@ pipeline {
             // Choose from download, build, test, deploy
             agent { label "download.jenkins.slave" }
             steps {
-                colourText("info", "Checking out code from source control.")
+                echo "Checking out code from source control."
                 retry(3) {
                     checkout scm
                     // Stash the files that have been checked out, for use in subsequent stages
@@ -54,11 +49,11 @@ pipeline {
             }
 
         }
-        stage("Build and deploy") {
+        stage("Build") {
             agent { label "build.${agentPython3Version}" }
             steps {
                 unstash name: 'Checkout'
-                colourText('info', "Building package")
+                echo "Building package"
                 retry(3) {
                     sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
                     sh 'python3 setup.py build bdist_wheel'
@@ -71,7 +66,7 @@ pipeline {
             agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
             steps {
                 unstash name: "Build"
-                colourText('info', "Deploying to Artifactory")
+                "Deploying package to Artifactory"
                 retry(3) {
                     pushToPyPiArtifactoryRepo(PROJECT_NAME)
                 }
