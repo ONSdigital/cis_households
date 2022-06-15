@@ -54,6 +54,7 @@ def run_from_config():
 
     config = get_config()
     run_datetime = datetime.now()
+    splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
     with spark_description_set("adding run log entry"):
         run_id = add_run_log_entry(run_datetime)
     print(f"Run ID: {run_id}")  # functional
@@ -63,7 +64,6 @@ def run_from_config():
     try:
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
-        splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
         splunk_logger.log(status="start")
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         pipeline_error_count = run_pipeline_stages(
