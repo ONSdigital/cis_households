@@ -9,6 +9,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: New Zealand
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Do you have any idea why this is not working?
   blood_not_taken_could_not_reason: null
   blood_not_taken_damage_description: Haskell features a type system with type inference
@@ -255,6 +256,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   swab_not_taken_missing_parts: Sample box
@@ -407,6 +409,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Initially composing light-hearted and irreverent
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   blood_not_taken_could_not_reason: null
@@ -659,6 +662,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Do you have any idea why this is not working?
   swab_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
   swab_not_taken_other: Do you have any idea why this is not working?
@@ -814,6 +818,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Senegal
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Tuples are containers for a fixed number of Erlang
     data types.
   blood_not_taken_could_not_reason: The pot spilled
@@ -1062,6 +1067,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
   swab_not_taken_other: She spent her earliest years reading classic literature, and
@@ -1219,6 +1225,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Sudan
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Any element of a tuple can be accessed in constant
     time.
   blood_not_taken_could_not_reason: null
@@ -1466,6 +1473,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Erlang is known for its designs that are well
     suited for systems.
   swab_not_taken_missing_parts: null
@@ -1624,6 +1632,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Ukraine
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
@@ -1874,6 +1883,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: Swab stick
@@ -2028,6 +2038,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Yemen
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Make me a sandwich.
   blood_not_taken_could_not_reason: I had bruising or pain
   blood_not_taken_damage_description: Any element of a tuple can be accessed in constant
@@ -2275,6 +2286,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: null
@@ -2428,6 +2440,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Ecuador
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: I felt unwell
@@ -2680,6 +2693,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Type classes first appeared in the Haskell programming
     language.
   swab_not_taken_missing_parts: Other please specify
@@ -2834,6 +2848,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Laos
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: null
@@ -3087,6 +3102,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
@@ -3241,6 +3257,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Tanzania
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I had bruising or pain
@@ -3490,6 +3507,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -3648,6 +3666,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Russia
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Atoms are used within a program to denote distinguished
     values.
   blood_not_taken_could_not_reason: I felt unwell
@@ -3901,6 +3920,7 @@
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
