@@ -1063,7 +1063,7 @@ def create_formatted_datetime_string_columns(df):
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
         if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
