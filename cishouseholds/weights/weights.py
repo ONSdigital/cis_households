@@ -397,7 +397,7 @@ def validate_design_weights(
     antibody_weight_column: str,
     cis_area_column: str,
     country_column: str,
-    rounding_value: float = 9,
+    rounding_value: float = 0,
 ):
     """
     Validate the derived design weights by checking 4 conditions are true:
