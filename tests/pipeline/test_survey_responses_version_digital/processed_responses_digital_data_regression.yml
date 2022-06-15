@@ -250,9 +250,9 @@
   street: Ballywatermoy
   study_cohort: null
   survey_completed_datetime: '2022-01-02 12:14:32.000000'
-  survey_completion_status: NEW
+  survey_completion_status: New
   survey_last_modified_datetime: '2022-01-07 21:38:59.000000'
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
@@ -656,9 +656,9 @@
   street: Glendon
   study_cohort: null
   survey_completed_datetime: '2022-01-08 10:33:08.000000'
-  survey_completion_status: COMPLETED
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-09 04:13:00.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
@@ -1061,9 +1061,9 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: null
-  survey_completion_status: NEW
+  survey_completion_status: New
   survey_last_modified_datetime: '2022-01-08 01:21:33.000000'
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
@@ -1467,7 +1467,7 @@
   street: Drumagrove
   study_cohort: null
   survey_completed_datetime: '2022-01-05 13:54:58.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Submitted
   survey_last_modified_datetime: '2022-01-07 10:47:10.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
@@ -1877,9 +1877,9 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-09 10:19:02.000000'
-  survey_completion_status: IN PROGRESS
+  survey_completion_status: In progress
   survey_last_modified_datetime: '2022-01-03 09:40:01.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
@@ -2280,9 +2280,9 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: '2022-01-03 11:18:46.000000'
-  survey_completion_status: ARCHIVED
+  survey_completion_status: Archived
   survey_last_modified_datetime: '2022-01-06 15:22:39.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
@@ -2687,7 +2687,7 @@
   street: Harford
   study_cohort: null
   survey_completed_datetime: '2022-01-03 23:19:23.000000'
-  survey_completion_status: IN PROGRESS
+  survey_completion_status: In progress
   survey_last_modified_datetime: '2022-01-06 23:28:31.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
@@ -3096,9 +3096,9 @@
   street: Ballynafey
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-03 06:18:11.000000'
-  survey_completion_status: ARCHIVED
+  survey_completion_status: Archived
   survey_last_modified_datetime: '2022-01-03 10:31:04.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
@@ -3501,9 +3501,9 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-07 16:06:21.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Submitted
   survey_last_modified_datetime: '2022-01-03 08:34:56.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
@@ -3914,9 +3914,9 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: '2022-01-01 18:30:04.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Submitted
   survey_last_modified_datetime: '2022-01-09 12:32:27.000000'
-  survey_not_completed_reason_code: QNR - Questionnaire No Return
+  survey_not_completed_reason_code: Qnr - questionnaire no return
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey

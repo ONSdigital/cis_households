@@ -8,6 +8,8 @@ from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
+from cishouseholds.edit import update_column_in_time_window
+from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
 
 
@@ -16,6 +18,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     Call functions to process digital specific variable transformations.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
+    df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
         "swab_manual_entry", F.when(F.col("swab_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
@@ -32,8 +35,13 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             F.col("sample_kit_dispatched_datetime"),
         ),
     )  # Placeholder for 2199
-
-    # Generic transformations depend on columns above
+    df = update_column_in_time_window(
+        df,
+        "digital_survey_collection_mode",
+        "survey_completed_datetime",
+        "Telephone",
+        ["20-05-2022T21:30:00", "26-05-2022 00:00:00"],
+    )
     df = transform_survey_responses_generic(df)
 
     dont_know_columns = [
