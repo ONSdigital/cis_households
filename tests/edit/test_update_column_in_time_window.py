@@ -23,7 +23,7 @@ def test_update_column_in_time_window(spark_session):
         schema="col string, date string",
     )
     output_df = update_column_in_time_window(
-        input_df, "col", "date", "new", ["2020-01-09T12:00:00", "2020-12-09T21:30:00"]
+        input_df, "col", "date", "new", ["2020-01-09T12:00:00", "2020-12-09T12:00:00"]
     )
     assert_df_equality(
         output_df,
