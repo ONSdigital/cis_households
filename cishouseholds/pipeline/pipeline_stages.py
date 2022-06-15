@@ -908,10 +908,10 @@ def report(
     unique_id_column
         column that should hold unique id for each row in responses file
     validation_failure_flag_column
-        name of the column containing the previously created to containt validation error messages
+        name of the column containing the previously created to contain validation error messages
         name should match that created in validate_survey_responses stage
     duplicate_count_column_name
-        name of the column containing the previously created to containt count of rows that repeat
+        name of the column containing the previously created to contain count of rows that repeat
         on the responses table. name should match that created in validate_survey_responses stage
     valid_survey_responses_table
         table name of hdfs table of survey responses passing validation checks

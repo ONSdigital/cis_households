@@ -58,7 +58,7 @@ blood_datetime_map = {
 }
 
 cis_digital_datetime_map = {
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": [
+    "yyyy-MM-dd'T'HH:mm:ss'Z'": [
         "household_digital_enrolment_invited_datetime" "existing_participant_digital_opt_in_window_start_datetime",
         "existing_participant_digital_opt_in_window_end_datetime",
         "existing_participant_digital_opted_in_datetime",
