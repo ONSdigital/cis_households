@@ -893,7 +893,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
             "cough",
             "shortness_of_breath",
             "headache",
-            "nausea_vomiting",
+            "nausea_or_vomiting",
             "abdominal_pain",
             "diarrhoea",
             "loss_of_taste",
