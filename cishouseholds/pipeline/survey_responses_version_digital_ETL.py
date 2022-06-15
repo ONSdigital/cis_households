@@ -112,7 +112,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "work_status_v2",
         [
             [
-                "Employed and currently working",
+                "Employed and currently working",
                 [
                     "Employed",
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
@@ -121,16 +121,19 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
                 ],
             ],
             [
-                "Self-employed and currently working",
+                "Employed and currently not working",
                 [
                     "Employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                    ],
                     None,
                     None,
                 ],
             ],
             [
-                "Self-employed and currently not working",
+                "Self-employed and currently working",
                 [
                     "Self-employed",
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
@@ -139,73 +142,89 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
                 ],
             ],
             [
-                "Looking for paid work and able to start",
+                "Self-employed and currently not working",
                 [
                     "Self-employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                    ],
                     None,
                     None,
                 ],
             ],
             [
-                "Not working and not looking for work",
+                "Looking for paid work and able to start",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
-                "Retired",
+                "Not working and not looking for work",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             [
-                "Child under 4-5y not attending child care",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, "Retired", None],
+                "Retired",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    ["Retired", "Or retired?"],
+                    None,
+                ],
             ],
             [
-                "Child under 4-5y attending child care",
+                "Child under 4-5y not attending child care",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     "A child below school age and not attending a nursery or pre-school or childminder",
                 ],
             ],
             [
-                "4-5y and older at school/home-school",
+                "Child under 4-5y attending child care",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
-                "Attending college or FE (including if temporarily absent)",
+                "4-5y and older at school/home-school",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     ["A child aged 4 or over at school", "A child aged 4 or over at home-school"],
                 ],
             ],
             [
-                "Attending university (including if temporarily absent)",
+                "Attending college or FE (including if temporarily absent)",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     "Attending a college or other further education provider including apprenticeships",
                 ],
             ],
-            [12, ["Education", None, None, "Attending university"]],
+            [
+                "Attending university (including if temporarily absent)",
+                [
+                    "In education",
+                    None,
+                    None,
+                    ["Attending university", "Or attending university?"],
+                ],
+            ],
         ],
         column_list,
     )
