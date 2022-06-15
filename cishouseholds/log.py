@@ -7,11 +7,16 @@ from cishouseholds.pipeline.load import get_run_id
 
 class SplunkLogger:
     def __init__(self, log_file_path: str):
-        log_file = Path(log_file_path)
-        if log_file.is_file():
-            self.log_file = log_file
+        if log_file_path is not None:
+            log_file = Path(log_file_path)
+            if log_file.is_file():
+                self.log_file = log_file
+            else:
+                print(
+                    f"Warning: Splunk log file {log_file_path} does not exist, so no log will be recorded."
+                )  # functional
         else:
-            print(f"Warning: Splunk log file {log_file_path} does not exist, so no log will be recorded.")  # functional
+            print("Warning: No Splunk log file directory has been provided, so no log will be recorded.")  # functional
 
     def log(self, **kwargs):
         """
