@@ -536,6 +536,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: bad_email
   nullable: true
   type: boolean

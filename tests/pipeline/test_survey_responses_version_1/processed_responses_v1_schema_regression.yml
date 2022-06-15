@@ -708,6 +708,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: bad_email
   nullable: true
   type: boolean
@@ -744,10 +748,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating
-  nullable: true
-  type: string
-- metadata: {}
   name: work_social_care
   nullable: true
   type: string
@@ -765,6 +765,10 @@ fields:
   type: string
 - metadata: {}
   name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating
   nullable: true
   type: string
 - metadata: {}

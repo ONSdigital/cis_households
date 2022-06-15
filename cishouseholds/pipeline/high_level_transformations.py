@@ -1,5 +1,7 @@
+# flake8: noqa
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
@@ -12,6 +14,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
+from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_fake_id
@@ -30,7 +33,7 @@ from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_test_target
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
-from cishouseholds.derive import assign_visit_order_from_digital
+from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
@@ -54,11 +57,12 @@ from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
-from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_if_ref_in_list
+from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_person_count_from_ages
+from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
@@ -68,21 +72,105 @@ from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset_based_on_column
-from cishouseholds.impute import impute_and_flag
-from cishouseholds.impute import impute_by_distribution
-from cishouseholds.impute import impute_by_k_nearest_neighbours
-from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
-from cishouseholds.impute import merge_previous_imputed_values
-from cishouseholds.mapping import column_name_maps
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
-# flake8: noqa
+
+def transform_blood_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process input for blood deltas.
+    """
+    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
+    df = assign_substring(
+        df,
+        column_name_to_assign="antibody_test_plate_common_id",
+        column_to_substring="antibody_test_plate_id",
+        start_position=5,
+        substring_length=5,
+    )
+    df = assign_unique_id_column(
+        df=df,
+        column_name_to_assign="unique_antibody_test_id",
+        concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
+    )
+    df = clean_barcode(
+        df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_in_bloods_dataset_flag"
+    )
+    return df
+
+
+def add_historical_fields(df: DataFrame):
+    """
+    Add empty values for union with historical data. Also adds constant
+    values for continuation with historical data.
+    """
+    historical_columns = {
+        "siemens_antibody_test_result_classification": "string",
+        "siemens_antibody_test_result_value": "float",
+        "antibody_test_tdi_result_value": "float",
+        "lims_id": "string",
+        "plate_storage_method": "string",
+    }
+    for column, type in historical_columns.items():
+        if column not in df.columns:
+            df = df.withColumn(column, F.lit(None).cast(type))
+    if "antibody_assay_category" not in df.columns:
+        df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
+    df = df.select(sorted(df.columns))
+    return df
+
+
+def add_fields(df: DataFrame):
+    """Add fields that might be missing in example data."""
+    new_columns = {
+        "antibody_test_undiluted_result_value": "float",
+        "antibody_test_bounded_result_value": "float",
+    }
+    for column, type in new_columns.items():
+        if column not in df.columns:
+            df = df.withColumn(column, F.lit(None).cast(type))
+    df = df.select(sorted(df.columns))
+    return df
+
+
+def transform_swab_delta(df: DataFrame) -> DataFrame:
+    """
+    Transform swab delta - derive new fields that do not depend on merging with survey responses.
+    """
+    spark_session = get_or_create_spark_session()
+    df = clean_barcode(
+        df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_in_swab_dataset_flag"
+    )
+    df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
+    df = derive_cq_pattern(
+        df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
+    )
+    df = assign_unique_id_column(
+        df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_result_recorded_datetime", "cq_pattern"]
+    )
+
+    df = mean_across_columns(
+        df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="one_positive_pcr_target_only",
+        reference_column="cq_pattern",
+        values_list=["N only", "OR only", "S only"],
+        true_false_values=[1, 0],
+    )
+    return df
+
+
+def transform_swab_delta_testKit(df: DataFrame):
+    df = df.drop("testKit")
+
+    return df
 
 
 def digital_specific_cleaning(df):
@@ -112,12 +200,166 @@ def digital_specific_cleaning(df):
     )
 
 
-def digital_specific_transformations(df):
+def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process input for iqvia version 0 survey deltas.
+    """
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
+    df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
+
+    df = map_column_values_to_null(
+        df=df,
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "ethnicity",
+            "work_status_v0",
+            "work_location",
+            "survey_response_type",
+            "participant_withdrawal_reason",
+            "work_not_from_home_days_per_week",
+        ],
+    )
+
+    column_editing_map = {
+        "work_location": {
+            "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
+            "Working From Home": "Working from home",
+            "Working Outside of your Home": "Working somewhere else (not your home)",
+            "Not applicable": "Not applicable, not currently working",
+        },
+        "last_covid_contact_type": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "last_suspected_covid_contact_type": {
+            "In your own household": "Living in your own home",
+            "Outside your household": "Outside your home",
+        },
+        "other_covid_infection_test_results": {
+            "Positive": "One or more positive test(s)",
+        },
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    return df
+
+
+def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
+    df = map_column_values_to_null(
+        df=df,
+        value="Participant Would Not/Could Not Answer",
+        column_list=[
+            "ethnicity",
+            "work_sector",
+            "work_health_care_area",
+            "work_status_v1",
+            "work_location",
+            "work_direct_contact_patients_or_clients",
+            "survey_response_type",
+            "self_isolating_reason",
+            "illness_reduces_activity_or_ability",
+            "ability_to_socially_distance_at_work_or_education",
+            "transport_to_work_or_education",
+            "face_covering_outside_of_home",
+            "other_antibody_test_location",
+            "participant_withdrawal_reason",
+            "work_not_from_home_days_per_week",
+        ],
+    )
+
+    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
+    fill_forward_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+    ]
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="work_main_job_changed",
+        value_to_assign="Yes",
+        column_list=fill_forward_columns,
+    )
+    return df
+
+
+def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process input for iqvia version 1 survey deltas.
+    """
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
+
+    df = df.withColumn("work_status_v0", F.col("work_status_v1"))
+    df = df.withColumn("work_status_v2", F.col("work_status_v1"))
+
+    been_value_map = {"No, someone else in my household has": "No I haven’t, but someone else in my household has"}
+    column_editing_map = {
+        "work_status_v0": {
+            "Employed and currently working": "Employed",  # noqa: E501
+            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
+            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Child under 5y not attending child care": "Student",  # noqa: E501
+            "Child under 5y attending child care": "Student",  # noqa: E501
+            "5y and older in full-time education": "Student",  # noqa: E501
+            "Self-employed and currently working": "Self-employed",  # noqa: E501
+        },
+        "work_status_v2": {
+            "Child under 5y not attending child care": "Child under 4-5y not attending child care",  # noqa: E501
+            "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
+            "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
+        },
+        "household_been_hospital_last_28_days": been_value_map,
+        "household_been_care_home_last_28_days": been_value_map,
+        "times_outside_shopping_or_socialising_last_7_days": {
+            "None": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7 times or more": 7,
+        },
+    }
+
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
+    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    return df
+
+
+def digital_specific_transformations(df: DataFrame) -> DataFrame:
     """
     Call functions to process digital specific variable transformations.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
+    df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
+    df = df.withColumn(
+        "swab_manual_entry", F.when(F.col("swab_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
+    )
+    df = df.withColumn(
+        "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
+    )
     df = df.withColumn(
         "visit_datetime",
         F.coalesce(
@@ -127,8 +369,15 @@ def digital_specific_transformations(df):
             F.col("sample_kit_dispatched_datetime"),
         ),
     )  # Placeholder for 2199
-
+    df = update_column_in_time_window(
+        df,
+        "digital_survey_collection_mode",
+        "survey_completed_datetime",
+        "Telephone",
+        ["20-05-2022T21:30:00", "26-05-2022 00:00:00"],
+    )
     df = transform_survey_responses_generic(df)
+
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",
@@ -155,10 +404,10 @@ def digital_specific_transformations(df):
         "times_hour_or_longer_another_home_last_7_days",
         "times_hour_or_longer_another_person_your_home_last_7_days",
         "times_shopping_last_7_days",
-        # "times_socialising_last_7_days",
+        "times_socialising_last_7_days",
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
-        # "cis_covid_vacine_type",
+        "cis_covid_vaccine_type",
     ]
     df = assign_raw_copies(df, dont_know_columns)
     dont_know_mapping_dict = {"Prefer not to say": None, "Don't Know": None, "I don't know the type": None}
@@ -166,14 +415,46 @@ def digital_specific_transformations(df):
         df,
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
+
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "self_isolating_reason",
+        [
+            ["No", ["No", None]],
+            [
+                "Yes, you have/have had symptoms",
+                ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
+            ],
+            [
+                "Yes, someone you live with had symptoms",
+                [
+                    "Yes",
+                    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                ],
+            ],
+            [
+                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
+                [
+                    "Yes",
+                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+                ],
+            ],
+            [
+                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
+                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
+            ],
+        ],
+        ["self_isolating", "self_isolating_reason"],
+    )
+
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
         df,
         "work_status_v2",
         [
             [
-                "Employed and currently working",
+                "Employed and currently working",
                 [
                     "Employed",
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
@@ -182,16 +463,19 @@ def digital_specific_transformations(df):
                 ],
             ],
             [
-                "Self-employed and currently working",
+                "Employed and currently not working",
                 [
                     "Employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                    ],
                     None,
                     None,
                 ],
             ],
             [
-                "Self-employed and currently not working",
+                "Self-employed and currently working",
                 [
                     "Self-employed",
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
@@ -200,73 +484,89 @@ def digital_specific_transformations(df):
                 ],
             ],
             [
-                "Looking for paid work and able to start",
+                "Self-employed and currently not working",
                 [
                     "Self-employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                    ],
                     None,
                     None,
                 ],
             ],
             [
-                "Not working and not looking for work",
+                "Looking for paid work and able to start",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
-                "Retired",
+                "Not working and not looking for work",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             [
-                "Child under 4-5y not attending child care",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, "Retired", None],
+                "Retired",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    ["Retired", "Or retired?"],
+                    None,
+                ],
             ],
             [
-                "Child under 4-5y attending child care",
+                "Child under 4-5y not attending child care",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     "A child below school age and not attending a nursery or pre-school or childminder",
                 ],
             ],
             [
-                "4-5y and older at school/home-school",
+                "Child under 4-5y attending child care",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
-                "Attending college or FE (including if temporarily absent)",
+                "4-5y and older at school/home-school",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     ["A child aged 4 or over at school", "A child aged 4 or over at home-school"],
                 ],
             ],
             [
-                "Attending university (including if temporarily absent)",
+                "Attending college or FE (including if temporarily absent)",
                 [
-                    "Education",
+                    "In education",
                     None,
                     None,
                     "Attending a college or other further education provider including apprenticeships",
                 ],
             ],
-            [12, ["Education", None, None, "Attending university"]],
+            [
+                "Attending university (including if temporarily absent)",
+                [
+                    "In education",
+                    None,
+                    None,
+                    ["Attending university", "Or attending university?"],
+                ],
+            ],
         ],
         column_list,
     )
@@ -362,36 +662,6 @@ def digital_specific_transformations(df):
         ],
         column_list,
     )
-    df = assign_column_value_from_multiple_column_map(
-        df,
-        "self_isolating_reason",
-        [
-            ["No", ["No", None]],
-            [
-                "Yes, you have/have had symptoms",
-                ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
-            ],
-            [
-                "Yes, someone you live with had symptoms",
-                [
-                    "Yes",
-                    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
-                ],
-            ],
-            [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
-                [
-                    "Yes",
-                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-                ],
-            ],
-            [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
-                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
-            ],
-        ],
-        ["self_isolating", "self_isolating_reason"],
-    )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
     df = map_options_to_bool_columns(
@@ -407,16 +677,12 @@ def digital_specific_transformations(df):
         ";",
     )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
-    """
-    Create copies of all digital specific variables to be remapped
-    """
     raw_copy_list = [
         "participant_survey_status",
         "participant_withdrawal_type",
         "survey_response_type",
         "work_sector",
         "illness_reduces_activity_or_ability",
-        # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
         "last_suspected_covid_contact_type",
@@ -593,6 +859,7 @@ def digital_specific_transformations(df):
         "work_not_from_home_days_per_week",
         F.greatest("work_not_from_home_days_per_week", "education_in_person_days_per_week"),
     )
+
     df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
     df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
@@ -609,7 +876,7 @@ def digital_specific_transformations(df):
     )
     df = derive_had_symptom_last_7days_from_digital(
         df,
-        "had_symptom_last_7days",
+        "think_have_covid_symptom_any",
         "think_have_covid_symptom_",
         [
             "fever",
@@ -623,144 +890,9 @@ def digital_specific_transformations(df):
             "abdominal_pain",
             "diarrhoea",
             "loss_of_taste",
-            "loff_of_smell",
+            "loss_of_smell",
         ],
     )
-    return df
-
-
-def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for iqvia version 0 survey deltas.
-    """
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
-    df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
-
-    df = map_column_values_to_null(
-        df=df,
-        value="Participant Would Not/Could Not Answer",
-        column_list=[
-            "ethnicity",
-            "work_status_v0",
-            "work_location",
-            "survey_response_type",
-            "participant_withdrawal_reason",
-            "work_not_from_home_days_per_week",
-        ],
-    )
-
-    column_editing_map = {
-        "work_location": {
-            "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
-            "Working From Home": "Working from home",
-            "Working Outside of your Home": "Working somewhere else (not your home)",
-            "Not applicable": "Not applicable, not currently working",
-        },
-        "last_covid_contact_type": {
-            "In your own household": "Living in your own home",
-            "Outside your household": "Outside your home",
-        },
-        "last_suspected_covid_contact_type": {
-            "In your own household": "Living in your own home",
-            "Outside your household": "Outside your home",
-        },
-        "other_covid_infection_test_results": {
-            "Positive": "One or more positive test(s)",
-        },
-    }
-    df = apply_value_map_multiple_columns(df, column_editing_map)
-
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
-    return df
-
-
-def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
-    df = map_column_values_to_null(
-        df=df,
-        value="Participant Would Not/Could Not Answer",
-        column_list=[
-            "ethnicity",
-            "work_sector",
-            "work_health_care_area",
-            "work_status_v1",
-            "work_location",
-            "work_direct_contact_patients_or_clients",
-            "survey_response_type",
-            "self_isolating_reason",
-            "illness_reduces_activity_or_ability",
-            "ability_to_socially_distance_at_work_or_education",
-            "transport_to_work_or_education",
-            "face_covering_outside_of_home",
-            "other_antibody_test_location",
-            "participant_withdrawal_reason",
-            "work_not_from_home_days_per_week",
-        ],
-    )
-
-    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-    fill_forward_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="work_main_job_changed",
-        value_to_assign="Yes",
-        column_list=fill_forward_columns,
-    )
-    return df
-
-
-def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for iqvia version 1 survey deltas.
-    """
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
-
-    df = df.withColumn("work_status_v0", F.col("work_status_v1"))
-    df = df.withColumn("work_status_v2", F.col("work_status_v1"))
-
-    been_value_map = {"No, someone else in my household has": "No I haven’t, but someone else in my household has"}
-    column_editing_map = {
-        "work_status_v0": {
-            "Employed and currently working": "Employed",  # noqa: E501
-            "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
-            "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Child under 5y not attending child care": "Student",  # noqa: E501
-            "Child under 5y attending child care": "Student",  # noqa: E501
-            "5y and older in full-time education": "Student",  # noqa: E501
-            "Self-employed and currently working": "Self-employed",  # noqa: E501
-        },
-        "work_status_v2": {
-            "Child under 5y not attending child care": "Child under 4-5y not attending child care",  # noqa: E501
-            "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
-            "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
-        },
-        "household_been_hospital_last_28_days": been_value_map,
-        "household_been_care_home_last_28_days": been_value_map,
-        "times_outside_shopping_or_socialising_last_7_days": {
-            "None": 0,
-            "1": 1,
-            "2": 2,
-            "3": 3,
-            "4": 4,
-            "5": 5,
-            "6": 6,
-            "7 times or more": 7,
-        },
-    }
-    df = apply_value_map_multiple_columns(df, column_editing_map)
-    df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
-    df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
     return df
 
 
@@ -789,6 +921,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -824,31 +957,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     """
     Transformations specific to the v1 and v2 survey responses.
     """
-    df = update_column_values_from_map(
-        df=df,
-        column="self_isolating_reason",
-        map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="self_isolating",
-        reference_column="self_isolating_reason",
-        values_list=[
-            "Yes, for other reasons (e.g. going into hospital, quarantining)",
-            "Yes, you have/have had symptoms",
-            "Yes, someone you live with had symptoms",
-        ],
-        true_false_values=["Yes", "No"],
-    )
     df = clean_within_range(df, "hours_a_day_with_someone_else_at_home", [0, 24])
     df = df.withColumn("been_outside_uk_last_country", F.upper(F.col("been_outside_uk_last_country")))
 
@@ -1206,17 +1314,50 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     Transformations that are specific to version 2 survey responses.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
+
+    # Derive from final V2 values, not raw
     df = assign_from_map(
         df,
         "self_isolating_reason_digital",
         "self_isolating_reason",
         {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
         },
     )
+    # Edits to final V2 values, which differ from raw
+    df = update_column_values_from_map(
+        df=df,
+        column="self_isolating_reason",
+        map={
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
+        },
+    )
+    df = assign_isin_list(
+        df=df,
+        column_name_to_assign="self_isolating",
+        reference_column="self_isolating_reason",
+        values_list=[
+            "Yes, for other reasons (e.g. going into hospital, quarantining)",
+            "Yes, you have/have had symptoms",
+            "Yes, someone you live with had symptoms",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+
     df = update_to_value_if_any_not_null(
         df,
         "cis_covid_vaccine_received",
@@ -1472,11 +1613,14 @@ def union_dependent_derivations(df):
     Transformations that must be carried out after the union of the different survey response schemas.
     """
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
-    df = assign_visit_order_from_digital(df, "visit_order", "visit_datetime", "participant_id")
+    df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
     df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
-    df = df.withColumn("combined visit_status", F.coalesce(F.col("visit_status"), F.col("survey_completion_status")))
+    if "survey_completion_status" in df.columns:
+        df = df.withColumn(
+            "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
+        )
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
         "Asian": [
@@ -1757,7 +1901,7 @@ def create_formatted_datetime_string_columns(df):
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]:
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
         if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
@@ -1849,183 +1993,4 @@ def fill_forwards_transformations(df):
             "ethnicity",
         ],
     )
-    return df
-
-
-def transform_swab_delta_testKit(df: DataFrame):
-    df = df.drop("testKit")
-    return df
-
-
-def transform_swab_delta(df: DataFrame) -> DataFrame:
-    """
-    Transform swab delta - derive new fields that do not depend on merging with survey responses.
-    """
-    spark_session = get_or_create_spark_session()
-    df = clean_barcode(
-        df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_in_swab_dataset_flag"
-    )
-    df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
-    df = derive_cq_pattern(
-        df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
-    )
-    df = assign_unique_id_column(
-        df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_result_recorded_datetime", "cq_pattern"]
-    )
-
-    df = mean_across_columns(
-        df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="one_positive_pcr_target_only",
-        reference_column="cq_pattern",
-        values_list=["N only", "OR only", "S only"],
-        true_false_values=[1, 0],
-    )
-    return df
-
-
-def transform_unassayed_blood(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for unassayed blood.
-    """
-    return df
-
-
-def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
-    """
-    Impute missing values for key variables that are required for weight calibration.
-    Most imputations require geographic data being joined onto the participant records.
-
-    Returns a single record per participant.
-    """
-    unique_id_column = "participant_id"
-    for column in columns_to_fill:
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="asc",
-        )
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="desc",
-        )
-    deduplicated_df = df.dropDuplicates([unique_id_column] + columns_to_fill)
-
-    if imputed_value_lookup_df is not None:
-        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        imputation_function=impute_by_mode,
-        reference_column="ethnicity_white",
-        group_by_column="ons_household_id",
-    )
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
-        reference_column="ethnicity_white",
-        donor_group_columns=["cis_area_code_20"],
-        donor_group_column_weights=[5000],
-        log_file_path=log_directory,
-    )
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        imputation_function=impute_by_distribution,
-        reference_column="sex",
-        group_by_columns=["ethnicity_white", "region_code"],
-        first_imputation_value="Female",
-        second_imputation_value="Male",
-    )
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
-        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
-        log_file_path=log_directory,
-    )
-
-    return deduplicated_df.select(
-        unique_id_column,
-        *columns_to_fill,
-        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
-        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")]
-    )
-
-
-def nims_transformations(df: DataFrame) -> DataFrame:
-    """Clean and transform NIMS data after reading from table."""
-    df = rename_column_names(df, column_name_maps["nims_column_name_map"])
-    df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
-    df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
-
-    # TODO: Derive nims_linkage_status, nims_vaccine_classification, nims_vaccine_dose_1_time, nims_vaccine_dose_2_time
-    return df
-
-
-def add_fields(df: DataFrame):
-    """Add fields that might be missing in example data."""
-    new_columns = {
-        "antibody_test_undiluted_result_value": "float",
-        "antibody_test_bounded_result_value": "float",
-    }
-    for column, type in new_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    df = df.select(sorted(df.columns))
-    return df
-
-
-def transform_blood_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for blood deltas.
-    """
-    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
-    df = assign_substring(
-        df,
-        column_name_to_assign="antibody_test_plate_common_id",
-        column_to_substring="antibody_test_plate_id",
-        start_position=5,
-        substring_length=5,
-    )
-    df = assign_unique_id_column(
-        df=df,
-        column_name_to_assign="unique_antibody_test_id",
-        concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
-    )
-    df = clean_barcode(
-        df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_in_bloods_dataset_flag"
-    )
-    return df
-
-
-def add_historical_fields(df: DataFrame):
-    """
-    Add empty values for union with historical data. Also adds constant
-    values for continuation with historical data.
-    """
-    historical_columns = {
-        "siemens_antibody_test_result_classification": "string",
-        "siemens_antibody_test_result_value": "float",
-        "antibody_test_tdi_result_value": "float",
-        "lims_id": "string",
-        "plate_storage_method": "string",
-    }
-    for column, type in historical_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    if "antibody_assay_category" not in df.columns:
-        df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
-    df = df.select(sorted(df.columns))
     return df

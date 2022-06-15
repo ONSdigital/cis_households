@@ -9,6 +9,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: New Zealand
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Do you have any idea why this is not working?
   blood_not_taken_could_not_reason: null
   blood_not_taken_damage_description: Haskell features a type system with type inference
@@ -24,8 +25,8 @@
   blood_sample_barcode_correct: 'No'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS80461642
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-07 17:33:06.000000'
+  blood_sample_received_lab_datetime: '2022-01-08 08:58:08.000000'
   blood_sample_transport_status: null
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -40,7 +41,7 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: null
-  cis_covid_vaccine_type: Don't know type
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Other / specify
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sputnik
@@ -60,7 +61,7 @@
   cis_covid_vaccine_type_other_4: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_5: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_6: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_raw: I don't know the type
+  cis_covid_vaccine_type_raw: null
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   completion_window_cadence: Weekly
@@ -75,10 +76,10 @@
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '1986-12-18 00:00:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: Date not given
+  days_since_think_had_covid: 3.0
+  days_since_think_had_covid_group: 0-14
   digital_communication_preference: Letter
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2020-02-21 13:53:17.000000'
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   digital_survey_collection_mode: Online
@@ -90,23 +91,24 @@
   ethnicity_other: Ports are used to communicate with the external world.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2021-09-16 08:57:58.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-09 13:06:58.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 19:03:42.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 04:24:07.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 08:54:52.000000'
   existing_participant_digital_opt_in_reminder_2_status: Tuples are containers for
     a fixed number of Erlang data types.
   existing_participant_digital_opt_in_status: Participant Opted In
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-05 21:57:52.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-07T17:27:48Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-06 10:18:09.000000'
   face_covering_other_enclosed_places: Never
   face_covering_other_enclosed_places_raw: Never
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
+  file_date: null
   first_name: Caron
   hh_id: '763063387334'
   hospital_last_28_days: null
@@ -114,7 +116,7 @@
   hours_a_day_with_someone_else_at_home_raw: '[15, 0, 18, 18, 2, 10, 4, 22]'
   household_completion_window_id: HW-4564424971
   household_completion_window_status: Closed
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-02 23:38:10.000000'
   household_digital_enrolment_invited_datetime: '2022-01-04T18:30:30Z'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'Yes'
@@ -143,9 +145,9 @@
   middle_name: Jessika
   ons_household_id: '763063387334'
   opted_out_of_blood_next_window: null
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-07 00:36:11.000000'
   opted_out_of_next_window: 'No'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-02 03:15:49.000000'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
@@ -166,9 +168,9 @@
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: SE3Z
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2022-08-18 22:27:35.000000'
   participant_completion_window_id: '0563'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2020-06-25 04:40:16.000000'
   participant_completion_window_status: Open
   participant_digital_enrolment_datetime: null
   participant_enrolled_digital: 'Yes'
@@ -222,9 +224,9 @@
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-02 23:04:49.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-07 07:05:03.000000'
+  sample_kit_dispatched_datetime: '2022-01-06 01:49:02.000000'
   sample_kit_not_dispatched_code: null
   sample_return_preference: Courier
   self_isolating: null
@@ -247,13 +249,14 @@
   social_distance_contact_under_18_years_raw: Don't know
   street: Ballywatermoy
   study_cohort: null
-  survey_completed_datetime: null
-  survey_completion_status: NEW
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_completed_datetime: '2022-01-02 12:14:32.000000'
+  survey_completion_status: New
+  survey_last_modified_datetime: '2022-01-07 21:38:59.000000'
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   swab_not_taken_missing_parts: Sample box
@@ -266,11 +269,11 @@
   swab_sample_barcode_correct: null
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS87621024
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-06 11:09:55.000000'
+  swab_sample_received_lab_datetime: '2022-01-02 00:44:20.000000'
   swab_sample_transport_status: Arrived at Lab
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-09 16:22:46.000000'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
@@ -363,8 +366,8 @@
   times_socialising_last_7_days_raw: '2'
   title: null
   transport_to_work_or_education: Train
-  unique_participant_response_id: 0563-DHR-421496963502
-  visit_datetime: null
+  unique_participant_response_id: 0563-DHR-421496963502-2022-01-09 16:22:46
+  visit_datetime: '2022-01-09 16:22:46.000000'
   visit_id: '0563'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
@@ -406,6 +409,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Initially composing light-hearted and irreverent
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   blood_not_taken_could_not_reason: null
@@ -423,8 +427,8 @@
   blood_sample_barcode_correct: 'No'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS10369370
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-02 11:50:21.000000'
+  blood_sample_received_lab_datetime: '2022-01-07 17:46:29.000000'
   blood_sample_transport_status: Arrived at Consolidation Hub
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -478,10 +482,10 @@
   currently_smokes_or_vapes_description: Pipe
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2014-11-24 00:00:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: Date not given
+  days_since_think_had_covid: -3.0
+  days_since_think_had_covid_group: null
   digital_communication_preference: Letter
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2022-05-22 13:20:25.000000'
   digital_entry_pack_status: Ports are used to communicate with the external world.
   digital_survey_collection_mode: Online
   digital_survey_mode_preference: Online
@@ -492,9 +496,9 @@
   ethnicity_other: I don't even care.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
+  existing_participant_digital_opt_in_datetime: '2021-11-28 03:46:57.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 07:33:53.000000'
   existing_participant_digital_opt_in_reminder_1_status: The sequential subset of
     Erlang supports eager evaluation, single assignment, and dynamic typing.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
@@ -502,13 +506,14 @@
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: null
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-04 23:08:28.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-05T05:23:23Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-02 15:49:21.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
+  file_date: null
   first_name: Forest
   hh_id: '414160350614'
   hospital_last_28_days: 'Yes'
@@ -516,7 +521,7 @@
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-9367679101
   household_completion_window_status: Closed
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-01 11:05:50.000000'
   household_digital_enrolment_invited_datetime: '2022-01-06T03:59:52Z'
   household_invited_to_digital: 'Yes'
   household_members_over_2_years_and_not_present_count: null
@@ -545,9 +550,9 @@
   middle_name: Buck
   ons_household_id: '414160350614'
   opted_out_of_blood_next_window: 'Yes'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-09 09:40:20.000000'
   opted_out_of_next_window: 'Yes'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-06 22:48:55.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -567,11 +572,11 @@
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: null
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2021-11-24 05:39:36.000000'
   participant_completion_window_id: '1652'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2021-09-05 06:26:42.000000'
   participant_completion_window_status: Closed
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2021-07-03 21:58:21.000000'
   participant_enrolled_digital: 'No'
   participant_id: DHR-032373782005
   participant_invited_to_digital: 'Yes'
@@ -625,9 +630,9 @@
   reason_for_not_consenting_9: Atoms are used within a program to denote distinguished
     values.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-05 21:37:31.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-06 19:53:20.000000'
+  sample_kit_dispatched_datetime: '2022-01-04 19:49:48.000000'
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: null
   self_isolating: null
@@ -650,13 +655,14 @@
   social_distance_contact_under_18_years_raw: 11 to 20
   street: Glendon
   study_cohort: null
-  survey_completed_datetime: null
-  survey_completion_status: COMPLETED
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_completed_datetime: '2022-01-08 10:33:08.000000'
+  survey_completion_status: Completed
+  survey_last_modified_datetime: '2022-01-09 04:13:00.000000'
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Do you have any idea why this is not working?
   swab_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
   swab_not_taken_other: Do you have any idea why this is not working?
@@ -668,11 +674,11 @@
   swab_sample_barcode_correct: null
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS67167189
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-01 15:25:28.000000'
+  swab_sample_received_lab_datetime: '2022-01-03 18:26:38.000000'
   swab_sample_transport_status: null
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-06 02:56:55.000000'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
@@ -765,8 +771,8 @@
   times_socialising_last_7_days_raw: null
   title: Ms.
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: 1652-DHR-032373782005
-  visit_datetime: null
+  unique_participant_response_id: 1652-DHR-032373782005-2022-01-06 02:56:55
+  visit_datetime: '2022-01-06 02:56:55.000000'
   visit_id: '1652'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
@@ -812,6 +818,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Senegal
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Tuples are containers for a fixed number of Erlang
     data types.
   blood_not_taken_could_not_reason: The pot spilled
@@ -827,7 +834,7 @@
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS95478104
-  blood_sample_received_consolidation_point_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-09 14:46:50.000000'
   blood_sample_received_lab_datetime: null
   blood_sample_transport_status: Arrived at Lab
   blood_taken: 'Yes'
@@ -883,7 +890,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2022-05-18 00:43:46.000000'
   digital_entry_pack_status: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   digital_survey_collection_mode: null
@@ -895,23 +902,24 @@
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2021-10-03 12:24:38.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 15:19:05.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 11:55:23.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-05 08:53:54.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 22:10:09.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted Out
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-09 03:34:14.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-03T01:27:05Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-08 17:40:52.000000'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_other_enclosed_places_raw: Yes sometimes
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
+  file_date: null
   first_name: Honey
   hh_id: 030988308904
   hospital_last_28_days: 'No'
@@ -919,7 +927,7 @@
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-2396451235
   household_completion_window_status: Open
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-01 15:18:18.000000'
   household_digital_enrolment_invited_datetime: '2022-01-06T16:19:05Z'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: null
@@ -948,9 +956,9 @@
   middle_name: Gale
   ons_household_id: 030988308904
   opted_out_of_blood_next_window: null
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-01 12:39:54.000000'
   opted_out_of_next_window: null
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-04 14:37:28.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
@@ -970,11 +978,11 @@
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: null
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2020-05-14 05:29:00.000000'
   participant_completion_window_id: '2206'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2022-09-25 08:49:41.000000'
   participant_completion_window_status: Closed
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-02-05 20:10:50.000000'
   participant_enrolled_digital: null
   participant_id: DHR-077145284257
   participant_invited_to_digital: 'Yes'
@@ -1027,9 +1035,9 @@
   reason_for_not_consenting_9: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-09 20:49:36.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 09:17:01.000000'
+  sample_kit_dispatched_datetime: '2022-01-04 09:51:29.000000'
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: Post
   self_isolating: 'Yes'
@@ -1053,12 +1061,13 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: null
-  survey_completion_status: NEW
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_completion_status: New
+  survey_last_modified_datetime: '2022-01-08 01:21:33.000000'
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
   swab_not_taken_other: She spent her earliest years reading classic literature, and
@@ -1071,11 +1080,11 @@
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS29802621
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-04 19:22:10.000000'
+  swab_sample_received_lab_datetime: '2022-01-09 23:00:40.000000'
   swab_sample_transport_status: Results Returned
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-07 11:10:34.000000'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: 'Yes'
@@ -1168,8 +1177,8 @@
   times_socialising_last_7_days_raw: None
   title: Mr.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: 2206-DHR-077145284257
-  visit_datetime: null
+  unique_participant_response_id: 2206-DHR-077145284257-2022-01-07 11:10:34
+  visit_datetime: '2022-01-07 11:10:34.000000'
   visit_id: '2206'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: null
@@ -1216,6 +1225,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Sudan
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Any element of a tuple can be accessed in constant
     time.
   blood_not_taken_could_not_reason: null
@@ -1232,8 +1242,8 @@
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS66470263
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-08 12:18:01.000000'
+  blood_sample_received_lab_datetime: '2022-01-03 04:38:45.000000'
   blood_sample_transport_status: null
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -1284,10 +1294,10 @@
   currently_smokes_or_vapes_description: Pipe
   currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1992-03-01 00:00:00.000000'
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -1.0
   days_since_think_had_covid_group: null
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2022-01-29 03:49:27.000000'
   digital_entry_pack_status: Make me a sandwich.
   digital_survey_collection_mode: null
   digital_survey_mode_preference: Online
@@ -1299,9 +1309,9 @@
     D2, ... Dn.
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2022-07-16 12:15:09.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 22:58:52.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 23:17:10.000000'
   existing_participant_digital_opt_in_reminder_1_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
@@ -1311,13 +1321,14 @@
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
   existing_participant_digital_opt_in_status: Participant Opted Out
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 20:43:33.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-05T05:37:41Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-09 05:52:18.000000'
   face_covering_other_enclosed_places: Yes, always
   face_covering_other_enclosed_places_raw: Yes always
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
+  file_date: null
   first_name: Shawnee
   hh_id: '734353881968'
   hospital_last_28_days: null
@@ -1325,7 +1336,7 @@
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-8082463081
   household_completion_window_status: Open
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-02 15:12:05.000000'
   household_digital_enrolment_invited_datetime: '2022-01-07T19:21:14Z'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'No'
@@ -1354,9 +1365,9 @@
   middle_name: Isaac
   ons_household_id: '734353881968'
   opted_out_of_blood_next_window: null
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-05 03:40:21.000000'
   opted_out_of_next_window: 'No'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-09 05:11:34.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -1377,9 +1388,9 @@
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
   outward_postcode: NC0C
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2020-08-05 14:42:33.000000'
   participant_completion_window_id: '2738'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2020-12-17 14:03:35.000000'
   participant_completion_window_status: Closed
   participant_digital_enrolment_datetime: null
   participant_enrolled_digital: 'No'
@@ -1430,9 +1441,9 @@
   reason_for_not_consenting_9: Haskell features a type system with type inference
     and lazy evaluation.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-08 11:44:34.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-05 11:38:56.000000'
+  sample_kit_dispatched_datetime: '2022-01-02 01:22:21.000000'
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: null
@@ -1455,13 +1466,14 @@
   social_distance_contact_under_18_years_raw: Don't know
   street: Drumagrove
   study_cohort: null
-  survey_completed_datetime: null
-  survey_completion_status: SUBMITTED
-  survey_last_modified_datetime: null
+  survey_completed_datetime: '2022-01-05 13:54:58.000000'
+  survey_completion_status: Submitted
+  survey_last_modified_datetime: '2022-01-07 10:47:10.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Erlang is known for its designs that are well
     suited for systems.
   swab_not_taken_missing_parts: null
@@ -1476,11 +1488,11 @@
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS72090747
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-03 11:03:35.000000'
+  swab_sample_received_lab_datetime: '2022-01-09 19:43:58.000000'
   swab_sample_transport_status: Arrived at Sorting Office
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-05 23:04:23.000000'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'No'
@@ -1573,8 +1585,8 @@
   times_socialising_last_7_days_raw: '5'
   title: Ms.
   transport_to_work_or_education: null
-  unique_participant_response_id: 2738-DHR-747928544728
-  visit_datetime: null
+  unique_participant_response_id: 2738-DHR-747928544728-2022-01-05 23:04:23
+  visit_datetime: '2022-01-05 23:04:23.000000'
   visit_id: '2738'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
@@ -1620,6 +1632,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Ukraine
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
@@ -1635,8 +1648,8 @@
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS12633229
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-06 11:34:20.000000'
+  blood_sample_received_lab_datetime: '2022-01-07 13:29:28.000000'
   blood_sample_transport_status: Arrived at Consolidation Hub
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -1691,10 +1704,10 @@
   currently_smokes_or_vapes_description: Cigarettes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2020-02-01 00:00:00.000000'
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -6.0
   days_since_think_had_covid_group: null
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
   digital_entry_pack_status: I don't even care.
   digital_survey_collection_mode: Online
   digital_survey_mode_preference: null
@@ -1705,18 +1718,18 @@
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2020-10-14 01:01:05.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-03 14:30:28.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 17:14:06.000000'
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 02:16:58.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 21:48:58.000000'
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted In
   existing_participant_digital_opt_in_window_end_datetime: null
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-01T05:24:08Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-03 00:12:48.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
@@ -1724,6 +1737,7 @@
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
+  file_date: null
   first_name: Annika
   hh_id: '602276804025'
   hospital_last_28_days: null
@@ -1731,7 +1745,7 @@
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_completion_window_id: HW-9300868759
   household_completion_window_status: Open
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-07 15:04:40.000000'
   household_digital_enrolment_invited_datetime: '2022-01-06T18:06:58Z'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'Yes'
@@ -1760,9 +1774,9 @@
   middle_name: Hank
   ons_household_id: '602276804025'
   opted_out_of_blood_next_window: 'No'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-06 17:18:28.000000'
   opted_out_of_next_window: null
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-03 12:02:32.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
@@ -1783,11 +1797,11 @@
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
   participant_completion_window_id: '3586'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2022-12-18 13:14:28.000000'
   participant_completion_window_status: New
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-12-04 21:47:57.000000'
   participant_enrolled_digital: null
   participant_id: DHR-016525808631
   participant_invited_to_digital: 'Yes'
@@ -1838,8 +1852,8 @@
   reason_for_not_consenting_9: Make me a sandwich.
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-02 21:15:12.000000'
+  sample_kit_dispatched_datetime: '2022-01-04 06:48:13.000000'
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
   self_isolating: 'Yes'
@@ -1862,13 +1876,14 @@
   social_distance_contact_under_18_years_raw: '0'
   street: null
   study_cohort: Fingerprick and Swab
-  survey_completed_datetime: null
-  survey_completion_status: IN PROGRESS
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_completed_datetime: '2022-01-09 10:19:02.000000'
+  survey_completion_status: In progress
+  survey_last_modified_datetime: '2022-01-03 09:40:01.000000'
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: Swab stick
@@ -1882,11 +1897,11 @@
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS85702202
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-06 19:58:32.000000'
+  swab_sample_received_lab_datetime: '2022-01-02 12:57:57.000000'
   swab_sample_transport_status: Arrived at Consolidation Hub
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-02 11:17:41.000000'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: 'Yes'
@@ -1979,8 +1994,8 @@
   times_socialising_last_7_days_raw: '5'
   title: Ms.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: 3586-DHR-016525808631
-  visit_datetime: null
+  unique_participant_response_id: 3586-DHR-016525808631-2022-01-02 11:17:41
+  visit_datetime: '2022-01-02 11:17:41.000000'
   visit_id: '3586'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'Yes'
@@ -2023,6 +2038,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Yemen
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Make me a sandwich.
   blood_not_taken_could_not_reason: I had bruising or pain
   blood_not_taken_damage_description: Any element of a tuple can be accessed in constant
@@ -2093,10 +2109,10 @@
   currently_smokes_or_vapes_description: Vape or E-cigarettes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2012-09-06 00:00:00.000000'
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -5.0
   days_since_think_had_covid_group: null
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2022-02-14 21:37:36.000000'
   digital_entry_pack_status: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   digital_survey_collection_mode: null
@@ -2108,23 +2124,24 @@
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2021-02-19 07:37:38.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 22:20:25.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 01:47:49.000000'
   existing_participant_digital_opt_in_reminder_1_status: Where are my pants?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 16:37:46.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 06:31:46.000000'
   existing_participant_digital_opt_in_reminder_2_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
   existing_participant_digital_opt_in_status: null
   existing_participant_digital_opt_in_window_end_datetime: null
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-02T12:39:12Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-05 15:20:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
+  file_date: null
   first_name: Shaun
   hh_id: '822178461989'
   hospital_last_28_days: null
@@ -2132,7 +2149,7 @@
   hours_a_day_with_someone_else_at_home_raw: null
   household_completion_window_id: HW-8828437201
   household_completion_window_status: New
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-06 16:42:54.000000'
   household_digital_enrolment_invited_datetime: '2022-01-08T03:56:28Z'
   household_invited_to_digital: 'Yes'
   household_members_over_2_years_and_not_present_count: 'Yes'
@@ -2161,9 +2178,9 @@
   middle_name: My
   ons_household_id: '822178461989'
   opted_out_of_blood_next_window: 'Yes'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-03 05:24:13.000000'
   opted_out_of_next_window: 'No'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-03 07:59:07.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2183,11 +2200,11 @@
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
   outward_postcode: LV1J
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2021-07-05 21:41:19.000000'
   participant_completion_window_id: '3892'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2021-05-07 21:45:20.000000'
   participant_completion_window_status: Open
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-02-20 02:43:55.000000'
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-880739888271
   participant_invited_to_digital: 'No'
@@ -2237,9 +2254,9 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-07 21:24:56.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-05 16:36:02.000000'
+  sample_kit_dispatched_datetime: '2022-01-06 17:44:05.000000'
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Post
   self_isolating: 'No'
@@ -2262,13 +2279,14 @@
   social_distance_contact_under_18_years_raw: null
   street: null
   study_cohort: Swab Only
-  survey_completed_datetime: null
-  survey_completion_status: ARCHIVED
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_completed_datetime: '2022-01-03 11:18:46.000000'
+  survey_completion_status: Archived
+  survey_last_modified_datetime: '2022-01-06 15:22:39.000000'
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: null
@@ -2281,8 +2299,8 @@
   swab_sample_barcode_correct: 'No'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS63959191
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-01 16:44:11.000000'
+  swab_sample_received_lab_datetime: '2022-01-03 10:41:25.000000'
   swab_sample_transport_status: null
   swab_taken: 'Yes'
   swab_taken_datetime: null
@@ -2378,8 +2396,8 @@
   times_socialising_last_7_days_raw: '4'
   title: Prof.
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  unique_participant_response_id: 3892-DHR-880739888271
-  visit_datetime: null
+  unique_participant_response_id: 3892-DHR-880739888271-2022-01-03 11:18:46
+  visit_datetime: '2022-01-03 11:18:46.000000'
   visit_id: '3892'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'Yes'
@@ -2422,6 +2440,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Ecuador
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: I felt unwell
@@ -2439,8 +2458,8 @@
   blood_sample_barcode_correct: null
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS75400895
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-08 15:10:16.000000'
+  blood_sample_received_lab_datetime: '2022-01-03 16:52:10.000000'
   blood_sample_transport_status: Dispatched
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -2497,7 +2516,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2020-05-15 07:55:59.000000'
   digital_entry_pack_status: Tuples are containers for a fixed number of Erlang data
     types.
   digital_survey_collection_mode: null
@@ -2510,25 +2529,26 @@
     D2, ... Dn.
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2020-04-07 17:28:08.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 09:05:51.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:21:55.000000'
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 07:55:27.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 20:18:20.000000'
   existing_participant_digital_opt_in_reminder_2_status: Erlang is a general-purpose,
     concurrent, functional programming language.
   existing_participant_digital_opt_in_status: null
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-08 22:23:09.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-08T07:07:36Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-01 05:21:13.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
+  file_date: null
   first_name: Clemmie
   hh_id: '623704990229'
   hospital_last_28_days: null
@@ -2565,9 +2585,9 @@
   middle_name: Clarence
   ons_household_id: '623704990229'
   opted_out_of_blood_next_window: 'Yes'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-07 16:15:40.000000'
   opted_out_of_next_window: 'No'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-07 11:23:48.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
@@ -2587,11 +2607,11 @@
   other_household_member_hospital_last_28_days: 'No'
   other_household_member_hospital_last_28_days_raw: 'No'
   outward_postcode: null
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2020-02-25 07:10:26.000000'
   participant_completion_window_id: '6249'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2021-09-04 01:41:34.000000'
   participant_completion_window_status: Closed
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-07-24 10:51:55.000000'
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-883187696082
   participant_invited_to_digital: 'No'
@@ -2641,9 +2661,9 @@
     data types.
   reason_for_not_consenting_9: Do you have any idea why this is not working?
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: null
+  sample_collection_courier_datetime: '2022-01-04 06:40:18.000000'
   sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_kit_dispatched_datetime: '2022-01-07 00:51:20.000000'
   sample_kit_not_dispatched_code: 'No'
   sample_return_preference: Courier
   self_isolating: null
@@ -2666,13 +2686,14 @@
   social_distance_contact_under_18_years_raw: 21 or more
   street: Harford
   study_cohort: null
-  survey_completed_datetime: null
-  survey_completion_status: IN PROGRESS
-  survey_last_modified_datetime: null
+  survey_completed_datetime: '2022-01-03 23:19:23.000000'
+  survey_completion_status: In progress
+  survey_last_modified_datetime: '2022-01-06 23:28:31.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Type classes first appeared in the Haskell programming
     language.
   swab_not_taken_missing_parts: Other please specify
@@ -2686,11 +2707,11 @@
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS80420762
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-03 19:48:20.000000'
+  swab_sample_received_lab_datetime: '2022-01-07 11:28:00.000000'
   swab_sample_transport_status: Arrived at Consolidation Hub
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-03 18:48:19.000000'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_any_symptoms: null
@@ -2783,8 +2804,8 @@
   times_socialising_last_7_days_raw: '5'
   title: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  unique_participant_response_id: 6249-DHR-883187696082
-  visit_datetime: null
+  unique_participant_response_id: 6249-DHR-883187696082-2022-01-03 18:48:19
+  visit_datetime: '2022-01-03 18:48:19.000000'
   visit_id: '6249'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
@@ -2827,6 +2848,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Laos
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: null
@@ -2842,8 +2864,8 @@
   blood_sample_barcode_correct: 'No'
   blood_sample_barcode_raw: null
   blood_sample_barcode_user_entered: ONS30378947
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-02 17:35:53.000000'
+  blood_sample_received_lab_datetime: '2022-01-05 19:44:47.000000'
   blood_sample_transport_status: Dispatched
   blood_taken: 'No'
   blood_taken_datetime: null
@@ -2901,7 +2923,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2020-08-08 06:52:58.000000'
   digital_entry_pack_status: He looked inquisitively at his keyboard and wrote another
     sentence.
   digital_survey_collection_mode: Online
@@ -2914,25 +2936,26 @@
     assignment, and dynamic typing.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_datetime: '2020-05-06 22:06:24.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 05:25:33.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 18:08:25.000000'
   existing_participant_digital_opt_in_reminder_1_status: They are written as strings
     of consecutive alphanumeric characters, the first character being lowercase.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-06 05:36:57.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 06:13:27.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted In
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-08 09:37:24.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-08T15:30:30Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-01 22:47:47.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
+  file_date: null
   first_name: Myung
   hh_id: '502848695986'
   hospital_last_28_days: 'No'
@@ -2940,7 +2963,7 @@
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-6202235126
   household_completion_window_status: Open
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-09 15:31:48.000000'
   household_digital_enrolment_invited_datetime: '2022-01-04T01:42:21Z'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: null
@@ -2971,7 +2994,7 @@
   opted_out_of_blood_next_window: null
   opted_out_of_blood_next_window_datetime: null
   opted_out_of_next_window: 'No'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-05 18:40:44.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
@@ -2992,11 +3015,11 @@
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
   outward_postcode: UK0X
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2020-07-11 08:55:04.000000'
   participant_completion_window_id: '7045'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2021-05-27 07:14:01.000000'
   participant_completion_window_status: Closed
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2021-07-26 21:55:47.000000'
   participant_enrolled_digital: 'No'
   participant_id: DHR-758587422675
   participant_invited_to_digital: 'No'
@@ -3047,9 +3070,9 @@
   reason_for_not_consenting_9: He looked inquisitively at his keyboard and wrote another
     sentence.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-03 23:27:03.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-07 07:49:00.000000'
+  sample_kit_dispatched_datetime: '2022-01-07 17:07:19.000000'
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'Yes'
@@ -3072,13 +3095,14 @@
   social_distance_contact_under_18_years_raw: 1 to 5
   street: Ballynafey
   study_cohort: Fingerprick and Swab
-  survey_completed_datetime: null
-  survey_completion_status: ARCHIVED
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_completed_datetime: '2022-01-03 06:18:11.000000'
+  survey_completion_status: Archived
+  survey_last_modified_datetime: '2022-01-03 10:31:04.000000'
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
@@ -3091,11 +3115,11 @@
   swab_sample_barcode_correct: null
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS42495687
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-02 02:03:42.000000'
+  swab_sample_received_lab_datetime: '2022-01-02 01:49:25.000000'
   swab_sample_transport_status: Arrived at Lab
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-07 20:37:58.000000'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: null
@@ -3188,8 +3212,8 @@
   times_socialising_last_7_days_raw: '3'
   title: Prof.
   transport_to_work_or_education: Taxi/minicab
-  unique_participant_response_id: 7045-DHR-758587422675
-  visit_datetime: null
+  unique_participant_response_id: 7045-DHR-758587422675-2022-01-07 20:37:58
+  visit_datetime: '2022-01-07 20:37:58.000000'
   visit_id: '7045'
   voucher_type_preference: Paper
   work_direct_contact_patients_or_clients: 'Yes'
@@ -3233,6 +3257,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Tanzania
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I had bruising or pain
@@ -3248,8 +3273,8 @@
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS56218256
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-04 20:22:49.000000'
+  blood_sample_received_lab_datetime: '2022-01-01 16:15:09.000000'
   blood_sample_transport_status: null
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -3304,7 +3329,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2022-12-23 06:45:19.000000'
   digital_entry_pack_status: Haskell features a type system with type inference and
     lazy evaluation.
   digital_survey_collection_mode: Telephone
@@ -3317,23 +3342,24 @@
     been restored.
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
-  existing_participant_digital_opt_in_datetime: null
+  existing_participant_digital_opt_in_datetime: '2021-09-28 19:27:13.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-08 14:45:30.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 19:56:11.000000'
   existing_participant_digital_opt_in_reminder_2_status: She spent her earliest years
     reading classic literature, and writing poetry.
   existing_participant_digital_opt_in_status: Participant Opted Out
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 06:04:23.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-04T18:33:09Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-05 16:55:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
+  file_date: null
   first_name: Remedios
   hh_id: '821442294850'
   hospital_last_28_days: 'Yes'
@@ -3341,7 +3367,7 @@
   hours_a_day_with_someone_else_at_home_raw: '[10, 14, 12, 22, 4, 17, 5, 9]'
   household_completion_window_id: HW-2744995712
   household_completion_window_status: Closed
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-09 09:53:47.000000'
   household_digital_enrolment_invited_datetime: '2022-01-06T13:47:11Z'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: 'Yes'
@@ -3370,9 +3396,9 @@
   middle_name: Jae
   ons_household_id: '821442294850'
   opted_out_of_blood_next_window: 'No'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-03 11:45:46.000000'
   opted_out_of_next_window: 'Yes'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-04 19:29:32.000000'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -3392,11 +3418,11 @@
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: null
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2020-04-08 02:21:01.000000'
   participant_completion_window_id: '9557'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2022-11-12 14:57:33.000000'
   participant_completion_window_status: New
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2022-03-05 21:30:35.000000'
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-989981424039
   participant_invited_to_digital: 'Yes'
@@ -3449,9 +3475,9 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
-  sample_kit_dispatched_datetime: null
+  sample_collection_courier_datetime: '2022-01-07 22:33:42.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-06 17:36:59.000000'
+  sample_kit_dispatched_datetime: '2022-01-01 00:45:57.000000'
   sample_kit_not_dispatched_code: null
   sample_return_preference: null
   self_isolating: 'No'
@@ -3474,13 +3500,14 @@
   social_distance_contact_under_18_years_raw: null
   street: null
   study_cohort: Fingerprick and Swab
-  survey_completed_datetime: null
-  survey_completion_status: SUBMITTED
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_completed_datetime: '2022-01-07 16:06:21.000000'
+  survey_completion_status: Submitted
+  survey_last_modified_datetime: '2022-01-03 08:34:56.000000'
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -3496,10 +3523,10 @@
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS05581901
   swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_lab_datetime: '2022-01-01 02:05:19.000000'
   swab_sample_transport_status: Results Returned
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-08 22:45:03.000000'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_any_symptoms: 'No'
@@ -3592,8 +3619,8 @@
   times_socialising_last_7_days_raw: '2'
   title: Mrs.
   transport_to_work_or_education: Bus, minibus, coach
-  unique_participant_response_id: 9557-DHR-989981424039
-  visit_datetime: null
+  unique_participant_response_id: 9557-DHR-989981424039-2022-01-08 22:45:03
+  visit_datetime: '2022-01-08 22:45:03.000000'
   visit_id: '9557'
   voucher_type_preference: email_address
   work_direct_contact_patients_or_clients: 'No'
@@ -3639,6 +3666,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Russia
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Atoms are used within a program to denote distinguished
     values.
   blood_not_taken_could_not_reason: I felt unwell
@@ -3654,8 +3682,8 @@
   blood_sample_barcode_correct: null
   blood_sample_barcode_raw: ONS00000000
   blood_sample_barcode_user_entered: ONS49825198
-  blood_sample_received_consolidation_point_datetime: null
-  blood_sample_received_lab_datetime: null
+  blood_sample_received_consolidation_point_datetime: '2022-01-01 14:56:59.000000'
+  blood_sample_received_lab_datetime: '2022-01-07 21:25:12.000000'
   blood_sample_transport_status: Dispatched
   blood_taken: 'Yes'
   blood_taken_datetime: null
@@ -3708,10 +3736,10 @@
   currently_smokes_or_vapes_description: Pipe
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '1994-05-03 00:00:00.000000'
-  days_since_think_had_covid: null
+  days_since_think_had_covid: -3.0
   days_since_think_had_covid_group: null
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: null
+  digital_entry_pack_sent_datetime: '2020-10-21 05:34:46.000000'
   digital_entry_pack_status: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -3725,23 +3753,24 @@
     been restored.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
-  existing_participant_digital_opt_in_datetime: null
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
+  existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:07:24.000000'
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 04:12:25.000000'
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Type classes first appeared
     in the Haskell programming language.
   existing_participant_digital_opt_in_status: Participant Opted In
-  existing_participant_digital_opt_in_window_end_datetime: null
+  existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 06:16:14.000000'
   existing_participant_digital_opt_in_window_start_datetime: '2022-01-03T08:45:07Z'
-  existing_participant_digital_opted_in_datetime: null
+  existing_participant_digital_opted_in_datetime: '2022-01-09 01:55:47.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
+  file_date: null
   first_name: Reiko
   hh_id: '568720322983'
   hospital_last_28_days: 'Yes'
@@ -3749,7 +3778,7 @@
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
   household_completion_window_id: HW-9500167403
   household_completion_window_status: New
-  household_digital_enrolment_datetime: null
+  household_digital_enrolment_datetime: '2022-01-04 14:16:13.000000'
   household_digital_enrolment_invited_datetime: '2022-01-06T01:15:19Z'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: 'Yes'
@@ -3778,9 +3807,9 @@
   middle_name: Argentina
   ons_household_id: '568720322983'
   opted_out_of_blood_next_window: 'Yes'
-  opted_out_of_blood_next_window_datetime: null
+  opted_out_of_blood_next_window_datetime: '2022-01-08 11:38:23.000000'
   opted_out_of_next_window: 'Yes'
-  opted_out_of_next_window_datetime: null
+  opted_out_of_next_window_datetime: '2022-01-08 21:48:14.000000'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
@@ -3801,11 +3830,11 @@
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
   outward_postcode: FN0F
-  participant_completion_window_end_datetime: null
+  participant_completion_window_end_datetime: '2022-04-22 10:53:49.000000'
   participant_completion_window_id: '9598'
-  participant_completion_window_start_datetime: null
+  participant_completion_window_start_datetime: '2020-08-13 08:59:40.000000'
   participant_completion_window_status: New
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2021-08-21 11:10:23.000000'
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-639422525832
   participant_invited_to_digital: 'Yes'
@@ -3859,8 +3888,8 @@
   reason_for_not_consenting_9: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: null
-  sample_collection_kit_received_delivery_partner_datetime: null
+  sample_collection_courier_datetime: '2022-01-01 12:30:42.000000'
+  sample_collection_kit_received_delivery_partner_datetime: '2022-01-08 21:39:00.000000'
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'Yes'
   sample_return_preference: null
@@ -3884,13 +3913,14 @@
   social_distance_contact_under_18_years_raw: 11 to 20
   street: null
   study_cohort: Swab Only
-  survey_completed_datetime: null
-  survey_completion_status: SUBMITTED
-  survey_last_modified_datetime: null
-  survey_not_completed_reason_code: QNR - Questionnaire No Return
+  survey_completed_datetime: '2022-01-01 18:30:04.000000'
+  survey_completion_status: Submitted
+  survey_last_modified_datetime: '2022-01-09 12:32:27.000000'
+  survey_not_completed_reason_code: Qnr - questionnaire no return
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
@@ -3904,11 +3934,11 @@
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_raw: ONS00000000
   swab_sample_barcode_user_entered: ONS07652614
-  swab_sample_received_consolidation_point_datetime: null
-  swab_sample_received_lab_datetime: null
+  swab_sample_received_consolidation_point_datetime: '2022-01-05 08:58:26.000000'
+  swab_sample_received_lab_datetime: '2022-01-07 20:17:24.000000'
   swab_sample_transport_status: Arrived at Consolidation Hub
   swab_taken: 'Yes'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-02 03:43:57.000000'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
   think_had_covid_any_symptoms: null
@@ -4001,8 +4031,8 @@
   times_socialising_last_7_days_raw: '5'
   title: Ms.
   transport_to_work_or_education: Train
-  unique_participant_response_id: 9598-DHR-639422525832
-  visit_datetime: null
+  unique_participant_response_id: 9598-DHR-639422525832-2022-01-02 03:43:57
+  visit_datetime: '2022-01-02 03:43:57.000000'
   visit_id: '9598'
   voucher_type_preference: null
   work_direct_contact_patients_or_clients: 'No'
