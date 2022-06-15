@@ -1248,6 +1248,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
   name: visit_datetime
   nullable: true
   type: timestamp
