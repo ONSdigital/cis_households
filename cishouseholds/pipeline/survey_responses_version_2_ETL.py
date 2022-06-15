@@ -811,12 +811,6 @@ def union_dependent_derivations(df):
             "blood_sample_barcode_combined",
             F.coalesce(F.col("blood_sample_barcode"), F.col("blood_sample_barcode_user_entered")),
         )
-        df = df.withColumn(
-            "swab_manual_entry", F.when(F.col("swab_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
-        )
-        df = df.withColumn(
-            "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
-        )
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
