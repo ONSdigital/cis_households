@@ -18,6 +18,12 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
+        "swab_manual_entry", F.when(F.col("swab_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
+    )
+    df = df.withColumn(
+        "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
+    )
+    df = df.withColumn(
         "visit_datetime",
         F.coalesce(
             F.col("swab_taken_datetime"),
