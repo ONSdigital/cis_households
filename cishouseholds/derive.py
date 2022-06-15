@@ -22,11 +22,13 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
     """
     assign an incremental count to each participants visit
-    column_name_to_assign: column to show count
-    visit_date_column: date column to base count on
-    id_column: The column where the window (subset) is based, then the count occurs
-
-    Window is set up over the data based on the id_column the count is then based on unique values on visit_date column
+    -------------
+    column_name_to_assign
+        column_name_to_assign: column to show count
+    visit_date_column
+        visit_date_column: date column to base count on
+    id_column
+        id_column: The column where the window (subset) is based, then the count occurs
     """
     window = Window.partitionBy(id_column).orderBy(visit_date_column)
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
