@@ -14,21 +14,22 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
-from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
-from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_visit_order_from_digital(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
     """
     assign an incremental count to each participants visit
+    column_name_to_assign: column to show count
+    visit_date_column: date column to base count on
+    id_column: The column where the window (subset) is based, then the count occurs
+
+    Window is set up over the data based on the id_column the count is then based on unique values on visit_date column
     """
     window = Window.partitionBy(id_column).orderBy(visit_date_column)
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
-    visit_order_map = {v: k for k, v in category_maps["iqvia_raw_category_map"]["visit_order"].items()}
-    df = update_column_values_from_map(df, column_name_to_assign, visit_order_map)
     return df
 
 
