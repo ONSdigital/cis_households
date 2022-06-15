@@ -27,6 +27,9 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
+from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
@@ -54,9 +57,6 @@ from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
-from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
 from cishouseholds.pipeline.validation_ETL import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session

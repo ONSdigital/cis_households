@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_people_in_household_count
+from cishouseholds.pipeline.high_level_transformations import derive_people_in_household_count
 
 
 def test_derive_people_in_household_count(spark_session):
