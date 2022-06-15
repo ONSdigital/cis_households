@@ -40,7 +40,7 @@ pipeline {
             // Choose from download, build, test, deploy
             agent { label "download.jenkins.slave" }
             steps {
-                echo "Checking out code from source control."
+                sh "echo 'Checking out code from source control.'"
                 retry(3) {
                     checkout scm
                     // Stash the files that have been checked out, for use in subsequent stages
@@ -53,7 +53,7 @@ pipeline {
             agent { label "build.${agentPython3Version}" }
             steps {
                 unstash name: 'Checkout'
-                echo "Building package"
+                sh "echo 'Building package.'"
                 retry(3) {
                     sh 'pip3 install wheel==0.29.0'  // Later versions not compatible with Python 3.6
                     sh 'python3 setup.py build bdist_wheel'
@@ -66,7 +66,7 @@ pipeline {
             agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
             steps {
                 unstash name: "Build"
-                "Deploying package to Artifactory"
+                sh "echo 'Deploying package to Artifactory'"
                 retry(3) {
                     pushToPyPiArtifactoryRepo(PROJECT_NAME)
                 }
