@@ -34,6 +34,8 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
 def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
     """
     assign an incremental count to each participants visit
+   
+    Parameters
     -------------
     column_name_to_assign
         column_name_to_assign: column to show count
