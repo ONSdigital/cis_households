@@ -150,12 +150,29 @@ def join_and_process_lookups(
         how="left",
     )
 
+    # Temporary fix for where postcode is missing or incomplete and can't be used to get country_code_12
+    df = derive_country_code(df, "country_code_12", "region_code")
+
     df = df.join(
         country_lookup_df.select("country_code_12", "country_name_12").distinct(), on="country_code_12", how="left"
     )
     if not first_run:
         df = union_multiple_tables([old_sample_df, df])
 
+    return df
+
+
+def derive_country_code(df, column_name_to_assign: str, region_code_column: str):
+    """Derive country code from region code starting character."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(region_code_column).startswith("E"), "E92000001")
+        .when(F.col(region_code_column).startswith("N"), "N92000002")
+        .when(F.col(region_code_column).startswith("S"), "S92000003")
+        .when(F.col(region_code_column).startswith("W"), "W92000004")
+        .when(F.col(region_code_column).startswith("L"), "L93000001")
+        .when(F.col(region_code_column).startswith("M"), "M83000003"),
+    )
     return df
 
 
