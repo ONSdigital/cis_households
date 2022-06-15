@@ -62,8 +62,6 @@ def generate_error_table(table_name: str, error_priority_map: dict, validation_f
     df = update_column_values_from_map(df, "ORDER", error_priority_map, default_value=9999).orderBy("ORDER")
     df_new = df.filter(F.col("run_id") == get_run_id()).groupBy("validation_check_failures").count()
     df_previous = df.filter(F.col("run_id") == (get_run_id() - 1)).groupBy("validation_check_failures").count()
-    if df_previous.count() == 0:
-        return df_new.withColumn("count_previous", F.lit(0))
     df = (
         df_previous.withColumnRenamed("count", "count_previous")
         .withColumnRenamed("run_id", "run_id_previous")
