@@ -14,7 +14,6 @@ from cishouseholds.pipeline.high_level_transformations import transform_survey_r
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_2_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta_testKit
-from cishouseholds.pipeline.high_level_transformations import transform_unassayed_blood
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -119,7 +118,7 @@ unassayed_blood_delta_parameters = {
     "validation_schema": validation_schemas["unassayed_blood_validation_schema"],
     "column_name_map": column_name_maps["unassayed_bloods_variable_name_map"],
     "datetime_column_map": blood_datetime_map,
-    "transformation_functions": [transform_unassayed_blood],
+    "transformation_functions": [],
     "source_file_column": "unassayed_blood_source_file",
     "write_mode": "append",
 }
