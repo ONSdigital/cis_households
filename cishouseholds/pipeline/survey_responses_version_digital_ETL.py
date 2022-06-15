@@ -35,6 +35,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         default_timestamp="12:00:00",
     )
     df = transform_survey_responses_generic(df)
+
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",
@@ -61,10 +62,10 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "times_hour_or_longer_another_home_last_7_days",
         "times_hour_or_longer_another_person_your_home_last_7_days",
         "times_shopping_last_7_days",
-        # "times_socialising_last_7_days",
+        "times_socialising_last_7_days",
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
-        # "cis_covid_vacine_type",
+        "cis_covid_vaccine_type",
     ]
     df = assign_raw_copies(df, dont_know_columns)
     dont_know_mapping_dict = {"Prefer not to say": None, "Don't Know": None, "I don't know the type": None}
@@ -72,7 +73,39 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         df,
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
+
     df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "self_isolating_reason",
+        [
+            ["No", ["No", None]],
+            [
+                "Yes, you have/have had symptoms",
+                ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
+            ],
+            [
+                "Yes, someone you live with had symptoms",
+                [
+                    "Yes",
+                    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                ],
+            ],
+            [
+                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
+                [
+                    "Yes",
+                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+                ],
+            ],
+            [
+                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
+                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
+            ],
+        ],
+        ["self_isolating", "self_isolating_reason"],
+    )
+
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -268,36 +301,6 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         ],
         column_list,
     )
-    df = assign_column_value_from_multiple_column_map(
-        df,
-        "self_isolating_reason",
-        [
-            ["No", ["No", None]],
-            [
-                "Yes, you have/have had symptoms",
-                ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
-            ],
-            [
-                "Yes, someone you live with had symptoms",
-                [
-                    "Yes",
-                    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
-                ],
-            ],
-            [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
-                [
-                    "Yes",
-                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-                ],
-            ],
-            [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
-                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
-            ],
-        ],
-        ["self_isolating", "self_isolating_reason"],
-    )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
     df = map_options_to_bool_columns(
@@ -313,16 +316,12 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         ";",
     )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
-    """
-    Create copies of all digital specific variables to be remapped
-    """
     raw_copy_list = [
         "participant_survey_status",
         "participant_withdrawal_type",
         "survey_response_type",
         "work_sector",
         "illness_reduces_activity_or_ability",
-        # "work_location",  # is already made raw in transform_survey_responses_generic
         "ability_to_socially_distance_at_work_or_education",
         "last_covid_contact_type",
         "last_suspected_covid_contact_type",
