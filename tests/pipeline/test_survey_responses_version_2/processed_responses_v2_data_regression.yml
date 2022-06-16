@@ -21,7 +21,7 @@
   cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: From a research study/trial
   cis_covid_vaccine_type_1: Oxford/AstraZeneca
   cis_covid_vaccine_type_2: Don't know type
@@ -628,7 +628,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sinovac
   cis_covid_vaccine_type_1: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
@@ -930,7 +930,7 @@
   cis_covid_vaccine_date_4: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'No'
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Valneva
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
@@ -1240,7 +1240,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Moderna
   cis_covid_vaccine_type_1: null
   cis_covid_vaccine_type_2: Moderna
@@ -1547,7 +1547,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Moderna
   cis_covid_vaccine_type_1: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
@@ -1857,7 +1857,7 @@
   cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: 'No'
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sinopharm
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Pfizer/BioNTech
@@ -2467,7 +2467,7 @@
   cis_covid_vaccine_date_4: '2022-01-05 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: From a research study/trial
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: null
@@ -2777,7 +2777,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '1'
   cis_covid_vaccine_offered: 'Yes'
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Novavax
   cis_covid_vaccine_type_1: Oxford/AstraZeneca
   cis_covid_vaccine_type_2: Pfizer/BioNTech
