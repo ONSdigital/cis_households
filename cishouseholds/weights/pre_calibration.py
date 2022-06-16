@@ -11,8 +11,6 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.weights.design_weights import DesignWeightError
 from cishouseholds.weights.design_weights import validate_design_weights
 
-# from cishouseholds.derive import assign_ethnicity_white
-
 
 def pre_calibration_high_level(
     df_survey: DataFrame,
@@ -65,7 +63,6 @@ def pre_calibration_high_level(
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
-        swab_group_by_columns=["index_multiple_deprivation", "sample_source_name", "cis_area_code_20"],
     )
     return df
 

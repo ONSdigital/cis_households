@@ -49,7 +49,6 @@ def test_precal_and_design_weights_checkpoints(spark_session):
             antibody_weight_column="design_weight_2",
             cis_area_column="country",
             country_column="country",
-            swab_group_by_columns=["country", "groupby"],
             rounding_value=18,
         )
 
@@ -85,8 +84,6 @@ def test_precal_and_design_weights_checkpoints(spark_session):
         swab_design_weights_sum_to_population,
         check_negative_design_weights,
         check_null_design_weights,
-        swab_design_weights_inconsistent_within_group,
-        antibody_design_weights_inconsistent_within_group,
     ) = validate_design_weights(
         df=input_df_pass,
         num_households_by_cis_column="num_households",
@@ -104,5 +101,3 @@ def test_precal_and_design_weights_checkpoints(spark_session):
     assert swab_design_weights_sum_to_population is True
     assert check_negative_design_weights is not True
     assert check_null_design_weights is not True
-    assert swab_design_weights_inconsistent_within_group is not True
-    assert antibody_design_weights_inconsistent_within_group is not True
