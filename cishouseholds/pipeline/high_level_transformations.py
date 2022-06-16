@@ -223,6 +223,13 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
 
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    df = df.drop(
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_number_of_doses",
+        "cis_covid_vaccine_type",
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_received",
+    )
     return df
 
 
@@ -264,6 +271,13 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         column_name_to_assign="work_main_job_changed",
         value_to_assign="Yes",
         column_list=fill_forward_columns,
+    )
+    df = df.drop(
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_number_of_doses",
+        "cis_covid_vaccine_type",
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_received",
     )
     return df
 
@@ -1338,33 +1352,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         true_false_values=["Yes", "No"],
     )
-
-    df = update_to_value_if_any_not_null(
-        df,
-        "cis_covid_vaccine_received",
-        "Yes",
-        [
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-        ],
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
-    )
-
     df = edit_to_sum_or_max_value(
         df=df,
         column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
@@ -1727,6 +1714,31 @@ def union_dependent_derivations(df):
         ],
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
+    df = update_to_value_if_any_not_null(
+        df,
+        "cis_covid_vaccine_received",
+        "Yes",
+        [
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+        ],
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_number_of_doses",
+            "cis_covid_vaccine_type",
+            "cis_covid_vaccine_type_other",
+            "cis_covid_vaccine_received",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="cis_covid_vaccine_received",
+        record_changed_value="Yes",
+    )
     return df
 
 
