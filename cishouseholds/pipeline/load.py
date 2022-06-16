@@ -16,7 +16,13 @@ class TableNotFoundError(Exception):
     pass
 
 
-def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables(
+    prefix: str = None,
+    table_names: Union[str, List[str]] = None,
+    pattern: str = None,
+    protected_tables: List[str] = [],
+    drop_protected_tables: bool = False,
+):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -33,18 +39,23 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
     spark_session = get_or_create_spark_session()
-    storage_config = get_config()["storage"]
+    config = get_config()
+    storage_config = config["storage"]
+
+    def drop_tables(table_names: List[str]):
+        for table_name in table_names:
+            if table_name in protected_tables and not drop_protected_tables:
+                print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
+            else:
+                print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
+                spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
     if table_names is not None:
         if type(table_names) != list:
             table_names = [table_names]  # type:ignore
-        for table_name in table_names:
-            print(
-                f"dropping table: {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )  # functional
-            spark_session.sql(
-                f"DROP TABLE IF EXISTS {storage_config['database']}.{storage_config['table_prefix']}{table_name}"
-            )
+        table_names = [f"{storage_config['table_prefix']}{table_name}" for table_name in table_names]
+        drop_tables(table_names)
+
     if pattern is not None:
         tables = (
             spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
@@ -52,9 +63,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
             .toPandas()["tableName"]
             .tolist()
         )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+        drop_tables(tables)
     if prefix is not None:
         tables = (
             spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
@@ -62,9 +71,7 @@ def delete_tables(prefix: str = None, table_names: Union[str, List[str]] = None,
             .toPandas()["tableName"]
             .tolist()
         )
-        for table_name in tables:
-            print(f"dropping table: {table_name}")  # functional
-            spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+        drop_tables(tables)
 
 
 def extract_from_table(table_name: str, break_lineage: bool = False) -> DataFrame:
