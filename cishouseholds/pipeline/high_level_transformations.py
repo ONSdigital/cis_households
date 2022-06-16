@@ -180,33 +180,6 @@ def transform_swab_delta_testKit(df: DataFrame):
     return df
 
 
-def digital_specific_cleaning(df):
-    df = assign_raw_copies(
-        df,
-        [
-            "work_in_additional_paid_employment",
-            "self_isolating",
-            "illness_lasting_over_12_months",
-            "ever_smoked_regularly",
-            "currently_smokes_or_vapes",
-            "hours_a_day_with_someone_else_at_home",
-            "face_covering_work_or_education",
-        ],
-    )
-    df = apply_value_map_multiple_columns(
-        df,
-        {
-            "work_in_additional_paid_employment": {"prefer_not_to_say": None},
-            "self_isolating": {"prefer_not_to_say": None},
-            "illness_lasting_over_12_months": {"prefer_not_to_say": None},
-            "ever_smoked_regularly": {"prefer_not_to_say": None},
-            "currently_smokes_or_vapes": {"prefer_not_to_say": None},
-            "hours_a_day_with_someone_else_at_home": {"prefer_not_to_say": None},
-            "face_covering_work_or_education": {"prefer_not_to_say": None},
-        },
-    )
-
-
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 0 survey deltas.
@@ -359,6 +332,18 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     Call functions to process digital specific variable transformations.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
+    df = assign_raw_copies(
+        df,
+        [
+            "work_in_additional_paid_employment",
+            "self_isolating",
+            "illness_lasting_over_12_months",
+            "ever_smoked_regularly",
+            "currently_smokes_or_vapes",
+            "hours_a_day_with_someone_else_at_home",
+            "face_covering_work_or_education",
+        ],
+    )
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
@@ -367,6 +352,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
     )
+
     df = df.withColumn(
         "visit_datetime",
         F.coalesce(
