@@ -19,18 +19,31 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
+from cishouseholds.mapping import category_maps
+from cishouseholds.mapping import column_name_maps
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_merge import load_to_data_warehouse_tables
+from cishouseholds.pipeline.high_level_merge import merge_blood_process_filtering
+from cishouseholds.pipeline.high_level_merge import merge_blood_process_preparation
+from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
+from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
+from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
+from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import impute_key_columns
+from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
+from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -39,34 +52,21 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
-from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehouse_tables
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_filtering
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_preparation
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_xtox_flag
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_filtering
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_preparation
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_xtox_flag
-from cishouseholds.pipeline.merge_process import merge_process_validation
-from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
-from cishouseholds.pipeline.post_merge_processing import impute_key_columns
-from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
-from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
-from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
+from cishouseholds.weights.design_weights import generate_weights
+from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
-from cishouseholds.weights.weights import generate_weights
-from cishouseholds.weights.weights import household_level_populations
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -923,12 +923,8 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
-    valid_df_errors = generate_error_table(
-        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
-    invalid_df_errors = generate_error_table(
-        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
+    valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
+    invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
 
     processed_file_log = extract_from_table("processed_filenames")
 

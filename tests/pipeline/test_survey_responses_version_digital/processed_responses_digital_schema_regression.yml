@@ -1248,6 +1248,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
   name: visit_datetime
   nullable: true
   type: timestamp
@@ -1513,6 +1521,26 @@ fields:
   type: string
 - metadata: {}
   name: cis_covid_vaccine_number_of_doses_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_which_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: which_symptoms_last_7_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: long_covid_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_symptom_any
   nullable: true
   type: string
 type: struct

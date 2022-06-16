@@ -16,6 +16,21 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 
 
+def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
+    """
+    apply lower case to all but first letter of string in list of columns
+    """
+    for col in columns:
+        df = df.withColumn(
+            col,
+            F.concat(
+                F.upper(F.substring(F.col(col), 0, 1)),
+                F.lower(F.expr(f"substring({col}, 2, length({col})-1)")),
+            ),
+        )
+    return df
+
+
 def update_column_in_time_window(
     df: DataFrame, column_name_to_update: str, time_column: str, new_value: Any, time_window: List[str]
 ):

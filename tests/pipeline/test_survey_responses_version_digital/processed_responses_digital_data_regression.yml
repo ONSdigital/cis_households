@@ -9,6 +9,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: New Zealand
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Do you have any idea why this is not working?
   blood_not_taken_could_not_reason: null
   blood_not_taken_damage_description: Haskell features a type system with type inference
@@ -105,6 +106,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-06 10:18:09.000000'
   face_covering_other_enclosed_places: Never
   face_covering_other_enclosed_places_raw: Never
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -141,6 +143,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood
   middle_name: Jessika
   ons_household_id: '763063387334'
   opted_out_of_blood_next_window: null
@@ -249,12 +252,13 @@
   street: Ballywatermoy
   study_cohort: null
   survey_completed_datetime: '2022-01-02 12:14:32.000000'
-  survey_completion_status: NEW
+  survey_completion_status: New
   survey_last_modified_datetime: '2022-01-07 21:38:59.000000'
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   swab_not_taken_missing_parts: Sample box
@@ -301,10 +305,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -368,6 +374,7 @@
   visit_datetime: '2022-01-09 16:22:46.000000'
   visit_id: '0563'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -407,6 +414,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Jamaica
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Initially composing light-hearted and irreverent
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   blood_not_taken_could_not_reason: null
@@ -508,6 +516,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-02 15:49:21.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -544,6 +553,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Buck
   ons_household_id: '414160350614'
   opted_out_of_blood_next_window: 'Yes'
@@ -653,12 +663,13 @@
   street: Glendon
   study_cohort: null
   survey_completed_datetime: '2022-01-08 10:33:08.000000'
-  survey_completion_status: COMPLETED
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-09 04:13:00.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Do you have any idea why this is not working?
   swab_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
   swab_not_taken_other: Do you have any idea why this is not working?
@@ -704,10 +715,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: null
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -771,6 +784,7 @@
   visit_datetime: '2022-01-06 02:56:55.000000'
   visit_id: '1652'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -814,6 +828,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Senegal
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Tuples are containers for a fixed number of Erlang
     data types.
   blood_not_taken_could_not_reason: The pot spilled
@@ -912,6 +927,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-08 17:40:52.000000'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_other_enclosed_places_raw: Yes sometimes
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -948,6 +964,7 @@
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: Outside your home
   last_suspected_covid_contact_type_raw: Someone I do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Gale
   ons_household_id: 030988308904
   opted_out_of_blood_next_window: null
@@ -1056,12 +1073,13 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: null
-  survey_completion_status: NEW
+  survey_completion_status: New
   survey_last_modified_datetime: '2022-01-08 01:21:33.000000'
-  survey_not_completed_reason_code: FNR - Full Non Response
+  survey_not_completed_reason_code: Fnr - full non response
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
   swab_not_taken_other: She spent her earliest years reading classic literature, and
@@ -1108,10 +1126,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
@@ -1175,6 +1195,7 @@
   visit_datetime: '2022-01-07 11:10:34.000000'
   visit_id: '2206'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -1219,6 +1240,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Sudan
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Any element of a tuple can be accessed in constant
     time.
   blood_not_taken_could_not_reason: null
@@ -1319,6 +1341,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-09 05:52:18.000000'
   face_covering_other_enclosed_places: Yes, always
   face_covering_other_enclosed_places_raw: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -1355,6 +1378,7 @@
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping
   middle_name: Isaac
   ons_household_id: '734353881968'
   opted_out_of_blood_next_window: null
@@ -1460,12 +1484,13 @@
   street: Drumagrove
   study_cohort: null
   survey_completed_datetime: '2022-01-05 13:54:58.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-07 10:47:10.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Erlang is known for its designs that are well
     suited for systems.
   swab_not_taken_missing_parts: null
@@ -1514,10 +1539,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: null
@@ -1581,6 +1608,7 @@
   visit_datetime: '2022-01-05 23:04:23.000000'
   visit_id: '2738'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -1624,6 +1652,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Ukraine
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
@@ -1725,6 +1754,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
@@ -1762,6 +1792,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Living in your own home
   last_suspected_covid_contact_type_raw: Someone I live with
+  long_covid_symptoms: think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Hank
   ons_household_id: '602276804025'
   opted_out_of_blood_next_window: 'No'
@@ -1868,12 +1899,13 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-09 10:19:02.000000'
-  survey_completion_status: IN PROGRESS
+  survey_completion_status: In progress
   survey_last_modified_datetime: '2022-01-03 09:40:01.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: Swab stick
@@ -1921,10 +1953,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -1988,6 +2022,7 @@
   visit_datetime: '2022-01-02 11:17:41.000000'
   visit_id: '3586'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_sore_throat;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -2028,6 +2063,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Yemen
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Make me a sandwich.
   blood_not_taken_could_not_reason: I had bruising or pain
   blood_not_taken_damage_description: Any element of a tuple can be accessed in constant
@@ -2128,6 +2164,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-05 15:20:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -2164,6 +2201,7 @@
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_noisy_breathing
   middle_name: My
   ons_household_id: '822178461989'
   opted_out_of_blood_next_window: 'Yes'
@@ -2269,12 +2307,13 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: '2022-01-03 11:18:46.000000'
-  survey_completion_status: ARCHIVED
+  survey_completion_status: Archived
   survey_last_modified_datetime: '2022-01-06 15:22:39.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: null
@@ -2321,10 +2360,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -2388,6 +2429,7 @@
   visit_datetime: '2022-01-03 11:18:46.000000'
   visit_id: '3892'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -2428,6 +2470,7 @@
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Ecuador
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: I felt unwell
@@ -2533,6 +2576,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -2569,6 +2613,7 @@
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '623704990229'
   opted_out_of_blood_next_window: 'Yes'
@@ -2674,12 +2719,13 @@
   street: Harford
   study_cohort: null
   survey_completed_datetime: '2022-01-03 23:19:23.000000'
-  survey_completion_status: IN PROGRESS
+  survey_completion_status: In progress
   survey_last_modified_datetime: '2022-01-06 23:28:31.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Type classes first appeared in the Haskell programming
     language.
   swab_not_taken_missing_parts: Other please specify
@@ -2727,10 +2773,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -2794,6 +2842,7 @@
   visit_datetime: '2022-01-03 18:48:19.000000'
   visit_id: '6249'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_loss_of_appetite
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -2834,6 +2883,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Laos
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: null
@@ -2938,6 +2988,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
   file_date: null
@@ -2974,6 +3025,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping
   middle_name: Quinn
   ons_household_id: '502848695986'
   opted_out_of_blood_next_window: null
@@ -3081,12 +3133,13 @@
   street: Ballynafey
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-03 06:18:11.000000'
-  survey_completion_status: ARCHIVED
+  survey_completion_status: Archived
   survey_last_modified_datetime: '2022-01-03 10:31:04.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
@@ -3133,10 +3186,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
@@ -3200,6 +3255,7 @@
   visit_datetime: '2022-01-07 20:37:58.000000'
   visit_id: '7045'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -3241,6 +3297,7 @@
   been_outside_uk: 'No'
   been_outside_uk_last_country: Tanzania
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I had bruising or pain
@@ -3340,6 +3397,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-05 16:55:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -3376,6 +3434,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jae
   ons_household_id: '821442294850'
   opted_out_of_blood_next_window: 'No'
@@ -3484,12 +3543,13 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-07 16:06:21.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-03 08:34:56.000000'
-  survey_not_completed_reason_code: TNR - Test Not Returned
+  survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
   survey_response_type: Follow-up Visit
   survey_response_type_raw: Follow-up Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -3538,10 +3598,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'No'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -3605,6 +3667,7 @@
   visit_datetime: '2022-01-08 22:45:03.000000'
   visit_id: '9557'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_low_mood
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -3648,6 +3711,7 @@
   been_outside_uk: null
   been_outside_uk_last_country: Russia
   been_outside_uk_last_return_date: null
+  blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Atoms are used within a program to denote distinguished
     values.
   blood_not_taken_could_not_reason: I felt unwell
@@ -3749,6 +3813,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-09 01:55:47.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
   file_date: null
@@ -3785,6 +3850,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: '568720322983'
   opted_out_of_blood_next_window: 'Yes'
@@ -3895,12 +3961,13 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: '2022-01-01 18:30:04.000000'
-  survey_completion_status: SUBMITTED
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-09 12:32:27.000000'
-  survey_not_completed_reason_code: QNR - Questionnaire No Return
+  survey_not_completed_reason_code: Qnr - questionnaire no return
   survey_response_dataset_major_version: 3
   survey_response_type: First Visit
   survey_response_type_raw: First Survey
+  swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
@@ -3948,10 +4015,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -4015,6 +4084,7 @@
   visit_datetime: '2022-01-02 03:43:57.000000'
   visit_id: '9598'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
