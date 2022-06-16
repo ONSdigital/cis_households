@@ -1612,9 +1612,9 @@ def union_dependent_derivations(df):
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
-                    F.col("{test_type}_sample_barcode_correct") == "No",
-                    F.col("{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col("{test_type}_sample_barcode"))
+                    F.col(f"{test_type}_sample_barcode_correct") == "No",
+                    F.col(f"{test_type}_sample_barcode_user_entered"),
+                ).otherwise(F.col(f"{test_type}_sample_barcode"))
                 # set to sample_barcode if _sample_barcode_correct is yes or null.
             )
     df = assign_column_from_mapped_list_key(
