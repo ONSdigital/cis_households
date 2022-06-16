@@ -369,7 +369,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "digital_survey_collection_mode",
         "survey_completed_datetime",
         "Telephone",
-        ["20-05-2022T21:30:00", "26-05-2022 00:00:00"],
+        ["20-05-2022T21:30:00", "26-05-2022 11:00:00"],
     )
     df = transform_survey_responses_generic(df)
 
