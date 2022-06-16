@@ -107,4 +107,11 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = clean_barcode(df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_flag")
     df = clean_barcode(df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_flag")
+    df = df.drop(
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_number_of_doses",
+        "cis_covid_vaccine_type",
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_received",
+    )
     return df
