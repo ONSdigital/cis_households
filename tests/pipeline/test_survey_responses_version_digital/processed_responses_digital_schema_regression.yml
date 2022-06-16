@@ -10,11 +10,11 @@ fields:
 - metadata: {}
   name: household_digital_enrolment_invited_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: existing_participant_digital_opt_in_window_start_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: existing_participant_digital_opt_in_window_end_datetime
   nullable: true
@@ -1214,7 +1214,7 @@ fields:
 - metadata: {}
   name: think_have_covid_symptom_onset_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: think_have_covid_symptoms
   nullable: true
@@ -1222,19 +1222,19 @@ fields:
 - metadata: {}
   name: other_covid_infection_test_positive_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: other_covid_infection_test_negative_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: other_antibody_test_positive_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: other_antibody_test_negative_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: survey_response_source_file
   nullable: false
