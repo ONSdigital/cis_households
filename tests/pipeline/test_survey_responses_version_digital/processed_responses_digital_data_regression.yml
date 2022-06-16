@@ -41,13 +41,13 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: null
-  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type: Don't know type
   cis_covid_vaccine_type_1: Other / specify
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
-  cis_covid_vaccine_type_3: null
-  cis_covid_vaccine_type_3_raw: null
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3_raw: Don't know type
   cis_covid_vaccine_type_4: Novavax
   cis_covid_vaccine_type_4_raw: Novavax
   cis_covid_vaccine_type_5: Valneva
@@ -61,7 +61,7 @@
   cis_covid_vaccine_type_other_4: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_5: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_6: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_raw: null
+  cis_covid_vaccine_type_raw: Don't know type
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   completion_window_cadence: Weekly
@@ -1280,10 +1280,10 @@
   cis_covid_vaccine_type_2_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_3: Other / specify
   cis_covid_vaccine_type_3_raw: Another vaccine please specify
-  cis_covid_vaccine_type_4: null
-  cis_covid_vaccine_type_4_raw: null
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_4: Don't know type
+  cis_covid_vaccine_type_4_raw: Don't know type
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Another vaccine please specify
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
@@ -2505,16 +2505,16 @@
   cis_covid_vaccine_number_of_doses_raw: 1 dose
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_3: Sinovac
   cis_covid_vaccine_type_3_raw: Sinovac
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Sinopharm
   cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: Houston, we have a problem.
@@ -2916,16 +2916,16 @@
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinopharm
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
   cis_covid_vaccine_type_3: Sinopharm
   cis_covid_vaccine_type_3_raw: Sinopharm
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Moderna
   cis_covid_vaccine_type_6_raw: Moderna
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
