@@ -332,18 +332,6 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
     Call functions to process digital specific variable transformations.
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
-    df = assign_raw_copies(
-        df,
-        [
-            "work_in_additional_paid_employment",
-            "self_isolating",
-            "illness_lasting_over_12_months",
-            "ever_smoked_regularly",
-            "currently_smokes_or_vapes",
-            "hours_a_day_with_someone_else_at_home",
-            "face_covering_work_or_education",
-        ],
-    )
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
