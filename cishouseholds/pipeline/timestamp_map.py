@@ -118,7 +118,6 @@ cis_digital_datetime_map = {
         "cis_covid_vaccine_date_5",
         "cis_covid_vaccine_date_6",
         "cis_covid_vaccine_date",
-        "date_of_birth",
         "improved_visit_date",
         "think_had_covid_onset_date",
         "cis_covid_vaccine_date",
