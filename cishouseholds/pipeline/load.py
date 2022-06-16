@@ -44,7 +44,9 @@ def delete_tables(
 
     def drop_tables(table_names: List[str]):
         for table_name in table_names:
-            if table_name not in protected_tables or drop_protected_tables:
+            if table_name in protected_tables and not drop_protected_tables:
+                print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
+            else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
