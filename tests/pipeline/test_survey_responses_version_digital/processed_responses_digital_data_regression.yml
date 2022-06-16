@@ -41,13 +41,13 @@
   cis_covid_vaccine_number_of_doses: 3 or more
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: null
-  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type: Don't know type
   cis_covid_vaccine_type_1: Other / specify
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
-  cis_covid_vaccine_type_3: null
-  cis_covid_vaccine_type_3_raw: null
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3_raw: Don't know type
   cis_covid_vaccine_type_4: Novavax
   cis_covid_vaccine_type_4_raw: Novavax
   cis_covid_vaccine_type_5: Valneva
@@ -61,7 +61,7 @@
   cis_covid_vaccine_type_other_4: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_5: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_6: You're gonna need a bigger boat.
-  cis_covid_vaccine_type_raw: null
+  cis_covid_vaccine_type_raw: Don't know type
   cis_flu_vaccine_received: 'Yes'
   city: Felixstowe
   completion_window_cadence: Weekly
@@ -102,7 +102,7 @@
     a fixed number of Erlang data types.
   existing_participant_digital_opt_in_status: Participant Opted In
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-05 21:57:52.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-07T17:27:48Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-07 17:27:48.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-06 10:18:09.000000'
   face_covering_other_enclosed_places: Never
   face_covering_other_enclosed_places_raw: Never
@@ -118,7 +118,7 @@
   household_completion_window_id: HW-4564424971
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-02 23:38:10.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-04T18:30:30Z'
+  household_digital_enrolment_invited_datetime: '2022-01-04 18:30:30.000000'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'Yes'
   household_members_under_2_years_count: 'Yes'
@@ -153,16 +153,16 @@
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
-  other_antibody_test_negative_date: 24/10/2021
-  other_antibody_test_positive_date: 04/11/2020
+  other_antibody_test_negative_date: '2021-10-24 00:00:00.000000'
+  other_antibody_test_positive_date: '2020-11-04 00:00:00.000000'
   other_antibody_test_results: Any tests negative, but none positive
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_covid_infection_test_negative_date: 12/05/2020
-  other_covid_infection_test_positive_date: 19/06/2020
+  other_covid_infection_test_negative_date: '2020-05-12 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2020-06-19 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
   other_household_member_care_home_last_28_days: null
@@ -327,7 +327,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: 29/02/2020
+  think_have_covid_symptom_onset_date: '2020-02-29 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: null
@@ -512,7 +512,7 @@
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: null
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-04 23:08:28.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-05T05:23:23Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-05 05:23:23.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-02 15:49:21.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
@@ -528,7 +528,7 @@
   household_completion_window_id: HW-9367679101
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-01 11:05:50.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-06T03:59:52Z'
+  household_digital_enrolment_invited_datetime: '2022-01-06 03:59:52.000000'
   household_invited_to_digital: 'Yes'
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: 'No'
@@ -563,15 +563,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 27/02/2021
-  other_antibody_test_positive_date: 03/11/2020
+  other_antibody_test_negative_date: '2021-02-27 00:00:00.000000'
+  other_antibody_test_positive_date: '2020-11-03 00:00:00.000000'
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 07/11/2021
-  other_covid_infection_test_positive_date: 20/10/2021
+  other_covid_infection_test_negative_date: '2021-11-07 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-10-20 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
@@ -737,7 +737,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: 27/09/2021
+  think_have_covid_symptom_onset_date: '2021-09-27 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -923,7 +923,7 @@
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted Out
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-09 03:34:14.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-03T01:27:05Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-03 01:27:05.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-08 17:40:52.000000'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_other_enclosed_places_raw: Yes sometimes
@@ -939,7 +939,7 @@
   household_completion_window_id: HW-2396451235
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-01 15:18:18.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-06T16:19:05Z'
+  household_digital_enrolment_invited_datetime: '2022-01-06 16:19:05.000000'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: 'Yes'
@@ -974,15 +974,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
-  other_antibody_test_negative_date: 02/04/2021
-  other_antibody_test_positive_date: 01/08/2021
+  other_antibody_test_negative_date: '2021-04-02 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-08-01 00:00:00.000000'
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 25/09/2020
-  other_covid_infection_test_positive_date: 17/11/2021
+  other_covid_infection_test_negative_date: '2020-09-25 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-11-17 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: null
@@ -1148,7 +1148,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: 25/09/2021
+  think_have_covid_symptom_onset_date: '2021-09-25 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -1280,10 +1280,10 @@
   cis_covid_vaccine_type_2_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_3: Other / specify
   cis_covid_vaccine_type_3_raw: Another vaccine please specify
-  cis_covid_vaccine_type_4: null
-  cis_covid_vaccine_type_4_raw: null
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_4: Don't know type
+  cis_covid_vaccine_type_4_raw: Don't know type
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Another vaccine please specify
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
@@ -1337,7 +1337,7 @@
     in the 1930s.
   existing_participant_digital_opt_in_status: Participant Opted Out
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 20:43:33.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-05T05:37:41Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-05 05:37:41.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-09 05:52:18.000000'
   face_covering_other_enclosed_places: Yes, always
   face_covering_other_enclosed_places_raw: Yes always
@@ -1353,7 +1353,7 @@
   household_completion_window_id: HW-8082463081
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-02 15:12:05.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-07T19:21:14Z'
+  household_digital_enrolment_invited_datetime: '2022-01-07 19:21:14.000000'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'No'
   household_members_under_2_years_count: 'Yes'
@@ -1388,16 +1388,16 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 29/06/2021
-  other_antibody_test_positive_date: 03/08/2021
+  other_antibody_test_negative_date: '2021-06-29 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-08-03 00:00:00.000000'
   other_antibody_test_results: Any tests negative, but none positive
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 09/11/2020
-  other_covid_infection_test_positive_date: 24/03/2021
+  other_covid_infection_test_negative_date: '2020-11-09 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-03-24 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
@@ -1561,7 +1561,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: 20/08/2021
+  think_have_covid_symptom_onset_date: '2021-08-20 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -1748,7 +1748,7 @@
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted In
   existing_participant_digital_opt_in_window_end_datetime: null
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-01T05:24:08Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-01 05:24:08.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-03 00:12:48.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
@@ -1767,7 +1767,7 @@
   household_completion_window_id: HW-9300868759
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-07 15:04:40.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-06T18:06:58Z'
+  household_digital_enrolment_invited_datetime: '2022-01-06 18:06:58.000000'
   household_invited_to_digital: null
   household_members_over_2_years_and_not_present_count: 'Yes'
   household_members_under_2_years_count: 'Yes'
@@ -1802,15 +1802,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_antibody_test_negative_date: 07/10/2021
-  other_antibody_test_positive_date: 10/09/2020
+  other_antibody_test_negative_date: '2021-10-07 00:00:00.000000'
+  other_antibody_test_positive_date: '2020-09-10 00:00:00.000000'
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
-  other_covid_infection_test_negative_date: 15/12/2020
-  other_covid_infection_test_positive_date: 28/06/2020
+  other_covid_infection_test_negative_date: '2020-12-15 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2020-06-28 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -1975,7 +1975,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: 07/03/2021
+  think_have_covid_symptom_onset_date: '2021-03-07 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2160,7 +2160,7 @@
     allows any character to be used within an atom.
   existing_participant_digital_opt_in_status: null
   existing_participant_digital_opt_in_window_end_datetime: null
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-02T12:39:12Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-02 12:39:12.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-05 15:20:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
@@ -2176,7 +2176,7 @@
   household_completion_window_id: HW-8828437201
   household_completion_window_status: New
   household_digital_enrolment_datetime: '2022-01-06 16:42:54.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-08T03:56:28Z'
+  household_digital_enrolment_invited_datetime: '2022-01-08 03:56:28.000000'
   household_invited_to_digital: 'Yes'
   household_members_over_2_years_and_not_present_count: 'Yes'
   household_members_under_2_years_count: 'No'
@@ -2211,15 +2211,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 04/11/2021
-  other_antibody_test_positive_date: 26/10/2021
+  other_antibody_test_negative_date: '2021-11-04 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-10-26 00:00:00.000000'
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 08/02/2021
-  other_covid_infection_test_positive_date: 07/09/2020
+  other_covid_infection_test_negative_date: '2021-02-08 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2020-09-07 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
   other_household_member_care_home_last_28_days: null
@@ -2382,7 +2382,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: 01/02/2021
+  think_have_covid_symptom_onset_date: '2021-02-01 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2505,16 +2505,16 @@
   cis_covid_vaccine_number_of_doses_raw: 1 dose
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_3: Sinovac
   cis_covid_vaccine_type_3_raw: Sinovac
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Sinopharm
   cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: Houston, we have a problem.
@@ -2570,7 +2570,7 @@
     concurrent, functional programming language.
   existing_participant_digital_opt_in_status: null
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-08 22:23:09.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-08T07:07:36Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-08 07:07:36.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-01 05:21:13.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
@@ -2588,7 +2588,7 @@
   household_completion_window_id: HW-6911152672
   household_completion_window_status: Open
   household_digital_enrolment_datetime: null
-  household_digital_enrolment_invited_datetime: '2022-01-09T18:51:37Z'
+  household_digital_enrolment_invited_datetime: '2022-01-09 18:51:37.000000'
   household_invited_to_digital: 'Yes'
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: null
@@ -2623,15 +2623,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 11/12/2020
-  other_antibody_test_positive_date: 07/03/2021
+  other_antibody_test_negative_date: '2020-12-11 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-03-07 00:00:00.000000'
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 14/05/2021
-  other_covid_infection_test_positive_date: 13/01/2021
+  other_covid_infection_test_negative_date: '2021-05-14 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-01-13 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: null
@@ -2795,7 +2795,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: 28/04/2021
+  think_have_covid_symptom_onset_date: '2021-04-28 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2916,16 +2916,16 @@
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinopharm
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Sputnik
   cis_covid_vaccine_type_2_raw: Sputnik
   cis_covid_vaccine_type_3: Sinopharm
   cis_covid_vaccine_type_3_raw: Sinopharm
   cis_covid_vaccine_type_4: Moderna
   cis_covid_vaccine_type_4_raw: Moderna
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
   cis_covid_vaccine_type_6: Moderna
   cis_covid_vaccine_type_6_raw: Moderna
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
@@ -2982,7 +2982,7 @@
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted In
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-08 09:37:24.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-08T15:30:30Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-08 15:30:30.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-01 22:47:47.000000'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
@@ -3000,7 +3000,7 @@
   household_completion_window_id: HW-6202235126
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-09 15:31:48.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-04T01:42:21Z'
+  household_digital_enrolment_invited_datetime: '2022-01-04 01:42:21.000000'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: null
   household_members_under_2_years_count: 'Yes'
@@ -3035,15 +3035,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
-  other_antibody_test_negative_date: 02/05/2020
-  other_antibody_test_positive_date: 20/07/2021
+  other_antibody_test_negative_date: '2020-05-02 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-07-20 00:00:00.000000'
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-05 00:00:00.000000'
-  other_covid_infection_test_negative_date: 20/02/2020
-  other_covid_infection_test_positive_date: 04/01/2021
+  other_covid_infection_test_negative_date: '2020-02-20 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-01-04 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -3208,7 +3208,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: 21/06/2021
+  think_have_covid_symptom_onset_date: '2021-06-21 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -3393,7 +3393,7 @@
     reading classic literature, and writing poetry.
   existing_participant_digital_opt_in_status: Participant Opted Out
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 06:04:23.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-04T18:33:09Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-04 18:33:09.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-05 16:55:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
@@ -3409,7 +3409,7 @@
   household_completion_window_id: HW-2744995712
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-09 09:53:47.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-06T13:47:11Z'
+  household_digital_enrolment_invited_datetime: '2022-01-06 13:47:11.000000'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: 'Yes'
   household_members_under_2_years_count: 'Yes'
@@ -3444,15 +3444,15 @@
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 22/02/2020
-  other_antibody_test_positive_date: 26/04/2021
+  other_antibody_test_negative_date: '2020-02-22 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-04-26 00:00:00.000000'
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: 22/05/2020
-  other_covid_infection_test_positive_date: 03/04/2020
+  other_covid_infection_test_negative_date: '2020-05-22 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2020-04-03 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
@@ -3620,7 +3620,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: 08/10/2020
+  think_have_covid_symptom_onset_date: '2020-10-08 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -3809,7 +3809,7 @@
     in the Haskell programming language.
   existing_participant_digital_opt_in_status: Participant Opted In
   existing_participant_digital_opt_in_window_end_datetime: '2022-01-06 06:16:14.000000'
-  existing_participant_digital_opt_in_window_start_datetime: '2022-01-03T08:45:07Z'
+  existing_participant_digital_opt_in_window_start_datetime: '2022-01-03 08:45:07.000000'
   existing_participant_digital_opted_in_datetime: '2022-01-09 01:55:47.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
@@ -3825,7 +3825,7 @@
   household_completion_window_id: HW-9500167403
   household_completion_window_status: New
   household_digital_enrolment_datetime: '2022-01-04 14:16:13.000000'
-  household_digital_enrolment_invited_datetime: '2022-01-06T01:15:19Z'
+  household_digital_enrolment_invited_datetime: '2022-01-06 01:15:19.000000'
   household_invited_to_digital: 'No'
   household_members_over_2_years_and_not_present_count: 'Yes'
   household_members_under_2_years_count: null
@@ -3860,15 +3860,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: 19/12/2021
-  other_antibody_test_positive_date: 09/03/2021
+  other_antibody_test_negative_date: '2021-12-19 00:00:00.000000'
+  other_antibody_test_positive_date: '2021-03-09 00:00:00.000000'
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2022-01-02 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_covid_infection_test_negative_date: 16/11/2020
-  other_covid_infection_test_positive_date: 07/02/2021
+  other_covid_infection_test_negative_date: '2020-11-16 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2021-02-07 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -4037,7 +4037,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: 27/04/2020
+  think_have_covid_symptom_onset_date: '2020-04-27 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
