@@ -391,7 +391,13 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "cis_covid_vaccine_type",
     ]
     df = assign_raw_copies(df, dont_know_columns)
-    dont_know_mapping_dict = {"Prefer not to say": None, "Don't Know": None, "I don't know the type": None}
+    dont_know_mapping_dict = {
+        "Prefer not to say": None,
+        "Don't Know": None,
+        "I don't know the type": "Don't know type",
+        "Dont know": None,
+        "Don&#39;t know": None,
+    }
     df = apply_value_map_multiple_columns(
         df,
         {k: dont_know_mapping_dict for k in dont_know_columns},
