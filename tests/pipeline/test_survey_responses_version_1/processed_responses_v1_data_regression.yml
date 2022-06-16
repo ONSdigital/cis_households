@@ -9,8 +9,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'No'
   city: null
   consent_16_visits: '1'
   consent_1_visit: '1'
@@ -215,8 +213,6 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'Yes'
   city: Sittingbourne
   consent_16_visits: '1'
   consent_1_visit: '0'
@@ -427,8 +423,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'Yes'
   city: Saltash
   consent_16_visits: '0'
   consent_1_visit: '0'
@@ -638,8 +632,6 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'No'
   city: null
   consent_16_visits: '1'
   consent_1_visit: '1'
@@ -849,8 +841,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 0.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: null
   city: null
   consent_16_visits: '0'
   consent_1_visit: '1'
@@ -1062,8 +1052,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'Yes'
   city: Luton
   consent_16_visits: '0'
   consent_1_visit: '1'
@@ -1268,8 +1256,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 0.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: null
   city: null
   consent_16_visits: '1'
   consent_1_visit: '0'
@@ -1477,8 +1463,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 0.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'Yes'
   city: null
   consent_16_visits: '1'
   consent_1_visit: '1'
@@ -1689,8 +1673,6 @@
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'No'
   city: null
   consent_16_visits: '1'
   consent_1_visit: '1'
@@ -1895,8 +1877,6 @@
   blood_sample_barcode_raw: null
   blood_taken: 'No'
   bloods_taken: 1.0
-  cis_covid_vaccine_date: null
-  cis_covid_vaccine_received: 'No'
   city: Inverurie
   consent_16_visits: '0'
   consent_1_visit: '0'

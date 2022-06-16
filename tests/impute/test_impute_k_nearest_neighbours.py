@@ -1,7 +1,7 @@
 from chispa.dataframe_comparer import assert_df_equality
 
-from cishouseholds.pipeline.post_merge_processing import impute_and_flag
-from cishouseholds.pipeline.post_merge_processing import impute_by_k_nearest_neighbours
+from cishouseholds.pipeline.high_level_transformations import impute_and_flag
+from cishouseholds.pipeline.high_level_transformations import impute_by_k_nearest_neighbours
 
 
 def test_impute_by_k_nearest_neighbours(spark_session):

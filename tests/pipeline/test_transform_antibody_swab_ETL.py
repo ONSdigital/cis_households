@@ -1,8 +1,8 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab
+from cishouseholds.pipeline.high_level_merge import merge_blood
+from cishouseholds.pipeline.high_level_merge import merge_swab
 
 
 @pytest.mark.xfail(reason="Test runs, but expected data need defining")
