@@ -29,7 +29,6 @@ def generate_weights(
     lsoa_cis_lookup_df: DataFrame,
     first_run: bool,
 ):
-    # initialise lookup dataframes
     df = join_and_process_lookups(
         household_level_populations_df,
         master_sample_df,
@@ -88,7 +87,6 @@ def generate_weights(
         antibody_weight_column="scaled_design_weight_antibodies_non_adjusted",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
-        swab_group_by_columns=["cis_area_code_20", "sample_source_name"],
     )
     return df
 
@@ -399,8 +397,7 @@ def validate_design_weights(
     antibody_weight_column: str,
     cis_area_column: str,
     country_column: str,
-    swab_group_by_columns: List[str],
-    rounding_value: float = 9,
+    rounding_value: float = 0,
 ):
     """
     Validate the derived design weights by checking 4 conditions are true:
@@ -438,17 +435,9 @@ def validate_design_weights(
     negative_design_weights = df.filter(F.least(swab_weight_column, antibody_weight_column) < 0).count()
     null_design_weights = df.filter(F.col(swab_weight_column).isNull() | F.col(antibody_weight_column).isNull()).count()
 
-    df = assign_distinct_count_in_group(
-        df, "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP", [swab_weight_column], swab_group_by_columns
-    )
-    swab_design_weights_inconsistent_within_group = (
-        False if df.filter((F.col("SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP") > 1)).count() == 0 else True
-    )
     df.drop(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         "ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED",
-        "SWAB_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
-        "ANTIBODY_DISTINCT_DESIGN_WEIGHT_BY_GROUP",
     )
     error_string = ""
 
@@ -468,9 +457,6 @@ def validate_design_weights(
     else:
         check_null_design_weights = False
 
-    if swab_design_weights_inconsistent_within_group:
-        error_string += "\n- Swab design weights are not consistent within CIS area population groups."
-
     if error_string:
         raise DesignWeightError(error_string + "\n")
     return (
@@ -478,7 +464,6 @@ def validate_design_weights(
         swab_design_weights_sum_to_population,
         check_negative_design_weights,
         check_null_design_weights,
-        swab_design_weights_inconsistent_within_group,
     )
 
 
@@ -519,7 +504,7 @@ def chose_scenario_of_design_weight_for_antibody_different_household(
                 / F.col(n_sampled_hh_tranche_by_strata_column)
             ),
         )
-        .otherwise(None),  # TODO: check this
+        .otherwise(None),
     )
     eligibility_pct_val = df.select(eligibility_pct_column).collect()[0][0]
     df = df.drop(eligibility_pct_column)
@@ -548,7 +533,6 @@ def calculate_scenario_ab_antibody_design_weights(
     return df
 
 
-# 1169
 def calculate_scenario_c_antibody_design_weights(
     df: DataFrame,
     column_name_to_assign: str,
