@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.weights import calculate_generic_design_weight_variables
+from cishouseholds.weights.design_weights import calculate_generic_design_weight_variables
 
 
 def test_calculate_generic_design_weight_variables(spark_session):

@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.weights import calculate_scenario_c_antibody_design_weights
+from cishouseholds.weights.design_weights import calculate_scenario_c_antibody_design_weights
 
 
 def test_calculate_scenario_c_antibody_design_weights(spark_session):

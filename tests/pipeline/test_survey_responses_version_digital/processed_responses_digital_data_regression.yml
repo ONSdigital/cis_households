@@ -106,6 +106,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-06 10:18:09.000000'
   face_covering_other_enclosed_places: Never
   face_covering_other_enclosed_places_raw: Never
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -142,6 +143,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood
   middle_name: Jessika
   ons_household_id: '763063387334'
   opted_out_of_blood_next_window: null
@@ -303,10 +305,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -370,6 +374,7 @@
   visit_datetime: '2022-01-09 16:22:46.000000'
   visit_id: '0563'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -511,6 +516,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-02 15:49:21.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -547,6 +553,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Buck
   ons_household_id: '414160350614'
   opted_out_of_blood_next_window: 'Yes'
@@ -708,10 +715,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: null
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -775,6 +784,7 @@
   visit_datetime: '2022-01-06 02:56:55.000000'
   visit_id: '1652'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -917,6 +927,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-08 17:40:52.000000'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_other_enclosed_places_raw: Yes sometimes
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -953,6 +964,7 @@
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: Outside your home
   last_suspected_covid_contact_type_raw: Someone I do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Gale
   ons_household_id: 030988308904
   opted_out_of_blood_next_window: null
@@ -1114,10 +1126,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
@@ -1181,6 +1195,7 @@
   visit_datetime: '2022-01-07 11:10:34.000000'
   visit_id: '2206'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -1326,6 +1341,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-09 05:52:18.000000'
   face_covering_other_enclosed_places: Yes, always
   face_covering_other_enclosed_places_raw: Yes always
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -1362,6 +1378,7 @@
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping
   middle_name: Isaac
   ons_household_id: '734353881968'
   opted_out_of_blood_next_window: null
@@ -1467,7 +1484,7 @@
   street: Drumagrove
   study_cohort: null
   survey_completed_datetime: '2022-01-05 13:54:58.000000'
-  survey_completion_status: Submitted
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-07 10:47:10.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
@@ -1522,10 +1539,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: null
@@ -1589,6 +1608,7 @@
   visit_datetime: '2022-01-05 23:04:23.000000'
   visit_id: '2738'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -1734,6 +1754,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
@@ -1771,6 +1792,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Living in your own home
   last_suspected_covid_contact_type_raw: Someone I live with
+  long_covid_symptoms: think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Hank
   ons_household_id: '602276804025'
   opted_out_of_blood_next_window: 'No'
@@ -1931,10 +1953,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -1998,6 +2022,7 @@
   visit_datetime: '2022-01-02 11:17:41.000000'
   visit_id: '3586'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_sore_throat;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -2139,6 +2164,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-05 15:20:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
   file_date: null
@@ -2175,6 +2201,7 @@
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_noisy_breathing
   middle_name: My
   ons_household_id: '822178461989'
   opted_out_of_blood_next_window: 'Yes'
@@ -2333,10 +2360,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -2400,6 +2429,7 @@
   visit_datetime: '2022-01-03 11:18:46.000000'
   visit_id: '3892'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -2546,6 +2576,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -2582,6 +2613,7 @@
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '623704990229'
   opted_out_of_blood_next_window: 'Yes'
@@ -2741,10 +2773,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'No'
@@ -2808,6 +2842,7 @@
   visit_datetime: '2022-01-03 18:48:19.000000'
   visit_id: '6249'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_loss_of_appetite
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -2953,6 +2988,7 @@
     using public transport
   face_covering_other_enclosed_places_raw: I am not going to other enclosed public
     spaces or using public transport
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
   file_date: null
@@ -2989,6 +3025,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping
   middle_name: Quinn
   ons_household_id: '502848695986'
   opted_out_of_blood_next_window: null
@@ -3149,10 +3186,12 @@
   think_had_covid_symptom_shortness_of_breath: 'No'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'Yes'
   think_have_covid_onset_date: '2022-01-05 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: null
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: null
@@ -3216,6 +3255,7 @@
   visit_datetime: '2022-01-07 20:37:58.000000'
   visit_id: '7045'
   voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -3357,6 +3397,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-05 16:55:15.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: null
@@ -3393,6 +3434,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
+  long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jae
   ons_household_id: '821442294850'
   opted_out_of_blood_next_window: 'No'
@@ -3501,7 +3543,7 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-07 16:06:21.000000'
-  survey_completion_status: Submitted
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-03 08:34:56.000000'
   survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
@@ -3556,10 +3598,12 @@
   think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'No'
   think_have_covid_symptom_cough: 'No'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -3623,6 +3667,7 @@
   visit_datetime: '2022-01-08 22:45:03.000000'
   visit_id: '9557'
   voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_low_mood
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -3768,6 +3813,7 @@
   existing_participant_digital_opted_in_datetime: '2022-01-09 01:55:47.000000'
   face_covering_other_enclosed_places: null
   face_covering_other_enclosed_places_raw: null
+  face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
   file_date: null
@@ -3804,6 +3850,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
+  long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: '568720322983'
   opted_out_of_blood_next_window: 'Yes'
@@ -3914,7 +3961,7 @@
   street: null
   study_cohort: Swab Only
   survey_completed_datetime: '2022-01-01 18:30:04.000000'
-  survey_completion_status: Submitted
+  survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-09 12:32:27.000000'
   survey_not_completed_reason_code: Qnr - questionnaire no return
   survey_response_dataset_major_version: 3
@@ -3968,10 +4015,12 @@
   think_had_covid_symptom_shortness_of_breath: 'Yes'
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
+  think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
   think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
+  think_have_covid_symptom_any: 'Yes'
   think_have_covid_symptom_chest_pain: 'Yes'
   think_have_covid_symptom_cough: 'Yes'
   think_have_covid_symptom_diarrhoea: 'Yes'
@@ -4035,6 +4084,7 @@
   visit_datetime: '2022-01-02 03:43:57.000000'
   visit_id: '9598'
   voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
