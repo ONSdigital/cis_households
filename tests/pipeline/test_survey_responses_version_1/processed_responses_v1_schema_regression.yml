@@ -644,14 +644,6 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: cis_covid_vaccine_received
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
