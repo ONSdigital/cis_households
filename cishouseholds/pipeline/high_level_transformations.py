@@ -1608,7 +1608,7 @@ def union_dependent_derivations(df):
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
     if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "antibody"]:
+        for test_type in ["swab", "blood"]:
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
