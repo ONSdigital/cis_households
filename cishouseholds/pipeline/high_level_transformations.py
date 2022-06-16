@@ -1607,15 +1607,17 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    if "swab_sample_barcode_user_entered" in df.columns:
-        df = df.withColumn(
-            "swab_sample_barcode_combined",
-            F.coalesce(F.col("swab_sample_barcode"), F.col("swab_sample_barcode_user_entered")),
-        )
-        df = df.withColumn(
-            "blood_sample_barcode_combined",
-            F.coalesce(F.col("blood_sample_barcode"), F.col("blood_sample_barcode_user_entered")),
-        )
+    for test_type in ["swab", "antibody"]:
+        if "swab_sample_barcode_user_entered" in df.columns:
+            # TODO: this has to be always true? why is there only for swab?
+            df = df.withColumn(
+                f"{test_type}_sample_barcode_combined",
+                F.when(
+                    F.col("{test_type}_sample_barcode_correct") == "No",
+                    F.col("{test_type}_sample_barcode_user_entered"),
+                ).otherwise(F.col("{test_type}_sample_barcode"))
+                # set to sample_barcode if _sample_barcode_correct is yes or null.
+            )
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
@@ -2055,7 +2057,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         unique_id_column,
         *columns_to_fill,
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
-        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")]
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )
 
 
