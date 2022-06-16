@@ -1244,34 +1244,6 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
-  name: work_in_additional_paid_employment_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: self_isolating_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: illness_lasting_over_12_months_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: ever_smoked_regularly_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: currently_smokes_or_vapes_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: hours_a_day_with_someone_else_at_home_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: face_covering_work_or_education_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: visit_id
   nullable: true
   type: string
@@ -1356,11 +1328,31 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_in_additional_paid_employment_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: work_nursing_or_residential_care_home_raw
   nullable: true
   type: string
 - metadata: {}
   name: work_direct_contact_patients_or_clients_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: illness_lasting_over_12_months_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: ever_smoked_regularly_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: currently_smokes_or_vapes_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1393,6 +1385,10 @@ fields:
   type: string
 - metadata: {}
   name: other_household_member_care_home_last_28_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: hours_a_day_with_someone_else_at_home_raw
   nullable: true
   type: string
 - metadata: {}
@@ -1433,6 +1429,10 @@ fields:
   type: string
 - metadata: {}
   name: times_socialising_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_work_or_education_raw
   nullable: true
   type: string
 - metadata: {}
