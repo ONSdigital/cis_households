@@ -379,7 +379,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "digital_survey_collection_mode",
         "survey_completed_datetime",
         "Telephone",
-        ["20-05-2022T21:30:00", "26-05-2022 00:00:00"],
+        ["20-05-2022T21:30:00", "26-05-2022 11:00:00"],
     )
     df = transform_survey_responses_generic(df)
 
@@ -1624,13 +1624,13 @@ def union_dependent_derivations(df):
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
     if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "antibody"]:
+        for test_type in ["swab", "blood"]:
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
-                    F.col("{test_type}_sample_barcode_correct") == "No",
-                    F.col("{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col("{test_type}_sample_barcode"))
+                    F.col(f"{test_type}_sample_barcode_correct") == "No",
+                    F.col(f"{test_type}_sample_barcode_user_entered"),
+                ).otherwise(F.col(f"{test_type}_sample_barcode"))
                 # set to sample_barcode if _sample_barcode_correct is yes or null.
             )
     df = assign_column_from_mapped_list_key(
