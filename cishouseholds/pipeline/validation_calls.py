@@ -4,7 +4,7 @@ from datetime import datetime
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pipeline.category_map import category_maps
+from cishouseholds.mapping import category_maps
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -33,16 +33,33 @@ def validation_calls(SparkVal):
             }
         },
         "visit_id": {"starts_with": r"DHV"},
-        "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
-        "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        "blood_sample_barcode": {
+            "matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$",
+            "subset": F.col("survey_response_dataset_major_version") <= 2,
+        },
+        "swab_sample_barcode": {
+            "matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$",
+            "subset": F.col("survey_response_dataset_major_version") <= 2,
+        },
         "1tot1_swab": {"matches": 1},  # Swab_matches_not_exact
         # "region_code":"not_null"
+    }
+    duplicate_column_calls = {
+        "blood_sample_barcode": {
+            "matches": r"^BLT[0-9]{8}$",
+            "subset": F.col("survey_response_dataset_major_version") == 3,
+        },
+        "swab_sample_barcode": {
+            "matches": r"^SWT[0-9]{8}$",
+            "subset": F.col("survey_response_dataset_major_version") == 3,
+        },
     }
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
             column_calls[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
     SparkVal.validate_column(column_calls)
+    SparkVal.validate_column(duplicate_column_calls)
 
     vaccine_columns = []
     for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:

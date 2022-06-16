@@ -67,6 +67,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
+  file_date: null
   first_name: Clemmie
   gender: Prefer not to say
   have_email_address: null
@@ -96,7 +97,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Clarence
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -160,6 +161,8 @@
   self_isolating: 'No'
   self_isolating_reason: Yes for other reasons related to reducing your risk of getting
     COVID-19 (e.g. going into hospital orshielding)
+  self_isolating_reason_digital: Yes for other reasons related to reducing your risk
+    of getting COVID-19 (e.g. going into hospital orshielding)
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -208,6 +211,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -228,7 +232,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: null
@@ -368,6 +371,7 @@
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
+  file_date: null
   first_name: Honey
   gender: Female
   have_email_address: 'No'
@@ -396,7 +400,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Hunt
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Outside your home
+  last_suspected_covid_contact_type: Outside your home
   middle_name: Gale
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
@@ -460,6 +464,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -508,6 +513,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: Maybe
   think_have_covid: 'No'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
@@ -528,7 +534,6 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -669,6 +674,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Shawnee
   gender: Prefer not to say
   have_email_address: 'No'
@@ -698,7 +704,7 @@
   last_covid_contact_type: null
   last_name: Waters
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Isaac
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -763,6 +769,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -811,6 +818,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -831,7 +839,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: null
@@ -970,6 +977,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Remedios
   gender: null
   have_email_address: 'Yes'
@@ -999,7 +1007,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Cervantes
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Jae
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -1064,6 +1072,7 @@
   samples_taken_datetime: null
   self_isolating: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
+  self_isolating_reason_digital: Yes, someone you live with had symptoms
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'Yes'
@@ -1112,6 +1121,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -1132,7 +1142,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -1278,6 +1287,7 @@
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, at work/school only
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Forest
   gender: Male
   have_email_address: 'Yes'
@@ -1307,7 +1317,7 @@
   last_covid_contact_type: null
   last_name: Meyers
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Buck
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
@@ -1372,6 +1382,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -1420,6 +1431,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: null
@@ -1440,7 +1452,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -1582,6 +1593,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
+  file_date: null
   first_name: Reiko
   gender: Male
   have_email_address: 'Yes'
@@ -1611,7 +1623,7 @@
   last_covid_contact_type: Outside your home
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: Argentina
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -1678,6 +1690,7 @@
   samples_taken_datetime: null
   self_isolating: 'No'
   self_isolating_reason: 'No'
+  self_isolating_reason_digital: 'No'
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -1726,6 +1739,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'Yes'
@@ -1746,7 +1760,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
@@ -1891,6 +1904,7 @@
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
+  file_date: null
   first_name: Caron
   gender: Male
   have_email_address: null
@@ -1919,7 +1933,7 @@
   last_covid_contact_type: Outside your home
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Jessika
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
@@ -1986,6 +2000,8 @@
   self_isolating: 'No'
   self_isolating_reason: Yes because you live with someone who has/has had symptoms
     or a positive test but you haven't hadsymptoms yourself
+  self_isolating_reason_digital: Yes because you live with someone who has/has had
+    symptoms or a positive test but you haven't hadsymptoms yourself
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -2034,6 +2050,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'No'
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'No'
@@ -2054,7 +2071,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
@@ -2193,6 +2209,7 @@
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: Yes, usually both Work/school/other
   face_covering_work_or_education: null
+  file_date: null
   first_name: Annika
   gender: Male
   have_email_address: null
@@ -2221,7 +2238,7 @@
   last_covid_contact_type: Outside your home
   last_name: Day
   last_suspected_covid_contact_date: null
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Hank
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Participant time constraints
@@ -2286,6 +2303,7 @@
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
@@ -2334,6 +2352,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: null
@@ -2354,7 +2373,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2495,6 +2513,7 @@
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: 'No'
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Myung
   gender: Female
   have_email_address: 'Yes'
@@ -2523,7 +2542,7 @@
   last_covid_contact_type: Living in your own home
   last_name: Mosley
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: null
+  last_suspected_covid_contact_type: null
   middle_name: Quinn
   no_email_address: 1.0
   no_fingerprick_blood_taken_reason: Participant time constraints
@@ -2589,6 +2608,7 @@
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_digital: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -2637,6 +2657,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: null
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
@@ -2657,7 +2678,6 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: null
@@ -2804,6 +2824,7 @@
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, in other situations only
   face_covering_work_or_education: Yes, sometimes
+  file_date: null
   first_name: Shaun
   gender: Female
   have_email_address: null
@@ -2834,7 +2855,7 @@
   last_covid_contact_type: null
   last_name: Bolton
   last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_suspected_covid_type: Living in your own home
+  last_suspected_covid_contact_type: Living in your own home
   middle_name: My
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Other
@@ -2899,6 +2920,7 @@
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
   self_isolating: 'No'
   self_isolating_reason: 'No'
+  self_isolating_reason_digital: 'No'
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
@@ -2947,6 +2969,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'No'
@@ -2967,7 +2990,6 @@
   think_have_covid_symptom_muscle_ache: null
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'

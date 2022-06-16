@@ -8,10 +8,8 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.weights.weights import DesignWeightError
-from cishouseholds.weights.weights import validate_design_weights_or_precal
-
-# from cishouseholds.derive import assign_ethnicity_white
+from cishouseholds.weights.design_weights import DesignWeightError
+from cishouseholds.weights.design_weights import validate_design_weights
 
 
 def pre_calibration_high_level(
@@ -57,13 +55,12 @@ def pre_calibration_high_level(
     df = grouping_from_lookup(df)
     df = create_calibration_var(df)
 
-    validate_design_weights_or_precal(
+    validate_design_weights(
         df=df,
         num_households_by_cis_column="number_of_households_by_cis_area",
         num_households_by_country_column="number_of_households_by_country",
         swab_weight_column="scaled_design_weight_adjusted_swab",
         antibody_weight_column="scaled_design_weight_adjusted_antibody",
-        group_by_columns=["participant_id", "sample_case", "cis_area_code_20"],
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
     )
@@ -86,7 +83,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
     """
     This function will carry forward last observation of antibodies,
     swab or longcovid result prioritising positive cases and age of patient.
-
     Parameters
     ----------
     df
@@ -146,7 +142,6 @@ def dataset_flag_generation_evernever_OR_longcovid(
 def cutoff_day_to_ever_never(df, days, cutoff_date):
     """
     This function will flag the visit_dates coming after a cutoff_date provided after days
-
     Parameters
     ----------
     df
@@ -183,7 +178,6 @@ def dataset_generation(
         - antibodies 28 days
         - long covid 28 days
         - long covid 42 days
-
     Parameters
     ----------
     df
@@ -300,7 +294,6 @@ def survey_extraction_household_data_response_factor(
     required_extracts_column_list
     mandatory_extracts_column_list
     population_join_column: Only swab/antibodies
-
     """
     # STEP 1 - create: extract_dataset as per requirements - TODO can we test this?
     # (i.e extract dataset for calibration from survey_data dataset (individual level))

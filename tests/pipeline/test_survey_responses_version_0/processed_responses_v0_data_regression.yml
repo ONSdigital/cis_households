@@ -21,6 +21,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: null
   ethnicity: Any other ethnic group
+  file_date: null
   full_name: Crystle Osborn
   hh_id: '212633229661'
   household_been_care_home_last_28_days: 'No'
@@ -42,7 +43,7 @@
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Elementary, my dear Watson.
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
-  last_suspected_covid_type: Elementary, my dear Watson.
+  last_suspected_covid_contact_type: Elementary, my dear Watson.
   no_email_address: 1.0
   ons_household_id: '212633229661'
   other_covid_infection_test: 'Yes'
@@ -174,6 +175,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: depict1972@gsnail.ac.uk
   ethnicity: Any other Mixed background
+  file_date: null
   full_name: Jae Cervantes
   hh_id: '558190156218'
   household_been_care_home_last_28_days: 'Yes'
@@ -197,7 +199,7 @@
   last_covid_contact_type: Those who refuse to learn from history are condemned to
     repeat it.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
-  last_suspected_covid_type: I'm gonna make him an offer he can't refuse.
+  last_suspected_covid_contact_type: I'm gonna make him an offer he can't refuse.
   no_email_address: 1.0
   ons_household_id: '558190156218'
   other_covid_infection_test: null
@@ -326,6 +328,7 @@
   days_since_think_had_covid_group: null
   email_address: null
   ethnicity: Mixed-White & Black African
+  file_date: null
   full_name: Argentina Brady
   hh_id: '167403959807'
   household_been_care_home_last_28_days: 'Yes'
@@ -347,7 +350,7 @@
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
-  last_suspected_covid_type: Here's looking at you, kid.
+  last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 1.0
   ons_household_id: '167403959807'
   other_covid_infection_test: null
@@ -481,6 +484,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: duckers1863@gsnail.ac.uk
   ethnicity: Asian or Asian British-Chinese
+  file_date: null
   full_name: Barton Ramos
   hh_id: '846198988073'
   household_been_care_home_last_28_days: 'No'
@@ -503,8 +507,8 @@
   last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
     in my pajamas, I don't know.
   last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '846198988073'
   other_covid_infection_test: 'Yes'
@@ -637,6 +641,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: uncontenting1914@gsnail.ac.uk
   ethnicity: Any other Black background
+  file_date: null
   full_name: Annika Reilly
   hh_id: '602276804025'
   household_been_care_home_last_28_days: 'No'
@@ -659,8 +664,8 @@
   last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
     lucky?"" Well, do ya? Punk!"'
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_suspected_covid_type: A census taker once tried to test me. I ate his liver
-    with some fava beans and a nice Chianti.
+  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   no_email_address: 1.0
   ons_household_id: '602276804025'
   other_covid_infection_test: 'No'
@@ -791,6 +796,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: cortina2016@gsnail.ac.uk
   ethnicity: Any other Black background
+  file_date: null
   full_name: Alan Robbins
   hh_id: '769043821442'
   household_been_care_home_last_28_days: 'No'
@@ -812,8 +818,8 @@
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '769043821442'
   other_covid_infection_test: 'Yes'
@@ -945,6 +951,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: null
   ethnicity: Mixed-White & Black African
+  file_date: null
   full_name: Caron Barton
   hh_id: '105638762102'
   household_been_care_home_last_28_days: null
@@ -966,8 +973,8 @@
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Frankly, my dear, I don't give a damn.
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_type: Mama always said life was like a box of chocolates. You
-    never know what you're gonna get.
+  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   no_email_address: 1.0
   ons_household_id: '105638762102'
   other_covid_infection_test: 'No'
@@ -1101,6 +1108,7 @@
   days_since_think_had_covid_group: 0-14
   email_address: elizabethan1976@gsnail.ac.uk
   ethnicity: Mixed-White & Black Caribbean
+  file_date: null
   full_name: Clemmie Harper
   hh_id: '826911152672'
   household_been_care_home_last_28_days: null
@@ -1122,8 +1130,8 @@
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_type: Houston, we have a problem.
   last_suspected_covid_contact_date: '2022-01-01 00:00:00.000000'
-  last_suspected_covid_type: Ask not what your country can do for you; ask what you
-    can do for your country.
+  last_suspected_covid_contact_type: Ask not what your country can do for you; ask
+    what you can do for your country.
   no_email_address: 0.0
   ons_household_id: '826911152672'
   other_covid_infection_test: 'No'
@@ -1254,6 +1262,7 @@
   days_since_think_had_covid_group: null
   email_address: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
+  file_date: null
   full_name: Honey Porter
   hh_id: '407714528425'
   household_been_care_home_last_28_days: null
@@ -1275,7 +1284,8 @@
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
-  last_suspected_covid_type: Get your stinking paws off me, you damned dirty ape.
+  last_suspected_covid_contact_type: Get your stinking paws off me, you damned dirty
+    ape.
   no_email_address: 0.0
   ons_household_id: '407714528425'
   other_covid_infection_test: 'No'
@@ -1405,6 +1415,7 @@
   days_since_think_had_covid_group: null
   email_address: null
   ethnicity: Asian or Asian British-Indian
+  file_date: null
   full_name: Carlos Martin
   hh_id: '736535270957'
   household_been_care_home_last_28_days: 'No'
@@ -1428,8 +1439,8 @@
   last_covid_contact_type: A census taker once tried to test me. I ate his liver with
     some fava beans and a nice Chianti.
   last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_suspected_covid_type: One morning I shot an elephant in my pajamas. How he
-    got in my pajamas, I don't know.
+  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   no_email_address: 0.0
   ons_household_id: '736535270957'
   other_covid_infection_test: null

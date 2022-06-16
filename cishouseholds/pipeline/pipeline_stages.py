@@ -19,18 +19,31 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
+from cishouseholds.mapping import category_maps
+from cishouseholds.mapping import column_name_maps
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.category_map import category_maps
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_merge import load_to_data_warehouse_tables
+from cishouseholds.pipeline.high_level_merge import merge_blood_process_filtering
+from cishouseholds.pipeline.high_level_merge import merge_blood_process_preparation
+from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
+from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
+from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
+from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import impute_key_columns
+from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
+from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
-from cishouseholds.pipeline.input_variable_names import column_name_maps
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -39,34 +52,21 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
-from cishouseholds.pipeline.merge_antibody_swab_ETL import load_to_data_warehouse_tables
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_filtering
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_process_preparation
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood_xtox_flag
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_filtering
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_process_preparation
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_swab_xtox_flag
-from cishouseholds.pipeline.merge_process import merge_process_validation
-from cishouseholds.pipeline.post_merge_processing import derive_overall_vaccination
-from cishouseholds.pipeline.post_merge_processing import impute_key_columns
-from cishouseholds.pipeline.post_merge_processing import nims_transformations
+from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
-from cishouseholds.pipeline.survey_responses_version_2_ETL import fill_forwards_transformations
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_cleaning
-from cishouseholds.pipeline.survey_responses_version_2_ETL import union_dependent_derivations
-from cishouseholds.pipeline.validation_ETL import validation_ETL
+from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
+from cishouseholds.weights.design_weights import generate_weights
+from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
-from cishouseholds.weights.weights import generate_weights
-from cishouseholds.weights.weights import household_level_populations
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -292,12 +292,12 @@ def generate_input_processing_function(
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
-            return
+            return "No files"
 
         valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {resource_path}.")  # functional
-            return
+            return "Error"
 
         df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
@@ -317,6 +317,7 @@ def generate_input_processing_function(
             update_table_and_log_source_files(
                 df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
             )
+            return "updated"
         return df
 
     _inner_function.__name__ = stage_name
@@ -337,6 +338,22 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     df_list = [extract_from_table(table) for table in tables_to_union]
 
     union_dataframes_to_hive(unioned_survey_responses_table, df_list)
+
+
+@register_pipeline_stage("replace_design_weights")
+def replace_design_weights(
+    design_weight_lookup_table: str,
+    survey_responses_table: str,
+    weighted_survey_responses_table: str,
+    design_weight_columns: List[str],
+):
+    design_weight_lookup = extract_from_table(design_weight_lookup_table)
+    survey_responses = extract_from_table(survey_responses_table)
+    survey_responses = survey_responses.drop(*design_weight_columns)
+    survey_responses = survey_responses.join(
+        design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
+    )
+    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -478,14 +495,16 @@ def lookup_based_editing(
         "new_cohort", "old_cohort"
     )
     df = df.join(
-        F.broadcast(travel_countries_lookup),
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
         how="left",
         on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
     )
     df = df.withColumn(
         "been_outside_uk_last_country",
-        F.coalesce(F.col("been_outside_uk_last_country_new"), F.col("been_outside_uk_last_country")),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new")
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
 
     if "lower_super_output_area_code_11" in df.columns:
         df = df.join(
@@ -889,10 +908,10 @@ def report(
     unique_id_column
         column that should hold unique id for each row in responses file
     validation_failure_flag_column
-        name of the column containing the previously created to containt validation error messages
+        name of the column containing the previously created to contain validation error messages
         name should match that created in validate_survey_responses stage
     duplicate_count_column_name
-        name of the column containing the previously created to containt count of rows that repeat
+        name of the column containing the previously created to contain count of rows that repeat
         on the responses table. name should match that created in validate_survey_responses stage
     valid_survey_responses_table
         table name of hdfs table of survey responses passing validation checks
@@ -904,12 +923,8 @@ def report(
     valid_df = extract_from_table(valid_survey_responses_table)
     invalid_df = extract_from_table(invalid_survey_responses_table)
 
-    valid_df_errors = generate_error_table(
-        valid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
-    invalid_df_errors = generate_error_table(
-        invalid_survey_responses_errors_table, error_priority_map, validation_failure_flag_column
-    )
+    valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
+    invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
 
     processed_file_log = extract_from_table("processed_filenames")
 
@@ -1307,7 +1322,7 @@ def tables_to_csv(
 
     file_directory = Path(outgoing_directory) / output_datetime_str
     manifest = Manifest(outgoing_directory, pipeline_run_datetime=output_datetime, dry_run=dry_run)
-    category_map_dictionary = category_maps[category_map]
+    category_map_dictionary = category_maps.get(category_map)
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
@@ -1319,7 +1334,8 @@ def tables_to_csv(
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
 
         df = df.select(*columns_to_select)
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        if category_map_dictionary is not None:
+            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)
@@ -1339,6 +1355,7 @@ def sample_file_ETL(
     household_level_populations_table,
     old_sample_file,
     new_sample_file,
+    new_sample_source_name,
     tranche,
     postcode_lookup,
     master_sample_file,
@@ -1372,6 +1389,7 @@ def sample_file_ETL(
         master_sample_df,
         old_sample_df,
         new_sample_df,
+        new_sample_source_name,
         tranche_df,
         postcode_lookup_df,
         country_lookup_df,

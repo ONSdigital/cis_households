@@ -1,6 +1,6 @@
 survey_responses_v2_datetime_map = {
     "dd/MM/yyyy": [
-        "think_have_covid_symptom_onset_date",
+        "think_have_covid_onset_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
@@ -22,7 +22,7 @@ survey_responses_v2_datetime_map = {
 
 survey_responses_v1_datetime_map = {
     "dd/MM/yyyy": [
-        "think_have_covid_symptom_onset_date",
+        "think_have_covid_onset_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
@@ -41,7 +41,7 @@ survey_responses_v1_datetime_map = {
 
 survey_responses_v0_datetime_map = {
     "dd/MM/yyyy": [
-        "think_have_covid_symptom_onset_date",
+        "think_have_covid_date",
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "think_had_covid_onset_date",
@@ -58,7 +58,7 @@ blood_datetime_map = {
 }
 
 cis_digital_datetime_map = {
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": [
+    "yyyy-MM-dd'T'HH:mm:ss'Z'": [
         "household_digital_enrolment_invited_datetime" "existing_participant_digital_opt_in_window_start_datetime",
         "existing_participant_digital_opt_in_window_end_datetime",
         "existing_participant_digital_opted_in_datetime",

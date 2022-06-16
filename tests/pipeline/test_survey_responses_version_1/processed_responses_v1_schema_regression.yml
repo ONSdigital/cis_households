@@ -388,7 +388,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_onset_date
+  name: think_have_covid_onset_date
   nullable: true
   type: timestamp
 - metadata: {}
@@ -468,7 +468,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -708,6 +708,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: bad_email
   nullable: true
   type: boolean
@@ -744,10 +748,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating
-  nullable: true
-  type: string
-- metadata: {}
   name: work_social_care
   nullable: true
   type: string
@@ -765,6 +765,10 @@ fields:
   type: string
 - metadata: {}
   name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating
   nullable: true
   type: string
 - metadata: {}

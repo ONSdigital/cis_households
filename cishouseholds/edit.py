@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from typing import Any
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -13,6 +14,38 @@ from pyspark.sql import DataFrame
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
+
+
+def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
+    """
+    apply lower case to all but first letter of string in list of columns
+    """
+    for col in columns:
+        df = df.withColumn(
+            col,
+            F.concat(
+                F.upper(F.substring(F.col(col), 0, 1)),
+                F.lower(F.expr(f"substring({col}, 2, length({col})-1)")),
+            ),
+        )
+    return df
+
+
+def update_column_in_time_window(
+    df: DataFrame, column_name_to_update: str, time_column: str, new_value: Any, time_window: List[str]
+):
+    """
+    Update the value of a column to a fixed value if the time the participant filled out the survey exists in a window
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(time_column) > F.to_timestamp(F.lit(time_window[0])))
+            & (F.col(time_column) < F.to_timestamp(F.lit(time_window[1]))),
+            new_value,
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
 
 
 def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
