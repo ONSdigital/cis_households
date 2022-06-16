@@ -398,7 +398,7 @@ fields:
 - metadata: {}
   name: sample_kit_dispatched_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: sample_kit_not_dispatched_code
   nullable: true
@@ -422,7 +422,7 @@ fields:
 - metadata: {}
   name: survey_completed_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: survey_not_completed_reason_code
   nullable: true
@@ -498,7 +498,7 @@ fields:
 - metadata: {}
   name: swab_taken_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: swab_returned
   nullable: true
@@ -542,7 +542,7 @@ fields:
 - metadata: {}
   name: blood_taken_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: blood_returned
   nullable: true
@@ -1257,6 +1257,10 @@ fields:
   type: string
 - metadata: {}
   name: visit_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: visit_date_type
   nullable: true
   type: string
 - metadata: {}
