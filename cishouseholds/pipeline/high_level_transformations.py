@@ -1609,8 +1609,6 @@ def union_dependent_derivations(df):
     }
     if "swab_sample_barcode_user_entered" in df.columns:
         for test_type in ["swab", "antibody"]:
-
-            # TODO: this has to be always true? why is there only for swab?
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
