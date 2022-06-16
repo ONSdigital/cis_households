@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.merge_process import merge_process_filtering
+from cishouseholds.pipeline.merge_process_combination import merge_process_filtering
 
 
 @pytest.mark.xfail(reason="MERGE OPTIMISATION WIP")

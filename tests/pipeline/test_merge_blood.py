@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.merge_antibody_swab_ETL import merge_blood
+from cishouseholds.pipeline.high_level_merge import merge_blood
 
 
 @pytest.mark.xfail(reason="MERGE OPTIMISATION WIP")

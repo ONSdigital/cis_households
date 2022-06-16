@@ -2,7 +2,7 @@ from chispa import assert_df_equality
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 
-from cishouseholds.weights.weights import scale_antibody_design_weights
+from cishouseholds.weights.design_weights import scale_antibody_design_weights
 
 
 def test_carry_forward_design_weights(spark_session):
