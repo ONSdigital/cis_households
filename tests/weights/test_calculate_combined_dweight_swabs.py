@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.weights import calculate_combined_design_weight_swabs
+from cishouseholds.weights.design_weights import calculate_combined_design_weight_swabs
 
 
 def test_calculate_combined_design_weight_swabs(spark_session):

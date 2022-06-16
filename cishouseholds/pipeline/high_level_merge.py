@@ -7,10 +7,10 @@ from cishouseholds.merge import many_to_one_swab_flag
 from cishouseholds.merge import one_to_many_antibody_flag
 from cishouseholds.merge import one_to_many_swabs
 from cishouseholds.pipeline.load import update_table
-from cishouseholds.pipeline.merge_process import execute_merge_specific_antibody
-from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
-from cishouseholds.pipeline.merge_process import merge_process_filtering
-from cishouseholds.pipeline.merge_process import merge_process_preparation
+from cishouseholds.pipeline.merge_process_combination import execute_merge_specific_antibody
+from cishouseholds.pipeline.merge_process_combination import execute_merge_specific_swabs
+from cishouseholds.pipeline.merge_process_combination import merge_process_filtering
+from cishouseholds.pipeline.merge_process_combination import merge_process_preparation
 
 
 def load_to_data_warehouse_tables(output_df_list, output_table_list):

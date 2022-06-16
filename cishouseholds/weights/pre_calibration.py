@@ -8,8 +8,8 @@ from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_from_lookup
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.weights.weights import DesignWeightError
-from cishouseholds.weights.weights import validate_design_weights
+from cishouseholds.weights.design_weights import DesignWeightError
+from cishouseholds.weights.design_weights import validate_design_weights
 
 
 def pre_calibration_high_level(
