@@ -114,10 +114,15 @@ cis_digital_datetime_map = {
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "cis_covid_vaccine_date",
+        "think_have_covid_onset_date",
         "think_have_covid_symptom_onset_date",  # tempvar
+        "other_covid_infection_test_first_positive_date",
         "other_covid_infection_test_positive_date",  # tempvar
+        "other_covid_infection_test_last_negative_date",
         "other_covid_infection_test_negative_date",  # tempvar
+        "other_antibody_test_first_positive_date",
         "other_antibody_test_positive_date",  # tempvar
+        "other_antibody_test_last_negative_date",
         "other_antibody_test_negative_date",  # tempvar
     ],
 }
