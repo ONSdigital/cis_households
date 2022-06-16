@@ -1,6 +1,6 @@
 import pytest
 
-from cishouseholds.pipeline.merge_process import execute_merge_specific_swabs
+from cishouseholds.pipeline.merge_process_combination import execute_merge_specific_swabs
 
 # from chispa import assert_df_equality
 

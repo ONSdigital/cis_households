@@ -2,8 +2,8 @@ import pytest
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 
-from cishouseholds.weights.weights import DesignWeightError
-from cishouseholds.weights.weights import validate_design_weights
+from cishouseholds.weights.design_weights import DesignWeightError
+from cishouseholds.weights.design_weights import validate_design_weights
 
 
 @pytest.mark.xfail(reason="Input data do not pass checks")
