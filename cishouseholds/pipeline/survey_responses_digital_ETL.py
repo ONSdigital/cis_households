@@ -51,7 +51,7 @@ def digital_specific_transformations(df):
     )
     df = derive_had_symptom_last_7days_from_digital(
         df,
-        "had_symptom_last_7days",
+        "think_have_covid_symptom_any",
         "think_have_covid_symptom_",
         [
             "fever",
@@ -65,7 +65,7 @@ def digital_specific_transformations(df):
             "abdominal_pain",
             "diarrhoea",
             "loss_of_taste",
-            "loff_of_smell",
+            "loss_of_smell",
         ],
     )
     return df
