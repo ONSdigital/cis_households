@@ -153,16 +153,16 @@
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-04 00:00:00.000000'
-  other_antibody_test_negative_date: '2021-10-24 00:00:00.000000'
-  other_antibody_test_positive_date: '2020-11-04 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: Any tests negative, but none positive
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_covid_infection_test_negative_date: '2020-05-12 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2020-06-19 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
   other_household_member_care_home_last_28_days: null
@@ -327,7 +327,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2020-02-29 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: null
@@ -564,15 +564,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2021-02-27 00:00:00.000000'
-  other_antibody_test_positive_date: '2020-11-03 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2021-11-07 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-10-20 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
@@ -738,7 +738,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2021-09-27 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -976,15 +976,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
-  other_antibody_test_negative_date: '2021-04-02 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-08-01 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2020-09-25 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-11-17 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: null
@@ -1150,7 +1150,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: '2021-09-25 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'Yes'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -1391,16 +1391,16 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2021-06-29 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-08-03 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: Any tests negative, but none positive
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2020-11-09 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-03-24 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
@@ -1564,7 +1564,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: '2021-08-20 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -1806,15 +1806,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
-  other_antibody_test_negative_date: '2021-10-07 00:00:00.000000'
-  other_antibody_test_positive_date: '2020-09-10 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
-  other_covid_infection_test_negative_date: '2020-12-15 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2020-06-28 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -1979,7 +1979,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2021-03-07 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2216,15 +2216,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2021-11-04 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-10-26 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2021-02-08 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2020-09-07 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
   other_household_member_care_home_last_28_days: null
@@ -2387,7 +2387,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_noisy_breathing: 'No'
-  think_have_covid_symptom_onset_date: '2021-02-01 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -2629,15 +2629,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2020-12-11 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-03-07 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2021-05-14 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-01-13 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: null
@@ -2801,7 +2801,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: null
-  think_have_covid_symptom_onset_date: '2021-04-28 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -3042,15 +3042,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-02 00:00:00.000000'
-  other_antibody_test_negative_date: '2020-05-02 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-07-20 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-05 00:00:00.000000'
-  other_covid_infection_test_negative_date: '2020-02-20 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-01-04 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -3215,7 +3215,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: '2021-06-21 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -3452,15 +3452,15 @@
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2020-02-22 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-04-26 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: One or more positive test(s)
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
-  other_covid_infection_test_negative_date: '2020-05-22 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2020-04-03 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
@@ -3628,7 +3628,7 @@
   think_have_covid_symptom_muscle_ache: 'No'
   think_have_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: '2020-10-08 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: 'No'
   think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_covid_symptom_shortness_of_breath: 'No'
@@ -3869,15 +3869,15 @@
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
   other_antibody_test_last_negative_date: null
-  other_antibody_test_negative_date: '2021-12-19 00:00:00.000000'
-  other_antibody_test_positive_date: '2021-03-09 00:00:00.000000'
+  other_antibody_test_negative_date: null
+  other_antibody_test_positive_date: null
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2022-01-02 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
-  other_covid_infection_test_negative_date: '2020-11-16 00:00:00.000000'
-  other_covid_infection_test_positive_date: '2021-02-07 00:00:00.000000'
+  other_covid_infection_test_negative_date: null
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
@@ -4046,7 +4046,7 @@
   think_have_covid_symptom_muscle_ache: 'Yes'
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_noisy_breathing: 'Yes'
-  think_have_covid_symptom_onset_date: '2020-04-27 00:00:00.000000'
+  think_have_covid_symptom_onset_date: null
   think_have_covid_symptom_palpitations: null
   think_have_covid_symptom_runny_nose_or_sneezing: null
   think_have_covid_symptom_shortness_of_breath: 'No'

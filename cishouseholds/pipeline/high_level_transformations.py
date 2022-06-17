@@ -379,7 +379,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "digital_survey_collection_mode",
         "survey_completed_datetime",
         "Telephone",
-        ["20-05-2022T21:30:00", "26-05-2022 11:00:00"],
+        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
     df = transform_survey_responses_generic(df)
 
@@ -1820,6 +1820,43 @@ def create_formatted_datetime_string_columns(df):
         "visit_date_string": "visit_datetime",
         "samples_taken_date_string": "samples_taken_datetime",
     }
+    datetime_format_dict = {
+        "visit_datetime_string": "visit_datetime",
+        "samples_taken_datetime_string": "samples_taken_datetime",
+    }
+    date_format_string_list = set(
+        [
+            "date_of_birth",
+            "improved_visit_date",
+            "think_had_covid_onset_date",
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+            "cis_covid_vaccine_date_3",
+            "cis_covid_vaccine_date_4",
+            "last_suspected_covid_contact_date",
+            "last_covid_contact_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "been_outside_uk_last_return_date",
+            "think_have_covid_onset_date",
+            "swab_return_date",
+            "swab_return_future_date",
+            "blood_return_date",
+            "blood_return_future_date",
+            "cis_covid_vaccine_date_5",
+            "cis_covid_vaccine_date_6",
+            "cis_covid_vaccine_date",
+            "think_have_covid_symptom_onset_date",  # tempvar
+            "other_covid_infection_test_positive_date",  # tempvar
+            "other_covid_infection_test_negative_date",  # tempvar
+            "other_antibody_test_positive_date",  # tempvar
+            "other_antibody_test_negative_date",  # tempvar
+        ]
+        + cis_digital_datetime_map["yyyy-MM-dd"]
+    )
 
     for column_name_to_assign, timestamp_column in date_format_dict.items():
         if timestamp_column in df.columns:
@@ -1830,17 +1867,33 @@ def create_formatted_datetime_string_columns(df):
                 time_format="ddMMMyyyy",
                 lower_case=True,
             )
-    for format, column_to_format_list in cis_digital_datetime_map.items():
-        for timestamp_column in column_to_format_list:
-            if timestamp_column in df.columns:
-                df = assign_column_to_date_string(
-                    df=df,
-                    column_name_to_assign=timestamp_column + "_string",
-                    reference_column=timestamp_column,
-                    time_format=format,
-                    lower_case=True,
-                )
-
+    for timestamp_column in date_format_string_list:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
+    for column_name_to_assign, timestamp_column in datetime_format_dict.items():
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
     return df
 
 
