@@ -15,6 +15,7 @@ from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_date_from_filename
+from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_fake_id
@@ -355,15 +356,24 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
     )
 
-    df = df.withColumn(
-        "visit_datetime",
-        F.coalesce(
-            F.col("swab_taken_datetime"),
-            F.col("blood_taken_datetime"),
-            F.col("survey_completed_datetime"),
-            F.col("sample_kit_dispatched_datetime"),
-        ),
-    )  # Placeholder for 2199
+    df = assign_datetime_from_coalesced_columns_and_log_source(
+        df,
+        column_name_to_assign="visit_datetime",
+        source_reference_column_name="visit_date_type",
+        ordered_columns=[
+            "swab_taken_datetime",
+            "blood_taken_datetime",
+            "survey_completed_datetime",
+            "survey_last_modified_datetime",
+            "swab_return_date",
+            "blood_return_date",
+            "swab_return_future_date",
+            "blood_return_future_date",
+        ],
+        date_format="yyyy-MM-dd",
+        time_format="HH:mm:ss",
+        default_timestamp="12:00:00",
+    )
     df = update_column_in_time_window(
         df,
         "digital_survey_collection_mode",
