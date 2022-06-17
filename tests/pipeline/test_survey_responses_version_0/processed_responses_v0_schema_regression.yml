@@ -552,14 +552,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_taken
-  nullable: false
-  type: string
-- metadata: {}
-  name: blood_taken
-  nullable: false
-  type: string
-- metadata: {}
   name: days_since_think_had_covid
   nullable: true
   type: integer
@@ -570,6 +562,14 @@ fields:
 - metadata: {}
   name: hh_id
   nullable: true
+  type: string
+- metadata: {}
+  name: swab_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_taken
+  nullable: false
   type: string
 - metadata: {}
   name: survey_response_dataset_major_version

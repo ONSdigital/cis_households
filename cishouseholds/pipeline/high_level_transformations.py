@@ -185,6 +185,9 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 0 survey deltas.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
@@ -287,6 +290,9 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 1 survey deltas.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
 
     df = df.withColumn("work_status_v0", F.col("work_status_v1"))
@@ -343,6 +349,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
 
 
 def digital_specific_transformations(df: DataFrame) -> DataFrame:
+    # TODO: should this name be consistent to the way v0, v1, v2 are called?
     """
     Call functions to process digital specific variable transformations.
     """
@@ -945,8 +952,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
-    df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
-    df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
@@ -1324,6 +1329,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
 
     # Derive from final V2 values, not raw
