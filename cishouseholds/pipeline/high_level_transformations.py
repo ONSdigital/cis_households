@@ -348,10 +348,9 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     return df
 
 
-def digital_specific_transformations(df: DataFrame) -> DataFrame:
-    # TODO: should this name be consistent to the way v0, v1, v2 are called?
+def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     """
-    Call functions to process digital specific variable transformations.
+    Call transformations to digital data necessary before generic transformations are applied
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
@@ -388,8 +387,13 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
-    df = transform_survey_responses_generic(df)
 
+
+def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
+    # TODO: should this name be consistent to the way v0, v1, v2 are called?
+    """
+    Call functions to process digital specific variable transformations.
+    """
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",

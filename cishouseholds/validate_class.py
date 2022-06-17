@@ -104,7 +104,9 @@ class SparkValidate:
         if len(missing) == 0:
             self.execute_check(logic, error_message)
         else:
-            print(" - Falied to run check as required " + ",".join(missing) + " missing from dataframe")  # functional
+            print(
+                "    - Falied to run check as required " + ",".join(missing) + " missing from dataframe"
+            )  # functional
 
     def execute_check(self, check, error_message, *params, subset=None, **kwargs):
         if callable(check):
