@@ -473,7 +473,7 @@ fields:
   type: string
 - metadata: {}
   name: swab_taken
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_reason
@@ -513,7 +513,7 @@ fields:
   type: timestamp
 - metadata: {}
   name: blood_taken
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_reason
