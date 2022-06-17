@@ -1296,6 +1296,7 @@ def tables_to_csv(
     outgoing_directory,
     tables_to_csv_config_file,
     category_map,
+    filter,
     sep="|",
     extension=".txt",
     dry_run=False,
@@ -1333,7 +1334,7 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
 
-        df = df.select(*columns_to_select)
+        df = df.filter(*[F.col(col) == val for col, val in filter.items()]).select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
