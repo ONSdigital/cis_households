@@ -387,6 +387,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
+    return df
 
 
 def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:

@@ -41,11 +41,11 @@ def spark_session():
 
 
 @pytest.fixture
-def pandas_df_to_temporary_csv(tmp_path):
+def pandas_df_to_temporary_csv(tmp_dir):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
     def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
-        temporary_csv_path = tmp_path / filename
+        temporary_csv_path = tmp_dir / filename
         pandas_df.to_csv(temporary_csv_path, sep=sep, header=True, index=False, na_rep="")
         return temporary_csv_path
 
