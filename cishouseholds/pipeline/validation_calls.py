@@ -4,7 +4,7 @@ from datetime import datetime
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.pipeline.category_map import category_maps
+from cishouseholds.mapping import category_maps
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -33,16 +33,33 @@ def validation_calls(SparkVal):
             }
         },
         "visit_id": {"starts_with": r"DHV"},
-        "blood_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
-        "swab_sample_barcode": {"matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$"},
+        "blood_sample_barcode": {
+            "matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$",
+            "subset": F.col("survey_response_dataset_major_version") <= 2,
+        },
+        "swab_sample_barcode": {
+            "matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$",
+            "subset": F.col("survey_response_dataset_major_version") <= 2,
+        },
         "1tot1_swab": {"matches": 1},  # Swab_matches_not_exact
         # "region_code":"not_null"
+    }
+    duplicate_column_calls = {
+        "blood_sample_barcode": {
+            "matches": r"^BLT[0-9]{8}$",
+            "subset": F.col("survey_response_dataset_major_version") == 3,
+        },
+        "swab_sample_barcode": {
+            "matches": r"^SWT[0-9]{8}$",
+            "subset": F.col("survey_response_dataset_major_version") == 3,
+        },
     }
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
             column_calls[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
 
     SparkVal.validate_column(column_calls)
+    SparkVal.validate_column(duplicate_column_calls)
 
     vaccine_columns = []
     for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
@@ -50,7 +67,7 @@ def validation_calls(SparkVal):
             vaccine_columns.append(template.format(number))
 
     dataset_calls = {
-        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_date_string"]},
+        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
         "duplicated": [
             {"check_columns": SparkVal.dataframe.columns},
             {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
@@ -69,13 +86,13 @@ def validation_calls(SparkVal):
                 "null_columns": [
                     "work_main_job_title",
                     "work_main_job_role",
-                    "work_sectors",
-                    "work_sectors_other",
+                    "work_sector",
+                    "work_sector_other",
                     "work_location",
                 ],
             },
             {
-                "condition": F.col("visit_type") != "First Visit",
+                "condition": F.col("survey_response_type") != "First Visit",
                 "null_columns": vaccine_columns,
             },
         ],
@@ -89,6 +106,7 @@ def validation_calls(SparkVal):
             | (F.col("cis_covid_vaccine_type") != "Other / specify")
         ),
         error_message="cis vaccine type other should be null unless vaccine type is 'Other / specify'",
+        columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
 
     SparkVal.validate_udl(
@@ -97,23 +115,36 @@ def validation_calls(SparkVal):
                 (F.col("work_social_care") == "Yes")
                 & (
                     (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_patients_clients") == "Yes")
+                    | (F.col("work_direct_contact_patients_or_clients") == "Yes")
                 )
             )
             | (F.col("work_social_care") == "No")
         ),
         error_message="work social care should be 'No' if not working in care homes or in direct contact",
+        columns=[
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_or_clients",
+        ],
     )
 
     SparkVal.validate_udl(
         logic=(
             (
-                (F.col("face_covering_other_enclosed_places").isNotNull() | F.col("face_covering_work").isNotNull())
+                (
+                    F.col("face_covering_other_enclosed_places").isNotNull()
+                    | F.col("face_covering_work_or_education").isNotNull()
+                )
                 & (F.col("face_covering_outside_of_home").isNull())
             )
             | (F.col("face_covering_outside_of_home").isNotNull())
         ),
         error_message="face covering is null when face covering at work and other places are null",
+        columns=[
+            "face_covering_other_enclosed_places",
+            "face_covering_work_or_education",
+            "face_covering_outside_of_home",
+        ],
     )
 
     SparkVal.validate_udl(  # Sample_taken_out_of_range
@@ -126,6 +157,7 @@ def validation_calls(SparkVal):
             )
         ),
         error_message="sample taken should be within date range",
+        columns=["visit_datetime", "samples_taken_datetime"],
     )
 
     SparkVal.validate_udl(  # No_blood_match_mismatching
@@ -134,11 +166,13 @@ def validation_calls(SparkVal):
             | ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) >= 11))
         ),
         error_message="blood sample recieved date should be between 2 days before and 11 after visit date",
+        columns=["blood_sample_received_date", "visit_datetime"],
     )
 
     SparkVal.validate_udl(
         logic=((F.col("pcr_result_recorded_datetime") >= F.col("visit_datetime")) & (F.col("diff_vs_visit_hr") <= 240)),
         error_message="the swab result should be recieved within 10 days after the visit",
+        columns=["pcr_result_recorded_datetime", "visit_datetime", "diff_vs_visit_hr"],
     )
 
 

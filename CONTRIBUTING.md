@@ -82,7 +82,7 @@ Subsequent commits will trigger the hooks (considerably faster) and clean up the
 
 If one of the hooks (e.g. `black`) alters a file, you will need to `git add` the file again and re-run the commit to confirm the changes.
 
-## Creating releases
+## Creating new versions
 
 We use `bump2version` (a development dependency) to increment the package version. The versioning scheme we use is [Semantic Versioning](http://semver.org/), with `beta` tags representing a non-production version of the package.
 
@@ -114,3 +114,31 @@ git push --tags
 ```
 
 Pushing a release tag will trigger deployment of the new version to Artifactory.
+
+### Creating a new pre-release version
+
+Pre-release versions can be bumped by manually running the [bump_UAT_version Action](https://github.com/ONS-SST/cis_households/actions/workflows/bump_UAT_version.yml).
+
+Alternatively, it can be bumped manually by running:
+```
+bumpversion pre
+git push
+git push --tags
+```
+
+
+### Creating a new production version
+
+Production releases must not include features that are still in user acceptance testing (UAT). As such, commits for these features must be reverted before bumping the version.
+
+After the version is bumped the commit should be reapplied, and one of the main version numbers bumped to return us to a pre-release version. This ensures that the latest pre-release version is ready for UAT to continue.
+
+An example workflow where a commit needs to be excluded from release looks like:
+```
+git revert 2921f894
+bumpversion release
+git cherry-pick 2921f894
+bumpversion patch
+git push
+git push --tags
+```

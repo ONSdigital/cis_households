@@ -76,10 +76,21 @@ class SparkValidate:
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             if column_name not in self.dataframe.columns:
-                print(f"Validation rule references {column_name} column and it is not in the dataframe.")  # functional
+                print(
+                    f"    - Validation rule references {column_name} column and it is not in the dataframe."
+                )  # functional
             else:
                 check = self.functions[list(method.keys())[0]]
-                self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
+                if "subset" in method:
+                    self.execute_check(
+                        check["function"],
+                        check["error_message"],
+                        column_name,
+                        list(method.values())[0],
+                        subset=method["subset"],
+                    )
+                else:
+                    self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
         for method, params in operations.items():
@@ -88,14 +99,20 @@ class SparkValidate:
             for p in params:
                 self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
-    def validate_udl(self, logic, error_message):
-        self.execute_check(logic, error_message)
+    def validate_udl(self, logic, error_message, columns):
+        missing = list(set(columns).difference(set(self.dataframe.columns)))
+        if len(missing) == 0:
+            self.execute_check(logic, error_message)
+        else:
+            print(" - Falied to run check as required " + ",".join(missing) + " missing from dataframe")  # functional
 
-    def execute_check(self, check, error_message, *params, **kwargs):
+    def execute_check(self, check, error_message, *params, subset=None, **kwargs):
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
-
-        self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
+        if subset is not None:
+            self.error_column_list.append(F.when(~check & subset, F.lit(error_message)).otherwise(None))
+        else:
+            self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
     def count_complete_duplicates(self, duplicate_count_column_name):
         self.dataframe = (
@@ -166,8 +183,8 @@ class SparkValidate:
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
-    def valid_vaccination(error_message, visit_type_column, check_columns):
-        return (F.col(visit_type_column) != "First Visit") | (
+    def valid_vaccination(error_message, survey_response_type_column, check_columns):
+        return (F.col(survey_response_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
 
