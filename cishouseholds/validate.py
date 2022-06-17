@@ -152,41 +152,37 @@ def check_singular_match(
     return df.drop("TOTAL")
 
 
-def upfront_key_value_parameters_validation(function_list: Dict, config_file_arguments: List):
+class ConfigError(Exception):
+    pass
+
+
+def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file_arguments: List):
     """
     Checks that there's a valid input in the pipeline_config.yaml for every stage
     input argument.
 
     Parameters
     ----------
-    function_list: dictionary of all functions name and function object in pipeline_stages.py
+    all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
-    # TODO: improvement would be to collect all the arguments wrong
+    error_msg = ""
     for function_run_dict in config_file_arguments:
         function_name = function_run_dict.pop("function")
         function_run_list = [x for x in function_run_dict.keys()]
 
-        input_arguments_needed = inspect.getargspec(function_list[function_name]).args
+        input_arguments_needed = inspect.getargspec(all_function_dict[function_name]).args
 
         if not (set(function_run_list) == set(input_arguments_needed)):
+            error_msg += f"\nThe following argument(s) for {function_name} stage \n"
+
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
             list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
 
-            # TODO: unpack the lists instead of showing them as [argument_1, argument_2, etc]
-            msg_not_passed_arg = f"""
-            The following argument(s) for {function_name} stage are not
-            passed in the config file: {list_not_passed_arg}.\n"""
+            if list_not_passed_arg:
+                error_msg += f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
 
-            msg_unrecognised_arg = f"""
-            The following argument(s) for {function_name} stage are not
-            recognised as input arguments: {list_of_unrecognised_arg}.\n"""
-
-            if (len(list_not_passed_arg) > 0) and (len(list_of_unrecognised_arg) > 0):
-                raise ValueError(msg_not_passed_arg + msg_unrecognised_arg)
-
-            elif (len(list_not_passed_arg) > 0) and (len(list_of_unrecognised_arg) == 0):
-                raise ValueError(msg_not_passed_arg)
-
-            elif (len(list_not_passed_arg) == 0) and (len(list_of_unrecognised_arg) > 0):
-                raise ValueError(msg_unrecognised_arg)
+            if list_of_unrecognised_arg:
+                error_msg += f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
+    if error_msg:
+        raise ConfigError(error_msg)
