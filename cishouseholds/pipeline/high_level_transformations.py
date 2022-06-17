@@ -390,7 +390,6 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
 
 
 def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
-    # TODO: should this name be consistent to the way v0, v1, v2 are called?
     """
     Call functions to process digital specific variable transformations.
     """
