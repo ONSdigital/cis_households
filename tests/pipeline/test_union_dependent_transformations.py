@@ -25,6 +25,7 @@ def union_transformed_output(
     )
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
+    df.toPandas().to_csv("test.csv", index=False)
     return df
 
 
