@@ -11,6 +11,10 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_random_day_in_month
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.udfs import generate_sample_proportional_to_size_udf
+
+sample_proportional_to_size_udf = generate_sample_proportional_to_size_udf(get_or_create_spark_session())
 
 
 def impute_outside_uk_columns(
@@ -113,7 +117,29 @@ def fill_forward_from_last_change(
     return df.drop("id_right", "start_datetime", "end_datetime")
 
 
-def fill_forward_only_to_nulls_in_dataset(
+def fill_forward_only_to_nulls(
+    df: DataFrame,
+    id: str,
+    date: str,
+    list_fill_forward: List[str],
+) -> DataFrame:
+    """
+    Fill forward to not nulls for the whole dataset.
+    """
+
+    window = Window.partitionBy(id).orderBy(date)
+
+    for fill_forward_column in list_fill_forward:
+        df = df.withColumn(
+            fill_forward_column,
+            F.coalesce(
+                F.last(fill_forward_column, ignorenulls=True).over(window),
+            ),
+        )
+    return df
+
+
+def fill_forward_only_to_nulls_in_dataset_based_on_column(
     df: DataFrame,
     id: str,
     date: str,
@@ -127,18 +153,6 @@ def fill_forward_only_to_nulls_in_dataset(
     This function will carry forward values windowed by an id ordered by date.
     ONLY will fill into NULLs not filling forward to not nulls regardless of whether
     there is a change=Yes or dataset=2 values. It will NOT fill forward Null values.
-
-    Parameters
-    ----------
-    df
-    id
-    date
-    visit_type
-    dataset
-    changed
-    list_fill_forward
-    changed_positive_value
-    visit_type_value
     """
     window = Window.partitionBy(id).orderBy(date)
 
@@ -174,16 +188,6 @@ def fill_backwards_work_status_v2(
     """
     This function fills backwards as long as it is within upper and lower date defined by list daterange.
     And requires a condition column to have specific values only apart from nulls.
-
-    Parameters
-    ----------
-    df
-    date
-    id
-    fill_backward_column
-    condition_column
-    condition_values
-    date_range
     """
     df = df.withColumn("COND_value", F.lit(None))
     df = df.withColumn("COND_not_fill", F.lit(None))
@@ -460,7 +464,6 @@ def merge_previous_imputed_values(
         for column in imputed_value_lookup_df.columns
         if column.endswith("_imputation_method")
     ]
-
     for value_column, status_column, method_column in columns_for_editing:
         fill_condition = F.col(value_column[1:]).isNull() & F.col(value_column).isNotNull()
         df = df.withColumn(status_column[1:], F.when(fill_condition, F.lit(1)).otherwise(F.lit(0)))
@@ -705,15 +708,23 @@ def impute_by_k_nearest_neighbours(
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
     )
+
     frequencies = frequencies.withColumn("expected_frequency", F.col("probability") * F.col("imputation_group_size"))
     frequencies = frequencies.withColumn("expected_frequency_integer_part", F.floor(F.col("expected_frequency")))
     frequencies = frequencies.withColumn(
         "expected_frequency_decimal_part", F.col("expected_frequency") - F.col("expected_frequency_integer_part")
     )
 
+    total_integer_part_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
-        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("expected_frequency_integer_part")
+        "total_expected_frequency_integer_part",
+        F.sum(F.col("expected_frequency_integer_part")).over(total_integer_part_window),
     )
+
+    frequencies = frequencies.withColumn(
+        "required_decimal_donor_count", F.col("imputation_group_size") - F.col("total_expected_frequency_integer_part")
+    )
+
     integer_part_donors = frequencies.select(
         "expected_frequency_integer_part", "unique_imputation_group", "don_" + reference_column
     )
@@ -724,14 +735,40 @@ def impute_by_k_nearest_neighbours(
     )
 
     decimal_part_donors = frequencies.filter(F.col("expected_frequency_decimal_part") > 0).select(
-        "probability", "unique_imputation_group", "don_" + reference_column, "required_decimal_donor_count"
+        "expected_frequency_decimal_part",
+        "unique_imputation_group",
+        "don_" + reference_column,
+        "required_decimal_donor_count",
     )
 
-    random_uniques_window = Window.partitionBy("unique_imputation_group").orderBy(
-        (F.rand() * F.col("probability")).desc()
+    rescale_window = Window.partitionBy("unique_imputation_group")
+
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part_total", F.sum(F.col("expected_frequency_decimal_part")).over(rescale_window)
     )
-    decimal_part_donors = decimal_part_donors.withColumn("donor_row_id", F.row_number().over(random_uniques_window))
-    decimal_part_donors = decimal_part_donors.filter(F.col("donor_row_id") <= F.col("required_decimal_donor_count"))
+    decimal_part_donors = decimal_part_donors.withColumn(
+        "expected_frequency_decimal_part",
+        F.col("expected_frequency_decimal_part") / F.col("expected_frequency_decimal_part_total"),
+    )
+
+    decimal_parts_grouped = decimal_part_donors.groupby("unique_imputation_group").agg(
+        F.collect_list("don_" + reference_column).alias("don_" + reference_column),
+        F.collect_list("expected_frequency_decimal_part").alias("expected_frequency_decimal_part"),
+        F.first("required_decimal_donor_count").alias("required_decimal_donor_count"),
+    )
+
+    decimals_to_impute = decimal_parts_grouped.withColumn(
+        "don_" + reference_column,
+        sample_proportional_to_size_udf(
+            "don_" + reference_column, "expected_frequency_decimal_part", "required_decimal_donor_count"
+        ),
+    )
+
+    decimals_to_impute = decimals_to_impute.select("unique_imputation_group", "don_" + reference_column)
+
+    decimal_part_donors = decimals_to_impute.withColumn(
+        "don_" + reference_column, F.explode(F.col("don_" + reference_column))
+    )
 
     to_impute_df = integer_part_donors.select("unique_imputation_group", "don_" + reference_column).unionByName(
         decimal_part_donors.select("unique_imputation_group", "don_" + reference_column)
@@ -774,14 +811,7 @@ def impute_latest_date_flag(
     contact_any_covid_date_column: str,
 ) -> DataFrame:
     """
-    Parameters
-    ----------
-    df
-    participant_id_column
-    visit_date_column
-    visit_id_column
-    contact_any_covid_column
-    contact_any_covid_date_column
+    derive a flag based on latest date and im values associated with rows where this flag is 1
     """
     window = Window.partitionBy(participant_id_column).orderBy(
         F.desc(contact_any_covid_date_column),

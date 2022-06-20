@@ -2,6 +2,9 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import and_
+from operator import or_
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
@@ -16,13 +19,211 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filename_column: str):
+    """
+    Populate a pyspark date column with the date contained in the filename column
+    """
+    date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 1)
+    time = F.when(
+        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "", "_000000"
+    ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"))
+    return df
+
+
+def assign_datetime_from_coalesced_columns_and_log_source(
+    df: DataFrame,
+    column_name_to_assign: str,
+    source_reference_column_name: str,
+    ordered_columns: List[str],
+    date_format: str,
+    time_format: str,
+    default_timestamp: str,
+):
+    """
+    Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
+    """
+    columns_to_coalesce = []
+    source_columns = []
+    for col in ordered_columns:
+        check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
+        columns_to_coalesce.append(
+            F.to_timestamp(
+                F.when(
+                    (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
+                    F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
+                ).otherwise(F.col(col)),
+                format=f"{date_format} {time_format}",
+            )
+        )
+        source_columns.append(F.when(F.col(col).isNull(), None).otherwise(col))
+    df = df.withColumn(column_name_to_assign, F.coalesce(*columns_to_coalesce))
+    df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
+    return df
+
+
+def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+    """
+    assign an incremental count to each participants visit
+
+    Parameters
+    -------------
+    column_name_to_assign
+        column_name_to_assign: column to show count
+    visit_date_column
+        visit_date_column: date column to base count on
+    id_column
+        id_column: The column where the window (subset) is based, then the count occurs
+    """
+    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    df = df.withColumn(column_name_to_assign, F.row_number().over(window))
+    return df
+
+
+def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
+    """
+    map column containing multiple value options to new columns containing true/false based on if their
+    value is chosen as the option.
+    Parameters
+    df
+    reference_column
+        column containing option values
+    value_column_name_map
+        mapping expression of column names to assign and options within reference column
+    """
+    df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
+    for val, col in value_column_name_map.items():
+        df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
+    return df.withColumn(reference_column, F.array_join(reference_column, sep))
+
+
+def assign_column_value_from_multiple_column_map(
+    df: DataFrame, column_name_to_assign: str, value_to_condition_map: List[List[Any]], column_names: List[str]
+):
+    """
+    assign column value based on values of any number of columns in a dictionary
+    Parameters
+    ----------
+    column_name_to_assign
+    value_to_condition_map
+        a list of column value options to map to each resultant value in the 'column_name_to_assign'.
+        multiple sublists are optional within this input and denote the option to have multiple optional values.
+    column_names
+        a list of column names in the same order as the values expressed in the 'value_to_condition_map' input
+    Example
+    -------
+    A | B
+    1 | 0
+    1 | 1
+    0 | 0
+    value_to_condition_map = [
+        [Yes,[1,0]],
+        [No,[1,1]]
+    ]
+    column_names = [A,B]
+    ~ with a value of 1 and 0 in columns A and B respectively the result column C would be set to Yes and with
+    1 and 1 in the same columns the result would b No and an unmapped result yields None. ~
+    A | B | C
+    1 | 0 | Yes
+    1 | 1 | No
+    0 | 0 |
+    """
+    df = df.withColumn(column_name_to_assign, F.lit(None))
+    for row in value_to_condition_map:
+        mapped_value = row[0]
+        values = row[1]
+        logic = []
+        for col, val in zip(column_names, values):
+            if type(val) == list:
+                logic.append(reduce(or_, [F.col(col).eqNullSafe(option) for option in val]))
+            else:
+                logic.append(F.col(col).eqNullSafe(val))
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(reduce(and_, logic), mapped_value).otherwise(F.col(column_name_to_assign)),
+        )
+    return df
+
+
+def concat_fields_if_true(
+    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
+):
+    """
+    concat the names of fields where a given condition is met to form a new column
+    """
+    columns = [col for col in df.columns if re.match(column_name_pattern, col)]
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
+    )
+    return df
+
+
+def derive_had_symptom_last_7days_from_digital(
+    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+):
+    """
+    Derive symptoms in v2 format from digital file
+    """
+    symptom_columns = [f"{symptom_column_prefix}{symptom}" for symptom in symptoms]
+
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
+    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
+    )
+    return df.drop("NUM_YES", "NUM_NO")
+
+
+def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
+    """
+    Count number of visits of each participant in a given day
+    Parameters
+    ----------
+    """
+    window = Window.partitionBy(participant_id_column, F.to_date(visit_date_column))
+    df = df.withColumn(column_name_to_assign, F.sum(F.lit(1)).over(window))
+    return df
+
+
+def count_barcode_cleaned(
+    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+):
+    """
+    Count occurrences of barcode
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    barcode_column
+    """
+    window = Window.partitionBy(barcode_column)
+    df = df.withColumn(
+        column_name_to_assign,
+        F.sum(
+            F.when(
+                (F.col(barcode_column).isNotNull())
+                & (F.col(barcode_column) != "ONS00000000")
+                & (F.datediff(F.col(visit_datetime_colum), F.col(date_taken_column)) <= 14),
+                1,
+            ).otherwise(0)
+        ).over(window),
+    )
+    return df
+
+
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Derive an incremental id from a reference column containing an id
     """
-    window = Window.orderBy(reference_column)
-    df = df.withColumn(column_name_to_assign, F.dense_rank().over(window).cast("integer"))
-    return df
+    df_unique_id = df.select(reference_column).distinct()
+    df_unique_id = df_unique_id.withColumn("TEMP", F.lit(1))
+    window = Window.partitionBy(F.col("TEMP")).orderBy(reference_column)
+    df_unique_id = df_unique_id.withColumn(column_name_to_assign, F.row_number().over(window))  # or dense_rank()
+
+    df = df.join(df_unique_id, on=reference_column, how="left")
+    return df.drop("TEMP")
 
 
 def assign_distinct_count_in_group(
@@ -47,7 +248,7 @@ def assign_distinct_count_in_group(
     return df
 
 
-def assign_count_by_group(df, column_name_to_assign: str, group_by_columns: List[str]):
+def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_columns: List[str]):
     """
     Window-based count of all rows by group
 
@@ -1112,7 +1313,7 @@ def assign_column_regex_match(
         Name of column that will be matched
     pattern
         Regular expression pattern as a string
-        Needs to be a raw string literal (preceeded by r"")
+        Needs to be a raw string literal (preceded by r"")
 
     Returns
     -------
@@ -1166,7 +1367,7 @@ def assign_column_to_date_string(
     lower_case: bool = False,
 ) -> DataFrame:
     """
-    Assign a column with a TimeStampType to a formatted date string.
+    Assign a column with a TimeStampType to a formatted date string.gg
     Does not use a DateType object, as this is incompatible with out HIVE tables.
     From households_aggregate_processes.xlsx, derivation number 13.
     Parameters
@@ -1430,6 +1631,27 @@ def assign_work_health_care(df, column_name_to_assign, direct_contact_column, he
         F.concat(value_map[F.col(health_care_column)], patient_facing_text),
     ).otherwise(F.col(health_care_column))
     df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
+    return df
+
+
+def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
+    """
+    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
+    Results in groups of:
+    - Unknown (null)
+    - Student
+    - Employed
+    - Not working (unemployed, retired, long term sick etc)
+    """
+    df = df.withColumn(
+        colum_name_to_assign,
+        F.when(
+            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
+            "Employed",
+        )
+        .when(F.col(reference_column).isNull(), "Unknown")
+        .otherwise(F.col(reference_column)),
+    )
     return df
 
 

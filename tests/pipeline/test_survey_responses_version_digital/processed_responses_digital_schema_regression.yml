@@ -8,25 +8,25 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: digital_enrolment_invite_datetime
+  name: household_digital_enrolment_invited_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: digital_opt_in_window_start_datetime
+  name: existing_participant_digital_opt_in_window_start_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: digital_opt_in_window_end_datetime
+  name: existing_participant_digital_opt_in_window_end_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: digital_opted_in_datetime
+  name: existing_participant_digital_opted_in_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: digital_enrolment_datetime
+  name: household_digital_enrolment_datetime
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: street
   nullable: true
@@ -36,7 +36,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: country
+  name: county
   nullable: true
   type: string
 - metadata: {}
@@ -44,7 +44,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: any_household_members_under_2_years
+  name: household_members_under_2_years_count
   nullable: true
   type: string
 - metadata: {}
@@ -80,7 +80,7 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: any_household_members_over_2_years_and_not_present
+  name: household_members_over_2_years_and_not_present_count
   nullable: true
   type: string
 - metadata: {}
@@ -192,7 +192,7 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: participant_status
+  name: participant_survey_status
   nullable: true
   type: string
 - metadata: {}
@@ -232,7 +232,111 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: sex
+  nullable: true
+  type: string
+- metadata: {}
+  name: ethnic_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: ethnicity
+  nullable: true
+  type: string
+- metadata: {}
+  name: ethnicity_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent_nhs_data_share_yn
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent_contact_extra_research_yn
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent_use_of_surplus_blood_samples_yn
+  nullable: true
+  type: string
+- metadata: {}
+  name: consent_blood_samples_if_positive_yn
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_invited_to_digital
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_enrolled_digital
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_digital_enrolment_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: existing_participant_digital_opt_in_status
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: digital_survey_mode_preference
+  nullable: true
+  type: string
+- metadata: {}
+  name: digital_communication_preference
+  nullable: true
+  type: string
+- metadata: {}
+  name: sample_return_preference
+  nullable: true
+  type: string
+- metadata: {}
+  name: language_preference
+  nullable: true
+  type: string
+- metadata: {}
+  name: study_cohort
+  nullable: true
+  type: string
+- metadata: {}
   name: voucher_type_preference
+  nullable: true
+  type: string
+- metadata: {}
+  name: digital_entry_pack_sent_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: digital_entry_pack_status
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_1_due_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_1_sent_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_1_status
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_2_due_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_2_sent_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_2_status
   nullable: true
   type: string
 - metadata: {}
@@ -264,69 +368,29 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: survey_type
+  name: survey_response_type
   nullable: true
   type: string
 - metadata: {}
-  name: opted_out
+  name: opted_out_of_next_window
   nullable: true
   type: string
 - metadata: {}
-  name: opted_out_datetime
+  name: opted_out_of_next_window_datetime
   nullable: true
   type: timestamp
 - metadata: {}
-  name: opted_out_blood
+  name: opted_out_of_blood_next_window
   nullable: true
   type: string
 - metadata: {}
-  name: opted_out_blood_datetime
+  name: opted_out_of_blood_next_window_datetime
   nullable: true
   type: timestamp
 - metadata: {}
   name: blood_sample_transport_status
   nullable: true
   type: string
-- metadata: {}
-  name: sex
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnic_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity
-  nullable: true
-  type: string
-- metadata: {}
-  name: ethnicity_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent_contact_extra_research_yn
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent_use_of_surplus_blood_samples_yn
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent_blood_samples_if_positive_yn
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_invited_digital
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_enrolled_digital
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_enrolment_datetime
-  nullable: true
-  type: timestamp
 - metadata: {}
   name: swab_sample_transport_status
   nullable: true
@@ -335,6 +399,10 @@ fields:
   name: sample_kit_dispatched_datetime
   nullable: true
   type: timestamp
+- metadata: {}
+  name: sample_kit_not_dispatched_code
+  nullable: true
+  type: string
 - metadata: {}
   name: sample_collection_courier_datetime
   nullable: true
@@ -356,6 +424,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: survey_not_completed_reason_code
+  nullable: true
+  type: string
+- metadata: {}
   name: swab_sample_barcode
   nullable: true
   type: string
@@ -369,6 +441,14 @@ fields:
   type: string
 - metadata: {}
   name: blood_sample_barcode_user_entered
+  nullable: true
+  type: string
+- metadata: {}
+  name: allocated_swab_barcode_not_used_reason
+  nullable: true
+  type: string
+- metadata: {}
+  name: allocated_blood_barcode_not_used_reason
   nullable: true
   type: string
 - metadata: {}
@@ -387,6 +467,10 @@ fields:
   name: blood_sample_received_lab_datetime
   nullable: true
   type: timestamp
+- metadata: {}
+  name: digital_survey_collection_mode
+  nullable: true
+  type: string
 - metadata: {}
   name: swab_taken
   nullable: true
@@ -508,7 +592,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_in_healthcare
+  name: work_health_care_area
   nullable: true
   type: string
 - metadata: {}
@@ -520,7 +604,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: where_are_you_mainly_working_now
+  name: work_location
   nullable: true
   type: string
 - metadata: {}
@@ -686,7 +770,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_1
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_2
   nullable: true
@@ -698,7 +782,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_2
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_3
   nullable: true
@@ -710,7 +794,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_3
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_4
   nullable: true
@@ -722,7 +806,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_4
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_5
   nullable: true
@@ -734,7 +818,7 @@ fields:
 - metadata: {}
   name: cis_covid_vaccine_date_5
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_covid_vaccine_type_6
   nullable: true
@@ -744,9 +828,9 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_date_
+  name: cis_covid_vaccine_date_6
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: cis_flu_vaccine_received
   nullable: true
@@ -784,7 +868,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_covid_symptom_muscle_ache_myalgia
+  name: think_had_covid_symptom_muscle_ache
   nullable: true
   type: string
 - metadata: {}
@@ -1030,9 +1114,9 @@ fields:
 - metadata: {}
   name: last_suspected_covid_contact_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
-  name: last_suspected_covid_type
+  name: last_suspected_covid_contact_type
   nullable: true
   type: string
 - metadata: {}
@@ -1092,7 +1176,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: times_socialise_last_7_days
+  name: times_socialising_last_7_days
   nullable: true
   type: string
 - metadata: {}
@@ -1108,7 +1192,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vacine_type
+  name: cis_covid_vaccine_type
   nullable: true
   type: string
 - metadata: {}
@@ -1128,7 +1212,339 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: think_have_covid_symptom_onset_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: think_have_covid_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_positive_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: other_covid_infection_test_negative_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: other_antibody_test_positive_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: other_antibody_test_negative_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: survey_response_source_file
   nullable: false
+  type: string
+- metadata: {}
+  name: survey_response_dataset_major_version
+  nullable: false
+  type: integer
+- metadata: {}
+  name: visit_id
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_manual_entry
+  nullable: false
+  type: string
+- metadata: {}
+  name: visit_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: visit_date_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptoms_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_area_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_not_from_home_days_per_week_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_location_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: sex_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_withdrawal_reason_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: unique_participant_response_id
+  nullable: false
+  type: string
+- metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: bad_email
+  nullable: true
+  type: boolean
+- metadata: {}
+  name: outward_postcode
+  nullable: true
+  type: string
+- metadata: {}
+  name: days_since_think_had_covid
+  nullable: true
+  type: integer
+- metadata: {}
+  name: days_since_think_had_covid_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: hh_id
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_in_additional_paid_employment_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_nursing_or_residential_care_home_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_direct_contact_patients_or_clients_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: illness_lasting_over_12_months_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: ever_smoked_regularly_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: currently_smokes_or_vapes_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_3_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_4_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_5_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_6_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_household_member_hospital_last_28_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_household_member_care_home_last_28_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: hours_a_day_with_someone_else_at_home_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_person_your_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_shopping_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_socialising_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_work_or_education_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_other_enclosed_places_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: self_isolating_reason_digital
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v0
+  nullable: true
+  type: string
+- metadata: {}
+  name: smoke_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_cigar
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_pipe
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_vape_e_cigarettes
+  nullable: true
+  type: string
+- metadata: {}
+  name: smokes_hookah_shisha_pipes
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_outside_shopping_or_socialising_last_7_days
+  nullable: true
+  type: integer
+- metadata: {}
+  name: participant_survey_status_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_withdrawal_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: survey_response_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_sector_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: illness_reduces_activity_or_ability_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: ability_to_socially_distance_at_work_or_education_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_covid_contact_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_suspected_covid_contact_type_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_results_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_results_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_outside_of_home
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_which_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: which_symptoms_last_7_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: long_covid_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_symptom_any
+  nullable: true
   type: string
 type: struct

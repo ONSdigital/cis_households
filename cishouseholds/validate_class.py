@@ -28,7 +28,7 @@ class SparkValidate:
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
             "valid_file_date": {
                 "function": self.check_valid_file_date,
-                "error_message": "the date in {} should be before the date expressed in {} when both {} and {} are null",  # noqa:E501
+                "error_message": "the date in {} should be before the date in {} when both {} and {} are null",  # noqa:E501
             },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
@@ -76,10 +76,21 @@ class SparkValidate:
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             if column_name not in self.dataframe.columns:
-                print(f"Validation rule references {column_name} column and it is not in the dataframe.")  # functional
+                print(
+                    f"    - Validation rule references {column_name} column and it is not in the dataframe."
+                )  # functional
             else:
                 check = self.functions[list(method.keys())[0]]
-                self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
+                if "subset" in method:
+                    self.execute_check(
+                        check["function"],
+                        check["error_message"],
+                        column_name,
+                        list(method.values())[0],
+                        subset=method["subset"],
+                    )
+                else:
+                    self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
         for method, params in operations.items():
@@ -88,14 +99,20 @@ class SparkValidate:
             for p in params:
                 self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
-    def validate_udl(self, logic, error_message):
-        self.execute_check(logic, error_message)
+    def validate_udl(self, logic, error_message, columns):
+        missing = list(set(columns).difference(set(self.dataframe.columns)))
+        if len(missing) == 0:
+            self.execute_check(logic, error_message)
+        else:
+            print(" - Falied to run check as required " + ",".join(missing) + " missing from dataframe")  # functional
 
-    def execute_check(self, check, error_message, *params, **kwargs):
+    def execute_check(self, check, error_message, *params, subset=None, **kwargs):
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
-
-        self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
+        if subset is not None:
+            self.error_column_list.append(F.when(~check & subset, F.lit(error_message)).otherwise(None))
+        else:
+            self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
     def count_complete_duplicates(self, duplicate_count_column_name):
         self.dataframe = (
@@ -130,25 +147,33 @@ class SparkValidate:
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(error_message, column_name, range):
-        lower_bound = (
-            (F.col(column_name) >= range["lower_bound"]["value"])
-            if range["lower_bound"]["inclusive"]
-            else (F.col(column_name) > range["lower_bound"]["value"])
-        )
-        upper_bound = (
-            (F.col(column_name) <= range["upper_bound"]["value"])
-            if range["upper_bound"]["inclusive"]
-            else (F.col(column_name) < range["upper_bound"]["value"])
-        )
-        error_message = error_message.format(
-            column_name,
-            range["lower_bound"]["value"],
-            " (inclusive)" if range["lower_bound"]["inclusive"] else "",
-            range["upper_bound"]["value"],
-            " (inclusive)" if range["upper_bound"]["inclusive"] else "",
-        )
-        return lower_bound & upper_bound, error_message
+    def between(error_message, column_name, range_set):
+        if type(range_set) != list:
+            range_set = [range_set]
+        bools = []
+        for range in range_set:
+            lower_bound = (
+                (F.col(column_name) >= range["lower_bound"]["value"])
+                if range["lower_bound"]["inclusive"]
+                else (F.col(column_name) > range["lower_bound"]["value"])
+            )
+            upper_bound = (
+                (F.col(column_name) <= range["upper_bound"]["value"])
+                if range["upper_bound"]["inclusive"]
+                else (F.col(column_name) < range["upper_bound"]["value"])
+            )
+            error_message = error_message.format(
+                column_name,
+                range["lower_bound"]["value"],
+                " (inclusive)" if range["lower_bound"]["inclusive"] else "",
+                range["upper_bound"]["value"],
+                " (inclusive)" if range["upper_bound"]["inclusive"] else "",
+            )
+            if "allow_none" in range and range["allow_none"] is True:
+                bools.append((lower_bound & upper_bound) | (F.col(column_name).isNull()))
+            else:
+                bools.append(lower_bound & upper_bound)
+        return F.array_contains(F.array(*bools), True), error_message
 
     # Non column wise functions
     @staticmethod
@@ -158,8 +183,8 @@ class SparkValidate:
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
-    def valid_vaccination(error_message, visit_type_column, check_columns):
-        return (F.col(visit_type_column) != "First Visit") | (
+    def valid_vaccination(error_message, survey_response_type_column, check_columns):
+        return (F.col(survey_response_type_column) != "First Visit") | (
             ~F.array_contains(F.array(*check_columns), None)
         ), error_message
 
@@ -186,20 +211,17 @@ class SparkValidate:
     def check_valid_file_date(
         error_message: str,
         visit_date_column: str,
-        filename_column: str,
+        file_date_column: str,
         swab_barcode_column: str,
         blood_barcode_column: str,
     ):
         error_message = error_message.format(
-            visit_date_column, filename_column, swab_barcode_column, blood_barcode_column
+            visit_date_column, file_date_column, swab_barcode_column, blood_barcode_column
         )
         return (
             F.when(
                 (
-                    (
-                        F.to_timestamp(F.regexp_extract(F.col(filename_column), r"\d{8}(?=.csv)", 0), format="yyyyMMdd")
-                        < F.col(visit_date_column)
-                    )
+                    (F.col(file_date_column) > F.col(visit_date_column))
                     & F.col(swab_barcode_column).isNull()
                     & F.col(blood_barcode_column).isNull()
                 ),

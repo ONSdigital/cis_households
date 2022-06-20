@@ -56,9 +56,6 @@ def assign_white_proportion(
     return df
 
 
-# 1174
-# - required columns:
-# - if
 def assign_population_projections(
     current_projection_df: DataFrame, previous_projection_df: DataFrame, month: int, m_f_columns: List[str]
 ):
@@ -86,13 +83,11 @@ def assign_population_projections(
     return current_projection_df
 
 
-# 1174
 def derive_m_f_column_list(df: DataFrame):
     r = re.compile(r"\w{1}\d{1,}")
     return [item for item in list(filter(r.match, df.columns)) if item in df.columns]
 
 
-# 1065
 def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str):
     """
     assign column to denote whether the data of a given set of columns (selection_columns) matches
@@ -108,31 +103,23 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     return joined_df
 
 
-# 1066
-def assign_sample_new_previous(df: DataFrame, colum_name_to_assign: str, date_column: str, batch_colum: str):
+def assign_sample_new_previous(df: DataFrame, column_name_to_assign: str, date_column: str, batch_number_column: str):
     """
-    Assign column by checking for highest batch number in most recent date where new is value if true
-    and previous otherwise
+    Assign as new sample where date and batch number are highest in the dataset, otherwise assign as previous.
     """
-    df = df.withColumn(date_column, F.to_timestamp(F.col(date_column), format="dd/MM/yyyy"))
-    df = df.orderBy(F.desc(date_column), F.desc(batch_colum))
-
-    df = df.withColumn("DATE_REFERENCE", F.lit(df.select(date_column).collect()[0][0]))
-    df = df.withColumn("BATCH_REFERENCE", F.lit(df.select(batch_colum).collect()[0][0]))
+    false_window = Window.partitionBy(F.lit(0))
+    df = df.withColumn("MAX_DATE", F.max(date_column).over(false_window))
+    df = df.withColumn("MAX_BATCH_NUMBER", F.max(batch_number_column).over(false_window))
     df = df.withColumn(
-        colum_name_to_assign,
+        column_name_to_assign,
         F.when(
-            (
-                (F.col(date_column).eqNullSafe(F.col("DATE_REFERENCE")))
-                & (F.col(batch_colum).eqNullSafe(F.col("BATCH_REFERENCE")))
-            ),
+            ((F.col(date_column) == F.col("MAX_DATE")) & (F.col(batch_number_column) == F.col("MAX_BATCH_NUMBER"))),
             "new",
         ).otherwise("previous"),
     )
-    return df.drop("DATE_REFERENCE", "BATCH_REFERENCE")
+    return df.drop("MAX_DATE", "MAX_BATCH_NUMBER")
 
 
-# 1065
 def count_distinct_in_filtered_df(
     df: DataFrame,
     column_name_to_assign: str,
@@ -152,7 +139,6 @@ def count_distinct_in_filtered_df(
     return df
 
 
-# 1065
 def assign_tranche_factor(
     df: DataFrame,
     column_name_to_assign: str,
@@ -163,26 +149,27 @@ def assign_tranche_factor(
 ):
     """
     Assign a variable tranche factor as the ratio between 2 derived columns
-    (number_eligible_households_tranche_bystrata_enrolment),
-    (number_sampled_households_tranche_bystrata_enrolment) when the household is eligible to be sampled
+    (number_eligible_households_tranche_by_strata_enrolment),
+    (number_sampled_households_tranche_by_strata_enrolment) when the household is eligible to be sampled
     as the barcode column is not null and the tranche
     value is maximum within the predefined window (window)
     """
     df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_ref_column).isNull(), "No").otherwise("Yes"))
     df = count_distinct_in_filtered_df(
         df=df,
-        column_name_to_assign="number_eligible_households_tranche_bystrata_enrolment",
+        column_name_to_assign="number_eligible_households_tranche_by_strata_enrolment",
         column_to_count=barcode_column,
         filter_positive=F.col("tranche_eligible_households") == "Yes",
         group_by_columns=group_by_columns,
     )
 
+    df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
     filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
-        F.col(tranche_column) == df.agg({tranche_column: "max"}).first()[0]
+        F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER")
     )
     df = count_distinct_in_filtered_df(
         df=df,
-        column_name_to_assign="number_sampled_households_tranche_bystrata_enrolment",
+        column_name_to_assign="number_sampled_households_tranche_by_strata_enrolment",
         column_to_count=barcode_column,
         filter_positive=filter_max_condition,
         group_by_columns=group_by_columns,
@@ -191,8 +178,8 @@ def assign_tranche_factor(
         column_name_to_assign,
         F.when(
             filter_max_condition,
-            F.col("number_eligible_households_tranche_bystrata_enrolment")
-            / F.col("number_sampled_households_tranche_bystrata_enrolment"),
+            F.col("number_eligible_households_tranche_by_strata_enrolment")
+            / F.col("number_sampled_households_tranche_by_strata_enrolment"),
         ).otherwise("missing"),
     )
-    return df.drop(barcode_ref_column)
+    return df.drop(barcode_ref_column, "MAX_TRANCHE_NUMBER")
