@@ -122,7 +122,13 @@ def csv_to_table(file_operations: list):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables_stage(
+    prefix: str = None,
+    table_names: Union[str, List[str]] = None,
+    pattern: str = None,
+    protected_tables: List[str] = [],
+    drop_protected_tables: bool = False,
+):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -138,7 +144,7 @@ def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] =
     pattern
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
-    delete_tables(prefix, table_names, pattern)
+    delete_tables(prefix, table_names, pattern, protected_tables, drop_protected_tables)
 
 
 @register_pipeline_stage("generate_dummy_data")
