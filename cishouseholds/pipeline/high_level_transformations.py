@@ -15,6 +15,7 @@ from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_date_from_filename
+from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_fake_id
@@ -184,6 +185,9 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 0 survey deltas.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
@@ -286,6 +290,9 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process input for iqvia version 1 survey deltas.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 1)
 
     df = df.withColumn("work_status_v0", F.col("work_status_v1"))
@@ -342,6 +349,7 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
 
 
 def digital_specific_transformations(df: DataFrame) -> DataFrame:
+    # TODO: should this name be consistent to the way v0, v1, v2 are called?
     """
     Call functions to process digital specific variable transformations.
     """
@@ -355,21 +363,30 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
     )
 
-    df = df.withColumn(
-        "visit_datetime",
-        F.coalesce(
-            F.col("swab_taken_datetime"),
-            F.col("blood_taken_datetime"),
-            F.col("survey_completed_datetime"),
-            F.col("sample_kit_dispatched_datetime"),
-        ),
-    )  # Placeholder for 2199
+    df = assign_datetime_from_coalesced_columns_and_log_source(
+        df,
+        column_name_to_assign="visit_datetime",
+        source_reference_column_name="visit_date_type",
+        ordered_columns=[
+            "swab_taken_datetime",
+            "blood_taken_datetime",
+            "survey_completed_datetime",
+            "survey_last_modified_datetime",
+            "swab_return_date",
+            "blood_return_date",
+            "swab_return_future_date",
+            "blood_return_future_date",
+        ],
+        date_format="yyyy-MM-dd",
+        time_format="HH:mm:ss",
+        default_timestamp="12:00:00",
+    )
     df = update_column_in_time_window(
         df,
         "digital_survey_collection_mode",
         "survey_completed_datetime",
         "Telephone",
-        ["20-05-2022T21:30:00", "26-05-2022 11:00:00"],
+        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
     df = transform_survey_responses_generic(df)
 
@@ -935,8 +952,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
-    df = assign_taken_column(df, "swab_taken", reference_column="swab_sample_barcode")
-    df = assign_taken_column(df, "blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
@@ -1314,6 +1329,9 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
+    df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
+
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
 
     # Derive from final V2 values, not raw
@@ -1593,7 +1611,7 @@ def union_dependent_derivations(df):
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
-            "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
+            "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
         )
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
@@ -1810,6 +1828,43 @@ def create_formatted_datetime_string_columns(df):
         "visit_date_string": "visit_datetime",
         "samples_taken_date_string": "samples_taken_datetime",
     }
+    datetime_format_dict = {
+        "visit_datetime_string": "visit_datetime",
+        "samples_taken_datetime_string": "samples_taken_datetime",
+    }
+    date_format_string_list = set(
+        [
+            "date_of_birth",
+            "improved_visit_date",
+            "think_had_covid_onset_date",
+            "cis_covid_vaccine_date",
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+            "cis_covid_vaccine_date_3",
+            "cis_covid_vaccine_date_4",
+            "last_suspected_covid_contact_date",
+            "last_covid_contact_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "been_outside_uk_last_return_date",
+            "think_have_covid_onset_date",
+            "swab_return_date",
+            "swab_return_future_date",
+            "blood_return_date",
+            "blood_return_future_date",
+            "cis_covid_vaccine_date_5",
+            "cis_covid_vaccine_date_6",
+            "cis_covid_vaccine_date",
+            "think_have_covid_symptom_onset_date",  # tempvar
+            "other_covid_infection_test_positive_date",  # tempvar
+            "other_covid_infection_test_negative_date",  # tempvar
+            "other_antibody_test_positive_date",  # tempvar
+            "other_antibody_test_negative_date",  # tempvar
+        ]
+        + cis_digital_datetime_map["yyyy-MM-dd"]
+    )
 
     for column_name_to_assign, timestamp_column in date_format_dict.items():
         if timestamp_column in df.columns:
@@ -1820,17 +1875,33 @@ def create_formatted_datetime_string_columns(df):
                 time_format="ddMMMyyyy",
                 lower_case=True,
             )
-    for format, column_to_format_list in cis_digital_datetime_map.items():
-        for timestamp_column in column_to_format_list:
-            if timestamp_column in df.columns:
-                df = assign_column_to_date_string(
-                    df=df,
-                    column_name_to_assign=timestamp_column + "_string",
-                    reference_column=timestamp_column,
-                    time_format=format,
-                    lower_case=True,
-                )
-
+    for timestamp_column in date_format_string_list:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy",
+                lower_case=True,
+            )
+    for column_name_to_assign, timestamp_column in datetime_format_dict.items():
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=column_name_to_assign,
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
+    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
+        if timestamp_column in df.columns:
+            df = assign_column_to_date_string(
+                df=df,
+                column_name_to_assign=timestamp_column + "_string",
+                reference_column=timestamp_column,
+                time_format="ddMMMyyyy HH:mm:ss",
+                lower_case=True,
+            )
     return df
 
 

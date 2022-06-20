@@ -60,6 +60,13 @@ blood_datetime_map = {
 cis_digital_datetime_map = {
     "yyyy-MM-dd'T'HH:mm:ss'Z'": [
         "household_digital_enrolment_invited_datetime",
+        "participant_completion_window_start_datetime",
+        "participant_completion_window_end_datetime",
+        "swab_taken_datetime",
+        "blood_taken_datetime",
+        "visit_datetime",
+        "samples_taken_datetime",
+        "household_digital_enrolment_invited_datetime",
         "existing_participant_digital_opt_in_window_start_datetime",
         "existing_participant_digital_opt_in_window_end_datetime",
         "existing_participant_digital_opted_in_datetime",
@@ -84,8 +91,6 @@ cis_digital_datetime_map = {
         "blood_sample_received_consolidation_point_datetime",
         "swab_sample_received_lab_datetime",
         "blood_sample_received_lab_datetime",
-        "swab_taken_datetime",
-        "blood_taken_datetime",
     ],
     "yyyy-MM-dd": [
         "date_of_birth",
@@ -109,34 +114,15 @@ cis_digital_datetime_map = {
         "last_covid_contact_date",
         "last_suspected_covid_contact_date",
         "cis_covid_vaccine_date",
-    ],
-    "dd/MM/yyyy": [
-        "other_covid_infection_test_positive_date",  # tempvar
-        "other_covid_infection_test_negative_date",  # tempvar
-        "think_have_covid_symptom_onset_date",  # tempvar
-        "other_antibody_test_positive_date",  # tempvar
-        "other_antibody_test_negative_date",  # tempvar
-        "cis_covid_vaccine_date_5",
-        "cis_covid_vaccine_date_6",
-        "cis_covid_vaccine_date",
-        "improved_visit_date",
-        "think_had_covid_onset_date",
-        "cis_covid_vaccine_date",
-        "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4",
-        "last_suspected_covid_contact_date",
-        "last_covid_contact_date",
-        "other_covid_infection_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_covid_infection_test_last_negative_date",
-        "been_outside_uk_last_return_date",
         "think_have_covid_onset_date",
-        "swab_return_date",
-        "swab_return_future_date",
-        "blood_return_date",
-        "blood_return_future_date",
+        "think_have_covid_symptom_onset_date",  # tempvar
+        "other_covid_infection_test_first_positive_date",
+        "other_covid_infection_test_positive_date",  # tempvar
+        "other_covid_infection_test_last_negative_date",
+        "other_covid_infection_test_negative_date",  # tempvar
+        "other_antibody_test_first_positive_date",
+        "other_antibody_test_positive_date",  # tempvar
+        "other_antibody_test_last_negative_date",
+        "other_antibody_test_negative_date",  # tempvar
     ],
 }
