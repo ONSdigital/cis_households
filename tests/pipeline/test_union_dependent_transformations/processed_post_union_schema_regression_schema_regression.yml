@@ -1832,31 +1832,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_onset_date_string
+  name: improved_visit_date_string
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_onset_date_string
+  name: date_of_birth_string
   nullable: true
   type: string
 - metadata: {}
-  name: last_suspected_covid_contact_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date_5_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: blood_return_future_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_antibody_test_positive_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date_string
+  name: swab_return_date_string
   nullable: true
   type: string
 - metadata: {}
@@ -1868,67 +1852,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cis_covid_vaccine_date_6_string
+  name: blood_return_future_date_string
   nullable: true
   type: string
 - metadata: {}
-  name: last_covid_contact_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_negative_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_onset_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_last_negative_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: date_of_birth_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_antibody_test_first_positive_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date_3_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: improved_visit_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: swab_return_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_first_positive_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date_4_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_antibody_test_last_negative_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_positive_date_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date_2_string
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_antibody_test_negative_date_string
+  name: think_have_covid_onset_date_string
   nullable: true
   type: string
 - metadata: {}
@@ -1936,7 +1864,79 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: cis_covid_vaccine_date_2_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_3_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_4_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_5_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_6_string
+  nullable: true
+  type: string
+- metadata: {}
   name: been_outside_uk_last_return_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_onset_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_first_positive_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_last_negative_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_first_positive_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_last_negative_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_covid_contact_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: last_suspected_covid_contact_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_covid_symptom_onset_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_positive_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_covid_infection_test_negative_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_positive_date_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: other_antibody_test_negative_date_string
   nullable: true
   type: string
 - metadata: {}
