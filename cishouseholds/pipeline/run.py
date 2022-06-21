@@ -53,7 +53,6 @@ def run_from_config():
     spark = get_or_create_spark_session()
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     config = get_config()
-    pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
 
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
@@ -65,13 +64,15 @@ def run_from_config():
     pipeline_error_count = None
 
     try:
+        import pdb;pdb.set_trace()
+        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         upfront_key_value_parameters_validation(
             all_function_dict=pipeline_stages, config_file_arguments=pipeline_stage_list
         )
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         splunk_logger.log(status="start")
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+        import pdb;pdb.set_trace()
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
             run_id,
@@ -118,6 +119,7 @@ def run_pipeline_stages(
         stage_success = False
         attempt = 0
         complete_status_string = "sucsessfully"
+        import pdb;pdb.set_trace()
         stage_name = stage_config.pop("function")
         stage_description = stage_name
         for key, val in stage_config.items():
