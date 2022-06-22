@@ -1832,39 +1832,39 @@ def create_formatted_datetime_string_columns(df):
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
     }
-    date_format_string_list = set(
-        [
-            "date_of_birth",
-            "improved_visit_date",
-            "think_had_covid_onset_date",
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_date_1",
-            "cis_covid_vaccine_date_2",
-            "cis_covid_vaccine_date_3",
-            "cis_covid_vaccine_date_4",
-            "last_suspected_covid_contact_date",
-            "last_covid_contact_date",
-            "other_covid_infection_test_first_positive_date",
-            "other_antibody_test_last_negative_date",
-            "other_antibody_test_first_positive_date",
-            "other_covid_infection_test_last_negative_date",
-            "been_outside_uk_last_return_date",
-            "think_have_covid_onset_date",
-            "swab_return_date",
-            "swab_return_future_date",
-            "blood_return_date",
-            "blood_return_future_date",
-            "cis_covid_vaccine_date_5",
-            "cis_covid_vaccine_date_6",
-            "cis_covid_vaccine_date",
-            "think_have_covid_symptom_onset_date",  # tempvar
-            "other_covid_infection_test_positive_date",  # tempvar
-            "other_covid_infection_test_negative_date",  # tempvar
-            "other_antibody_test_positive_date",  # tempvar
-            "other_antibody_test_negative_date",  # tempvar
-        ]
-        + cis_digital_datetime_map["yyyy-MM-dd"]
-    )
+    date_format_string_list = [
+        "date_of_birth",
+        "improved_visit_date",
+        "think_had_covid_onset_date",
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_date_1",
+        "cis_covid_vaccine_date_2",
+        "cis_covid_vaccine_date_3",
+        "cis_covid_vaccine_date_4",
+        "last_suspected_covid_contact_date",
+        "last_covid_contact_date",
+        "other_covid_infection_test_first_positive_date",
+        "other_antibody_test_last_negative_date",
+        "other_antibody_test_first_positive_date",
+        "other_covid_infection_test_last_negative_date",
+        "been_outside_uk_last_return_date",
+        "think_have_covid_onset_date",
+        "swab_return_date",
+        "swab_return_future_date",
+        "blood_return_date",
+        "blood_return_future_date",
+        "cis_covid_vaccine_date_5",
+        "cis_covid_vaccine_date_6",
+        "cis_covid_vaccine_date",
+        "think_have_covid_symptom_onset_date",  # tempvar
+        "other_covid_infection_test_positive_date",  # tempvar
+        "other_covid_infection_test_negative_date",  # tempvar
+        "other_antibody_test_positive_date",  # tempvar
+        "other_antibody_test_negative_date",  # tempvar
+    ]
+    date_format_string_list = [
+        col for col in date_format_string_list if col not in cis_digital_datetime_map["yyyy-MM-dd"]
+    ] + cis_digital_datetime_map["yyyy-MM-dd"]
 
     for column_name_to_assign, timestamp_column in date_format_dict.items():
         if timestamp_column in df.columns:
