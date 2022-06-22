@@ -1611,7 +1611,7 @@ def union_dependent_derivations(df):
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
-            "combined_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
+            "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
         )
     ethnicity_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
