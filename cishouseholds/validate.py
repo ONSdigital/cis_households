@@ -173,7 +173,11 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
         function_name = function_run_dict.pop("function")
         function_run_list = [x for x in function_run_dict.keys()]
 
-        input_arguments_needed = inspect.getargspec(all_function_dict[function_name]).args
+        input_arguments_needed = [
+            arg
+            for arg in inspect.getargspec(all_function_dict[function_name]).args
+            if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+        ]
 
         if not (set(function_run_list) == set(input_arguments_needed)):
             error_msg += f"\nThe following argument(s) for {function_name} stage \n"
