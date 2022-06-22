@@ -22,6 +22,8 @@ from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
 
+# from datetime import datetime
+
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "integration: mark integration tests (likely to run slowly)")
@@ -94,6 +96,7 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
         **survey_responses_v2_parameters, include_hadoop_read_write=False
     )
     processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    # processed_df.toPandas().to_csv(f"v2x_{datetime.strftime(datetime.now(),'%Y%m%d_%H%M%S')}.csv", index=False)
     return processed_df
 
 

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
@@ -15,6 +17,7 @@ def union_transformed_output(
     """
     Generate dummy survey responses digital.
     """
+    # responses_v2_survey_ETL_output.toPandas().to_csv(f"v2_{datetime.strftime(datetime.now(),'%Y%m%d_%H%M%S')}.csv", index=False)
     df = union_multiple_tables(
         [
             responses_v0_survey_ETL_output,
@@ -25,14 +28,17 @@ def union_transformed_output(
     )
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
-    df.toPandas().to_csv("test.csv", index=False)
+    # df.orderBy("ons_household_id").drop("survey_response_source_file")
+
+    df = df.drop("survey_response_source_file")
+    # df.toPandas().to_csv(f"pretest_{datetime.strftime(datetime.now(),'%Y%m%d_%H%M%S')}.csv", index=False)
     return df
 
 
 @pytest.mark.integration
 def test_union_transformed_output(union_transformed_output, regression_test_df):
     regression_test_df(
-        union_transformed_output.drop("survey_response_source_file"), "visit_id", "processed_post_union_data_regression"
+        union_transformed_output, "visit_id", "processed_post_union_data_regression"
     )  # remove source file column, as it varies for our temp dummy data
 
 
