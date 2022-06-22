@@ -1,3 +1,4 @@
+import copy
 import time
 import traceback
 from contextlib import contextmanager
@@ -64,15 +65,15 @@ def run_from_config():
     pipeline_error_count = None
 
     try:
-        import pdb;pdb.set_trace()
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+        config_copy = copy.deepcopy(config["stages"])
+        pipeline_stage_list = [stage for stage in config_copy if stage.pop("run")]
         upfront_key_value_parameters_validation(
             all_function_dict=pipeline_stages, config_file_arguments=pipeline_stage_list
         )
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         splunk_logger.log(status="start")
-        import pdb;pdb.set_trace()
+
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
             run_id,
@@ -119,7 +120,6 @@ def run_pipeline_stages(
         stage_success = False
         attempt = 0
         complete_status_string = "sucsessfully"
-        import pdb;pdb.set_trace()
         stage_name = stage_config.pop("function")
         stage_description = stage_name
         for key, val in stage_config.items():

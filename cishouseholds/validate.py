@@ -1,3 +1,4 @@
+import copy
 import csv
 import inspect
 from io import StringIO
@@ -167,7 +168,8 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
     error_msg = ""
-    for function_run_dict in config_file_arguments:
+    config_file_arguments_copy = copy.deepcopy(config_file_arguments)
+    for function_run_dict in config_file_arguments_copy:
         function_name = function_run_dict.pop("function")
         function_run_list = [x for x in function_run_dict.keys()]
 
