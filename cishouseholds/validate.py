@@ -1,13 +1,13 @@
 import csv
 import inspect
 import os
-import yaml
 from io import StringIO
 from operator import add
 from typing import Dict
 from typing import List
 from typing import Union
 
+import yaml
 from pyspark import RDD
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -170,11 +170,15 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
     """
     error_msg = ""
     corrected_pipeline_stages = {}
-    for function_name,function_run_dict in config["stages"].items():
+    for function_name, function_run_dict in config["stages"].items():
         if function_run_dict["run"]:
             function_run_list = [x for x in function_run_dict.keys() if x not in ["run"]]
 
-            input_arguments_needed = [arg for arg in inspect.getargspec(all_function_dict[function_name]).args if "=" in str(inspect.signature(all_function_dict[function_name]).parameters[arg])]
+            input_arguments_needed = [
+                arg
+                for arg in inspect.getargspec(all_function_dict[function_name]).args
+                if "=" in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+            ]
 
             if not (set(function_run_list) == set(input_arguments_needed)):
                 error_msg += f"\nThe following argument(s) for {function_name} stage \n"
@@ -191,16 +195,17 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
                     error_msg += f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
 
                 if list_of_unrecognised_arg:
-                    error_msg += f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
-        
+                    error_msg += (
+                        f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
+                    )
+
         corrected_pipeline_stages[function_name] = function_run_dict
     if error_msg:
         fix_config = input("your config file is erroneous, produce corrected version? ")
-        if any(x in fix_config for x in ["Y","y"]):
+        if any(x in fix_config for x in ["Y", "y"]):
             config["stages"] = corrected_pipeline_stages
             for v in corrected_pipeline_stages:
                 print(v)
-            with open(os.environ.get("PIPELINE_CONFIG_LOCATION"),"w+") as fh:
+            with open(os.environ.get("PIPELINE_CONFIG_LOCATION"), "w+") as fh:
                 yaml.dump(config, fh, allow_unicode=True, default_flow_style=False, indent=2)
         raise ConfigError(error_msg)
-        
