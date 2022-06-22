@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
@@ -17,7 +15,6 @@ def union_transformed_output(
     """
     Generate dummy survey responses digital.
     """
-    # responses_v2_survey_ETL_output.toPandas().to_csv(f"v2_{datetime.strftime(datetime.now(),'%Y%m%d_%H%M%S')}.csv", index=False)
     df = union_multiple_tables(
         [
             responses_v0_survey_ETL_output,
@@ -31,7 +28,6 @@ def union_transformed_output(
     # df.orderBy("ons_household_id").drop("survey_response_source_file")
 
     df = df.drop("survey_response_source_file")
-    # df.toPandas().to_csv(f"pretest_{datetime.strftime(datetime.now(),'%Y%m%d_%H%M%S')}.csv", index=False)
     return df
 
 
