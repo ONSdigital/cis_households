@@ -135,6 +135,9 @@ category_maps = {
         "cis_covid_vaccine_received": _yes_no_categories,
         "cis_flu_vaccine_received": _yes_no_categories,
         "did_not_attend_inferred": _yes_no_categories,
+        "digital_survey_mode_preference": {"Online": 0, "Telephone": 1},
+        "digital_communication_preference": {"Email": 0, "Letter": 1},
+        "sample_return_preference": {"Post": 0, "Courier": 1},
         "visit_order": {
             "First Visit": 1,
             "Follow-up 1": 2,
