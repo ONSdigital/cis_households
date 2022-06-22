@@ -1164,10 +1164,6 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
-  name: self_isolating_reason_digital
-  nullable: true
-  type: string
-- metadata: {}
   name: self_isolating
   nullable: true
   type: string
