@@ -457,24 +457,27 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Yes",
                     [
-                        "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
-                        "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                        "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                        "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
                     ],
                 ],
             ],
             [
-                "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
+                "Yes, for other reasons (e.g. going into hospital, quarantining)",
                 [
                     "Yes",
-                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-                ],
+                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
+                ],  # noqa: E501
             ],
             [
-                "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
+                "Yes, for other reasons (e.g. going into hospital, quarantining)",
+                [
+                    "Yes",
+                    "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
+                ],  # noqa: E501
             ],
         ],
-        ["self_isolating", "self_isolating_reason"],
+        ["self_isolating", "self_isolating_reason_digital"],
     )
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
