@@ -348,10 +348,9 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     return df
 
 
-def digital_specific_transformations(df: DataFrame) -> DataFrame:
-    # TODO: should this name be consistent to the way v0, v1, v2 are called?
+def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     """
-    Call functions to process digital specific variable transformations.
+    Call transformations to digital data necessary before generic transformations are applied
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
@@ -388,8 +387,13 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
-    df = transform_survey_responses_generic(df)
+    return df
 
+
+def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process digital specific variable transformations.
+    """
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",
@@ -1832,39 +1836,39 @@ def create_formatted_datetime_string_columns(df):
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
     }
-    date_format_string_list = set(
-        [
-            "date_of_birth",
-            "improved_visit_date",
-            "think_had_covid_onset_date",
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_date_1",
-            "cis_covid_vaccine_date_2",
-            "cis_covid_vaccine_date_3",
-            "cis_covid_vaccine_date_4",
-            "last_suspected_covid_contact_date",
-            "last_covid_contact_date",
-            "other_covid_infection_test_first_positive_date",
-            "other_antibody_test_last_negative_date",
-            "other_antibody_test_first_positive_date",
-            "other_covid_infection_test_last_negative_date",
-            "been_outside_uk_last_return_date",
-            "think_have_covid_onset_date",
-            "swab_return_date",
-            "swab_return_future_date",
-            "blood_return_date",
-            "blood_return_future_date",
-            "cis_covid_vaccine_date_5",
-            "cis_covid_vaccine_date_6",
-            "cis_covid_vaccine_date",
-            "think_have_covid_symptom_onset_date",  # tempvar
-            "other_covid_infection_test_positive_date",  # tempvar
-            "other_covid_infection_test_negative_date",  # tempvar
-            "other_antibody_test_positive_date",  # tempvar
-            "other_antibody_test_negative_date",  # tempvar
-        ]
-        + cis_digital_datetime_map["yyyy-MM-dd"]
-    )
+    date_format_string_list = [
+        "date_of_birth",
+        "improved_visit_date",
+        "think_had_covid_onset_date",
+        "cis_covid_vaccine_date",
+        "cis_covid_vaccine_date_1",
+        "cis_covid_vaccine_date_2",
+        "cis_covid_vaccine_date_3",
+        "cis_covid_vaccine_date_4",
+        "last_suspected_covid_contact_date",
+        "last_covid_contact_date",
+        "other_covid_infection_test_first_positive_date",
+        "other_antibody_test_last_negative_date",
+        "other_antibody_test_first_positive_date",
+        "other_covid_infection_test_last_negative_date",
+        "been_outside_uk_last_return_date",
+        "think_have_covid_onset_date",
+        "swab_return_date",
+        "swab_return_future_date",
+        "blood_return_date",
+        "blood_return_future_date",
+        "cis_covid_vaccine_date_5",
+        "cis_covid_vaccine_date_6",
+        "cis_covid_vaccine_date",
+        "think_have_covid_symptom_onset_date",  # tempvar
+        "other_covid_infection_test_positive_date",  # tempvar
+        "other_covid_infection_test_negative_date",  # tempvar
+        "other_antibody_test_positive_date",  # tempvar
+        "other_antibody_test_negative_date",  # tempvar
+    ]
+    date_format_string_list = [
+        col for col in date_format_string_list if col not in cis_digital_datetime_map["yyyy-MM-dd"]
+    ] + cis_digital_datetime_map["yyyy-MM-dd"]
 
     for column_name_to_assign, timestamp_column in date_format_dict.items():
         if timestamp_column in df.columns:
