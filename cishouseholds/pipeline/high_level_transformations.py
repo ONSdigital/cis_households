@@ -574,7 +574,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Attending college or FE (including if temporarily absent)",
                 [
-                    "In education",
+                    ["In education", None],
                     None,
                     None,
                     "Attending a college or other further education provider including apprenticeships",
@@ -583,7 +583,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Attending university (including if temporarily absent)",
                 [
-                    "In education",
+                    ["In education", None],
                     None,
                     None,
                     ["Attending university", "Or attending university?"],
@@ -655,7 +655,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Student",
                 [
-                    "Education",
+                    ["Education", None],
                     None,
                     None,
                     "A child below school age and not attending a nursery or pre-school or childminder",
@@ -664,7 +664,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Student",
                 [
-                    "Education",
+                    ["Education", None],
                     None,
                     None,
                     "A child below school age and attending a nursery or pre-school or childminder",
@@ -675,7 +675,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Student",
                 [
-                    "Education",
+                    ["Education", None],
                     None,
                     None,
                     "Attending a college or other further education provider including apprenticeships",
