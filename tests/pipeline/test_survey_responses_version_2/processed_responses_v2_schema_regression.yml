@@ -972,6 +972,26 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: cis_covid_vaccine_received
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_number_of_doses
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: cis_covid_vaccine_type_1
   nullable: true
   type: string
@@ -1112,14 +1132,6 @@ fields:
   nullable: true
   type: double
 - metadata: {}
-  name: swab_taken
-  nullable: false
-  type: string
-- metadata: {}
-  name: blood_taken
-  nullable: false
-  type: string
-- metadata: {}
   name: days_since_think_had_covid
   nullable: true
   type: integer
@@ -1140,6 +1152,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_taken
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_taken
+  nullable: false
+  type: string
+- metadata: {}
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
@@ -1149,26 +1169,6 @@ fields:
   type: string
 - metadata: {}
   name: self_isolating
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_date
-  nullable: true
-  type: timestamp
-- metadata: {}
-  name: cis_covid_vaccine_number_of_doses
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_received
   nullable: true
   type: string
 - metadata: {}

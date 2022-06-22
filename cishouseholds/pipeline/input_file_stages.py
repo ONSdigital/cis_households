@@ -1,27 +1,27 @@
-from cishouseholds.pipeline.blood_delta_ETL import add_historical_fields
-from cishouseholds.pipeline.blood_delta_ETL import transform_blood_delta
-from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cast_to_double
-from cishouseholds.pipeline.cast_columns_from_string_map import survey_response_cisd_cast_to_double
-from cishouseholds.pipeline.historical_blood_ETL import add_fields
-from cishouseholds.pipeline.input_variable_names import column_name_maps
+from cishouseholds.mapping import column_name_maps
+from cishouseholds.mapping import survey_response_cast_to_double
+from cishouseholds.mapping import survey_response_cisd_cast_to_double
+from cishouseholds.pipeline.high_level_transformations import add_fields
+from cishouseholds.pipeline.high_level_transformations import add_historical_fields
+from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_1
+from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
+from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
+from cishouseholds.pipeline.high_level_transformations import pre_generic_digital_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_blood_delta
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_generic
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_0_delta
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_1_delta
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_2_delta
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_digital_delta
+from cishouseholds.pipeline.high_level_transformations import transform_swab_delta
+from cishouseholds.pipeline.high_level_transformations import transform_swab_delta_testKit
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
-from cishouseholds.pipeline.survey_responses_version_0_ETL import transform_survey_responses_version_0_delta
-from cishouseholds.pipeline.survey_responses_version_1_ETL import clean_survey_responses_version_1
-from cishouseholds.pipeline.survey_responses_version_1_ETL import transform_survey_responses_version_1_delta
-from cishouseholds.pipeline.survey_responses_version_2_ETL import clean_survey_responses_version_2
-from cishouseholds.pipeline.survey_responses_version_2_ETL import derive_additional_v1_2_columns
-from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_generic
-from cishouseholds.pipeline.survey_responses_version_2_ETL import transform_survey_responses_version_2_delta
-from cishouseholds.pipeline.survey_responses_version_digital_ETL import digital_specific_transformations
-from cishouseholds.pipeline.swab_delta_ETL import transform_swab_delta
-from cishouseholds.pipeline.swab_delta_ETL_testKit import transform_swab_delta_testKit
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.timestamp_map import swab_datetime_map
-from cishouseholds.pipeline.unassayed_blood_ETL import transform_unassayed_blood
 from cishouseholds.pipeline.validation_schema import validation_schemas
 
 blood_delta_parameters = {
@@ -119,7 +119,7 @@ unassayed_blood_delta_parameters = {
     "validation_schema": validation_schemas["unassayed_blood_validation_schema"],
     "column_name_map": column_name_maps["unassayed_bloods_variable_name_map"],
     "datetime_column_map": blood_datetime_map,
-    "transformation_functions": [transform_unassayed_blood],
+    "transformation_functions": [],
     "source_file_column": "unassayed_blood_source_file",
     "write_mode": "append",
 }
@@ -141,7 +141,11 @@ cis_digital_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
-    "transformation_functions": [digital_specific_transformations],
+    "transformation_functions": [
+        pre_generic_digital_transformations,
+        transform_survey_responses_generic,
+        transform_survey_responses_version_digital_delta,
+    ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "survey_response_source_file",
