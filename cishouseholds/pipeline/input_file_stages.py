@@ -6,12 +6,13 @@ from cishouseholds.pipeline.high_level_transformations import add_historical_fie
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_1
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
-from cishouseholds.pipeline.high_level_transformations import digital_specific_transformations
+from cishouseholds.pipeline.high_level_transformations import pre_generic_digital_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_blood_delta
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_generic
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_0_delta
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_1_delta
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_2_delta
+from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_digital_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta_testKit
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
@@ -140,7 +141,11 @@ cis_digital_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
-    "transformation_functions": [digital_specific_transformations],
+    "transformation_functions": [
+        pre_generic_digital_transformations,
+        transform_survey_responses_generic,
+        transform_survey_responses_version_digital_delta,
+    ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "survey_response_source_file",

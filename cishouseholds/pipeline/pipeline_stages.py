@@ -122,7 +122,13 @@ def csv_to_table(file_operations: list):
 
 
 @register_pipeline_stage("delete_tables")
-def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] = None, pattern: str = None):
+def delete_tables_stage(
+    prefix: str = None,
+    table_names: Union[str, List[str]] = None,
+    pattern: str = None,
+    protected_tables: List[str] = [],
+    drop_protected_tables: bool = False,
+):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
@@ -138,7 +144,7 @@ def delete_tables_stage(prefix: str = None, table_names: Union[str, List[str]] =
     pattern
         drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
     """
-    delete_tables(prefix, table_names, pattern)
+    delete_tables(prefix, table_names, pattern, protected_tables, drop_protected_tables)
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -1250,8 +1256,7 @@ def report_iqvia(
 def record_level_interface(
     survey_responses_table: str,
     csv_editing_file: str,
-    unique_id_column: str,
-    unique_id_list: List,
+    filter: dict,
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
 ):
@@ -1271,23 +1276,26 @@ def record_level_interface(
             - target_column
             - old_value
             - new_value
-    unique_id_column
-        unique id that will be edited
-    unique_id_list
-        list of ids to be filtered
+    filter
+        dictionary of column names paired to lists of values to be filtered out of that column.
+        all filters will be applied with the result being a table of rows where any column
+        value appears in one of the given lists and a table with the remaining rows.
     edited_survey_responses_table
         HIVE table to write edited responses
     filtered_survey_responses_table
         HIVE table when they have been filtered out from survey responses
     """
     df = extract_from_table(survey_responses_table)
-
-    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
+    filtered_out_df = df
+    for id_column, id_list in filter.items():
+        filtered_out_df = filtered_out_df.filter(F.col(id_column).isin(id_list))
     update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
 
     lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
-    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
-    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
+    filtered_in_df = df
+    for id_column, id_list in filter.items():
+        filtered_in_df = filtered_out_df.filter(~F.col(id_column).isin(id_list))
+    edited_df = update_from_lookup_df(filtered_in_df, lookup_df)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
 
