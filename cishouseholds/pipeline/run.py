@@ -1,9 +1,9 @@
+import copy
 import time
 import traceback
 from contextlib import contextmanager
 from datetime import datetime
 from typing import Dict
-from typing import List
 
 import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
@@ -64,11 +64,13 @@ def run_from_config():
     pipeline_error_count = None
 
     try:
-        upfront_key_value_parameters_validation(all_function_dict=pipeline_stages, config=config)
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+        config_copy = copy.deepcopy(config)
+        pipeline_stage_list = {stage_name: stage for stage_name, stage in config["stages"].items() if stage.pop("run")}
+        upfront_key_value_parameters_validation(all_function_dict=pipeline_stages, config=config_copy)
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         splunk_logger.log(status="start")
+
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
             run_id,
@@ -99,23 +101,22 @@ def run_from_config():
 
 
 def run_pipeline_stages(
-    pipeline_stage_list: List[dict],
+    pipeline_stage_list: dict,
     run_id: int,
     splunk_logger: SplunkLogger,
     retry_count: int = 1,
     retry_wait_time: int = 1,
 ):
     """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
-    number_of_stages = len(pipeline_stage_list)
+    number_of_stages = len(pipeline_stage_list.keys())
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
     stage_responses: Dict[str, str] = {}
-    for n, stage_config in enumerate(pipeline_stage_list):
+    for n, (stage_name, stage_config) in enumerate(pipeline_stage_list.items()):
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
         complete_status_string = "sucsessfully"
-        stage_name = stage_config.pop("function")
         stage_description = stage_name
         for key, val in stage_config.items():
             stage_description += f"{key}:{val}, "

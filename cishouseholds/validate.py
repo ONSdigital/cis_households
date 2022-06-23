@@ -174,38 +174,44 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
         if function_run_dict["run"]:
             function_run_list = [x for x in function_run_dict.keys() if x not in ["run"]]
             all_input_args = inspect.getfullargspec(all_function_dict[function_name]).args
+            error_msg_prefix = f"\nThe following argument(s) for {function_name} stage \n"
             input_arguments_needed = [
                 arg
                 for arg in all_input_args
                 if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
             ]
-            optional_input_args = [
+            optional_input_args_not_present = [
                 arg
                 for arg in all_input_args
                 if "=" in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+                and arg not in function_run_dict
             ]
-            if not (set(function_run_list) == set(input_arguments_needed)):
-                error_msg += f"\nThe following argument(s) for {function_name} stage \n"
 
-                list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
-                list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
+            list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
+            list_of_unrecognised_arg = [x for x in function_run_list if x not in all_input_args]
+            for arg in list_not_passed_arg:
+                function_run_dict[arg] = "MISSING!"
+            for arg in optional_input_args_not_present:
+                function_run_dict[arg] = (
+                    None
+                    if inspect.signature(all_function_dict[function_name]).parameters[arg].default is None
+                    else inspect.signature(all_function_dict[function_name]).parameters[arg].default
+                )
+            for arg in list_of_unrecognised_arg:
+                del function_run_dict[arg]
 
-                for arg in list_not_passed_arg:
-                    function_run_dict[arg] = "MISSING ARGUMENT"
-                for arg in optional_input_args:
-                    function_run_dict[arg] = None
-                for arg in list_of_unrecognised_arg:
-                    del function_run_dict[arg]
+            if list_not_passed_arg:
+                error_msg += (
+                    error_msg_prefix + f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
+                )
 
-                if list_not_passed_arg:
-                    error_msg += f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
-
-                if list_of_unrecognised_arg:
-                    error_msg += (
-                        f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
-                    )
-
+            if list_of_unrecognised_arg:
+                error_msg += (
+                    error_msg_prefix
+                    + f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
+                )
         corrected_pipeline_stages[function_name] = function_run_dict
+
     if error_msg:
         fix_config = input("your config file is erroneous, produce corrected version? ")
         if any(x in fix_config for x in ["Y", "y"]):
