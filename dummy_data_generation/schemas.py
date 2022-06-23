@@ -2158,7 +2158,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "work_status_employment": _(
             "choice",
             items=[
-                "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
+                "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                 None,
             ],
