@@ -1256,8 +1256,7 @@ def report_iqvia(
 def record_level_interface(
     survey_responses_table: str,
     csv_editing_file: str,
-    unique_id_column: str,
-    unique_id_list: List,
+    filter: dict,
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
 ):
@@ -1277,23 +1276,26 @@ def record_level_interface(
             - target_column
             - old_value
             - new_value
-    unique_id_column
-        unique id that will be edited
-    unique_id_list
-        list of ids to be filtered
+    filter
+        dictionary of column names paired to lists of values to be filtered out of that column.
+        all filters will be applied with the result being a table of rows where any column
+        value appears in one of the given lists and a table with the remaining rows.
     edited_survey_responses_table
         HIVE table to write edited responses
     filtered_survey_responses_table
         HIVE table when they have been filtered out from survey responses
     """
     df = extract_from_table(survey_responses_table)
-
-    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
+    filtered_out_df = df
+    for id_column, id_list in filter.items():
+        filtered_out_df = filtered_out_df.filter(F.col(id_column).isin(id_list))
     update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
 
     lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
-    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
-    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
+    filtered_in_df = df
+    for id_column, id_list in filter.items():
+        filtered_in_df = filtered_out_df.filter(~F.col(id_column).isin(id_list))
+    edited_df = update_from_lookup_df(filtered_in_df, lookup_df)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
 
