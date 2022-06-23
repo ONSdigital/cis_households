@@ -173,13 +173,17 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
     for function_name, function_run_dict in config["stages"].items():
         if function_run_dict["run"]:
             function_run_list = [x for x in function_run_dict.keys() if x not in ["run"]]
-
+            all_input_args = inspect.getfullargspec(all_function_dict[function_name]).args
             input_arguments_needed = [
                 arg
-                for arg in inspect.getargspec(all_function_dict[function_name]).args
+                for arg in all_input_args
+                if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+            ]
+            optional_input_args = [
+                arg
+                for arg in all_input_args
                 if "=" in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
             ]
-
             if not (set(function_run_list) == set(input_arguments_needed)):
                 error_msg += f"\nThe following argument(s) for {function_name} stage \n"
 
@@ -188,6 +192,8 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
 
                 for arg in list_not_passed_arg:
                     function_run_dict[arg] = "MISSING ARGUMENT"
+                for arg in optional_input_args:
+                    function_run_dict[arg] = None
                 for arg in list_of_unrecognised_arg:
                     del function_run_dict[arg]
 
@@ -204,8 +210,6 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
         fix_config = input("your config file is erroneous, produce corrected version? ")
         if any(x in fix_config for x in ["Y", "y"]):
             config["stages"] = corrected_pipeline_stages
-            for v in corrected_pipeline_stages:
-                print(v)
-            with open(os.environ.get("PIPELINE_CONFIG_LOCATION"), "w+") as fh:
-                yaml.dump(config, fh, allow_unicode=True, default_flow_style=False, indent=2)
+            with open(os.environ.get("PIPELINE_CONFIG_LOCATION"), "w+") as fh:  # type: ignore
+                yaml.dump(config, fh, allow_unicode=True, default_flow_style=False, indent=2, sort_keys=False)
         raise ConfigError(error_msg)
