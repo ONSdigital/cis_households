@@ -353,6 +353,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     Call transformations to digital data necessary before generic transformations are applied
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
@@ -361,20 +362,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
     )
-    df = update_column_in_time_window(
-        df,
-        "digital_survey_collection_mode",
-        "survey_completed_datetime",
-        "Telephone",
-        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
-    )
-    return df
 
-
-def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process digital specific variable transformations.
-    """
     df = assign_datetime_from_coalesced_columns_and_log_source(
         df,
         column_name_to_assign="visit_datetime",
@@ -395,6 +383,20 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         min_date="2022/05/01",
         default_timestamp="12:00:00",
     )
+    df = update_column_in_time_window(
+        df,
+        "digital_survey_collection_mode",
+        "survey_completed_datetime",
+        "Telephone",
+        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
+    )
+    return df
+
+
+def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process digital specific variable transformations.
+    """
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",
@@ -588,6 +590,111 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     None,
                     ["Attending university", "Or attending university?"],
+                ],
+            ],
+        ],
+        column_list,
+    )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_status_v1",
+        [
+            [
+                "Employed and currently working",
+                [
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Employed and currently not working",
+                [
+                    "Employed",
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
+                    ],  # noqa: E501
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently working",
+                [
+                    "self-employed"
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently not working",
+                [
+                    "self-employed"
+                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Looking for paid work and able to start",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Looking for paid work and able to start",
+                    None,
+                ],
+            ],
+            [
+                "Not working and not looking for work",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    None,
+                ],
+            ],
+            [
+                "Retired",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    ["Or retired?", "Retired"],
+                    None,
+                ],
+            ],
+            [
+                "Child under 5y not attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and not attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "Child under 5y attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "5y and older in full-time education",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    [
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
                 ],
             ],
         ],
