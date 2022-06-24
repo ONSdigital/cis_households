@@ -221,13 +221,17 @@ Includes combining data from different files and filling forwards or backwards o
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">geography_and_imputation_dependent_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imputed_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_imputed_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply processing that depends on the imputation and geographic columns being created
-:param imputed_responses_table:
-:param response_records_table:
-:param invalid_response_records_table:
-:param output_imputed_responses_table:
-:param key_columns:</p>
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">geography_and_imputation_dependent_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rural_urban_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processing that depends on geographies and and imputed demographic infromation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_table</strong> – name of the table containing data to be processed</p></li>
+<li><p><strong>rural_urban_lookup_path</strong> – path to the rural urban lookup to be joined onto responses</p></li>
+<li><p><strong>edited_table</strong> – name of table to write processed data to</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
