@@ -891,23 +891,44 @@ def join_geographic_data(
 
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
 def geography_and_imputation_dependent_processing(
-    imputed_responses_table: str,
-    output_imputed_responses_table: str,
+    input_table_name: str,
+    rural_urban_lookup_path: str,
+    output_table_name: str,
 ):
     """
-    Apply processing that depends on the imputation and geographic columns being created
-    Parameters
-    -----------
-    imputed_responses_table
-    response_records_table
-    invalid_response_records_table
-    output_imputed_responses_table
-    key_columns
-    """
-    df_with_imputed_values = extract_from_table(imputed_responses_table)
+    Processing that depends on geographies and and imputed demographic infromation.
 
-    df_with_imputed_values = assign_multigeneration(
-        df=df_with_imputed_values,
+    Parameters
+    ----------
+    input_table
+        name of the table containing data to be processed
+    rural_urban_lookup_path
+        path to the rural urban lookup to be joined onto responses
+    edited_table
+        name of table to write processed data to
+    """
+    df = extract_from_table(input_table_name)
+    rural_urban_lookup_df = (
+        get_or_create_spark_session()
+        .read.csv(
+            rural_urban_lookup_path,
+            header=True,
+            schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+        )
+        .drop("rural_urban_classification_11")
+    )  # Prefer version from sample
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+
+    df = assign_multigeneration(
+        df=df,
         column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
@@ -915,7 +936,7 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )  # Includes school year derivation
-    update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
+    update_table(df, output_table_name, write_mode="overwrite")
 
 
 @register_pipeline_stage("report")
