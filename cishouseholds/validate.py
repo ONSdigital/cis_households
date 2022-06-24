@@ -180,15 +180,18 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
         ]
 
         if not (set(function_run_list) == set(input_arguments_needed)):
-            error_msg += f"\nThe following argument(s) for {function_name} stage \n"
+            error_msg += "\n"
 
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
             list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
 
             if list_not_passed_arg:
-                error_msg += f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
-
+                error_msg += f"""
+                  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n
+                """
             if list_of_unrecognised_arg:
-                error_msg += f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
+                error_msg += f"""
+                  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n
+                """
     if error_msg:
         raise ConfigError(error_msg)
