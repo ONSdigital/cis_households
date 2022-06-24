@@ -380,7 +380,7 @@
   title: Mrs.
   transport_to_work_or_education: null
   unique_participant_response_id: 0014-DHR-910115823345
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '0014'
   voucher_type_preference: email_address
@@ -795,7 +795,7 @@
   title: Mrs.
   transport_to_work_or_education: Taxi/minicab
   unique_participant_response_id: 0176-DHR-904837937029
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '0176'
   voucher_type_preference: null
@@ -1213,7 +1213,7 @@
   title: Miss.
   transport_to_work_or_education: Bus, minibus, coach
   unique_participant_response_id: 2645-DHR-265113936833
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '2645'
   voucher_type_preference: email_address
@@ -1619,7 +1619,7 @@
   title: Miss.
   transport_to_work_or_education: Car or van
   unique_participant_response_id: 4384-DHR-251477511783
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '4384'
   voucher_type_preference: null
@@ -2038,7 +2038,7 @@
   title: Mrs.
   transport_to_work_or_education: Other method
   unique_participant_response_id: 4705-DHR-873192621176
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '4705'
   voucher_type_preference: email_address
@@ -2452,7 +2452,7 @@
   title: Mr.
   transport_to_work_or_education: Bicycle
   unique_participant_response_id: 5122-DHR-896449967341
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '5122'
   voucher_type_preference: null
@@ -2864,7 +2864,7 @@
   title: Prof.
   transport_to_work_or_education: null
   unique_participant_response_id: 5823-DHR-649389366563
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '5823'
   voucher_type_preference: email_address
@@ -3276,7 +3276,7 @@
   title: Dr.
   transport_to_work_or_education: On foot
   unique_participant_response_id: 7553-DHR-560763609637
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '7553'
   voucher_type_preference: null
@@ -3688,7 +3688,7 @@
   title: Ms.
   transport_to_work_or_education: null
   unique_participant_response_id: 8726-DHR-537278018134
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '8726'
   voucher_type_preference: null
@@ -4103,7 +4103,7 @@
   title: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
   unique_participant_response_id: 8964-DHR-094893452129
-  visit_date_type: swab_taken_datetime
+  visit_date_type: null
   visit_datetime: null
   visit_id: '8964'
   voucher_type_preference: Paper
