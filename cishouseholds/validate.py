@@ -186,12 +186,8 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
             list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
 
             if list_not_passed_arg:
-                error_msg += f"""
-                  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n
-                """
+                error_msg += f"""  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
             if list_of_unrecognised_arg:
-                error_msg += f"""
-                  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n
-                """
+                error_msg += f"""  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
     if error_msg:
         raise ConfigError(error_msg)
