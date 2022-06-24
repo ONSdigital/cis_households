@@ -64,7 +64,7 @@ def test_travel_column_imputation(spark_session):
             (4, "2021-01-03", "CountryD", "2020-03-01", "Yes"),
 
             (5, "2021-01-02", "CountryD", None, "Yes"),
-            (5, "2021-01-03", "CountryD", None, None),
+            (5, "2021-01-03", "CountryD", None, "Yes"),
 
             (6, "2021-01-02", None, "2020-03-01", "Yes"),
             (6, "2021-01-03", None, "2020-03-01", "Yes"),
