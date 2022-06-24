@@ -19,7 +19,7 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_datetime_from_group(
+def assign_datetime_from_coalesced_columns_and_log_source(
     df: DataFrame,
     column_name_to_assign: str,
     ordered_columns: List[str],
@@ -63,37 +63,6 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
         F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "", "_000000"
     ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
     df = df.withColumn(column_name_to_assign, F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"))
-    return df
-
-
-def assign_datetime_from_coalesced_columns_and_log_source(
-    df: DataFrame,
-    column_name_to_assign: str,
-    source_reference_column_name: str,
-    ordered_columns: List[str],
-    date_format: str,
-    time_format: str,
-    default_timestamp: str,
-):
-    """
-    Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
-    """
-    columns_to_coalesce = []
-    source_columns = []
-    for col in ordered_columns:
-        check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
-        columns_to_coalesce.append(
-            F.to_timestamp(
-                F.when(
-                    (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
-                    F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
-                ).otherwise(F.col(col)),
-                format=f"{date_format} {time_format}",
-            )
-        )
-        source_columns.append(F.when(F.col(col).isNull(), None).otherwise(col))
-    df = df.withColumn(column_name_to_assign, F.coalesce(*columns_to_coalesce))
-    df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     return df
 
 
