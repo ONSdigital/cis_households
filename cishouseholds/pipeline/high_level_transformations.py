@@ -620,27 +620,18 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    "Self-employed",
+                    "self-employed"
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
-                    "Looking for paid work and able to start",
-                    None,
-                ],
-            ],
-            [
-                "Self-employed and currently working",
-                [
-                    "Self-employed",
-                    None,
-                    "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
                 "Self-employed and currently not working",
                 [
-                    "Self-employed",
+                    "self-employed"
+                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
                     None,
                 ],
             ],
@@ -667,7 +658,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Retired",
+                    ["Or retired?", "Retired"],
                     None,
                 ],
             ],
