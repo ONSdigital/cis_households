@@ -2067,24 +2067,8 @@ def fill_forwards_transformations(df):
     #            "Student",
     #        ],
     #    )
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="been_outside_uk",
-        value_to_assign="Yes",
-        column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
-    )
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "been_outside_uk_last_country",
-            "been_outside_uk_last_return_date",
-            "been_outside_uk",
-        ],
-        participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
-        record_changed_column="been_outside_uk",
-        record_changed_value="Yes",
-    )
+
+    df = fill_forwards_travel_column(df)
 
     df = fill_backwards_overriding_not_nulls(
         df=df,
@@ -2102,6 +2086,28 @@ def fill_forwards_transformations(df):
             "date_of_birth",
             "ethnicity",
         ],
+    )
+    return df
+
+
+def fill_forwards_travel_column(df):
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="been_outside_uk",
+        value_to_assign="Yes",
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "been_outside_uk_last_country",
+            "been_outside_uk_last_return_date",
+            "been_outside_uk",
+        ],
+        participant_id_column="participant_id",
+        visit_date_column="visit_datetime",
+        record_changed_column="been_outside_uk",
+        record_changed_value="Yes",
     )
     return df
 
