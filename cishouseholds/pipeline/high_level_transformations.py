@@ -361,7 +361,20 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "blood_manual_entry", F.when(F.col("blood_sample_barcode_user_entered").isNull(), "No").otherwise("Yes")
     )
+    df = update_column_in_time_window(
+        df,
+        "digital_survey_collection_mode",
+        "survey_completed_datetime",
+        "Telephone",
+        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
+    )
+    return df
 
+
+def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
+    """
+    Call functions to process digital specific variable transformations.
+    """
     df = assign_datetime_from_coalesced_columns_and_log_source(
         df,
         column_name_to_assign="visit_datetime",
@@ -381,20 +394,6 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         file_date_column="file_date",
         default_timestamp="12:00:00",
     )
-    df = update_column_in_time_window(
-        df,
-        "digital_survey_collection_mode",
-        "survey_completed_datetime",
-        "Telephone",
-        ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
-    )
-    return df
-
-
-def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process digital specific variable transformations.
-    """
     dont_know_columns = [
         "work_in_additional_paid_employment",
         "work_nursing_or_residential_care_home",
