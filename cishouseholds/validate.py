@@ -1,13 +1,12 @@
+import copy
 import csv
 import inspect
-import os
 from io import StringIO
 from operator import add
 from typing import Dict
 from typing import List
 from typing import Union
 
-import yaml
 from pyspark import RDD
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -158,7 +157,7 @@ class ConfigError(Exception):
     pass
 
 
-def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dict):
+def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file_arguments: List):
     """
     Checks that there's a valid input in the pipeline_config.yaml for every stage
     input argument.
@@ -169,47 +168,26 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config: dic
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
     error_msg = ""
-    corrected_pipeline_stages = {}
-    for function_name, function_run_dict in config["stages"].items():
-        if function_run_dict["run"]:
-            function_run_list = [x for x in function_run_dict.keys() if x not in ["run"]]
-            all_input_args = inspect.getfullargspec(all_function_dict[function_name]).args
-            input_arguments_needed = [
-                arg
-                for arg in all_input_args
-                if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
-            ]
-            optional_input_args = [
-                arg
-                for arg in all_input_args
-                if "=" in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
-            ]
-            if not (set(function_run_list) == set(input_arguments_needed)):
-                error_msg += f"\nThe following argument(s) for {function_name} stage \n"
+    config_file_arguments_copy = copy.deepcopy(config_file_arguments)
+    for stage_argument_dict in config_file_arguments_copy:
+        function_name = stage_argument_dict.pop("function")
+        stage_argument_list = [x for x in stage_argument_dict.keys()]
+        all_input_arguments = inspect.getfullargspec(all_function_dict[function_name]).args
+        input_arguments_needed = [
+            arg
+            for arg in all_input_arguments
+            if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+        ]
 
-                list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
-                list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
+        if not (set(stage_argument_list) == set(input_arguments_needed)):
+            error_msg += "\n"
 
-                for arg in list_not_passed_arg:
-                    function_run_dict[arg] = "MISSING ARGUMENT"
-                for arg in optional_input_args:
-                    function_run_dict[arg] = None
-                for arg in list_of_unrecognised_arg:
-                    del function_run_dict[arg]
+            list_not_passed_arg = [x for x in input_arguments_needed if x not in stage_argument_list]
+            list_of_unrecognised_arg = [x for x in stage_argument_list if x not in all_input_arguments]
 
-                if list_not_passed_arg:
-                    error_msg += f""" - are not passed in the config file: {', '.join(list_not_passed_arg)}.\n"""
-
-                if list_of_unrecognised_arg:
-                    error_msg += (
-                        f""" - are not recognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""
-                    )
-
-        corrected_pipeline_stages[function_name] = function_run_dict
+            if list_not_passed_arg:
+                error_msg += f"""  - {function_name} stage missing argument(s): {', '.join(list_not_passed_arg)} in the config file.\n"""  # noqa: E501
+            if list_of_unrecognised_arg:
+                error_msg += f"""  - {function_name} stage passed unrecognised input argument(s): {', '.join(list_of_unrecognised_arg)} from config file.\n"""  # noqa: E501
     if error_msg:
-        fix_config = input("your config file is erroneous, produce corrected version? ")
-        if any(x in fix_config for x in ["Y", "y"]):
-            config["stages"] = corrected_pipeline_stages
-            with open(os.environ.get("PIPELINE_CONFIG_LOCATION"), "w+") as fh:  # type: ignore
-                yaml.dump(config, fh, allow_unicode=True, default_flow_style=False, indent=2, sort_keys=False)
         raise ConfigError(error_msg)
