@@ -674,7 +674,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Child under 5y not attending child care",
                 [
-                    "Education",
+                    ["In education", None],
                     None,
                     None,
                     "A child below school age and not attending a nursery or pre-school or childminder",
@@ -683,7 +683,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Child under 5y attending child care",
                 [
-                    "Education",
+                    ["In education", None],
                     None,
                     None,
                     "A child below school age and attending a nursery or pre-school or childminder",
@@ -692,7 +692,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "5y and older in full-time education",
                 [
-                    "Education",
+                    ["In education", None],
                     None,
                     None,
                     [
