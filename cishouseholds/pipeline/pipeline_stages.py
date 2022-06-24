@@ -453,12 +453,12 @@ def lookup_based_editing(
     input_table: str,
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
-    rural_urban_lookup_path: str,
     tenure_group_path: str,
     edited_table: str,
 ):
     """
     Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+
     Parameters
     ----------
     input_table
@@ -469,29 +469,19 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark = get_or_create_spark_session()
+    spark_session = get_or_create_spark_session()
     df = extract_from_table(input_table)
 
-    cohort_lookup = spark.read.csv(
+    cohort_lookup = spark_session.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
     ).withColumnRenamed("participant_id", "cohort_participant_id")
 
-    travel_countries_lookup = spark.read.csv(
+    travel_countries_lookup = spark_session.read.csv(
         travel_countries_lookup_path,
         header=True,
         schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
     )
-    rural_urban_lookup_df = spark.read.csv(
-        rural_urban_lookup_path,
-        header=True,
-        schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
-    ).drop(
-        "rural_urban_classification_11"
-    )  # Prefer version from sample
+
     df = df.join(
         F.broadcast(cohort_lookup),
         how="left",
@@ -512,13 +502,7 @@ def lookup_based_editing(
         ),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
 
-    if "lower_super_output_area_code_11" in df.columns:
-        df = df.join(
-            F.broadcast(rural_urban_lookup_df),
-            how="left",
-            on="lower_super_output_area_code_11",
-        )
-    tenure_group = spark.read.csv(tenure_group_path, header=True).select(
+    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
     for key, value in column_name_maps["tenure_group_variable_map"].items():
@@ -527,6 +511,47 @@ def lookup_based_editing(
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
 
     update_table(df, edited_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("imputation_depdendent_transformations")
+def imputation_depdendent_transformations(
+    input_table_name: str,
+    rural_urban_lookup_path: str,
+    output_table_name: str,
+):
+    """
+    Processing that depends on geographies and and imputed demographic infromation.
+
+    Parameters
+    ----------
+    input_table
+        name of the table containing data to be processed
+    rural_urban_lookup_path
+        path to the rural urban lookup to be joined onto responses
+    edited_table
+        name of table to write processed data to
+    """
+    df = extract_from_table(input_table_name)
+    rural_urban_lookup_df = (
+        get_or_create_spark_session()
+        .read.csv(
+            rural_urban_lookup_path,
+            header=True,
+            schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+        )
+        .drop("rural_urban_classification_11")
+    )  # Prefer version from sample
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+
+    update_table(df, output_table_name, write_mode="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
