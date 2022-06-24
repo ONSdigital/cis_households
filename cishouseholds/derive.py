@@ -35,22 +35,23 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     """
     coalesce_columns = []
     source_columns = []
+    for col, type in df.select(*ordered_columns).dtypes:
+        if type != "timestamp":
+            df = df.withColumn(col, F.to_timestamp(col, format=f"{date_format} {time_format}"))
     for col in ordered_columns:
-        check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
-        coalesce_columns.append(
+        check_distinct = df.agg(F.countDistinct(F.date_format(col, time_format))).collect()[0][0] == 1
+        col_object = F.when(
+            (F.col(col) >= F.lit(min_date)) & (F.col(col) < F.col(file_date_column)),
             F.when(
-                (F.col(col) >= F.lit(min_date)) & (F.col(col) < F.col(file_date_column)),
-                F.to_timestamp(
-                    F.when(
-                        (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
-                        F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
-                    ).otherwise(F.col(col)),
-                    format=f"{date_format} {time_format}",
-                ),
-            ).otherwise(None)
-        )
-        source_columns.append(F.when(F.col(col).isNull(), None).otherwise(col))
-    df = df.withColumn(column_name_to_assign, F.coalesce(*coalesce_columns))
+                (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
+                F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
+            ).otherwise(F.col(col)),
+        ).otherwise(None)
+        coalesce_columns.append(col_object)
+        source_columns.append(F.when(col_object.isNull(), None).otherwise(col))
+    df = df.withColumn(
+        column_name_to_assign, F.to_timestamp(F.coalesce(*coalesce_columns), format=f"{date_format} {time_format}")
+    )
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     return df
 
