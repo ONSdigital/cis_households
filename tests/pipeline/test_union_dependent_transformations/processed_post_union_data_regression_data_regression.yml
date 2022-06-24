@@ -1110,9 +1110,9 @@
   work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
     work
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
@@ -2223,9 +2223,9 @@
   work_social_care_raw: null
   work_status_digital: null
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: Retired
   work_status_v0: null
@@ -2789,9 +2789,9 @@
   work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
     work
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: null
   work_status_v0: null
@@ -3343,9 +3343,9 @@
   work_social_care_raw: null
   work_status_digital: In education
   work_status_education: A child aged 4 or over at home-school
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
@@ -3899,9 +3899,9 @@
   work_social_care_raw: null
   work_status_digital: null
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: Retired
   work_status_v0: null
@@ -5567,9 +5567,9 @@
   work_social_care_raw: null
   work_status_digital: null
   work_status_education: A child aged 4 or over at school
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_group: Unknown
   work_status_unemployment: null
   work_status_v0: null
