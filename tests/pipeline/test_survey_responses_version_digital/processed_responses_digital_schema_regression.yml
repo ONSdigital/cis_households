@@ -1456,6 +1456,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_status_v1
+  nullable: true
+  type: string
+- metadata: {}
   name: work_status_v0
   nullable: true
   type: string

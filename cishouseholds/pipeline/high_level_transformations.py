@@ -594,6 +594,111 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = assign_column_value_from_multiple_column_map(
         df,
+        "work_status_v1",
+        [
+            [
+                "Employed and currently working",
+                [
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Employed and currently not working",
+                [
+                    "Employed",
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
+                    ],  # noqa: E501
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently working",
+                [
+                    "self-employed"
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently not working",
+                [
+                    "self-employed"
+                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Looking for paid work and able to start",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Looking for paid work and able to start",
+                    None,
+                ],
+            ],
+            [
+                "Not working and not looking for work",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    None,
+                ],
+            ],
+            [
+                "Retired",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    ["Or retired?", "Retired"],
+                    None,
+                ],
+            ],
+            [
+                "Child under 5y not attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and not attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "Child under 5y attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "5y and older in full-time education",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    [
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
+                ],
+            ],
+        ],
+        column_list,
+    )
+    df = assign_column_value_from_multiple_column_map(
+        df,
         "work_status_v0",
         [
             [
