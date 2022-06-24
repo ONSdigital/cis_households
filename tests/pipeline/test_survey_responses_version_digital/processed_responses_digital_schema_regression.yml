@@ -1244,6 +1244,10 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: visit_id
   nullable: true
   type: string
@@ -1307,10 +1311,6 @@ fields:
   name: unique_participant_response_id
   nullable: false
   type: string
-- metadata: {}
-  name: file_date
-  nullable: true
-  type: timestamp
 - metadata: {}
   name: bad_email
   nullable: true
@@ -1453,6 +1453,10 @@ fields:
   type: string
 - metadata: {}
   name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1
   nullable: true
   type: string
 - metadata: {}
