@@ -24,6 +24,7 @@ def assign_datetime_from_group(
     column_name_to_assign: str,
     ordered_columns: List[str],
     date_format: str,
+    file_date_column: str,
     time_format: str,
     default_timestamp: str,
 ):
@@ -34,13 +35,16 @@ def assign_datetime_from_group(
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
         coalesce_columns.append(
-            F.to_timestamp(
-                F.when(
-                    (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
-                    F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
-                ).otherwise(F.col(col)),
-                format=f"{date_format} {time_format}",
-            )
+            F.when(
+                (F.col(col) <= F.lit("2022/05/01")) & (F.col(col) < F.col(file_date_column)),
+                F.to_timestamp(
+                    F.when(
+                        (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
+                        F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
+                    ).otherwise(F.col(col)),
+                    format=f"{date_format} {time_format}",
+                ),
+            ).otherwise(None)
         )
     df = df.withColumn(column_name_to_assign, F.coalesce(*coalesce_columns))
     return df

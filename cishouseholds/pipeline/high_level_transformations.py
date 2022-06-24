@@ -371,6 +371,7 @@ def digital_specific_transformations(df: DataFrame) -> DataFrame:
         ],
         date_format="yyyy-MM-dd",
         time_format="HH:mm:ss",
+        file_date_column="file_date",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
