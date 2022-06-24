@@ -25,6 +25,7 @@ def assign_datetime_from_group(
     ordered_columns: List[str],
     date_format: str,
     file_date_column: str,
+    source_reference_column_name: str,
     time_format: str,
     default_timestamp: str,
 ):
@@ -32,6 +33,7 @@ def assign_datetime_from_group(
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
     """
     coalesce_columns = []
+    source_columns = []
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
         coalesce_columns.append(
@@ -46,7 +48,9 @@ def assign_datetime_from_group(
                 ),
             ).otherwise(None)
         )
+        source_columns.append(F.when(F.col(col).isNull(), None).otherwise(col))
     df = df.withColumn(column_name_to_assign, F.coalesce(*coalesce_columns))
+    df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     return df
 
 
