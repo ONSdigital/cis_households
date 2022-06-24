@@ -392,6 +392,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         date_format="yyyy-MM-dd",
         time_format="HH:mm:ss",
         file_date_column="file_date",
+        min_date="2022/05/01",
         default_timestamp="12:00:00",
     )
     dont_know_columns = [

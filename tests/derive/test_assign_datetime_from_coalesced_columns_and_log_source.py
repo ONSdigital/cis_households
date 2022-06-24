@@ -52,6 +52,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         date_format="yyyy-MM-dd",
         time_format="HH:mm:ss",
         file_date_column="file_date",
+        min_date="2020/05/01",
         default_timestamp="12:00:00",
     )
     assert_df_equality(output_df_1, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
@@ -66,6 +67,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         date_format="yyyy-MM-dd",
         time_format="HH:mm:ss",
         file_date_column="file_date",
+        min_date="2020/05/01",
         default_timestamp="12:00:00",
     )
     assert_df_equality(output_df_2, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)

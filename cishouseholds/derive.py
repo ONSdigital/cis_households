@@ -25,6 +25,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     ordered_columns: List[str],
     date_format: str,
     file_date_column: str,
+    min_date: str,
     source_reference_column_name: str,
     time_format: str,
     default_timestamp: str,
@@ -38,7 +39,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         check_distinct = df.agg(F.countDistinct(col).alias("c")).collect()[0][0] == 1
         coalesce_columns.append(
             F.when(
-                (F.col(col) <= F.lit("2022/05/01")) & (F.col(col) < F.col(file_date_column)),
+                (F.col(col) >= F.lit(min_date)) & (F.col(col) < F.col(file_date_column)),
                 F.to_timestamp(
                     F.when(
                         (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
