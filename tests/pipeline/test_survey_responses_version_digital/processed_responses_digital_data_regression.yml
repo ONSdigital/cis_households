@@ -416,6 +416,7 @@
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -829,6 +830,7 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
@@ -1242,6 +1244,7 @@
   work_status_employment: null
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -1652,6 +1655,7 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
@@ -2073,6 +2077,7 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
@@ -2482,6 +2487,7 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -2893,6 +2899,7 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: null
   ability_to_socially_distance_at_work_or_education_raw: null
@@ -3302,6 +3309,7 @@
   work_status_employment: null
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: null
   ability_to_socially_distance_at_work_or_education_raw: null
@@ -3714,6 +3722,7 @@
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
@@ -4126,4 +4135,5 @@
     working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
