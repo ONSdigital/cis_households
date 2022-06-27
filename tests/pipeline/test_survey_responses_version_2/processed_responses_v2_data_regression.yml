@@ -165,6 +165,8 @@
   self_isolating: 'No'
   self_isolating_reason: Yes for other reasons related to reducing your risk of getting
     COVID-19 (e.g. going into hospital orshielding)
+  self_isolating_reason_detailed: Yes for other reasons related to reducing your risk
+    of getting COVID-19 (e.g. going into hospital orshielding)
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -470,6 +472,8 @@
   samples_taken_datetime: null
   self_isolating: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -774,6 +778,7 @@
   samples_taken_datetime: null
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1077,6 +1082,8 @@
   samples_taken_datetime: '2022-01-08 20:31:43.000000'
   self_isolating: 'Yes'
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
+  self_isolating_reason_detailed: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1382,6 +1389,7 @@
   samples_taken_datetime: '2022-01-09 09:52:11.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -1691,6 +1699,7 @@
   samples_taken_datetime: '2022-01-09 21:38:36.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -1998,6 +2007,7 @@
   samples_taken_datetime: '2022-01-07 01:16:00.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -2310,6 +2320,7 @@
   samples_taken_datetime: null
   self_isolating: 'No'
   self_isolating_reason: 'No'
+  self_isolating_reason_detailed: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -2616,6 +2627,8 @@
   samples_taken_datetime: null
   self_isolating: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -2929,6 +2942,7 @@
   samples_taken_datetime: '2022-01-08 05:48:45.000000'
   self_isolating: null
   self_isolating_reason: null
+  self_isolating_reason_detailed: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
