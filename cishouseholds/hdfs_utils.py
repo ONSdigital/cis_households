@@ -1,4 +1,5 @@
 """A collection of HDFS utils."""
+import os
 import subprocess
 
 
@@ -47,14 +48,15 @@ def isdir(path):
 
 def create_dir(path):
     """
-    Create a directory. Uses 'hadoop fs -mkdir'.
+    Create a directory including the parent directories if they don't already exist.
+    Uses 'hadoop fs -mkdir -p'
 
     Args: path (String)
 
     Returns:
         bool: Returns True for successfully completed operation. Else False.
     """
-    command = ["hadoop", "fs", "-mkdir", path]
+    command = ["hadoop", "fs", "-mkdir", "-p", path]
     return _perform(command)
 
 
@@ -127,6 +129,12 @@ def copy_local_to_hdfs(from_path, to_path):
     Returns:
         bool: Returns True for successfully completed operation. Else False.
     """
+    # make sure any nested directories in to_path exist first before copying
+    destination_path = os.path.dirname(to_path)
+    destination_path_creation = create_dir(destination_path)
+
+    assert destination_path_creation is True, f"Unable to create destination path: {destination_path}"
+
     command = ["hadoop", "fs", "-copyFromLocal", from_path, to_path]
     return _perform(command)
 
