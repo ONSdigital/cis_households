@@ -242,7 +242,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -658,7 +658,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -1076,7 +1076,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -1482,7 +1482,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -1900,7 +1900,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -2315,7 +2315,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+  self_isolating_reason_detailed: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
@@ -2726,7 +2726,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -3139,7 +3139,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -3551,7 +3551,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -3966,7 +3966,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female

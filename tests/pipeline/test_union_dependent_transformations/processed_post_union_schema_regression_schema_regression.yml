@@ -1424,7 +1424,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason_digital
+  name: self_isolating_reason_detailed
   nullable: true
   type: string
 - metadata: {}

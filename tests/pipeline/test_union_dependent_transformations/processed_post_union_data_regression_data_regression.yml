@@ -356,7 +356,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -916,7 +916,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -1478,7 +1478,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -2028,7 +2028,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -2589,7 +2589,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -3147,7 +3147,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+  self_isolating_reason_detailed: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
@@ -3702,7 +3702,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -4259,7 +4259,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -4814,7 +4814,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -5372,7 +5372,7 @@
   self_isolating: 'No'
   self_isolating_raw: 'No'
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -5913,7 +5913,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: Do you have any idea why this is not working?
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -6463,7 +6463,7 @@
   self_isolating_raw: null
   self_isolating_reason: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -7015,7 +7015,7 @@
   self_isolating_raw: null
   self_isolating_reason: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -7563,7 +7563,7 @@
   self_isolating_raw: null
   self_isolating_reason: Haskell features a type system with type inference and lazy
     evaluation.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'No'
@@ -8110,7 +8110,8 @@
   self_isolating_raw: null
   self_isolating_reason: Yes for other reasons related to reducing your risk of getting
     COVID-19 (e.g. going into hospital orshielding)
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: Yes for other reasons related to reducing your risk
+    of getting COVID-19 (e.g. going into hospital orshielding)
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -8648,7 +8649,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -9190,7 +9191,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -9733,7 +9734,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -10276,7 +10277,8 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -10816,7 +10818,7 @@
   self_isolating: null
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -11355,7 +11357,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: null
   smoke_cigarettes: null
@@ -11893,7 +11895,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: Ports are used to communicate with the external world.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -12443,7 +12445,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -12986,7 +12988,8 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: Due to increased risk of getting COVID-19 such as
+    having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -13527,7 +13530,7 @@
   self_isolating: null
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'Yes'
@@ -14068,7 +14071,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -14616,7 +14619,7 @@
   self_isolating_reason: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -15168,7 +15171,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -15708,7 +15711,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -16251,7 +16254,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: Atoms are used within a program to denote distinguished values.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
@@ -16803,7 +16806,7 @@
   self_isolating: null
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -17347,7 +17350,7 @@
   self_isolating: null
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: null
@@ -17893,7 +17896,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
@@ -18437,7 +18440,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: Type classes first appeared in the Haskell programming language.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: null
   sex_raw: null
   smoke_cigarettes: 'Yes'
@@ -18984,7 +18987,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: 'No'
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: 'No'
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -19526,7 +19529,8 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
+    who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -20074,7 +20078,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: Any element of a tuple can be accessed in constant time.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -20620,7 +20624,7 @@
   self_isolating: null
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Male
   sex_raw: Male
   smoke_cigarettes: 'No'
@@ -21167,7 +21171,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: null
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -21707,7 +21711,7 @@
   self_isolating_raw: null
   self_isolating_reason: They are written as strings of consecutive alphanumeric characters,
     the first character being lowercase.
-  self_isolating_reason_digital: null
+  self_isolating_reason_detailed: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'

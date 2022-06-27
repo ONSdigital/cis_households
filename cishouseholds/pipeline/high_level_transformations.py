@@ -441,7 +441,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
 
-    df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
+    if "self_isolating_reason" in df.columns:
+        # Plan to edit the name to self_isolating_reason_detailed in raw data instead of this
+        df = df.withColumn("self_isolating_reason_detailed", F.col("self_isolating_reason"))
 
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -461,6 +463,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     "Yes",
                     [
                         "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                        # TODO: Remove once encoding fixed in raw data
                         "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
                     ],
                 ],
@@ -480,7 +483,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 ],  # noqa: E501
             ],
         ],
-        ["self_isolating", "self_isolating_reason_digital"],
+        ["self_isolating", "self_isolating_reason_detailed"],
     )
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
@@ -1307,6 +1310,24 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "times_socialising_last_7_days",
         ],
     )
+
+    # Map to digital from raw V2 values, before editing them to V1 below
+    df = assign_from_map(
+        df,
+        "self_isolating_reason_detailed",
+        "self_isolating_reason",
+        {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
+        },
+    )
+
     times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
@@ -1456,21 +1477,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
 
-    # Edits to final V2 values, which differ from raw
-    df = update_column_values_from_map(
-        df=df,
-        column="self_isolating_reason",
-        map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-    )
+    # After editing to V1 values in cleaning
     df = assign_isin_list(
         df=df,
         column_name_to_assign="self_isolating",
