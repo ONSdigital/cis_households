@@ -56,26 +56,19 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2022-04-18 12:00:00",
                 None,
             ),  # should pick priority 3 date when all others are out of range
+            (
+                "2022-04-18 00:00:00",
+                "2022-04-18 00:00:00",
+                "2022-04-18 00:00:00",
+                None,
+                "2021-04-18 12:00:00",
+                None,
+            ),  # should be null as all dates are after file date
         ],
         schema="date_1 string, date_2 string, date_3 string, result string, file_date string, source string",
     )
-    # expected_df = expected_df.withColumn(
-    #     "result", F.to_timestamp("result", format="yyyy-MM-dd HH:mm:ss").cast("timestamp")
-    # )
-    # output_df_1 = assign_datetime_from_coalesced_columns_and_log_source(
-    #     expected_df.drop("result", "source"),
-    #     column_name_to_assign="result",
-    #     source_reference_column_name="source",
-    #     ordered_columns=["date_1", "date_2", "date_3"],
-    #     date_format="yyyy-MM-dd",
-    #     time_format="HH:mm:ss",
-    #     file_date_column="file_date",
-    #     min_date="2000/05/01",
-    #     default_timestamp="12:00:00",
-    # )
-    # assert_df_equality(output_df_1, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
 
-    output_df_2 = assign_datetime_from_coalesced_columns_and_log_source(
+    output_df = assign_datetime_from_coalesced_columns_and_log_source(
         expected_df.drop("result", "source"),
         column_name_to_assign="result",
         source_reference_column_name="source",
@@ -88,4 +81,4 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
     )
     for col in ["date_1", "date_2", "date_3", "result"]:
         expected_df = expected_df.withColumn(col, F.to_timestamp(col, format="yyyy-MM-dd HH:mm:ss"))
-    assert_df_equality(output_df_2, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
+    assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
