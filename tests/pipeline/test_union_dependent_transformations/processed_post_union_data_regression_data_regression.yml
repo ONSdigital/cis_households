@@ -355,7 +355,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
+  self_isolating_reason: null
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
@@ -1477,7 +1477,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
+  self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
   self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
@@ -2027,7 +2027,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
+  self_isolating_reason: Yes, someone you live with had symptoms
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
@@ -3146,7 +3146,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
+  self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
   self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
@@ -4258,7 +4258,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
+  self_isolating_reason: null
   self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
@@ -4813,7 +4813,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
+  self_isolating_reason: null
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
@@ -5371,7 +5371,7 @@
   samples_taken_datetime_string: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
+  self_isolating_reason: null
   self_isolating_reason_digital: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
@@ -8110,8 +8110,7 @@
   self_isolating_raw: null
   self_isolating_reason: Yes for other reasons related to reducing your risk of getting
     COVID-19 (e.g. going into hospital orshielding)
-  self_isolating_reason_digital: Yes for other reasons related to reducing your risk
-    of getting COVID-19 (e.g. going into hospital orshielding)
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -10277,7 +10276,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: Yes, someone you live with had symptoms
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
@@ -12987,8 +12986,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
-  self_isolating_reason_digital: Yes, for other reasons (e.g. going into hospital,
-    quarantining)
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -18986,7 +18984,7 @@
   self_isolating: 'No'
   self_isolating_raw: null
   self_isolating_reason: 'No'
-  self_isolating_reason_digital: 'No'
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
@@ -19528,7 +19526,7 @@
   self_isolating: 'Yes'
   self_isolating_raw: null
   self_isolating_reason: Yes, someone you live with had symptoms
-  self_isolating_reason_digital: Yes, someone you live with had symptoms
+  self_isolating_reason_digital: null
   sex: Female
   sex_raw: Female
   smoke_cigarettes: 'No'
