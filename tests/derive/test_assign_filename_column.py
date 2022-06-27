@@ -18,7 +18,7 @@ def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
         }
     )
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    path = ("hdfs://" if in_dev_test else "file:///") + str(csv_file_path.as_posix()).lstrip("/")
+    path = ("hdfs:///" if in_dev_test else "file:///") + str(csv_file_path.as_posix()).lstrip("/")
     expected_df = spark_session.createDataFrame(
         data=[
             (0, "first_value", path),
