@@ -8,6 +8,9 @@ from cishouseholds.pyspark_utils import running_in_dev_test
 
 
 def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
+
+    in_dev_test = running_in_dev_test()
+
     pandas_df = pd.DataFrame(
         data={
             "id": [0, 1],
@@ -15,7 +18,7 @@ def test_assign_filename_column(pandas_df_to_temporary_csv, spark_session):
         }
     )
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    path = "file:///" + str(csv_file_path.as_posix()).lstrip("/")
+    path = ("hdfs://" if in_dev_test else "file:///") + str(csv_file_path.as_posix()).lstrip("/")
     expected_df = spark_session.createDataFrame(
         data=[
             (0, "first_value", path),
