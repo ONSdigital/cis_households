@@ -1769,8 +1769,7 @@ def aggregated_output_window(
 def conclusion_from_abc(
     df: DataFrame,
     column_question_list: List[str],
-    column_name_to_assign,
-    unused_input,
+    column_name_to_assign: str,
 ) -> DataFrame:
     """
 
@@ -1780,10 +1779,10 @@ def conclusion_from_abc(
     column_question_list
     column_name_to_assign
     """
-    df = df.withColumn("conclusion", F.lit(None))
+    df = df.withColumn(column_name_to_assign, F.lit(None))
     for col in column_question_list:
         df = df.withColumn(
-            "conclusion",
+            column_name_to_assign,
             F.when(F.col(column_name_to_assign) == "yes", "yes")
             .when(F.col(col).contains("yes"), "yes")
             .otherwise("no"),
