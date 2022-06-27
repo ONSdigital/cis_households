@@ -7,6 +7,8 @@ from pandas import Timestamp
 from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
+from cishouseholds.hdfs_utils import copy_local_to_hdfs
+from cishouseholds.pyspark_utils import running_in_dev_test
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 
@@ -45,9 +47,16 @@ def pandas_df_to_temporary_csv(tmp_path):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
     def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
+        in_dev_test = running_in_dev_test()
         temporary_csv_path = tmp_path / filename
         pandas_df.to_csv(temporary_csv_path, sep=sep, header=True, index=False, na_rep="")
-        return temporary_csv_path
+        _temporary_csv_path = str(temporary_csv_path.as_posix()).lstrip("/")
+        if in_dev_test:
+            # copy the csv file from local dir to hdfs when running in DevTest env
+            copy_local_to_hdfs(temporary_csv_path, temporary_csv_path)
+            return f"hdfs:///{_temporary_csv_path}"
+        else:
+            return f"file:///{_temporary_csv_path}"
 
     return _pandas_df_to_temporary_csv
 
