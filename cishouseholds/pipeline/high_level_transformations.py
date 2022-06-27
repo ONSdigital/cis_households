@@ -438,12 +438,18 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
 
-    df = df.withColumn("self_isolating_reason_digital", F.col("self_isolating_reason"))
+    if "self_isolating_reason" in df.columns:
+        # Plan to edit the name to self_isolating_reason_detailed in raw data instead of this
+        df = df.withColumn("self_isolating_reason_detailed", F.col("self_isolating_reason"))
+
     df = assign_column_value_from_multiple_column_map(
         df,
         "self_isolating_reason",
         [
-            ["No", ["No", None]],
+            [
+                "No",
+                ["No", None],
+            ],
             [
                 "Yes, you have/have had symptoms",
                 ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
@@ -452,22 +458,29 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Yes, someone you live with had symptoms",
                 [
                     "Yes",
-                    "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                    [
+                        "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                        # TODO: Remove once encoding fixed in raw data
+                        "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                    ],
                 ],
             ],
             [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
+                "Yes, for other reasons (e.g. going into hospital, quarantining)",
                 [
                     "Yes",
-                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-                ],
+                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
+                ],  # noqa: E501
             ],
             [
-                "Yes, for other reasons (e.g. going into hospital, quarantining),",  # noqa: E501
-                ["Yes", "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding"],
+                "Yes, for other reasons (e.g. going into hospital, quarantining)",
+                [
+                    "Yes",
+                    "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
+                ],  # noqa: E501
             ],
         ],
-        ["self_isolating", "self_isolating_reason"],
+        ["self_isolating", "self_isolating_reason_detailed"],
     )
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
@@ -587,6 +600,111 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     None,
                     ["Attending university", "Or attending university?"],
+                ],
+            ],
+        ],
+        column_list,
+    )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_status_v1",
+        [
+            [
+                "Employed and currently working",
+                [
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Employed and currently not working",
+                [
+                    "Employed",
+                    [
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
+                    ],  # noqa: E501
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently working",
+                [
+                    "self-employed"
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Self-employed and currently not working",
+                [
+                    "self-employed"
+                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    None,
+                    None,
+                ],
+            ],
+            [
+                "Looking for paid work and able to start",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Looking for paid work and able to start",
+                    None,
+                ],
+            ],
+            [
+                "Not working and not looking for work",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    None,
+                ],
+            ],
+            [
+                "Retired",
+                [
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                    None,
+                    ["Or retired?", "Retired"],
+                    None,
+                ],
+            ],
+            [
+                "Child under 5y not attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and not attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "Child under 5y attending child care",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    "A child below school age and attending a nursery or pre-school or childminder",
+                ],
+            ],
+            [
+                "5y and older in full-time education",
+                [
+                    ["In education", None],
+                    None,
+                    None,
+                    [
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
                 ],
             ],
         ],
@@ -1189,6 +1307,24 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "times_socialising_last_7_days",
         ],
     )
+
+    # Map to digital from raw V2 values, before editing them to V1 below
+    df = assign_from_map(
+        df,
+        "self_isolating_reason_detailed",
+        "self_isolating_reason",
+        {
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
+            "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
+        },
+    )
+
     times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
@@ -1338,37 +1474,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 2)
 
-    # Derive from final V2 values, not raw
-    df = assign_from_map(
-        df,
-        "self_isolating_reason_digital",
-        "self_isolating_reason",
-        {
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
-        },
-    )
-    # Edits to final V2 values, which differ from raw
-    df = update_column_values_from_map(
-        df=df,
-        column="self_isolating_reason",
-        map={
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Yes, for other reasons (e.g. going into hospital, quarantining)",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "Yes, someone you live with had symptoms",  # noqa: E501
-            "Yes because you have/have had symptoms of COVID-19": "Yes, you have/have had symptoms",
-            "Yes because you have/have had symptoms of COVID-19 or a positive test": "Yes, you have/have had symptoms",
-        },
-    )
+    # After editing to V1 values in cleaning
     df = assign_isin_list(
         df=df,
         column_name_to_assign="self_isolating",

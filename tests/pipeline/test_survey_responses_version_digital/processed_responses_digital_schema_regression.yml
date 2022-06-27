@@ -1448,11 +1448,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason_digital
+  name: self_isolating_reason_detailed
   nullable: true
   type: string
 - metadata: {}
   name: work_status_v2
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_status_v1
   nullable: true
   type: string
 - metadata: {}

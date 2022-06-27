@@ -241,8 +241,8 @@
   sample_return_preference: Post
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason: null
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -416,6 +416,7 @@
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -657,7 +658,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -824,11 +825,12 @@
   work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
     work
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
@@ -1073,8 +1075,8 @@
   sample_return_preference: Courier
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -1242,6 +1244,7 @@
   work_status_employment: null
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -1478,8 +1481,8 @@
   sample_return_preference: Post
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason: Yes, someone you live with had symptoms
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -1647,11 +1650,12 @@
   work_sector_raw: Manufacturing or construction
   work_status_digital: null
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1 metre away. Your work means you are in close contact with others on a regular
@@ -1896,7 +1900,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Male
   sex_raw: Male
@@ -2068,11 +2072,12 @@
   work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
     work
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
@@ -2309,8 +2314,8 @@
   sample_return_preference: Courier
   self_isolating: 'Yes'
   self_isolating_raw: 'Yes'
-  self_isolating_reason: null
-  self_isolating_reason_digital: Due to increased risk of getting COVID-19 such as
+  self_isolating_reason: Yes, for other reasons (e.g. going into hospital, quarantining)
+  self_isolating_reason_detailed: Due to increased risk of getting COVID-19 such as
     having been in contact with a known case or quarantining after travel abroad
   sex: Female
   sex_raw: Female
@@ -2477,11 +2482,12 @@
   work_sector_raw: Food production and agriculture. This includes farming
   work_status_digital: In education
   work_status_education: A child aged 4 or over at home-school
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
@@ -2720,7 +2726,7 @@
   self_isolating: null
   self_isolating_raw: Prefer not to say
   self_isolating_reason: null
-  self_isolating_reason_digital: Due to reducing my risk of getting COVID-19 such
+  self_isolating_reason_detailed: Due to reducing my risk of getting COVID-19 such
     as going into hospital or shielding
   sex: Female
   sex_raw: Female
@@ -2888,11 +2894,12 @@
   work_sector_raw: Civil Service or Local Government
   work_status_digital: null
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: null
   ability_to_socially_distance_at_work_or_education_raw: null
@@ -3131,8 +3138,8 @@
   sample_return_preference: Post
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
-  self_isolating_reason_digital: I have or have had symptoms of COVID-19 or a positive
+  self_isolating_reason: null
+  self_isolating_reason_detailed: I have or have had symptoms of COVID-19 or a positive
     test
   sex: Male
   sex_raw: Male
@@ -3302,6 +3309,7 @@
   work_status_employment: null
   work_status_unemployment: Retired
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: null
   ability_to_socially_distance_at_work_or_education_raw: null
@@ -3542,8 +3550,8 @@
   sample_return_preference: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason: null
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -3714,6 +3722,7 @@
   work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
@@ -3956,8 +3965,8 @@
   sample_return_preference: null
   self_isolating: 'No'
   self_isolating_raw: 'No'
-  self_isolating_reason: 'No'
-  self_isolating_reason_digital: I haven't had any symptoms but I live with someone
+  self_isolating_reason: null
+  self_isolating_reason_detailed: I haven't had any symptoms but I live with someone
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
@@ -4121,9 +4130,10 @@
   work_sector_raw: Civil Service or Local Government
   work_status_digital: null
   work_status_education: A child aged 4 or over at school
-  work_status_employment: Currently not working - for example on sick or other leave
-    such as maternity or paternity for longer than 4 weeksCurrently working. This
-    includes if you are on sick or other leave for less than 4 weeks
+  work_status_employment: Currently not working. This includes if you are on sick
+    or other leave such as maternity or paternity for longer than 4 weeksCurrently
+    working. This includes if you are on sick or other leave for less than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
+  work_status_v1: null
   work_status_v2: null
