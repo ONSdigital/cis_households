@@ -1764,3 +1764,28 @@ def aggregated_output_window(
     for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
         df = df.withColumn(column_name_to_assign, apply_function.over(window))
     return df
+
+
+def conclusion_from_abc(
+    df: DataFrame,
+    column_question_list: List[str],
+    column_name_to_assign,
+    unused_input,
+) -> DataFrame:
+    """
+
+    Parameters
+    ----------
+    df
+    column_question_list
+    column_name_to_assign
+    """
+    df = df.withColumn("conclusion", F.lit(None))
+    for col in column_question_list:
+        df = df.withColumn(
+            "conclusion",
+            F.when(F.col(column_name_to_assign) == "yes", "yes")
+            .when(F.col(col).contains("yes"), "yes")
+            .otherwise("no"),
+        )
+    return df
