@@ -166,15 +166,13 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
+    # TODO: make sure all_function_dict has also the run=False
     error_msg = ""
     for stage_dict in config_file_arguments_list:
         if type(stage_dict["run"]) != bool:
-            error_msg += f"Run parameter in {stage_dict['function']} has to be boolean type."
-    if error_msg:
-        raise ConfigError(error_msg)
+            error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
 
-    config_file_arguments_list_true = [true_stage for true_stage in config_file_arguments_list if true_stage["run"]]
-    for function_run_dict in config_file_arguments_list_true:
+    for function_run_dict in config_file_arguments_list:  # _true
         function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
         input_arguments_needed = [
             arg
@@ -182,7 +180,6 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
             if "=" not in str(inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg])
         ]
         if not (set(function_run_list) == set(input_arguments_needed)):
-            error_msg += "\n"
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
             list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
             if list_not_passed_arg:
