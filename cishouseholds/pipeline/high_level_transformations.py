@@ -2018,6 +2018,37 @@ def create_formatted_datetime_string_columns(df):
     return df
 
 
+def transform_from_lookups(
+    df: DataFrame, cohort_lookup: DataFrame, travel_countries_lookup: DataFrame, tenure_group: DataFrame
+):
+    cohort_lookup = cohort_lookup.withColumnRenamed("participant_id", "cohort_participant_id")
+    df = df.join(
+        F.broadcast(cohort_lookup),
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    df = df.join(
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
+
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+    return df
+
+
 def fill_forwards_transformations(df):
     df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,

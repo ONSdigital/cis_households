@@ -39,6 +39,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -474,7 +475,7 @@ def lookup_based_editing(
 
     cohort_lookup = spark_session.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
+    )
 
     travel_countries_lookup = spark_session.read.csv(
         travel_countries_lookup_path,
@@ -482,34 +483,10 @@ def lookup_based_editing(
         schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
     )
 
-    df = df.join(
-        F.broadcast(cohort_lookup),
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-    df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
     tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group = tenure_group.withColumnRenamed(key, value)
-
-    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
-
+    transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
 
