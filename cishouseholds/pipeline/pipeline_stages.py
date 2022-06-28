@@ -354,13 +354,32 @@ def replace_design_weights(
     weighted_survey_responses_table: str,
     design_weight_columns: List[str],
 ):
+    """
+    Temporary stage to replace design weights by lookup.
+    Also makes temporary edits to fix raw data issues in geographies.
+    """
     design_weight_lookup = extract_from_table(design_weight_lookup_table)
-    survey_responses = extract_from_table(survey_responses_table)
-    survey_responses = survey_responses.drop(*design_weight_columns)
-    survey_responses = survey_responses.join(
+    df = extract_from_table(survey_responses_table)
+    df = df.drop(*design_weight_columns)
+    df = df.join(
         design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
     )
-    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
+
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+
+    update_table(df, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
