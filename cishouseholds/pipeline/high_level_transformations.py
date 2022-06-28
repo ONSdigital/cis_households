@@ -353,6 +353,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     Call transformations to digital data necessary before generic transformations are applied
     """
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 3)
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = update_strings_to_sentence_case(df, ["survey_completion_status", "survey_not_completed_reason_code"])
     df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
     df = df.withColumn(
@@ -371,13 +372,15 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            "swab_return_date",
-            "blood_return_date",
-            "swab_return_future_date",
-            "blood_return_future_date",
+            # "swab_return_date",
+            # "blood_return_date",
+            # "swab_return_future_date",
+            # "blood_return_future_date",
         ],
         date_format="yyyy-MM-dd",
         time_format="HH:mm:ss",
+        file_date_column="file_date",
+        min_date="2022/05/01",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(

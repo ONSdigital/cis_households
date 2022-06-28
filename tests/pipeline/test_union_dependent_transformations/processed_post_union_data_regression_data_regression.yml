@@ -5,10 +5,10 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 4.0
-  age_group_5_intervals: 2-11
-  age_group_5_year_intervals: 2-4
-  age_group_7_intervals: 2-11
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
   age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: The Galactic Empire is nearing completion
@@ -71,8 +71,8 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: null
   cis_covid_vaccine_type_1_raw: null
   cis_covid_vaccine_type_2: Novavax
@@ -85,8 +85,7 @@
   cis_covid_vaccine_type_5_raw: Valneva
   cis_covid_vaccine_type_6: Don't know type
   cis_covid_vaccine_type_6_raw: Don't know type
-  cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: Houston, we have a problem.
   cis_covid_vaccine_type_other_3: '"You''ve got to ask yourself one question: ""Do
@@ -513,11 +512,11 @@
   times_socialising_last_7_days_raw: '4'
   title: Mrs.
   transport_to_work_or_education: null
-  unique_participant_response_id: 0014-DHR-910115823345-2022-01-07 23:04:02
-  visit_date_string: 07jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-07 23:04:02.000000'
-  visit_datetime_string: 07jan2022 23:04:02
+  unique_participant_response_id: 0014-DHR-910115823345
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '0014'
   visit_order: 1
   voucher_type_preference: email_address
@@ -568,11 +567,11 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 31.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 30-34
-  age_group_7_intervals: 25-34
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: Type classes first appeared in the Haskell
     programming language.
@@ -619,7 +618,7 @@
   blood_taken_datetime_string: null
   bloods_taken: null
   care_home_last_28_days: null
-  cis_covid_vaccine_date: '2022-01-08 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_1_string: 07jan2022
   cis_covid_vaccine_date_2: '2022-01-07 00:00:00.000000'
@@ -633,11 +632,11 @@
   cis_covid_vaccine_date_6: null
   cis_covid_vaccine_date_6_string: null
   cis_covid_vaccine_date_string: 08jan2022
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Sinopharm
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Novavax
   cis_covid_vaccine_type_1_raw: Novavax
   cis_covid_vaccine_type_2: From a research study/trial
@@ -650,7 +649,7 @@
   cis_covid_vaccine_type_5_raw: Moderna
   cis_covid_vaccine_type_6: Valneva
   cis_covid_vaccine_type_6_raw: Valneva
-  cis_covid_vaccine_type_other: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Elementary, my dear Watson.
   cis_covid_vaccine_type_other_2: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_3: Ask not what your country can do for you; ask what
@@ -689,8 +688,8 @@
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '1990-06-14 00:00:00.000000'
   date_of_birth_string: 14jun1990
-  days_since_think_had_covid: 3.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: null
   deferred: null
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2020-11-28 17:29:26.000000'
@@ -1072,11 +1071,11 @@
   times_socialising_last_7_days_raw: '5'
   title: Mrs.
   transport_to_work_or_education: Taxi/minicab
-  unique_participant_response_id: 0176-DHR-904837937029-2022-01-08 14:50:13
-  visit_date_string: 08jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-08 14:50:13.000000'
-  visit_datetime_string: 08jan2022 14:50:13
+  unique_participant_response_id: 0176-DHR-904837937029
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '0176'
   visit_order: 1
   voucher_type_preference: null
@@ -1129,10 +1128,10 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 6.0
-  age_group_5_intervals: 2-11
-  age_group_5_year_intervals: 5-9
-  age_group_7_intervals: 2-11
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
   age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: He looked inquisitively at his keyboard
@@ -1191,11 +1190,11 @@
   cis_covid_vaccine_date_6: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_date_6_string: 01jan2022
   cis_covid_vaccine_date_string: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 6 doses or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: From a research study/trial
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_1_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_2: Valneva
@@ -1208,7 +1207,7 @@
   cis_covid_vaccine_type_5_raw: Valneva
   cis_covid_vaccine_type_6: Pfizer/BioNTech
   cis_covid_vaccine_type_6_raw: Pfizer / BioNTech
-  cis_covid_vaccine_type_other: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Ask not what your country can do for you; ask what
     you can do for your country.
   cis_covid_vaccine_type_other_2: One morning I shot an elephant in my pajamas. How
@@ -1249,7 +1248,7 @@
   currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '2015-03-13 00:00:00.000000'
   date_of_birth_string: 13mar2015
-  days_since_think_had_covid: -1.0
+  days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   deferred: null
   digital_communication_preference: null
@@ -1634,11 +1633,11 @@
   times_socialising_last_7_days_raw: null
   title: Miss.
   transport_to_work_or_education: Bus, minibus, coach
-  unique_participant_response_id: 2645-DHR-265113936833-2022-01-07 22:53:04
-  visit_date_string: 07jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-07 22:53:04.000000'
-  visit_datetime_string: 07jan2022 22:53:04
+  unique_participant_response_id: 2645-DHR-265113936833
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '2645'
   visit_order: 1
   voucher_type_preference: email_address
@@ -1684,11 +1683,11 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 23.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 20-24
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: It is also a garbage-collected runtime
     system.
@@ -1746,11 +1745,11 @@
   cis_covid_vaccine_date_6: '2022-01-05 00:00:00.000000'
   cis_covid_vaccine_date_6_string: 05jan2022
   cis_covid_vaccine_date_string: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 6 doses or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Valneva
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Sinovac
   cis_covid_vaccine_type_1_raw: Sinovac
   cis_covid_vaccine_type_2: Valneva
@@ -1763,7 +1762,7 @@
   cis_covid_vaccine_type_5_raw: Sinovac
   cis_covid_vaccine_type_6: null
   cis_covid_vaccine_type_6_raw: null
-  cis_covid_vaccine_type_other: Let them eat cake.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_2: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
@@ -2184,11 +2183,11 @@
   times_socialising_last_7_days_raw: None
   title: Miss.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: 4384-DHR-251477511783-2022-01-03 09:17:09
-  visit_date_string: 03jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-03 09:17:09.000000'
-  visit_datetime_string: 03jan2022 09:17:09
+  unique_participant_response_id: 4384-DHR-251477511783
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '4384'
   visit_order: 1
   voucher_type_preference: null
@@ -2242,11 +2241,11 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 17.0
-  age_group_5_intervals: 12-19
-  age_group_5_year_intervals: 15-19
-  age_group_7_intervals: 17-25
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: The arguments can be primitive data types
     or compound data types.
@@ -2290,7 +2289,7 @@
   blood_taken_datetime_string: null
   bloods_taken: null
   care_home_last_28_days: 'Yes'
-  cis_covid_vaccine_date: '2022-01-03 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_1_string: 03jan2022
   cis_covid_vaccine_date_2: null
@@ -2304,11 +2303,11 @@
   cis_covid_vaccine_date_6: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_6_string: 03jan2022
   cis_covid_vaccine_date_string: 03jan2022
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Novavax
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Don't know type
   cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
@@ -2321,8 +2320,7 @@
   cis_covid_vaccine_type_5_raw: Oxford / AstraZeneca
   cis_covid_vaccine_type_6: Sputnik
   cis_covid_vaccine_type_6_raw: Sputnik
-  cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
-    to repeat it.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_other_2: Let them eat cake.
@@ -2747,11 +2745,11 @@
   times_socialising_last_7_days_raw: None
   title: Mrs.
   transport_to_work_or_education: Other method
-  unique_participant_response_id: 4705-DHR-873192621176-2022-01-01 16:36:54
-  visit_date_string: 01jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-01 16:36:54.000000'
-  visit_datetime_string: 01jan2022 16:36:54
+  unique_participant_response_id: 4705-DHR-873192621176
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '4705'
   visit_order: 1
   voucher_type_preference: email_address
@@ -2806,10 +2804,10 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 10.0
-  age_group_5_intervals: 2-11
-  age_group_5_year_intervals: 10-14
-  age_group_7_intervals: 2-11
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
   age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: Haskell is a standardized, general-purpose
@@ -2854,7 +2852,7 @@
   blood_taken_datetime_string: null
   bloods_taken: null
   care_home_last_28_days: null
-  cis_covid_vaccine_date: '2022-01-05 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_1_string: null
   cis_covid_vaccine_date_2: null
@@ -2868,11 +2866,11 @@
   cis_covid_vaccine_date_6: null
   cis_covid_vaccine_date_6_string: null
   cis_covid_vaccine_date_string: 05jan2022
-  cis_covid_vaccine_number_of_doses: '2'
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Other / specify
   cis_covid_vaccine_type_1_raw: Another vaccine please specify
   cis_covid_vaccine_type_2: Novavax
@@ -2885,8 +2883,7 @@
   cis_covid_vaccine_type_5_raw: Sinopharm
   cis_covid_vaccine_type_6: Valneva
   cis_covid_vaccine_type_6_raw: Valneva
-  cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
-    to repeat it.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vaccine_type_other_2: Here's looking at you, kid.
@@ -3305,11 +3302,11 @@
   times_socialising_last_7_days_raw: '1'
   title: Mr.
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: 5122-DHR-896449967341-2022-01-05 09:45:45
-  visit_date_string: 05jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-05 09:45:45.000000'
-  visit_datetime_string: 05jan2022 09:45:45
+  unique_participant_response_id: 5122-DHR-896449967341
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '5122'
   visit_order: 1
   voucher_type_preference: null
@@ -3359,11 +3356,11 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 39.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 35-39
-  age_group_7_intervals: 35-49
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: Haskell features a type system with type
     inference and lazy evaluation.
@@ -3424,8 +3421,8 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Sinovac
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Moderna
   cis_covid_vaccine_type_1_raw: Moderna
   cis_covid_vaccine_type_2: From a research study/trial
@@ -3438,7 +3435,7 @@
   cis_covid_vaccine_type_5_raw: Sinopharm
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Another vaccine please specify
-  cis_covid_vaccine_type_other: Houston, we have a problem.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vaccine_type_other_2: They call me *Mister* Tibbs!
@@ -3861,11 +3858,11 @@
   times_socialising_last_7_days_raw: 7 times or more
   title: Prof.
   transport_to_work_or_education: null
-  unique_participant_response_id: 5823-DHR-649389366563-2022-01-06 07:08:07
-  visit_date_string: 06jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-06 07:08:07.000000'
-  visit_datetime_string: 06jan2022 07:08:07
+  unique_participant_response_id: 5823-DHR-649389366563
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '5823'
   visit_order: 1
   voucher_type_preference: email_address
@@ -3914,10 +3911,10 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 15.0
-  age_group_5_intervals: 12-19
-  age_group_5_year_intervals: 15-19
-  age_group_7_intervals: 12-16
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
   age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: The Galactic Empire is nearing completion
@@ -3976,11 +3973,11 @@
   cis_covid_vaccine_date_6: '2022-01-06 00:00:00.000000'
   cis_covid_vaccine_date_6_string: 06jan2022
   cis_covid_vaccine_date_string: null
-  cis_covid_vaccine_number_of_doses: '2'
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Don't know type
+  cis_covid_vaccine_received: null
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Valneva
   cis_covid_vaccine_type_1_raw: Valneva
   cis_covid_vaccine_type_2: Pfizer/BioNTech
@@ -3993,7 +3990,7 @@
   cis_covid_vaccine_type_5_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_6: Sinopharm
   cis_covid_vaccine_type_6_raw: Sinopharm
-  cis_covid_vaccine_type_other: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_2: Let them eat cake.
   cis_covid_vaccine_type_other_3: Get your stinking paws off me, you damned dirty
@@ -4417,11 +4414,11 @@
   times_socialising_last_7_days_raw: null
   title: Dr.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: 7553-DHR-560763609637-2022-01-03 05:58:05
-  visit_date_string: 03jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-03 05:58:05.000000'
-  visit_datetime_string: 03jan2022 05:58:05
+  unique_participant_response_id: 7553-DHR-560763609637
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '7553'
   visit_order: 1
   voucher_type_preference: null
@@ -4468,7 +4465,7 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 1.0
+  age_at_visit: null
   age_group_5_intervals: null
   age_group_5_year_intervals: null
   age_group_7_intervals: null
@@ -4516,7 +4513,7 @@
   blood_taken_datetime_string: null
   bloods_taken: null
   care_home_last_28_days: null
-  cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_date_1_string: 09jan2022
   cis_covid_vaccine_date_2: '2022-01-01 00:00:00.000000'
@@ -4530,10 +4527,10 @@
   cis_covid_vaccine_date_6: null
   cis_covid_vaccine_date_6_string: null
   cis_covid_vaccine_date_string: 02jan2022
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 6 doses or more
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Sinovac
   cis_covid_vaccine_type_1_raw: Sinovac
@@ -4547,8 +4544,7 @@
   cis_covid_vaccine_type_5_raw: From a research study/trial
   cis_covid_vaccine_type_6: From a research study/trial
   cis_covid_vaccine_type_6_raw: From a research study/trial
-  cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
-    to repeat it.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
@@ -4973,11 +4969,11 @@
   times_socialising_last_7_days_raw: '6'
   title: Ms.
   transport_to_work_or_education: null
-  unique_participant_response_id: 8726-DHR-537278018134-2022-01-04 04:38:16
-  visit_date_string: 04jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-04 04:38:16.000000'
-  visit_datetime_string: 04jan2022 04:38:16
+  unique_participant_response_id: 8726-DHR-537278018134
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '8726'
   visit_order: 1
   voucher_type_preference: null
@@ -5027,11 +5023,11 @@
   able_to_take_blood: null
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
-  age_at_visit: 25.0
-  age_group_5_intervals: 20-49
-  age_group_5_year_intervals: 25-29
-  age_group_7_intervals: 25-34
-  age_group_over_16: 16-49
+  age_at_visit: null
+  age_group_5_intervals: null
+  age_group_5_year_intervals: null
+  age_group_7_intervals: null
+  age_group_over_16: null
   agreed_to_additional_consent_visit: null
   allocated_blood_barcode_not_used_reason: Where are my pants?
   allocated_swab_barcode_not_used_reason: Tuples are containers for a fixed number
@@ -5089,10 +5085,10 @@
   cis_covid_vaccine_date_6: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_date_6_string: 09jan2022
   cis_covid_vaccine_date_string: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_offered: null
-  cis_covid_vaccine_received: 'Yes'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Moderna
   cis_covid_vaccine_type_1_raw: Moderna
@@ -5106,8 +5102,7 @@
   cis_covid_vaccine_type_5_raw: Sputnik
   cis_covid_vaccine_type_6: Oxford/AstraZeneca
   cis_covid_vaccine_type_6_raw: Oxford / AstraZeneca
-  cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_3: Let them eat cake.
@@ -5145,8 +5140,8 @@
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '1996-08-04 00:00:00.000000'
   date_of_birth_string: 04aug1996
-  days_since_think_had_covid: -2.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: null
+  days_since_think_had_covid_group: Date not given
   deferred: null
   digital_communication_preference: Letter
   digital_entry_pack_sent_datetime: '2021-10-20 19:14:49.000000'
@@ -5532,11 +5527,11 @@
   times_socialising_last_7_days_raw: '5'
   title: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  unique_participant_response_id: 8964-DHR-094893452129-2022-01-07 20:28:41
-  visit_date_string: 07jan2022
-  visit_date_type: swab_taken_datetime
-  visit_datetime: '2022-01-07 20:28:41.000000'
-  visit_datetime_string: 07jan2022 20:28:41
+  unique_participant_response_id: 8964-DHR-094893452129
+  visit_date_string: null
+  visit_date_type: null
+  visit_datetime: null
+  visit_datetime_string: null
   visit_id: '8964'
   visit_order: 1
   voucher_type_preference: Paper
