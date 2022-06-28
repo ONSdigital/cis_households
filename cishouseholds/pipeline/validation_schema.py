@@ -190,6 +190,15 @@ projections_column_map = {
     "f85": integer_dict,
 }
 validation_schemas = {
+    "cohort_schema": {"participant_id": string_dict, "new_cohort": string_dict, "old_cohort": string_dict},
+    "travel_schema": {"been_outside_uk_last_country_old": string_dict, "been_outside_uk_last_country_new": string_dict},
+    "tenure_schema": {
+        "UAC": string_dict,
+        "numAdult": string_dict,
+        "numChild": string_dict,
+        "dvhsize": string_dict,
+        "tenure_group": string_dict,
+    },
     "address_schema": {
         "UPRN": string_dict,
         "ORGANISATION_NAME": string_dict,

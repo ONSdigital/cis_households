@@ -452,9 +452,9 @@ def validate_survey_responses(
 @register_pipeline_stage("lookup_based_editing")
 def lookup_based_editing(
     input_table: str,
-    cohort_lookup_path: str,
-    travel_countries_lookup_path: str,
-    tenure_group_path: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
     edited_table: str,
 ):
     """
@@ -470,22 +470,11 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark_session = get_or_create_spark_session()
     df = extract_from_table(input_table)
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table)
 
-    cohort_lookup = spark_session.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    )
-
-    travel_countries_lookup = spark_session.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
-        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
-    )
     transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
