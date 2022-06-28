@@ -1220,6 +1220,10 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
+  name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: visit_id
   nullable: true
   type: string
@@ -1283,10 +1287,6 @@ fields:
   name: unique_participant_response_id
   nullable: false
   type: string
-- metadata: {}
-  name: file_date
-  nullable: true
-  type: timestamp
 - metadata: {}
   name: bad_email
   nullable: true
@@ -1424,7 +1424,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason_digital
+  name: self_isolating_reason_detailed
   nullable: true
   type: string
 - metadata: {}
