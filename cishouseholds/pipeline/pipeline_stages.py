@@ -353,13 +353,32 @@ def replace_design_weights(
     weighted_survey_responses_table: str,
     design_weight_columns: List[str],
 ):
+    """
+    Temporary stage to replace design weights by lookup.
+    Also makes temporary edits to fix raw data issues in geographies.
+    """
     design_weight_lookup = extract_from_table(design_weight_lookup_table)
-    survey_responses = extract_from_table(survey_responses_table)
-    survey_responses = survey_responses.drop(*design_weight_columns)
-    survey_responses = survey_responses.join(
+    df = extract_from_table(survey_responses_table)
+    df = df.drop(*design_weight_columns)
+    df = df.join(
         design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
     )
-    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
+
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+
+    update_table(df, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -453,12 +472,12 @@ def lookup_based_editing(
     input_table: str,
     cohort_lookup_path: str,
     travel_countries_lookup_path: str,
-    rural_urban_lookup_path: str,
     tenure_group_path: str,
     edited_table: str,
 ):
     """
     Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+
     Parameters
     ----------
     input_table
@@ -469,29 +488,19 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark = get_or_create_spark_session()
+    spark_session = get_or_create_spark_session()
     df = extract_from_table(input_table)
 
-    cohort_lookup = spark.read.csv(
+    cohort_lookup = spark_session.read.csv(
         cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
     ).withColumnRenamed("participant_id", "cohort_participant_id")
 
-    travel_countries_lookup = spark.read.csv(
+    travel_countries_lookup = spark_session.read.csv(
         travel_countries_lookup_path,
         header=True,
         schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
     )
-    rural_urban_lookup_df = spark.read.csv(
-        rural_urban_lookup_path,
-        header=True,
-        schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
-    ).drop(
-        "rural_urban_classification_11"
-    )  # Prefer version from sample
+
     df = df.join(
         F.broadcast(cohort_lookup),
         how="left",
@@ -512,13 +521,7 @@ def lookup_based_editing(
         ),
     ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
 
-    if "lower_super_output_area_code_11" in df.columns:
-        df = df.join(
-            F.broadcast(rural_urban_lookup_df),
-            how="left",
-            on="lower_super_output_area_code_11",
-        )
-    tenure_group = spark.read.csv(tenure_group_path, header=True).select(
+    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
     for key, value in column_name_maps["tenure_group_variable_map"].items():
@@ -527,6 +530,47 @@ def lookup_based_editing(
     df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
 
     update_table(df, edited_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("imputation_depdendent_transformations")
+def imputation_depdendent_transformations(
+    input_table_name: str,
+    rural_urban_lookup_path: str,
+    output_table_name: str,
+):
+    """
+    Processing that depends on geographies and and imputed demographic infromation.
+
+    Parameters
+    ----------
+    input_table
+        name of the table containing data to be processed
+    rural_urban_lookup_path
+        path to the rural urban lookup to be joined onto responses
+    edited_table
+        name of table to write processed data to
+    """
+    df = extract_from_table(input_table_name)
+    rural_urban_lookup_df = (
+        get_or_create_spark_session()
+        .read.csv(
+            rural_urban_lookup_path,
+            header=True,
+            schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+        )
+        .drop("rural_urban_classification_11")
+    )  # Prefer version from sample
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+
+    update_table(df, output_table_name, write_mode="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -866,23 +910,44 @@ def join_geographic_data(
 
 @register_pipeline_stage("geography_and_imputation_dependent_logic")
 def geography_and_imputation_dependent_processing(
-    imputed_responses_table: str,
-    output_imputed_responses_table: str,
+    input_table_name: str,
+    rural_urban_lookup_path: str,
+    output_table_name: str,
 ):
     """
-    Apply processing that depends on the imputation and geographic columns being created
-    Parameters
-    -----------
-    imputed_responses_table
-    response_records_table
-    invalid_response_records_table
-    output_imputed_responses_table
-    key_columns
-    """
-    df_with_imputed_values = extract_from_table(imputed_responses_table)
+    Processing that depends on geographies and and imputed demographic infromation.
 
-    df_with_imputed_values = assign_multigeneration(
-        df=df_with_imputed_values,
+    Parameters
+    ----------
+    input_table
+        name of the table containing data to be processed
+    rural_urban_lookup_path
+        path to the rural urban lookup to be joined onto responses
+    edited_table
+        name of table to write processed data to
+    """
+    df = extract_from_table(input_table_name)
+    rural_urban_lookup_df = (
+        get_or_create_spark_session()
+        .read.csv(
+            rural_urban_lookup_path,
+            header=True,
+            schema="""
+            lower_super_output_area_code_11 string,
+            cis_rural_urban_classification string,
+            rural_urban_classification_11 string
+        """,
+        )
+        .drop("rural_urban_classification_11")
+    )  # Prefer version from sample
+    df = df.join(
+        F.broadcast(rural_urban_lookup_df),
+        how="left",
+        on="lower_super_output_area_code_11",
+    )
+
+    df = assign_multigeneration(
+        df=df,
         column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
         household_id_column="ons_household_id",
@@ -890,7 +955,7 @@ def geography_and_imputation_dependent_processing(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )  # Includes school year derivation
-    update_table(df_with_imputed_values, output_imputed_responses_table, write_mode="overwrite")
+    update_table(df, output_table_name, write_mode="overwrite")
 
 
 @register_pipeline_stage("report")
@@ -1256,7 +1321,8 @@ def report_iqvia(
 def record_level_interface(
     survey_responses_table: str,
     csv_editing_file: str,
-    filter: dict,
+    unique_id_column: str,
+    unique_id_list: List,
     edited_survey_responses_table: str,
     filtered_survey_responses_table: str,
 ):
@@ -1276,26 +1342,23 @@ def record_level_interface(
             - target_column
             - old_value
             - new_value
-    filter
-        dictionary of column names paired to lists of values to be filtered out of that column.
-        all filters will be applied with the result being a table of rows where any column
-        value appears in one of the given lists and a table with the remaining rows.
+    unique_id_column
+        unique id that will be edited
+    unique_id_list
+        list of ids to be filtered
     edited_survey_responses_table
         HIVE table to write edited responses
     filtered_survey_responses_table
         HIVE table when they have been filtered out from survey responses
     """
     df = extract_from_table(survey_responses_table)
-    filtered_out_df = df
-    for id_column, id_list in filter.items():
-        filtered_out_df = filtered_out_df.filter(F.col(id_column).isin(id_list))
+
+    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
     update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
 
     lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
-    filtered_in_df = df
-    for id_column, id_list in filter.items():
-        filtered_in_df = filtered_out_df.filter(~F.col(id_column).isin(id_list))
-    edited_df = update_from_lookup_df(filtered_in_df, lookup_df)
+    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
+    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
     update_table(edited_df, edited_survey_responses_table, "overwrite")
 
 
@@ -1304,6 +1367,7 @@ def tables_to_csv(
     outgoing_directory,
     tables_to_csv_config_file,
     category_map,
+    filter={},
     sep="|",
     extension=".txt",
     dry_run=False,
@@ -1340,7 +1404,8 @@ def tables_to_csv(
         missing_columns = set(columns_to_select) - set(df.columns)
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
-
+        if len(filter.keys()) > 0:
+            df = df.filter(all([F.col(col) == val for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
