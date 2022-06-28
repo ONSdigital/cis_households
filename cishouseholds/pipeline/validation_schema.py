@@ -190,14 +190,26 @@ projections_column_map = {
     "f85": integer_dict,
 }
 validation_schemas = {
-    "cohort_schema": {"participant_id": string_dict, "new_cohort": string_dict, "old_cohort": string_dict},
+    "cohort_schema": {"participant_id": string_dict, "old_cohort": string_dict, "new_cohort": string_dict},
     "travel_schema": {"been_outside_uk_last_country_old": string_dict, "been_outside_uk_last_country_new": string_dict},
     "tenure_schema": {
-        "UAC": string_dict,
-        "numAdult": string_dict,
-        "numChild": string_dict,
-        "dvhsize": string_dict,
+        "UAC": {"type": "long"},
+        "GOR9D": string_dict,
+        "ten1": string_dict,
         "tenure_group": string_dict,
+        "DVHSize": integer_dict,
+        "NumChild": integer_dict,
+        "NumAdult": integer_dict,
+        "sample": "",
+    },
+    "imputation_lookup_schema": {
+        "participant_id": string_dict,
+        "ethnicity_white": string_dict,
+        "eth_white_imputation_method": string_dict,
+        "sex": string_dict,
+        "sex_imputation_method": string_dict,
+        "date_of_birth": string_dict,
+        "date_of_birth_imputation_method": string_dict,
     },
     "address_schema": {
         "UPRN": string_dict,
