@@ -1,4 +1,3 @@
-import copy
 import csv
 import inspect
 from io import StringIO
@@ -157,7 +156,7 @@ class ConfigError(Exception):
     pass
 
 
-def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file_arguments: List):
+def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file_arguments_list: List):
     """
     Checks that there's a valid input in the pipeline_config.yaml for every stage
     input argument.
@@ -168,26 +167,27 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
     error_msg = ""
-    config_file_arguments_copy = copy.deepcopy(config_file_arguments)
-    for function_run_dict in config_file_arguments_copy:
-        function_name = function_run_dict.pop("function")
-        function_run_list = [x for x in function_run_dict.keys()]
+    for stage_dict in config_file_arguments_list:
+        if type(stage_dict["run"]) != bool:
+            error_msg += f"Run parameter in {stage_dict['function']} has to be boolean type."
+    if error_msg:
+        raise ConfigError(error_msg)
 
+    config_file_arguments_list_true = [true_stage for true_stage in config_file_arguments_list if true_stage["run"]]
+    for function_run_dict in config_file_arguments_list_true:
+        function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
         input_arguments_needed = [
             arg
-            for arg in inspect.getargspec(all_function_dict[function_name]).args
-            if "=" not in str(inspect.signature(all_function_dict[function_name]).parameters[arg])
+            for arg in inspect.getargspec(all_function_dict[function_run_dict["function"]]).args
+            if "=" not in str(inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg])
         ]
-
         if not (set(function_run_list) == set(input_arguments_needed)):
             error_msg += "\n"
-
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
             list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
-
             if list_not_passed_arg:
-                error_msg += f"""  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
+                error_msg += f"""  - {function_run_dict["function"]} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
             if list_of_unrecognised_arg:
-                error_msg += f"""  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
+                error_msg += f"""  - {function_run_dict["function"]} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
     if error_msg:
         raise ConfigError(error_msg)
