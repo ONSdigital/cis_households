@@ -1,4 +1,5 @@
 import json
+import os
 
 import numpy as np
 import pytest
@@ -43,7 +44,7 @@ def spark_session():
 
 
 @pytest.fixture
-def pandas_df_to_temporary_csv(tmp_path):
+def pandas_df_to_temporary_csv(tmp_path, spark_session):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
     def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
@@ -53,8 +54,13 @@ def pandas_df_to_temporary_csv(tmp_path):
         _temporary_csv_path = str(temporary_csv_path.as_posix()).lstrip("/")
         if in_dev_test:
             # copy the csv file from local dir to hdfs when running in DevTest env
-            copy_local_to_hdfs(temporary_csv_path, temporary_csv_path)
-            return f"hdfs:///{_temporary_csv_path}"
+            # using spark's temp dir to ensure unique tmp location for each run
+            hdfs_filepath = os.path.join(
+                spark_session.sparkContext._temp_dir,
+                _temporary_csv_path,
+            )
+            copy_local_to_hdfs(temporary_csv_path, hdfs_filepath)
+            return f"hdfs:///{hdfs_filepath}"
         else:
             return f"file:///{_temporary_csv_path}"
 
