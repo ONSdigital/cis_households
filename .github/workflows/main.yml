@@ -48,7 +48,7 @@ jobs:
         id: cache-spark
         uses: actions/cache@v3
         with:
-          path: spark-2.4.0-bin-hadoop2.6
+          path: ../../spark-2.4.0-bin-hadoop2.6
           key: ${{ runner.os }}-spark-2.4.0
 
       - name: Download spark
@@ -60,7 +60,7 @@ jobs:
           rm "spark.tgz"
 
       - name: Configure spark
-        run: (cd spark-2.4.0-bin-hadoop2.6 &&
+        run: (cd ../../spark-2.4.0-bin-hadoop2.6 &&
           export SPARK_HOME=`pwd` &&
           export PYTHONPATH=$(ZIPS=("$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "${ZIPS[*]}"):$PYTHONPATH
           )
