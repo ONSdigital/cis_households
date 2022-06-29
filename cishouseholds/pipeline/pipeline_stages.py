@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import reduce
 from io import BytesIO
 from itertools import chain
+from operator import and_
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -1405,7 +1406,7 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
         if len(filter.keys()) > 0:
-            df = df.filter(all([F.col(col) == val for col, val in filter.items()]))
+            df = df.filter(reduce(and_, [F.col(col) == val for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
