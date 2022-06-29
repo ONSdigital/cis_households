@@ -5,11 +5,11 @@ from io import BytesIO
 from itertools import chain
 from operator import and_
 from pathlib import Path
+from pyspark.sql import functions as F
 from typing import List
 from typing import Union
 
 import pandas as pd
-from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
@@ -386,7 +386,8 @@ def replace_design_weights(
 def execute_union_dependent_transformations(unioned_survey_table: str, transformed_table: str):
     """
     Transformations that require the union of the different input survey response files.
-    Includes combining data from different files and filling forwards or backwards over time.
+    Includes filling forwards or backwards over time and deriving new information over time.
+
     Parameters
     ----------
     unioned_survey_table
@@ -394,17 +395,11 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     transformed_table
         output table name for table with applied transformations dependent on complete survey dataset
     """
-    unioned_survey_responses = extract_from_table(unioned_survey_table)
-    unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
-    unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
-    update_table(unioned_survey_responses, transformed_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("fill_forwards_stage")
-def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
     df = extract_from_table(unioned_survey_table)
     df = fill_forwards_transformations(df)
-    update_table(df, filled_forwards_table, write_mode="overwrite")
+    df = union_dependent_cleaning(df)
+    df = union_dependent_derivations(df)
+    update_table(df, transformed_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
