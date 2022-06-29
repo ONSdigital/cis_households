@@ -22,6 +22,8 @@ def historical_blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv)
     return processed_df
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
+@pytest.mark.regression
 @pytest.mark.integration
 def test_historical_blood_delta_ETL_df(regression_test_df, historical_blood_delta_ETL_output):
     regression_test_df(
@@ -31,6 +33,8 @@ def test_historical_blood_delta_ETL_df(regression_test_df, historical_blood_delt
     )  # removes filename column to account for variation in filename caused by regression
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
+@pytest.mark.regression
 @pytest.mark.integration
 def test_historical_blood_delta_ETL_schema(regression_test_df_schema, historical_blood_delta_ETL_output):
     regression_test_df_schema(historical_blood_delta_ETL_output, "processed_historical_blood")
