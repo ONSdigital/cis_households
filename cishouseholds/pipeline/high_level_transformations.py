@@ -1071,6 +1071,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         reference_column="email_address",
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
+    df = df.withColumn(
+        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
+    )
+
     df = clean_postcode(df, "postcode")
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
@@ -1833,10 +1837,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = df.withColumn(
-        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
-    )
-
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
