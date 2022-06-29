@@ -495,7 +495,7 @@ def lookup_based_editing(
     travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
     tenure_group = extract_from_table(tenure_group_table)
 
-    transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
 
