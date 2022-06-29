@@ -168,6 +168,7 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     """
     # TODO: make sure all_function_dict has also the run=False
     # TODO: check that function exists
+    # TODO: use getallargspec instead of getargspec
     error_msg = ""
     for stage_dict in config_file_arguments_list:
         if type(stage_dict["run"]) != bool:
