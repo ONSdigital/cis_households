@@ -1,110 +1,110 @@
 - cq_pattern: OR+N+S
-  mean_pcr_cq_value: 19.394668720497
-  ms2_pcr_cq_value: 18.348161072232
-  ms2_pcr_result_classification: Positive
-  ms2_pcr_target: null
-  n_gene_pcr_cq_value: 10.75032265668
-  n_gene_pcr_result_classification: Negative
-  n_gene_pcr_target: N gene
+  mean_pcr_cq_value: 29.656181560960665
+  ms2_pcr_cq_value: 21.882777788811
+  ms2_pcr_result_classification: Rejected
+  ms2_pcr_target: S gene
+  n_gene_pcr_cq_value: 21.86895703182
+  n_gene_pcr_result_classification: Positive
+  n_gene_pcr_target: null
   one_positive_pcr_target_only: 0
-  orf1ab_gene_pcr_cq_value: 29.182803953737
-  orf1ab_gene_pcr_result_classification: Negative
+  orf1ab_gene_pcr_cq_value: 29.663159958846
+  orf1ab_gene_pcr_result_classification: Positive
   orf1ab_gene_pcr_target: null
   pcr_lab_id: GLS
-  pcr_result_classification: Void
-  pcr_result_recorded_date_string: '2018-01-24'
-  pcr_result_recorded_datetime: '2018-01-24 08:15:14.000000'
-  s_gene_pcr_cq_value: 18.250879551074
-  s_gene_pcr_result_classification: Inconclusive
-  s_gene_pcr_target: S gene
-  swab_sample_barcode: ONS00227680
-  swab_sample_barcode_edited_in_swab_dataset_flag: 1.0
-  unique_pcr_test_id: ONS00227680-2018-01-24 08:15:14-OR+N+S
+  pcr_result_classification: Negative
+  pcr_result_recorded_date_string: '2019-02-22'
+  pcr_result_recorded_datetime: '2019-02-22 00:08:00.000000'
+  s_gene_pcr_cq_value: 37.436427692216
+  s_gene_pcr_result_classification: Rejected
+  s_gene_pcr_target: null
+  swab_sample_barcode: ONS00647614
+  swab_sample_barcode_edited_in_swab_dataset_flag: 1
+  unique_pcr_test_id: ONS00647614-2019-02-22 00:08:00-OR+N+S
 - cq_pattern: OR+N+S
-  mean_pcr_cq_value: 33.053502692917334
-  ms2_pcr_cq_value: 16.304082489441
-  ms2_pcr_result_classification: Positive
-  ms2_pcr_target: null
-  n_gene_pcr_cq_value: 30.300984622687
+  mean_pcr_cq_value: 28.818093789664005
+  ms2_pcr_cq_value: 18.289811387359
+  ms2_pcr_result_classification: Rejected
+  ms2_pcr_target: S gene
+  n_gene_pcr_cq_value: 36.934686508074
   n_gene_pcr_result_classification: Rejected
   n_gene_pcr_target: N gene
   one_positive_pcr_target_only: 0
-  orf1ab_gene_pcr_cq_value: 32.09413642492
+  orf1ab_gene_pcr_cq_value: 27.537579706706
   orf1ab_gene_pcr_result_classification: Inconclusive
   orf1ab_gene_pcr_target: ORF1ab
   pcr_lab_id: GLS
-  pcr_result_classification: Negative
-  pcr_result_recorded_date_string: '2018-11-24'
-  pcr_result_recorded_datetime: '2018-11-24 17:05:37.000000'
-  s_gene_pcr_cq_value: 36.765387031145
-  s_gene_pcr_result_classification: Rejected
-  s_gene_pcr_target: S gene
-  swab_sample_barcode: ONS00250165
-  swab_sample_barcode_edited_in_swab_dataset_flag: 1.0
-  unique_pcr_test_id: ONS00250165-2018-11-24 17:05:37-OR+N+S
+  pcr_result_classification: Void
+  pcr_result_recorded_date_string: '2019-12-14'
+  pcr_result_recorded_datetime: '2019-12-14 16:07:47.000000'
+  s_gene_pcr_cq_value: 21.982015154212
+  s_gene_pcr_result_classification: Inconclusive
+  s_gene_pcr_target: null
+  swab_sample_barcode: ONS01205667
+  swab_sample_barcode_edited_in_swab_dataset_flag: 1
+  unique_pcr_test_id: ONS01205667-2019-12-14 16:07:47-OR+N+S
 - cq_pattern: OR+N+S
-  mean_pcr_cq_value: 18.752580581500336
-  ms2_pcr_cq_value: 23.174122209048
+  mean_pcr_cq_value: 20.728758083552336
+  ms2_pcr_cq_value: 18.941124127844
   ms2_pcr_result_classification: Positive
+  ms2_pcr_target: S gene
+  n_gene_pcr_cq_value: 17.39882523082
+  n_gene_pcr_result_classification: Positive
+  n_gene_pcr_target: null
+  one_positive_pcr_target_only: 0
+  orf1ab_gene_pcr_cq_value: 17.946404994942
+  orf1ab_gene_pcr_result_classification: Rejected
+  orf1ab_gene_pcr_target: null
+  pcr_lab_id: GLS
+  pcr_result_classification: Void
+  pcr_result_recorded_date_string: '2019-10-11'
+  pcr_result_recorded_datetime: '2019-10-11 00:11:16.000000'
+  s_gene_pcr_cq_value: 26.841044024895
+  s_gene_pcr_result_classification: Rejected
+  s_gene_pcr_target: null
+  swab_sample_barcode: ONS08017539
+  swab_sample_barcode_edited_in_swab_dataset_flag: 1
+  unique_pcr_test_id: ONS08017539-2019-10-11 00:11:16-OR+N+S
+- cq_pattern: OR+N+S
+  mean_pcr_cq_value: 30.302601843940664
+  ms2_pcr_cq_value: 19.720168211977
+  ms2_pcr_result_classification: Rejected
   ms2_pcr_target: null
-  n_gene_pcr_cq_value: 15.965129520599
+  n_gene_pcr_cq_value: 38.287291430052
   n_gene_pcr_result_classification: Rejected
   n_gene_pcr_target: N gene
   one_positive_pcr_target_only: 0
-  orf1ab_gene_pcr_cq_value: 10.796079090516
-  orf1ab_gene_pcr_result_classification: Rejected
+  orf1ab_gene_pcr_cq_value: 16.32948530759
+  orf1ab_gene_pcr_result_classification: Inconclusive
   orf1ab_gene_pcr_target: ORF1ab
   pcr_lab_id: GLS
   pcr_result_classification: Positive
-  pcr_result_recorded_date_string: '2018-09-07'
-  pcr_result_recorded_datetime: '2018-09-07 22:41:44.000000'
-  s_gene_pcr_cq_value: 29.496533133386
+  pcr_result_recorded_date_string: '2018-05-28'
+  pcr_result_recorded_datetime: '2018-05-28 04:08:34.000000'
+  s_gene_pcr_cq_value: 36.29102879418
   s_gene_pcr_result_classification: Positive
   s_gene_pcr_target: S gene
-  swab_sample_barcode: ONS03008687
-  swab_sample_barcode_edited_in_swab_dataset_flag: 1.0
-  unique_pcr_test_id: ONS03008687-2018-09-07 22:41:44-OR+N+S
+  swab_sample_barcode: ONS08177191
+  swab_sample_barcode_edited_in_swab_dataset_flag: 1
+  unique_pcr_test_id: ONS08177191-2018-05-28 04:08:34-OR+N+S
 - cq_pattern: OR+N+S
-  mean_pcr_cq_value: 26.191367625944334
-  ms2_pcr_cq_value: 15.097481395171
+  mean_pcr_cq_value: 15.766013639271998
+  ms2_pcr_cq_value: 19.016113139636
   ms2_pcr_result_classification: Rejected
   ms2_pcr_target: null
-  n_gene_pcr_cq_value: 27.677970516277
-  n_gene_pcr_result_classification: Negative
-  n_gene_pcr_target: N gene
+  n_gene_pcr_cq_value: 10.963007317121
+  n_gene_pcr_result_classification: Rejected
+  n_gene_pcr_target: null
   one_positive_pcr_target_only: 0
-  orf1ab_gene_pcr_cq_value: 16.613218661221
-  orf1ab_gene_pcr_result_classification: Positive
-  orf1ab_gene_pcr_target: ORF1ab
-  pcr_lab_id: GLS
-  pcr_result_classification: Void
-  pcr_result_recorded_date_string: '2021-04-15'
-  pcr_result_recorded_datetime: '2021-04-15 18:17:51.000000'
-  s_gene_pcr_cq_value: 34.282913700335
-  s_gene_pcr_result_classification: Rejected
-  s_gene_pcr_target: S gene
-  swab_sample_barcode: ONS09358685
-  swab_sample_barcode_edited_in_swab_dataset_flag: 1.0
-  unique_pcr_test_id: ONS09358685-2021-04-15 18:17:51-OR+N+S
-- cq_pattern: OR+N+S
-  mean_pcr_cq_value: 16.70357013926933
-  ms2_pcr_cq_value: 22.58032932155
-  ms2_pcr_result_classification: Positive
-  ms2_pcr_target: null
-  n_gene_pcr_cq_value: 10.893916583142
-  n_gene_pcr_result_classification: Positive
-  n_gene_pcr_target: N gene
-  one_positive_pcr_target_only: 0
-  orf1ab_gene_pcr_cq_value: 22.657654590558
+  orf1ab_gene_pcr_cq_value: 16.871442158923
   orf1ab_gene_pcr_result_classification: Negative
   orf1ab_gene_pcr_target: null
   pcr_lab_id: GLS
-  pcr_result_classification: Negative
-  pcr_result_recorded_date_string: '2018-01-03'
-  pcr_result_recorded_datetime: '2018-01-03 06:14:32.000000'
-  s_gene_pcr_cq_value: 16.559139244108
+  pcr_result_classification: Positive
+  pcr_result_recorded_date_string: '2019-06-25'
+  pcr_result_recorded_datetime: '2019-06-25 04:50:57.000000'
+  s_gene_pcr_cq_value: 19.463591441772
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: S gene
-  swab_sample_barcode: ONS25808631
-  swab_sample_barcode_edited_in_swab_dataset_flag: null
-  unique_pcr_test_id: ONS25808631-2018-01-03 06:14:32-OR+N+S
+  swab_sample_barcode: ONS09410371
+  swab_sample_barcode_edited_in_swab_dataset_flag: 1
+  unique_pcr_test_id: ONS09410371-2019-06-25 04:50:57-OR+N+S

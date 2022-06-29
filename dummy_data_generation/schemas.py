@@ -2158,7 +2158,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "work_status_employment": _(
             "choice",
             items=[
-                "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
+                "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                 None,
             ],
@@ -2294,7 +2294,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.5, 0.5],
         ),
         "self_isolating": _("choice", items=yes_no_prefer_not_to_say),
-        "self_isolating_reason": _("choice", items=self_isolating_reasons),
+        "self_isolating_reason_detailed": _("choice", items=self_isolating_reasons),
         "think_have_covid": _("choice", items=yes_no_none_choice),  # TODO Check as marked TBC in extract
         "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
         "illness_reduces_activity_or_ability": _(

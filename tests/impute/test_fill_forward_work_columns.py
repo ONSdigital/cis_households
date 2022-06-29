@@ -62,7 +62,7 @@ def test_fill_forward_from_last_change(spark_session):
 
                 (4, "2020-08-14",   None,       3,      2,      1),
                 (4, "2020-08-15",   "No",       3,      2,      1),
-                (4, "2020-08-16",   None,       3,      2,      1), # these values should be overrided
+                (4, "2020-08-16",   None,       3,      2,      1), # these values should be override
 
                 (5, "2020-08-15",   "No",       None,   5,      None),
                 (5, "2020-08-16",   None,       None,   5,      None),

@@ -104,7 +104,9 @@ class SparkValidate:
         if len(missing) == 0:
             self.execute_check(logic, error_message)
         else:
-            print(" - Falied to run check as required " + ",".join(missing) + " missing from dataframe")  # functional
+            print(
+                "    - Falied to run check as required " + ",".join(missing) + " missing from dataframe"
+            )  # functional
 
     def execute_check(self, check, error_message, *params, subset=None, **kwargs):
         if callable(check):
@@ -210,18 +212,18 @@ class SparkValidate:
     @staticmethod
     def check_valid_file_date(
         error_message: str,
-        visit_date_column: str,
+        visit_datetime_column: str,
         file_date_column: str,
         swab_barcode_column: str,
         blood_barcode_column: str,
     ):
         error_message = error_message.format(
-            visit_date_column, file_date_column, swab_barcode_column, blood_barcode_column
+            visit_datetime_column, file_date_column, swab_barcode_column, blood_barcode_column
         )
         return (
             F.when(
                 (
-                    (F.col(file_date_column) > F.col(visit_date_column))
+                    (F.col(visit_datetime_column) >= (F.col(file_date_column)))
                     & F.col(swab_barcode_column).isNull()
                     & F.col(blood_barcode_column).isNull()
                 ),

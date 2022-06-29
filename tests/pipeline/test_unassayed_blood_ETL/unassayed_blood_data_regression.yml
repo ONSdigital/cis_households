@@ -1,26 +1,26 @@
-- blood_sample_barcode: ONS00265774
-  blood_sample_received_date: '2018-11-24 00:00:00.000000'
-  blood_sample_type: V
-  rejection_code: 7360
-  rejection_reason: Its main implementation is the Glasgow Haskell Compiler.
-- blood_sample_barcode: ONS02683106
-  blood_sample_received_date: '2021-04-15 00:00:00.000000'
-  blood_sample_type: V
-  rejection_code: 4742
-  rejection_reason: Atoms are used within a program to denote distinguished values.
-- blood_sample_barcode: ONS13332041
-  blood_sample_received_date: '2018-09-07 00:00:00.000000'
-  blood_sample_type: V
-  rejection_code: 6202
-  rejection_reason: Make me a sandwich.
-- blood_sample_barcode: ONS58086319
-  blood_sample_received_date: '2018-01-03 00:00:00.000000'
+- blood_sample_barcode: ONS34529645
+  blood_sample_received_date: '2019-07-11 00:00:00.000000'
   blood_sample_type: C
-  rejection_code: 5515
-  rejection_reason: Haskell is a standardized, general-purpose purely functional programming
-    language, with non-strict semantics and strong static typing.
-- blood_sample_barcode: ONS60227680
-  blood_sample_received_date: '2018-01-24 00:00:00.000000'
+  rejection_code: 909
+  rejection_reason: Initially composing light-hearted and irreverent works, he also
+    wrote serious, sombre and religious pieces beginning in the 1930s.
+- blood_sample_barcode: ONS34922916
+  blood_sample_received_date: '2020-07-20 00:00:00.000000'
   blood_sample_type: V
-  rejection_code: 6913
-  rejection_reason: Where are my pants?
+  rejection_code: 902
+  rejection_reason: I don't even care.
+- blood_sample_barcode: ONS37717719
+  blood_sample_received_date: '2022-07-04 00:00:00.000000'
+  blood_sample_type: V
+  rejection_code: 8569
+  rejection_reason: Erlang is known for its designs that are well suited for systems.
+- blood_sample_barcode: ONS58237871
+  blood_sample_received_date: '2022-12-28 00:00:00.000000'
+  blood_sample_type: C
+  rejection_code: 481
+  rejection_reason: Atoms are used within a program to denote distinguished values.
+- blood_sample_barcode: ONS62352853
+  blood_sample_received_date: '2019-05-20 00:00:00.000000'
+  blood_sample_type: C
+  rejection_code: 1084
+  rejection_reason: Type classes first appeared in the Haskell programming language.

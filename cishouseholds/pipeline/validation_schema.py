@@ -1198,7 +1198,7 @@ validation_schemas = {
         "think_have_covid_symptom_difficulty_concentrating": string_dict,
         "think_have_covid_onset_date": string_dict,
         "self_isolating": string_dict,
-        "self_isolating_reason": string_dict,
+        "self_isolating_reason_detailed": string_dict,
         "think_have_covid": string_dict,
         "illness_lasting_over_12_months": string_dict,
         "illness_reduces_activity_or_ability": string_dict,
