@@ -1,6 +1,7 @@
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.pipeline_stages import union_dependent_cleaning
 from cishouseholds.pipeline.pipeline_stages import union_dependent_derivations
 
@@ -23,9 +24,9 @@ def union_transformed_output(
             responses_digital_ETL_output,
         ]
     )
+    df = fill_forwards_transformations(df)
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
-    # df.orderBy("ons_household_id").drop("survey_response_source_file")
 
     df = df.drop("survey_response_source_file")
     return df
