@@ -2026,7 +2026,7 @@ def transform_from_lookups(
         F.broadcast(cohort_lookup),
         how="left",
         on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
+    ).drop("cohort_participant_id")
     df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
         "new_cohort", "old_cohort"
     )
