@@ -724,7 +724,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason
+  name: self_isolating_reason_detailed
   nullable: true
   type: string
 - metadata: {}
@@ -1424,7 +1424,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason_detailed
+  name: self_isolating_reason
   nullable: true
   type: string
 - metadata: {}
