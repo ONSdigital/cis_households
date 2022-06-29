@@ -60,7 +60,7 @@ def pandas_df_to_temporary_csv(tmp_path, spark_session):
                 _temporary_csv_path,
             )
             copy_local_to_hdfs(temporary_csv_path, hdfs_filepath)
-            return f"hdfs:///{hdfs_filepath}"
+            return f"hdfs://{hdfs_filepath}"
         else:
             return f"file:///{_temporary_csv_path}"
 
