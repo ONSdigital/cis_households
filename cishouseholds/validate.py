@@ -167,13 +167,24 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
     # TODO: make sure all_function_dict has also the run=False
+    # TODO: check that function exists
     error_msg = ""
     for stage_dict in config_file_arguments_list:
         if type(stage_dict["run"]) != bool:
             error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
 
+        # if run and function not in list:
+        #     error
+        # if key == run:
+        #     validate value is bool
+        # if key == function:
+        #     validation function exists
+        # if key == when:
+        #     validate when
+
     for function_run_dict in config_file_arguments_list:  # _true
         function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
+
         input_arguments_needed = [
             arg
             for arg in inspect.getargspec(all_function_dict[function_run_dict["function"]]).args
