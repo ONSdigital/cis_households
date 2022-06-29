@@ -25,6 +25,7 @@ from dummy_data_generation.schemas import get_voyager_2_data_description
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "integration: mark integration tests (likely to run slowly)")
+    config.addinivalue_line("markers", "regression: mark tests that include regression testing of output")
 
 
 def timestamp_representer(dumper, timestamp):
