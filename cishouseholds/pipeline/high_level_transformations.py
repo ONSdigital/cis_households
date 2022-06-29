@@ -2023,7 +2023,7 @@ def transform_from_lookups(
 ):
     cohort_lookup = cohort_lookup.withColumnRenamed("participant_id", "cohort_participant_id")
     df = df.join(
-        F.broadcast(cohort_lookup),
+        cohort_lookup,
         how="left",
         on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
     )
@@ -2031,7 +2031,7 @@ def transform_from_lookups(
         "new_cohort", "old_cohort"
     )
     df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True)),
         how="left",
         on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
     )
