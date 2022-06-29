@@ -21,6 +21,7 @@ def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     return processed_df
 
 
+@pytest.mark.regression
 @pytest.mark.integration
 def test_responses_version_1_delta_df(responses_v1_survey_ETL_output, regression_test_df):
     regression_test_df(
@@ -28,6 +29,7 @@ def test_responses_version_1_delta_df(responses_v1_survey_ETL_output, regression
     )  # remove source file column, as it varies for our temp dummy data
 
 
+@pytest.mark.regression
 @pytest.mark.integration
 def test_responses_version_1_delta_schema(regression_test_df_schema, responses_v1_survey_ETL_output):
     regression_test_df_schema(responses_v1_survey_ETL_output, "processed_responses_v1")

@@ -21,6 +21,8 @@ def swab_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     return processed_df
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
+@pytest.mark.regression
 @pytest.mark.integration
 def test_swab_delta_ETL_df(swab_delta_ETL_output, regression_test_df):
     regression_test_df(
@@ -28,6 +30,8 @@ def test_swab_delta_ETL_df(swab_delta_ETL_output, regression_test_df):
     )  # remove source file column, as it varies for our temp dummy data
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
+@pytest.mark.regression
 @pytest.mark.integration
 def test_swab_delta_ETL_schema(swab_delta_ETL_output, regression_test_df_schema):
     regression_test_df_schema(swab_delta_ETL_output, "processed_swab")
