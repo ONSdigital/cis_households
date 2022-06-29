@@ -4,6 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.pipeline.high_level_merge import merge_blood
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
 @pytest.mark.xfail(reason="MERGE OPTIMISATION WIP")
 def test_merge_blood(spark_session):
     voyager_schema = """
