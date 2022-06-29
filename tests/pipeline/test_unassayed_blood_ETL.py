@@ -18,7 +18,7 @@ def unassayed_blood_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     processing_function = generate_input_processing_function(
         **unassayed_blood_delta_parameters, include_hadoop_read_write=False
     )
-    processed_df = processing_function(resource_path=csv_file_path)
+    processed_df = processing_function(resource_path=csv_file_path.as_posix())
     return processed_df
 
 
