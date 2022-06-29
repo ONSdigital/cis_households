@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import reduce
 from io import BytesIO
 from itertools import chain
+from operator import and_
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -354,13 +355,32 @@ def replace_design_weights(
     weighted_survey_responses_table: str,
     design_weight_columns: List[str],
 ):
+    """
+    Temporary stage to replace design weights by lookup.
+    Also makes temporary edits to fix raw data issues in geographies.
+    """
     design_weight_lookup = extract_from_table(design_weight_lookup_table)
-    survey_responses = extract_from_table(survey_responses_table)
-    survey_responses = survey_responses.drop(*design_weight_columns)
-    survey_responses = survey_responses.join(
+    df = extract_from_table(survey_responses_table)
+    df = df.drop(*design_weight_columns)
+    df = df.join(
         design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
     )
-    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
+
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+
+    update_table(df, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
@@ -1352,7 +1372,7 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
         if len(filter.keys()) > 0:
-            df = df.filter(all([F.col(col) == val for col, val in filter.items()]))
+            df = df.filter(reduce(and_, [F.col(col) == val for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
