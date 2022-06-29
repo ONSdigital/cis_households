@@ -200,9 +200,15 @@ Should not be used in production, as all tables may be deleted.</p>
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.execute_union_dependent_transformations">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">execute_union_dependent_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unioned_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformed_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.execute_union_dependent_transformations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformations that require the union of the different input survey response files.
-Includes combining data from different files and filling forwards or backwards over time.
-:param unioned_survey_table: input table name for table containing the combined survey responses tables
-:param transformed_table: output table name for table with applied transformations dependent on complete survey dataset</p>
+Includes filling forwards or backwards over time and deriving new information over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unioned_survey_table</strong> – input table name for table containing the combined survey responses tables</p></li>
+<li><p><strong>transformed_table</strong> – output table name for table with applied transformations dependent on complete survey dataset</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
