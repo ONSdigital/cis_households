@@ -564,6 +564,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: study_cohort
+  nullable: false
+  type: string
+- metadata: {}
   name: swab_taken
   nullable: false
   type: string

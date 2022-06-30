@@ -28,7 +28,7 @@ class SparkValidate:
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
             "valid_file_date": {
                 "function": self.check_valid_file_date,
-                "error_message": "the date in {} should be before the date in {} when both {} and {} are null",  # noqa:E501
+                "error_message": "the date in {} should be before the date in {} plus two days when both {} and {} are null",  # noqa:E501
             },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
@@ -223,7 +223,7 @@ class SparkValidate:
         return (
             F.when(
                 (
-                    (F.col(visit_datetime_column) >= (F.col(file_date_column)))
+                    (F.col(visit_datetime_column) > ((F.col(file_date_column) + F.expr("INTERVAL 2 DAYS"))))
                     & F.col(swab_barcode_column).isNull()
                     & F.col(blood_barcode_column).isNull()
                 ),
