@@ -491,13 +491,20 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
+
     df = extract_from_table(input_table)
     cohort_lookup = extract_from_table(cohort_lookup_table)
     travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+
+    for name, table in zip(
+        [cohort_lookup_table, travel_countries_lookup_table], [cohort_lookup, travel_countries_lookup]
+    ):
+        if table.count() > table.distinct().count():
+            raise ValueError(f"lookup table {name} has duplicated entries.")
+
     tenure_group = extract_from_table(tenure_group_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-
     df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
