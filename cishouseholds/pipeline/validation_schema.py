@@ -7,6 +7,9 @@ validation_schemas: Dict[str, Dict[str, Any]]
 string_dict = {"type": "string"}
 
 integer_dict = {"type": "integer"}
+
+long_dict = {"type": "long"}
+
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 projections_column_map = {
@@ -190,6 +193,33 @@ projections_column_map = {
     "f85": integer_dict,
 }
 validation_schemas = {
+    "cohort_schema": {"participant_id": string_dict, "old_cohort": string_dict, "new_cohort": string_dict},
+    "travel_schema": {"been_outside_uk_last_country_old": string_dict, "been_outside_uk_last_country_new": string_dict},
+    "tenure_schema": {
+        "UAC": long_dict,
+        "GOR9D": string_dict,
+        "ten1": string_dict,
+        "tenure_group": string_dict,
+        "DVHSize": integer_dict,
+        "NumChild": integer_dict,
+        "NumAdult": integer_dict,
+        "sample": string_dict,
+        "dweight_hh": integer_dict,
+        "ons_household_id": long_dict,
+        "UAC_new": long_dict,
+        "UA19NM": long_dict,
+        "LHB19CD": string_dict,
+        "health_board": string_dict,
+    },
+    "imputation_lookup_schema": {
+        "participant_id": string_dict,
+        "ethnicity_white": string_dict,
+        "ethnicity_white_imputation_method": string_dict,
+        "sex": string_dict,
+        "sex_imputation_method": string_dict,
+        "date_of_birth": string_dict,
+        "date_of_birth_imputation_method": string_dict,
+    },
     "address_schema": {
         "UPRN": string_dict,
         "ORGANISATION_NAME": string_dict,
