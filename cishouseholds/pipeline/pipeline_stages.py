@@ -464,7 +464,7 @@ def validate_survey_responses(
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite", archive=True)
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
