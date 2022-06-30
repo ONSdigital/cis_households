@@ -16,7 +16,7 @@ def blood_delta_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
     pandas_df = pd.DataFrame(schema.create(iterations=5))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, filename="N.csv")
     processing_function = generate_input_processing_function(**blood_delta_parameters, include_hadoop_read_write=False)
-    processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    processed_df = processing_function(resource_path=csv_file_path)
 
     return processed_df
 
