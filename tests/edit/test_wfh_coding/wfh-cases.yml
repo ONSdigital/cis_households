@@ -1,7 +1,7 @@
 # A list of positive test cases which need to be interpreted as "Working from Home" &
 # negative test cases which shouldn't.
 # Please append new cases to the appropriate list below
-positive_cases:
+positive:
   - WORKING FROM HOME
   - WORKS FROM HOME
   - WORK FROM HOME
@@ -17,7 +17,7 @@ positive_cases:
   - WK FROM HOM
   - WFH
 
-negative_cases:
+negative:
   - WORK WORK WORK
   - SWEET HOME ALABAMA
   - FROM DAWN TO DUSK

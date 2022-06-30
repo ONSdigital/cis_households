@@ -11,6 +11,7 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
@@ -791,4 +792,30 @@ def edit_to_sum_or_max_value(
         .otherwise(F.col(column_name_to_assign))
         .cast("integer"),
     )
+    return df
+
+
+def add_work_from_home_identifier(
+    df: DataFrame,
+    columns_to_check_in: List[str],
+    regex_pattern: str = "(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
+    pattern_result_column: str = "is_wfh",
+):
+    """
+    Applies the user provided RegEx pattern to the list of columns. If a value in any of the
+    columns matches the RegEx pattern then `pattern_result_column` column will have the corresponding
+    value set to integer: 1 (True), 0 (False) otherwise.
+
+    Parameters:
+    -----------
+    df: The input dataframe to process
+    columns_to_check_in: a list of columns in which to look for the `regex_pattern`
+    regex_pattern: the Spark-compatible regex pattern to check against
+    pattern_result_column: name of the output column which will contain the result of the RegEx pattern search
+
+    """
+    df = df.withColumn(
+        pattern_result_column, any_column_matches_regex(columns_to_check_in, regex_pattern).cast("integer")
+    )
+
     return df
