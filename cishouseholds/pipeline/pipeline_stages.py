@@ -106,21 +106,26 @@ def blind_csv_to_table(path: str, table_name: str):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
-    Convert a list of csv files into a HDFS table
+    Convert a list of csv files into HDFS tables. Requires a schema.
     """
     for file in file_operations:
         if file["schema"] not in validation_schemas:
-            raise ValueError(file["schema"] + " schema does not exists")
+            raise ValueError(f"Schema doesn't exist: {file['schema']}")
         schema = validation_schemas[file["schema"]]
-        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
+
+        if file["column_map"] is not None and file["column_map"] not in column_name_maps:
+            raise ValueError(f"Column name map doesn't exist: {file['column_map']}")
+        column_map = column_name_maps.get(file["column_map"])
+
         df = extract_lookup_csv(
             file["path"],
             schema,
             column_map,
             file["drop_not_found"],
         )
-        print("    created table:" + file["table_name"])  # functional
+
         update_table(df, file["table_name"], "overwrite")
+        print("    created table:" + file["table_name"])  # functional
 
 
 @register_pipeline_stage("delete_tables")
