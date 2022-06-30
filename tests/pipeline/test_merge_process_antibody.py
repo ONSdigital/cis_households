@@ -5,6 +5,7 @@ from cishouseholds.pipeline.merge_process_combination import execute_merge_speci
 # from chispa import assert_df_equality
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
 @pytest.mark.xfail(reason="units do not function correctly")
 def test_merge_process_antibody(spark_session):
     schema = "blood_sample_barcode string, unique_participant_response_id string, any string"
