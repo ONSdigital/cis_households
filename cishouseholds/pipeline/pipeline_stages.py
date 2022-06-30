@@ -123,7 +123,7 @@ def csv_to_table(file_operations: list):
             schema,
             column_map,
             file["drop_not_found"],
-        )
+        ).distinct()
 
         update_table(df, file["table_name"], "overwrite")
         print("    created table:" + file["table_name"])  # functional
