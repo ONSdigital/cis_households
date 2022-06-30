@@ -242,7 +242,7 @@
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
@@ -659,7 +659,7 @@
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
-  smokes_pipe: null
+  smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
@@ -1083,7 +1083,7 @@
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
-  smokes_vape_e_cigarettes: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 11-20
@@ -1497,7 +1497,7 @@
   sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: null
-  smokes_hookah_shisha_pipes: null
+  smokes_hookah_shisha_pipes: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6-10
@@ -1905,7 +1905,7 @@
     test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
@@ -2324,7 +2324,7 @@
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
-  smokes_pipe: null
+  smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
@@ -2731,7 +2731,7 @@
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -3146,7 +3146,7 @@
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -3560,7 +3560,7 @@
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -3973,7 +3973,7 @@
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
