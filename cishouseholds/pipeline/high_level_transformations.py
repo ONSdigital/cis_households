@@ -79,6 +79,7 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -2172,7 +2173,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
-        impute_by_k_nearest_neighbours,
+        impute_date_by_k_nearest_neighbours,
         reference_column="date_of_birth",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
