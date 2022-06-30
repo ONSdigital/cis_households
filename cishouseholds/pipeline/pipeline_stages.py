@@ -16,6 +16,7 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
+from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import read_header
@@ -58,6 +59,7 @@ from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
+from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -118,6 +120,8 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
+        if file.get("datetime_map") is not None:
+            df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
         print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
 
