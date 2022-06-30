@@ -36,6 +36,7 @@ from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
@@ -460,7 +461,7 @@ def validate_survey_responses(
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite", archive=True)
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
@@ -533,7 +534,7 @@ def imputation_depdendent_transformations(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
