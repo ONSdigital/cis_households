@@ -807,11 +807,11 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "currently_smokes_or_vapes_description",
         {
-            "cigarettes": "smoke_cigarettes",
-            "cigars": "smokes_cigar",
-            "pipe": "smokes_pipe",
-            "vape/E-cigarettes": "smokes_vape_e_cigarettes",
-            "Hookah/shisha pipes": "smokes_hookah_shisha_pipes",
+            "Cigarettes": "smoke_cigarettes",
+            "Cigars": "smokes_cigar",
+            "Pipe": "smokes_pipe",
+            "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
+            "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
         },
         ";",
     )
