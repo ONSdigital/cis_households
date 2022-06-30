@@ -1507,7 +1507,7 @@
   social_distance_contact_under_18_years: '0'
   social_distance_contact_under_18_years_raw: '0'
   street: Culnafay
-  study_cohort: Original
+  study_cohort: null
   survey_completed_datetime: '2022-01-08 12:15:27.000000'
   survey_completion_status: New
   survey_last_modified_datetime: '2022-01-06 17:00:27.000000'
@@ -1917,7 +1917,7 @@
   social_distance_contact_under_18_years: 21 or more
   social_distance_contact_under_18_years_raw: 21 or more
   street: Glenmont
-  study_cohort: Original
+  study_cohort: null
   survey_completed_datetime: '2022-01-01 19:09:53.000000'
   survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-08 23:13:45.000000'
@@ -3985,7 +3985,7 @@
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
   street: Ballyhanwood
-  study_cohort: Original
+  study_cohort: null
   survey_completed_datetime: '2022-01-06 17:16:06.000000'
   survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-02 16:07:22.000000'
