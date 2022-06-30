@@ -441,10 +441,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
 
-    if "self_isolating_reason" in df.columns:
-        # Plan to edit the name to self_isolating_reason_detailed in raw data instead of this
-        df = df.withColumn("self_isolating_reason_detailed", F.col("self_isolating_reason"))
-
     df = assign_column_value_from_multiple_column_map(
         df,
         "self_isolating_reason",
