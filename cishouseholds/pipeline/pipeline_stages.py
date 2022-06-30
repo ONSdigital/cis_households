@@ -36,6 +36,7 @@ from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
@@ -565,7 +566,7 @@ def imputation_depdendent_transformations(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
