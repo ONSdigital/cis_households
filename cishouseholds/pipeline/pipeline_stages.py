@@ -17,6 +17,8 @@ from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.hdfs_utils import copy
+from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
@@ -119,6 +121,20 @@ def csv_to_table(file_operations: list):
         )
         print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
+
+
+@register_pipeline_stage("backup_files")
+def backup_files(file_list: List[str], backup_directory: str):
+    """ """
+    storage_dir = Path(backup_directory) / datetime.now().strftime("%Y%m%d_%H%M%S")
+    create_dir(storage_dir)
+    if "hdfs:///" in backup_directory:
+        for file_path in file_list:
+            import pdb
+
+            pdb.set_trace()
+            new_path = storage_dir / Path(file_path).name
+            copy(file_path, new_path.as_posix())
 
 
 @register_pipeline_stage("delete_tables")
