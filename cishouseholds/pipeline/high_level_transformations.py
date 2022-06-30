@@ -731,18 +731,26 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                 ],
             ],
-            ["Employed", ["Self-employed", None, "Looking for paid work and able to start", None]],
+            ["Employed", ["Employed", None, None, None]],
             [
                 "Self-employed",
                 [
                     "Self-employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             ["Self-employed", [None, None, None]],
-            ["Not working (unemployed, retired, long-term sick etc.)", ["Self-employed", None, None, None]],
+            [
+                "Not working (unemployed, retired, long-term sick etc.)",
+                [
+                    "Self-employed",
+                    "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    None,
+                    None,
+                ],
+            ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
@@ -763,7 +771,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, "Retired", None],
+                [
+                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    None,
+                    ["Retired", "Or retired?"],
+                    None,
+                ],
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
