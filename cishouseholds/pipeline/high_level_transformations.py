@@ -1101,7 +1101,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     )
     if "study_cohort" not in df.columns:
-        df.withColumn("study_cohort", "Original")
+        df = df.withColumn("study_cohort", F.lit("Original"))
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
