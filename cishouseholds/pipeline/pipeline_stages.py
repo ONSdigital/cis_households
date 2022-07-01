@@ -127,11 +127,10 @@ def csv_to_table(file_operations: list):
             file["drop_not_found"],
         )
 
-        if file["datetime_map"] is not None and file["datetime_map"] not in csv_datetime_maps:
+        if file.get("datetime_map") is not None and file["datetime_map"] not in csv_datetime_maps:
             raise ValueError(f"CSV datetime map doesn't exist: {file['datetime_map']}")
         if file.get("datetime_map") is not None:
             df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
-        print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
         print("    created table:" + file["table_name"])  # functional
 

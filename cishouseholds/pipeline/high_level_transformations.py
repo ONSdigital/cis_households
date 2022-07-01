@@ -2152,7 +2152,7 @@ def fill_forwards_travel_column(df):
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
-    Most imputations require geographic data being joined onto the participant records.
+    Most imputations require geographic data beinga joined onto the participant records.
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
