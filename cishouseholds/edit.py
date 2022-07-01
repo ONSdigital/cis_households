@@ -808,11 +808,14 @@ def add_work_from_home_identifier(
 
     Parameters:
     -----------
-    df: The input dataframe to process
-    columns_to_check_in: a list of columns in which to look for the `regex_pattern`
-    regex_pattern: the Spark-compatible regex pattern to check against
-    pattern_result_column: name of the output column which will contain the result of the RegEx pattern search
-
+    df
+        The input dataframe to process
+    columns_to_check_in
+        a list of columns in which to look for the `regex_pattern`
+    regex_pattern
+        the Spark-compatible regex pattern to check against
+    pattern_result_column
+        name of the output column which will contain the result of the RegEx pattern search
     """
     df = df.withColumn(
         pattern_result_column, any_column_matches_regex(columns_to_check_in, regex_pattern).cast("integer")
