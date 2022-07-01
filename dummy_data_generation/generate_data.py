@@ -14,6 +14,7 @@ from dummy_data_generation.helpers import code_mask
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_data_description
+from dummy_data_generation.schemas import get_cis_soc_data_description
 from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_nims_data_description
 from dummy_data_generation.schemas import get_survey_responses_digital_data_description
@@ -33,6 +34,16 @@ def write_output(pd_df: pd.DataFrame, filepath: str, sep: str = ","):
     write_string_to_file(output.getvalue().encode(), filepath)
     print("created dummy data in path: ", filepath)  # functional
     output.close()
+
+
+def generate_cis_soc_data(directory, file_date, records):
+    """
+    Generate dummy cis soc data.
+    """
+    schema = Schema(schema=get_cis_soc_data_description(_))
+    cis_soc_data = pd.DataFrame(schema.create(iterations=records))
+    write_output(cis_soc_data, directory / f"cis_soc_data_file_{file_date}.csv")
+    return cis_soc_data
 
 
 def generate_survey_v0_data(directory, file_date, records, swab_barcodes, blood_barcodes):

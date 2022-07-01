@@ -67,6 +67,7 @@ from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
+from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -160,6 +161,8 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
+    cis_soc_direcory = raw_dir / "cis_soc"
+
     for directory in [
         swab_dir,
         blood_dir,
@@ -220,6 +223,8 @@ def generate_dummy_data(output_directory):
 
     swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
+
+    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
 
     generate_survey_v0_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
