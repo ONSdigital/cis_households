@@ -126,7 +126,7 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
-        
+
         if file["datetime_map"] is not None and file["datetime_map"] not in csv_datetime_maps:
             raise ValueError(f"CSV datetime map doesn't exist: {file["datetime_map"]}")
         if file.get("datetime_map") is not None:
