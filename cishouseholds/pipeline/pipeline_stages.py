@@ -37,10 +37,12 @@ from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -107,23 +109,31 @@ def blind_csv_to_table(path: str, table_name: str):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
-    Convert a list of csv files into a HDFS table
+    Convert a list of csv files into HDFS tables. Requires a schema.
     """
     for file in file_operations:
         if file["schema"] not in validation_schemas:
-            raise ValueError(file["schema"] + " schema does not exists")
+            raise ValueError(f"Schema doesn't exist: {file['schema']}")
         schema = validation_schemas[file["schema"]]
-        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
+
+        if file["column_map"] is not None and file["column_map"] not in column_name_maps:
+            raise ValueError(f"Column name map doesn't exist: {file['column_map']}")
+        column_map = column_name_maps.get(file["column_map"])
+
         df = extract_lookup_csv(
             file["path"],
             schema,
             column_map,
             file["drop_not_found"],
         )
+        
+        if file["datetime_map"] is not None and file["datetime_map"] not in csv_datetime_maps:
+            raise ValueError(f"CSV datetime map doesn't exist: {file["datetime_map"]}")
         if file.get("datetime_map") is not None:
             df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
         print("    created table:" + file["table_name"])  # functional
         update_table(df, file["table_name"], "overwrite")
+        print("    created table:" + file["table_name"])  # functional
 
 
 @register_pipeline_stage("delete_tables")
@@ -463,16 +473,16 @@ def validate_survey_responses(
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite", archive=True)
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("lookup_based_editing")
 def lookup_based_editing(
     input_table: str,
-    cohort_lookup_path: str,
-    travel_countries_lookup_path: str,
-    tenure_group_path: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
     edited_table: str,
 ):
     """
@@ -488,47 +498,14 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark_session = get_or_create_spark_session()
     df = extract_from_table(input_table)
-
-    cohort_lookup = spark_session.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
-
-    travel_countries_lookup = spark_session.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    df = df.join(
-        F.broadcast(cohort_lookup),
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-    df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
-    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group = tenure_group.withColumnRenamed(key, value)
 
-    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
-
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
 
@@ -569,7 +546,7 @@ def imputation_depdendent_transformations(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
