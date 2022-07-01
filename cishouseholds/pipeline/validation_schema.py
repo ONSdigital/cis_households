@@ -189,6 +189,11 @@ projections_column_map = {
     "f84": integer_dict,
     "f85": integer_dict,
 }
+soc_schema = {
+    "work_main_job_title": string_dict,
+    "work_main_job_role": string_dict,
+    "standard_occupational_classification_code": integer_dict,
+}
 validation_schemas = {
     "address_schema": {
         "UPRN": string_dict,

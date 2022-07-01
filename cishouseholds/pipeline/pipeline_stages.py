@@ -39,6 +39,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -58,6 +59,7 @@ from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.validation_calls import validation_ETL
+from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -333,6 +335,18 @@ def generate_input_processing_function(
 
     _inner_function.__name__ = stage_name
     return _inner_function
+
+
+@register_pipeline_stage("process_soc_data")
+def process_soc_data(soc_file_pattern: str, survey_responses_table: str, soc_coded_survey_responses_table: str):
+    """
+    Process soc data and combine result with survey responses data
+    """
+    soc_df = extract_input_data(soc_file_pattern, soc_schema, ",")
+    soc_df = transform_cis_soc_data(soc_df)
+    survey_responses_df = extract_from_table(survey_responses_table)
+    survey_responses_df = survey_responses_df.join(soc_df, on=["work_main_job_title", "work_main_job_role"], how="left")
+    update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
