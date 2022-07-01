@@ -13,7 +13,7 @@ end_date_list = datetime(2022, 1, 10)
 
 def get_cis_soc_data_description(_):
     return lambda: {
-        "work_main_job_title": _("choice", items=[_("text.quote"), None]),
+        "work_main_job_title": _("choice", items=[_("text.quote")]),
         "work_main_job_role": _("choice", items=[_("text.quote"), None]),
         "standard_occupational_classification_code": _(
             "custom_random.random_integer", lower=1000, upper=9999, null_percent=0
