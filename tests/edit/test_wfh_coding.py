@@ -20,9 +20,9 @@ def wfh_cases():
 
 def test_add_work_from_home_identifier(wfh_cases, spark_session):
 
-    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_wfh boolean")
+    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_working_from_home boolean")
     actual_df = add_work_from_home_identifier(
-        df=expected_df.drop("is_wfh"),
+        df=expected_df.drop("is_working_from_home"),
         columns_to_check_in=["test_case"],
         regex_pattern="(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
     )

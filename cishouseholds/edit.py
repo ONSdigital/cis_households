@@ -799,11 +799,11 @@ def add_work_from_home_identifier(
     df: DataFrame,
     columns_to_check_in: List[str],
     regex_pattern: str = "(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
-    pattern_result_column: str = "is_wfh",
+    column_name_to_assign: str = "is_working_from_home",
 ):
     """
     Applies the user provided RegEx pattern to the list of columns. If a value in any of the
-    columns matches the RegEx pattern then `pattern_result_column` column will have the corresponding
+    columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
     value set to (bool) True, False otherwise.
 
     Parameters:
@@ -814,9 +814,9 @@ def add_work_from_home_identifier(
         a list of columns in which to look for the `regex_pattern`
     regex_pattern
         the Spark-compatible regex pattern to check against
-    pattern_result_column
+    column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
     """
-    df = df.withColumn(pattern_result_column, any_column_matches_regex(columns_to_check_in, regex_pattern))
+    df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, regex_pattern))
 
     return df
