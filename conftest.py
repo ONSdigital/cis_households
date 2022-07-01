@@ -182,7 +182,7 @@ def regression_test_df_schema(data_regression):
     return _regression_test_df
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def mimesis_field():
     """Generate a new field for mimesis data generation, to ensure test data are independently generated"""
     return Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
