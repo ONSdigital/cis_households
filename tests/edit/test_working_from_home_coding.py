@@ -7,7 +7,7 @@ from cishouseholds.edit import add_work_from_home_identifier
 
 @pytest.fixture
 def wfh_cases():
-    with open("tests/edit/test_wfh_coding/wfh-cases.yml", "r") as fh:
+    with open("tests/edit/test_working_from_home_coding/working-from-home-testcases.yml", "r") as fh:
         test_data = yaml.safe_load(fh)
 
     test_data_melted = [
