@@ -79,6 +79,7 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -221,6 +222,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         },
         "other_covid_infection_test_results": {
             "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -1410,8 +1412,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes sometimes": "Yes, sometimes",
         },
         "other_antibody_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
         },
         "other_antibody_test_location": {
@@ -2151,7 +2153,7 @@ def fill_forwards_travel_column(df):
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
-    Most imputations require geographic data being joined onto the participant records.
+    Most imputations require geographic data being joined onto the response records.
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
@@ -2204,7 +2206,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
-        impute_by_k_nearest_neighbours,
+        impute_date_by_k_nearest_neighbours,
         reference_column="date_of_birth",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
