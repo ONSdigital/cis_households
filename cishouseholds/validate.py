@@ -148,3 +148,21 @@ def check_singular_match(
             failure_column_name, F.when(F.col(existing_failure_column) == 1, 1).otherwise(F.col(failure_column_name))
         )
     return df.drop("TOTAL")
+
+
+def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df=""):
+    if df.select(*join_column_list).count() > df.select(*join_column_list).distinct().count():
+        df_repeated = df.groupBy(*join_column_list).count().filter("count > 1").drop("count")
+        raise ValueError(
+            f"""The lookup dataframe {name_of_df} used for joining on {', '.join(join_column_list)} columns have duplicated entries that should be unique. These are the rows: \n
+            {df_repeated.show()}"""  # noqa 506
+        )
+
+
+def check_lookup_table_not_complete_duplicates(df, name_of_df=""):
+    if df.select(df.columns).count() > df.select(df.columns).distinct().count():
+        df_repeated = df.groupBy(df.columns).count().filter("count > 1").drop("count")
+        raise ValueError(
+            f"""The lookup dataframe {name_of_df} has complete duplicated entries that should be unique. These are the rows: \n
+            {df_repeated.show()}"""  # noqa 506
+        )
