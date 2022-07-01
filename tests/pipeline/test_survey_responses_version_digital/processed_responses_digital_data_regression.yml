@@ -1,6 +1,5 @@
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
-    1 metre away. Your work means you are in close contact with others on a regular
-    basis
+    1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
     than 1 metre away. Your work means you are in close contact with others on a regular
     basis
@@ -242,7 +241,7 @@
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
@@ -659,7 +658,7 @@
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
-  smokes_pipe: null
+  smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
@@ -827,8 +826,7 @@
   work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
-    1 metre away. Your work means you are in close contact with others on a regular
-    basis
+    1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
     than 1 metre away. Your work means you are in close contact with others on a regular
     basis
@@ -1083,7 +1081,7 @@
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
-  smokes_vape_e_cigarettes: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 11-20
@@ -1497,7 +1495,7 @@
   sex_raw: Male
   smoke_cigarettes: null
   smokes_cigar: null
-  smokes_hookah_shisha_pipes: null
+  smokes_hookah_shisha_pipes: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6-10
@@ -1507,7 +1505,7 @@
   social_distance_contact_under_18_years: '0'
   social_distance_contact_under_18_years_raw: '0'
   street: Culnafay
-  study_cohort: null
+  study_cohort: Original
   survey_completed_datetime: '2022-01-08 12:15:27.000000'
   survey_completion_status: New
   survey_last_modified_datetime: '2022-01-06 17:00:27.000000'
@@ -1905,7 +1903,7 @@
     test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
@@ -1917,7 +1915,7 @@
   social_distance_contact_under_18_years: 21 or more
   social_distance_contact_under_18_years_raw: 21 or more
   street: Glenmont
-  study_cohort: null
+  study_cohort: Original
   survey_completed_datetime: '2022-01-01 19:09:53.000000'
   survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-08 23:13:45.000000'
@@ -2324,7 +2322,7 @@
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
-  smokes_pipe: null
+  smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
@@ -2731,7 +2729,7 @@
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -2899,8 +2897,7 @@
   work_status_v1: null
   work_status_v2: null
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
-    1 metre away. Your work means you are in close contact with others on a regular
-    basis
+    1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
     than 1 metre away. Your work means you are in close contact with others on a regular
     basis
@@ -3146,7 +3143,7 @@
   sex: Male
   sex_raw: Male
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -3560,7 +3557,7 @@
   sex: Female
   sex_raw: Female
   smoke_cigarettes: null
-  smokes_cigar: null
+  smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
@@ -3973,7 +3970,7 @@
     who has or has had symptoms or a positive test
   sex: Female
   sex_raw: Female
-  smoke_cigarettes: null
+  smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
@@ -3985,7 +3982,7 @@
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
   street: Ballyhanwood
-  study_cohort: null
+  study_cohort: Original
   survey_completed_datetime: '2022-01-06 17:16:06.000000'
   survey_completion_status: Completed
   survey_last_modified_datetime: '2022-01-02 16:07:22.000000'

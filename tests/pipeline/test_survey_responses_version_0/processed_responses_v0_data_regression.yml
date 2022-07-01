@@ -92,6 +92,7 @@
   sex: Female
   sex_raw: Female
   street: Ballydoonan
+  study_cohort: Original
   suffix: B
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -245,6 +246,7 @@
   sex: Female
   sex_raw: Female
   street: Benwee
+  study_cohort: Original
   suffix: A
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -398,6 +400,7 @@
   sex: null
   sex_raw: null
   street: Invergourie
+  study_cohort: Original
   suffix: C
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -558,6 +561,7 @@
   sex: Male
   sex_raw: Male
   street: null
+  study_cohort: Original
   suffix: L
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -713,6 +717,7 @@
   sex: null
   sex_raw: null
   street: null
+  study_cohort: Original
   suffix: C
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -869,6 +874,7 @@
   sex: Female
   sex_raw: Female
   street: null
+  study_cohort: Original
   suffix: B
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -1024,6 +1030,7 @@
   sex: Male
   sex_raw: Male
   street: Drumagrove
+  study_cohort: Original
   suffix: O
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -1179,6 +1186,7 @@
   sex: Female
   sex_raw: null
   street: null
+  study_cohort: Original
   suffix: U
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -1331,6 +1339,7 @@
   sex: Prefer not to say
   sex_raw: null
   street: null
+  study_cohort: Original
   suffix: M
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
@@ -1487,6 +1496,7 @@
   sex: Male
   sex_raw: null
   street: Glendon
+  study_cohort: Original
   suffix: U
   survey_response_dataset_major_version: 0
   survey_response_type: Follow-up Visit
