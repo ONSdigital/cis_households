@@ -155,6 +155,7 @@ category_maps = {
             "New": 7,
             "Dispatched": 8,
             "Household did not attend": 9,
+            "Locked": 10,
         },
         "survey_response_type": {"First Visit": 0, "Follow-up Visit": 1},
         "sex": {"Male": 1, "Female": 2},
