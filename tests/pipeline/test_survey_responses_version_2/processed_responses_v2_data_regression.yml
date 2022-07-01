@@ -730,7 +730,7 @@
   other_antibody_test_first_positive_date: '2022-01-05 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: Private lab
-  other_antibody_test_results: Any tests negative, but none negative
+  other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
@@ -1348,7 +1348,7 @@
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
-  other_antibody_test_results: Any tests negative, but none negative
+  other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-05 00:00:00.000000'
@@ -1966,7 +1966,7 @@
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-06 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
-  other_antibody_test_results: Any tests negative, but none negative
+  other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
@@ -2584,7 +2584,7 @@
   other_antibody_test_first_positive_date: null
   other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
-  other_antibody_test_results: Any tests negative, but none negative
+  other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
