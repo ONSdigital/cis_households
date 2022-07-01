@@ -11,7 +11,7 @@ def wfh_cases():
         test_data = yaml.safe_load(fh)
 
     test_data_melted = [
-        (test_case, int(pos_or_neg == "positive"))
+        (test_case, pos_or_neg == "positive")
         for pos_or_neg, test_cases in test_data.items()
         for test_case in test_cases
     ]
@@ -20,7 +20,7 @@ def wfh_cases():
 
 def test_add_work_from_home_identifier(wfh_cases, spark_session):
 
-    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_wfh integer")
+    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_wfh boolean")
     actual_df = add_work_from_home_identifier(
         df=expected_df.drop("is_wfh"),
         columns_to_check_in=["test_case"],

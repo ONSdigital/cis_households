@@ -804,7 +804,7 @@ def add_work_from_home_identifier(
     """
     Applies the user provided RegEx pattern to the list of columns. If a value in any of the
     columns matches the RegEx pattern then `pattern_result_column` column will have the corresponding
-    value set to integer: 1 (True), 0 (False) otherwise.
+    value set to (bool) True, False otherwise.
 
     Parameters:
     -----------
@@ -817,8 +817,6 @@ def add_work_from_home_identifier(
     pattern_result_column
         name of the output column which will contain the result of the RegEx pattern search
     """
-    df = df.withColumn(
-        pattern_result_column, any_column_matches_regex(columns_to_check_in, regex_pattern).cast("integer")
-    )
+    df = df.withColumn(pattern_result_column, any_column_matches_regex(columns_to_check_in, regex_pattern))
 
     return df
