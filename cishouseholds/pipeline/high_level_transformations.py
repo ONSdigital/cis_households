@@ -1022,10 +1022,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "survey_completion_status",
         {
-            "In Progress": "Partially Completed",
-            "IN PROGRESS": "Partially Completed",
+            "In progress": "Partially Completed",
             "Submitted": "Completed",
-            "SUBMITTED": "Completed",
         },
     )
     df = derive_had_symptom_last_7days_from_digital(
