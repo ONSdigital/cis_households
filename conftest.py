@@ -57,11 +57,11 @@ def spark_session():
 
 
 @pytest.fixture(scope="session")
-def responses_v0_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v0_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v0 delta.
     """
-    schema = Schema(schema=get_voyager_0_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_0_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
@@ -72,11 +72,11 @@ def responses_v0_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 
 
 @pytest.fixture(scope="session")
-def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v1_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v1 delta.
     """
-    schema = Schema(schema=get_voyager_1_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_1_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
@@ -87,11 +87,11 @@ def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 
 
 @pytest.fixture(scope="session")
-def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v2_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v2 delta.
     """
-    schema = Schema(schema=get_voyager_2_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_2_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
@@ -102,12 +102,12 @@ def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
 
 
 @pytest.fixture(scope="session")
-def responses_digital_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_digital_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses digital.
     """
     schema = Schema(
-        schema=get_survey_responses_digital_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"])
+        schema=get_survey_responses_digital_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"])
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
@@ -182,7 +182,6 @@ def regression_test_df_schema(data_regression):
     return _regression_test_df
 
 
-@pytest.fixture(scope="function")
-def mimesis_field():
+def create_mimesis_field():
     """Generate a new field for mimesis data generation, to ensure test data are independently generated"""
     return Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
