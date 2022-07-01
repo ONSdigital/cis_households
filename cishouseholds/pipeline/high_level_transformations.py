@@ -221,6 +221,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         },
         "other_covid_infection_test_results": {
             "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -1410,8 +1411,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes sometimes": "Yes, sometimes",
         },
         "other_antibody_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
         },
         "other_antibody_test_location": {
