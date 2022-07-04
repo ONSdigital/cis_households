@@ -149,7 +149,7 @@ def backup_files(file_list: List[str], backup_directory: str):
         if create_dir(storage_dir):
             print(f"    created dir: {storage_dir}")  # functional
         else:
-            print(f"    failed to create dir: {storage_dir}")  # functional
+            raise FileNotFoundError(f"failed to create dir: {storage_dir}")  # functional
 
     for file_path in file_list:
         new_path = storage_dir + "/" + Path(file_path).name
