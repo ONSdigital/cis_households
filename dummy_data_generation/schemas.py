@@ -2304,7 +2304,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.5, 0.5],
         ),
         "self_isolating": _("choice", items=yes_no_prefer_not_to_say),
-        "self_isolating_reason": _("choice", items=self_isolating_reasons),
+        "self_isolating_reason_detailed": _("choice", items=self_isolating_reasons),
         "think_have_covid": _("choice", items=yes_no_none_choice),  # TODO Check as marked TBC in extract
         "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
         "illness_reduces_activity_or_ability": _(

@@ -38,18 +38,29 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.6.8
+          cache: 'pip'
 
       - uses: actions/setup-java@v1
         with:
           java-version: '8'
 
-      - name: Setup spark
+      - name: Cache spark
+        id: cache-spark
+        uses: actions/cache@v3
+        with:
+          path: ../../spark-2.4.0-bin-hadoop2.6
+          key: ${{ runner.os }}-spark-2.4.0
+
+      - name: Download spark
+        if: steps.cache-spark.outputs.cache-hit != 'true'
         run: |
           cd ../../ &&
           wget -q -O spark.tgz https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-hadoop2.6.tgz &&
           tar xzvf spark.tgz &&
-          rm "spark.tgz" &&
-          (cd spark-2.4.0-bin-hadoop2.6 &&
+          rm "spark.tgz"
+
+      - name: Configure spark
+        run: (cd ../../spark-2.4.0-bin-hadoop2.6 &&
           export SPARK_HOME=`pwd` &&
           export PYTHONPATH=$(ZIPS=("$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "${ZIPS[*]}"):$PYTHONPATH
           )

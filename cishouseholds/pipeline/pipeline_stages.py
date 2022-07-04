@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import reduce
 from io import BytesIO
 from itertools import chain
+from operator import and_
 from pathlib import Path
 from typing import List
 from typing import Union
@@ -15,6 +16,7 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
+from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import read_header
@@ -35,11 +37,13 @@ from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
+from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
+from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -58,6 +62,7 @@ from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
+from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
@@ -107,21 +112,30 @@ def blind_csv_to_table(path: str, table_name: str):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
-    Convert a list of csv files into a HDFS table
+    Convert a list of csv files into HDFS tables. Requires a schema.
     """
     for file in file_operations:
         if file["schema"] not in validation_schemas:
-            raise ValueError(file["schema"] + " schema does not exists")
+            raise ValueError(f"Schema doesn't exist: {file['schema']}")
         schema = validation_schemas[file["schema"]]
-        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
+
+        if file["column_map"] is not None and file["column_map"] not in column_name_maps:
+            raise ValueError(f"Column name map doesn't exist: {file['column_map']}")
+        column_map = column_name_maps.get(file["column_map"])
+
         df = extract_lookup_csv(
             file["path"],
             schema,
             column_map,
             file["drop_not_found"],
         )
-        print("    created table:" + file["table_name"])  # functional
+
+        if file.get("datetime_map") is not None and file["datetime_map"] not in csv_datetime_maps:
+            raise ValueError(f"CSV datetime map doesn't exist: {file['datetime_map']}")
+        if file.get("datetime_map") is not None:
+            df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
         update_table(df, file["table_name"], "overwrite")
+        print("    created table:" + file["table_name"])  # functional
 
 
 @register_pipeline_stage("delete_tables")
@@ -372,20 +386,40 @@ def replace_design_weights(
     weighted_survey_responses_table: str,
     design_weight_columns: List[str],
 ):
+    """
+    Temporary stage to replace design weights by lookup.
+    Also makes temporary edits to fix raw data issues in geographies.
+    """
     design_weight_lookup = extract_from_table(design_weight_lookup_table)
-    survey_responses = extract_from_table(survey_responses_table)
-    survey_responses = survey_responses.drop(*design_weight_columns)
-    survey_responses = survey_responses.join(
+    df = extract_from_table(survey_responses_table)
+    df = df.drop(*design_weight_columns)
+    df = df.join(
         design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
     )
-    update_table(survey_responses, weighted_survey_responses_table, "overwrite")
+
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+
+    update_table(df, weighted_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_dependent_transformations")
 def execute_union_dependent_transformations(unioned_survey_table: str, transformed_table: str):
     """
     Transformations that require the union of the different input survey response files.
-    Includes combining data from different files and filling forwards or backwards over time.
+    Includes filling forwards or backwards over time and deriving new information over time.
+
     Parameters
     ----------
     unioned_survey_table
@@ -393,17 +427,11 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     transformed_table
         output table name for table with applied transformations dependent on complete survey dataset
     """
-    unioned_survey_responses = extract_from_table(unioned_survey_table)
-    unioned_survey_responses = union_dependent_cleaning(unioned_survey_responses)
-    unioned_survey_responses = union_dependent_derivations(unioned_survey_responses)
-    update_table(unioned_survey_responses, transformed_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("fill_forwards_stage")
-def fill_forwards_stage(unioned_survey_table: str, filled_forwards_table: str):
     df = extract_from_table(unioned_survey_table)
     df = fill_forwards_transformations(df)
-    update_table(df, filled_forwards_table, write_mode="overwrite")
+    df = union_dependent_cleaning(df)
+    df = union_dependent_derivations(df)
+    update_table(df, transformed_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -463,16 +491,16 @@ def validate_survey_responses(
 
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite")
+    update_table(valid_survey_responses, valid_survey_responses_table, write_mode="overwrite", archive=True)
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("lookup_based_editing")
 def lookup_based_editing(
     input_table: str,
-    cohort_lookup_path: str,
-    travel_countries_lookup_path: str,
-    tenure_group_path: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
     edited_table: str,
 ):
     """
@@ -488,47 +516,14 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark_session = get_or_create_spark_session()
     df = extract_from_table(input_table)
-
-    cohort_lookup = spark_session.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
-
-    travel_countries_lookup = spark_session.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    df = df.join(
-        F.broadcast(cohort_lookup),
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-    df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
-    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group = tenure_group.withColumnRenamed(key, value)
 
-    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
-
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
 
@@ -569,7 +564,7 @@ def imputation_depdendent_transformations(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
@@ -1405,7 +1400,7 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
         if len(filter.keys()) > 0:
-            df = df.filter(all([F.col(col) == val for col, val in filter.items()]))
+            df = df.filter(reduce(and_, [F.col(col) == val for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
