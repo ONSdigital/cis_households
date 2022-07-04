@@ -623,10 +623,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Employed and currently not working",
                 [
                     "Employed",
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
-                    ],  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -743,7 +740,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                 ],
             ],
-            ["Self-employed", [None, None, None]],
+            ["Self-employed", ["Self-employed", None, None, None]],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
@@ -795,29 +792,17 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and not attending a nursery or pre-school or childminder",
+                    [
+                        "A child below school age and not attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
                 ],
             ],
-            [
-                "Student",
-                [
-                    ["In education", None],
-                    None,
-                    None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
-                ],
-            ],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at school"]],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at home-school"]],
-            [
-                "Student",
-                [
-                    ["In education", None],
-                    None,
-                    None,
-                    "Attending a college or other further education provider including apprenticeships",
-                ],
-            ],
+            ["Student", ["In education", None, None, None]],
         ],
         column_list,
     )
