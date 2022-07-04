@@ -98,7 +98,7 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     df = clean_work_main_job_role(df, "work_main_job_role")
     df = df.withColumn(
         "standard_occupational_classification_code",
-        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodable").otherwise(
+        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
             F.col("standard_occupational_classification_code")
         ),
     )
@@ -108,7 +108,7 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
 
     window = Window.partitionBy("work_main_job_title", "work_main_job_role")
     df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodable"))
+    df = df.filter((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable"))
     return df
 
 
