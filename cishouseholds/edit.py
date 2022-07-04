@@ -828,3 +828,45 @@ def add_work_from_home_identifier(
         regex_pattern=regex_pattern,
         column_name_to_assign=column_name_to_assign,
     )
+
+
+def add_at_school_identifier(
+    df: DataFrame,
+    columns_to_check_in: List[str],
+    regex_pattern: str = "|".join(
+        [
+            "(SCHOOL.+(?<=CHILD|GIRL|BOY|PUPIL|AGE))",
+            "((AT|ATTEND(S|ING)|IN|GOES TO).SCHOOL)",
+            "((PRIMARY|SECONDARY).(SCHOOL).?(?:YEAR)?)",
+            "^(?:MINOR|CHILD)$",
+        ]
+    ),
+    column_name_to_assign: str = "at_school",
+):
+    """
+    Applies the user provided RegEx pattern to detect "At School". If a value in any of the
+    columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
+    value set to (bool) True, False otherwise.
+
+    Parameters:
+    -----------
+    df
+        The input dataframe to process
+    columns_to_check_in
+        a list of columns in which to look for the `regex_pattern`
+    regex_pattern
+        the Spark-compatible regex pattern to check against
+    column_name_to_assign
+        name of the output column which will contain the result of the RegEx pattern search
+
+    See Also:
+    ---------
+    derive.assign_regex_match_result:
+        A generic function to apply a given regex pattern to a list of columns
+    """
+    return assign_regex_match_result(
+        df=df,
+        columns_to_check_in=columns_to_check_in,
+        regex_pattern=regex_pattern,
+        column_name_to_assign=column_name_to_assign,
+    )
