@@ -150,7 +150,7 @@ def check_singular_match(
     return df.drop("TOTAL")
 
 
-def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df=""):
+def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df):
     duplicate_key_rows_df = df.groupBy(*join_column_list).count().filter("count > 1").drop("count")
     if duplicate_key_rows_df.count() > 0:
         raise ValueError(

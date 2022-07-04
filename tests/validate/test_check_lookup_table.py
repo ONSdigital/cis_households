@@ -21,12 +21,11 @@ def test_check_lookup_table_joined_columns_unique_fail(spark_session):
             """,
     )
     with pytest.raises(ValueError) as lookup_exception:
-        check_lookup_table_joined_columns_unique(df=df_input, join_column_list=["key_1", "key_2"])
+        check_lookup_table_joined_columns_unique(
+            df=df_input, join_column_list=["key_1", "key_2"], name_of_df="lookup_df"
+        )
 
-    assert (
-        "The lookup dataframe  used for joining on key_1, key_2 columns have duplicated entries that should be unique. These are the rows:"
-        in str(lookup_exception.value)
-    )
+    assert all(value in str(lookup_exception.value) for value in ["lookup_df", "key_1", "key_2", "duplicate"])
 
 
 def test_check_lookup_table_joined_columns_unique_pass(spark_session):
@@ -46,4 +45,4 @@ def test_check_lookup_table_joined_columns_unique_pass(spark_session):
                col_2 string
             """,
     )
-    check_lookup_table_joined_columns_unique(df=df_input, join_column_list=["key_1", "key_2"])
+    check_lookup_table_joined_columns_unique(df=df_input, join_column_list=["key_1", "key_2"], name_of_df="lookup_df")
