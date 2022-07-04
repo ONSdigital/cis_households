@@ -11,7 +11,7 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.expressions import any_column_matches_regex
+from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
@@ -802,7 +802,7 @@ def add_work_from_home_identifier(
     column_name_to_assign: str = "is_working_from_home",
 ):
     """
-    Applies the user provided RegEx pattern to the list of columns. If a value in any of the
+    Applies the user provided RegEx pattern to detect Working From Home. If a value in any of the
     columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
     value set to (bool) True, False otherwise.
 
@@ -816,7 +816,15 @@ def add_work_from_home_identifier(
         the Spark-compatible regex pattern to check against
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
-    """
-    df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, regex_pattern))
 
-    return df
+    See Also:
+    ---------
+    derive.assign_regex_match_result:
+        A generic function to apply a given regex pattern to a list of columns
+    """
+    return assign_regex_match_result(
+        df=df,
+        columns_to_check_in=columns_to_check_in,
+        regex_pattern=regex_pattern,
+        column_name_to_assign=column_name_to_assign,
+    )

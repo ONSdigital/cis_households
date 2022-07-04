@@ -16,6 +16,7 @@ from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -1769,4 +1770,31 @@ def aggregated_output_window(
     ]
     for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
         df = df.withColumn(column_name_to_assign, apply_function.over(window))
+    return df
+
+
+def assign_regex_match_result(
+    df: DataFrame,
+    columns_to_check_in: List[str],
+    regex_pattern: str,
+    column_name_to_assign: str,
+):
+    """
+    A generic function which applies the user provided RegEx pattern to the list of columns. If a value in any
+    of the columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
+    value set to (bool) True, False otherwise.
+
+    Parameters:
+    -----------
+    df
+        The input dataframe to process
+    columns_to_check_in
+        a list of columns in which to look for the `regex_pattern`
+    regex_pattern
+        the Spark-compatible regex pattern to check against
+    column_name_to_assign
+        name of the output column which will contain the result of the RegEx pattern search
+    """
+    df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, regex_pattern))
+
     return df
