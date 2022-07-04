@@ -41,7 +41,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(F.date_format(col, "HH:mm:ss"))).collect()[0][0] == 1
         col_object = F.when(
-            (F.col(col) >= F.lit(min_date)) & (F.col(col) < F.col(file_date_column)),
+            F.col(col).between(F.lit(min_date), F.col(file_date_column)),
             F.when(
                 (F.date_format(col, "HH:mm:ss") == "00:00:00") & F.lit(check_distinct),
                 F.concat_ws(" ", F.date_format(col, "yyyy-MM-dd"), F.lit(default_timestamp)),
