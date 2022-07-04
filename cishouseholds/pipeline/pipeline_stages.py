@@ -19,6 +19,10 @@ from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.hdfs_utils import copy
+from cishouseholds.hdfs_utils import copy_local_to_hdfs
+from cishouseholds.hdfs_utils import create_dir
+from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
@@ -134,6 +138,29 @@ def csv_to_table(file_operations: list):
             df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
         update_table(df, file["table_name"], "overwrite")
         print("    created table:" + file["table_name"])  # functional
+
+
+@register_pipeline_stage("backup_files")
+def backup_files(file_list: List[str], backup_directory: str):
+    """
+    Backup a list of files on the local or hdfs file system to a hdfs backup directory
+    """
+    storage_dir = backup_directory + "/" + datetime.now().strftime("%Y%m%d_%H%M%S")
+    if not isdir(storage_dir):
+        if create_dir(storage_dir):
+            print(f"    created dir: {storage_dir}")  # functional
+        else:
+            raise FileNotFoundError(f"failed to create dir: {storage_dir}")  # functional
+
+    for file_path in file_list:
+        new_path = storage_dir + "/" + Path(file_path).name
+        function = copy_local_to_hdfs
+        if "hdfs:///" in file_path:
+            function = copy
+        if function(file_path, new_path):
+            print(f"    backed up {Path(file_path).name} to {storage_dir}")  # functional
+        else:
+            print(f"    failed to back up {Path(file_path).name} to {storage_dir}")  # functional
 
 
 @register_pipeline_stage("delete_tables")
