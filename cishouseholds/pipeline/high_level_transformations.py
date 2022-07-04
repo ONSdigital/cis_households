@@ -205,7 +205,18 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         ],
     )
 
+    # Create before editing to v1 version below
+    df = df.withColumn("work_health_care_area", F.col("work_health_care_patient_facing"))
+
     column_editing_map = {
+        "work_health_care_area": {
+            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+        },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
             "Working From Home": "Working from home",
