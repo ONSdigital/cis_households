@@ -79,6 +79,7 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -221,6 +222,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         },
         "other_covid_infection_test_results": {
             "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -440,10 +442,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         {k: dont_know_mapping_dict for k in dont_know_columns},
     )
-
-    if "self_isolating_reason" in df.columns:
-        # Plan to edit the name to self_isolating_reason_detailed in raw data instead of this
-        df = df.withColumn("self_isolating_reason_detailed", F.col("self_isolating_reason"))
 
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -735,18 +733,26 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                 ],
             ],
-            ["Employed", ["Self-employed", None, "Looking for paid work and able to start", None]],
+            ["Employed", ["Employed", None, None, None]],
             [
                 "Self-employed",
                 [
                     "Self-employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             ["Self-employed", [None, None, None]],
-            ["Not working (unemployed, retired, long-term sick etc.)", ["Self-employed", None, None, None]],
+            [
+                "Not working (unemployed, retired, long-term sick etc.)",
+                [
+                    "Self-employed",
+                    "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    None,
+                    None,
+                ],
+            ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
@@ -767,7 +773,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, "Retired", None],
+                [
+                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    None,
+                    ["Retired", "Or retired?"],
+                    None,
+                ],
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
@@ -811,11 +822,11 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "currently_smokes_or_vapes_description",
         {
-            "cigarettes": "smoke_cigarettes",
-            "cigars": "smokes_cigar",
-            "pipe": "smokes_pipe",
-            "vape/E-cigarettes": "smokes_vape_e_cigarettes",
-            "Hookah/shisha pipes": "smokes_hookah_shisha_pipes",
+            "Cigarettes": "smoke_cigarettes",
+            "Cigars": "smokes_cigar",
+            "Pipe": "smokes_pipe",
+            "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
+            "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
         },
         ";",
     )
@@ -927,7 +938,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",  # noqa: E501
             "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",  # noqa: E501
             "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",  # noqa: E501
-            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",  # noqa: E501
+            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
         },
         "last_covid_contact_type": {
             "Someone I live with": "Living in your own home",
@@ -1011,10 +1022,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "survey_completion_status",
         {
-            "In Progress": "Partially Completed",
-            "IN PROGRESS": "Partially Completed",
+            "In progress": "Partially Completed",
             "Submitted": "Completed",
-            "SUBMITTED": "Completed",
         },
     )
     df = derive_had_symptom_last_7days_from_digital(
@@ -1090,6 +1099,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df,
         "work_not_from_home_days_per_week",
         {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
+    if "study_cohort" not in df.columns:
+        df = df.withColumn("study_cohort", F.lit("Original"))
+    df = df.withColumn(
+        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
     return df
 
@@ -1396,8 +1410,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes sometimes": "Yes, sometimes",
         },
         "other_antibody_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
         },
         "other_antibody_test_location": {
@@ -1720,7 +1734,6 @@ def union_dependent_derivations(df):
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
-    df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
@@ -1833,10 +1846,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = df.withColumn(
-        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
-    )
-
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -1877,6 +1886,8 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    # Derive these after fill forwards and other changes to dates
+    df = create_formatted_datetime_string_columns(df)
     return df
 
 
@@ -2018,6 +2029,37 @@ def create_formatted_datetime_string_columns(df):
     return df
 
 
+def transform_from_lookups(
+    df: DataFrame, cohort_lookup: DataFrame, travel_countries_lookup: DataFrame, tenure_group: DataFrame
+):
+    cohort_lookup = cohort_lookup.withColumnRenamed("participant_id", "cohort_participant_id")
+    df = df.join(
+        F.broadcast(cohort_lookup),
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    ).drop("cohort_participant_id")
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    df = df.join(
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
+
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+    return df
+
+
 def fill_forwards_transformations(df):
     df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
@@ -2110,7 +2152,7 @@ def fill_forwards_travel_column(df):
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
-    Most imputations require geographic data being joined onto the participant records.
+    Most imputations require geographic data being joined onto the response records.
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
@@ -2163,7 +2205,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
-        impute_by_k_nearest_neighbours,
+        impute_date_by_k_nearest_neighbours,
         reference_column="date_of_birth",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,

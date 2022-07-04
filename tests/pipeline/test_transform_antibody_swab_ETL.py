@@ -5,6 +5,7 @@ from cishouseholds.pipeline.high_level_merge import merge_blood
 from cishouseholds.pipeline.high_level_merge import merge_swab
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
 @pytest.mark.xfail(reason="Test runs, but expected data need defining")
 def test_transform_antibody_swab_ETL(spark_session):
     # df survey data

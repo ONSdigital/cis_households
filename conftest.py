@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -10,11 +11,13 @@ from pandas import Timestamp
 from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
+from cishouseholds.hdfs_utils import copy_local_to_hdfs
 from cishouseholds.pipeline.input_file_stages import cis_digital_parameters
 from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
 from cishouseholds.pipeline.input_file_stages import survey_responses_v0_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v2_parameters
+from cishouseholds.pyspark_utils import running_in_dev_test
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_survey_responses_digital_data_description
@@ -25,6 +28,7 @@ from dummy_data_generation.schemas import get_voyager_2_data_description
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "integration: mark integration tests (likely to run slowly)")
+    config.addinivalue_line("markers", "regression: mark tests that include regression testing of output")
 
 
 def timestamp_representer(dumper, timestamp):
@@ -53,73 +57,85 @@ def spark_session():
 
 
 @pytest.fixture(scope="session")
-def responses_v0_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v0_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v0 delta.
     """
-    schema = Schema(schema=get_voyager_0_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_0_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
         **survey_responses_v0_parameters, include_hadoop_read_write=False
     )
-    processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def responses_v1_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v1_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v1 delta.
     """
-    schema = Schema(schema=get_voyager_1_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_1_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
         **survey_responses_v1_parameters, include_hadoop_read_write=False
     )
-    processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def responses_v2_survey_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_v2_survey_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses v2 delta.
     """
-    schema = Schema(schema=get_voyager_2_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"]))
+    schema = Schema(schema=get_voyager_2_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"]))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
         **survey_responses_v2_parameters, include_hadoop_read_write=False
     )
-    processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def responses_digital_ETL_output(mimesis_field, pandas_df_to_temporary_csv):
+def responses_digital_ETL_output(pandas_df_to_temporary_csv):
     """
     Generate dummy survey responses digital.
     """
     schema = Schema(
-        schema=get_survey_responses_digital_data_description(mimesis_field, ["ONS00000000"], ["ONS00000000"])
+        schema=get_survey_responses_digital_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"])
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(**cis_digital_parameters, include_hadoop_read_write=False)
-    processed_df = processing_function(resource_path=csv_file_path.as_posix())
+    processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def pandas_df_to_temporary_csv(tmpdir_factory):
+def pandas_df_to_temporary_csv(tmpdir_factory, spark_session):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
     def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
+        in_dev_test = running_in_dev_test()
         temporary_csv_path = Path(tmpdir_factory.mktemp("data") / filename)
         pandas_df.to_csv(temporary_csv_path, sep=sep, header=True, index=False, na_rep="")
-        return temporary_csv_path
+        _temporary_csv_path = str(temporary_csv_path.as_posix()).lstrip("/")
+        if in_dev_test:
+            # copy the csv file from local dir to hdfs when running in DevTest env
+            # using spark's temp dir to ensure unique tmp location for each run
+            hdfs_filepath = os.path.join(
+                spark_session.sparkContext._temp_dir,
+                _temporary_csv_path,
+            )
+            copy_local_to_hdfs(temporary_csv_path, hdfs_filepath)
+            return f"hdfs://{hdfs_filepath}"
+        else:
+            return f"file:///{_temporary_csv_path}"
 
     return _pandas_df_to_temporary_csv
 
@@ -166,7 +182,6 @@ def regression_test_df_schema(data_regression):
     return _regression_test_df
 
 
-@pytest.fixture(scope="session")
-def mimesis_field():
+def create_mimesis_field():
     """Generate a new field for mimesis data generation, to ensure test data are independently generated"""
     return Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
