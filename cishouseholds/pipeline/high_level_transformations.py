@@ -106,10 +106,9 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    window = Window.partitionBy("work_main_job_title", "work_main_job_title")
-    df = df.filter(
-        (F.count("*").over(window) > 1) & (F.col("standard_occupational_classification_code") == "uncodable")
-    )
+    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
+    df = df.withColumn("COUNT", F.count("*").over(window))
+    df = df.filter((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodable"))
     return df
 
 

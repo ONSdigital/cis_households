@@ -54,7 +54,7 @@ def create_dir(path):
     Returns:
         bool: Returns True for successfully completed operation. Else False.
     """
-    command = ["hadoop", "fs", "-mkdir", path]
+    command = ["hadoop", "fs", "-mkdir", "-p", path]
     return _perform(command)
 
 

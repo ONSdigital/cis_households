@@ -2,12 +2,15 @@
 Generate fake data for households survey raw input data.
 """
 # mypy: ignore-errors
+from genericpath import isdir
 from io import StringIO
+from pathlib import Path
 
 import pandas as pd
 from mimesis.schema import Field
 from mimesis.schema import Schema
 
+from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from dummy_data_generation.helpers import code_mask
@@ -31,6 +34,9 @@ _ = Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
 def write_output(pd_df: pd.DataFrame, filepath: str, sep: str = ","):
     output = StringIO()
     pd_df.to_csv(output, index=False, sep=sep)
+    parent = Path(filepath).parent.as_posix()
+    if not isdir(parent):
+        create_dir(parent)
     write_string_to_file(output.getvalue().encode(), filepath)
     print("created dummy data in path: ", filepath)  # functional
     output.close()
