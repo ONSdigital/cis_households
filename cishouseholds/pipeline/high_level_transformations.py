@@ -1734,7 +1734,6 @@ def union_dependent_derivations(df):
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
-    df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
@@ -1887,6 +1886,8 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    # Derive these after fill forwards and other changes to dates
+    df = create_formatted_datetime_string_columns(df)
     return df
 
 
