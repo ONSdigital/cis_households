@@ -35,6 +35,9 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     """
     coalesce_columns = []
     source_columns = []
+    for col, type in df.select(*ordered_columns).dtypes:
+        if type != "timestamp":
+            df = df.withColumn(col, F.to_timestamp(col, format=f"{date_format} {time_format}"))
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(F.date_format(col, "HH:mm:ss"))).collect()[0][0] == 1
         col_object = F.when(
