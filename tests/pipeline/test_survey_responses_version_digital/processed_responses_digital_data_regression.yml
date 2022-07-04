@@ -1907,7 +1907,7 @@
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-09 10:19:02.000000'
-  survey_completion_status: In progress
+  survey_completion_status: Partially Completed
   survey_last_modified_datetime: '2022-01-03 09:40:01.000000'
   survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
@@ -2731,7 +2731,7 @@
   street: Harford
   study_cohort: Original
   survey_completed_datetime: '2022-01-03 23:19:23.000000'
-  survey_completion_status: In progress
+  survey_completion_status: Partially Completed
   survey_last_modified_datetime: '2022-01-06 23:28:31.000000'
   survey_not_completed_reason_code: null
   survey_response_dataset_major_version: 3
