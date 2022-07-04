@@ -378,7 +378,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             # "blood_return_future_date",
         ],
         date_format="yyyy-MM-dd",
-        time_format="HH:mm:ss",
+        time_format="HH:mm:ss.S",
         file_date_column="file_date",
         min_date="2022/05/01",
         default_timestamp="12:00:00",
