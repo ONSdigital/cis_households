@@ -154,6 +154,6 @@ def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df=""
     duplicate_key_rows_df = df.groupBy(*join_column_list).count().filter("count > 1").drop("count")
     if duplicate_key_rows_df.count() > 0:
         raise ValueError(
-            f"""The lookup dataframe {name_of_df} used for joining on {', '.join(join_column_list)} columns have duplicated entries that should be unique. These are the rows: \n
-            {duplicate_key_rows_df.show()}"""  # noqa: E501
+            f"The lookup dataframe {name_of_df} has entried with duplicate join keys ({', '.join(join_column_list)})."
+            f"Duplicate rows: \n{duplicate_key_rows_df.toPandas()}"
         )

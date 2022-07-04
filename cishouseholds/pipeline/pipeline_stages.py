@@ -550,6 +550,8 @@ def imputation_depdendent_transformations(
         )
         .drop("rural_urban_classification_11")
     )  # Prefer version from sample
+
+    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
     df = df.join(
         F.broadcast(rural_urban_lookup_df),
         how="left",
