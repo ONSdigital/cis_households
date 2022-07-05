@@ -20,7 +20,10 @@ class InvalidFileError(Exception):
 
 
 def normalise_schema(file_path: str, reference_validation_schema: dict, regex_schema: dict):
-    """ """
+    """
+    Use a series of regex patterns mapped to correct column names to build an individual schema
+    for a given csv input file that has varied headings across a group of similar files.
+    """
     spark_session = get_or_create_spark_session()
 
     file = spark_session.sparkContext.textFile(file_path)
