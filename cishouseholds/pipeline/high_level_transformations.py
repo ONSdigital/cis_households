@@ -1862,17 +1862,7 @@ def union_dependent_derivations(df):
         ],
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
-    df = update_to_value_if_any_not_null(
-        df,
-        "cis_covid_vaccine_received",
-        "Yes",
-        [
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-        ],
-    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
