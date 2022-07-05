@@ -87,9 +87,49 @@ def test_fill_forward_from_last_change(spark_session):
         df=input_df,
         fill_forward_columns=["var_1", "var_2", "var_3"],
         participant_id_column="id",
-        visit_date_column="date",
+        visit_datetime_column="date",
         record_changed_column="changed",
         record_changed_value="Yes",
+    )
+    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
+
+
+def test_fill_forward_from_last_change_dataset(spark_session):
+    input_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+            # TODO: incorporate survey_response_type, not fill forward None
+            ## understand how change column is derived
+                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-12",   None,      None,      None,      None),
+
+                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
+                (2, 1, "2020-11-12",   None,      None,      None,      None),
+            # fmt: on
+        ],
+        schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
+    )
+
+    expected_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-12",   None,      None,      None,      None),
+                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
+                (2, 1, "2020-11-12",   None,       1,      1,      1),
+            # fmt: on
+        ],
+        schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
+    )
+    actual_df = fill_forward_from_last_change(
+        df=input_df,
+        fill_forward_columns=["var_1", "var_2", "var_3"],
+        participant_id_column="id",
+        visit_datetime_column="date",
+        record_changed_column="changed",
+        record_changed_value="Yes",
+        dateset_version_column="dataset",
+        minimum_dateset_version=1,
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
