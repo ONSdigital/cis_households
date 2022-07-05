@@ -195,7 +195,7 @@ projections_column_map = {
 soc_schema = {
     "work_main_job_title": string_dict,
     "work_main_job_role": string_dict,
-    "standard_occupational_classification_code": integer_dict,
+    "standard_occupational_classification_code": string_dict,
 }
 validation_schemas = {
     "cohort_schema": {"participant_id": string_dict, "old_cohort": string_dict, "new_cohort": string_dict},

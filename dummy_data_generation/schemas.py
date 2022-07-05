@@ -15,10 +15,11 @@ def get_cis_soc_data_description(_):
     option = int(_("custom_random.random_integer", lower=1, upper=2, null_percent=0))
     if option > 1:
         return lambda: {
-            "work_main_job_title": _("text.quote"),
-            "work_main_job_role": _("choice", items=[_("text.quote"), None]),
+            "work_main_job_title": _("text.sentence"),
+            "work_main_job_role": _("choice", items=[_("text.sentence"), None]),
             "standard_occupational_classification_code": _(
-                "custom_random.random_integer", lower=1000, upper=9999, null_percent=0
+                "choice",
+                items=[_("custom_random.random_integer", lower=1000, upper=9999, null_percent=15), "un", "uncodeable"],
             ),
         }
     else:

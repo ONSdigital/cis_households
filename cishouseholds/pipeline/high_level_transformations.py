@@ -109,7 +109,7 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
 
     window = Window.partitionBy("work_main_job_title", "work_main_job_role")
     df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable"))
+    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
     return df
 
 

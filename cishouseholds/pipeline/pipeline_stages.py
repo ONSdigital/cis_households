@@ -354,7 +354,12 @@ def generate_input_processing_function(
 
 
 @register_pipeline_stage("process_soc_data")
-def process_soc_data(soc_file_pattern: str, survey_responses_table: str, soc_coded_survey_responses_table: str):
+def process_soc_data(
+    soc_file_pattern: str,
+    survey_responses_table: str,
+    soc_coded_survey_responses_table: str,
+    unioned_soc_lookup_table: str,
+):
     """
     Process soc data and combine result with survey responses data
     """
@@ -369,6 +374,7 @@ def process_soc_data(soc_file_pattern: str, survey_responses_table: str, soc_cod
     soc_df = transform_cis_soc_data(soc_df)
     survey_responses_df = extract_from_table(survey_responses_table)
     survey_responses_df = survey_responses_df.join(soc_df, on=["work_main_job_title", "work_main_job_role"], how="left")
+    update_table(soc_df, unioned_soc_lookup_table, "overwrite")
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
 
 
