@@ -1776,25 +1776,55 @@ def aggregated_output_window(
 def assign_regex_match_result(
     df: DataFrame,
     columns_to_check_in: List[str],
-    regex_pattern: str,
     column_name_to_assign: str,
+    positive_regex_pattern: str,
+    negative_regex_pattern: Optional[str] = None,
 ):
     """
-    A generic function which applies the user provided RegEx pattern to the list of columns. If a value in any
-    of the columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
-    value set to (bool) True, False otherwise.
+    A generic function which applies the user provided RegEx patterns to a list of columns. If a value in any
+    of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
+    then `column_name_to_assign` column will have the corresponding value set to (bool) True, False otherwise.
+
+    The Truth Table below shows how the final pattern matching result is stored in `column_name_to_assign`
+
+    +----------------------+----------------------+-----+
+    |positive_regex_pattern|negative_regex_pattern|final|
+    +----------------------+----------------------+-----+
+    |                  true|                  true|false|
+    |                  true|                 false| true|
+    |                 false|                  true|false|
+    |                 false|                 false|false|
+    +----------------------+----------------------+-----+
 
     Parameters:
     -----------
     df
         The input dataframe to process
     columns_to_check_in
-        a list of columns in which to look for the `regex_pattern`
-    regex_pattern
-        the Spark-compatible regex pattern to check against
+        a list of columns in which to look for the `positive_regex_pattern`
+    positive_regex_pattern
+        the Spark-compatible regex pattern match against
+    negative_regex_pattern
+        (optional) the Spark-compatible regex pattern to NOT match against
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
     """
-    df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, regex_pattern))
+    if negative_regex_pattern is None:
+        df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, positive_regex_pattern))
+    else:
+        df = (
+            df.withColumn(
+                f"{column_name_to_assign}_positive",
+                any_column_matches_regex(columns_to_check_in, positive_regex_pattern),
+            )
+            .withColumn(
+                f"{column_name_to_assign}_negative",
+                any_column_matches_regex(columns_to_check_in, negative_regex_pattern),
+            )
+            .withColumn(
+                column_name_to_assign,
+                F.col(f"{column_name_to_assign}_positive") & ~F.col(f"{column_name_to_assign}_negative"),
+            )
+        )
 
     return df
