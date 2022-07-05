@@ -1779,6 +1779,7 @@ def assign_regex_match_result(
     column_name_to_assign: str,
     positive_regex_pattern: str,
     negative_regex_pattern: Optional[str] = None,
+    debug_mode: bool = False,
 ):
     """
     A generic function which applies the user provided RegEx patterns to a list of columns. If a value in any
@@ -1805,9 +1806,14 @@ def assign_regex_match_result(
     positive_regex_pattern
         the Spark-compatible regex pattern match against
     negative_regex_pattern
-        (optional) the Spark-compatible regex pattern to NOT match against
+        (optional) the Spark-compatible regex pattern to NOT match against. If given, then two additional columns of the
+        form: f"{column_name_to_assign}_positive" & f"{column_name_to_assign}_negative" are created which track the
+        matches against the positive and negative regex patterns. Setting `debug_mode` to True will retain these columns
+        otherwise they are dropped.
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
+    debug_mode:
+        See `negative_regex_pattern` above.
     """
     if negative_regex_pattern is None:
         df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, positive_regex_pattern))
@@ -1826,5 +1832,8 @@ def assign_regex_match_result(
                 F.col(f"{column_name_to_assign}_positive") & ~F.col(f"{column_name_to_assign}_negative"),
             )
         )
+
+        if not debug_mode:
+            df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
 
     return df
