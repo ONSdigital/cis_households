@@ -10,7 +10,6 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import DataFrame
 
-from cishouseholds.mapping import soc_regex_map
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -35,7 +34,7 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
     if actual_header != list(reference_validation_schema.keys()):
         for actual_col in actual_header:
             validation_schema[actual_col] = {"type": "string"}
-            for regex, normalised_column in soc_regex_map.items():
+            for regex, normalised_column in regex_schema.items():
                 if re.search(rf"{regex}", actual_col):
                     validation_schema[actual_col] = reference_validation_schema[normalised_column]
                     column_name_map[actual_col] = normalised_column
