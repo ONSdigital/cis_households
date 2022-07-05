@@ -22,32 +22,39 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def assign_datetime_from_coalesced_columns_and_log_source(
     df: DataFrame,
     column_name_to_assign: str,
-    ordered_columns: List[str],
+    primary_datetime_columns: List[str],
+    secondary_date_columns: List[str],
     file_date_column: str,
     min_date: str,
     source_reference_column_name: str,
     default_timestamp: str,
 ):
+
     """
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
     """
-    coalesce_columns = []
-    source_columns = []
-    for col in ordered_columns:
-        check_distinct = df.agg(F.countDistinct(F.date_format(col, "HH:mm:ss"))).collect()[0][0] == 1
-        col_object = F.when(
-            F.col(col).between(F.lit(min_date), F.col(file_date_column)),
-            F.when(
-                (F.date_format(col, "HH:mm:ss") == "00:00:00") & F.lit(check_distinct),
-                F.concat_ws(" ", F.date_format(col, "yyyy-MM-dd"), F.lit(default_timestamp)),
-            ).otherwise(F.col(col)),
-        ).otherwise(None)
-        coalesce_columns.append(col_object)
-        source_columns.append(F.when(col_object.isNull(), None).otherwise(col))
-    df = df.withColumn(
-        column_name_to_assign, F.to_timestamp(F.coalesce(*coalesce_columns), format="yyyy-MM-dd HH:mm:ss")
-    )
+    coalesce_columns = [
+        F.col(datetime_column) for datetime_column in [*primary_datetime_columns, *secondary_date_columns]
+    ]
+    coalesce_columns = [F.when(col.between(F.lit(min_date), F.col(file_date_column)), col) for col in coalesce_columns]
+
+    column_names = primary_datetime_columns + secondary_date_columns
+    source_columns = [
+        F.when(column_object.isNotNull(), column_name)
+        for column_object, column_name in zip(coalesce_columns, column_names)
+    ]
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(
+            F.when(
+                F.col(source_reference_column_name).isin(secondary_date_columns),
+                F.concat_ws(" ", F.date_format(F.coalesce(*coalesce_columns), "yyyy-MM-dd"), F.lit(default_timestamp)),
+            ).otherwise(F.coalesce(*coalesce_columns)),
+            format="yyyy-MM-dd HH:mm:ss",
+        ),
+    )
+    return df
 
 
 def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filename_column: str):

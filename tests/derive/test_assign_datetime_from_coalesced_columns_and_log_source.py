@@ -9,8 +9,8 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         data=[
             (
                 "2020-04-18 00:00:00.0",
-                "2020-04-18 11:59:59.0",
-                "2020-07-20 05:30:00.0",
+                "2010-04-18 11:59:59.0",
+                "2010-07-20 05:30:00.0",
                 "2020-04-18 12:00:00.0",
                 "2022-04-18 12:00:00.0",
                 "date_1",
@@ -27,17 +27,17 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-18 00:00:00.0",
                 "2020-04-18 11:59:59.0",
                 "2020-04-18 00:00:00.0",
-                "2020-04-18 12:00:00.0",
+                "2020-04-18 11:59:59.0",
                 "2022-04-18 12:00:00.0",
-                "date_1",
+                "date_2",
             ),  # chosen date has no time component so should be set to mid day
             (
                 "2020-04-18 00:00:00.0",
                 "2020-04-18 11:59:59.0",
                 None,
-                "2020-04-18 12:00:00.0",
+                "2020-04-18 11:59:59.0",
                 "2022-04-18 12:00:00.0",
-                "date_1",
+                "date_2",
             ),  # null date in priority 3 should have no effect on result
             (
                 None,  # null here ensures check for absence of timestamp ignores nulls
@@ -71,8 +71,8 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         data=[
             (
                 "18-04-2020 00:00:00.0",
-                "18-04-2020 11:59:59.0",
-                "20-07-2020 05:30:00.0",
+                "18-04-2010 11:59:59.0",
+                "20-07-2010 05:30:00.0",
                 "18-04-2020 12:00:00.0",
                 "18-04-2020 12:00:00.0",
                 "date_1",
@@ -89,17 +89,17 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "18-04-2020 00:00:00.0",
                 "18-04-2020 11:59:59.0",
                 "18-04-2020 00:00:00.0",
+                "18-04-2020 11:59:59.0",
                 "18-04-2020 12:00:00.0",
-                "18-04-2020 12:00:00.0",
-                "date_1",
+                "date_2",
             ),  # chosen date has no time component so should be set to mid day
             (
                 "18-04-2020 00:00:00.0",
                 "18-04-2020 11:59:59.0",
                 None,
+                "18-04-2020 11:59:59.0",
                 "18-04-2020 12:00:00.0",
-                "18-04-2020 12:00:00.0",
-                "date_1",
+                "date_2",
             ),  # null date in priority 3 should have no effect on result
             (
                 None,  # null here ensures check for absence of timestamp ignores nulls
@@ -138,18 +138,20 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         expected_df.drop("result", "source"),
         column_name_to_assign="result_date",
         source_reference_column_name="source",
-        ordered_columns=["date_1", "date_2", "date_3"],
+        primary_datetime_columns=["date_2", "date_3"],
         file_date_column="file_date",
-        min_date="2000/05/01",
+        secondary_date_columns=["date_1"],
+        min_date="2011-05-01",
         default_timestamp="12:00:00",
     )
     output_df2 = assign_datetime_from_coalesced_columns_and_log_source(
         expected_df2.drop("result", "source"),
         column_name_to_assign="result_date",
         source_reference_column_name="source",
-        ordered_columns=["date_1", "date_2", "date_3"],
+        primary_datetime_columns=["date_2", "date_3"],
         file_date_column="file_date",
-        min_date="2000/05/01",
+        secondary_date_columns=["date_1"],
+        min_date="2011-05-01",
         default_timestamp="12:00:00",
     )
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
