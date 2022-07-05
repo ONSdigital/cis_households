@@ -105,6 +105,8 @@ def get_files_by_date(
     file_df = file_df.dropna(subset=["upload_date"])
     file_df = file_df.sort_values(["upload_date", "upload_time"])
 
+    print(file_df)
+
     if start_date is not None:
         if isinstance(start_date, str):
             start_date = datetime.strptime(start_date, "%Y-%m-%d")
@@ -115,6 +117,7 @@ def get_files_by_date(
         file_df = file_df[file_df["upload_date"].dt.date <= end_date]
 
     file_list = file_df["file_path"].tolist()
+    print("FILE LIST INNER: ",file_list)
     return file_list
 
 
