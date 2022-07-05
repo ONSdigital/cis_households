@@ -41,18 +41,17 @@ def test_precal_and_design_weights_checkpoints_fail(spark_session):
             country_column="country",
             rounding_value=18,
         )
-
-        assert all(
-            [
-                x in weightexception.value
-                for x in [
-                    "Antibody design weights do not sum to country population totals",
-                    "Swab design weights do not sum to cis area population totals.",
-                    "records have negative design weights.",
-                    "records with null swab or antibody design weights.",
-                ]
+    assert all(
+        [
+            x in str(weightexception.value)
+            for x in [
+                "Antibody design weights do not sum to country population totals",
+                "Swab design weights do not sum to cis area population totals.",
+                "records have negative design weights.",
+                "records with null swab or antibody design weights.",
             ]
-        )
+        ]
+    )
 
 
 def test_precal_and_design_weights_checkpoints_pass(spark_session):

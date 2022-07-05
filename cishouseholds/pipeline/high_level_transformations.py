@@ -228,7 +228,18 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         ],
     )
 
+    # Create before editing to v1 version below
+    df = df.withColumn("work_health_care_area", F.col("work_health_care_patient_facing"))
+
     column_editing_map = {
+        "work_health_care_area": {
+            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+        },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
             "Working From Home": "Working from home",
@@ -1757,7 +1768,6 @@ def union_dependent_derivations(df):
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
-    df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
@@ -1910,6 +1920,8 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    # Derive these after fill forwards and other changes to dates
+    df = create_formatted_datetime_string_columns(df)
     return df
 
 
