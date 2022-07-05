@@ -117,7 +117,7 @@ def get_files_by_date(
         file_df = file_df[file_df["upload_date"].dt.date <= end_date]
 
     file_list = file_df["file_path"].tolist()
-    print("FILE LIST INNER: ",file_list)
+    print("FILE LIST INNER: ", file_list)
     return file_list
 
 
