@@ -67,8 +67,11 @@ def list_contents(
     for line in ls.stdout:  # type: ignore
         dic = {}
         f = line.decode("utf-8")
+        attributes = f.split()
+
+        attributes = [*attributes[:7], " ".join(attributes[7:])]
         if "Found" not in f:
-            for i, component in enumerate(f.split()):
+            for i, component in enumerate(attributes):
                 dic[names[i]] = component
             dic["filename"] = dic["file_path"].split("/")[-1]
         files.append(dic)
