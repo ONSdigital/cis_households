@@ -447,24 +447,10 @@ def validate_design_weights(
         error_string += "\n- Swab design weights do not sum to cis area population totals."
     if negative_design_weights > 0:
         error_string += f"\n- {negative_design_weights} records have negative design weights."
-        check_negative_design_weights = True
-    else:
-        check_negative_design_weights = False
-
     if null_design_weights > 0:
         error_string += f"\n- There are {null_design_weights} records with null swab or antibody design weights."
-        check_null_design_weights = True
-    else:
-        check_null_design_weights = False
-
     if error_string:
         raise DesignWeightError(error_string + "\n")
-    return (
-        antibody_design_weights_sum_to_population,
-        swab_design_weights_sum_to_population,
-        check_negative_design_weights,
-        check_null_design_weights,
-    )
 
 
 def chose_scenario_of_design_weight_for_antibody_different_household(

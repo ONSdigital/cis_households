@@ -96,3 +96,17 @@ def get_or_create_spark_session() -> SparkSession:
 def column_to_list(df: DataFrame, column_name: str):
     """Fast collection of all records in a column to a standard list."""
     return [row[column_name] for row in df.collect()]
+
+
+def running_in_dev_test() -> bool:
+    """Convenience function to check if the code is executing in DevTest environment.
+
+    We test whether the code is executing in DevTest or not by inspecting the SPARK_HOME
+    environment variable - which is usuaully set to
+    `/opt/cloudera/parcels/CDH-6.3.x-x.cdh6.x.x.p0.xxxxxxxx/lib/spark`
+    """
+    expected_prefix_in_devtest_spark_home = "/opt/cloudera/parcels/CDH"
+
+    spark_home = os.getenv("SPARK_HOME", "")
+
+    return spark_home.startswith(expected_prefix_in_devtest_spark_home)

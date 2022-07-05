@@ -4,6 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.pipeline.merge_process_combination import merge_process_filtering
 
 
+@pytest.mark.skip(reason="Lab data and merge currently out of scope")
 @pytest.mark.xfail(reason="MERGE OPTIMISATION WIP")
 def test_merge_process_filtering(spark_session):
     schema = """

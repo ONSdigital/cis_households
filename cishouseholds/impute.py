@@ -151,14 +151,17 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
 ) -> DataFrame:
     """
     This function will carry forward values windowed by an id ordered by date.
-    ONLY will fill into NULLs not filling forward to not nulls regardless of whether
-    there is a change=Yes or dataset=2 values. It will NOT fill forward Null values.
+    Fills the set of columns in list_fill_forward indepentently, filling non-null values forwards into the row when
+    all list_fill_forward values in that row are null.
+
+    Only fills into Null values on or after specified dataset version and when changed condition is met.
+    Though this may include filling the last value from the previous dataset version.
     """
     window = Window.partitionBy(id).orderBy(date)
 
     df = df.withColumn(
         "FLAG_fill_forward",
-        (F.col(dataset) == dataset_value) & ((F.col(changed) != changed_positive_value) | F.col(changed).isNull()),
+        (F.col(dataset) >= dataset_value) & ((F.col(changed) != changed_positive_value) | F.col(changed).isNull()),
     )
 
     for fill_forward_column in list_fill_forward:
