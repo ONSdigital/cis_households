@@ -380,7 +380,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         df,
         column_name_to_assign="visit_datetime",
         source_reference_column_name="visit_date_type",
-        ordered_columns=[
+        primary_datetime_columns=[
             "swab_taken_datetime",
             "blood_taken_datetime",
             "survey_completed_datetime",
@@ -390,8 +390,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             # "swab_return_future_date",
             # "blood_return_future_date",
         ],
-        date_format="yyyy-MM-dd",
-        time_format="HH:mm:ss",
+        secondary_date_columns=[],
         file_date_column="file_date",
         min_date="2022/05/01",
         default_timestamp="12:00:00",
