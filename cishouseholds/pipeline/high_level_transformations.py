@@ -1861,17 +1861,7 @@ def union_dependent_derivations(df):
         ],
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
-    df = update_to_value_if_any_not_null(
-        df,
-        "cis_covid_vaccine_received",
-        "Yes",
-        [
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-        ],
-    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -1882,7 +1872,7 @@ def union_dependent_derivations(df):
             "cis_covid_vaccine_received",
         ],
         participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
+        visit_datetime_column="visit_datetime",
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
@@ -2061,14 +2051,9 @@ def transform_from_lookups(
 
 
 def fill_forwards_transformations(df):
-    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
+    df = fill_forward_from_last_change(
         df=df,
-        id="participant_id",
-        date="visit_datetime",
-        changed="work_main_job_changed",
-        dataset="survey_response_dataset_major_version",
-        dataset_value=2,
-        list_fill_forward=[
+        fill_forward_columns=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
@@ -2079,6 +2064,12 @@ def fill_forwards_transformations(df):
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
+        dateset_version_column="survey_response_dataset_major_version",
+        minimum_dateset_version=2,
     )
 
     # TODO: uncomment for releases after R1
@@ -2142,7 +2133,7 @@ def fill_forwards_travel_column(df):
             "been_outside_uk",
         ],
         participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
+        visit_datetime_column="visit_datetime",
         record_changed_column="been_outside_uk",
         record_changed_value="Yes",
     )
