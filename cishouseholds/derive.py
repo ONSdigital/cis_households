@@ -23,11 +23,9 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     df: DataFrame,
     column_name_to_assign: str,
     ordered_columns: List[str],
-    date_format: str,
     file_date_column: str,
     min_date: str,
     source_reference_column_name: str,
-    time_format: str,
     default_timestamp: str,
 ):
     """
@@ -35,9 +33,6 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     """
     coalesce_columns = []
     source_columns = []
-    for col, type in df.select(*ordered_columns).dtypes:
-        if type != "timestamp":
-            df = df.withColumn(col, F.to_timestamp(col, format=f"{date_format} {time_format}"))
     for col in ordered_columns:
         check_distinct = df.agg(F.countDistinct(F.date_format(col, "HH:mm:ss"))).collect()[0][0] == 1
         col_object = F.when(

@@ -351,33 +351,6 @@
   think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
   think_have_long_covid_symptom_more_trouble_sleeping: null
   think_have_long_covid_symptom_muscle_ache: 'Yes'
-<<<<<<< HEAD
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing: 'Yes'
-  think_have_long_covid_symptom_palpitations: 'Yes'
-  think_have_long_covid_symptom_reduced_ability: Yes a little
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: null
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
-  times_hour_or_longer_another_home_last_7_days: null
-  times_hour_or_longer_another_home_last_7_days_raw: null
-  times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: '4'
-  times_outside_shopping_or_socialising_last_7_days: 4.0
-  times_shopping_last_7_days: null
-  times_shopping_last_7_days_raw: null
-  times_socialising_last_7_days: '4'
-  times_socialising_last_7_days_raw: '4'
-  title: Mrs.
-  transport_to_work_or_education: null
-  unique_participant_response_id: 0014-DHR-910115823345
-  visit_date_type: null
-  visit_datetime: null
-  visit_id: '0014'
-  voucher_type_preference: email_address
-  which_symptoms_last_7_days: think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_memory_loss_or_confusion
-=======
   think_have_long_covid_symptom_nausea_or_vomiting: 'No'
   think_have_long_covid_symptom_noisy_breathing: 'No'
   think_have_long_covid_symptom_palpitations: 'No'
@@ -403,7 +376,6 @@
   visit_id: '0563'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations
->>>>>>> origin/main
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -515,21 +487,12 @@
   county: Suffolk
   currently_smokes_or_vapes: 'Yes'
   currently_smokes_or_vapes_description: Pipe
-<<<<<<< HEAD
-  currently_smokes_or_vapes_raw: 'No'
-  date_of_birth: '1990-06-14 00:00:00.000000'
-  days_since_think_had_covid: null
-  days_since_think_had_covid_group: null
-  digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: '2020-11-28 17:29:26.000000'
-=======
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2014-11-24 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   digital_communication_preference: Letter
   digital_entry_pack_sent_datetime: '2022-05-22 13:20:25.000000'
->>>>>>> origin/main
   digital_entry_pack_status: Ports are used to communicate with the external world.
   digital_survey_collection_mode: Online
   digital_survey_mode_preference: Online
@@ -812,17 +775,17 @@
   times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
-  times_outside_shopping_or_socialising_last_7_days: 6.0
-  times_shopping_last_7_days: '1'
-  times_shopping_last_7_days_raw: '1'
-  times_socialising_last_7_days: '5'
-  times_socialising_last_7_days_raw: '5'
-  title: Mrs.
-  transport_to_work_or_education: Taxi/minicab
-  unique_participant_response_id: 0176-DHR-904837937029
+  times_outside_shopping_or_socialising_last_7_days: 3
+  times_shopping_last_7_days: '3'
+  times_shopping_last_7_days_raw: '3'
+  times_socialising_last_7_days: null
+  times_socialising_last_7_days_raw: null
+  title: Ms.
+  transport_to_work_or_education: Bicycle
+  unique_participant_response_id: 1652-DHR-032373782005
   visit_date_type: null
   visit_datetime: null
-  visit_id: '0176'
+  visit_id: '1652'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
@@ -932,12 +895,12 @@
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: 'No'
-  county: Borders
-  currently_smokes_or_vapes: null
-  currently_smokes_or_vapes_description: Cigarettes
-  currently_smokes_or_vapes_raw: Prefer not to say
-  date_of_birth: '2015-03-13 00:00:00.000000'
+  contact_suspected_positive_covid_last_28_days: null
+  county: Avon
+  currently_smokes_or_vapes: 'No'
+  currently_smokes_or_vapes_description: Hookah or shisha pipes
+  currently_smokes_or_vapes_raw: 'No'
+  date_of_birth: '2003-04-05 00:00:00.000000'
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: Email
@@ -1221,27 +1184,28 @@
   think_have_long_covid_symptom_shortness_of_breath: 'No'
   think_have_long_covid_symptom_sore_throat: 'No'
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
-  times_hour_or_longer_another_home_last_7_days: '6'
-  times_hour_or_longer_another_home_last_7_days_raw: '6'
-  times_hour_or_longer_another_person_your_home_last_7_days: null
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: null
-  times_shopping_last_7_days_raw: null
-  times_socialising_last_7_days: null
-  times_socialising_last_7_days_raw: null
-  title: Miss.
-  transport_to_work_or_education: Bus, minibus, coach
-  unique_participant_response_id: 2645-DHR-265113936833
+  times_hour_or_longer_another_home_last_7_days: null
+  times_hour_or_longer_another_home_last_7_days_raw: null
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
+  times_outside_shopping_or_socialising_last_7_days: 5
+  times_shopping_last_7_days: '5'
+  times_shopping_last_7_days_raw: '5'
+  times_socialising_last_7_days: '0'
+  times_socialising_last_7_days_raw: None
+  title: Mr.
+  transport_to_work_or_education: Car or van
+  unique_participant_response_id: 2206-DHR-077145284257
   visit_date_type: null
   visit_datetime: null
-  visit_id: '2645'
-  voucher_type_preference: email_address
-  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_difficulty_concentrating
-  work_direct_contact_patients_or_clients: 'Yes'
-  work_direct_contact_patients_or_clients_raw: 'Yes'
-  work_health_care_area: Yes, in primary care, e.g. GP, dentist
-  work_health_care_area_raw: Primary care - for example in a GP or dentist
+  visit_id: '2206'
+  voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
+  work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_raw: Prefer not to say
+  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Another type of healthcare - for example mental health
+    services
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
   work_location: null
@@ -1633,23 +1597,23 @@
   think_have_long_covid_symptom_reduced_ability: Yes a little
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
-  times_hour_or_longer_another_home_last_7_days: '1'
-  times_hour_or_longer_another_home_last_7_days_raw: '1'
-  times_hour_or_longer_another_person_your_home_last_7_days: null
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: 4.0
-  times_shopping_last_7_days: '4'
-  times_shopping_last_7_days_raw: '4'
-  times_socialising_last_7_days: '0'
-  times_socialising_last_7_days_raw: None
-  title: Miss.
-  transport_to_work_or_education: Car or van
-  unique_participant_response_id: 4384-DHR-251477511783
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  times_hour_or_longer_another_home_last_7_days: '5'
+  times_hour_or_longer_another_home_last_7_days_raw: '5'
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '3'
+  times_shopping_last_7_days_raw: '3'
+  times_socialising_last_7_days: '5'
+  times_socialising_last_7_days_raw: '5'
+  title: Ms.
+  transport_to_work_or_education: null
+  unique_participant_response_id: 2738-DHR-747928544728
   visit_date_type: null
   visit_datetime: null
-  visit_id: '4384'
+  visit_id: '2738'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
@@ -2055,17 +2019,17 @@
   times_hour_or_longer_another_home_last_7_days_raw: '1'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
-  times_outside_shopping_or_socialising_last_7_days: 0.0
-  times_shopping_last_7_days: null
-  times_shopping_last_7_days_raw: null
-  times_socialising_last_7_days: '0'
-  times_socialising_last_7_days_raw: None
-  title: Mrs.
-  transport_to_work_or_education: Other method
-  unique_participant_response_id: 4705-DHR-873192621176
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '6'
+  times_shopping_last_7_days_raw: '6'
+  times_socialising_last_7_days: '5'
+  times_socialising_last_7_days_raw: '5'
+  title: Ms.
+  transport_to_work_or_education: On foot
+  unique_participant_response_id: 3586-DHR-016525808631
   visit_date_type: null
   visit_datetime: null
-  visit_id: '4705'
+  visit_id: '3586'
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_sore_throat;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
@@ -2464,44 +2428,43 @@
   times_hour_or_longer_another_home_last_7_days_raw: '4'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: 5.0
-  times_shopping_last_7_days: '4'
-  times_shopping_last_7_days_raw: '4'
-  times_socialising_last_7_days: '1'
-  times_socialising_last_7_days_raw: '1'
-  title: Mr.
-  transport_to_work_or_education: Bicycle
-  unique_participant_response_id: 5122-DHR-896449967341
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '7'
+  times_shopping_last_7_days_raw: 7 times or more
+  times_socialising_last_7_days: '4'
+  times_socialising_last_7_days_raw: '4'
+  title: Prof.
+  transport_to_work_or_education: Underound or Metro or Light Rail or Tram
+  unique_participant_response_id: 3892-DHR-880739888271
   visit_date_type: null
   visit_datetime: null
-  visit_id: '5122'
-  voucher_type_preference: null
-  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_fatigue;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_chest_pain;think_have_covid_symptom_low_mood;think_have_covid_symptom_difficulty_concentrating
-  work_direct_contact_patients_or_clients: 'No'
-  work_direct_contact_patients_or_clients_raw: 'No'
-  work_health_care_area: Yes, in primary care, e.g. GP, dentist
-  work_health_care_area_raw: Primary care - for example in a GP or dentist
-  work_in_additional_paid_employment: 'Yes'
-  work_in_additional_paid_employment_raw: 'Yes'
-  work_location: Both from home and somewhere else
-  work_location_raw: Both from home and somewhere else
-  work_main_job_changed: 'Yes'
-  work_main_job_role: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
-  work_main_job_role_raw: The sequential subset of Erlang supports eager evaluation,
-    single assignment, and dynamic typing.
-  work_main_job_title: He looked inquisitively at his keyboard and wrote another sentence.
-  work_main_job_title_raw: He looked inquisitively at his keyboard and wrote another
-    sentence.
-  work_not_from_home_days_per_week: '3'
-  work_not_from_home_days_per_week_raw: '3'
-  work_nursing_or_residential_care_home: 'No'
-  work_nursing_or_residential_care_home_raw: 'No'
-  work_sector: Food production, agriculture, farming
-  work_sector_other: Type classes first appeared in the Haskell programming language.
-  work_sector_raw: Food production and agriculture. This includes farming
-  work_status_digital: In education
-  work_status_education: A child aged 4 or over at home-school
+  visit_id: '3892'
+  voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_difficulty_concentrating
+  work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
+  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_raw: Secondary care - for example in a hospital
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
+  work_location: Working from home
+  work_location_raw: From home meaning in the same grounds or building as your home
+  work_main_job_changed: 'No'
+  work_main_job_role: Atoms are used within a program to denote distinguished values.
+  work_main_job_role_raw: Atoms are used within a program to denote distinguished
+    values.
+  work_main_job_title: Make me a sandwich.
+  work_main_job_title_raw: Make me a sandwich.
+  work_not_from_home_days_per_week: '7'
+  work_not_from_home_days_per_week_raw: '6'
+  work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_raw: Prefer not to say
+  work_sector: Armed forces
+  work_sector_other: Ports are created with the built-in function open_port.
+  work_sector_raw: Armed forces
+  work_status_digital: Not in paid work. This includes being unemployed or doing voluntary
+    work
+  work_status_education: A child aged 4 or over at school
   work_status_employment: Currently not working. This includes if you are on sick
     or other leave such as maternity or paternity for longer than 4 weeksCurrently
     working. This includes if you are on sick or other leave for less than 4 weeks
@@ -2875,28 +2838,29 @@
   think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
   think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
-  times_hour_or_longer_another_home_last_7_days: '5'
-  times_hour_or_longer_another_home_last_7_days_raw: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: '5'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
-  times_shopping_last_7_days: '6'
-  times_shopping_last_7_days_raw: '6'
-  times_socialising_last_7_days: '7'
-  times_socialising_last_7_days_raw: 7 times or more
-  title: Prof.
-  transport_to_work_or_education: null
-  unique_participant_response_id: 5823-DHR-649389366563
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  times_hour_or_longer_another_home_last_7_days: '4'
+  times_hour_or_longer_another_home_last_7_days_raw: '4'
+  times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '4'
+  times_shopping_last_7_days_raw: '4'
+  times_socialising_last_7_days: '5'
+  times_socialising_last_7_days_raw: '5'
+  title: null
+  transport_to_work_or_education: Underound or Metro or Light Rail or Tram
+  unique_participant_response_id: 6249-DHR-883187696082
   visit_date_type: null
   visit_datetime: null
-  visit_id: '5823'
-  voucher_type_preference: email_address
-  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_fatigue;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion
-  work_direct_contact_patients_or_clients: null
-  work_direct_contact_patients_or_clients_raw: Prefer not to say
-  work_health_care_area: null
-  work_health_care_area_raw: null
+  visit_id: '6249'
+  voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_loss_of_appetite
+  work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_raw: 'Yes'
+  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Another type of healthcare - for example mental health
+    services
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Both from home and somewhere else
@@ -3289,24 +3253,24 @@
   think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
   think_have_long_covid_symptom_shortness_of_breath: null
   think_have_long_covid_symptom_sore_throat: null
-  think_have_long_covid_symptom_vertigo_or_dizziness: null
-  times_hour_or_longer_another_home_last_7_days: '5'
-  times_hour_or_longer_another_home_last_7_days_raw: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days: '3'
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: '3'
-  times_outside_shopping_or_socialising_last_7_days: 5.0
-  times_shopping_last_7_days: '5'
-  times_shopping_last_7_days_raw: '5'
-  times_socialising_last_7_days: null
-  times_socialising_last_7_days_raw: null
-  title: Dr.
-  transport_to_work_or_education: On foot
-  unique_participant_response_id: 7553-DHR-560763609637
+  think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
+  times_hour_or_longer_another_home_last_7_days: '7'
+  times_hour_or_longer_another_home_last_7_days_raw: 7 times or more
+  times_hour_or_longer_another_person_your_home_last_7_days: '2'
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
+  times_outside_shopping_or_socialising_last_7_days: 7
+  times_shopping_last_7_days: '6'
+  times_shopping_last_7_days_raw: '6'
+  times_socialising_last_7_days: '3'
+  times_socialising_last_7_days_raw: '3'
+  title: Prof.
+  transport_to_work_or_education: Taxi/minicab
+  unique_participant_response_id: 7045-DHR-758587422675
   visit_date_type: null
   visit_datetime: null
-  visit_id: '7553'
-  voucher_type_preference: null
-  which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_sore_throat;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion
+  visit_id: '7045'
+  voucher_type_preference: Paper
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
@@ -3706,21 +3670,21 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'Yes'
   times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_home_last_7_days_raw: null
-  times_hour_or_longer_another_person_your_home_last_7_days: '1'
-  times_hour_or_longer_another_person_your_home_last_7_days_raw: '1'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
-  times_shopping_last_7_days: '2'
-  times_shopping_last_7_days_raw: '2'
-  times_socialising_last_7_days: '6'
-  times_socialising_last_7_days_raw: '6'
-  title: Ms.
-  transport_to_work_or_education: null
-  unique_participant_response_id: 8726-DHR-537278018134
+  times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days_raw: null
+  times_outside_shopping_or_socialising_last_7_days: 6
+  times_shopping_last_7_days: '4'
+  times_shopping_last_7_days_raw: '4'
+  times_socialising_last_7_days: '2'
+  times_socialising_last_7_days_raw: '2'
+  title: Mrs.
+  transport_to_work_or_education: Bus, minibus, coach
+  unique_participant_response_id: 9557-DHR-989981424039
   visit_date_type: null
   visit_datetime: null
-  visit_id: '8726'
-  voucher_type_preference: null
-  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness
+  visit_id: '9557'
+  voucher_type_preference: email_address
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_sore_throat;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_low_mood
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
@@ -3831,23 +3795,25 @@
   contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: null
   county: null
-  currently_smokes_or_vapes: 'No'
-  currently_smokes_or_vapes_description: Cigarettes
-  currently_smokes_or_vapes_raw: 'No'
-  date_of_birth: '1996-08-04 00:00:00.000000'
+  currently_smokes_or_vapes: 'Yes'
+  currently_smokes_or_vapes_description: Pipe
+  currently_smokes_or_vapes_raw: 'Yes'
+  date_of_birth: '1994-05-03 00:00:00.000000'
   days_since_think_had_covid: null
-  days_since_think_had_covid_group: Date not given
-  digital_communication_preference: Letter
-  digital_entry_pack_sent_datetime: '2021-10-20 19:14:49.000000'
-  digital_entry_pack_status: Ports are used to communicate with the external world.
-  digital_survey_collection_mode: null
-  digital_survey_mode_preference: null
-  education_in_person_days_per_week: '4'
-  email_address: null
-  ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Any other Asian background
-  ethnicity_other: She spent her earliest years reading classic literature, and writing
-    poetry.
+  days_since_think_had_covid_group: null
+  digital_communication_preference: Email
+  digital_entry_pack_sent_datetime: '2020-10-21 05:34:46.000000'
+  digital_entry_pack_status: Atoms can contain any character if they are enclosed
+    within single quotes and an escape convention exists which allows any character
+    to be used within an atom.
+  digital_survey_collection_mode: Telephone
+  digital_survey_mode_preference: Telephone
+  education_in_person_days_per_week: null
+  email_address: fortes2058@gsnail.ac.uk
+  ethnic_group: Other Ethnic Group
+  ethnicity: Chinese
+  ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
+    been restored.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
@@ -4130,14 +4096,14 @@
   times_shopping_last_7_days_raw: None
   times_socialising_last_7_days: '5'
   times_socialising_last_7_days_raw: '5'
-  title: null
-  transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  unique_participant_response_id: 8964-DHR-094893452129
+  title: Ms.
+  transport_to_work_or_education: Train
+  unique_participant_response_id: 9598-DHR-639422525832
   visit_date_type: null
   visit_datetime: null
-  visit_id: '8964'
-  voucher_type_preference: Paper
-  which_symptoms_last_7_days: think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_loss_of_taste;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_difficulty_concentrating
+  visit_id: '9598'
+  voucher_type_preference: null
+  which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_fatigue;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
