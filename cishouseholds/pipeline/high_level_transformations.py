@@ -205,7 +205,18 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         ],
     )
 
+    # Create before editing to v1 version below
+    df = df.withColumn("work_health_care_area", F.col("work_health_care_patient_facing"))
+
     column_editing_map = {
+        "work_health_care_area": {
+            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+        },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
             "Working From Home": "Working from home",
@@ -623,10 +634,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Employed and currently not working",
                 [
                     "Employed",
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
-                    ],  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -634,7 +642,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    "self-employed"
+                    "Self-employed"
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
@@ -643,8 +651,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently not working",
                 [
-                    "self-employed"
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    "Self-employed"
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
                     None,
                     None,
                 ],
@@ -728,7 +736,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -743,7 +751,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                 ],
             ],
-            ["Self-employed", [None, None, None]],
+            ["Self-employed", ["Self-employed", None, None, None]],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
@@ -756,7 +764,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Looking for paid work and able to start",
                     None,
@@ -765,7 +773,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
@@ -774,7 +782,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     ["Retired", "Or retired?"],
                     None,
@@ -782,15 +790,11 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, None, None],
-            ],
-            [
-                "Student",
                 [
-                    ["In education", None],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     None,
-                    "A child below school age and not attending a nursery or pre-school or childminder",
+                    None,
                 ],
             ],
             [
@@ -799,20 +803,17 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    [
+                        "A child below school age and not attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
                 ],
             ],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at school"]],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at home-school"]],
-            [
-                "Student",
-                [
-                    ["In education", None],
-                    None,
-                    None,
-                    "Attending a college or other further education provider including apprenticeships",
-                ],
-            ],
+            ["Student", ["In education", None, None, None]],
         ],
         column_list,
     )
