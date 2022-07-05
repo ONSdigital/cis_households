@@ -168,7 +168,7 @@ def test_fill_forward_only_to_nulls_in_dataset_based_on_column(spark_session):
                 (1,     '2020-01-05',      'b1',   'b2',   'b3',    'Yes',      2),
                 (1,     '2020-01-06',      'b1',   'b2',   'b3',    None,       2),
                 (1,     '2020-01-07',      None,   'c2',   None,    'Yes',      2),
-                (1,     '2020-01-08',      None,   'c2',   None,    None,       3),
+                (1,     '2020-01-08',      'b1',   'c2',   'b3',    None,       3),
             # fmt: on
         ],
         schema=schema,
