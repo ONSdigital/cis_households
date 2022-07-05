@@ -194,7 +194,7 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
             F.coalesce(
                 F.when(
                     F.col("FLAG_fill_forward") & F.col(fill_forward_column).isNull(),
-                    F.last(fill_forward_column, ignorenulls=False).over(window),
+                    F.last(fill_forward_column, ignorenulls=True).over(window),
                 ),
                 F.col(fill_forward_column),
             ),
