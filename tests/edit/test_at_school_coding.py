@@ -1,5 +1,6 @@
 import pytest
 import yaml
+from at_school_testcases import test_data
 from chispa import assert_df_equality
 
 from cishouseholds.edit import add_at_school_identifier
@@ -7,9 +8,6 @@ from cishouseholds.edit import add_at_school_identifier
 
 @pytest.fixture
 def at_school_test_cases():
-    with open("tests/edit/test_attending_school_coding/attending_school_testcases.yml", "r") as fh:
-        test_data = yaml.safe_load(fh)
-
     test_data_melted = [
         (test_case, pos_or_neg == "positive")
         for pos_or_neg, test_cases in test_data.items()

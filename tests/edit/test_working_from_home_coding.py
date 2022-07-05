@@ -1,15 +1,13 @@
 import pytest
 import yaml
 from chispa import assert_df_equality
+from working_from_home_testcases import test_data
 
 from cishouseholds.edit import add_work_from_home_identifier
 
 
 @pytest.fixture
 def wfh_cases():
-    with open("tests/edit/test_working_from_home_coding/working-from-home-testcases.yml", "r") as fh:
-        test_data = yaml.safe_load(fh)
-
     test_data_melted = [
         (test_case, pos_or_neg == "positive")
         for pos_or_neg, test_cases in test_data.items()
@@ -25,4 +23,10 @@ def test_add_work_from_home_identifier(wfh_cases, spark_session):
         df=expected_df.drop("is_working_from_home"),
         columns_to_check_in=["test_case"],
     )
-    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+    assert_df_equality(
+        actual_df,
+        expected_df,
+        ignore_row_order=True,
+        ignore_column_order=True,
+        ignore_nullable=True,
+    )
