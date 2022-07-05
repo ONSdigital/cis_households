@@ -825,6 +825,7 @@ def add_work_from_home_identifier(
         name of the output column which will contain the result of the RegEx pattern search
     debug_mode:
         See `negative_regex_pattern` above.
+
     See Also:
     ---------
     derive.assign_regex_match_result:
@@ -854,13 +855,13 @@ def add_at_school_identifier(
     ),
     negative_regex_pattern: Optional[str] = "|".join(
         [
-            "(?:TEACH(ER|ING)?",
+            "TEACH(ER|ING)?",
             "MINDER",
             "ASSISTANT",
             "MANAGER",
             "CATERING",
             "MASTER",
-            "MISTRESS)",  # note the closing `)` in the last word
+            "MISTRESS",
         ]
     ),
     debug_mode: bool = False,
@@ -887,6 +888,7 @@ def add_at_school_identifier(
         name of the output column which will contain the result of the RegEx pattern search
     debug_mode:
         See `negative_regex_pattern` above.
+
     See Also:
     ---------
     derive.assign_regex_match_result:
