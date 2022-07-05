@@ -69,6 +69,7 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.design_weights import generate_weights
 from cishouseholds.weights.design_weights import household_level_populations
@@ -524,12 +525,21 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
+
     df = extract_from_table(input_table)
     cohort_lookup = extract_from_table(cohort_lookup_table)
     travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
     tenure_group = extract_from_table(tenure_group_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
+    for lookup_table_name, lookup_df, join_on_column_list in zip(
+        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        [cohort_lookup, travel_countries_lookup, tenure_group],
+        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
+    ):
+        check_lookup_table_joined_columns_unique(
+            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
+        )
 
     df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
@@ -567,6 +577,8 @@ def imputation_depdendent_transformations(
         )
         .drop("rural_urban_classification_11")
     )  # Prefer version from sample
+
+    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
     df = df.join(
         F.broadcast(rural_urban_lookup_df),
         how="left",
