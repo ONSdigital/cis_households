@@ -852,7 +852,17 @@ def add_at_school_identifier(
             "^(?:MINOR|CHILD)$",
         ]
     ),
-    negative_regex_pattern: Optional[str] = None,
+    negative_regex_pattern: Optional[str] = "|".join(
+        [
+            "(?:TEACH(ER|ING)?",
+            "MINDER",
+            "ASSISTANT",
+            "MANAGER",
+            "CATERING",
+            "MASTER",
+            "MISTRESS)",  # note the closing `)` in the last word
+        ]
+    ),
     debug_mode: bool = False,
 ):
     """
