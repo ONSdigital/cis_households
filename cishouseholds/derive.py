@@ -48,7 +48,6 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         column_name_to_assign, F.to_timestamp(F.coalesce(*coalesce_columns), format="yyyy-MM-dd HH:mm:ss")
     )
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
-    return df
 
 
 def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filename_column: str):
