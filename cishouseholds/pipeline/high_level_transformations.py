@@ -756,7 +756,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Self-employed",
-                    "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
                     None,
                     None,
                 ],
