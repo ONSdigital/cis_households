@@ -46,9 +46,10 @@ def generate_cis_soc_data(directory, file_date, records):
     """
     Generate dummy cis soc data.
     """
-    schema = Schema(schema=get_cis_soc_data_description(_))
-    cis_soc_data = pd.DataFrame(schema.create(iterations=records))
-    write_output(cis_soc_data, directory / f"cis_soc_data_file_{file_date}.csv")
+    for i in range(0, 3):
+        schema = Schema(schema=get_cis_soc_data_description(_))
+        cis_soc_data = pd.DataFrame(schema.create(iterations=records))
+        write_output(cis_soc_data, directory / f"cis_soc_data_file_{i}_{file_date}.csv")
     return cis_soc_data
 
 

@@ -19,10 +19,12 @@ from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.extract import normalise_schema
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
 from cishouseholds.mapping import column_name_maps
+from cishouseholds.mapping import soc_regex_map
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -356,7 +358,14 @@ def process_soc_data(soc_file_pattern: str, survey_responses_table: str, soc_cod
     """
     Process soc data and combine result with survey responses data
     """
-    soc_df = extract_input_data(soc_file_pattern, soc_schema, ",")
+    dfs = []
+    for file_path in get_files_to_be_processed(soc_file_pattern):
+        validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
+        df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
+        for actual_column, normalised_column in column_name_map.items():
+            df = df.withColumnRenamed(actual_column, normalised_column)
+        dfs.append(df)
+    soc_df = union_multiple_tables(dfs)
     soc_df = transform_cis_soc_data(soc_df)
     survey_responses_df = extract_from_table(survey_responses_table)
     survey_responses_df = survey_responses_df.join(soc_df, on=["work_main_job_title", "work_main_job_role"], how="left")
