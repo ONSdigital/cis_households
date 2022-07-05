@@ -798,25 +798,33 @@ def edit_to_sum_or_max_value(
 def add_work_from_home_identifier(
     df: DataFrame,
     columns_to_check_in: List[str],
-    regex_pattern: str = "(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
     column_name_to_assign: str = "is_working_from_home",
+    positive_regex_pattern: str = "(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
+    negative_regex_pattern: Optional[str] = None,
+    debug_mode: bool = False,
 ):
     """
-    Applies the user provided RegEx pattern to detect Working From Home. If a value in any of the
-    columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
-    value set to (bool) True, False otherwise.
+    Applies the user provided RegEx pattern to detect Working From Home. If a value in any
+    of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
+    then `column_name_to_assign` column will have the corresponding value set to (bool) True, False otherwise.
 
     Parameters:
     -----------
     df
         The input dataframe to process
     columns_to_check_in
-        a list of columns in which to look for the `regex_pattern`
-    regex_pattern
-        the Spark-compatible regex pattern to check against
+        a list of columns in which to look for the `positive_regex_pattern`
+    positive_regex_pattern
+        the Spark-compatible regex pattern match against
+    negative_regex_pattern
+        (optional) the Spark-compatible regex pattern to NOT match against. If given, then two additional columns of the
+        form: f"{column_name_to_assign}_positive" & f"{column_name_to_assign}_negative" are created which track the
+        matches against the positive and negative regex patterns. Setting `debug_mode` to True will retain these columns
+        otherwise they are dropped.
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
-
+    debug_mode:
+        See `negative_regex_pattern` above.
     See Also:
     ---------
     derive.assign_regex_match_result:
@@ -825,15 +833,18 @@ def add_work_from_home_identifier(
     return assign_regex_match_result(
         df=df,
         columns_to_check_in=columns_to_check_in,
-        regex_pattern=regex_pattern,
         column_name_to_assign=column_name_to_assign,
+        positive_regex_pattern=positive_regex_pattern,
+        negative_regex_pattern=negative_regex_pattern,
+        debug_mode=debug_mode,
     )
 
 
 def add_at_school_identifier(
     df: DataFrame,
     columns_to_check_in: List[str],
-    regex_pattern: str = "|".join(
+    column_name_to_assign: str = "at_school",
+    positive_regex_pattern: str = "|".join(
         [
             "(SCHOOL.+(?<=CHILD|GIRL|BOY|PUPIL|AGE))",
             "((AT|ATTEND(S|ING)|IN|GOES TO).SCHOOL)",
@@ -841,24 +852,31 @@ def add_at_school_identifier(
             "^(?:MINOR|CHILD)$",
         ]
     ),
-    column_name_to_assign: str = "at_school",
+    negative_regex_pattern: Optional[str] = None,
+    debug_mode: bool = False,
 ):
     """
-    Applies the user provided RegEx pattern to detect "At School". If a value in any of the
-    columns matches the RegEx pattern then `column_name_to_assign` column will have the corresponding
-    value set to (bool) True, False otherwise.
+    Applies the user provided RegEx pattern to detect "At School". If a value in any
+    of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
+    then `column_name_to_assign` column will have the corresponding value set to (bool) True, False otherwise.
 
     Parameters:
     -----------
     df
         The input dataframe to process
     columns_to_check_in
-        a list of columns in which to look for the `regex_pattern`
-    regex_pattern
-        the Spark-compatible regex pattern to check against
+        a list of columns in which to look for the `positive_regex_pattern`
+    positive_regex_pattern
+        the Spark-compatible regex pattern match against
+    negative_regex_pattern
+        (optional) the Spark-compatible regex pattern to NOT match against. If given, then two additional columns of the
+        form: f"{column_name_to_assign}_positive" & f"{column_name_to_assign}_negative" are created which track the
+        matches against the positive and negative regex patterns. Setting `debug_mode` to True will retain these columns
+        otherwise they are dropped.
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
-
+    debug_mode:
+        See `negative_regex_pattern` above.
     See Also:
     ---------
     derive.assign_regex_match_result:
@@ -867,6 +885,8 @@ def add_at_school_identifier(
     return assign_regex_match_result(
         df=df,
         columns_to_check_in=columns_to_check_in,
-        regex_pattern=regex_pattern,
         column_name_to_assign=column_name_to_assign,
+        positive_regex_pattern=positive_regex_pattern,
+        negative_regex_pattern=negative_regex_pattern,
+        debug_mode=debug_mode,
     )
