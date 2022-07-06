@@ -18,6 +18,7 @@ from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.extract import get_files_all
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -384,6 +385,7 @@ def generate_input_processing_function(
 @register_pipeline_stage("process_soc_data")
 def process_soc_data(
     soc_file_pattern: str,
+    inconsistances_resolution_table: str,
     survey_responses_table: str,
     soc_coded_survey_responses_table: str,
     unioned_soc_lookup_table: str,
@@ -392,12 +394,31 @@ def process_soc_data(
     Process soc data and combine result with survey responses data
     """
     dfs = []
-    file_list = get_files_to_be_processed(soc_file_pattern, use_file_date=False)
+    inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
+        "Gold SOC2010 code", "resolved_soc_code"
+    )
+    file_list = get_files_all(soc_file_pattern)
     for file_path in file_list:
         validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
         df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
         for actual_column, normalised_column in column_name_map.items():
             df = df.withColumnRenamed(actual_column, normalised_column)
+        df = df.join(
+            inconsistances_resolution_df,
+            on=(
+                (df.work_main_job_title == inconsistances_resolution_df.job_title)
+                & (df.work_main_job_role == inconsistances_resolution_df.work_main_job_role)
+            ),
+            how="left",
+        )
+        df = (
+            df.withColumn(
+                "standard_occupational_classification_code",
+                F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+            )
+            .drop("resolved_soc_code")
+            .distinct()
+        )
         dfs.append(df)
     soc_df = union_multiple_tables(dfs)
     soc_df = transform_cis_soc_data(soc_df)

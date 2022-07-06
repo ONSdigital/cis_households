@@ -50,11 +50,15 @@ def list_contents(
     return df
 
 
+def get_files_all(path):
+    "Get all files in hdfs path"
+    return list_contents(path, date_from_filename=False).to_list("filename")
+
+
 def get_files_by_date(
     path: str,
     start_date: Optional[Union[str, datetime]] = None,
     end_date: Optional[Union[str, datetime]] = None,
-    use_file_date=False,
 ) -> List:
     """
     Get a list of hdfs file paths for a given set of date critera and parent path on hdfs.
@@ -70,7 +74,7 @@ def get_files_by_date(
     end_date
         date to select files before
     """
-    file_df = list_contents(path, date_from_filename=use_file_date)
+    file_df = list_contents(path)
     file_df = file_df.dropna(subset=["upload_date"])
     file_df = file_df.sort_values(["upload_date", "upload_time"])
 
@@ -115,7 +119,6 @@ def get_files_to_be_processed(
     end_date=None,
     include_processed=False,
     include_invalid=False,
-    use_file_date=True,
 ):
     """
     Get list of files matching the specified pattern and optionally filter
@@ -123,7 +126,7 @@ def get_files_to_be_processed(
     """
     from cishouseholds.pipeline.load import check_table_exists
 
-    file_paths = get_files_by_date(resource_path, start_date, end_date, use_file_date)
+    file_paths = get_files_by_date(resource_path, start_date, end_date)
 
     if check_table_exists("error_file_log") and not include_invalid:
         file_paths = remove_list_items_in_table(file_paths, "error_file_log", "file_path")

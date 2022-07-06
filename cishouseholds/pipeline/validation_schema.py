@@ -199,6 +199,11 @@ soc_schema = {
 }
 validation_schemas = {
     "cohort_schema": {"participant_id": string_dict, "old_cohort": string_dict, "new_cohort": string_dict},
+    "soc_resolution_schema": {
+        "job_title": string_dict,
+        "main_job_responsibilities": string_dict,
+        "Gold SOC2010 code": string_dict,
+    },
     "travel_schema": {"been_outside_uk_last_country_old": string_dict, "been_outside_uk_last_country_new": string_dict},
     "tenure_schema": {
         "UAC": string_dict,
