@@ -1,8 +1,5 @@
-import csv
-import re
 import subprocess
 from datetime import datetime
-from io import StringIO
 from typing import List
 from typing import Optional
 from typing import Union
@@ -12,39 +9,10 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 class InvalidFileError(Exception):
     pass
-
-
-def normalise_schema(file_path: str, reference_validation_schema: dict, regex_schema: dict):
-    """
-    Use a series of regex patterns mapped to correct column names to build an individual schema
-    for a given csv input file that has varied headings across a group of similar files.
-    """
-    spark_session = get_or_create_spark_session()
-
-    file = spark_session.sparkContext.textFile(file_path)
-    actual_header = file.first()
-    buffer = StringIO(actual_header)
-    reader = csv.reader(buffer, delimiter=",")
-    actual_header = next(reader)
-    validation_schema = {}
-    column_name_map = {}
-    dont_drop_list = []
-    if actual_header != list(reference_validation_schema.keys()):
-        for actual_col in actual_header:
-            validation_schema[actual_col] = {"type": "string"}
-            for regex, normalised_column in regex_schema.items():
-                if re.search(rf"{regex}", actual_col):
-                    validation_schema[actual_col] = reference_validation_schema[normalised_column]
-                    column_name_map[actual_col] = normalised_column
-                    dont_drop_list.append(actual_col)
-                    break
-        return validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
-    return reference_validation_schema, {}, []
 
 
 def list_contents(

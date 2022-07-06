@@ -1,4 +1,5 @@
 import csv
+import re
 from io import StringIO
 from operator import add
 from typing import List
@@ -34,6 +35,34 @@ def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     number_of_columns = count_fields_in_row(delimiter, header)
     error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
     return True if error_count == 0 else False
+
+
+def normalise_schema(file_path: str, reference_validation_schema: dict, regex_schema: dict):
+    """
+    Use a series of regex patterns mapped to correct column names to build an individual schema
+    for a given csv input file that has varied headings across a group of similar files.
+    """
+    spark_session = get_or_create_spark_session()
+
+    file = spark_session.sparkContext.textFile(file_path)
+    actual_header = file.first()
+    buffer = StringIO(actual_header)
+    reader = csv.reader(buffer, delimiter=",")
+    actual_header = next(reader)
+    validation_schema = {}
+    column_name_map = {}
+    dont_drop_list = []
+    if actual_header != list(reference_validation_schema.keys()):
+        for actual_col in actual_header:
+            validation_schema[actual_col] = {"type": "string"}
+            for regex, normalised_column in regex_schema.items():
+                if re.search(rf"{regex}", actual_col):
+                    validation_schema[actual_col] = reference_validation_schema[normalised_column]
+                    column_name_map[actual_col] = normalised_column
+                    dont_drop_list.append(actual_col)
+                    break
+        return validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
+    return reference_validation_schema, {}, []
 
 
 def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: str = ","):

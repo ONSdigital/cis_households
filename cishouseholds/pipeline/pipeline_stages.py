@@ -19,7 +19,6 @@ from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
-from cishouseholds.extract import normalise_schema
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
 from cishouseholds.hdfs_utils import create_dir
@@ -74,6 +73,7 @@ from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
+from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.design_weights import generate_weights
 from cishouseholds.weights.design_weights import household_level_populations
