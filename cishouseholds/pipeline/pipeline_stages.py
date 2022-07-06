@@ -408,7 +408,7 @@ def replace_design_weights(
 
     df = df.withColumn(
         "local_authority_unity_authority_code",
-        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
         .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
         .otherwise(F.col("local_authority_unity_authority_code")),
     )
