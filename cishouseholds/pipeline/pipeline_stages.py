@@ -392,13 +392,10 @@ def process_soc_data(
     Process soc data and combine result with survey responses data
     """
     dfs = []
-    file_list = get_files_to_be_processed(soc_file_pattern,include_processed=True,include_invalid=True)
-    print("FILE LIST: ",file_list)
+    file_list = get_files_to_be_processed(soc_file_pattern, use_file_date=False)
     for file_path in file_list:
         validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
-        print("VALIDATION SCHEMA: ",validation_schema)
         df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
-        df.show()
         for actual_column, normalised_column in column_name_map.items():
             df = df.withColumnRenamed(actual_column, normalised_column)
         dfs.append(df)
