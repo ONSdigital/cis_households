@@ -1838,3 +1838,104 @@ def assign_regex_match_result(
             df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
 
     return df
+
+
+def patient_facing_flag_generator(
+    df,
+    job_main_resp1,
+    healthcare_bin,
+    patient_facing_orig,
+    work_direct_contact_patients_etc,
+):
+    """ """
+    flag_physiotherapist = F.col(job_main_resp1).rlike(
+        r"PH[YI]+SIO|PH[YSIH]+IO\\s*THERAPIST|PH[YI]S[IY]CAL\\s*REHAB|PH[YI]S[IY]CAL\\s*THERAPY"
+    ) & ~F.col(job_main_resp1).rlike("PHYSIOLOG|PHYSIOSIST")
+
+    # Pharmacy
+    flag_pharmacist = F.col(job_main_resp1).rlike("PHARMA(?![CS][EU]*TIC)")
+    flag_nhc_pharmacist = flag_pharmacist & ~F.col(job_main_resp1).rlike(
+        "ANALYST|CARE HOME|ELECTRICAL|COMPAN(Y|IES)|INDUSTR|DIRECTOR|RESEARCH|WAREHOUSE|LAB|PROJECT|PRODUCTION|PROCESS|LAB|QA|QUALITY"
+    )
+    flag_hc_pharmacist = flag_pharmacist & F.col(job_main_resp1).rlike(
+        "AS+IST|TECHN|RETAIL|DISPEN[SC]|SALES AS+IST|HOSPITAL|PRIMARY CARE|SERVE CUSTOM"
+    )
+
+    flag_dentist = F.col(job_main_resp1).rlike(r"DENTIS.*|\\bDENTAL")
+    flag_midwife = F.col(job_main_resp1).rlike(r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR")
+    flag_nurse = F.col(job_main_resp1).rlike(r"N[IU]RS[EY]|MATRON|\\bHCA\\b") & ~F.col(job_main_resp1).rlike(
+        r"N[UI][RS]S[EA]R*[YIEU]+|(CARE|NURSING) *HOME|SCHOOL|TEACHER"
+    )
+    flag_paramedic = F.col(job_main_resp1).rlike(r"PARA *MEDIC|AMBUL[AE]NCE") & ~F.col(job_main_resp1).rlike("LECTUR")
+
+    flag_doctor = F.col(job_main_resp1).rlike(
+        r"DOCT[EO]R|\\bGP\\b|GENERAL PRACTI[CIAN|TION]|\\bDR\\b|CARDIAC|\\A ?(&|AND) ?E\\|PHYSI[CT]I[AO]"
+    ) & ~F.col(job_main_resp1).rlike(r"LECTURER|DOCTORI*AL|RESEARCH|PHD|STAT|WAR|ANIMAL|SALES*|FINANCE")
+    flag_dietician = (
+        F.col(job_main_resp1).rlike(r"\bD[EIA]{0,2}[TC][EI]?[CT]+[AEIOU]*[NC(RY)]|\bDIET(RIST)?\b")
+        & ~F.col(job_main_resp1).rlike(r"DETECTION"),
+    )
+    flag_hc_support = (
+        flag_support
+        & F.col(job_main_resp1).rlike(
+            r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]"
+        )
+        & ~F.col(job_main_resp1).rlike(
+            r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS"
+        ),  # needed to exclude those who deal with discharged hospital patients
+    )
+    flag_hc_counsellor = F.col(job_main_resp1).rlike(r"COUNS|COUNC") & F.col(job_main_resp1).rlike(
+        r"ADDICT|VICTIM|TRAUMA|\sMENTAL HEALTH|DRUG|ALCOHOL|ABUSE|SUBSTANCE"
+    )
+    flag_hc_receptionist = flag_receptionist & F.col(job_main_resp1).rlike(
+        r"NHS|HOSPITAL$|OSTEOPATH|OUTPATIENT|HOSPITAL(?!ITY)|MEDICAL|SURG[EA]RY|CLINIC|HEALTH *CARE|DENTAL|DENTIST|\bGP\b|\bDOCTOR|OPTICIAN|OPTICAL|CHIROPRAC|A&E"
+    )
+
+    flag_non_patient_facing = (
+        flag_admin
+        | flag_secretary
+        | flag_call_handler
+        | F.col(job_main_resp1).rlike(
+            r"ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)"
+        )
+        | F.col(job_main_resp1).rlike(
+            r"(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI"
+        )
+        & ~F.col(job_main_resp1).rlike(r"(?<!NOT )OFFICE BASED")
+    )
+    flag_patient_facing = ~flag_non_patient_facing & (
+        F.col(job_main_resp1).rlike(
+            r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|(?<!NO )FACE TO FACE|(?<!NOT )FACE TO FACE"
+        )
+        | F.col(job_main_resp1).rlike(
+            r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE"
+        )
+        | flag_paramedic
+        | flag_additional_hc
+        | flag_covid_test
+    )
+
+    patient_facing_final = (
+        F.when(F.col(healthcare_bin) == "No", "Not healthcare")
+        .when(F.col(healthcare_bin).isNull(), None)
+        .when(flag_non_patient_facing, "No")
+        .when(flag_patient_facing, "Yes")
+        .when(flag_hc_receptionist | flag_hc_counsellor | flag_hc_support, "No")
+        .when(
+            flag_dietician
+            | flag_doctor
+            | flag_dentist
+            | flag_midwife
+            | flag_nurse
+            | flag_paramedic
+            | flag_pharmacist
+            | flag_physiotherapist,
+            "Yes",
+        )
+        .when(F.col(patient_facing_orig) == "non-patient-facing", "No")
+        .when(F.col(patient_facing_orig) == "patient-facing", "Yes")
+        .when(F.col(work_direct_contact_patients_etc) == "No", "No")
+        .when(F.col(work_direct_contact_patients_etc) == "Yes", "Yes")
+    )
+
+    return df
