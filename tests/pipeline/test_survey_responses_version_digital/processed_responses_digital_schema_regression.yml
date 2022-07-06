@@ -1260,13 +1260,13 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_datetime
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: visit_date_type
   nullable: true
   type: string
+- metadata: {}
+  name: visit_datetime
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: think_had_covid_any_symptoms_raw
   nullable: true
