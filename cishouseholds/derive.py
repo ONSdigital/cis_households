@@ -16,43 +16,45 @@ from pyspark.sql import Window
 
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def assign_datetime_from_coalesced_columns_and_log_source(
     df: DataFrame,
     column_name_to_assign: str,
-    ordered_columns: List[str],
-    date_format: str,
+    primary_datetime_columns: List[str],
+    secondary_date_columns: List[str],
     file_date_column: str,
     min_date: str,
     source_reference_column_name: str,
-    time_format: str,
     default_timestamp: str,
 ):
+
     """
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
     """
-    coalesce_columns = []
-    source_columns = []
-    for col, type in df.select(*ordered_columns).dtypes:
-        if type != "timestamp":
-            df = df.withColumn(col, F.to_timestamp(col, format=f"{date_format} {time_format}"))
-    for col in ordered_columns:
-        check_distinct = df.agg(F.countDistinct(F.date_format(col, time_format))).collect()[0][0] == 1
-        col_object = F.when(
-            (F.col(col) >= F.lit(min_date)) & (F.col(col) < F.col(file_date_column)),
-            F.when(
-                (F.date_format(col, time_format) == "00:00:00") & F.lit(check_distinct),
-                F.concat_ws(" ", F.date_format(col, date_format), F.lit(default_timestamp)),
-            ).otherwise(F.col(col)),
-        ).otherwise(None)
-        coalesce_columns.append(col_object)
-        source_columns.append(F.when(col_object.isNull(), None).otherwise(col))
-    df = df.withColumn(
-        column_name_to_assign, F.to_timestamp(F.coalesce(*coalesce_columns), format=f"{date_format} {time_format}")
-    )
+    coalesce_columns = [
+        F.col(datetime_column) for datetime_column in [*primary_datetime_columns, *secondary_date_columns]
+    ]
+    coalesce_columns = [F.when(col.between(F.lit(min_date), F.col(file_date_column)), col) for col in coalesce_columns]
+
+    column_names = primary_datetime_columns + secondary_date_columns
+    source_columns = [
+        F.when(column_object.isNotNull(), column_name)
+        for column_object, column_name in zip(coalesce_columns, column_names)
+    ]
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(
+            F.when(
+                F.col(source_reference_column_name).isin(secondary_date_columns),
+                F.concat_ws(" ", F.date_format(F.coalesce(*coalesce_columns), "yyyy-MM-dd"), F.lit(default_timestamp)),
+            ).otherwise(F.coalesce(*coalesce_columns)),
+            format="yyyy-MM-dd HH:mm:ss",
+        ),
+    )
     return df
 
 
@@ -1769,4 +1771,70 @@ def aggregated_output_window(
     ]
     for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
         df = df.withColumn(column_name_to_assign, apply_function.over(window))
+    return df
+
+
+def assign_regex_match_result(
+    df: DataFrame,
+    columns_to_check_in: List[str],
+    column_name_to_assign: str,
+    positive_regex_pattern: str,
+    negative_regex_pattern: Optional[str] = None,
+    debug_mode: bool = False,
+):
+    """
+    A generic function which applies the user provided RegEx patterns to a list of columns. If a value in any
+    of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
+    then `column_name_to_assign` column will have the corresponding value set to (bool) True, False otherwise.
+
+    The Truth Table below shows how the final pattern matching result is stored in `column_name_to_assign`
+
+    +----------------------+----------------------+-----+
+    |positive_regex_pattern|negative_regex_pattern|final|
+    +----------------------+----------------------+-----+
+    |                  true|                  true|false|
+    |                  true|                 false| true|
+    |                 false|                  true|false|
+    |                 false|                 false|false|
+    +----------------------+----------------------+-----+
+
+    Parameters:
+    -----------
+    df
+        The input dataframe to process
+    columns_to_check_in
+        a list of columns in which to look for the `positive_regex_pattern`
+    positive_regex_pattern
+        the Spark-compatible regex pattern match against
+    negative_regex_pattern
+        (optional) the Spark-compatible regex pattern to NOT match against. If given, then two additional columns of the
+        form: f"{column_name_to_assign}_positive" & f"{column_name_to_assign}_negative" are created which track the
+        matches against the positive and negative regex patterns. Setting `debug_mode` to True will retain these columns
+        otherwise they are dropped.
+    column_name_to_assign
+        name of the output column which will contain the result of the RegEx pattern search
+    debug_mode:
+        See `negative_regex_pattern` above.
+    """
+    if negative_regex_pattern is None:
+        df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, positive_regex_pattern))
+    else:
+        df = (
+            df.withColumn(
+                f"{column_name_to_assign}_positive",
+                any_column_matches_regex(columns_to_check_in, positive_regex_pattern),
+            )
+            .withColumn(
+                f"{column_name_to_assign}_negative",
+                any_column_matches_regex(columns_to_check_in, negative_regex_pattern),
+            )
+            .withColumn(
+                column_name_to_assign,
+                F.col(f"{column_name_to_assign}_positive") & ~F.col(f"{column_name_to_assign}_negative"),
+            )
+        )
+
+        if not debug_mode:
+            df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
+
     return df

@@ -79,6 +79,7 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -204,7 +205,18 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         ],
     )
 
+    # Create before editing to v1 version below
+    df = df.withColumn("work_health_care_area", F.col("work_health_care_patient_facing"))
+
     column_editing_map = {
+        "work_health_care_area": {
+            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
+            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
+            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+        },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
             "Working From Home": "Working from home",
@@ -221,6 +233,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         },
         "other_covid_infection_test_results": {
             "Positive": "One or more positive test(s)",
+            "Negative": "Any tests negative, but none positive",
         },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
@@ -367,7 +380,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         df,
         column_name_to_assign="visit_datetime",
         source_reference_column_name="visit_date_type",
-        ordered_columns=[
+        primary_datetime_columns=[
             "swab_taken_datetime",
             "blood_taken_datetime",
             "survey_completed_datetime",
@@ -377,10 +390,9 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             # "swab_return_future_date",
             # "blood_return_future_date",
         ],
-        date_format="yyyy-MM-dd",
-        time_format="HH:mm:ss",
+        secondary_date_columns=[],
         file_date_column="file_date",
-        min_date="2022/05/01",
+        min_date="2022-05-01",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -621,10 +633,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Employed and currently not working",
                 [
                     "Employed",
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
-                    ],  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -632,7 +641,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    "self-employed"
+                    "Self-employed"
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
@@ -641,8 +650,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently not working",
                 [
-                    "self-employed"
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    "Self-employed"
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
                     None,
                     None,
                 ],
@@ -726,7 +735,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Employed",
-                    "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -741,12 +750,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                 ],
             ],
-            ["Self-employed", [None, None, None]],
+            ["Self-employed", ["Self-employed", None, None, None]],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Self-employed",
-                    "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
                     None,
                     None,
                 ],
@@ -754,7 +763,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Looking for paid work and able to start",
                     None,
@@ -763,7 +772,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
@@ -772,7 +781,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    "Not in paid work. This includes being unemployed or doing voluntary work",
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     ["Retired", "Or retired?"],
                     None,
@@ -780,15 +789,11 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
-                ["Not in paid work. This includes being unemployed or doing voluntary work", None, None, None],
-            ],
-            [
-                "Student",
                 [
-                    ["In education", None],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     None,
-                    "A child below school age and not attending a nursery or pre-school or childminder",
+                    None,
                 ],
             ],
             [
@@ -797,20 +802,17 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    [
+                        "A child below school age and not attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child aged 4 or over at school",
+                        "A child aged 4 or over at home-school",
+                        "Attending a college or other further education provider including apprenticeships",
+                        "Attending university",
+                    ],
                 ],
             ],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at school"]],
-            ["Student", [["In education", None], None, None, "A child aged 4 or over at home-school"]],
-            [
-                "Student",
-                [
-                    ["In education", None],
-                    None,
-                    None,
-                    "Attending a college or other further education provider including apprenticeships",
-                ],
-            ],
+            ["Student", ["In education", None, None, None]],
         ],
         column_list,
     )
@@ -936,7 +938,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",  # noqa: E501
             "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",  # noqa: E501
             "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",  # noqa: E501
-            "Very difficult to be more than 1m away as your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",  # noqa: E501
+            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
         },
         "last_covid_contact_type": {
             "Someone I live with": "Living in your own home",
@@ -1020,10 +1022,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "survey_completion_status",
         {
-            "In Progress": "Partially Completed",
-            "IN PROGRESS": "Partially Completed",
+            "In progress": "Partially Completed",
             "Submitted": "Completed",
-            "SUBMITTED": "Completed",
         },
     )
     df = derive_had_symptom_last_7days_from_digital(
@@ -1099,6 +1099,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df,
         "work_not_from_home_days_per_week",
         {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
+    if "study_cohort" not in df.columns:
+        df = df.withColumn("study_cohort", F.lit("Original"))
+    df = df.withColumn(
+        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
     return df
 
@@ -1405,8 +1410,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Yes sometimes": "Yes, sometimes",
         },
         "other_antibody_test_results": {
-            "One or more negative tests but none positive": "Any tests negative, but none negative",
-            "One or more negative tests but none were positive": "Any tests negative, but none negative",
+            "One or more negative tests but none positive": "Any tests negative, but none positive",
+            "One or more negative tests but none were positive": "Any tests negative, but none positive",
             "All tests failed": "All Tests failed",
         },
         "other_antibody_test_location": {
@@ -1729,7 +1734,6 @@ def union_dependent_derivations(df):
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
     df = symptom_column_transformations(df)
-    df = create_formatted_datetime_string_columns(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
@@ -1842,10 +1846,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = df.withColumn(
-        "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
-    )
-
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -1861,17 +1861,7 @@ def union_dependent_derivations(df):
         ],
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
-    df = update_to_value_if_any_not_null(
-        df,
-        "cis_covid_vaccine_received",
-        "Yes",
-        [
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-        ],
-    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -1882,10 +1872,12 @@ def union_dependent_derivations(df):
             "cis_covid_vaccine_received",
         ],
         participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
+        visit_datetime_column="visit_datetime",
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    # Derive these after fill forwards and other changes to dates
+    df = create_formatted_datetime_string_columns(df)
     return df
 
 
@@ -2027,15 +2019,41 @@ def create_formatted_datetime_string_columns(df):
     return df
 
 
+def transform_from_lookups(
+    df: DataFrame, cohort_lookup: DataFrame, travel_countries_lookup: DataFrame, tenure_group: DataFrame
+):
+    cohort_lookup = cohort_lookup.withColumnRenamed("participant_id", "cohort_participant_id")
+    df = df.join(
+        F.broadcast(cohort_lookup),
+        how="left",
+        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
+    ).drop("cohort_participant_id")
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
+        "new_cohort", "old_cohort"
+    )
+    df = df.join(
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
+
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+
+    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
+    return df
+
+
 def fill_forwards_transformations(df):
-    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
+    df = fill_forward_from_last_change(
         df=df,
-        id="participant_id",
-        date="visit_datetime",
-        changed="work_main_job_changed",
-        dataset="survey_response_dataset_major_version",
-        dataset_value=2,
-        list_fill_forward=[
+        fill_forward_columns=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
@@ -2046,6 +2064,12 @@ def fill_forwards_transformations(df):
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
+        dateset_version_column="survey_response_dataset_major_version",
+        minimum_dateset_version=2,
     )
 
     # TODO: uncomment for releases after R1
@@ -2109,7 +2133,7 @@ def fill_forwards_travel_column(df):
             "been_outside_uk",
         ],
         participant_id_column="participant_id",
-        visit_date_column="visit_datetime",
+        visit_datetime_column="visit_datetime",
         record_changed_column="been_outside_uk",
         record_changed_value="Yes",
     )
@@ -2119,7 +2143,7 @@ def fill_forwards_travel_column(df):
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
-    Most imputations require geographic data being joined onto the participant records.
+    Most imputations require geographic data being joined onto the response records.
     Returns a single record per participant.
     """
     unique_id_column = "participant_id"
@@ -2172,7 +2196,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
-        impute_by_k_nearest_neighbours,
+        impute_date_by_k_nearest_neighbours,
         reference_column="date_of_birth",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,

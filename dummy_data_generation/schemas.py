@@ -2078,7 +2078,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_not_taken_reason": _(
             "choice",
             items=[
-                "I am near the end of my testing window and my blood test kit has not arrived",
+                "I am near the end of my testing window and my swab test kit has not arrived",
                 "I asked not to receive a blood test kit this month",
                 "I decided not to take it this month",
                 "I tried but could not take it",
@@ -2150,7 +2150,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Employed",
                 "In education",
-                "Not in paid work. This includes being unemployed or doing voluntary work",
+                "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                 "Self-employed",
                 None,
             ],
@@ -2158,7 +2158,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "work_status_employment": _(
             "choice",
             items=[
-                "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
+                "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                 None,
             ],

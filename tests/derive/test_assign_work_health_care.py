@@ -10,6 +10,8 @@ def test_assign_work_health_care(spark_session):
             ("No", "Yes, in primary care, e.g. GP, dentist", "Yes, primary care, non-patient-facing"),
             ("No", "No", "No"),
             ("No", None, None),
+            (None, None, None),
+            ("Yes", None, None),
         ],
         schema="contact string, health_care string, outcome string",
     )

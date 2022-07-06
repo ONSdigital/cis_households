@@ -16,8 +16,13 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
+from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.hdfs_utils import copy
+from cishouseholds.hdfs_utils import copy_local_to_hdfs
+from cishouseholds.hdfs_utils import create_dir
+from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
@@ -41,6 +46,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -59,9 +65,11 @@ from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
+from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.design_weights import generate_weights
 from cishouseholds.weights.design_weights import household_level_populations
@@ -106,21 +114,53 @@ def blind_csv_to_table(path: str, table_name: str):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
-    Convert a list of csv files into a HDFS table
+    Convert a list of csv files into HDFS tables. Requires a schema.
     """
     for file in file_operations:
         if file["schema"] not in validation_schemas:
-            raise ValueError(file["schema"] + " schema does not exists")
+            raise ValueError(f"Schema doesn't exist: {file['schema']}")
         schema = validation_schemas[file["schema"]]
-        column_map = column_name_maps[file["column_map"]] if file["column_map"] in column_name_maps else None
+
+        if file["column_map"] is not None and file["column_map"] not in column_name_maps:
+            raise ValueError(f"Column name map doesn't exist: {file['column_map']}")
+        column_map = column_name_maps.get(file["column_map"])
+
         df = extract_lookup_csv(
             file["path"],
             schema,
             column_map,
             file["drop_not_found"],
         )
-        print("    created table:" + file["table_name"])  # functional
+
+        if file.get("datetime_map") is not None and file["datetime_map"] not in csv_datetime_maps:
+            raise ValueError(f"CSV datetime map doesn't exist: {file['datetime_map']}")
+        if file.get("datetime_map") is not None:
+            df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
         update_table(df, file["table_name"], "overwrite")
+        print("    created table:" + file["table_name"])  # functional
+
+
+@register_pipeline_stage("backup_files")
+def backup_files(file_list: List[str], backup_directory: str):
+    """
+    Backup a list of files on the local or hdfs file system to a hdfs backup directory
+    """
+    storage_dir = backup_directory + "/" + datetime.now().strftime("%Y%m%d_%H%M%S")
+    if not isdir(storage_dir):
+        if create_dir(storage_dir):
+            print(f"    created dir: {storage_dir}")  # functional
+        else:
+            raise FileNotFoundError(f"failed to create dir: {storage_dir}")  # functional
+
+    for file_path in file_list:
+        new_path = storage_dir + "/" + Path(file_path).name
+        function = copy_local_to_hdfs
+        if "hdfs:///" in file_path:
+            function = copy
+        if function(file_path, new_path):
+            print(f"    backed up {Path(file_path).name} to {storage_dir}")  # functional
+        else:
+            print(f"    failed to back up {Path(file_path).name} to {storage_dir}")  # functional
 
 
 @register_pipeline_stage("delete_tables")
@@ -467,9 +507,9 @@ def validate_survey_responses(
 @register_pipeline_stage("lookup_based_editing")
 def lookup_based_editing(
     input_table: str,
-    cohort_lookup_path: str,
-    travel_countries_lookup_path: str,
-    tenure_group_path: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
     edited_table: str,
 ):
     """
@@ -485,47 +525,23 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    spark_session = get_or_create_spark_session()
+
     df = extract_from_table(input_table)
-
-    cohort_lookup = spark_session.read.csv(
-        cohort_lookup_path, header=True, schema="participant_id string, new_cohort string, old_cohort string"
-    ).withColumnRenamed("participant_id", "cohort_participant_id")
-
-    travel_countries_lookup = spark_session.read.csv(
-        travel_countries_lookup_path,
-        header=True,
-        schema="been_outside_uk_last_country_old string, been_outside_uk_last_country_new string",
-    )
-
-    df = df.join(
-        F.broadcast(cohort_lookup),
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    )
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-    df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
-    tenure_group = spark_session.read.csv(tenure_group_path, header=True).select(
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group = tenure_group.withColumnRenamed(key, value)
+    for lookup_table_name, lookup_df, join_on_column_list in zip(
+        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        [cohort_lookup, travel_countries_lookup, tenure_group],
+        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
+    ):
+        check_lookup_table_joined_columns_unique(
+            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
+        )
 
-    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
-
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
 
 
@@ -561,6 +577,8 @@ def imputation_depdendent_transformations(
         )
         .drop("rural_urban_classification_11")
     )  # Prefer version from sample
+
+    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
     df = df.join(
         F.broadcast(rural_urban_lookup_df),
         how="left",
