@@ -5,7 +5,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_age_at_date, assign_regex_match_result
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -2223,3 +2223,84 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
+
+
+def extra_cleaning(df):
+    """
+    To be appplied in generic job title and role cleaning
+    """
+    # Also make sure empty strings are Null in cleaning
+    F.regexp_replace(F.col(), r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$", None)
+    return df
+
+
+def assign_health_care_classification(df: DataFrame) -> DataFrame:
+    """
+    postive:
+        - flag_hc_admin
+        - flag_hc_secretary
+        flag_hc_receptionist
+        flag_hc_counsellor
+        flag_hc_support
+        flag_hc_pharmacist
+        flag_call_handler
+        flag_patient_facing
+        flag_dietician
+        flag_doctor
+        flag_dentist
+        flag_midwife
+        flag_nurse
+        flag_paramedic
+        flag_physiotherapist
+
+        flag_include_always
+        flag_additional_hc
+        flag_covid_test
+
+
+    negative:
+        flag_exclude_transport
+        flag_exclude_catering
+        flag_exclude_acad_edu
+        flag_exclude_media
+        flag_exclude_retail
+        flag_exclude_domestic
+        flag_exclude_construction
+        flag_exclude_religion
+        flag_exclude_computing
+        flag_exclude_public_serv
+        - flag_nhc_admin
+        - flag_nhc_secretary
+        flag_nhc_receptionist
+        flag_nhc_counsellor
+        flag_nhc_support
+        flag_nhc_psychologist
+        flag_vet
+        flag_nhc_pharmacist
+        flag_house_care
+        flag_child_care
+        flag_formal_care
+        flag_informal_care
+        flag_social_worker
+
+        flag_exclude_always
+        flag_exclude_manage_admin
+
+    """
+    df = assign_regex_match_result(
+        df,
+        column_name_to_assign="health_care_admin_FLAG",
+        positive_regex_pattern=[
+
+        ],
+        negative_regex_pattern=[
+        ]
+        )
+
+    health_care_flags = []
+    not_health_care_flags = []
+    df = df.withColumn(
+        "health_care_classification",
+        any(*[F.col(flag) for flag in health_care_flags]) and not any(*[F.col(flag) for flag in not_health_care_flags]))
+    return df
+
