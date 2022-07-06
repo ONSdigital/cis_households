@@ -1132,7 +1132,7 @@ category_maps = {
         },
         "work_status_employment": {
             "Currently working. This includes if you are on sick or other leave for less than 4 weeks": 1,
-            "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
+            "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
         },
         "work_status_unemployment": {
             "Looking for paid work and able to start": 1,
@@ -1143,7 +1143,7 @@ category_maps = {
         "work_status_education": {
             "A child aged 4 or over at home-school": 1,
             "A child aged 4 or over at school": 2,
-            "A child below school age and attending a nursery or pre-school or childminder": 3,
+            "A child below school age and attending a nursery or a pre-school or childminder": 3,
             "A child below school age and not attending a nursery or pre-school or childminder": 4,
             "Attending a college or other further education provider including apprenticeships": 5,
             "Attending university": 6,

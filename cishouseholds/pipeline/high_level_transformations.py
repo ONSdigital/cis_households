@@ -415,7 +415,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         ],
         secondary_date_columns=[],
         file_date_column="file_date",
-        min_date="2022/05/01",
+        min_date="2022-05-01",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -778,7 +778,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Self-employed",
-                    "Currently not working - for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
                     None,
                     None,
                 ],
