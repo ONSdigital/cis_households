@@ -814,7 +814,7 @@
   work_status_digital: Employed
   work_status_education: A child below school age and not attending a nursery or pre-school
     or childminder
-  work_status_employment: Currently not working - for example on sick or other leave
+  work_status_employment: Currently not working -  for example on sick or other leave
     such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Not looking for paid work. This includes looking after
     the home or family or not wanting a job or being long-term sick or disabled
@@ -1643,7 +1643,7 @@
   work_status_digital: Employed
   work_status_education: A child below school age and not attending a nursery or pre-school
     or childminder
-  work_status_employment: Currently not working - for example on sick or other leave
+  work_status_employment: Currently not working -  for example on sick or other leave
     such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
@@ -2883,7 +2883,7 @@
   work_status_digital: Not in paid work. This includes being unemployed or retired
     or doing voluntary work
   work_status_education: A child aged 4 or over at school
-  work_status_employment: Currently not working - for example on sick or other leave
+  work_status_employment: Currently not working -  for example on sick or other leave
     such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: null
   work_status_v0: null
@@ -4127,7 +4127,7 @@
   work_sector_raw: Social Care
   work_status_digital: In education
   work_status_education: Attending university
-  work_status_employment: Currently not working - for example on sick or other leave
+  work_status_employment: Currently not working -  for example on sick or other leave
     such as maternity or paternity for longer than 4 weeks
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
