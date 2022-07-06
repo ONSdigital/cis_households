@@ -145,7 +145,9 @@ def backup_files(file_list: List[str], backup_directory: str):
     """
     Backup a list of files on the local or hdfs file system to a hdfs backup directory
     """
-    storage_dir = backup_directory + "/" + datetime.now().strftime("%Y%m%d_%H%M%S")
+    storage_dir = (
+        backup_directory + "/" + get_config()["storage"]["table_prefix"] + datetime.now().strftime("%Y%m%d_%H%M%S")
+    )
     if not isdir(storage_dir):
         if create_dir(storage_dir):
             print(f"    created dir: {storage_dir}")  # functional
