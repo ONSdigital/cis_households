@@ -28,7 +28,11 @@ def test_add_at_university_identifier(at_university_test_cases, spark_session):
         columns_to_check_in=["test_case"],
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        return_column_object=False,
     )
+
+    a = actual_df.collect()
+
     assert_df_equality(
         actual_df,
         expected_df,

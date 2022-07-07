@@ -37,7 +37,8 @@ at_university_pattern = RegexPattern(
     positive_regex_pattern="|".join(
         [
             "(?:IN|AT).?COLLEGE",
-            "UNI(?:VERSITY)?",
+            "UNI\\b",
+            "UNIVERSITY",
             "FULL.?TIME",
             "EDUCATION",
             "ST[UI]D(?:YING|Y|ENT|T|WNY)",

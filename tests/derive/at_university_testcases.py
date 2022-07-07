@@ -21,6 +21,7 @@ test_data = {
         "STUDYING MECHANICAL ENGINEERING",
         "STUDYING SOCIAL POLICY",
         "UNIVERSITY STUDENT",
+        "UNI",
     ],
     "negative": [
         "LEARNING OFFICER",
@@ -28,5 +29,6 @@ test_data = {
         "UNIVERSITY PROFESSOR",
         "ASSISTANT PROFESSOR",
         "LECTURER AT UNIVERSITY",
+        "COMMUNITY WORKER",
     ],
 }
