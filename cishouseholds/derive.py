@@ -1780,8 +1780,9 @@ def assign_regex_match_result(
     column_name_to_assign: str,
     positive_regex_pattern: str,
     negative_regex_pattern: Optional[str] = None,
+    return_column_object: bool = True,
     debug_mode: bool = False,
-):
+) -> Union[DataFrame, F.Column]:
     """
     A generic function which applies the user provided RegEx patterns to a list of columns. If a value in any
     of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
@@ -1813,6 +1814,9 @@ def assign_regex_match_result(
         otherwise they are dropped.
     column_name_to_assign
         name of the output column which will contain the result of the RegEx pattern search
+    return_column_object:
+        if True, `column_name_to_assign` is returned as a column object otherwise `column_name_to_assign`
+        will be a column in the returned dataframe
     debug_mode:
         See `negative_regex_pattern` above.
     """
@@ -1837,4 +1841,7 @@ def assign_regex_match_result(
         if not debug_mode:
             df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
 
-    return df
+    if return_column_object:
+        return df[column_name_to_assign]
+    else:
+        return df
