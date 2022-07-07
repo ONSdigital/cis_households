@@ -85,13 +85,7 @@ def fill_forward_from_last_change(
     minimum_dateset_version: int = None,
 ) -> DataFrame:
     """
-    Fill forwards, by time, a list of columns from records that are indicated to have changed.
-    The first record for each participant is taken to be the first "change".
-
-    All fields in `fill_forward_columns` are carried forwards, regardless of their value
-    (i.e. includes filling forward Null).
-
-    You can optionally restrict the filling to occur from on or after a specific `minimum_dateset_version`.
+    Fills forwards from records that are indicated to have changed.
 
     Parameters
     ----------
@@ -108,7 +102,7 @@ def fill_forward_from_last_change(
     dateset_version_column
         column containing dataset version number
     minimum_dateset_version
-        minimum dataset version that should be filled from
+        minimum datates version that should be filled
     """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
     df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
