@@ -3,7 +3,8 @@ import yaml
 from chispa import assert_df_equality
 from working_from_home_testcases import test_data
 
-from cishouseholds.edit import add_work_from_home_identifier
+from cishouseholds.derive import assign_regex_match_result
+from cishouseholds.regex_patterns import work_from_home_pattern
 
 
 @pytest.fixture
@@ -19,9 +20,12 @@ def wfh_cases():
 def test_add_work_from_home_identifier(wfh_cases, spark_session):
 
     expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_working_from_home boolean")
-    actual_df = add_work_from_home_identifier(
+    actual_df = assign_regex_match_result(
         df=expected_df.drop("is_working_from_home"),
+        column_name_to_assign="is_working_from_home",
         columns_to_check_in=["test_case"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
     )
     assert_df_equality(
         actual_df,
