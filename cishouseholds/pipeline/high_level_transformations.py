@@ -5,7 +5,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_age_at_date, assign_regex_match_result
+from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -28,6 +28,7 @@ from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_substring
 from cishouseholds.derive import assign_taken_column
@@ -2230,7 +2231,11 @@ def extra_cleaning(df):
     To be appplied in generic job title and role cleaning
     """
     # Also make sure empty strings are Null in cleaning
-    F.regexp_replace(F.col(), r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$", None)
+    F.regexp_replace(
+        F.col(),
+        r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$",
+        None,
+    )
     return df
 
 
@@ -2288,19 +2293,13 @@ def assign_health_care_classification(df: DataFrame) -> DataFrame:
 
     """
     df = assign_regex_match_result(
-        df,
-        column_name_to_assign="health_care_admin_FLAG",
-        positive_regex_pattern=[
-
-        ],
-        negative_regex_pattern=[
-        ]
-        )
+        df, column_name_to_assign="health_care_admin_FLAG", positive_regex_pattern=[], negative_regex_pattern=[]
+    )
 
     health_care_flags = []
     not_health_care_flags = []
     df = df.withColumn(
         "health_care_classification",
-        any(*[F.col(flag) for flag in health_care_flags]) and not any(*[F.col(flag) for flag in not_health_care_flags]))
+        any(*[F.col(flag) for flag in health_care_flags]) and not any(*[F.col(flag) for flag in not_health_care_flags]),
+    )
     return df
-
