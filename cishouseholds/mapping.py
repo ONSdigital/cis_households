@@ -1301,7 +1301,7 @@ column_name_maps = {
         "City": "city",
         "County": "county",
         "Postcode": "postcode",
-        "Phase": "phase",
+        "Phase": "study_cohort",
         "No. Paticicpants not Consented": "household_participants_not_consenting_count",
         "Reason Participants not Consented": "household_participants_not_consented_reason",
         "No. Participants not present for Visit": "household_members_over_2_years_and_not_present_count",
