@@ -2239,6 +2239,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="is_working_from_home",
         positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
         negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+        return_column_object=False,
         debug_mode=False,
     )
 
@@ -2249,6 +2250,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="at_school",
         positive_regex_pattern=at_school_pattern.positive_regex_pattern,
         negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+        return_column_object=False,
         debug_mode=False,
     )
 
@@ -2259,6 +2261,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="at_university",
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        return_column_object=False,
         debug_mode=False,
     )
 
