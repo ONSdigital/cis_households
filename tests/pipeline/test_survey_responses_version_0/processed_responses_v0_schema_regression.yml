@@ -40,7 +40,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: phase
+  name: study_cohort
   nullable: true
   type: string
 - metadata: {}
@@ -562,10 +562,6 @@ fields:
 - metadata: {}
   name: hh_id
   nullable: true
-  type: string
-- metadata: {}
-  name: study_cohort
-  nullable: false
   type: string
 - metadata: {}
   name: swab_taken
