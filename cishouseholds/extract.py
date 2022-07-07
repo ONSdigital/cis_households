@@ -52,7 +52,7 @@ def list_contents(
 
 def get_files_all(path):
     "Get all files in hdfs path"
-    return list_contents(path, date_from_filename=False).to_list("filename")
+    return list_contents(path, date_from_filename=False)["file_path"].tolist()
 
 
 def get_files_by_date(

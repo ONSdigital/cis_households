@@ -10,6 +10,7 @@ from typing import Union
 
 import pandas as pd
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
@@ -96,6 +97,10 @@ from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 # from cishouseholds.pipeline.validation_schema import cis_phase_schema
 
 pipeline_stages = {}
+
+
+class DuplicationError(Exception):
+    pass
 
 
 def register_pipeline_stage(key):
@@ -401,24 +406,30 @@ def process_soc_data(
     for file_path in file_list:
         validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
         df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
+        window = Window.partitionBy("work_main_job_title", "work_main_job_role")
         for actual_column, normalised_column in column_name_map.items():
             df = df.withColumnRenamed(actual_column, normalised_column)
-        df = df.join(
-            inconsistances_resolution_df,
-            on=(
-                (df.work_main_job_title == inconsistances_resolution_df.job_title)
-                & (df.work_main_job_role == inconsistances_resolution_df.work_main_job_role)
-            ),
-            how="left",
-        )
-        df = (
-            df.withColumn(
-                "standard_occupational_classification_code",
-                F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+        if all([col in df.columns for col in ["work_main_job_title", "work_main_job_role"]]):
+            df = df.join(
+                inconsistances_resolution_df.withColumnRenamed(
+                    "standard_occupational_classification_code", "resolved_soc_code"
+                ),
+                on=["work_main_job_title", "work_main_job_role"],
+                how="left",
             )
-            .drop("resolved_soc_code")
-            .distinct()
-        )
+            df = (
+                df.withColumn(
+                    "standard_occupational_classification_code",
+                    F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+                )
+                .drop("resolved_soc_code")
+                .distinct()
+            )
+            duplicate_rows = df.withColumn("duplicate_count", F.count("*").over(window)).filter(
+                F.col("duplicate_count") > 1
+            )
+            if duplicate_rows.count() > 0:
+                raise DuplicationError(f"{duplicate_rows.count()} duplicate rows detected in {file_path}")
         dfs.append(df)
     soc_df = union_multiple_tables(dfs)
     soc_df = transform_cis_soc_data(soc_df)

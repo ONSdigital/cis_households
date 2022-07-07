@@ -43,7 +43,7 @@ def union_dataframes_to_hive(output_table_name: str, dataframe_list: List[DataFr
         update_table(df, output_table_name, write_mode="append")
 
 
-def union_multiple_tables(tables: List[DataFrame]):
+def union_multiple_tables(tables: List[DataFrame]) -> DataFrame:
     """
     Given a list of tables combine them through a union process
     and create null columns for columns inconsistent between all tables
