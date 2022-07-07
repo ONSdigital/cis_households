@@ -61,7 +61,11 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
                     column_name_map[actual_col] = normalised_column
                     dont_drop_list.append(actual_col)
                     break
-        return validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
+        if set(column_name_map.values()) == set(reference_validation_schema.keys()):
+            return validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
+        else:
+            print(f"{file_path} is invalid as header({actual_header} contained unrecognisable columns")  # functional
+            return {}, {}, []
     return reference_validation_schema, {}, []
 
 

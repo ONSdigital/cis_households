@@ -399,17 +399,18 @@ def process_soc_data(
     Process soc data and combine result with survey responses data
     """
     dfs = []
+    duplicate_rows_dfs = []
     inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
     file_list = get_files_all(soc_file_pattern)
     for file_path in file_list:
         validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
-        df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
-        window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-        for actual_column, normalised_column in column_name_map.items():
-            df = df.withColumnRenamed(actual_column, normalised_column)
-        if all([col in df.columns for col in ["work_main_job_title", "work_main_job_role"]]):
+        if validation_schema != {}:
+            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
+            window = Window.partitionBy("work_main_job_title", "work_main_job_role")
+            for actual_column, normalised_column in column_name_map.items():
+                df = df.withColumnRenamed(actual_column, normalised_column)
             df = df.join(
                 inconsistances_resolution_df.withColumnRenamed(
                     "standard_occupational_classification_code", "resolved_soc_code"
@@ -425,12 +426,13 @@ def process_soc_data(
                 .drop("resolved_soc_code")
                 .distinct()
             )
-            duplicate_rows = df.withColumn("duplicate_count", F.count("*").over(window)).filter(
-                F.col("duplicate_count") > 1
+            duplicate_rows_dfs.append(
+                df.filter(F.count("*").over(window) > 1).withColumn("soc_code_source_file", file_path)
             )
-            if duplicate_rows.count() > 0:
-                raise DuplicationError(f"{duplicate_rows.count()} duplicate rows detected in {file_path}")
-        dfs.append(df)
+            df = df.filter(F.count("*").over(window) == 1)
+            dfs.append(df)
+
+    union_dataframes_to_hive("duplicate_soc_lookup_rows", duplicate_rows_dfs)
     soc_df = union_multiple_tables(dfs)
     soc_df = transform_cis_soc_data(soc_df)
     survey_responses_df = extract_from_table(survey_responses_table)
