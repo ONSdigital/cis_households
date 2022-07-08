@@ -348,18 +348,17 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
     df = imputation_function(
         df, column_name_to_assign="temporary_imputation_values", reference_column=reference_column, **kwargs
     )
-
     status_column = reference_column + "_is_imputed"
     status_other = F.col(status_column) if status_column in df.columns else None
 
     df = df.withColumn(
         status_column,
-        F.when(F.col("temporary_imputation_values").isNotNull(), 1)
+        F.when(status_other == 1, 1)
+        .when(F.col("temporary_imputation_values").isNotNull(), 1)
         .when(F.col("temporary_imputation_values").isNull(), 0)
-        .otherwise(status_other)
+        .otherwise(0)
         .cast("integer"),
     )
-
     method_column = reference_column + "_imputation_method"
     method_other = F.col(method_column) if method_column in df.columns else None
     df = df.withColumn(
@@ -374,7 +373,7 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
     """
-    Get imputation value from given column by most commonly occuring value.
+    Get imputation value from given column by most commonly occurring value.
     Results in None when multiple modes are found.
 
     Parameters
