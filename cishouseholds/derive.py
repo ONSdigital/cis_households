@@ -1820,32 +1820,33 @@ def assign_regex_match_result(
     positive_regex_match_result = any_column_matches_regex(columns_to_check_in, positive_regex_pattern)
 
     if negative_regex_pattern is None:
-        result = positive_regex_match_result
-        if column_name_to_assign is not None:
-            df = df.withColumn(column_name_to_assign, positive_regex_match_result)
-    else:
-        negative_regex_match_result = any_column_matches_regex(columns_to_check_in, negative_regex_pattern)
-        result = positive_regex_match_result & ~negative_regex_match_result
-        if column_name_to_assign is not None:
-            df = (
-                df.withColumn(
-                    f"{column_name_to_assign}_positive",
-                    positive_regex_match_result,
-                )
-                .withColumn(
-                    f"{column_name_to_assign}_negative",
-                    negative_regex_match_result,
-                )
-                .withColumn(
-                    column_name_to_assign,
-                    result,
-                )
-            )
+        if column_name_to_assign is None:
+            # returns Column object
+            return positive_regex_match_result
+        else:
+            # returns DataFrame
+            return df.withColumn(column_name_to_assign, positive_regex_match_result)
+
+    negative_regex_match_result = any_column_matches_regex(columns_to_check_in, negative_regex_pattern)
+    result = positive_regex_match_result & ~negative_regex_match_result
 
     if column_name_to_assign is None:
-        # returns column object
         return result
     else:
-        if not debug_mode:
-            df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
-        return df
+        df = (
+            df.withColumn(
+                f"{column_name_to_assign}_positive",
+                positive_regex_match_result,
+            )
+            .withColumn(
+                f"{column_name_to_assign}_negative",
+                negative_regex_match_result,
+            )
+            .withColumn(
+                column_name_to_assign,
+                result,
+            )
+        )
+    if not debug_mode:
+        df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
+    return df
