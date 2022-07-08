@@ -642,7 +642,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    "Self-employed"
+                    "Self-employed",
                     "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
@@ -651,7 +651,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently not working",
                 [
-                    "Self-employed"
+                    "Self-employed",
                     "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
                     None,
                     None,
