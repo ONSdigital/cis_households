@@ -9,10 +9,13 @@ from typing import List
 from typing import Union
 
 import pandas as pd
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import Window
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
+from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
@@ -27,6 +30,7 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
 from cishouseholds.mapping import column_name_maps
+from cishouseholds.mapping import soc_regex_map
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -46,12 +50,14 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -67,9 +73,11 @@ from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
+from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
+from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.design_weights import generate_weights
 from cishouseholds.weights.design_weights import household_level_populations
@@ -77,6 +85,7 @@ from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
 from cishouseholds.weights.population_projections import proccess_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
+from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -204,6 +213,8 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
+    cis_soc_direcory = raw_dir / "cis_soc"
+
     for directory in [
         swab_dir,
         blood_dir,
@@ -264,6 +275,8 @@ def generate_dummy_data(output_directory):
 
     swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
     blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
+
+    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
 
     generate_survey_v0_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
@@ -372,6 +385,90 @@ def generate_input_processing_function(
 
     _inner_function.__name__ = stage_name
     return _inner_function
+
+
+@register_pipeline_stage("process_soc_deltas")
+def process_soc_deltas(
+    soc_file_pattern: str,
+    source_file_column: str,
+    unioned_soc_lookup_table: str,
+    include_processed=False,
+    include_invalid=False,
+    latest_only=False,
+    start_date=None,
+    end_date=None,
+):
+    """
+    Process soc data and combine result with survey responses data
+    """
+    dfs: List[DataFrame] = []
+    file_list = get_files_to_be_processed(
+        resource_path=soc_file_pattern,
+        latest_only=latest_only,
+        start_date=start_date,
+        end_date=end_date,
+        include_processed=include_processed,
+        include_invalid=include_invalid,
+        date_from_filename=False,
+    )
+    for file_path in file_list:
+        error_message, validation_schema, column_name_map, drop_list = normalise_schema(
+            file_path, soc_schema, soc_regex_map
+        )
+        if error_message is not None:
+            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
+            df = assign_filename_column(df, source_file_column)
+            for actual_column, normalised_column in column_name_map.items():
+                df = df.withColumnRenamed(actual_column, normalised_column)
+        else:
+            add_error_file_log_entry(file_path, error_message)  # type: ignore
+            raise ValueError(error_message)
+    if include_processed:
+        union_dataframes_to_hive(unioned_soc_lookup_table, dfs)
+    else:
+        update_table(union_multiple_tables(dfs), unioned_soc_lookup_table, "append")
+
+
+@register_pipeline_stage("process_soc_data")
+def process_soc_data(
+    survey_responses_table: str,
+    soc_coded_survey_responses_table: str,
+    inconsistances_resolution_table: str,
+    unioned_soc_lookup_table: str,
+    transformed_soc_lookup_table: str,
+    duplicate_soc_rows_table: str,
+):
+    """
+    Process soc data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    window = Window.partitionBy(*join_on_columns)
+    inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
+        "Gold SOC2010 code", "resolved_soc_code"
+    )
+    soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
+    survey_responses_df = extract_from_table(survey_responses_table)
+    soc_lookup_df = soc_lookup_df.join(
+        inconsistances_resolution_df.withColumnRenamed(
+            "standard_occupational_classification_code", "resolved_soc_code"
+        ),
+        on=join_on_columns,
+        how="left",
+    )
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
+    filter_condition = F.count(*join_on_columns).over(window) > 1
+    duplicate_rows_df = soc_lookup_df.filter(filter_condition)
+    soc_lookup_df = soc_lookup_df.filter(~filter_condition)
+
+    update_table(duplicate_soc_rows_table, duplicate_rows_df, "overwrite", archive=True)
+
+    soc_lookup_df = transform_cis_soc_data(soc_lookup_df)
+    survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+    update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
+    update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
