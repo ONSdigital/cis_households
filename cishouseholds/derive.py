@@ -1777,18 +1777,17 @@ def aggregated_output_window(
 def assign_regex_match_result(
     df: DataFrame,
     columns_to_check_in: List[str],
-    column_name_to_assign: str,
     positive_regex_pattern: str,
     negative_regex_pattern: Optional[str] = None,
-    return_column_object: bool = True,
+    column_name_to_assign: Optional[str] = None,
     debug_mode: bool = False,
 ) -> Union[DataFrame, F.Column]:
     """
     A generic function which applies the user provided RegEx patterns to a list of columns. If a value in any
     of the columns matches the `positive_regex_pattern` pattern but not the `negative_regex_pattern` pattern
-    then `column_name_to_assign` column will have the corresponding value set to (bool) True, False otherwise.
+    then the result of the match will be set to (bool) True, False otherwise.
 
-    The Truth Table below shows how the final pattern matching result is stored in `column_name_to_assign`
+    The Truth Table below shows how the final pattern matching result is assigned.
 
     +----------------------+----------------------+-----+
     |positive_regex_pattern|negative_regex_pattern|final|
@@ -1808,40 +1807,45 @@ def assign_regex_match_result(
     positive_regex_pattern
         the Spark-compatible regex pattern match against
     negative_regex_pattern
-        (optional) the Spark-compatible regex pattern to NOT match against. If given, then two additional columns of the
-        form: f"{column_name_to_assign}_positive" & f"{column_name_to_assign}_negative" are created which track the
-        matches against the positive and negative regex patterns. Setting `debug_mode` to True will retain these columns
-        otherwise they are dropped.
+        (optional) the Spark-compatible regex pattern to NOT match against. If given and `column_name_to_assign` is not
+        None, then two additional columns of the form: f"{column_name_to_assign}_positive" &
+        f"{column_name_to_assign}_negative" are created which track the matches against the positive and negative regex
+        patterns respectively. Set `debug_mode` to True to expose these columns in the returned dataframe.
     column_name_to_assign
-        name of the output column which will contain the result of the RegEx pattern search
-    return_column_object:
-        if True, `column_name_to_assign` is returned as a column object otherwise `column_name_to_assign`
-        will be a column in the returned dataframe
+        (optional) if this is none, then we return a PySpark Column object containing the result of the RegEx pattern
+        search, otherwise we return a DataFrame with `column_name_to_assign` as the column containing the result.
     debug_mode:
-        See `negative_regex_pattern` above.
+        Only relevant when `column_name_to_assign` is not None - See `negative_regex_pattern` above.
     """
-    if negative_regex_pattern is None:
-        df = df.withColumn(column_name_to_assign, any_column_matches_regex(columns_to_check_in, positive_regex_pattern))
-    else:
-        df = (
-            df.withColumn(
-                f"{column_name_to_assign}_positive",
-                any_column_matches_regex(columns_to_check_in, positive_regex_pattern),
-            )
-            .withColumn(
-                f"{column_name_to_assign}_negative",
-                any_column_matches_regex(columns_to_check_in, negative_regex_pattern),
-            )
-            .withColumn(
-                column_name_to_assign,
-                F.col(f"{column_name_to_assign}_positive") & ~F.col(f"{column_name_to_assign}_negative"),
-            )
-        )
+    positive_regex_match_result = any_column_matches_regex(columns_to_check_in, positive_regex_pattern)
 
+    if negative_regex_pattern is None:
+        result = positive_regex_match_result
+        if column_name_to_assign is not None:
+            df = df.withColumn(column_name_to_assign, positive_regex_match_result)
+    else:
+        negative_regex_match_result = any_column_matches_regex(columns_to_check_in, negative_regex_pattern)
+        result = positive_regex_match_result & ~negative_regex_match_result
+        if column_name_to_assign is not None:
+            df = (
+                df.withColumn(
+                    f"{column_name_to_assign}_positive",
+                    positive_regex_match_result,
+                )
+                .withColumn(
+                    f"{column_name_to_assign}_negative",
+                    negative_regex_match_result,
+                )
+                .withColumn(
+                    column_name_to_assign,
+                    result,
+                )
+            )
+
+    if column_name_to_assign is None:
+        # returns column object
+        return result
+    else:
         if not debug_mode:
             df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
-
-    if return_column_object:
-        return df[column_name_to_assign]
-    else:
         return df

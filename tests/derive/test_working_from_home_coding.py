@@ -22,11 +22,10 @@ def test_add_work_from_home_identifier(wfh_cases, spark_session):
     expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_working_from_home boolean")
     actual_df = assign_regex_match_result(
         df=expected_df.drop("is_working_from_home"),
-        column_name_to_assign="is_working_from_home",
         columns_to_check_in=["test_case"],
         positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
         negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        return_column_object=False,
+        column_name_to_assign="is_working_from_home",
     )
     assert_df_equality(
         actual_df,

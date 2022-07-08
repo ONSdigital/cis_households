@@ -24,11 +24,10 @@ def test_add_at_university_identifier(at_university_test_cases, spark_session):
     )
     actual_df = assign_regex_match_result(
         df=expected_df.drop("at_university"),
-        column_name_to_assign="at_university",
         columns_to_check_in=["test_case"],
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        return_column_object=False,
+        column_name_to_assign="at_university",
     )
 
     a = actual_df.collect()
