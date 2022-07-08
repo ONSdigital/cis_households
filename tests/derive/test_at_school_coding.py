@@ -1,23 +1,56 @@
 import pytest
 import yaml
-from at_school_testcases import test_data
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import at_school_pattern
+from conftest import prepare_regex_test_cases
+
+# A list of positive test cases which need to be interpreted as Attending School &
+# negative test cases which shouldn't.
+# Please append new cases to the appropriate list below
+test_data = {
+    "positive": [
+        "AT SCHOOL",
+        "ATTENDING SCHOOL",
+        "SCHOOL /CHILD",
+        "MINOR",
+        "SCHOOL AGE",
+        "SCHOOL AGE CHILD",
+        "SCHOOL GIRL",
+        "SCHOOL PUPIL",
+        "CHILD",
+        "PRIMARY SCHOOL",
+        "PRIMARY SCHOOL YEAR 1",
+        "SECONDARY SCHOOL",
+        "PRIMARY SCHOOL YEAR 6",
+        "SCHOOL AGED CHILD",
+        "SCHOOL-AGED CHILD",
+        "GOES TO SCHOOL",
+        "ATTENDS SCHOOL",
+        "IN SCHOOL",
+        "EDUCATION IN FINAL YEAR OF SECONDARY SCHOOL",
+    ],
+    "negative": [
+        "SCHOOL TEACHER",
+        "SCHOOL DINNER LADY",
+        "PRIMARY CARE GIVER",
+        "CHILD MINDER",
+        "PRIMARY SCHOOL TEACHER",
+        "SECONDARY SCHOOL TEACHER",
+        "TEACHER",
+        "TEACHING ASSISTANT AT A SCHOOL",
+        "CATERING ASSISTANT",
+        "SCHOOL BUSINESS MANAGER",
+        "SCHOOL HEADMASTER",
+        "SCHOOL HEADMISTRESS",
+    ],
+}
 
 
-@pytest.fixture
-def at_school_test_cases():
-    test_data_melted = [
-        (test_case, pos_or_neg == "positive")
-        for pos_or_neg, test_cases in test_data.items()
-        for test_case in test_cases
-    ]
-    return test_data_melted
+def test_add_at_school_identifier(spark_session):
 
-
-def test_add_at_school_identifier(at_school_test_cases, spark_session):
+    at_school_test_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(at_school_test_cases, schema="test_case string, at_school boolean")
     actual_df = assign_regex_match_result(

@@ -1,6 +1,9 @@
 import json
 import os
 from pathlib import Path
+from typing import Dict
+from typing import List
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -185,3 +188,19 @@ def regression_test_df_schema(data_regression):
 def create_mimesis_field():
     """Generate a new field for mimesis data generation, to ensure test data are independently generated"""
     return Field("en-gb", seed=42, providers=[Distribution, CustomRandom])
+
+
+def prepare_regex_test_cases(test_data: Dict[str, List[str]]) -> List[Tuple[str, bool]]:
+    """Convenience function to prepare regex test cases.
+
+    Parameters:
+    -----------
+    test_data:
+        A dictionary with two keys, "positive" & "negative" & a list of strings as values
+    """
+    test_data_melted = [
+        (test_case, pos_or_neg == "positive")
+        for pos_or_neg, test_cases in test_data.items()
+        for test_case in test_cases
+    ]
+    return test_data_melted

@@ -1,23 +1,46 @@
 import pytest
 import yaml
 from chispa import assert_df_equality
-from working_from_home_testcases import test_data
 
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import work_from_home_pattern
+from conftest import prepare_regex_test_cases
 
 
-@pytest.fixture
-def wfh_cases():
-    test_data_melted = [
-        (test_case, pos_or_neg == "positive")
-        for pos_or_neg, test_cases in test_data.items()
-        for test_case in test_cases
-    ]
-    return test_data_melted
+# A list of positive test cases which need to be interpreted as "Working from Home" &
+# negative test cases which shouldn't.
+# Please append new cases to the appropriate list below
+test_data = {
+    "positive": [
+        "WORKING FROM HOME",
+        "WORKS FROM HOME",
+        "WORK FROM HOME",
+        "NO CHANGE IN WORK - BOTH STILL WORKING FROM HOME",
+        "NO CHANGE IN WORK - CONTINUING TO WORK FROM HOME",
+        "WORKING FROM HOME - ENVIRONMENT AGENCY - NO CONTACT WITH COLLEAGUES",
+        "WORKING FROM HOME - NO CHANGE IN CIRCUMSTANCES",
+        "WORKING FROM HOME FULL TIME - SEE PREVIOUS NOTES",
+        "WORKING FROM HOME ON COMPUTER",
+        "WORKING FULL TIME FRO HOME",
+        "WORKING FULL TIME FROM HOME - SOFTWARE ENGINEER",
+        "WORKING FULL TIME FROM HOME IT",
+        "WK FROM HOM",
+        "WFH",
+    ],
+    "negative": [
+        "WORK WORK WORK",
+        "SWEET HOME ALABAMA",
+        "FROM DAWN TO DUSK",
+        "WORK DAY",
+        "WORKING 9 TO 5",
+        "HOME WORK",
+    ],
+}
 
 
-def test_add_work_from_home_identifier(wfh_cases, spark_session):
+def test_add_work_from_home_identifier(spark_session):
+
+    wfh_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_working_from_home boolean")
     actual_df = assign_regex_match_result(

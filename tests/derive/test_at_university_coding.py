@@ -1,23 +1,51 @@
 import pytest
 import yaml
-from at_university_testcases import test_data
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import at_university_pattern
+from conftest import prepare_regex_test_cases
 
 
-@pytest.fixture
-def at_university_test_cases():
-    test_data_melted = [
-        (test_case, pos_or_neg == "positive")
-        for pos_or_neg, test_cases in test_data.items()
-        for test_case in test_cases
-    ]
-    return test_data_melted
+# A list of positive test cases which need to be interpreted as Attending University &
+# negative test cases which shouldn't.
+# Please append new cases to the appropriate list below
+test_data = {
+    "positive": [
+        "AT COLLEGE",
+        "FULL TIME EDUCATION",
+        "FULL TIME STUDENT",
+        "N/A (STUDENT)",
+        "PHD STUDENT",
+        "STIDY",
+        "STUDENT",
+        "STUDENT FULL TIME",
+        "STUDENT ONLY",
+        "STUDENT UNIVERSITY",
+        "STUDT",
+        "STUDWNY",
+        "STUDY",
+        "STUDYING",
+        "STUDYING AT UNIVERSITY",
+        "STUDYING MECHANICAL ENGINEERING",
+        "STUDYING SOCIAL POLICY",
+        "UNIVERSITY STUDENT",
+        "UNI",
+    ],
+    "negative": [
+        "LEARNING OFFICER",
+        "INTERN",
+        "UNIVERSITY PROFESSOR",
+        "ASSISTANT PROFESSOR",
+        "LECTURER AT UNIVERSITY",
+        "COMMUNITY WORKER",
+    ],
+}
 
 
-def test_add_at_university_identifier(at_university_test_cases, spark_session):
+def test_add_at_university_identifier(spark_session):
+
+    at_university_test_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(
         at_university_test_cases, schema="test_case string, at_university boolean"
@@ -29,8 +57,6 @@ def test_add_at_university_identifier(at_university_test_cases, spark_session):
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
         column_name_to_assign="at_university",
     )
-
-    a = actual_df.collect()
 
     assert_df_equality(
         actual_df,
