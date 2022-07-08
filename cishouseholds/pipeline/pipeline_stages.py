@@ -45,8 +45,8 @@ from cishouseholds.pipeline.high_level_transformations import create_formatted_d
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
+from cishouseholds.pipeline.high_level_transformations import join_from_lookups_generic
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
-from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -510,7 +510,7 @@ def lookup_based_editing(
     cohort_lookup_table: str,
     travel_countries_lookup_table: str,
     tenure_group_table: str,
-    tenure_group_table_columns_list: List[str], # TODO: csv to table to look how the values are drop if not found 
+    # tenure_group_table_columns_list: List[str], # TODO: csv to table to look how the values are drop if not found
     edited_table: str,
 ):
     """
@@ -527,25 +527,20 @@ def lookup_based_editing(
     edited_table
     """
     # TODO: for loop of a list of tables with keys to join
-    # TODO: editing null values
+    # TODO: use csv_to_table and schemas to delete unwanted columns
 
     df = extract_from_table(input_table)
 
-    for lookup_table_name, lookup_columns_list, join_on_column_list in zip(
-        [
-            cohort_lookup_table, 
-            travel_countries_lookup_table, 
-            tenure_group_table
-        ],
-        [None, None, ['UAC', 'numAdult', 'numChild', 'dvhsize', 'tenure_group']],
+    for lookup_table_name, join_on_column_list in zip(
+        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        # [None, None, ['UAC', 'numAdult', 'numChild', 'dvhsize', 'tenure_group']],
         [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
     ):
         lookup_df = extract_from_table(lookup_table_name)
         check_lookup_table_joined_columns_unique(
             df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
         )
-        import pdb; pdb.set_trace()
-        df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
+        df = join_from_lookups_generic(df=df, df_lookup=lookup_df, list_columns_join=join_on_column_list)
         update_table(df, edited_table, write_mode="overwrite")
 
 
