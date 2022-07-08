@@ -99,10 +99,6 @@ from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 pipeline_stages = {}
 
 
-class DuplicationError(Exception):
-    pass
-
-
 def register_pipeline_stage(key):
     """Decorator to register a pipeline stage function."""
 
@@ -431,8 +427,7 @@ def process_soc_data(
             duplicate_rows_dfs.append(
                 df.filter(F.count("*").over(window) > 1).withColumn("soc_code_source_file", file_path)
             )
-            df = df.filter(F.count("*").over(window) == 1)
-            dfs.append(df)
+            dfs.append(df.filter(F.count("*").over(window) == 1))
 
     union_dataframes_to_hive("duplicate_soc_lookup_rows", duplicate_rows_dfs)
     soc_df = union_multiple_tables(dfs)
