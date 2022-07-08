@@ -355,7 +355,6 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         status_column,
         F.when(status_other == 1, 1)
         .when(F.col("temporary_imputation_values").isNotNull(), 1)
-        .when(F.col("temporary_imputation_values").isNull(), 0)
         .otherwise(0)
         .cast("integer"),
     )
