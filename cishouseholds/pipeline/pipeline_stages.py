@@ -145,7 +145,9 @@ def backup_files(file_list: List[str], backup_directory: str):
     """
     Backup a list of files on the local or hdfs file system to a hdfs backup directory
     """
-    storage_dir = backup_directory + "/" + datetime.now().strftime("%Y%m%d_%H%M%S")
+    storage_dir = (
+        backup_directory + "/" + get_config()["storage"]["table_prefix"] + datetime.now().strftime("%Y%m%d_%H%M%S")
+    )
     if not isdir(storage_dir):
         if create_dir(storage_dir):
             print(f"    created dir: {storage_dir}")  # functional
@@ -408,7 +410,7 @@ def replace_design_weights(
 
     df = df.withColumn(
         "local_authority_unity_authority_code",
-        F.when(F.col("local_authority_unity_authority_code") == "E0600006", "E07000154")
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
         .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
         .otherwise(F.col("local_authority_unity_authority_code")),
     )
