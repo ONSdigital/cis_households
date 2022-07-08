@@ -17,6 +17,23 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 
 
+def clean_work_main_job_role(df: DataFrame, column_name_to_update: str):
+    """
+    Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.upper(
+            F.regexp_replace(
+                F.regexp_replace(column_name_to_update, "(-)|(\s{2,})", " "),  # noqa:W605
+                "([^a-zA-Z0-9&\s]{1,})|(^\s)|(\s$)",  # noqa:W605
+                "",
+            )
+        ),
+    )
+    return df
+
+
 def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
     """
     apply lower case to all but first letter of string in list of columns

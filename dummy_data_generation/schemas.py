@@ -11,6 +11,27 @@ start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
 
+def get_cis_soc_data_description(_):
+    option = int(_("custom_random.random_integer", lower=1, upper=2, null_percent=0))
+    if option > 1:
+        return lambda: {
+            "work_main_job_title": _("text.sentence"),
+            "work_main_job_role": _("choice", items=[_("text.sentence"), None]),
+            "standard_occupational_classification_code": _(
+                "choice",
+                items=[_("custom_random.random_integer", lower=1000, upper=9999, null_percent=15), "un", "uncodeable"],
+            ),
+        }
+    else:
+        return lambda: {
+            "job_title": _("text.quote"),
+            "main_job_responsibilities": _("choice", items=[_("text.quote"), None]),
+            "Gold SOC2010 code": _("custom_random.random_integer", lower=1000, upper=9999, null_percent=0),
+            "Source": _("text.quote"),
+            "CHU ID": _("custom_random.random_integer", lower=1000, upper=9999, null_percent=0),
+        }
+
+
 def get_nims_data_description(_, participant_ids=[]):
     return lambda: {  # noqa: E731
         "cis_participant_id": _("choice", items=participant_ids + [None]),

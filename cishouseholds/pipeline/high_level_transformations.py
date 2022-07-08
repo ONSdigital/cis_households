@@ -54,6 +54,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
+from cishouseholds.edit import clean_work_main_job_role
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -88,6 +89,28 @@ from cishouseholds.mapping import column_name_maps
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+
+def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+    """
+    transform and process cis soc data
+    """
+    # clean columns
+    df = clean_work_main_job_role(df, "work_main_job_role")
+    df = df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
+    )
+
+    # remove nulls and deduplicate on all columns
+    df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
+
+    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
+    df = df.withColumn("COUNT", F.count("*").over(window))
+    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
+    return df.drop("COUNT")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:
