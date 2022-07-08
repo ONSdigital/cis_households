@@ -11,7 +11,7 @@ def test_impute_wrapper(spark_session):
         ("A", None, 1, 1, "example_imputer"),
         ("B", None, 1, 1, "example_imputer"),
         ("C", 1, 1, 0, None),
-        ("D", 1, 1, 1, "example_imputer"),
+        ("D", 1, 1, 1, None),
     ]
 
     def example_imputer(df: DataFrame, column_name_to_assign: str, reference_column: str, literal=1):
