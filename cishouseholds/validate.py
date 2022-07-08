@@ -62,11 +62,13 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
                     dont_drop_list.append(actual_col)
                     break
         if set(column_name_map.values()) == set(reference_validation_schema.keys()):
-            return validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
+            return None, validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
         else:
-            print(f"{file_path} is invalid as header({actual_header} contained unrecognisable columns")  # functional
-            return {}, {}, []
-    return reference_validation_schema, {}, []
+            error_message = (
+                f"{file_path} is invalid as header({actual_header} contained unrecognisable columns"  # functional
+            )
+            return error_message, {}, {}, []
+    return None, reference_validation_schema, {}, []
 
 
 def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: str = ","):

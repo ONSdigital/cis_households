@@ -9,17 +9,18 @@ from typing import List
 from typing import Union
 
 import pandas as pd
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
+from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigeneration
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.extract import get_files_all
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -56,6 +57,7 @@ from cishouseholds.pipeline.high_level_transformations import union_dependent_de
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -385,57 +387,93 @@ def generate_input_processing_function(
     return _inner_function
 
 
-@register_pipeline_stage("process_soc_data")
-def process_soc_data(
+@register_pipeline_stage("process_soc_deltas")
+def process_soc_deltas(
     soc_file_pattern: str,
-    inconsistances_resolution_table: str,
-    survey_responses_table: str,
-    soc_coded_survey_responses_table: str,
+    source_file_column: str,
     unioned_soc_lookup_table: str,
+    include_processed=False,
+    include_invalid=False,
+    latest_only=False,
+    start_date=None,
+    end_date=None,
 ):
     """
     Process soc data and combine result with survey responses data
     """
-    dfs = []
-    duplicate_rows_dfs = []
+    dfs: List[DataFrame] = []
+    file_list = get_files_to_be_processed(
+        resource_path=soc_file_pattern,
+        latest_only=latest_only,
+        start_date=start_date,
+        end_date=end_date,
+        include_processed=include_processed,
+        include_invalid=include_invalid,
+        date_from_filename=False,
+    )
+    for file_path in file_list:
+        error_message, validation_schema, column_name_map, drop_list = normalise_schema(
+            file_path, soc_schema, soc_regex_map
+        )
+        if error_message is not None:
+            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
+            df = assign_filename_column(df, source_file_column)
+            for actual_column, normalised_column in column_name_map.items():
+                df = df.withColumnRenamed(actual_column, normalised_column)
+        else:
+            add_error_file_log_entry(file_path, error_message)  # type: ignore
+            raise ValueError(error_message)
+    if include_processed:
+        union_dataframes_to_hive(unioned_soc_lookup_table, dfs)
+    else:
+        update_table(union_multiple_tables(dfs), unioned_soc_lookup_table, "append")
+
+
+@register_pipeline_stage("process_soc_data")
+def process_soc_data(
+    survey_responses_table: str,
+    soc_coded_survey_responses_table: str,
+    inconsistances_resolution_table: str,
+    unioned_soc_lookup_table: str,
+    transformed_soc_lookup_table: str,
+    duplicate_soc_rows_table: str,
+):
+    """
+    Process soc data and combine result with survey responses data
+    """
+    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
     inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
-    file_list = get_files_all(soc_file_pattern)
-    for file_path in file_list:
-        validation_schema, column_name_map, drop_list = normalise_schema(file_path, soc_schema, soc_regex_map)
-        if validation_schema != {}:
-            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
-            window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-            for actual_column, normalised_column in column_name_map.items():
-                df = df.withColumnRenamed(actual_column, normalised_column)
-            df = df.join(
-                inconsistances_resolution_df.withColumnRenamed(
-                    "standard_occupational_classification_code", "resolved_soc_code"
-                ),
-                on=["work_main_job_title", "work_main_job_role"],
-                how="left",
-            )
-            df = (
-                df.withColumn(
-                    "standard_occupational_classification_code",
-                    F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-                )
-                .drop("resolved_soc_code")
-                .distinct()
-            )
-            duplicate_rows_dfs.append(
-                df.filter(F.count("*").over(window) > 1).withColumn("soc_code_source_file", file_path)
-            )
-            dfs.append(df.filter(F.count("*").over(window) == 1))
-
-    union_dataframes_to_hive("duplicate_soc_lookup_rows", duplicate_rows_dfs)
-    soc_df = union_multiple_tables(dfs)
-    soc_df = transform_cis_soc_data(soc_df)
+    soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    survey_responses_df = survey_responses_df.join(soc_df, on=["work_main_job_title", "work_main_job_role"], how="left")
-    update_table(soc_df, unioned_soc_lookup_table, "overwrite")
+    soc_lookup_df = soc_lookup_df.join(
+        inconsistances_resolution_df.withColumnRenamed(
+            "standard_occupational_classification_code", "resolved_soc_code"
+        ),
+        on=["work_main_job_title", "work_main_job_role"],
+        how="left",
+    )
+    soc_lookup_df = (
+        soc_lookup_df.withColumn(
+            "standard_occupational_classification_code",
+            F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+        )
+        .drop("resolved_soc_code")
+        .distinct()
+    )
+
+    duplicate_rows_df = soc_lookup_df.filter(F.count("*").over(window) > 1)
+    soc_lookup_df = soc_lookup_df.filter(F.count("*").over(window) == 1)
+
+    update_table(duplicate_soc_rows_table, duplicate_rows_df, "overwrite", archive=True)
+
+    soc_lookup_df = transform_cis_soc_data(soc_lookup_df)
+    survey_responses_df = survey_responses_df.join(
+        soc_lookup_df, on=["work_main_job_title", "work_main_job_role"], how="left"
+    )
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
+    update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
