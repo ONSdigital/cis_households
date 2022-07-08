@@ -348,21 +348,21 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
     df = imputation_function(
         df, column_name_to_assign="temporary_imputation_values", reference_column=reference_column, **kwargs
     )
-    status_column = reference_column + "_is_imputed"
-    status_other = F.col(status_column) if status_column in df.columns else F.lit(None)
 
+    imputed_in_current_imputation = F.col("temporary_imputation_values").isNotNull() & F.col(reference_column).isNull()
+
+    status_column = reference_column + "_is_imputed"
+    status_other = F.col(status_column) if status_column in df.columns else F.lit(0)
     df = df.withColumn(
         status_column,
-        F.when(status_other == 1, 1)
-        .when(F.col("temporary_imputation_values").isNotNull(), 1)
-        .otherwise(0)
-        .cast("integer"),
+        F.when(imputed_in_current_imputation, 1).otherwise(status_other).cast("integer"),
     )
+
     method_column = reference_column + "_imputation_method"
     method_other = F.col(method_column) if method_column in df.columns else None
     df = df.withColumn(
         reference_column + "_imputation_method",
-        F.when(F.col(status_column) == 1, imputation_function.__name__).otherwise(method_other).cast("string"),
+        F.when(imputed_in_current_imputation, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
 
     df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
