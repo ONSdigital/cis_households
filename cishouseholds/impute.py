@@ -349,7 +349,7 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         df, column_name_to_assign="temporary_imputation_values", reference_column=reference_column, **kwargs
     )
     status_column = reference_column + "_is_imputed"
-    status_other = F.col(status_column) if status_column in df.columns else None
+    status_other = F.col(status_column) if status_column in df.columns else F.lit(None)
 
     df = df.withColumn(
         status_column,
