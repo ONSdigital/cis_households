@@ -1186,6 +1186,11 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "soc_resolution_name_map": {
+        "job_title": "work_main_job_title",
+        "main_job_responsibilities": "work_main_job_role",
+        "Gold SOC2010 code": "standard_occupational_classification_code",
+    },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
         "Result": "pcr_result_classification",
@@ -2031,3 +2036,8 @@ survey_response_cisd_cast_to_double = [
     "person_not_consenting_age_9",
     "household_participants_not_consenting_count",
 ]
+soc_regex_map = {
+    "title": "work_main_job_title",
+    "(role)|(responsibilities)": "work_main_job_role",
+    "(code)|(SOC)": "standard_occupational_classification_code",
+}
