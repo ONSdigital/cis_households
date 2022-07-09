@@ -4,7 +4,6 @@ from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import at_university_pattern
-from conftest import prepare_regex_test_cases
 
 
 # A list of positive test cases which need to be interpreted as Attending University &
@@ -43,7 +42,7 @@ test_data = {
 }
 
 
-def test_add_at_university_identifier(spark_session):
+def test_add_at_university_identifier(prepare_regex_test_cases, spark_session):
 
     at_university_test_cases = prepare_regex_test_cases(test_data)
 

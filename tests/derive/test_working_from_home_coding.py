@@ -4,7 +4,6 @@ from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import work_from_home_pattern
-from conftest import prepare_regex_test_cases
 
 
 # A list of positive test cases which need to be interpreted as "Working from Home" &
@@ -38,7 +37,7 @@ test_data = {
 }
 
 
-def test_add_work_from_home_identifier(spark_session):
+def test_add_work_from_home_identifier(prepare_regex_test_cases, spark_session):
 
     wfh_cases = prepare_regex_test_cases(test_data)
 
