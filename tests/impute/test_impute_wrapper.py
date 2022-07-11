@@ -7,9 +7,7 @@ from cishouseholds.impute import impute_and_flag
 
 def _example_imputer(df: DataFrame, column_name_to_assign: str, reference_column: str, literal=1):
     """Imputes a column with a constant literal"""
-    return df.withColumn(
-        column_name_to_assign, F.when(F.col(reference_column).isNull(), F.lit(literal)).otherwise(None)
-    )
+    return df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), F.lit(literal)))
 
 
 def test_impute_wrapper_first_run(spark_session):
@@ -59,7 +57,7 @@ def test_impute_wrapper_subsequent_run(spark_session):
         """
     input_data = [
         ("A", 1, 1, "_some_imputer"),
-        ("B", 1, None, None),
+        ("B", None, None, None),
     ]
 
     expected_data = [
