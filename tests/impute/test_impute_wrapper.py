@@ -22,8 +22,8 @@ def test_impute_wrapper_first_run(spark_session):
     ]
 
     expected_data = [
-        ("A", 1, 1, "example_imputer"),
-        ("B", 1, 1, "example_imputer"),
+        ("A", 1, 1, "_example_imputer"),
+        ("B", 1, 1, "_example_imputer"),
         ("C", 1, 0, None),
     ]
 
@@ -58,13 +58,13 @@ def test_impute_wrapper_subsequent_run(spark_session):
             value_imputation_method string
         """
     input_data = [
-        ("A", 1, 1, 1, "example_imputer"),
-        ("B", 1, None, None, None),
+        ("A", 1, 1, "_some_imputer"),
+        ("B", 1, None, None),
     ]
 
     expected_data = [
-        ("A", 1, 1, "example_imputer"),
-        ("B", 1, 1, "example_imputer"),
+        ("A", 1, 1, "_some_imputer"),
+        ("B", 1, 1, "_example_imputer"),
     ]
 
     input_df = spark_session.createDataFrame(
