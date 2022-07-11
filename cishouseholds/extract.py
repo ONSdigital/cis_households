@@ -15,9 +15,7 @@ class InvalidFileError(Exception):
     pass
 
 
-def list_contents(
-    path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = False
-) -> DataFrame:
+def list_contents(path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = True) -> DataFrame:
     """
     Read contents of a directory and return the path for each file and
     returns a dataframe of
@@ -70,7 +68,7 @@ def get_files_by_date(
     end_date
         date to select files before
     """
-    file_df = list_contents(path, date_from_filename)
+    file_df = list_contents(path, date_from_filename=date_from_filename)
     file_df = file_df.dropna(subset=["upload_date"])
     file_df = file_df.sort_values(["upload_date", "upload_time"])
 

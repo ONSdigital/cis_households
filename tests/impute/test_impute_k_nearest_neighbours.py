@@ -51,4 +51,5 @@ def test_impute_by_k_nearest_neighbours(spark_session):
         output_df.sort("uid").drop("important_column"),
         expected_df.sort("uid").drop("important_column"),
         ignore_column_order=True,
+        ignore_nullable=True,
     )
