@@ -672,29 +672,6 @@ def lookup_based_editing(
 
     update_table(df, edited_table, write_mode="overwrite")
 
-    # for lookup_table_name, join_on_column_list in zip(
-    #     [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
-    #     # [None, None, ['UAC', 'numAdult', 'numChild', 'dvhsize', 'tenure_group']],
-    #     [
-    #         ["participant_id", "old_cohort"], # R: study_cohort
-    #         ["been_outside_uk_last_country_old"], # R: been_outside_uk_last_country
-    #         ["UAC"]
-    #     ],
-    # ):
-    #     lookup_df = extract_from_table(lookup_table_name)
-    #     check_lookup_table_joined_columns_unique(
-    #         df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
-    #     )
-    #     import pdb; pdb.set_trace()
-    #     df = null_safe_join(
-    #         left_df=df,
-    #         right_df=lookup_df,
-    #         null_safe_on=join_on_column_list,
-    #         null_unsafe_on=[]
-    #     )
-    #     import pdb; pdb.set_trace()
-    #     update_table(df, edited_table, write_mode="overwrite")
-
 
 @register_pipeline_stage("imputation_depdendent_transformations")
 def imputation_depdendent_transformations(
