@@ -28,6 +28,7 @@ from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_substring
 from cishouseholds.derive import assign_taken_column
@@ -88,6 +89,9 @@ from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.mapping import column_name_maps
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.regex_patterns import at_school_pattern
+from cishouseholds.regex_patterns import at_university_pattern
+from cishouseholds.regex_patterns import work_from_home_pattern
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -2245,4 +2249,40 @@ def nims_transformations(df: DataFrame) -> DataFrame:
 
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
+    return df
+
+
+def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
+    """Add result of various regex pattern matchings"""
+
+    # add work from home flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+        column_name_to_assign="is_working_from_home",
+        debug_mode=False,
+    )
+
+    # add at-school flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+        column_name_to_assign="at_school",
+        debug_mode=False,
+    )
+
+    # add at-university flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        column_name_to_assign="at_university",
+        debug_mode=False,
+    )
+
     return df
