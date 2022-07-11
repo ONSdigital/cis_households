@@ -169,27 +169,43 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     # TODO: make sure all_function_dict has also the run=False
     # TODO: check that function exists
     # TODO: use getallargspec instead of getargspec
+
     error_msg = ""
     for stage_dict in config_file_arguments_list:
         if type(stage_dict["run"]) != bool:
             error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
 
-        # if run and function not in list:
-        #     error
-        # if key == run:
-        #     validate value is bool
-        # if key == function:
-        #     validation function exists
-        # if key == when:
-        #     validate when
-
     for function_run_dict in config_file_arguments_list:  # _true
         function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
+        if function_run_dict["function"] == "union_survey_response_files":
+            import pdb
+
+            pdb.set_trace()
+
+        if "when" in function_run_dict:  # operator type and expected value exists
+            if not (
+                ("operator" in function_run_dict["when"])
+                or (function_run_dict["when"]["operator"] == "any")
+                or (function_run_dict["when"]["operator"] == "all")
+            ):
+                error_msg += (
+                    f""" - {function_run_dict['function']} stage should have operator as either any or all. \n"""
+                )
+            if "conditions" not in function_run_dict["when"]:
+                error_msg += f""" - {function_run_dict['function']} stage should have conditions as the stages to have been run. \n"""  # noqa: E501
+            if function_run_dict["when"]["conditions"]:  # there are conditions and the conditions have run as true
+                for function_run in function_run_dict["when"]["conditions"]:
+                    for function_run_condition in config_file_arguments_list:
+                        if not function_run_condition[function_run]["run"]:
+                            error_msg += f""" - {function_run_dict['function']} stage requires {function_run} stage to be turned as True. \n"""  # noqa: E501
 
         input_arguments_needed = [
             arg
-            for arg in inspect.getargspec(all_function_dict[function_run_dict["function"]]).args
-            if "=" not in str(inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg])
+            for arg in inspect.getfullargspec(all_function_dict[function_run_dict["function"]]).args
+            if "="
+            not in str(
+                inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg]
+            )  # noqa: E501
         ]
         if not (set(function_run_list) == set(input_arguments_needed)):
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
