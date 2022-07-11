@@ -201,22 +201,16 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
-    # TODO: make sure all_function_dict has also the run=False
-    # TODO: check that function exists
-    # TODO: use getallargspec instead of getargspec
-
     error_msg = ""
     for stage_dict in config_file_arguments_list:
         if type(stage_dict["run"]) != bool:
             error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
-
+    for config_func_name in set([config_func["function"] for config_func in config_file_arguments_list]):
+        # check that theres an object function per each of the pipeline stages in the config_file
+        if config_func_name not in set(list(all_function_dict.keys())):
+            error_msg += f""" - the {config_func_name} stage function isn't defined. \n"""  # noqa: E501
     for function_run_dict in config_file_arguments_list:  # _true
         function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
-        if function_run_dict["function"] == "union_survey_response_files":
-            import pdb
-
-            pdb.set_trace()
-
         if "when" in function_run_dict:  # operator type and expected value exists
             if not (
                 ("operator" in function_run_dict["when"])
@@ -233,7 +227,6 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
                     for function_run_condition in config_file_arguments_list:
                         if not function_run_condition[function_run]["run"]:
                             error_msg += f""" - {function_run_dict['function']} stage requires {function_run} stage to be turned as True. \n"""  # noqa: E501
-
         input_arguments_needed = [
             arg
             for arg in inspect.getfullargspec(all_function_dict[function_run_dict["function"]]).args
