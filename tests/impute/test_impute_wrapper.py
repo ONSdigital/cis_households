@@ -14,29 +14,39 @@ def _example_imputer(df: DataFrame, column_name_to_assign: str, reference_column
 
 def test_impute_wrapper_first_run(spark_session):
     """Check imputation flag creation on first run"""
-    expected_data_1 = [
-        ("A", None, 1, 1, "example_imputer"),
-        ("B", None, 1, 1, "example_imputer"),
-        ("C", 1, 1, 0, None),
+
+    input_data = [
+        ("A", None),
+        ("B", None),
+        ("C", 1),
     ]
 
-    df1 = spark_session.createDataFrame(
-        data=expected_data_1,
+    expected_data = [
+        ("A", 1, 1, "example_imputer"),
+        ("B", 1, 1, "example_imputer"),
+        ("C", 1, 0, None),
+    ]
+
+    input_df = spark_session.createDataFrame(
+        data=input_data,
+        schema="""
+            group string,
+            value integer
+        """,
+    )
+
+    expected_df = spark_session.createDataFrame(
+        data=expected_data,
         schema="""
             group string,
             value integer,
-            imputed_value integer,
             value_is_imputed integer,
             value_imputation_method string
         """,
     )
 
-    # Drop flags to mimic first run
-    df_input1 = df1.drop("imputed_value", "value_imputation_method", "value_is_imputed")
-    expected_df1 = df1.withColumn("value", F.col("imputed_value")).drop("imputed_value")
-
-    actual_df1 = impute_and_flag(df_input1, imputation_function=_example_imputer, reference_column="value", literal=1)
-    assert_df_equality(actual_df1, expected_df1, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+    actual_df = impute_and_flag(input_df, imputation_function=_example_imputer, reference_column="value", literal=1)
+    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
 def test_impute_wrapper_subsequent_run(spark_session):
