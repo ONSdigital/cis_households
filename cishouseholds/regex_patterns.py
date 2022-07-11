@@ -55,3 +55,9 @@ at_university_pattern = RegexPattern(
         ]
     ),
 )
+
+
+furloughed_pattern = RegexPattern(
+    positive_regex_pattern="FU[RL]{1,3}O[UW]{0,1}[GHE]{1,}D?",
+    negative_regex_pattern="|".join(["NOT ON FURLOUGH", "FURLOUGHED ON AND OFF CURRENTLY WORKING"]),
+)
