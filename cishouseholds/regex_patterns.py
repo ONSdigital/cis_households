@@ -55,3 +55,5 @@ at_university_pattern = RegexPattern(
         ]
     ),
 )
+
+self_employed_regex = RegexPattern(positive_regex_pattern="SELF.?EMPLOYED", negative_regex_pattern="")

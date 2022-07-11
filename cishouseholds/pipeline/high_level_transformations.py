@@ -91,6 +91,7 @@ from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex_patterns import at_school_pattern
 from cishouseholds.regex_patterns import at_university_pattern
+from cishouseholds.regex_patterns import self_employed_regex
 from cishouseholds.regex_patterns import work_from_home_pattern
 from cishouseholds.validate_class import SparkValidate
 
@@ -2282,6 +2283,14 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
         column_name_to_assign="at_university",
+        debug_mode=False,
+    )
+
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        column_name_to_assign="is_self_employed",
         debug_mode=False,
     )
 
