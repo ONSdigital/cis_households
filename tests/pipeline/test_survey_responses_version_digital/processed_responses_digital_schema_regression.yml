@@ -724,7 +724,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason
+  name: self_isolating_reason_detailed
   nullable: true
   type: string
 - metadata: {}
@@ -1260,13 +1260,13 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_datetime
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: visit_date_type
   nullable: true
   type: string
+- metadata: {}
+  name: visit_datetime
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: think_had_covid_any_symptoms_raw
   nullable: true
@@ -1448,7 +1448,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: self_isolating_reason_detailed
+  name: self_isolating_reason
   nullable: true
   type: string
 - metadata: {}

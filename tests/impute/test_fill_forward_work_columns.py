@@ -87,9 +87,50 @@ def test_fill_forward_from_last_change(spark_session):
         df=input_df,
         fill_forward_columns=["var_1", "var_2", "var_3"],
         participant_id_column="id",
-        visit_date_column="date",
+        visit_datetime_column="date",
         record_changed_column="changed",
         record_changed_value="Yes",
+    )
+    assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
+
+
+def test_fill_forward_from_last_change_dataset(spark_session):
+    input_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-12",   None,      None,      None,      None),
+                (1, 1, "2020-11-13",   None,      None,      None,      None),
+
+                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
+                (2, 1, "2020-11-12",   None,      None,      None,      None),
+            # fmt: on
+        ],
+        schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
+    )
+
+    expected_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-12",   None,      None,      None,      None),
+                (1, 1, "2020-11-13",   None,      None,      None,      None),
+
+                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
+                (2, 1, "2020-11-12",   None,       1,      1,      1),
+            # fmt: on
+        ],
+        schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
+    )
+    actual_df = fill_forward_from_last_change(
+        df=input_df,
+        fill_forward_columns=["var_1", "var_2", "var_3"],
+        participant_id_column="id",
+        visit_datetime_column="date",
+        record_changed_column="changed",
+        record_changed_value="Yes",
+        dateset_version_column="dataset",
+        minimum_dateset_version=1,
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
@@ -105,27 +146,15 @@ def test_fill_forward_only_to_nulls_in_dataset_based_on_column(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                # fill_forward should happen as from v1 to v2.
-                (1,     '2020-01-04',      'g1',   'g2',   'g3',    'Yes',      1),
-                (1,     '2020-01-05',      None,   None,   None,    None,       2), # fill_forward
-                (1,     '2020-01-06',      None,   'r2',   None,    0,          2),
-                (1,     '2020-01-07',      None,   None,   None,    0,          2),
-                (1,     '2020-01-08',      'f1',   'f2',   'f3',    'Yes',      2),
-                (1,     '2020-01-09',      None,   None,   None,    0,          2),
-                (1,     '2020-01-10',      None,   None,   None,    0,          2),
-
-                (1,     '2020-01-11',      't1',   None,   None,    'Yes',      1),
-                (1,     '2020-01-12',      None,   'a1',   'h1',    'No',       2), # only fill_forward var_1
-                (1,     '2020-01-13',      None,   None,   None,    'No',       2), # fill_forward
-
-                (2,     '2020-01-01',      None,   None,   None,    0,          1), # not fill_forward
-
-                (3,     '2020-01-01',      'g1',   'g2',   'g3',    'Yes',      1),
-                (3,     '2020-01-02',      None,   None,   None,    None,       1), # not fill_forward as from v1 to v1
-
-                (4,     '2020-01-01',      'g1',   'g2',   'g3',    'Yes',      2),
-                (4,     '2020-01-02',      None,   None,   None,    None,       2),
-            # fill_forward as from v2 to v2
+                (1,     '2020-01-01',      'a1',   'a2',   'a3',    'Yes',      1),
+                (1,     '2020-01-02',      None,   None,   None,    None,       1), # not filled into
+                (1,     '2020-01-03',      'a1',   'a2',   'a3',    'Yes',      1),
+                (1,     '2020-01-04',      None,   None,   None,    None,       2), # first row can be filled into from previous version
+                (1,     '2020-01-05',      'b1',   'b2',   'b3',    'Yes',      2),
+                (1,     '2020-01-06',      None,   None,   None,    None,       2), # filled as version 2 and null
+                (1,     '2020-01-07',      None,   'c2',   None,    'Yes',      2), # filled as version 2 and null, but no overwrite
+                (1,     '2020-01-08',      None,   None,   None,    None,       3),
+            # filled as above version 2
             # fmt: on
         ],
         schema=schema,
@@ -133,25 +162,14 @@ def test_fill_forward_only_to_nulls_in_dataset_based_on_column(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     '2020-01-04',      'g1',   'g2',   'g3',    'Yes',      1),
-                (1,     '2020-01-05',      'g1',   'g2',   'g3',    None,       2),
-                (1,     '2020-01-06',      'g1',   'r2',   'g3',    0,          2),
-                (1,     '2020-01-07',      'g1',   'r2',   'g3',    0,          2),
-                (1,     '2020-01-08',      'f1',   'f2',   'f3',    'Yes',      2),
-                (1,     '2020-01-09',      'f1',   'f2',   'f3',    0,          2),
-                (1,     '2020-01-10',      'f1',   'f2',   'f3',    0,          2),
-
-                (1,     '2020-01-11',      't1',   None,   None,    'Yes',      1),
-                (1,     '2020-01-12',      't1',   'a1',   'h1',    'No',       2),
-                (1,     '2020-01-13',      't1',   'a1',   'h1',    'No',       2),
-
-                (2,     '2020-01-01',      None,   None,   None,    0,          1),
-
-                (3,     '2020-01-01',      'g1',   'g2',   'g3',    'Yes',      1),
-                (3,     '2020-01-02',      None,   None,   None,    None,       1),
-
-                (4,     '2020-01-01',      'g1',   'g2',   'g3',    'Yes',      2),
-                (4,     '2020-01-02',      'g1',   'g2',   'g3',    None,       2),
+                (1,     '2020-01-01',      'a1',   'a2',   'a3',    'Yes',      1),
+                (1,     '2020-01-02',      None,   None,   None,    None,       1),
+                (1,     '2020-01-03',      'a1',   'a2',   'a3',    'Yes',      1),
+                (1,     '2020-01-04',      'a1',   'a2',   'a3',    None,       2),
+                (1,     '2020-01-05',      'b1',   'b2',   'b3',    'Yes',      2),
+                (1,     '2020-01-06',      'b1',   'b2',   'b3',    None,       2),
+                (1,     '2020-01-07',      None,   'c2',   None,    'Yes',      2),
+                (1,     '2020-01-08',      'b1',   'c2',   'b3',    None,       3),
             # fmt: on
         ],
         schema=schema,

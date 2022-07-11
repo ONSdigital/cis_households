@@ -40,7 +40,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: phase
+  name: study_cohort
   nullable: true
   type: string
 - metadata: {}
@@ -575,6 +575,10 @@ fields:
   name: survey_response_dataset_major_version
   nullable: false
   type: integer
+- metadata: {}
+  name: work_health_care_area
+  nullable: true
+  type: string
 - metadata: {}
   name: swab_sample_barcode_edited_flag
   nullable: true

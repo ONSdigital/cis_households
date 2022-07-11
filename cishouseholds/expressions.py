@@ -35,3 +35,10 @@ def sum_within_row(column_list: list):
     N.B. Null values are treated as 0. If is values are Null, sum will be 0.
     """
     return reduce(add, [F.coalesce(F.col(column), F.lit(0)) for column in column_list])
+
+
+def any_column_matches_regex(column_list: list, regex_pattern: str):
+    """
+    Expression that evaluates true if any column matches the given RegEx pattern.
+    """
+    return reduce(or_, [F.col(column).rlike(regex_pattern) for column in column_list])

@@ -11,6 +11,27 @@ start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
 
+def get_cis_soc_data_description(_):
+    option = int(_("custom_random.random_integer", lower=1, upper=2, null_percent=0))
+    if option > 1:
+        return lambda: {
+            "work_main_job_title": _("text.sentence"),
+            "work_main_job_role": _("choice", items=[_("text.sentence"), None]),
+            "standard_occupational_classification_code": _(
+                "choice",
+                items=[_("custom_random.random_integer", lower=1000, upper=9999, null_percent=15), "un", "uncodeable"],
+            ),
+        }
+    else:
+        return lambda: {
+            "job_title": _("text.quote"),
+            "main_job_responsibilities": _("choice", items=[_("text.quote"), None]),
+            "Gold SOC2010 code": _("custom_random.random_integer", lower=1000, upper=9999, null_percent=0),
+            "Source": _("text.quote"),
+            "CHU ID": _("custom_random.random_integer", lower=1000, upper=9999, null_percent=0),
+        }
+
+
 def get_nims_data_description(_, participant_ids=[]):
     return lambda: {  # noqa: E731
         "cis_participant_id": _("choice", items=participant_ids + [None]),
@@ -2078,7 +2099,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_not_taken_reason": _(
             "choice",
             items=[
-                "I am near the end of my testing window and my blood test kit has not arrived",
+                "I am near the end of my testing window and my swab test kit has not arrived",
                 "I asked not to receive a blood test kit this month",
                 "I decided not to take it this month",
                 "I tried but could not take it",
@@ -2150,7 +2171,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             items=[
                 "Employed",
                 "In education",
-                "Not in paid work. This includes being unemployed or doing voluntary work",
+                "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                 "Self-employed",
                 None,
             ],
@@ -2158,7 +2179,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "work_status_employment": _(
             "choice",
             items=[
-                "Currently not working. This includes if you are on sick or other leave such as maternity or paternity for longer than 4 weeks"  # noqa: E501
+                "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                 "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                 None,
             ],
@@ -2294,7 +2315,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.5, 0.5],
         ),
         "self_isolating": _("choice", items=yes_no_prefer_not_to_say),
-        "self_isolating_reason": _("choice", items=self_isolating_reasons),
+        "self_isolating_reason_detailed": _("choice", items=self_isolating_reasons),
         "think_have_covid": _("choice", items=yes_no_none_choice),  # TODO Check as marked TBC in extract
         "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
         "illness_reduces_activity_or_ability": _(

@@ -143,36 +143,6 @@ category_maps = {
             "QNR - Questionnaire No Return": 1,
             "TNR - Test Not Returned": 2,
         },
-        "visit_order": {
-            "First Visit": 1,
-            "Follow-up 1": 2,
-            "Follow-up 2": 3,
-            "Follow-up 3": 4,
-            "Follow-up 4": 5,
-            "Month 2": 6,
-            "Month 3": 7,
-            "Month 4": 8,
-            "Month 5": 9,
-            "Month 6": 10,
-            "Month 7": 11,
-            "Month 8": 12,
-            "Month 9": 13,
-            "Month 10": 14,
-            "Month 11": 15,
-            "Month 12": 16,
-            "Month 13": 17,
-            "Month 14": 18,
-            "Month 15": 19,
-            "Month 16": 20,
-            "Month 17": 21,
-            "Month 18": 22,
-            "Month 19": 23,
-            "Month 20": 24,
-            "Month 21": 25,
-            "Month 22": 26,
-            "Month 23": 27,
-            "Month 24": 28,
-        },
         "participant_visit_status": {
             "Cancelled": 0,
             "Completed": 1,
@@ -185,6 +155,7 @@ category_maps = {
             "New": 7,
             "Dispatched": 8,
             "Household did not attend": 9,
+            "Locked": 10,
         },
         "survey_response_type": {"First Visit": 0, "Follow-up Visit": 1},
         "sex": {"Male": 1, "Female": 2},
@@ -452,6 +423,8 @@ category_maps = {
             "Deceased": 9,
             "Do not reinstate": 10,
             "SWCAP": 11,
+            "Mental Capacity Reasons": 12,
+            "Do not want to proceed with CISD": 13,
         },
         "cis_covid_vaccine_type": {
             "Don't know type": 1,
@@ -1071,12 +1044,153 @@ category_maps = {
             "S99999999": 11,
             "W99999999": 12,
         },
+        "approached_for_blood_samples": _yes_no_categories,
+        "household_invited_to_digital": _yes_no_categories,
+        "consent_nhs_data_share_yn": _yes_no_categories,
+        "participant_invited_to_digital": _yes_no_categories,
+        "participant_enrolled_digital": _yes_no_categories,
+        "existing_participant_digital_opt_in_status": {
+            "Participant Opted In": 1,
+            "Participant Opted Out": 0,
+        },
+        "language_preference": {
+            "English": 1,
+            "Welsh": 2,
+        },
+        # "digital_entry_pack_status": {},  # TODO Need categories to map
+        # "existing_participant_digital_opt_in_reminder_1_status": {},  # TODO Need categories to map
+        # "existing_participant_digital_opt_in_reminder_2_status": {},  # TODO Need categories to map
+        "household_completion_window_status": {
+            "New": 1,
+            "Open": 2,
+            "Closed": 3,
+        },
+        "completion_window_cadence": {
+            "Weekly": 1,
+            "Monthly": 2,
+        },
+        "participant_completion_window_status": {
+            "New": 1,
+            "Open": 2,
+            "Closed": 3,
+        },
+        "opted_out_of_next_window": _yes_no_categories,
+        "opted_out_of_blood_next_window": _yes_no_categories,
+        "blood_sample_transport_status": {
+            "Dispatched": 1,
+            "Arrived at Sorting Office": 2,
+            "Arrived at Consolidation Hub": 3,
+            "Arrived at Lab": 4,
+            "Results Returned": 5,
+        },
+        "swab_sample_transport_status": {
+            "Dispatched": 1,
+            "Arrived at Sorting Office": 2,
+            "Arrived at Consolidation Hub": 3,
+            "Arrived at Lab": 4,
+            "Results Returned": 5,
+        },
+        # "sample_kit_not_dispatched_code": {},  # TODO Need categories to map
+        "survey_completion_status": {
+            "New": 1,
+            "Partially Completed": 2,
+            "In progress": 2,
+            "Completed": 3,
+            "Submitted": 3,
+            "Archived": 4,
+            "Locked": 5,
+        },
+        "swab_not_taken_reason": {
+            "I am near the end of my testing window and my swab test kit has not arrived": 1,
+            "I did not want to take it this month": 2,
+            "I tried but could not take it": 3,
+            "The swab test kit arrived both damaged and with parts missing": 4,
+            "The swab test kit arrived damaged": 5,
+            "The swab test kit arrived with parts missing": 6,
+        },
+        # "swab_not_taken_missing_parts": {},  # TODO Logic for multiple choice responses
+        "questionnaire_started_no_incentive": _yes_no_categories,
+        "swab_returned": _yes_no_categories,
+        "blood_not_taken_reason": {
+            "I am near the end of my testing window and my swab test kit has not arrived": 1,
+            "I am near the end of my testing window and my blood test kit has not arrived": 1,
+            "I asked not to receive a blood test kit this month": 2,
+            "I decided not to take it this month": 3,
+            "I tried but could not take it": 4,
+            "The blood test kit arrived both damaged and with parts missing": 5,
+            "The blood test kit arrived damaged": 6,
+            "The blood test kit arrived with parts missing": 7,
+        },
+        # "blood_not_taken_missing_parts": {},  # TODO Logic for multiple choice responses
+        # "blood_not_taken_could_not_reason": {},  # TODO Logic for multiple choice responses
+        "blood_returned": _yes_no_categories,
+        "work_status_digital": {
+            "Employed": 1,
+            "Self-employed": 2,
+            "Not in paid work. This includes being unemployed or retired or doing voluntary work": 3,
+            "In education": 4,
+        },
+        "work_status_employment": {
+            "Currently working. This includes if you are on sick or other leave for less than 4 weeks": 1,
+            "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
+        },
+        "work_status_unemployment": {
+            "Looking for paid work and able to start": 1,
+            "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled": 2,  # noqa: E501
+            "Retired": 3,
+            "Or retired?": 3,
+        },
+        "work_status_education": {
+            "A child aged 4 or over at home-school": 1,
+            "A child aged 4 or over at school": 2,
+            "A child below school age and attending a nursery or a pre-school or childminder": 3,
+            "A child below school age and not attending a nursery or pre-school or childminder": 4,
+            "Attending a college or other further education provider including apprenticeships": 5,
+            "Attending university": 6,
+        },
+        "cis_covid_vaccine_type_5": {
+            "Don't know type": 1,
+            "From a research study/trial": 2,
+            "Moderna": 3,
+            "Oxford/AstraZeneca": 4,
+            "Pfizer/BioNTech": 5,
+            "Other / specify": 6,
+            "Janssen/Johnson&Johnson": 7,
+            "Novavax": 8,
+            "Sinovac": 9,
+            "Sinovax": 10,
+            "Valneva": 11,
+            "Sinopharm": 12,
+            "Sputnik": 13,
+        },
+        "cis_covid_vaccine_type_6": {
+            "Don't know type": 1,
+            "From a research study/trial": 2,
+            "Moderna": 3,
+            "Oxford/AstraZeneca": 4,
+            "Pfizer/BioNTech": 5,
+            "Other / specify": 6,
+            "Janssen/Johnson&Johnson": 7,
+            "Novavax": 8,
+            "Sinovac": 9,
+            "Sinovax": 10,
+            "Valneva": 11,
+            "Sinopharm": 12,
+            "Sputnik": 13,
+        },
+        "swab_sample_barcode_correct": _yes_no_categories,
+        "blood_sample_barcode_correct": _yes_no_categories,
     }
 }
 
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "soc_resolution_name_map": {
+        "job_title": "work_main_job_title",
+        "main_job_responsibilities": "work_main_job_role",
+        "Gold SOC2010 code": "standard_occupational_classification_code",
+    },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
         "Result": "pcr_result_classification",
@@ -1187,7 +1301,7 @@ column_name_maps = {
         "City": "city",
         "County": "county",
         "Postcode": "postcode",
-        "Phase": "phase",
+        "Phase": "study_cohort",
         "No. Paticicpants not Consented": "household_participants_not_consenting_count",
         "Reason Participants not Consented": "household_participants_not_consented_reason",
         "No. Participants not present for Visit": "household_members_over_2_years_and_not_present_count",
@@ -1922,3 +2036,8 @@ survey_response_cisd_cast_to_double = [
     "person_not_consenting_age_9",
     "household_participants_not_consenting_count",
 ]
+soc_regex_map = {
+    "title": "work_main_job_title",
+    "(role)|(responsibilities)": "work_main_job_role",
+    "(code)|(SOC)": "standard_occupational_classification_code",
+}

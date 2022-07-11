@@ -13,16 +13,7 @@ def validation_calls(SparkVal):
         "visit_datetime": {
             "between": {
                 "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("26/04/2020"), format="dd/MM/yyyy")},
-                "upper_bound": {
-                    "inclusive": True,
-                    "value": F.date_add(
-                        F.to_timestamp(
-                            F.regexp_extract(F.col("survey_response_source_file"), r"\d{8}(?=.csv)", 0),
-                            format="yyyyMMdd",
-                        ),
-                        1,
-                    ),
-                },
+                "upper_bound": {"inclusive": True, "value": F.col("file_date") + F.expr("INTERVAL 2 DAYS")},
             }
         },
         "age_at_visit": {
@@ -183,7 +174,7 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     return SparkVal.filter(
         selected_errors=[
             "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
-            "the date in visit_datetime should be before the date in file_date when both swab_sample_barcode and blood_sample_barcode are null",  # noqa:E501
+            "the date in visit_datetime should be before the date in file_date plus two days when both swab_sample_barcode and blood_sample_barcode are null",  # noqa:E501
         ],
         any=True,
         return_failed=True,
