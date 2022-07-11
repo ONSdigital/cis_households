@@ -28,6 +28,7 @@ from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.mapping import category_maps
 from cishouseholds.mapping import column_name_maps
 from cishouseholds.merge import join_assayed_bloods
+from cishouseholds.merge import null_safe_join
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
@@ -45,7 +46,6 @@ from cishouseholds.pipeline.high_level_transformations import create_formatted_d
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
-from cishouseholds.pipeline.high_level_transformations import join_from_lookups_generic
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
@@ -528,22 +528,75 @@ def lookup_based_editing(
         input file path name for travel_countries corrections lookup file
     edited_table
     """
-    # TODO: for loop of a list of tables with keys to join
-    # TODO: use csv_to_table and schemas to delete unwanted columns
-
     df = extract_from_table(input_table)
 
-    for lookup_table_name, join_on_column_list in zip(
-        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
-        # [None, None, ['UAC', 'numAdult', 'numChild', 'dvhsize', 'tenure_group']],
-        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
-    ):
-        lookup_df = extract_from_table(lookup_table_name)
-        check_lookup_table_joined_columns_unique(
-            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
-        )
-        df = join_from_lookups_generic(df=df, df_lookup=lookup_df, list_columns_join=join_on_column_list)
-        update_table(df, edited_table, write_mode="overwrite")
+    # COHORT
+    lookup_df_cohort = extract_from_table(cohort_lookup_table)
+    check_lookup_table_joined_columns_unique(
+        df=lookup_df_cohort, join_column_list=["participant_id", "old_cohort"], name_of_df=cohort_lookup_table
+    )
+    lookup_df_cohort = lookup_df_cohort.withColumnRenamed("old_cohort", "study_cohort")
+    df = null_safe_join(
+        left_df=df, right_df=lookup_df_cohort, null_safe_on=["participant_id", "study_cohort"], null_unsafe_on=[]
+    )
+    # TENURE
+    tenure_group_df = extract_from_table(tenure_group_table)
+    check_lookup_table_joined_columns_unique(
+        df=tenure_group_df,
+        join_column_list=["UAC"],
+        name_of_df=tenure_group_table,
+    )
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
+        tenure_group_df = tenure_group_df.withColumnRenamed(key, value)
+    tenure_group_df = tenure_group_df.withColumnRenamed("UAC", "ons_household_id")
+
+    df = null_safe_join(
+        left_df=df,
+        right_df=tenure_group_df,
+        null_safe_on=["ons_household_id"],
+        null_unsafe_on=[],
+    )
+    # TRAVEL
+    lookup_df_travel = extract_from_table(travel_countries_lookup_table)
+    check_lookup_table_joined_columns_unique(
+        df=lookup_df_travel, join_column_list=["been_outside_uk_last_country_old"], name_of_df=cohort_lookup_table
+    )
+    df = df.join(
+        F.broadcast(lookup_df_travel.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        how="left",
+        on=df.been_outside_uk_last_country == lookup_df_travel.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
+
+    update_table(df, edited_table, write_mode="overwrite")
+
+    # for lookup_table_name, join_on_column_list in zip(
+    #     [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+    #     # [None, None, ['UAC', 'numAdult', 'numChild', 'dvhsize', 'tenure_group']],
+    #     [
+    #         ["participant_id", "old_cohort"], # R: study_cohort
+    #         ["been_outside_uk_last_country_old"], # R: been_outside_uk_last_country
+    #         ["UAC"]
+    #     ],
+    # ):
+    #     lookup_df = extract_from_table(lookup_table_name)
+    #     check_lookup_table_joined_columns_unique(
+    #         df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
+    #     )
+    #     import pdb; pdb.set_trace()
+    #     df = null_safe_join(
+    #         left_df=df,
+    #         right_df=lookup_df,
+    #         null_safe_on=join_on_column_list,
+    #         null_unsafe_on=[]
+    #     )
+    #     import pdb; pdb.set_trace()
+    #     update_table(df, edited_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("imputation_depdendent_transformations")

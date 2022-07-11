@@ -2019,64 +2019,6 @@ def create_formatted_datetime_string_columns(df):
     return df
 
 
-def join_from_lookups_generic(df, df_lookup, list_columns_join, null_value=None):
-    """
-    Function used for joining lookup tables
-
-    Parameters
-    ----------
-    df
-    df_lookup
-    list_columns_join
-
-    NOTE: This function will expect the column names to be join on to be the same in both sides
-    """
-    # TODO: editing null values to given
-    # TODO: raise error if column name not found in either side
-    # join: list keys
-    df = df.join(df_lookup, how="left", on=(list_columns_join)).filna(null_value)
-    return df
-
-
-def transform_from_lookups(
-    df: DataFrame, cohort_lookup: DataFrame, travel_countries_lookup: DataFrame, tenure_group: DataFrame
-):
-    # renaming: key column to be renamed to
-    # join: need 2 dataframe and key list
-    # TODO: send elsewhere - specific logic to country only
-
-    # COHORT
-    cohort_lookup = cohort_lookup.withColumnRenamed("participant_id", "cohort_participant_id")
-    df = df.join(
-        F.broadcast(cohort_lookup),
-        how="left",
-        on=((df.participant_id == cohort_lookup.cohort_participant_id) & (df.study_cohort == cohort_lookup.old_cohort)),
-    ).drop("cohort_participant_id")
-    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop(
-        "new_cohort", "old_cohort"
-    )
-
-    # TRAVEL
-    df = df.join(
-        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
-    )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
-    # TENURE
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group = tenure_group.withColumnRenamed(key, value)
-
-    df = df.join(tenure_group, on=(df["ons_household_id"] == tenure_group["UAC"]), how="left").drop("UAC")
-    return df
-
-
 def fill_forwards_transformations(df):
     df = fill_forward_from_last_change(
         df=df,
