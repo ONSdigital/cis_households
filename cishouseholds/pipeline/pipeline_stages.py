@@ -618,10 +618,12 @@ def lookup_based_editing(
     ----------
     input_table
         input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
+    cohort_lookup_table
+        input file name for cohort corrections lookup file
+    travel_countries_lookup_table
+        input file name for travel_countries corrections lookup file
+    tenure_group_table
+        input file name for tenure groups correction lookup file
     edited_table
     """
     df = extract_from_table(input_table)
