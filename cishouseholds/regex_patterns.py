@@ -55,3 +55,16 @@ at_university_pattern = RegexPattern(
         ]
     ),
 )
+
+not_working_pattern = RegexPattern(
+    positive_regex_pattern="|".join(
+        [
+            r"(NONE|NOTHING|NIL|AT HOME)",
+            r"(NO.{0,}WORK)|(^UN(ABLE|EMPLOY))",
+            r"((SONS|TERS|THERS|'S).CARER)",
+            r"(TERNITY.LEAVE$)|((HOME|HOUSE)\w)",
+            r"(FULL TIME.{0,}(MOM|MOTHER|DAD|FATHER))",
+        ]
+    ),
+    negative_regex_pattern="|".join(["MASTER", "MISTRESS"]),
+)
