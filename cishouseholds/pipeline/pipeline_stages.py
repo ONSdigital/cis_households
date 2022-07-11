@@ -32,7 +32,6 @@ from cishouseholds.mapping import category_maps
 from cishouseholds.mapping import column_name_maps
 from cishouseholds.mapping import soc_regex_map
 from cishouseholds.merge import join_assayed_bloods
-from cishouseholds.merge import null_safe_join
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
@@ -52,6 +51,7 @@ from cishouseholds.pipeline.high_level_transformations import fill_forwards_tran
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
+from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
@@ -609,7 +609,6 @@ def lookup_based_editing(
     cohort_lookup_table: str,
     travel_countries_lookup_table: str,
     tenure_group_table: str,
-    # tenure_group_table_columns_list: List[str], # TODO: csv to table to look how the values are drop if not found
     edited_table: str,
 ):
     """
@@ -626,16 +625,12 @@ def lookup_based_editing(
     edited_table
     """
     df = extract_from_table(input_table)
-
     # COHORT
     lookup_df_cohort = extract_from_table(cohort_lookup_table)
     check_lookup_table_joined_columns_unique(
         df=lookup_df_cohort, join_column_list=["participant_id", "old_cohort"], name_of_df=cohort_lookup_table
     )
     lookup_df_cohort = lookup_df_cohort.withColumnRenamed("old_cohort", "study_cohort")
-    df = null_safe_join(
-        left_df=df, right_df=lookup_df_cohort, null_safe_on=["participant_id", "study_cohort"], null_unsafe_on=[]
-    )
     # TENURE
     tenure_group_df = extract_from_table(tenure_group_table)
     check_lookup_table_joined_columns_unique(
@@ -643,33 +638,18 @@ def lookup_based_editing(
         join_column_list=["UAC"],
         name_of_df=tenure_group_table,
     )
-    for key, value in column_name_maps["tenure_group_variable_map"].items():
-        tenure_group_df = tenure_group_df.withColumnRenamed(key, value)
     tenure_group_df = tenure_group_df.withColumnRenamed("UAC", "ons_household_id")
-
-    df = null_safe_join(
-        left_df=df,
-        right_df=tenure_group_df,
-        null_safe_on=["ons_household_id"],
-        null_unsafe_on=[],
-    )
     # TRAVEL
     lookup_df_travel = extract_from_table(travel_countries_lookup_table)
     check_lookup_table_joined_columns_unique(
         df=lookup_df_travel, join_column_list=["been_outside_uk_last_country_old"], name_of_df=cohort_lookup_table
     )
-    df = df.join(
-        F.broadcast(lookup_df_travel.withColumn("REPLACE_COUNTRY", F.lit(True))),
-        how="left",
-        on=df.been_outside_uk_last_country == lookup_df_travel.been_outside_uk_last_country_old,
+    df = transform_from_lookups(
+        df=df,
+        cohort_lookup=lookup_df_cohort,
+        tenure_group=tenure_group_df,
+        travel_countries_lookup=lookup_df_travel,
     )
-    df = df.withColumn(
-        "been_outside_uk_last_country",
-        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
-            F.col("been_outside_uk_last_country"),
-        ),
-    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
-
     update_table(df, edited_table, write_mode="overwrite")
 
 

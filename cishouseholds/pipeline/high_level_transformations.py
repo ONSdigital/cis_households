@@ -87,6 +87,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.mapping import column_name_maps
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex_patterns import at_school_pattern
@@ -1958,6 +1959,36 @@ def derive_people_in_household_count(df):
             F.col("people_in_household_count").cast("string")
         ),
     )
+    return df
+
+
+def transform_from_lookups(
+    df: DataFrame,
+    cohort_lookup: DataFrame,
+    tenure_group: DataFrame,
+    travel_countries_lookup: DataFrame,
+):
+    # COHORT
+    df = null_safe_join(
+        left_df=df, right_df=cohort_lookup, null_safe_on=["participant_id", "study_cohort"], null_unsafe_on=[]
+    )
+    df = df.withColumn("study_cohort", F.coalesce(F.col("new_cohort"), F.col("study_cohort"))).drop("new_cohort")
+    # TENURE
+    for key, value in column_name_maps["tenure_group_variable_map"].items():
+        tenure_group = tenure_group.withColumnRenamed(key, value)
+    df = null_safe_join(left_df=df, right_df=tenure_group, null_safe_on=["ons_household_id"], null_unsafe_on=[])
+    # TRAVEL
+    df = df.join(
+        F.broadcast(travel_countries_lookup.withColumn("REPLACE_COUNTRY", F.lit(True))),
+        how="left",
+        on=df.been_outside_uk_last_country == travel_countries_lookup.been_outside_uk_last_country_old,
+    )
+    df = df.withColumn(
+        "been_outside_uk_last_country",
+        F.when(F.col("REPLACE_COUNTRY"), F.col("been_outside_uk_last_country_new")).otherwise(
+            F.col("been_outside_uk_last_country"),
+        ),
+    ).drop("been_outside_uk_last_country_old", "been_outside_uk_last_country_new", "REPLACE_COUNTRY")
     return df
 
 
