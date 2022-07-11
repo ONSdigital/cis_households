@@ -43,4 +43,4 @@ def any_column_matches_regex(column_list: list, regex_pattern: str):
     are replaced with 0-length strings - this prevents the result from being evaluated as null when one or
     more columns contain a null value.
     """
-    reduce(or_, [F.coalesce(F.col(column), F.lit("")).rlike(regex_pattern) for column in column_list])
+    return reduce(or_, [F.coalesce(F.col(column), F.lit("")).rlike(regex_pattern) for column in column_list])
