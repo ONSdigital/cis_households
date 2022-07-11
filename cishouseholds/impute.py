@@ -362,6 +362,7 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
 
     method_column = reference_column + "_imputation_method"
     method_other = F.col(method_column) if method_column in df.columns else None
+
     df = df.withColumn(
         reference_column + "_imputation_method",
         F.when(F.col(status_column) == 1, imputation_function.__name__).otherwise(method_other).cast("string"),

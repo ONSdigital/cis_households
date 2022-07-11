@@ -480,7 +480,7 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     unioned_survey_responses_table
         input tables for extracting each of the transformed survey responses tables
     unioned_survey_responses_table
-        output table name for the combine file of all unioned survey responses
+        output table name for the combine file of all unioned survey responsesi
     """
     df_list = [extract_from_table(table) for table in tables_to_union]
 
