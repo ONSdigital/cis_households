@@ -19,7 +19,7 @@ def test_impute_wrapper(spark_session):
         ("A", None, 1, 1, "example_imputer"),
         ("B", None, 1, 1, "example_imputer"),
         ("C", 1, 1, 0, None),
-        ("D", 1, 1, 1, None),
+        ("D", 1, 1, 1, None),  # positive is imputed valued should be retained
     ]
 
     def example_imputer(df: DataFrame, column_name_to_assign: str, reference_column: str, literal=1):
@@ -49,8 +49,12 @@ def test_impute_wrapper(spark_session):
     expected_df1 = df1.withColumn("value", F.col("imputed_value")).drop("imputed_value")
     expected_df2 = df2.withColumn("value", F.col("imputed_value")).drop("imputed_value")
 
-    actual_df1 = impute_and_flag(df_input1, imputation_function=example_imputer, reference_column="value", literal=1)
+    actual_df1 = impute_and_flag(
+        df_input1, imputation_function=example_imputer, reference_column="value", literal=1
+    )  # test with dropped imputation flags to represent no exisiting table
     assert_df_equality(actual_df1, expected_df1, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
-    actual_df2 = impute_and_flag(df_input2, imputation_function=example_imputer, reference_column="value", literal=1)
+    actual_df2 = impute_and_flag(
+        df_input2, imputation_function=example_imputer, reference_column="value", literal=1
+    )  # tesst without dropping flags to ensure positives are retained
     assert_df_equality(actual_df2, expected_df2, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
