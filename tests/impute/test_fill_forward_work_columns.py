@@ -98,10 +98,9 @@ def test_fill_forward_from_last_change_dataset(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-            # TODO: incorporate survey_response_type, not fill forward None
-            ## understand how change column is derived
                 (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
                 (1, 0, "2020-11-12",   None,      None,      None,      None),
+                (1, 1, "2020-11-13",   None,      None,      None,      None),
 
                 (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
                 (2, 1, "2020-11-12",   None,      None,      None,      None),
@@ -115,6 +114,8 @@ def test_fill_forward_from_last_change_dataset(spark_session):
             # fmt: off
                 (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
                 (1, 0, "2020-11-12",   None,      None,      None,      None),
+                (1, 1, "2020-11-13",   None,      None,      None,      None),
+
                 (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
                 (2, 1, "2020-11-12",   None,       1,      1,      1),
             # fmt: on
