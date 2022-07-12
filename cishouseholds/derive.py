@@ -1006,7 +1006,11 @@ def assign_ethnicity_white(df: DataFrame, column_name_to_assign: str, ethnicity_
     """
 
     df = df.withColumn(
-        column_name_to_assign, F.when(F.col(ethnicity_group_column_name) == "White", "White").otherwise("Non-White")
+        column_name_to_assign,
+        F.when(F.col(ethnicity_group_column_name) == "White", "White")
+        .when(F.col(ethnicity_group_column_name) != "White", "Non-White")
+        .otherwise(None)
+        .cast("string"),
     )
     return df
 
