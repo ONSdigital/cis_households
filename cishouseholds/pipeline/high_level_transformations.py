@@ -2307,6 +2307,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         debug_mode=False,
     )
 
+    # add self-employed flag
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
