@@ -6,7 +6,7 @@ from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import retired_regex_pattern
 
 
-# A list of positive test cases which need to be interpreted as "Working from Home" &
+# A list of positive test cases which need to be interpreted as "Retired" &
 # negative test cases which shouldn't.
 # Please append new cases to the appropriate list below
 test_data = {

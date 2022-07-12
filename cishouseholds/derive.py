@@ -1838,7 +1838,7 @@ def assign_regex_match_result(
             result,
         )
     if debug_mode:
-        df = df.withColumn(f"{column_name_to_assign}_positive", positive_regex_match_result,).withColumn(
+        df = df.withColumn(f"{column_name_to_assign}_positive", positive_regex_match_result).withColumn(
             f"{column_name_to_assign}_negative",
             negative_regex_match_result,
         )
