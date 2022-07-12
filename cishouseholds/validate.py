@@ -201,16 +201,21 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
-    error_msg = ""
+    error_msg = "\n"
     for stage_dict in config_file_arguments_list:
+        if "run" not in stage_dict:
+            error_msg += f"""  - The {stage_dict['function']} does NOT have run parameter. \n"""  # noqa: E501
         if type(stage_dict["run"]) != bool:
             error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
+
     for config_func_name in set([config_func["function"] for config_func in config_file_arguments_list]):
         # check that theres an object function per each of the pipeline stages in the config_file
         if config_func_name not in set(list(all_function_dict.keys())):
-            error_msg += f""" - the {config_func_name} stage function isn't defined. \n"""  # noqa: E501
+            error_msg += f"""  - the {config_func_name} stage function isn't defined. \n"""  # noqa: E501
+
     for function_run_dict in config_file_arguments_list:  # _true
         function_run_list = [x for x in function_run_dict.keys() if (x != "run") and (x != "function")]
+
         if "when" in function_run_dict:  # operator type and expected value exists
             if not (
                 ("operator" in function_run_dict["when"])
@@ -218,31 +223,47 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
                 or (function_run_dict["when"]["operator"] == "all")
             ):
                 error_msg += (
-                    f""" - {function_run_dict['function']} stage should have operator as either any or all. \n"""
+                    f"""  - {function_run_dict['function']} stage should have operator as either any or all. \n"""
                 )
             if "conditions" not in function_run_dict["when"]:
-                error_msg += f""" - {function_run_dict['function']} stage should have conditions as the stages to have been run. \n"""  # noqa: E501
-            if function_run_dict["when"]["conditions"]:  # there are conditions and the conditions have run as true
-                for function_run in function_run_dict["when"]["conditions"]:
-                    for function_run_condition in config_file_arguments_list:
-                        if not function_run_condition[function_run]["run"]:
-                            error_msg += f""" - {function_run_dict['function']} stage requires {function_run} stage to be turned as True. \n"""  # noqa: E501
-        input_arguments_needed = [
-            arg
-            for arg in inspect.getfullargspec(all_function_dict[function_run_dict["function"]]).args
-            if "="
-            not in str(
-                inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg]
-            )  # noqa: E501
-        ]
+                error_msg += f"""  - {function_run_dict['function']} stage should have conditions as the stages to have been run. \n"""  # noqa: E501
+            else:  # there are conditions and the conditions have run as true
+                for function_run_name, status in function_run_dict["when"]["conditions"].items():
+                    list_needed_functions = [
+                        condition_stage
+                        for condition_stage in config_file_arguments_list
+                        if ((condition_stage["function"] == function_run_name) and (status == "updated"))
+                    ]
+                    for function_run_condition in list_needed_functions:
+                        if not function_run_condition["run"]:
+                            error_msg += f"""  - {function_run_dict['function']} stage requires {function_run_name} stage to be turned as True. \n"""  # noqa: E501
+        else:
+            input_arguments_needed = [
+                arg
+                for arg in inspect.getfullargspec(all_function_dict[function_run_dict["function"]]).args
+                if "="
+                not in str(
+                    inspect.signature(all_function_dict[function_run_dict["function"]]).parameters[arg]
+                )  # noqa: E501
+            ]
         if not (set(function_run_list) == set(input_arguments_needed)):
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_run_list]
-            list_of_unrecognised_arg = [x for x in function_run_list if x not in input_arguments_needed]
+            list_of_unrecognised_arg = [
+                x
+                for x in function_run_list
+                if (
+                    (x not in input_arguments_needed)
+                    and (x != "when")
+                    # the reason when is taken out from the list is because input_arguments_needed only
+                    # checks for inputs in the function object
+                )
+            ]
+
             if list_not_passed_arg:
                 error_msg += f"""  - {function_run_dict["function"]} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
             if list_of_unrecognised_arg:
                 error_msg += f"""  - {function_run_dict["function"]} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
-    if error_msg:
+    if error_msg != "\n":
         raise ConfigError(error_msg)
 
 
