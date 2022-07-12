@@ -98,12 +98,24 @@ def test_fill_forward_from_last_change_dataset(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-11",   "Yes",     1,         1,         1),
                 (1, 0, "2020-11-12",   None,      None,      None,      None),
                 (1, 1, "2020-11-13",   None,      None,      None,      None),
 
-                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
+                (2, 1, "2020-11-11",   "Yes",     1,         1,         1),
                 (2, 1, "2020-11-12",   None,      None,      None,      None),
+
+                (3, 0, "2020-11-10",   "Yes",     1,         1,         1),
+                (3, 0, "2020-11-11",   None,      None,      None,      None),
+                (3, 1, "2020-11-12",   None,      None,      None,      None),
+                (3, 1, "2020-11-13",   "Yes",     1,         1,         1),
+                (3, 2, "2020-11-14",   None,      None,      None,      None),
+                (3, 2, "2020-11-15",   None,      None,      None,      None),
+                (3, 3, "2020-11-16",   "Yes",     1,         1,         1),
+                (3, 3, "2020-11-17",   None,      None,      None,      None),
+
+                (4, 0, "2020-11-11",   None,     1,         1,         1),
+                (4, 3, "2020-11-11",   None,      None,      None,      None)
             # fmt: on
         ],
         schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
@@ -112,12 +124,24 @@ def test_fill_forward_from_last_change_dataset(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1, 0, "2020-11-11",   "Yes",      1,      1,      1),
+                (1, 0, "2020-11-11",   "Yes",     1,         1,         1),
                 (1, 0, "2020-11-12",   None,      None,      None,      None),
                 (1, 1, "2020-11-13",   None,      None,      None,      None),
 
-                (2, 1, "2020-11-11",   "Yes",      1,      1,      1),
-                (2, 1, "2020-11-12",   None,       1,      1,      1),
+                (2, 1, "2020-11-11",   "Yes",     1,         1,         1),
+                (2, 1, "2020-11-12",   None,      None,      None,      None),
+
+                (3, 0, "2020-11-10",   "Yes",     1,         1,         1),
+                (3, 0, "2020-11-11",   None,      None,      None,      None),
+                (3, 1, "2020-11-12",   None,      None,      None,      None),
+                (3, 1, "2020-11-13",   "Yes",     1,         1,         1),
+                (3, 2, "2020-11-14",   None,      1,         1,         1),
+                (3, 2, "2020-11-15",   None,      1,         1,         1),
+                (3, 3, "2020-11-16",   "Yes",     1,         1,         1),
+                (3, 3, "2020-11-17",   None,      1,         1,         1),
+
+                (4, 0, "2020-11-11",   None,      1,         1,         1),
+                (4, 3, "2020-11-11",   None,      1,         1,         1),
             # fmt: on
         ],
         schema="id integer, dataset integer, date string, changed string, var_1 integer, var_2 integer, var_3 integer",
@@ -130,7 +154,7 @@ def test_fill_forward_from_last_change_dataset(spark_session):
         record_changed_column="changed",
         record_changed_value="Yes",
         dateset_version_column="dataset",
-        minimum_dateset_version=1,
+        impute_dataset_versions=[2, 3],
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
