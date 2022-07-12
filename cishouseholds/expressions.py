@@ -39,6 +39,8 @@ def sum_within_row(column_list: list):
 
 def any_column_matches_regex(column_list: list, regex_pattern: str):
     """
-    Expression that evaluates true if any column matches the given RegEx pattern.
+    Expression that evaluates to true if any column matches the given RegEx pattern. Null values in a column
+    are replaced with 0-length strings - this prevents the result from being evaluated as null when one or
+    more columns contain a null value.
     """
-    return reduce(or_, [F.col(column).rlike(regex_pattern) for column in column_list])
+    return reduce(or_, [F.coalesce(F.col(column), F.lit("")).rlike(regex_pattern) for column in column_list])
