@@ -10,6 +10,9 @@ def test_upfront_key_value_parameters_validation_pass():
 
     mock_pipeline_stages = {
         "mock_function_a": mock_function_a,
+        "mock_function_aa": mock_function_a,
+        "mock_function_b": mock_function_a,
+        "mock_function_c": mock_function_a,
     }
     mock_config = [
         {
@@ -19,10 +22,42 @@ def test_upfront_key_value_parameters_validation_pass():
             "input_2": "",
         },
         {
-            "function": "mock_function_a",
+            "function": "mock_function_aa",
+            "run": True,
+            "input_1": "",
+            "input_2": "",
+        },
+        {
+            "function": "mock_function_b",
             "run": False,
             "input_1": "",
             "input_2": "",
+        },
+        {
+            "function": "mock_function_c",
+            "run": True,
+            "input_1": "",
+            "input_2": "",
+            "when": {
+                "operator": "all",  # all functions must be set as true
+                "conditions": {
+                    "mock_function_a": "updated",
+                    "mock_function_aa": "updated",
+                },
+            },
+        },
+        {
+            "function": "mock_function_c",
+            "run": True,
+            "input_1": "",
+            "input_2": "",
+            "when": {
+                "operator": "any",  # either of the functions must be set as true
+                "conditions": {
+                    "mock_function_a": "updated",
+                    "mock_function_b": "No files",
+                },
+            },
         },
     ]
     upfront_key_value_parameters_validation(
@@ -43,6 +78,7 @@ def test_upfront_key_value_parameters_validation_fail():
         "mock_function_a": mock_function_a,
         "mock_function_b": mock_function_b,
         "mock_function_c": mock_function_c,
+        "mock_function_d": mock_function_c,
     }
     mock_config = [
         {
@@ -77,8 +113,14 @@ def test_upfront_key_value_parameters_validation_fail():
             "input_2": "",
             "unwanted_parameter": True,  # despite the function not being run (run=False), validate its parameters
         },
+        {
+            "function": "mock_function_d",
+            "run": False,
+            "input_1": "",
+            "input_2": "",
+            "when": {"operator": "all", "conditions": {"mock_function_c": "updated"}},
+        },
     ]
-
     with pytest.raises(ConfigError) as config_error:
         upfront_key_value_parameters_validation(
             all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config
@@ -92,6 +134,7 @@ def test_upfront_key_value_parameters_validation_fail():
                 "- mock_function_a stage does not have in the config file: input_2.",
                 "- mock_function_b stage have unrecognised as input arguments: unwanted_parameter.",
                 "- mock_function_c stage have unrecognised as input arguments: unwanted_parameter.",
+                "- mock_function_d stage requires mock_function_c stage to be turned as True.",
             ]
         ]
     )
