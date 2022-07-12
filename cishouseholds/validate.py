@@ -191,7 +191,7 @@ class ConfigError(Exception):
     pass
 
 
-def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file_arguments_list: List):
+def validate_config_stages(all_function_dict: Dict, config_file_arguments_list: List):
     """
     Checks that there's a valid input in the pipeline_config.yaml for every stage
     input argument.
@@ -205,6 +205,8 @@ def upfront_key_value_parameters_validation(all_function_dict: Dict, config_file
     for stage_dict in config_file_arguments_list:
         if "run" not in stage_dict:
             error_msg += f"""  - The {stage_dict['function']} does NOT have run parameter. \n"""  # noqa: E501
+        if "function" not in stage_dict:
+            error_msg += f"""  - The {stage_dict['function']} does NOT have function parameter representing its name. \n"""  # noqa: E501
         if type(stage_dict["run"]) != bool:
             error_msg += f"""  - Run parameter in {stage_dict['function']} has to be boolean type instead of {type(stage_dict["run"])}. \n"""  # noqa: E501
 

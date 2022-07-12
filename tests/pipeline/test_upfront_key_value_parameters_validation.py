@@ -1,7 +1,7 @@
 import pytest
 
 from cishouseholds.validate import ConfigError
-from cishouseholds.validate import upfront_key_value_parameters_validation
+from cishouseholds.validate import validate_config_stages
 
 
 def test_upfront_key_value_parameters_validation_pass():
@@ -60,9 +60,7 @@ def test_upfront_key_value_parameters_validation_pass():
             },
         },
     ]
-    upfront_key_value_parameters_validation(
-        all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config
-    )
+    validate_config_stages(all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config)
 
 
 def test_upfront_key_value_parameters_validation_fail():
@@ -122,9 +120,7 @@ def test_upfront_key_value_parameters_validation_fail():
         },
     ]
     with pytest.raises(ConfigError) as config_error:
-        upfront_key_value_parameters_validation(
-            all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config
-        )
+        validate_config_stages(all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config)
     assert all(
         [
             message in str(config_error.value)
