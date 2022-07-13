@@ -556,9 +556,6 @@ def _validate_donor_group_variables(
             if var_max_count > 0:
                 logging.warning(f"{var_max_count} rows have {var} above {var_max}")
 
-    logging.info("Summary statistics for donor group variables:")
-    logging.info(df.select(donor_group_columns).summary().toPandas())
-
 
 def weighted_distance(df, group_id, donor_group_columns, donor_group_column_weights):
     """
@@ -812,11 +809,7 @@ def impute_by_k_nearest_neighbours(
         "unique_imputation_group", "donor_row_id"
     )
 
-    output_df_length = df.cache().count()
-    logging.info(
-        f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
-    )
-    logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
+    output_df_length = df.count()
     if output_df_length != input_df_length:
         raise ValueError(
             f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."
