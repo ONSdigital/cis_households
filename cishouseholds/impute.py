@@ -82,7 +82,7 @@ def fill_forward_from_last_change(
     record_changed_column: str,
     record_changed_value: str,
     dateset_version_column: str = None,
-    impute_dataset_versions: List[int] = [],
+    minimum_dateset_version: str = None,
 ) -> DataFrame:
     """
     Fill forwards, by time, a list of columns from records that are indicated to have changed.
@@ -114,12 +114,8 @@ def fill_forward_from_last_change(
     df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
 
     fill_from_condition = (F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1)
-    if dateset_version_column is not None and impute_dataset_versions != []:
-        fill_from_condition = (
-            fill_from_condition
-            | (F.col(dateset_version_column) < min(impute_dataset_versions))
-            | (F.col(dateset_version_column) > max(impute_dataset_versions))
-        )
+    if dateset_version_column is not None and minimum_dateset_version is not None:
+        fill_from_condition = fill_from_condition | (F.col(dateset_version_column) < minimum_dateset_version)
 
     df_fill_forwards_from = (
         df.where(fill_from_condition)

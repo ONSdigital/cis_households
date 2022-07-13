@@ -114,7 +114,7 @@ def test_fill_forward_from_last_change_dataset(spark_session):
                 (3, 3, "2020-11-16",   "Yes",     1,         1,         1),
                 (3, 3, "2020-11-17",   None,      None,      None,      None),
 
-                (4, 0, "2020-11-11",   None,     1,         1,         1),
+                (4, 0, "2020-11-11",   None,      1,         1,         1),
                 (4, 3, "2020-11-11",   None,      None,      None,      None)
             # fmt: on
         ],
@@ -154,7 +154,7 @@ def test_fill_forward_from_last_change_dataset(spark_session):
         record_changed_column="changed",
         record_changed_value="Yes",
         dateset_version_column="dataset",
-        impute_dataset_versions=[2, 3],
+        minimum_dateset_version=2,
     )
     assert_df_equality(actual_df, expected_df, ignore_row_order=True, ignore_column_order=True)
 
