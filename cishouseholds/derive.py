@@ -1006,7 +1006,11 @@ def assign_ethnicity_white(df: DataFrame, column_name_to_assign: str, ethnicity_
     """
 
     df = df.withColumn(
-        column_name_to_assign, F.when(F.col(ethnicity_group_column_name) == "White", "White").otherwise("Non-White")
+        column_name_to_assign,
+        F.when(F.col(ethnicity_group_column_name) == "White", "White")
+        .when(F.col(ethnicity_group_column_name) != "White", "Non-White")
+        .otherwise(None)
+        .cast("string"),
     )
     return df
 
@@ -1833,20 +1837,13 @@ def assign_regex_match_result(
     if column_name_to_assign is None:
         return result
     else:
-        df = (
-            df.withColumn(
-                f"{column_name_to_assign}_positive",
-                positive_regex_match_result,
-            )
-            .withColumn(
-                f"{column_name_to_assign}_negative",
-                negative_regex_match_result,
-            )
-            .withColumn(
-                column_name_to_assign,
-                result,
-            )
+        df = df.withColumn(
+            column_name_to_assign,
+            result,
         )
-    if not debug_mode:
-        df = df.drop(f"{column_name_to_assign}_positive", f"{column_name_to_assign}_negative")
+    if debug_mode:
+        df = df.withColumn(f"{column_name_to_assign}_positive", positive_regex_match_result).withColumn(
+            f"{column_name_to_assign}_negative",
+            negative_regex_match_result,
+        )
     return df

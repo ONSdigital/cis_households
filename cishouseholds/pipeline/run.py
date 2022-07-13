@@ -16,6 +16,7 @@ from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.pyspark_utils import get_spark_application_id
 from cishouseholds.pyspark_utils import get_spark_ui_url
+from cishouseholds.validate import validate_config_stages
 
 
 @contextmanager
@@ -51,8 +52,8 @@ def run_from_config():
     """
     spark = get_or_create_spark_session()
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
-
     config = get_config()
+
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
     with spark_description_set("adding run log entry"):
@@ -61,11 +62,14 @@ def run_from_config():
     with spark_description_set("adding run status"):
         add_run_status(run_id, "started")
     pipeline_error_count = None
+
     try:
+        validate_config_stages(all_function_dict=pipeline_stages, config_file_arguments_list=config["stages"])
+        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         splunk_logger.log(status="start")
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
             run_id,
