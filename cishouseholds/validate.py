@@ -224,7 +224,7 @@ def validate_config_stages(all_object_function_dict: Dict, config_arguments_list
         # CHECK: for stage function that require when,
         # ensure operator and condition exist and stages required are turned on.
         if "when" in config_arguments_dict:
-            if type(config_arguments_dict["when"]) == Dict:  # operator type and expected value exists
+            if type(config_arguments_dict["when"]) == dict:  # operator type and expected value exists
                 if not (
                     ("operator" in config_arguments_dict["when"])
                     or (config_arguments_dict["when"]["operator"] == "any")
