@@ -6,7 +6,7 @@ from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import not_working_pattern
 
 
-# A list of positive test cases which need to be interpreted as "Working from Home" &
+# A list of positive test cases which need to be interpreted as "Not working" &
 # negative test cases which shouldn't.
 # Please append new cases to the appropriate list below
 test_data = {
@@ -45,9 +45,9 @@ test_data = {
 
 def test_add_not_working_identifier(prepare_regex_test_cases, spark_session):
 
-    wfh_cases = prepare_regex_test_cases(test_data)
+    test_cases = prepare_regex_test_cases(test_data)
 
-    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_not_working boolean")
+    expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, is_not_working boolean")
     actual_df = assign_regex_match_result(
         df=expected_df.drop("is_not_working"),
         columns_to_check_in=["test_case"],
