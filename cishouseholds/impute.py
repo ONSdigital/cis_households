@@ -82,7 +82,104 @@ def fill_forward_from_last_change(
     record_changed_column: str,
     record_changed_value: str,
     dateset_version_column: str = None,
-    minimum_dateset_version: str = None,
+    minimum_dateset_version: int = None,
+) -> DataFrame:
+    """
+    Call the fill forwards from last change function with a specific condition
+
+    Parameters
+    ----------
+    fill_forward_columns
+        list of column names to include in fill forwards
+    participant_id_column
+        column used to identify the group to fill within
+    visit_datetime_column
+        column used to order for fill forwards
+    record_changed_column
+        column that indicates a change in the current record
+    record_changed_value
+        value in `record_changed_column` that indicates a change in the current record
+    dateset_version_column
+        column containing dataset version number
+    minimum_dateset_version
+        minimum dataset version that should be filled from
+    """
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+
+    fill_from_condition = (F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1)
+    if dateset_version_column is not None:
+        fill_from_condition = fill_from_condition | (F.col(dateset_version_column) < minimum_dateset_version)
+
+    df_fill_forwards_from = (
+        df.where(fill_from_condition)
+        .select(participant_id_column, visit_datetime_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+        .drop("ROW_NUMBER")
+    )
+
+    return fill_forward_from_last_change_process(
+        df, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
+    )
+
+
+def fill_forward_from_last_change_complete_rows(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_datetime_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
+    dateset_version_column: str = None,
+    minimum_dateset_version: int = None,
+) -> DataFrame:
+    """
+    Call the fill forwards from last change function with a specific condition
+
+    Parameters
+    ----------
+    fill_forward_columns
+        list of column names to include in fill forwards
+    participant_id_column
+        column used to identify the group to fill within
+    visit_datetime_column
+        column used to order for fill forwards
+    record_changed_column
+        column that indicates a change in the current record
+    record_changed_value
+        value in `record_changed_column` that indicates a change in the current record
+    dateset_version_column
+        column containing dataset version number
+    minimum_dateset_version
+        minimum dataset version that should be filled from
+    """
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
+    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
+
+    fill_from_condition = (
+        (F.col(record_changed_column) == record_changed_value)
+        & (F.col(dateset_version_column) < minimum_dateset_version)
+    ) | (F.col("ROW_NUMBER") == 1)
+    df_fill_forwards_from = (
+        df.where(fill_from_condition)
+        .select(participant_id_column, visit_datetime_column, *fill_forward_columns)
+        .withColumnRenamed(participant_id_column, "id_right")
+        .drop("ROW_NUMBER")
+    )
+
+    df_filtered = df.filter(F.col(dateset_version_column) >= minimum_dateset_version)
+    df_filtered = fill_forward_from_last_change_process(
+        df_filtered, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
+    )
+    return df_filtered.union(df.drop("ROW_NUMBER").filter(F.col(dateset_version_column) < minimum_dateset_version))
+
+
+def fill_forward_from_last_change_process(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    visit_datetime_column: str,
+    df_fill_forwards_from: DataFrame,
 ) -> DataFrame:
     """
     Fill forwards, by time, a list of columns from records that are indicated to have changed.
@@ -110,18 +207,6 @@ def fill_forward_from_last_change(
     minimum_dateset_version
         minimum dataset version that should be filled from
     """
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
-    df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
-
-    fill_from_condition = (F.col(record_changed_column) == record_changed_value) | (F.col("ROW_NUMBER") == 1)
-    if dateset_version_column is not None and minimum_dateset_version is not None:
-        fill_from_condition = fill_from_condition | (F.col(dateset_version_column) < minimum_dateset_version)
-
-    df_fill_forwards_from = (
-        df.where(fill_from_condition)
-        .select(participant_id_column, visit_datetime_column, *fill_forward_columns)
-        .withColumnRenamed(participant_id_column, "id_right")
-    )
 
     df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_datetime_column, "start_datetime")
     window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
@@ -129,7 +214,6 @@ def fill_forward_from_last_change(
     df_fill_forwards_from = df_fill_forwards_from.withColumn(
         "end_datetime", F.lead(F.col("start_datetime"), 1).over(window_lag)
     )
-
     df = df.drop(*fill_forward_columns, "ROW_NUMBER")
 
     df = df.join(
