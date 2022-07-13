@@ -65,3 +65,11 @@ furloughed_pattern = RegexPattern(
     positive_regex_pattern="FU[RL]{1,3}O[UW]{0,1}[GHE]{1,}D?",
     negative_regex_pattern="|".join(["NOT ON FURLOUGH", "FURLOUGHED ON AND OFF CURRENTLY WORKING"]),
 )
+
+
+in_college_or_further_education_pattern = RegexPattern(
+    positive_regex_pattern="|".join(
+        ["[AT].?LEVELS?", "YEAR \\d{2}", "APPRENTICE", "VOCATION", "QUALIFICATION", "SIXTH FORM", "COLLEGE"]
+    ),
+    negative_regex_pattern="|".join(["ASSISTANT", "LECTURER", "PROFESSOR" "SCHOOL", "INTERN", "TEACHER", "WORKER"]),
+)
