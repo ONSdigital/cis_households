@@ -60,7 +60,7 @@ def test_upfront_key_value_parameters_validation_pass():
             },
         },
     ]
-    validate_config_stages(all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config)
+    validate_config_stages(all_object_function_dict=mock_pipeline_stages, config_arguments_list_of_dict=mock_config)
 
 
 def test_upfront_key_value_parameters_validation_fail():
@@ -120,7 +120,7 @@ def test_upfront_key_value_parameters_validation_fail():
         },
     ]
     with pytest.raises(ConfigError) as config_error:
-        validate_config_stages(all_function_dict=mock_pipeline_stages, config_file_arguments_list=mock_config)
+        validate_config_stages(all_object_function_dict=mock_pipeline_stages, config_arguments_list_of_dict=mock_config)
     assert all(
         [
             message in str(config_error.value)

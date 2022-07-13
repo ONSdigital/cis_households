@@ -64,7 +64,7 @@ def run_from_config():
     pipeline_error_count = None
 
     try:
-        validate_config_stages(all_function_dict=pipeline_stages, config_file_arguments_list=config["stages"])
+        validate_config_stages(all_object_function_dict=pipeline_stages, config_arguments_list_of_dict=config["stages"])
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
