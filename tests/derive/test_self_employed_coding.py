@@ -6,7 +6,7 @@ from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.regex_patterns import self_employed_regex
 
 
-# A list of positive test cases which need to be interpreted as "Working from Home" &
+# A list of positive test cases which need to be interpreted as "Self Employed" &
 # negative test cases which shouldn't.
 # Please append new cases to the appropriate list below
 test_data = {
@@ -24,9 +24,9 @@ test_data = {
 
 def test_add_self_employed_identifier(prepare_regex_test_cases, spark_session):
 
-    wfh_cases = prepare_regex_test_cases(test_data)
+    test_cases = prepare_regex_test_cases(test_data)
 
-    expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_self_employed boolean")
+    expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, is_self_employed boolean")
     actual_df = assign_regex_match_result(
         df=expected_df.drop("is_self_employed"),
         columns_to_check_in=["test_case"],
