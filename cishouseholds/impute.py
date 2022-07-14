@@ -902,7 +902,7 @@ def impute_by_k_nearest_neighbours(
 
     unique_imputation_group_window = Window.partitionBy("unique_imputation_group").orderBy(F.lit(None))
     df = df.withColumn("donor_row_id", F.row_number().over(unique_imputation_group_window))
-    df = df.join(F.broadcast(to_impute_df), on=["unique_imputation_group", "donor_row_id"], how="left").drop(
+    df = df.join(to_impute_df, on=["unique_imputation_group", "donor_row_id"], how="left").drop(
         "unique_imputation_group", "donor_row_id"
     )
 

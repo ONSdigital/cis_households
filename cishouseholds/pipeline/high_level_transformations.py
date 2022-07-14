@@ -476,6 +476,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "I don't know the type": "Don't know type",
         "Dont know": None,
         "Don&#39;t know": None,
+        "Do not know": None,
+        "Don&amp;#39;t Know": None,
     }
     df = apply_value_map_multiple_columns(
         df,
