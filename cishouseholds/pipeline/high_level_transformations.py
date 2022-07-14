@@ -55,6 +55,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
+from cishouseholds.edit import clean_work_main_job_role
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -88,7 +89,33 @@ from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.mapping import column_name_maps
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.regex_patterns import at_school_pattern
+from cishouseholds.regex_patterns import at_university_pattern
+from cishouseholds.regex_patterns import retired_regex_pattern
+from cishouseholds.regex_patterns import work_from_home_pattern
 from cishouseholds.validate_class import SparkValidate
+
+
+def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+    """
+    transform and process cis soc data
+    """
+    # clean columns
+    df = clean_work_main_job_role(df, "work_main_job_role")
+    df = df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
+    )
+
+    # remove nulls and deduplicate on all columns
+    df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
+
+    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
+    df = df.withColumn("COUNT", F.count("*").over(window))
+    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
+    return df.drop("COUNT")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:
@@ -2052,9 +2079,14 @@ def transform_from_lookups(
 
 
 def fill_forwards_transformations(df):
-    df = fill_forward_from_last_change(
+    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
         df=df,
-        fill_forward_columns=[
+        id="participant_id",
+        date="visit_datetime",
+        changed="work_main_job_changed",
+        dataset="survey_response_dataset_major_version",
+        dataset_value=2,
+        list_fill_forward=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
@@ -2065,13 +2097,29 @@ def fill_forwards_transformations(df):
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
-        dateset_version_column="survey_response_dataset_major_version",
-        minimum_dateset_version=2,
     )
+
+    # TODO: Replace above with this + 2336 after initial digital release
+    # df = fill_forward_from_last_change(
+    #     df=df,
+    #     fill_forward_columns=[
+    #         "work_main_job_title",
+    #         "work_main_job_role",
+    #         "work_sector",
+    #         "work_sector_other",
+    #         "work_social_care",
+    #         "work_health_care_patient_facing",
+    #         "work_health_care_area",
+    #         "work_nursing_or_residential_care_home",
+    #         "work_direct_contact_patients_or_clients",
+    #     ],
+    #     participant_id_column="participant_id",
+    #     visit_datetime_column="visit_datetime",
+    #     record_changed_column="work_main_job_changed",
+    #     record_changed_value="Yes",
+    #     dateset_version_column="survey_response_dataset_major_version",
+    #     minimum_dateset_version=2,
+    # )
 
     # TODO: uncomment for releases after R1
     # df = fill_backwards_overriding_not_nulls(
@@ -2239,67 +2287,111 @@ def extra_cleaning(df):
     return df
 
 
-def assign_health_care_classification(df: DataFrame) -> DataFrame:
-    """
-    postive:
-        - flag_hc_admin
-        - flag_hc_secretary
-        flag_hc_receptionist
-        flag_hc_counsellor
-        flag_hc_support
-        flag_hc_pharmacist
-        flag_call_handler
-        flag_patient_facing
-        flag_dietician
-        flag_doctor
-        flag_dentist
-        flag_midwife
-        flag_nurse
-        flag_paramedic
-        flag_physiotherapist
+# def assign_health_care_classification(df: DataFrame) -> DataFrame:
+#     """
+#     postive:
+#         - flag_hc_admin
+#         - flag_hc_secretary
+#         flag_hc_receptionist
+#         flag_hc_counsellor
+#         flag_hc_support
+#         flag_hc_pharmacist
+#         flag_call_handler
+#         flag_patient_facing
+#         flag_dietician
+#         flag_doctor
+#         flag_dentist
+#         flag_midwife
+#         flag_nurse
+#         flag_paramedic
+#         flag_physiotherapist
 
-        flag_include_always
-        flag_additional_hc
-        flag_covid_test
+#         flag_include_always
+#         flag_additional_hc
+#         flag_covid_test
 
 
-    negative:
-        flag_exclude_transport
-        flag_exclude_catering
-        flag_exclude_acad_edu
-        flag_exclude_media
-        flag_exclude_retail
-        flag_exclude_domestic
-        flag_exclude_construction
-        flag_exclude_religion
-        flag_exclude_computing
-        flag_exclude_public_serv
-        - flag_nhc_admin
-        - flag_nhc_secretary
-        flag_nhc_receptionist
-        flag_nhc_counsellor
-        flag_nhc_support
-        flag_nhc_psychologist
-        flag_vet
-        flag_nhc_pharmacist
-        flag_house_care
-        flag_child_care
-        flag_formal_care
-        flag_informal_care
-        flag_social_worker
+#     negative:
+#         flag_exclude_transport
+#         flag_exclude_catering
+#         flag_exclude_acad_edu
+#         flag_exclude_media
+#         flag_exclude_retail
+#         flag_exclude_domestic
+#         flag_exclude_construction
+#         flag_exclude_religion
+#         flag_exclude_computing
+#         flag_exclude_public_serv
+#         - flag_nhc_admin
+#         - flag_nhc_secretary
+#         flag_nhc_receptionist
+#         flag_nhc_counsellor
+#         flag_nhc_support
+#         flag_nhc_psychologist
+#         flag_vet
+#         flag_nhc_pharmacist
+#         flag_house_care
+#         flag_child_care
+#         flag_formal_care
+#         flag_informal_care
+#         flag_social_worker
 
-        flag_exclude_always
-        flag_exclude_manage_admin
+#         flag_exclude_always
+#         flag_exclude_manage_admin
 
-    """
+#     """
+#     df = assign_regex_match_result(
+#         df, column_name_to_assign="health_care_admin_FLAG", positive_regex_pattern=[], negative_regex_pattern=[]
+#     )
+
+#     health_care_flags = []
+#     not_health_care_flags = []
+#     df = df.withColumn(
+#         "health_care_classification",
+#         any(*[F.col(flag) for flag in health_care_flags]) and not any(*[F.col(flag) for flag in not_health_care_flags]),
+#     )
+
+
+def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
+    """Add result of various regex pattern matchings"""
+
+    # add work from home flag
     df = assign_regex_match_result(
-        df, column_name_to_assign="health_care_admin_FLAG", positive_regex_pattern=[], negative_regex_pattern=[]
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+        column_name_to_assign="is_working_from_home",
+        debug_mode=False,
     )
 
-    health_care_flags = []
-    not_health_care_flags = []
-    df = df.withColumn(
-        "health_care_classification",
-        any(*[F.col(flag) for flag in health_care_flags]) and not any(*[F.col(flag) for flag in not_health_care_flags]),
+    # add at-school flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+        column_name_to_assign="at_school",
+        debug_mode=False,
     )
+
+    # add at-university flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        column_name_to_assign="at_university",
+        debug_mode=False,
+    )
+    # add is-retired flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+        column_name_to_assign="is_retired",
+        debug_mode=False,
+    )
+
     return df
