@@ -147,7 +147,7 @@ def fill_forward_from_last_change_marked_subset(
     minimum_dateset_version
         minimum dataset version that should be filled from
     """
-
+    filter_condition = F.col(dateset_version_column) >= minimum_dateset_version
     df_fill_forwards_from = generate_fill_forward_df(
         df,
         fill_forward_columns,
@@ -156,11 +156,11 @@ def fill_forward_from_last_change_marked_subset(
         record_changed_column,
         record_changed_value,
     )
-    df_filtered = df.filter(F.col(dateset_version_column) >= minimum_dateset_version)
+    df_filtered = df.filter(filter_condition)
     df_filtered = fill_forward_from_last_change_process(
         df_filtered, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
     )
-    return df_filtered.union(df.drop("ROW_NUMBER").filter(F.col(dateset_version_column) < minimum_dateset_version))
+    return df_filtered.union(df.filter(~filter_condition))
 
 
 def generate_fill_forward_df(
