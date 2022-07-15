@@ -160,7 +160,7 @@ def fill_forward_from_last_change_marked_subset(
     df_filtered = fill_forward_from_last_change_process(
         df_filtered, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
     )
-    return df_filtered.union(df.filter(~filter_condition))
+    return df_filtered.unionByName(df.filter(~filter_condition))
 
 
 def generate_fill_forward_df(
