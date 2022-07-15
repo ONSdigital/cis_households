@@ -2327,7 +2327,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     """
     Adds various flags to indicate which rules were triggered for a given record.
     """
-    df = df.withColumn("wfh_rules", F.when(F.col("work_location").isNull(), F.lit(1).otherwise(0)))  # Done
+    df = df.withColumn("wfh_rules", F.when(F.col("work_location").isNull(), F.lit(1).otherwise(0)))
 
     df = df.withColumn(
         "furlough_rules_v0",
@@ -2386,7 +2386,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "retired_rules_generic",
         F.when(
-            any_column_null(["work_status", "work_status_v1", "work_Status_v2"])
+            any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
             & F.col("main_job").isNull()
             & F.col("main_resp").isNull()
             & F.col("age_at_visit")
@@ -2422,7 +2422,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "student_rules_v0",
         F.when(
-            F.col("age_at_visit") < 18
+            F.col("age_at_visit") <= 18
             or (
                 F.col("age_at_visit") >= 17
                 and (
@@ -2440,12 +2440,15 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
             (F.col("age_at_visit") >= 5 and F.col("age_at_visit") <= 18)
             or (
                 F.col("age_at_visit") >= 16
-                and F.col("work_status_v1").isin(
-                    "Looking for paid work and able to start",
-                    "Not working and not looking for work",
-                    "Retired",
-                    "Child under 5y not attending child care",
-                    "Child under 5y attending child care",
+                and (
+                    F.col("work_status_v1").isNull()
+                    or F.col("work_status_v1").isin(
+                        "Looking for paid work and able to start",
+                        "Not working and not looking for work",
+                        "Retired",
+                        "Child under 5y not attending child care",
+                        "Child under 5y attending child care",
+                    )
                 )
             )
         ),
