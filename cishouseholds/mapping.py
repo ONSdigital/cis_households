@@ -1941,12 +1941,10 @@ column_name_maps = {
         "SAMPLE_TYPE": "sample_type",
     },
     "tranche_column_map": {
-        "UAC": "ons_household_id",
-        "lsoa_11": "lower_super_output_area_code_11",
-        "cis20cd": "cis_area_code_20",
-        "ctry12": "country_code_12",
-        "ctry_name12": "country_name_12",
-        "enrolment_date": "enrolment_date",
+        "cis20_samp": "cis_area_code_20",
+        "ons_household_id": "ons_household_id",
+        "hh_enrol_date": "enrolment_date",
+        "country": "country_code_12",
         "tranche": "tranche",
     },
     "population_projection_previous_column_map": {
