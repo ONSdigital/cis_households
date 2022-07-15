@@ -50,7 +50,8 @@ class SparkValidate:
 
     def new_function(self, function_name: str, function_method, error_message: str = "default error"):
         """
-        By giving a function and an error message, this method will evaluate the logic in a given dataframe.
+        This function will add a new named method to the class which can be called from the dictionary of
+        method objects.
         Parameters
         ----------
         function_name
@@ -62,7 +63,7 @@ class SparkValidate:
 
     def set_error_message(self, function_name: str, new_error_message: str):
         """
-        Sets new error message from the default one by a given function.
+        Replaces the error message for the specified function.
         Parameters
         ----------
         function_name
@@ -88,8 +89,10 @@ class SparkValidate:
         Parameters
         ----------
         return_failed
+            return a subset of the failed rows
         any
         selected_errors
+            list of errors that denote a failed row
         """
         if len(self.error_column_list) != 0:
             self.produce_error_column()
@@ -157,8 +160,11 @@ class SparkValidate:
         Parameters
         ----------
         logic
+            the pyspark logic to be applied (must return a true/false outcome to denote a pass or fail of check)
         error_message
+            string pattern to be added to list of errors if the check fails
         columns
+            list of columns used in the function
         """
         missing = list(set(columns).difference(set(self.dataframe.columns)))
         if len(missing) == 0:
@@ -202,7 +208,7 @@ class SparkValidate:
     @staticmethod
     def not_null(error_message: str, check_columns):  # works in validate and validate_column
         """
-        TODO
+        Check any column contains nulls.
         Parameters
         ----------
         error_message
@@ -322,7 +328,7 @@ class SparkValidate:
     @staticmethod
     def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
         """
-        TODO
+        Check all columns in list are null.
         Parameters
         ----------
         error_message
