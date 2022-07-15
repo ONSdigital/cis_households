@@ -1,12 +1,13 @@
 from datetime import datetime
 from datetime import timezone
 from pathlib import Path
+from typing import Union
 
 from cishouseholds.pipeline.load import get_run_id
 
 
 class SplunkLogger:
-    def __init__(self, log_file_path: str):
+    def __init__(self, log_file_path: Union[str, None]):
         if log_file_path is not None:
             log_file = Path(log_file_path)
             if log_file.is_file():
