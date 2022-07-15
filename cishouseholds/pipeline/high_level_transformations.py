@@ -2332,10 +2332,11 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "furlough_rules_v0",
         F.when(
-            F.col("work_status").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)"),
+            F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)"),
             F.lit(1).otherwise(0),
         ),
     )
+
     df = df.withColumn(
         "furlough_rules_v1",
         F.when(
@@ -2395,7 +2396,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn(
-        "not_working_rules_v0", F.when(F.col("work_status").isin("Employed", "Self-employed"), F.lit(1).otherwise(0))
+        "not_working_rules_v0", F.when(F.col("work_status_v0").isin("Employed", "Self-employed"), F.lit(1).otherwise(0))
     )
 
     df = df.withColumn(
@@ -2425,8 +2426,8 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
             or (
                 F.col("age_at_visit") >= 17
                 and (
-                    F.col("work_status").isNull()
-                    or F.col("work_status").isin("Employed", "Furloughed (temporarily not working)")
+                    F.col("work_status_v0").isNull()
+                    or F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
                 )
             ),
             F.lit(1).otherwise(0),
