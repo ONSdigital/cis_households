@@ -7,7 +7,19 @@ from pyspark.sql.functions import DataFrame
 
 
 class SparkValidate:
+    """
+    Class that validates dataframes to the methods specified (see below in methods).
+    """
+
     def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
+        """
+        Parameters
+        ----------
+        dataframe
+            dataframe object in which validation will be carried over
+        error_column_name
+            Column in which the validation messages will be appended in a list
+        """
         self.dataframe = dataframe
         self.error_column = error_column_name
 
@@ -36,13 +48,32 @@ class SparkValidate:
             },
         }
 
-    def new_function(self, function_name, function_method, error_message="default error"):
+    def new_function(self, function_name: str, function_method, error_message: str = "default error"):
+        """
+        By giving a function and an error message, this method will evaluate the logic in a given dataframe.
+        Parameters
+        ----------
+        function_name
+        function_method
+            function object
+        error_message
+        """
         self.functions[function_name] = {"function": function_method, "error_message": error_message}
 
-    def set_error_message(self, function_name, new_error_message):
+    def set_error_message(self, function_name: str, new_error_message: str):
+        """
+        Sets new error message from the default one by a given function.
+        Parameters
+        ----------
+        function_name
+        new_error_message
+        """
         self.functions[function_name]["error_message"] = new_error_message
 
     def produce_error_column(self):
+        """
+        Creates the error column in which all the errors will be listed in an array.
+        """
         self.dataframe = self.dataframe.withColumn(
             self.error_column, F.concat(F.col(self.error_column), F.array([col for col in self.error_column_list]))
         )
@@ -52,6 +83,14 @@ class SparkValidate:
         self.error_column_list = []
 
     def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
+        """
+        Returns Dataframe with validation column filtered by the errors wanted. TODO: doublecheck
+        Parameters
+        ----------
+        return_failed
+        any
+        selected_errors
+        """
         if len(self.error_column_list) != 0:
             self.produce_error_column()
         if len(selected_errors) == 0 or any:
@@ -72,7 +111,14 @@ class SparkValidate:
             return passed_df, failed_df
         return passed_df
 
-    def validate_column(self, operations):
+    def validate_column(self, operations: dict):
+        """
+        Executes validation by given number of columns and logic validation.
+        Parameters
+        ----------
+        operations
+            dictionary with key to be column name, and value to be the function logic.
+        """
         # operations : {"column_name": "method"(function or string)}
         for column_name, method in operations.items():
             if column_name not in self.dataframe.columns:
@@ -92,14 +138,28 @@ class SparkValidate:
                 else:
                     self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-    def validate(self, operations):
+    def validate(self, operations: dict):
+        """
+        Executes validation by given logic validation to all columns. TODO
+        Parameters
+        ----------
+        operations
+        """
         for method, params in operations.items():
             if type(params) != list:
                 params = [params]
             for p in params:
                 self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
-    def validate_udl(self, logic, error_message, columns):
+    def validate_udl(self, logic: Any, error_message: str, columns: List[str]):
+        """
+        Specific user defined validation. TODO: dobulecheck
+        Parameters
+        ----------
+        logic
+        error_message
+        columns
+        """
         missing = list(set(columns).difference(set(self.dataframe.columns)))
         if len(missing) == 0:
             self.execute_check(logic, error_message)
@@ -109,6 +169,16 @@ class SparkValidate:
             )  # functional
 
     def execute_check(self, check, error_message, *params, subset=None, **kwargs):
+        """
+        TODO
+        Parameters
+        ----------
+        check
+        error_message
+        *params
+        subset
+        **kwargs
+        """
         if callable(check):
             check, error_message = check(error_message, *params, **kwargs)
         if subset is not None:
@@ -117,6 +187,12 @@ class SparkValidate:
             self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
     def count_complete_duplicates(self, duplicate_count_column_name):
+        """
+        Finds duplicated values by a given column name.
+        Parameters
+        ----------
+        duplicate_count_column_name
+        """
         self.dataframe = (
             self.dataframe.groupBy(*self.dataframe.columns)
             .count()
@@ -124,7 +200,14 @@ class SparkValidate:
         )
 
     @staticmethod
-    def not_null(error_message, check_columns):  # works in validate and validate_column
+    def not_null(error_message: str, check_columns):  # works in validate and validate_column
+        """
+        TODO
+        Parameters
+        ----------
+        error_message
+        check_columns
+        """
         error_message = error_message.format(", ".join(check_columns))
         if type(check_columns) == str:
             check_columns = [check_columns]
@@ -134,22 +217,52 @@ class SparkValidate:
         )
 
     @staticmethod
-    def contains(error_message, column_name, pattern):
+    def contains(error_message: str, column_name, pattern):
+        """
+        Finds what columns have a specific pattern.
+        Parameters
+        ----------
+        error_message
+        column_name
+        pattern
+        """
         error_message = error_message.format(column_name, pattern)
         return F.col(column_name).rlike(pattern), error_message
 
     @staticmethod
-    def starts_with(error_message, column_name, pattern):
+    def starts_with(error_message: str, column_name, pattern):
+        """
+        Parameters
+        ----------
+        error_message
+        column_name
+        pattern
+        """
         error_message = error_message.format(column_name, pattern)
         return F.col(column_name).startswith(pattern), error_message
 
     @staticmethod
     def isin(error_message, column_name, options):
+        """
+        TODO
+        Parameters
+        ----------
+        error_message
+        column_name
+        options
+        """
         error_message = error_message.format(column_name, "'" + "', '".join(options) + "'")
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(error_message, column_name, range_set):
+    def between(error_message: str, column_name, range_set):
+        """
+        Parameters
+        ----------
+        error_message
+        column_name
+        range_set
+        """
         if type(range_set) != list:
             range_set = [range_set]
         bools = []
@@ -179,19 +292,43 @@ class SparkValidate:
 
     # Non column wise functions
     @staticmethod
-    def duplicated(error_message, check_columns):
+    def duplicated(error_message: str, check_columns: List[str]):
+        """
+        Finds duplicated values by given column and can specify specific error message.
+        Parameters
+        ----------
+        error_message
+        check_columns
+        """
         window = Window.partitionBy(*check_columns)
         error_message = error_message.format(", ".join(check_columns))
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
-    def valid_vaccination(error_message, survey_response_type_column, check_columns):
-        return (F.col(survey_response_type_column) != "First Visit") | (
-            ~F.array_contains(F.array(*check_columns), None)
-        ), error_message
+    def valid_vaccination(error_message: str, survey_response_type_column: str, check_columns: List[str]):
+        """
+        works out valid vaccination by finding "First Visit" or None TODO
+        Parameters
+        ----------
+        error_message
+        survey_response_type_column
+        check_columns
+        """
+        return (
+            (F.col(survey_response_type_column) != "First Visit") | (~F.array_contains(F.array(*check_columns), None)),
+            error_message,
+        )
 
     @staticmethod
     def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
+        """
+        TODO
+        Parameters
+        ----------
+        error_message
+        condition
+        null_columns
+        """
         error_message = error_message.format(", ".join(null_columns), str(condition))
         return (
             F.when(
@@ -217,6 +354,16 @@ class SparkValidate:
         swab_barcode_column: str,
         blood_barcode_column: str,
     ):
+        """
+        TODO
+        Parameters
+        ----------
+        error_message
+        visit_datetime_column
+        file_date_column
+        swab_barcode_column
+        blood_barcode_column
+        """
         error_message = error_message.format(
             visit_datetime_column, file_date_column, swab_barcode_column, blood_barcode_column
         )
