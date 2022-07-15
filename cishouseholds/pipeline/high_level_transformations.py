@@ -74,6 +74,7 @@ from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
+from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset_based_on_column
 from cishouseholds.impute import impute_and_flag
@@ -2082,14 +2083,10 @@ def transform_from_lookups(
 
 
 def fill_forwards_transformations(df):
-    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
+
+    df = fill_forward_from_last_change_marked_subset(
         df=df,
-        id="participant_id",
-        date="visit_datetime",
-        changed="work_main_job_changed",
-        dataset="survey_response_dataset_major_version",
-        dataset_value=2,
-        list_fill_forward=[
+        fill_forward_columns=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
@@ -2100,29 +2097,13 @@ def fill_forwards_transformations(df):
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
+        dateset_version_column="survey_response_dataset_major_version",
+        minimum_dateset_version=2,
     )
-
-    # TODO: Replace above with this + 2336 after initial digital release
-    # df = fill_forward_from_last_change(
-    #     df=df,
-    #     fill_forward_columns=[
-    #         "work_main_job_title",
-    #         "work_main_job_role",
-    #         "work_sector",
-    #         "work_sector_other",
-    #         "work_social_care",
-    #         "work_health_care_patient_facing",
-    #         "work_health_care_area",
-    #         "work_nursing_or_residential_care_home",
-    #         "work_direct_contact_patients_or_clients",
-    #     ],
-    #     participant_id_column="participant_id",
-    #     visit_datetime_column="visit_datetime",
-    #     record_changed_column="work_main_job_changed",
-    #     record_changed_value="Yes",
-    #     dateset_version_column="survey_response_dataset_major_version",
-    #     minimum_dateset_version=2,
-    # )
 
     # TODO: uncomment for releases after R1
     # df = fill_backwards_overriding_not_nulls(
