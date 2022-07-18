@@ -4,7 +4,7 @@ from datetime import datetime
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.mapping import category_maps
+from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.validate_class import SparkValidate
 
 
