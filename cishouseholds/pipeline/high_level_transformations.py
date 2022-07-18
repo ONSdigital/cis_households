@@ -90,6 +90,7 @@ from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
+from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
@@ -2300,6 +2301,14 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         debug_mode=False,
     )
 
+    # add not-working flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+        column_name_to_assign="not_working",
+    )
     # add self-employed flag
     df = assign_regex_match_result(
         df=df,
