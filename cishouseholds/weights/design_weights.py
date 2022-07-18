@@ -27,6 +27,7 @@ def generate_weights(
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
+    strata_variable: str,
     first_run: bool,
 ):
     df = join_and_process_lookups(
@@ -51,7 +52,7 @@ def generate_weights(
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",
-            barcode_column="ons_household_id",
+            column_to_count=strata_variable,
             barcode_ref_column="TRANCHE_BARCODE_REF",
             tranche_column="tranche",
             group_by_columns=["cis_area_code_20", "enrolment_date"],
