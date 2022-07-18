@@ -12,9 +12,14 @@ def any_column_not_null(column_list: list):
     return reduce(or_, [F.col(column).isNotNull() for column in column_list])
 
 
+def all_columns_null(column_list: list):
+    "Expression that evaluates true if all columns are null."
+    return reduce(and_, [F.col(column).isNull() for column in column_list])
+
+
 def any_column_null(column_list: list):
     "Expression that evaluates true if any column is null."
-    return reduce(and_, [F.col(column).isNull() for column in column_list])
+    return reduce(or_, [F.col(column).isNull() for column in column_list])
 
 
 def all_equal(column_list: list, equal_to: Any):
