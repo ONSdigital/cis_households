@@ -5,6 +5,7 @@ from operator import add
 from operator import and_
 from operator import or_
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
@@ -18,6 +19,8 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
+from cishouseholds.expressions import any_column_null
+from cishouseholds.mapping import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -1907,3 +1910,214 @@ def assign_regex_match_result(
         df = df.withColumn(column_name_to_assign, match_result)
 
     return df
+
+
+def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
+    """
+    Returns a list of keys from the input dictionary if the dictionary's values are in the
+    given list of values.
+
+    Parameters
+    ----------
+    input_dict
+        the input dictionary
+    values_to_lookup
+        a list of values to search for in the `input_dict` and return matching keys
+
+    Raises
+    ------
+    ValueError
+        If none of the values in `values_to_lookup` are found as values of the `input_dict`.
+    """
+    result = [k for k, v in input_dict.items() if v in values_to_lookup]
+    if len(result) == 0:
+        raise ValueError("None of the values in `values_to_lookup` are found in `input_dict`")
+    return result
+
+
+def flag_records_for_generic_rules(column_to_check_in: str, categories_list: List) -> F.Column:
+    """
+    A generic function which flags records if any of the values in `column_to_check_in` match values in
+    `categories_list`.
+
+    Parameters
+    ----------
+    column_to_check_in
+        The name of the column to check
+    categories_list
+        A list of values against which values in `column_to_check_in` are checked against
+    """
+    return F.when(F.col(column_to_check_in).isin(*categories_list), F.lit(True)).otherwise(False)
+
+
+def flag_records_for_work_from_home_rules() -> F.Column:
+    """Flag records for application of "Work From Home" rules"""
+    return F.when(F.col("work_location").isNull(), F.lit(True)).otherwise(False)
+
+
+def flag_records_for_furlough_rules_v0() -> F.Column:
+    """Flag records for application of "Furlough Rules V0" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v0", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 4])
+    )
+
+
+def flag_records_for_furlough_rules_v1() -> F.Column:
+    """Flag records for application of "Furlough Rules V1" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1, 3, 5, 6])
+    )
+
+
+def flag_records_for_furlough_rules_v2() -> F.Column:
+    """Flag records for application of "Furlough Rules V2" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1, 3, 5, 6])
+    )
+
+
+def flag_records_for_self_employed_rules_v1_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-a" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1])
+    )
+
+
+def flag_records_for_self_employed_rules_v1_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-b" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [2])
+    )
+
+
+def flag_records_for_self_employed_rules_v2_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-a" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1])
+    )
+
+
+def flag_records_for_self_employed_rules_v2_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-b" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [2])
+    )
+
+
+def flag_records_for_retired_rules() -> F.Column:
+    """Flag records for application of "Retired" rules"""
+    return F.when(
+        any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
+        & F.col("main_job").isNull()
+        & F.col("main_resp").isNull()
+        & (F.col("age_at_visit") > F.lit(75)),
+        F.lit(True),
+    ).otherwise(False)
+
+
+def flag_records_for_not_working_rules_v0() -> F.Column:
+    """Flag records for application of "Not working Rules V0" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v0", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 2])
+    )
+
+
+def flag_records_for_not_working_rules_v1_a() -> F.Column:
+    """Flag records for application of "Not working Rules V1-a" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1])
+    )
+
+
+def flag_records_for_not_working_rules_v1_b() -> F.Column:
+    """Flag records for application of "Not working Rules V1-b" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [3])
+    )
+
+
+def flag_records_for_not_working_rules_v2_a() -> F.Column:
+    """Flag records for application of "Not working Rules V2-a" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1])
+    )
+
+
+def flag_records_for_not_working_rules_v2_b() -> F.Column:
+    """Flag records for application of "Not working Rules V2-b" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [3])
+    )
+
+
+def flag_records_for_student_v0_rules() -> F.Column:
+    """Flag records for application of "Student-v0" rules."""
+    return F.when(
+        (F.col("age_at_visit") <= F.lit(18))
+        | (
+            (F.col("age_at_visit") >= F.lit(17))
+            & (
+                F.col("work_status_v0").isNull()
+                | flag_records_for_generic_rules(
+                    "work_status_v0",
+                    get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 3]),
+                )
+            )
+        ),
+        F.lit(True),
+    ).otherwise(F.lit(False))
+
+
+def flag_records_for_student_v1_rules() -> F.Column:
+    """Flag records for application of "Student-v1" rules"""
+    return F.when(
+        ((F.col("age_at_visit") >= F.lit(5)) & (F.col("age_at_visit") <= F.lit(18)))
+        | (
+            (F.col("age_at_visit") >= F.lit(16))
+            & (
+                F.col("work_status_v1").isNull()
+                | flag_records_for_generic_rules(
+                    "work_status_v1",
+                    get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [5, 6, 7, 8, 9]),
+                )
+            )
+        ),
+        F.lit(True),
+    ).otherwise(F.lit(False))
+
+
+def flag_records_for_student_v2_rules() -> F.Column:
+    """Flag records for application of "Student-v2" rules"""
+    return F.when((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)), F.lit(True)).otherwise(
+        F.lit(False)
+    )
+
+
+def flag_records_for_uni_v2_rules() -> F.Column:
+    """Flag records for application of "Uni-v2" rules"""
+    return F.when(
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v2").isNull()
+            | flag_records_for_generic_rules(
+                "work_status_v2",
+                get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [5, 6, 7]),
+            )
+        ),
+        F.lit(True),
+    ).otherwise(F.lit(False))
+
+
+def flag_records_for_college_v2_rules() -> F.Column:
+    """Flag records for application of "College-v2" rules"""
+    return F.when(
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v2").isNull()
+            | flag_records_for_generic_rules(
+                "work_status_v2",
+                get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [5, 6, 7]),
+            )
+        ),
+        F.lit(True),
+    ).otherwise(F.lit(False))

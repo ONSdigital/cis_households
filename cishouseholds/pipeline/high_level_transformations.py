@@ -47,6 +47,27 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
+from cishouseholds.derive import flag_records_for_college_v2_rules
+from cishouseholds.derive import flag_records_for_furlough_rules_v0
+from cishouseholds.derive import flag_records_for_furlough_rules_v1
+from cishouseholds.derive import flag_records_for_furlough_rules_v2
+from cishouseholds.derive import flag_records_for_generic_rules
+from cishouseholds.derive import flag_records_for_not_working_rules_v0
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_b
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_b
+from cishouseholds.derive import flag_records_for_retired_rules
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_b
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_b
+from cishouseholds.derive import flag_records_for_student_v0_rules
+from cishouseholds.derive import flag_records_for_student_v1_rules
+from cishouseholds.derive import flag_records_for_student_v2_rules
+from cishouseholds.derive import flag_records_for_uni_v2_rules
+from cishouseholds.derive import flag_records_for_work_from_home_rules
+from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
@@ -2327,162 +2348,49 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     """
     Adds various flags to indicate which rules were triggered for a given record.
     """
-    df = df.withColumn("wfh_rules", F.when(F.col("work_location").isNull(), F.lit(1).otherwise(0)))
+    # Work from Home rules
+    df = df.withColumn("wfh_rules", flag_records_for_work_from_home_rules())
 
-    df = df.withColumn(
-        "furlough_rules_v0",
-        F.when(
-            F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)"),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    # Furlough rules
+    df = df.withColumn("furlough_rules_v0", flag_records_for_furlough_rules_v0())
 
-    df = df.withColumn(
-        "furlough_rules_v1",
-        F.when(
-            F.col("work_status_v1").isin(
-                "Employed and currently working",
-                "Self-employed and currently working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-            ),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    df = df.withColumn("furlough_rules_v1", flag_records_for_furlough_rules_v1())
 
-    df = df.withColumn(
-        "furlough_rules_v2",
-        F.when(
-            F.col("work_status_v2").isin(
-                "Employed and currently working",
-                "Self-employed and currently working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-            ),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    df = df.withColumn("furlough_rules_v2", flag_records_for_furlough_rules_v2())
 
-    df = df.withColumn(
-        "self_employed_rules_v1_a",
-        F.when(F.col("work_status_v1") == F.lit("Employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    # Self-employed rules
+    df = df.withColumn("self_employed_rules_v1_a", flag_records_for_self_employed_rules_v1_a())
 
-    df = df.withColumn(
-        "self_employed_rules_v1_b",
-        F.when(F.col("work_status_v1") == F.lit("Employed and currently not working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("self_employed_rules_v1_b", flag_records_for_self_employed_rules_v1_b())
 
-    df = df.withColumn(
-        "self_employed_rules_v2_a",
-        F.when(F.col("work_status_v2") == F.lit("Employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("self_employed_rules_v2_a", flag_records_for_self_employed_rules_v2_a())
 
-    df = df.withColumn(
-        "self_employed_rules_v2_b",
-        F.when(F.col("work_status_v2") == F.lit("Employed and currently not working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("self_employed_rules_v2_b", flag_records_for_self_employed_rules_v2_b())
 
-    df = df.withColumn(
-        "retired_rules_generic",
-        F.when(
-            any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
-            & F.col("main_job").isNull()
-            & F.col("main_resp").isNull()
-            & F.col("age_at_visit")
-            > 75,
-            F.lit(1).otherwise(0),
-        ),
-    )
+    # Retired rules
+    df = df.withColumn("retired_rules_generic", flag_records_for_retired_rules())
 
-    df = df.withColumn(
-        "not_working_rules_v0", F.when(F.col("work_status_v0").isin("Employed", "Self-employed"), F.lit(1).otherwise(0))
-    )
+    # Not-working rules
+    df = df.withColumn("not_working_rules_v0", flag_records_for_not_working_rules_v0())
 
-    df = df.withColumn(
-        "not_working_rules_v1_a",
-        F.when(F.col("work_status_v1") == F.lit("Employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("not_working_rules_v1_a", flag_records_for_not_working_rules_v1_a())
 
-    df = df.withColumn(
-        "not_working_rules_v1_b",
-        F.when(F.col("work_status_v1") == F.lit("Self-employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("not_working_rules_v1_b", flag_records_for_not_working_rules_v1_b())
 
-    df = df.withColumn(
-        "not_working_rules_v2_a",
-        F.when(F.col("work_status_v2") == F.lit("Employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("not_working_rules_v2_a", flag_records_for_not_working_rules_v2_a())
 
-    df = df.withColumn(
-        "not_working_rules_v2_b",
-        F.when(F.col("work_status_v2") == F.lit("Self-employed and currently working"), F.lit(1).otherwise(0)),
-    )
+    df = df.withColumn("not_working_rules_v2_b", flag_records_for_not_working_rules_v2_b())
 
-    df = df.withColumn(
-        "student_rules_v0",
-        F.when(
-            F.col("age_at_visit") <= 18
-            or (
-                F.col("age_at_visit") >= 17
-                and (
-                    F.col("work_status_v0").isNull()
-                    or F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
-                )
-            ),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    # Student rules
+    df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
 
-    df = df.withColumn(
-        "student_rules_v1",
-        F.when(
-            (F.col("age_at_visit") >= 5 and F.col("age_at_visit") <= 18)
-            or (
-                F.col("age_at_visit") >= 16
-                and (
-                    F.col("work_status_v1").isNull()
-                    or F.col("work_status_v1").isin(
-                        "Looking for paid work and able to start",
-                        "Not working and not looking for work",
-                        "Retired",
-                        "Child under 5y not attending child care",
-                        "Child under 5y attending child care",
-                    )
-                )
-            )
-        ),
-        F.lit(1).otherwise(0),
-    )
+    df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
 
-    df = df.withColumn(
-        "school_rules_v2", F.when(F.col("age_at_visit") >= 4 and F.col("age_at_visit") <= 18, F.lit(1).otherwise(0))
-    )
+    df = df.withColumn("school_rules_v2", flag_records_for_student_v2_rules())
 
-    df = df.withColumn(
-        "uni_rules_v2",
-        F.when(
-            F.col("age_at_visit") >= 17
-            and F.col("work_status_v2").isin(
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            ),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    # University rules
+    df = df.withColumn("uni_rules_v2", flag_records_for_uni_v2_rules())
 
-    df = df.withColumn(
-        "college_rules_v2",
-        F.when(
-            F.col("age_at_visit") >= 16
-            and F.col("work_status_v2").isin(
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            ),
-            F.lit(1).otherwise(0),
-        ),
-    )
+    df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
 
     return df
