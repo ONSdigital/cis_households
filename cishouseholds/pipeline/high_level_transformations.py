@@ -49,8 +49,10 @@ from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.derive import flag_records_for_college_v2_rules
 from cishouseholds.derive import flag_records_for_furlough_rules_v0
-from cishouseholds.derive import flag_records_for_furlough_rules_v1
-from cishouseholds.derive import flag_records_for_furlough_rules_v2
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_b
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_b
 from cishouseholds.derive import flag_records_for_generic_rules
 from cishouseholds.derive import flag_records_for_not_working_rules_v0
 from cishouseholds.derive import flag_records_for_not_working_rules_v1_a
@@ -2354,9 +2356,13 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     # Furlough rules
     df = df.withColumn("furlough_rules_v0", flag_records_for_furlough_rules_v0())
 
-    df = df.withColumn("furlough_rules_v1", flag_records_for_furlough_rules_v1())
+    df = df.withColumn("furlough_rules_v1_a", flag_records_for_furlough_rules_v1_a())
 
-    df = df.withColumn("furlough_rules_v2", flag_records_for_furlough_rules_v2())
+    df = df.withColumn("furlough_rules_v1_b", flag_records_for_furlough_rules_v1_b())
+
+    df = df.withColumn("furlough_rules_v2_a", flag_records_for_furlough_rules_v2_a())
+
+    df = df.withColumn("furlough_rules_v2_b", flag_records_for_furlough_rules_v2_b())
 
     # Self-employed rules
     df = df.withColumn("self_employed_rules_v1_a", flag_records_for_self_employed_rules_v1_a())

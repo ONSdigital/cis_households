@@ -1962,17 +1962,31 @@ def flag_records_for_furlough_rules_v0() -> F.Column:
     )
 
 
-def flag_records_for_furlough_rules_v1() -> F.Column:
-    """Flag records for application of "Furlough Rules V1" rules"""
+def flag_records_for_furlough_rules_v1_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-a" rules"""
     return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1, 3, 5, 6])
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1, 5, 6])
     )
 
 
-def flag_records_for_furlough_rules_v2() -> F.Column:
-    """Flag records for application of "Furlough Rules V2" rules"""
+def flag_records_for_furlough_rules_v1_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-b" rules"""
     return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1, 3, 5, 6])
+        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [3])
+    )
+
+
+def flag_records_for_furlough_rules_v2_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-a" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1, 5, 6])
+    )
+
+
+def flag_records_for_furlough_rules_v2_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-b" rules"""
+    return flag_records_for_generic_rules(
+        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [3])
     )
 
 
