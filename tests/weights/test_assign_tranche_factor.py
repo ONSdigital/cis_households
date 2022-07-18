@@ -30,10 +30,10 @@ def test_assign_tranche_factor(spark_session):
             "number_sampled_households_tranche_by_strata_enrolment",
         ),
         column_name_to_assign="tranche_factor",
-        barcode_column="barcode",
         barcode_ref_column="barcode_ref",
         tranche_column="tranche",
         group_by_columns=["groupby"],
+        column_to_count="barcode",
     )
     assert_df_equality(
         output_df,
