@@ -5,9 +5,9 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-from cishouseholds.compare import prepare_for_union
 from cishouseholds.edit import rename_column_names
 from cishouseholds.pipeline.load import update_table
+from cishouseholds.prepare_for_union import prepare_for_union
 
 
 def flag_identical_rows_after_first(df: DataFrame, exclusion_columns: Union[List[str], str], drop_flag_column: str):
