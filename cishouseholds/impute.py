@@ -567,6 +567,8 @@ def merge_previous_imputed_values(
     Retrieve and coalesce imputed values and associated flags from a lookup table.
     Includes the imputed value, imputation status and imputation method.
 
+    Keeps raw value if available, otherwise takes lookup value.
+
     Parameters
     ----------
     df
