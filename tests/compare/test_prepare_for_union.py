@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.compare import prepare_for_union
+from cishouseholds.prepare_for_union import prepare_for_union
 
 
 def test_prepare_for_union(spark_session):
