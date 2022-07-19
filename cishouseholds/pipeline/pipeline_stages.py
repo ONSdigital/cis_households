@@ -918,10 +918,7 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
 
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(
-    survey_responses_table: str,
-    imputed_values_table: str,
-    survey_responses_imputed_table: str,
-    key_columns: List[str],
+    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
 ):
     """
     Imputes values for key demographic columns.
@@ -935,8 +932,6 @@ def impute_demographic_columns(
         name of HIVE table containing previously imputed values
     survey_responses_imputed_table
         name of HIVE table to write survey responses following imputation
-    key_columns
-        names of key demographic columns to be filled forwards
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
@@ -944,21 +939,26 @@ def impute_demographic_columns(
 
     df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
-        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
+        df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endsswith("_imputation_method")
+    ]
     imputed_values_df = key_columns_imputed_df.filter(
         reduce(
             lambda col_1, col_2: col_1 | col_2,
-            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
+            (F.col(f"{column}_imputation_method").isNotNull() for column in imputed_columns),
         )
     )
 
-    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
     imputed_values = imputed_values_df.select(
         "participant_id",
         *lookup_columns,
     )
-    df_with_imputed_values = df.drop(*key_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+    df_with_imputed_values = df.drop(*imputed_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
     update_table(imputed_values, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
