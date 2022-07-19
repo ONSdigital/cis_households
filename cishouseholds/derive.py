@@ -71,20 +71,21 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     return df
 
 
-def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order_list: List[str]):
     """
     assign an incremental count to each participants visit
 
     Parameters
     -------------
+    df
     column_name_to_assign
-        column_name_to_assign: column to show count
-    visit_date_column
-        visit_date_column: date column to base count on
+        column to show count
     id_column
-        id_column: The column where the window (subset) is based, then the count occurs
+        column from which window is created
+    order_list
+        counting order occurrence. This list should NOT have any possible repetition.
     """
-    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    window = Window.partitionBy(id).orderBy(order_list)
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
     return df
 

@@ -1763,7 +1763,12 @@ def union_dependent_derivations(df):
     Transformations that must be carried out after the union of the different survey response schemas.
     """
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
-    df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
+    df = assign_visit_order(
+        df=df,
+        column_name_to_assign="visit_order",
+        id="participant_id",
+        order_list=["visit_datetime", "visit_id"],
+    )
     df = symptom_column_transformations(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:

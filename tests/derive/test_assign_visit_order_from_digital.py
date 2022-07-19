@@ -6,14 +6,23 @@ from cishouseholds.derive import assign_visit_order
 def test_assign_visit_order(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2020-07-09", 2),
-            (1, "2020-07-10", 3),
-            (1, "2020-07-08", 1),
-            (2, "2020-07-11", 1),
-            (2, "2020-07-27", 2),
+            # fmt: off
+            (1, 1,  "2020-07-09", 2),
+            (1, 2,  "2020-07-10", 3),
+            (1, 3,  "2020-07-10", 4), # identical patient_id and date but different visit_id
+            (1, 4,  "2020-07-08", 1),
+
+            (2, 1,  "2020-07-11", 1),
+            (2, 2,  "2020-07-27", 2),
+            # fmt: on
         ],
-        schema="id integer, date string, count_value integer",
+        schema="patient_id integer, visit_id integer, date string, count_value integer",
     )
 
-    output_df = assign_visit_order(expected_df.drop("count_value"), "count_value", "date", "id")
+    output_df = assign_visit_order(
+        df=expected_df.drop("count_value"),
+        column_name_to_assign="count_value",
+        id="patient_id",
+        order_list=["date", "visit_id"],
+    )
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)
