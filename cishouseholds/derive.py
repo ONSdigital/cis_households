@@ -20,7 +20,6 @@ from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_null
-from cishouseholds.mapping import category_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -1958,64 +1957,62 @@ def flag_records_for_work_from_home_rules() -> F.Column:
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules"""
     return flag_records_for_generic_rules(
-        "work_status_v0", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 4])
+        "work_status_v0", ["Employed", "Not working (unemployed, retired, long-term sick etc.)"]
     )
 
 
 def flag_records_for_furlough_rules_v1_a() -> F.Column:
     """Flag records for application of "Furlough Rules V1-a" rules"""
     return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1, 5, 6])
+        "work_status_v1",
+        [
+            "Employed and currently working",
+            "Looking for paid work and able to start",
+            "Not working and not looking for work",
+        ],
     )
 
 
 def flag_records_for_furlough_rules_v1_b() -> F.Column:
     """Flag records for application of "Furlough Rules V1-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [3])
-    )
+    return flag_records_for_generic_rules("work_status_v1", ["Self-employed and currently working"])
 
 
 def flag_records_for_furlough_rules_v2_a() -> F.Column:
     """Flag records for application of "Furlough Rules V2-a" rules"""
     return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1, 5, 6])
+        "work_status_v2",
+        [
+            "Employed and currently working",
+            "Looking for paid work and able to start",
+            "Not working and not looking for work",
+        ],
     )
 
 
 def flag_records_for_furlough_rules_v2_b() -> F.Column:
     """Flag records for application of "Furlough Rules V2-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [3])
-    )
+    return flag_records_for_generic_rules("work_status_v2", ["Self-employed and currently working"])
 
 
 def flag_records_for_self_employed_rules_v1_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1])
-    )
+    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently working"])
 
 
 def flag_records_for_self_employed_rules_v1_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [2])
-    )
+    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently not working"])
 
 
 def flag_records_for_self_employed_rules_v2_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1])
-    )
+    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently working"])
 
 
 def flag_records_for_self_employed_rules_v2_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [2])
-    )
+    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently not working"])
 
 
 def flag_records_for_retired_rules() -> F.Column:
@@ -2031,37 +2028,27 @@ def flag_records_for_retired_rules() -> F.Column:
 
 def flag_records_for_not_working_rules_v0() -> F.Column:
     """Flag records for application of "Not working Rules V0" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v0", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 2])
-    )
+    return flag_records_for_generic_rules("work_status_v0", ["Employed", "Self-employed"])
 
 
 def flag_records_for_not_working_rules_v1_a() -> F.Column:
     """Flag records for application of "Not working Rules V1-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [1])
-    )
+    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently working"])
 
 
 def flag_records_for_not_working_rules_v1_b() -> F.Column:
     """Flag records for application of "Not working Rules V1-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [3])
-    )
+    return flag_records_for_generic_rules("work_status_v1", ["Self-employed and currently working"])
 
 
 def flag_records_for_not_working_rules_v2_a() -> F.Column:
     """Flag records for application of "Not working Rules V2-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [1])
-    )
+    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently working"])
 
 
 def flag_records_for_not_working_rules_v2_b() -> F.Column:
     """Flag records for application of "Not working Rules V2-b" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2", get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [3])
-    )
+    return flag_records_for_generic_rules("work_status_v2", ["Self-employed and currently working"])
 
 
 def flag_records_for_student_v0_rules() -> F.Column:
@@ -2074,7 +2061,7 @@ def flag_records_for_student_v0_rules() -> F.Column:
                 F.col("work_status_v0").isNull()
                 | flag_records_for_generic_rules(
                     "work_status_v0",
-                    get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v0"], [1, 3]),
+                    ["Employed", "Furloughed (temporarily not working)"],
                 )
             )
         ),
@@ -2092,7 +2079,13 @@ def flag_records_for_student_v1_rules() -> F.Column:
                 F.col("work_status_v1").isNull()
                 | flag_records_for_generic_rules(
                     "work_status_v1",
-                    get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v1"], [5, 6, 7, 8, 9]),
+                    [
+                        "Looking for paid work and able to start",
+                        "Not working and not looking for work",
+                        "Retired",
+                        "Child under 5y not attending child care",
+                        "Child under 5y attending child care",
+                    ],
                 )
             )
         ),
@@ -2115,7 +2108,7 @@ def flag_records_for_uni_v2_rules() -> F.Column:
             F.col("work_status_v2").isNull()
             | flag_records_for_generic_rules(
                 "work_status_v2",
-                get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [5, 6, 7]),
+                ["Looking for paid work and able to start", "Not working and not looking for work", "Retired"],
             )
         ),
         F.lit(True),
@@ -2130,7 +2123,7 @@ def flag_records_for_college_v2_rules() -> F.Column:
             F.col("work_status_v2").isNull()
             | flag_records_for_generic_rules(
                 "work_status_v2",
-                get_keys_by_value(category_maps["iqvia_raw_category_map"]["work_status_v2"], [5, 6, 7]),
+                ["Looking for paid work and able to start", "Not working and not looking for work", "Retired"],
             )
         ),
         F.lit(True),
