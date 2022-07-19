@@ -13,6 +13,7 @@ class SparkValidate:
 
     def __init__(self, dataframe: DataFrame, error_column_name: str) -> None:
         """
+        Initialisation of SparkValidate with the compulsory input parameters.
         Parameters
         ----------
         dataframe
@@ -85,12 +86,14 @@ class SparkValidate:
 
     def filter(self, return_failed: bool, any: bool, selected_errors: List = []):
         """
-        Returns Dataframe with validation column filtered by the errors wanted. TODO: doublecheck
+        Returns Dataframe with validation column filtered by the errors wanted.
+
         Parameters
         ----------
         return_failed
-            return a subset of the failed rows
+            returns a subset of the failed rows
         any
+            if True, will return any conditions not met and if false will return all
         selected_errors
             list of errors that denote a failed row
         """
@@ -143,10 +146,12 @@ class SparkValidate:
 
     def validate(self, operations: dict):
         """
-        Executes validation by given logic validation to all columns. TODO
+        Executes validation by given logic validation to all columns.
         Parameters
         ----------
         operations
+            should be a dictionary with key being the name of the check and value should be another dictionary
+            or list depending on the check.
         """
         for method, params in operations.items():
             if type(params) != list:
@@ -156,7 +161,7 @@ class SparkValidate:
 
     def validate_udl(self, logic: Any, error_message: str, columns: List[str]):
         """
-        Specific user defined validation. TODO: dobulecheck
+        Specific user defined validation by given logic on provided list of columns.
         Parameters
         ----------
         logic
@@ -174,9 +179,9 @@ class SparkValidate:
                 "    - Falied to run check as required " + ",".join(missing) + " missing from dataframe"
             )  # functional
 
-    def execute_check(self, check, error_message, *params, subset=None, **kwargs):
+    def execute_check(self, check, error_message: object, *params, subset=None, **kwargs):
         """
-        TODO
+        Validates check provided by a given instance of SparkValidate Class. TODO
         Parameters
         ----------
         check
@@ -192,7 +197,7 @@ class SparkValidate:
         else:
             self.error_column_list.append(F.when(~check, F.lit(error_message)).otherwise(None))
 
-    def count_complete_duplicates(self, duplicate_count_column_name):
+    def count_complete_duplicates(self, duplicate_count_column_name: str):
         """
         Finds duplicated values by a given column name.
         Parameters
@@ -223,7 +228,7 @@ class SparkValidate:
         )
 
     @staticmethod
-    def contains(error_message: str, column_name, pattern):
+    def contains(error_message: str, column_name: str, pattern):
         """
         Finds what columns have a specific pattern.
         Parameters
@@ -236,21 +241,22 @@ class SparkValidate:
         return F.col(column_name).rlike(pattern), error_message
 
     @staticmethod
-    def starts_with(error_message: str, column_name, pattern):
+    def starts_with(error_message: str, column_name: str, pattern: str):
         """
         Parameters
         ----------
         error_message
         column_name
         pattern
+            regex pattern
         """
         error_message = error_message.format(column_name, pattern)
         return F.col(column_name).startswith(pattern), error_message
 
     @staticmethod
-    def isin(error_message, column_name, options):
+    def isin(error_message: str, column_name: str, options: List):
         """
-        TODO
+        Checks that the content of a column is in a list of options.
         Parameters
         ----------
         error_message
@@ -261,13 +267,15 @@ class SparkValidate:
         return F.col(column_name).isin(options), error_message
 
     @staticmethod
-    def between(error_message: str, column_name, range_set):
+    def between(error_message: str, column_name: str, range_set: List):
         """
+        Check that column_name is between range_set.
         Parameters
         ----------
         error_message
         column_name
         range_set
+            list composed of low and high bounds.
         """
         if type(range_set) != list:
             range_set = [range_set]
@@ -313,7 +321,7 @@ class SparkValidate:
     @staticmethod
     def valid_vaccination(error_message: str, survey_response_type_column: str, check_columns: List[str]):
         """
-        works out valid vaccination by finding "First Visit" or None TODO
+        Works out valid vaccination by finding "First Visit" or None
         Parameters
         ----------
         error_message
@@ -328,7 +336,7 @@ class SparkValidate:
     @staticmethod
     def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
         """
-        Check all columns in list are null.
+        Check all columns in list are null if they meet a specific logic condition.
         Parameters
         ----------
         error_message
@@ -361,7 +369,8 @@ class SparkValidate:
         blood_barcode_column: str,
     ):
         """
-        TODO
+        Ensure that the file date column is at least 2 days earlier than visit_datetime
+        and swab/blood barcodes are null.
         Parameters
         ----------
         error_message
