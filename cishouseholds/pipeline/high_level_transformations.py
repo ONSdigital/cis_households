@@ -250,7 +250,7 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
         value="Participant Would Not/Could Not Answer",
         column_list=[
             "ethnicity",
-            "work_status",
+            "work_status_v0",
             "work_location",
             "survey_response_type",
             "participant_withdrawal_reason",
