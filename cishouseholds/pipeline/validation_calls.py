@@ -61,6 +61,7 @@ def validation_calls(SparkVal):
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
         "duplicated": [
             {"check_columns": SparkVal.dataframe.columns},
+            {"check_columns": ["participant_id", "visit_datetime"]},
             {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},
