@@ -2178,7 +2178,8 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
     """
     Impute missing values for key variables that are required for weight calibration.
     Most imputations require geographic data being joined onto the response records.
-    Returns a single record per participant.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
     """
     unique_id_column = "participant_id"
     for column in columns_to_fill:
