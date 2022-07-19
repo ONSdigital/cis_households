@@ -142,7 +142,7 @@ def count_distinct_in_filtered_df(
 def assign_tranche_factor(
     df: DataFrame,
     column_name_to_assign: str,
-    barcode_column: str,
+    column_to_count: str,
     barcode_ref_column: str,
     tranche_column: str,
     group_by_columns: List[str],
@@ -158,7 +158,7 @@ def assign_tranche_factor(
     df = count_distinct_in_filtered_df(
         df=df,
         column_name_to_assign="number_eligible_households_tranche_by_strata_enrolment",
-        column_to_count=barcode_column,
+        column_to_count=column_to_count,
         filter_positive=F.col("tranche_eligible_households") == "Yes",
         group_by_columns=group_by_columns,
     )
@@ -170,7 +170,7 @@ def assign_tranche_factor(
     df = count_distinct_in_filtered_df(
         df=df,
         column_name_to_assign="number_sampled_households_tranche_by_strata_enrolment",
-        column_to_count=barcode_column,
+        column_to_count=column_to_count,
         filter_positive=filter_max_condition,
         group_by_columns=group_by_columns,
     )

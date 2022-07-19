@@ -27,8 +27,34 @@ def generate_weights(
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
+    tranche_strata_columns: List[str],
     first_run: bool,
 ):
+    """
+    Wrapper for calling each of the functions necessary to generate the design weights
+
+    Parameters
+    -----------
+
+    household_level_populations
+        dataframe containing information about each individual household
+    master_sample_df
+        lookup data containing additional information for given participants
+    old_sample_df
+        previously processed sample data
+    new_sample_df
+        to be processed sample data
+    new_sample_source_name
+    tranche_df
+        optional table containing information about a tranche of survey participants
+    postcode_lookup_df
+    country_lookup_df
+    lsoa_cis_lookup_df
+    first_run
+        boolean flag to denote if this is the first run of this dataset.
+        On first run dataset will require certain processes which are later not necessary
+        once some data is tabulated
+    """
     df = join_and_process_lookups(
         household_level_populations_df,
         master_sample_df,
@@ -51,10 +77,10 @@ def generate_weights(
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",
-            barcode_column="ons_household_id",
+            column_to_count="ons_household_id",
             barcode_ref_column="TRANCHE_BARCODE_REF",
             tranche_column="tranche",
-            group_by_columns=["cis_area_code_20", "enrolment_date"],
+            group_by_columns=tranche_strata_columns,
         )
     else:
         df = df.withColumn("tranche_eligible_households", F.lit("No"))
@@ -331,7 +357,8 @@ def calculate_generic_design_weight_variables(
     cis_window: Window,
 ) -> DataFrame:
     """
-    calculate variables common to design weights
+    calculate variables common to design weights.
+    Mathematical operations are performed on a variety of columns to derive a set of new columns.
     """
     window = Window.partitionBy(*groupby_columns)
     df = df.withColumn(f"sum_raw_design_weight_{test_type}_cis", F.sum(design_weight_column).over(window))
@@ -507,7 +534,10 @@ def calculate_scenario_ab_antibody_design_weights(
     sample_new_previous_column: str,
     scaled_design_weight_swab_non_adjusted_column: str,
 ) -> DataFrame:
-    """ """
+    """
+    Use the sample_new_previous column value to either select the hh_design_weight_antibodies_column or
+    scaled_design_weight_swab_non_adjusted_column as the scenario A/B design weight value.
+    """
 
     df = df.withColumn(
         column_name_to_assign,
@@ -562,6 +592,15 @@ def scale_antibody_design_weights(df: DataFrame, scenario: str, groupby_column: 
     """
     Use scenario lookup to apply dependent function to carry forward design weights variable
     to current dataframe
+
+    Parameters
+    ----------
+    df
+    scenario
+        A,B,C depending on previous conditions decides which logic to perform
+    groupby_column
+        column name whose values are used to subdivide the dataset
+    household_population_column
     """
     window = Window.partitionBy(groupby_column)
     scenario_carry_forward_lookup = {
