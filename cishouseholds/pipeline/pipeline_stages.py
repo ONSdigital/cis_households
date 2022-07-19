@@ -28,9 +28,6 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
-from cishouseholds.mapping import category_maps
-from cishouseholds.mapping import column_name_maps
-from cishouseholds.mapping import soc_regex_map
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -66,6 +63,9 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
+from cishouseholds.pipeline.mapping import category_maps
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
