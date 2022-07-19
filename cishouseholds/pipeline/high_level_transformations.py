@@ -111,8 +111,6 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
-from cishouseholds.mapping import category_maps
-from cishouseholds.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
