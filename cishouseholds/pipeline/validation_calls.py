@@ -4,7 +4,7 @@ from datetime import datetime
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.mapping import category_maps
+from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -61,6 +61,7 @@ def validation_calls(SparkVal):
         "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
         "duplicated": [
             {"check_columns": SparkVal.dataframe.columns},
+            {"check_columns": ["participant_id", "visit_datetime"]},
             {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
             {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
             {"check_columns": ["visit_id"]},

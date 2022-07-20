@@ -28,9 +28,6 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
-from cishouseholds.mapping import category_maps
-from cishouseholds.mapping import column_name_maps
-from cishouseholds.mapping import soc_regex_map
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -66,6 +63,9 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
+from cishouseholds.pipeline.mapping import category_maps
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
@@ -1543,12 +1543,13 @@ def sample_file_ETL(
     old_sample_file,
     new_sample_file,
     new_sample_source_name,
-    tranche,
     postcode_lookup,
     master_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
+    tranche_file_path=None,
+    tranche_strata_columns=None,
 ):
     first_run = not check_table_exists(design_weight_table)
 
@@ -1565,9 +1566,9 @@ def sample_file_ETL(
         True,
     )
     tranche_df = None
-    if tranche is not None:
+    if tranche_file_path is not None:
         tranche_df = extract_lookup_csv(
-            tranche, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
+            tranche_file_path, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
         )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
@@ -1581,6 +1582,7 @@ def sample_file_ETL(
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
+        tranche_strata_columns,
         first_run,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
