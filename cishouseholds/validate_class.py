@@ -150,8 +150,8 @@ class SparkValidate:
         Parameters
         ----------
         operations
-            should be a dictionary with key being the name of the check and value should be another dictionary
-            or list depending on the check.
+            should be a dictionary with key being the name of the check and value should be another
+            dictionary or list depending on the check.
         """
         for method, params in operations.items():
             if type(params) != list:
