@@ -1918,7 +1918,7 @@ column_name_maps = {
         "dweight_HH": "scaled_design_weight_swab_non_adjusted",
         "dweight_hh_atb": "scaled_design_weight_antibodies_non_adjusted",
         # "hh_design_weight_atb": "scaled_design_weight_antibodies_non_adjusted",
-        "tranche": "tranche",
+        "tranche": "tranche_number_indicator",
     },
     "new_sample_file_column_map": {
         "UAC": "ons_household_id",

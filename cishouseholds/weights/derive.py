@@ -142,10 +142,9 @@ def count_distinct_in_filtered_df(
 def assign_tranche_factor(
     df: DataFrame,
     column_name_to_assign: str,
-    column_to_count: str,
-    barcode_ref_column: str,
+    household_id_column: str,
     tranche_column: str,
-    group_by_columns: List[str],
+    strata_columns: List[str],
 ):
     """
     Assign a variable tranche factor as the ratio between 2 derived columns
@@ -154,13 +153,15 @@ def assign_tranche_factor(
     as the barcode column is not null and the tranche
     value is maximum within the predefined window (window)
     """
-    df = df.withColumn("tranche_eligible_households", F.when(F.col(barcode_ref_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn(
+        "tranche_eligible_households", F.when(F.col(household_id_column).isNull(), "No").otherwise("Yes")
+    )
     df = count_distinct_in_filtered_df(
         df=df,
         column_name_to_assign="number_eligible_households_tranche_by_strata_enrolment",
-        column_to_count=column_to_count,
+        column_to_count=household_id_column,
         filter_positive=F.col("tranche_eligible_households") == "Yes",
-        group_by_columns=group_by_columns,
+        group_by_columns=strata_columns,
     )
 
     df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
@@ -170,9 +171,9 @@ def assign_tranche_factor(
     df = count_distinct_in_filtered_df(
         df=df,
         column_name_to_assign="number_sampled_households_tranche_by_strata_enrolment",
-        column_to_count=column_to_count,
+        column_to_count=household_id_column,
         filter_positive=filter_max_condition,
-        group_by_columns=group_by_columns,
+        group_by_columns=strata_columns,
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -180,6 +181,6 @@ def assign_tranche_factor(
             filter_max_condition,
             F.col("number_eligible_households_tranche_by_strata_enrolment")
             / F.col("number_sampled_households_tranche_by_strata_enrolment"),
-        ).otherwise("missing"),
+        ).otherwise(None),
     )
-    return df.drop(barcode_ref_column, "MAX_TRANCHE_NUMBER")
+    return df.drop("MAX_TRANCHE_NUMBER")

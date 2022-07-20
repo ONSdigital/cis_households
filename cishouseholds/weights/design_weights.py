@@ -71,16 +71,13 @@ def generate_weights(
 
     if tranche_df is not None:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
-        tranche_df = tranche_df.withColumn("TRANCHE_BARCODE_REF", F.col("ons_household_id"))
-
-        df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"]).drop("UAC")
+        df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",
-            column_to_count="ons_household_id",
-            barcode_ref_column="TRANCHE_BARCODE_REF",
-            tranche_column="tranche",
-            group_by_columns=tranche_strata_columns,
+            household_id_column="ons_household_id",
+            tranche_column="tranche_number_indicator",
+            strata_columns=tranche_strata_columns,
         )
     else:
         df = df.withColumn("tranche_eligible_households", F.lit("No"))
@@ -296,7 +293,7 @@ def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "
             column_name_to_assign=design_weight_column,
             sample_new_previous_column="sample_new_previous",
             tranche_eligible_column="tranche_eligible_households",
-            tranche_number_column="tranche",
+            tranche_number_column="tranche_number_indicator",
             swab_design_weight_column="scaled_design_weight_swab_non_adjusted",
             tranche_factor_column="tranche_factor",
             previous_design_weight_column="scaled_design_weight_antibodies_non_adjusted",
