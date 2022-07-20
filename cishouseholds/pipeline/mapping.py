@@ -1927,8 +1927,10 @@ column_name_maps = {
         "SAMPLE_TYPE": "sample_type",
     },
     "tranche_column_map": {
+        "cis20_samp": "cis_area_code_20",
         "ons_household_id": "ons_household_id",
         "hh_enrol_date": "enrolment_date",
+        "country": "country_code_12",
         "tranche": "tranche_number_indicator",
     },
     "population_projection_previous_column_map": {
