@@ -47,6 +47,28 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
+from cishouseholds.derive import flag_records_for_college_v2_rules
+from cishouseholds.derive import flag_records_for_furlough_rules_v0
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_b
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_b
+from cishouseholds.derive import flag_records_for_not_working_rules_v0
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_b
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_b
+from cishouseholds.derive import flag_records_for_retired_rules
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_b
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_b
+from cishouseholds.derive import flag_records_for_student_v0_rules
+from cishouseholds.derive import flag_records_for_student_v1_rules
+from cishouseholds.derive import flag_records_for_student_v2_rules
+from cishouseholds.derive import flag_records_for_uni_v2_rules
+from cishouseholds.derive import flag_records_for_work_from_home_rules
+from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
@@ -70,6 +92,7 @@ from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -2318,5 +2341,61 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="is_self_employed",
         debug_mode=False,
     )
+
+    return df
+
+
+def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
+    """
+    Adds various flags to indicate which rules were triggered for a given record.
+    """
+    # Work from Home rules
+    df = df.withColumn("wfh_rules", flag_records_for_work_from_home_rules())
+
+    # Furlough rules
+    df = df.withColumn("furlough_rules_v0", flag_records_for_furlough_rules_v0())
+
+    df = df.withColumn("furlough_rules_v1_a", flag_records_for_furlough_rules_v1_a())
+
+    df = df.withColumn("furlough_rules_v1_b", flag_records_for_furlough_rules_v1_b())
+
+    df = df.withColumn("furlough_rules_v2_a", flag_records_for_furlough_rules_v2_a())
+
+    df = df.withColumn("furlough_rules_v2_b", flag_records_for_furlough_rules_v2_b())
+
+    # Self-employed rules
+    df = df.withColumn("self_employed_rules_v1_a", flag_records_for_self_employed_rules_v1_a())
+
+    df = df.withColumn("self_employed_rules_v1_b", flag_records_for_self_employed_rules_v1_b())
+
+    df = df.withColumn("self_employed_rules_v2_a", flag_records_for_self_employed_rules_v2_a())
+
+    df = df.withColumn("self_employed_rules_v2_b", flag_records_for_self_employed_rules_v2_b())
+
+    # Retired rules
+    df = df.withColumn("retired_rules_generic", flag_records_for_retired_rules())
+
+    # Not-working rules
+    df = df.withColumn("not_working_rules_v0", flag_records_for_not_working_rules_v0())
+
+    df = df.withColumn("not_working_rules_v1_a", flag_records_for_not_working_rules_v1_a())
+
+    df = df.withColumn("not_working_rules_v1_b", flag_records_for_not_working_rules_v1_b())
+
+    df = df.withColumn("not_working_rules_v2_a", flag_records_for_not_working_rules_v2_a())
+
+    df = df.withColumn("not_working_rules_v2_b", flag_records_for_not_working_rules_v2_b())
+
+    # Student rules
+    df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
+
+    df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
+
+    df = df.withColumn("school_rules_v2", flag_records_for_student_v2_rules())
+
+    # University rules
+    df = df.withColumn("uni_rules_v2", flag_records_for_uni_v2_rules())
+
+    df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
 
     return df
