@@ -13,7 +13,6 @@ from cishouseholds.edit import clean_postcode
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.weights.derive import assign_sample_new_previous
 from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
 
 
@@ -71,7 +70,7 @@ def calculate_design_weights(
 
     if tranche_df is not None:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
-        df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
+        df = df.join(tranche_df, on="ons_household_id", how="left")
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",
