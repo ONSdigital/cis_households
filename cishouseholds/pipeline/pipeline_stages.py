@@ -1543,12 +1543,13 @@ def sample_file_ETL(
     old_sample_file,
     new_sample_file,
     new_sample_source_name,
-    tranche,
     postcode_lookup,
     master_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
+    tranche_file_path=None,
+    tranche_strata_columns=None,
 ):
     first_run = not check_table_exists(design_weight_table)
 
@@ -1565,9 +1566,9 @@ def sample_file_ETL(
         True,
     )
     tranche_df = None
-    if tranche is not None:
+    if tranche_file_path is not None:
         tranche_df = extract_lookup_csv(
-            tranche, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
+            tranche_file_path, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
         )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
@@ -1581,6 +1582,7 @@ def sample_file_ETL(
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
+        tranche_strata_columns,
         first_run,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
