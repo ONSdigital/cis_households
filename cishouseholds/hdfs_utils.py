@@ -27,10 +27,6 @@ def isfile(path: str) -> bool:
     """
     Test if file exists. Uses 'hadoop fs -test -f.
 
-    Parameters
-    ----------
-    path: str
-
     Returns
     -------
     bool
@@ -49,10 +45,6 @@ def isdir(path: str) -> bool:
     """
     Test if directory exists. Uses 'hadoop fs -test -d'.
 
-    Parameters
-    ----------
-    path: str
-
     Returns
     -------
     Returns True for successfully completed operation. Else False.
@@ -66,10 +58,6 @@ def create_dir(path: str) -> bool:
     Create a directory including the parent directories if they don't already exist.
     Uses 'hadoop fs -mkdir -p'
 
-    Parameters
-    ----------
-    path: str
-
     Returns
     -------
     Returns True for successfully completed operation. Else False.
@@ -81,10 +69,6 @@ def create_dir(path: str) -> bool:
 def delete_file(path: str):
     """
     Delete a file. Uses 'hadoop fs -rm'.
-
-    Parameters
-    ----------
-    path: str
 
     Returns
     -------
@@ -98,10 +82,6 @@ def delete_dir(path: str):
     """
     Delete a directory. Uses 'hadoop fs -rmdir'.
 
-    Parameters
-    ----------
-    path: str
-
     Returns
     -------
     bool: Returns True for successfully completed operation. Else False.
@@ -113,12 +93,6 @@ def delete_dir(path: str):
 def rename(from_path: str, to_path: str, overwrite=False) -> bool:
     """
     Rename (i.e. move using full path) a file. Uses 'hadoop fs -mv'.
-
-    Parameters
-    ----------
-    from_path
-    to_path
-    overwrite
 
     Returns
     -------
@@ -135,12 +109,6 @@ def rename(from_path: str, to_path: str, overwrite=False) -> bool:
 def copy(from_path, to_path, overwrite=False) -> bool:
     """
     Copy a file. Uses 'hadoop fs -cp'.
-
-    Parameters
-    ----------
-    from_path
-    to_path
-    overwrite
 
     Returns
     -------
@@ -199,11 +167,6 @@ def move_local_to_hdfs(from_path: str, to_path: str) -> bool:
 def dir_size(path: str):
     """
     Get HDFS directory size.
-
-    Parameters
-    ----------
-    path: str
-        path to HDFS directory
 
     Returns
     -------
