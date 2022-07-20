@@ -11,8 +11,8 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 
 
@@ -800,7 +800,7 @@ def edit_to_sum_or_max_value(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
+        F.when(all_columns_null([column_name_to_assign, *columns_to_sum]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
             F.least(F.lit(max_value), sum_within_row(columns_to_sum)),
