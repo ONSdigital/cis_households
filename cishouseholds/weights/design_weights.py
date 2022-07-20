@@ -17,7 +17,7 @@ from cishouseholds.weights.edit import join_on_existing
 from cishouseholds.weights.edit import null_to_value
 
 
-def generate_weights(
+def calculate_design_weights(
     household_level_populations_df: DataFrame,
     master_sample_df: DataFrame,
     old_sample_df: DataFrame,
@@ -85,17 +85,17 @@ def generate_weights(
         df = df.withColumn("number_sampled_households_tranche_by_strata_enrolment", F.lit(None).cast("integer"))
 
     cis_window = Window.partitionBy("cis_area_code_20")
-    df = swab_weight_wrapper(
+    df = calculate_swab_design_weights(
         df=df, household_level_populations_df=household_level_populations_df, cis_window=cis_window
     )
-    scenario_string = chose_scenario_of_design_weight_for_antibody_different_household(
+    scenario_string = determine_scenario_antibody_design_weights(
         df=df,
         tranche_eligible_indicator="tranche_eligible_households",
         eligibility_pct_column="eligibility_pct",
         n_eligible_hh_tranche_by_strata_column="number_eligible_households_tranche_by_strata_enrolment",
         n_sampled_hh_tranche_by_strata_column="number_sampled_households_tranche_by_strata_enrolment",
     )
-    df = antibody_weight_wrapper(df=df, cis_window=cis_window, scenario=scenario_string)
+    df = calculate_antibody_design_weights(df=df, cis_window=cis_window, scenario=scenario_string)
     df = scale_antibody_design_weights(
         df=df,
         scenario=scenario_string,
@@ -242,7 +242,7 @@ def household_level_populations(
     return df
 
 
-def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame, cis_window: Window):
+def calculate_swab_design_weights(df: DataFrame, household_level_populations_df: DataFrame, cis_window: Window):
     """
     Wrapper function to calculate swab design weights
     """
@@ -276,7 +276,7 @@ def swab_weight_wrapper(df: DataFrame, household_level_populations_df: DataFrame
     return df
 
 
-def antibody_weight_wrapper(df: DataFrame, cis_window: Window, scenario: str = "A"):
+def calculate_antibody_design_weights(df: DataFrame, cis_window: Window, scenario: str = "A"):
     if scenario in "AB":
         design_weight_column = "raw_design_weight_antibodies_ab"
         df = calculate_scenario_ab_antibody_design_weights(
@@ -477,7 +477,7 @@ def validate_design_weights(
         raise DesignWeightError(error_string + "\n")
 
 
-def chose_scenario_of_design_weight_for_antibody_different_household(
+def determine_scenario_antibody_design_weights(
     df: DataFrame,
     eligibility_pct_column: str,
     tranche_eligible_indicator: str,
