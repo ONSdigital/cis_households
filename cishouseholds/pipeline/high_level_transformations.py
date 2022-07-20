@@ -2194,7 +2194,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         )
 
     # Get latest record for each participant
-    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime"), ascending=False)
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
     deduplicated_df = (
         df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
         .filter(F.col("ROW_NUMBER") == 1)
