@@ -21,6 +21,7 @@ from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -947,20 +948,16 @@ def impute_demographic_columns(
         if column.endsswith("_imputation_method")
     ]
     imputed_values_df = key_columns_imputed_df.filter(
-        reduce(
-            lambda col_1, col_2: col_1 | col_2,
-            (F.col(f"{column}_imputation_method").isNotNull() for column in imputed_columns),
-        )
+        any_column_not_null([F.col(f"{column}_imputation_method") for column in imputed_columns])
     )
-
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
-    imputed_values = imputed_values_df.select(
+    new_imputed_value_lookup = imputed_values_df.select(
         "participant_id",
         *lookup_columns,
     )
     df_with_imputed_values = df.drop(*imputed_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
-    update_table(imputed_values, imputed_values_table, "overwrite")
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
