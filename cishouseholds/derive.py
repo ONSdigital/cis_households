@@ -5,6 +5,7 @@ from operator import add
 from operator import and_
 from operator import or_
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
@@ -18,6 +19,7 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
+from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -1908,3 +1910,172 @@ def assign_regex_match_result(
         df = df.withColumn(column_name_to_assign, match_result)
 
     return df
+
+
+def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
+    """
+    Returns a list of keys from the input dictionary if the dictionary's values are in the
+    given list of values.
+
+    Parameters
+    ----------
+    input_dict
+        the input dictionary
+    values_to_lookup
+        a list of values to search for in the `input_dict` and return matching keys
+
+    Raises
+    ------
+    ValueError
+        If none of the values in `values_to_lookup` are found as values of the `input_dict`.
+    """
+    result = [k for k, v in input_dict.items() if v in values_to_lookup]
+    if len(result) == 0:
+        raise ValueError("None of the values in `values_to_lookup` are found in `input_dict`")
+    return result
+
+
+def flag_records_for_work_from_home_rules() -> F.Column:
+    """Flag records for application of "Work From Home" rules"""
+    return F.col("work_location").isNull()
+
+
+def flag_records_for_furlough_rules_v0() -> F.Column:
+    """Flag records for application of "Furlough Rules V0" rules"""
+    return F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)")
+
+
+def flag_records_for_furlough_rules_v1_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-a" rules"""
+    return F.col("work_status_v1").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
+    )
+
+
+def flag_records_for_furlough_rules_v1_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Self-employed and currently working")
+
+
+def flag_records_for_furlough_rules_v2_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-a" rules"""
+    return F.col("work_status_v2").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
+    )
+
+
+def flag_records_for_furlough_rules_v2_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Self-employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v1_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-a" rules"""
+    return F.col("work_status_v1").isin("Employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v1_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Employed and currently not working")
+
+
+def flag_records_for_self_employed_rules_v2_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-a" rules"""
+    return F.col("work_status_v2").isin("Employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v2_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Employed and currently not working")
+
+
+def flag_records_for_retired_rules() -> F.Column:
+    """Flag records for application of "Retired" rules"""
+    return (
+        any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
+        & F.col("main_job").isNull()
+        & F.col("main_resp").isNull()
+        & (F.col("age_at_visit") > F.lit(75))
+    )
+
+
+def flag_records_for_not_working_rules_v0() -> F.Column:
+    """Flag records for application of "Not working Rules V0" rules"""
+    return F.col("work_status_v0").isin("Employed", "Self-employed")
+
+
+def flag_records_for_not_working_rules_v1_a() -> F.Column:
+    """Flag records for application of "Not working Rules V1-a" rules"""
+    return F.col("work_status_v1").isin("Employed and currently working")
+
+
+def flag_records_for_not_working_rules_v1_b() -> F.Column:
+    """Flag records for application of "Not working Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Self-employed and currently working")
+
+
+def flag_records_for_not_working_rules_v2_a() -> F.Column:
+    """Flag records for application of "Not working Rules V2-a" rules"""
+    return F.col("work_status_v2").isin("Employed and currently working")
+
+
+def flag_records_for_not_working_rules_v2_b() -> F.Column:
+    """Flag records for application of "Not working Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Self-employed and currently working")
+
+
+def flag_records_for_student_v0_rules() -> F.Column:
+    """Flag records for application of "Student-v0" rules."""
+    return (F.col("age_at_visit") <= F.lit(18)) | (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
+        )
+    )
+
+
+def flag_records_for_student_v1_rules() -> F.Column:
+    """Flag records for application of "Student-v1" rules"""
+    return ((F.col("age_at_visit") >= F.lit(5)) & (F.col("age_at_visit") <= F.lit(18))) | (
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v1").isNull()
+            | F.col("work_status_v1").isin(
+                "Looking for paid work and able to start",
+                "Not working and not looking for work",
+                "Retired",
+                "Child under 5y not attending child care",
+                "Child under 5y attending child care",
+            )
+        )
+    )
+
+
+def flag_records_for_student_v2_rules() -> F.Column:
+    """Flag records for application of "Student-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
+
+
+def flag_records_for_uni_v2_rules() -> F.Column:
+    """Flag records for application of "Uni-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(17)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )
+
+
+def flag_records_for_college_v2_rules() -> F.Column:
+    """Flag records for application of "College-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(16)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )
