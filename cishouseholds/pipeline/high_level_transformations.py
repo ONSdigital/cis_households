@@ -1788,7 +1788,12 @@ def union_dependent_derivations(df):
     Transformations that must be carried out after the union of the different survey response schemas.
     """
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
-    df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
+    df = assign_visit_order(
+        df=df,
+        column_name_to_assign="visit_order",
+        id="participant_id",
+        order_list=["visit_datetime", "visit_id"],
+    )
     df = symptom_column_transformations(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
@@ -2197,14 +2202,16 @@ def fill_forwards_travel_column(df):
     return df
 
 
-def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
+def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
     Most imputations require geographic data being joined onto the response records.
-    Returns a single record per participant.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
     """
     unique_id_column = "participant_id"
-    for column in columns_to_fill:
+    impute_columns = ["ethnicity_white", "sex", "date_of_birth"]
+    for column in impute_columns:
         df = impute_and_flag(
             df,
             imputation_function=impute_by_ordered_fill_forward,
@@ -2213,15 +2220,14 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
             order_by_column="visit_datetime",
             order_type="asc",
         )
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="desc",
-        )
-    deduplicated_df = df.dropDuplicates([unique_id_column] + columns_to_fill)
+
+    # Get latest record for each participant
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
 
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
@@ -2261,7 +2267,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     return deduplicated_df.select(
         unique_id_column,
-        *columns_to_fill,
+        *impute_columns,
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
         *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )
