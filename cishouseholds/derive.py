@@ -1934,197 +1934,147 @@ def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
     return result
 
 
-def flag_records_for_generic_rules(column_to_check_in: str, categories_list: List) -> F.Column:
-    """
-    A generic function which flags records if any of the values in `column_to_check_in` match values in
-    `categories_list`.
-
-    Parameters
-    ----------
-    column_to_check_in
-        The name of the column to check
-    categories_list
-        A list of values against which values in `column_to_check_in` are checked against
-    """
-    return F.when(F.col(column_to_check_in).isin(*categories_list), F.lit(True)).otherwise(False)
-
-
 def flag_records_for_work_from_home_rules() -> F.Column:
     """Flag records for application of "Work From Home" rules"""
-    return F.when(F.col("work_location").isNull(), F.lit(True)).otherwise(False)
+    return F.col("work_location").isNull()
 
 
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v0", ["Employed", "Not working (unemployed, retired, long-term sick etc.)"]
-    )
+    return F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)")
 
 
 def flag_records_for_furlough_rules_v1_a() -> F.Column:
     """Flag records for application of "Furlough Rules V1-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v1",
-        [
-            "Employed and currently working",
-            "Looking for paid work and able to start",
-            "Not working and not looking for work",
-        ],
+    return F.col("work_status_v1").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
     )
 
 
 def flag_records_for_furlough_rules_v1_b() -> F.Column:
     """Flag records for application of "Furlough Rules V1-b" rules"""
-    return flag_records_for_generic_rules("work_status_v1", ["Self-employed and currently working"])
+    return F.col("work_status_v1").isin("Self-employed and currently working")
 
 
 def flag_records_for_furlough_rules_v2_a() -> F.Column:
     """Flag records for application of "Furlough Rules V2-a" rules"""
-    return flag_records_for_generic_rules(
-        "work_status_v2",
-        [
-            "Employed and currently working",
-            "Looking for paid work and able to start",
-            "Not working and not looking for work",
-        ],
+    return F.col("work_status_v2").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
     )
 
 
 def flag_records_for_furlough_rules_v2_b() -> F.Column:
     """Flag records for application of "Furlough Rules V2-b" rules"""
-    return flag_records_for_generic_rules("work_status_v2", ["Self-employed and currently working"])
+    return F.col("work_status_v2").isin("Self-employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v1_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-a" rules"""
-    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently working"])
+    return F.col("work_status_v1").isin("Employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v1_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-b" rules"""
-    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently not working"])
+    return F.col("work_status_v1").isin("Employed and currently not working")
 
 
 def flag_records_for_self_employed_rules_v2_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-a" rules"""
-    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently working"])
+    return F.col("work_status_v2").isin("Employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v2_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-b" rules"""
-    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently not working"])
+    return F.col("work_status_v2").isin("Employed and currently not working")
 
 
 def flag_records_for_retired_rules() -> F.Column:
     """Flag records for application of "Retired" rules"""
-    return F.when(
+    return (
         any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
         & F.col("main_job").isNull()
         & F.col("main_resp").isNull()
-        & (F.col("age_at_visit") > F.lit(75)),
-        F.lit(True),
-    ).otherwise(False)
+        & (F.col("age_at_visit") > F.lit(75))
+    )
 
 
 def flag_records_for_not_working_rules_v0() -> F.Column:
     """Flag records for application of "Not working Rules V0" rules"""
-    return flag_records_for_generic_rules("work_status_v0", ["Employed", "Self-employed"])
+    return F.col("work_status_v0").isin("Employed", "Self-employed")
 
 
 def flag_records_for_not_working_rules_v1_a() -> F.Column:
     """Flag records for application of "Not working Rules V1-a" rules"""
-    return flag_records_for_generic_rules("work_status_v1", ["Employed and currently working"])
+    return F.col("work_status_v1").isin("Employed and currently working")
 
 
 def flag_records_for_not_working_rules_v1_b() -> F.Column:
     """Flag records for application of "Not working Rules V1-b" rules"""
-    return flag_records_for_generic_rules("work_status_v1", ["Self-employed and currently working"])
+    return F.col("work_status_v1").isin("Self-employed and currently working")
 
 
 def flag_records_for_not_working_rules_v2_a() -> F.Column:
     """Flag records for application of "Not working Rules V2-a" rules"""
-    return flag_records_for_generic_rules("work_status_v2", ["Employed and currently working"])
+    return F.col("work_status_v2").isin("Employed and currently working")
 
 
 def flag_records_for_not_working_rules_v2_b() -> F.Column:
     """Flag records for application of "Not working Rules V2-b" rules"""
-    return flag_records_for_generic_rules("work_status_v2", ["Self-employed and currently working"])
+    return F.col("work_status_v2").isin("Self-employed and currently working")
 
 
 def flag_records_for_student_v0_rules() -> F.Column:
     """Flag records for application of "Student-v0" rules."""
-    return F.when(
-        (F.col("age_at_visit") <= F.lit(18))
-        | (
-            (F.col("age_at_visit") >= F.lit(17))
-            & (
-                F.col("work_status_v0").isNull()
-                | flag_records_for_generic_rules(
-                    "work_status_v0",
-                    ["Employed", "Furloughed (temporarily not working)"],
-                )
-            )
-        ),
-        F.lit(True),
-    ).otherwise(F.lit(False))
+    return (F.col("age_at_visit") <= F.lit(18)) | (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
+        )
+    )
 
 
 def flag_records_for_student_v1_rules() -> F.Column:
     """Flag records for application of "Student-v1" rules"""
-    return F.when(
-        ((F.col("age_at_visit") >= F.lit(5)) & (F.col("age_at_visit") <= F.lit(18)))
-        | (
-            (F.col("age_at_visit") >= F.lit(16))
-            & (
-                F.col("work_status_v1").isNull()
-                | flag_records_for_generic_rules(
-                    "work_status_v1",
-                    [
-                        "Looking for paid work and able to start",
-                        "Not working and not looking for work",
-                        "Retired",
-                        "Child under 5y not attending child care",
-                        "Child under 5y attending child care",
-                    ],
-                )
+    return ((F.col("age_at_visit") >= F.lit(5)) & (F.col("age_at_visit") <= F.lit(18))) | (
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v1").isNull()
+            | F.col("work_status_v1").isin(
+                "Looking for paid work and able to start",
+                "Not working and not looking for work",
+                "Retired",
+                "Child under 5y not attending child care",
+                "Child under 5y attending child care",
             )
-        ),
-        F.lit(True),
-    ).otherwise(F.lit(False))
+        )
+    )
 
 
 def flag_records_for_student_v2_rules() -> F.Column:
     """Flag records for application of "Student-v2" rules"""
-    return F.when((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)), F.lit(True)).otherwise(
-        F.lit(False)
-    )
+    return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
 
 
 def flag_records_for_uni_v2_rules() -> F.Column:
     """Flag records for application of "Uni-v2" rules"""
-    return F.when(
-        (F.col("age_at_visit") >= F.lit(17))
-        & (
-            F.col("work_status_v2").isNull()
-            | flag_records_for_generic_rules(
-                "work_status_v2",
-                ["Looking for paid work and able to start", "Not working and not looking for work", "Retired"],
-            )
-        ),
-        F.lit(True),
-    ).otherwise(F.lit(False))
+    return (F.col("age_at_visit") >= F.lit(17)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )
 
 
 def flag_records_for_college_v2_rules() -> F.Column:
     """Flag records for application of "College-v2" rules"""
-    return F.when(
-        (F.col("age_at_visit") >= F.lit(16))
-        & (
-            F.col("work_status_v2").isNull()
-            | flag_records_for_generic_rules(
-                "work_status_v2",
-                ["Looking for paid work and able to start", "Not working and not looking for work", "Retired"],
-            )
-        ),
-        F.lit(True),
-    ).otherwise(F.lit(False))
+    return (F.col("age_at_visit") >= F.lit(16)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )

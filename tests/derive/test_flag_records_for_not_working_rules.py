@@ -17,7 +17,7 @@ def test_flag_records_for_not_working_rules_v0(spark_session):
         ("Furloughed (temporarily not working)", 3, False),
         ("Not working (unemployed, retired, long-term sick etc.)", 4, False),
         ("Student", 5, False),
-        (None, None, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
@@ -29,7 +29,7 @@ def test_flag_records_for_not_working_rules_v0(spark_session):
     assert_df_equality(
         actual_df,
         expected_df,
-        ignore_row_order=True,
+        ignore_row_order=False,
         ignore_column_order=True,
         ignore_nullable=True,
     )
@@ -50,7 +50,7 @@ def test_flag_records_for_not_working_rules_v1_a(spark_session):
         ("Child under 5y not attending child care", 8, False),
         ("Child under 5y attending child care", 9, False),
         ("5y and older in full-time education", 10, False),
-        (None, None, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
@@ -83,7 +83,7 @@ def test_flag_records_for_not_working_rules_v1_b(spark_session):
         ("Child under 5y not attending child care", 8, False),
         ("Child under 5y attending child care", 9, False),
         ("5y and older in full-time education", 10, False),
-        (None, None, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
@@ -118,7 +118,7 @@ def test_flag_records_for_not_working_rules_v2_a(spark_session):
         ("4-5y and older at school/home-school", 10, False),
         ("Attending college or FE (including if temporarily absent)", 11, False),
         ("Attending university (including if temporarily absent)", 12, False),
-        (None, None, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
@@ -153,7 +153,7 @@ def test_flag_records_for_not_working_rules_v2_b(spark_session):
         ("4-5y and older at school/home-school", 10, False),
         ("Attending college or FE (including if temporarily absent)", 11, False),
         ("Attending university (including if temporarily absent)", 12, False),
-        (None, None, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
