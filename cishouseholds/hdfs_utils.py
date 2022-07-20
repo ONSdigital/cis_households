@@ -29,8 +29,7 @@ def isfile(path: str) -> bool:
 
     Returns
     -------
-    bool
-        Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
 
     Note
     ----
@@ -47,7 +46,7 @@ def isdir(path: str) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-test", "-d", path]
     return _perform(command)
@@ -60,7 +59,7 @@ def create_dir(path: str) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-mkdir", "-p", path]
     return _perform(command)
@@ -72,7 +71,7 @@ def delete_file(path: str):
 
     Returns
     -------
-    bool: Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-rm", path]
     return _perform(command)
@@ -84,7 +83,7 @@ def delete_dir(path: str):
 
     Returns
     -------
-    bool: Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-rmdir", path]
     return _perform(command)
@@ -96,7 +95,7 @@ def rename(from_path: str, to_path: str, overwrite=False) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     # move fails if target file exists and no -f option available
     if overwrite:
@@ -112,7 +111,7 @@ def copy(from_path, to_path, overwrite=False) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     if overwrite:
         return _perform(["hadoop", "fs", "-cp", "-f", from_path, to_path])
@@ -133,7 +132,7 @@ def copy_local_to_hdfs(from_path: str, to_path: str) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     # make sure any nested directories in to_path exist first before copying
     destination_path = os.path.dirname(to_path)
@@ -158,7 +157,7 @@ def move_local_to_hdfs(from_path: str, to_path: str) -> bool:
 
     Returns
     -------
-    Returns True for successfully completed operation. Else False.
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-moveFromLocal", from_path, to_path]
     return _perform(command)
