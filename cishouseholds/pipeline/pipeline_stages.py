@@ -1565,6 +1565,8 @@ def sample_file_ETL(
     )
     tranche_df = None
     if tranche_file_path is not None:
+        if tranche_strata_columns is None:
+            raise ValueError("`tranche_strata_columns` must be provided when a `tranche_file_path` has been provided")
         tranche_df = extract_lookup_csv(
             tranche_file_path, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
         )

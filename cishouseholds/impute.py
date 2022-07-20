@@ -567,7 +567,7 @@ def merge_previous_imputed_values(
     Retrieve and coalesce imputed values and associated flags from a lookup table.
     Includes the imputed value, imputation status and imputation method.
 
-    Keeps raw value if available, otherwise takes lookup value.
+    Keeps raw value if available, otherwise takes lookup value if it has been previously imputed.
 
     Parameters
     ----------
@@ -589,7 +589,11 @@ def merge_previous_imputed_values(
         if column.endswith("_imputation_method")
     ]
     for value_column, status_column, method_column in columns_for_editing:
-        fill_condition = F.col(value_column[1:]).isNull() & F.col(value_column).isNotNull()
+        fill_condition = (
+            F.col(value_column[1:]).isNull()
+            & F.col(value_column).isNotNull()
+            & F.col(f"{value_column}_imputation_method").isNotNull()
+        )
         df = df.withColumn(status_column[1:], F.when(fill_condition, F.lit(1)).otherwise(F.lit(0)))
         df = df.withColumn(
             method_column[1:], F.when(fill_condition, F.col(method_column)).otherwise(F.lit(None)).cast("string")
