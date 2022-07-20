@@ -2197,14 +2197,16 @@ def fill_forwards_travel_column(df):
     return df
 
 
-def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
+def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
     Most imputations require geographic data being joined onto the response records.
-    Returns a single record per participant.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
     """
     unique_id_column = "participant_id"
-    for column in columns_to_fill:
+    impute_columns = ["ethnicity_white", "sex", "date_of_birth"]
+    for column in impute_columns:
         df = impute_and_flag(
             df,
             imputation_function=impute_by_ordered_fill_forward,
@@ -2213,15 +2215,14 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
             order_by_column="visit_datetime",
             order_type="asc",
         )
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="desc",
-        )
-    deduplicated_df = df.dropDuplicates([unique_id_column] + columns_to_fill)
+
+    # Get latest record for each participant
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
 
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
@@ -2261,7 +2262,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     return deduplicated_df.select(
         unique_id_column,
-        *columns_to_fill,
+        *impute_columns,
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
         *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )
