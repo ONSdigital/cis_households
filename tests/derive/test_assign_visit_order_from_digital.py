@@ -1,3 +1,4 @@
+import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_visit_order
@@ -18,6 +19,7 @@ def test_assign_visit_order(spark_session):
         ],
         schema="patient_id integer, visit_id integer, date string, count_value integer",
     )
+    expected_df = expected_df.withColumn("date", F.to_timestamp("date"))
 
     output_df = assign_visit_order(
         df=expected_df.drop("count_value"),
