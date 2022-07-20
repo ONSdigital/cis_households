@@ -9,7 +9,10 @@ def _perform(command, shell: bool = False, str_output: bool = False, ignore_erro
     Parameters
     ----------
     shell
+        If true, the command will be executed through the shell.
+        See subprocess.Popen() reference.
     str_output
+        output exception as string
     ignore_error
     """
     process = subprocess.Popen(command, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
