@@ -57,7 +57,7 @@ class SparkValidate:
         ----------
         function_name
         function_method
-            function object
+            function object defined by user
         error_message
         """
         self.functions[function_name] = {"function": function_method, "error_message": error_message}
@@ -181,13 +181,15 @@ class SparkValidate:
 
     def execute_check(self, check, error_message: object, *params, subset=None, **kwargs):
         """
-        Validates check provided by a given instance of SparkValidate Class. TODO
+        Validates check provided by a given instance of SparkValidate Class.
         Parameters
         ----------
         check
+            validation logic to be true if pass, false if it does not meet condition.
         error_message
         *params
         subset
+            row filtering logic
         **kwargs
         """
         if callable(check):
