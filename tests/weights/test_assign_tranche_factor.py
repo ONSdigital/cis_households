@@ -10,7 +10,7 @@ def test_assign_tranche_factor(spark_session):
             ("B", "B", "J2", 2, "Yes", 2, 2, 1.0),
             ("C", "C", "J2", 2, "Yes", 2, 2, 1.0),
             ("D", "D", "J1", 2, "Yes", 2, 1, 2.0),
-            ("E", None, "J1", 1, "No", 0, 0, None),
+            (None, None, "J1", 1, "No", 0, 0, None),
         ],
         schema="""
             barcode string,
@@ -30,7 +30,6 @@ def test_assign_tranche_factor(spark_session):
             "number_sampled_households_tranche_by_strata_enrolment",
         ),
         column_name_to_assign="tranche_factor",
-        barcode_ref_column="barcode_ref",
         tranche_column="tranche_number_indicator",
         strata_columns=["groupby"],
         household_id_column="barcode",
