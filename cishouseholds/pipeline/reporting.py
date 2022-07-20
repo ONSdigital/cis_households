@@ -1,5 +1,6 @@
 from io import BytesIO
 from typing import Dict
+from typing import List
 
 import pandas as pd
 from pyspark.sql import DataFrame
@@ -12,7 +13,17 @@ from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_run_id
 
 
-def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]):
+def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
+    """
+    Convert a dictionary of Spark DataFrames into an Excel Object.
+
+    Parameters
+    ----------
+    sheet_df_map
+        A dictionary of Spark DataFrames - keys in this dictionary become
+        names of the sheets in Excel & the values in this dictionary become
+        the content in the respective sheets
+    """
     output = BytesIO()
     with pd.ExcelWriter(output) as writer:
         for sheet, df in sheet_df_map.items():
@@ -20,15 +31,22 @@ def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]):
     return output
 
 
-def multiple_visit_1_day(df, participant_id, visit_id, date_column, datetime_column):
+def multiple_visit_1_day(df: DataFrame, participant_id: str, visit_id: str, date_column: str, datetime_column: str):
     """
+    Tracks multiple visits by a participant
+
     Parameters
     ----------
     df
+        The input dataframe to process
     participant_id
+        The column name containing participant ids
     visit_id
+        The column name containing visit ids
     date_column
+        The column name containing visit date
     datetime_column
+        The column name containing visit datetime
     """
     window = Window.partitionBy(participant_id, date_column)  # .orderBy(date_column, datetime_column)
 
@@ -41,13 +59,21 @@ def multiple_visit_1_day(df, participant_id, visit_id, date_column, datetime_col
     return df_multiple_visit.drop("FLAG")
 
 
-def unmatching_antibody_to_swab_viceversa(swab_df, antibody_df, column_list):
+def unmatching_antibody_to_swab_viceversa(
+    swab_df: DataFrame, antibody_df: DataFrame, column_list: List[str]
+) -> DataFrame:
     """
+    Identifies participants who are present in Swab dataframe but not in Antibody
+    dataframe and vice versa.
+
     Parameters
     ----------
     swab_df
+        The Swabs dataframe
     antibody_df
+        The Antibody dataframe
     column_list
+        A list of columns to return in the resulting dataframe
     """
     unmatched_swab_df = swab_df.join(antibody_df, on="barcode", how="left_anti").select(*column_list)
     unmatched_antibody_df = antibody_df.join(swab_df, on="barcode", how="left_anti").select(*column_list)
@@ -56,7 +82,17 @@ def unmatching_antibody_to_swab_viceversa(swab_df, antibody_df, column_list):
     return df
 
 
-def generate_error_table(table_name: str, error_priority_map: dict):
+def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame:
+    """
+    Generates error tables
+
+    Parameters
+    ----------
+    table_name
+        Name of a hdfs table of survey responses passing/failing validation checks
+    error_priority_map
+        Error priority dictionary
+    """
     df = extract_from_table(table_name)
     df_new = df.filter(F.col("run_id") == get_run_id()).groupBy("validation_check_failures").count()
     df_previous = df.filter(F.col("run_id") == (get_run_id() - 1)).groupBy("validation_check_failures").count()
