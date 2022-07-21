@@ -26,7 +26,7 @@ def test_calculate_scenario_c_antibody_design_weights(spark_session):
         sample_new_previous_column="sample",
         tranche_eligible_column="eligible",
         tranche_number_column="tranche_num",
-        swab_design_weight_column="weight",
+        scaled_swab_design_weight_column="weight",
         tranche_factor_column="factor",
         previous_design_weight_column="hh_weight",
     )
