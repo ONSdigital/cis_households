@@ -12,16 +12,15 @@ def test_carry_forward_design_weights(spark_session):
             groupby integer,
             raw_design_weight_antibodies_ab double,
             num_hh integer,
-            scaled_design_weight_antibodies_non_adjusted double,
+            scaled_design_weight_antibodies_non_adjusted double
             """,
+    ).withColumn(
+        "scaled_design_weight_antibodies_non_adjusted",
+        F.col("scaled_design_weight_antibodies_non_adjusted").cast(DecimalType(38, 20)),
     )
+
     output_df = scale_antibody_design_weights(
-        df=expected_df.drop(
-            "carry_forward_design_weight_antibodies",
-            "sum_carry_forward_design_weight_antibodies",
-            "scaling_factor_carry_forward_design_weight_antibodies",
-            "scaled_design_weight_antibodies_non_adjusted",
-        ),
+        df=expected_df.drop("scaled_design_weight_antibodies_non_adjusted"),
         column_name_to_assign="scaled_design_weight_antibodies_non_adjusted",
         design_weight_column_to_scale="raw_design_weight_antibodies_ab",
         groupby_column="groupby",
@@ -29,10 +28,7 @@ def test_carry_forward_design_weights(spark_session):
     )
     assert_df_equality(
         output_df,
-        expected_df.withColumn(
-            "scaled_design_weight_antibodies_non_adjusted",
-            F.col("scaled_design_weight_antibodies_non_adjusted").cast(DecimalType(38, 20)),
-        ),
+        expected_df,
         ignore_column_order=True,
         ignore_row_order=True,
         ignore_nullable=True,
