@@ -98,9 +98,9 @@ def calculate_design_weights(
     )
 
     higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
-    scenario_ab = higher_eligibility and tranche_df is None
+    new_antibody_enrolment = higher_eligibility and tranche_df is None
     df = calculate_scaled_antibody_design_weights(
-        df, "scaled_design_weight_antibodies_non_adjusted", cis_area_window, scenario_ab
+        df, "scaled_design_weight_antibodies_non_adjusted", cis_area_window, new_antibody_enrolment
     )
 
     try:
@@ -119,19 +119,11 @@ def calculate_design_weights(
 
 
 def calculate_scaled_antibody_design_weights(
-    df: DataFrame, column_name_to_assign: str, cis_area_window: Window, scenario_ab: bool
+    df: DataFrame, column_name_to_assign: str, cis_area_window: Window, new_antibody_enrolment: bool
 ):
     design_weight_column = "antibody_design_weight"
-    if scenario_ab:
-        df = calculate_scenario_ab_antibody_design_weights(
-            df=df,
-            column_name_to_assign=design_weight_column,
-            hh_design_weight_antibodies_column="scaled_design_weight_antibodies_non_adjusted",
-            sample_new_previous_column="sample_new_previous",
-            scaled_design_weight_swab_non_adjusted_column="scaled_design_weight_swab_non_adjusted",
-        )
-    else:
-        df = calculate_scenario_c_antibody_design_weights(
+    if new_antibody_enrolment:
+        df = calculate_scenario_c_raw_antibody_design_weights(
             df=df,
             column_name_to_assign="raw_antibody_design_weight",
             sample_new_previous_column="sample_new_previous",
@@ -148,6 +140,15 @@ def calculate_scaled_antibody_design_weights(
             eligible_household_count_column="number_eligible_household_sample",
             groupby_columns=["cis_area_code_20", "sample_new_previous"],
             cis_window=cis_area_window,
+        )
+
+    else:
+        df = calculate_scenario_ab_antibody_design_weights(
+            df=df,
+            column_name_to_assign=design_weight_column,
+            hh_design_weight_antibodies_column="scaled_design_weight_antibodies_non_adjusted",
+            sample_new_previous_column="sample_new_previous",
+            scaled_design_weight_swab_non_adjusted_column="scaled_design_weight_swab_non_adjusted",
         )
 
     df = scale_antibody_design_weights(
@@ -497,7 +498,7 @@ def calculate_scenario_ab_antibody_design_weights(
     return df
 
 
-def calculate_scenario_c_antibody_design_weights(
+def calculate_scenario_c_raw_antibody_design_weights(
     df: DataFrame,
     column_name_to_assign: str,
     sample_new_previous_column: str,
