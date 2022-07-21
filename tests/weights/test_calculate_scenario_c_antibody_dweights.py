@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.design_weights import calculate_scenario_c_raw_antibody_design_weights
+from cishouseholds.weights.design_weights import calculate_raw_antibody_design_weights_with_migration
 
 
 def test_calculate_scenario_c_antibody_design_weights(spark_session):
@@ -20,7 +20,7 @@ def test_calculate_scenario_c_antibody_design_weights(spark_session):
             c_weight double
             """,
     )
-    output_df = calculate_scenario_c_raw_antibody_design_weights(
+    output_df = calculate_raw_antibody_design_weights_with_migration(
         df=expected_df.drop("c_weight"),
         column_name_to_assign="c_weight",
         sample_new_previous_column="sample",
