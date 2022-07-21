@@ -74,7 +74,7 @@ def calculate_design_weights(
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
-        df = tranche_df.withColumn(
+        df = df.withColumn(
             "tranche_eligible_households",
             F.when(F.col("tranche_eligible_households").isNull(), "No").otherwise(F.col("tranche_eligible_households")),
         )
