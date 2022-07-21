@@ -129,7 +129,7 @@ def calculate_scaled_antibody_design_weights(
 ):
     design_weight_column = "antibody_design_weight"
     if new_migration_to_antibody:
-        df = calculate_scenario_c_raw_antibody_design_weights(
+        df = calculate_raw_antibody_design_weights_with_migration(
             df=df,
             column_name_to_assign="raw_antibody_design_weight",
             sample_new_previous_column="sample_new_previous",
@@ -149,7 +149,7 @@ def calculate_scaled_antibody_design_weights(
         )
 
     else:
-        df = calculate_scenario_ab_antibody_design_weights(
+        df = calculate_antibody_design_weights_without_migration(
             df=df,
             column_name_to_assign=design_weight_column,
             hh_design_weight_antibodies_column="scaled_design_weight_antibodies_non_adjusted",
@@ -482,7 +482,7 @@ def validate_design_weights(
         raise DesignWeightError(error_string + "\n")
 
 
-def calculate_scenario_ab_antibody_design_weights(
+def calculate_antibody_design_weights_without_migration(
     df: DataFrame,
     column_name_to_assign: str,
     hh_design_weight_antibodies_column: str,
@@ -504,7 +504,7 @@ def calculate_scenario_ab_antibody_design_weights(
     return df
 
 
-def calculate_scenario_c_raw_antibody_design_weights(
+def calculate_raw_antibody_design_weights_with_migration(
     df: DataFrame,
     column_name_to_assign: str,
     sample_new_previous_column: str,
