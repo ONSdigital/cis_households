@@ -7,15 +7,12 @@ from cishouseholds.weights.design_weights import scale_antibody_design_weights
 
 def test_carry_forward_design_weights(spark_session):
     expected_df = spark_session.createDataFrame(
-        data=[(2, 1.0, 4, 1.0, 1.0, 4.0, 1.0), (2, 3.0, 4, 3.0, 1.0, 4.0, 3.0), (1, 1.0, 6, 6.0, 6.0, 1.0, 1.0)],
+        data=[(2, 1.0, 4, 1.0), (2, 3.0, 4, 3.0), (1, 1.0, 6, 6.0)],
         schema="""
             groupby integer,
             raw_design_weight_antibodies_ab double,
             num_hh integer,
             scaled_design_weight_antibodies_non_adjusted double,
-            scaling_factor_carry_forward_design_weight_antibodies double,
-            sum_carry_forward_design_weight_antibodies double,
-            carry_forward_design_weight_antibodies double
             """,
     )
     output_df = scale_antibody_design_weights(
@@ -25,7 +22,8 @@ def test_carry_forward_design_weights(spark_session):
             "scaling_factor_carry_forward_design_weight_antibodies",
             "scaled_design_weight_antibodies_non_adjusted",
         ),
-        scenario="A",
+        column_name_to_assign="scaled_design_weight_antibodies_non_adjusted",
+        design_weight_column_to_scale="raw_design_weight_antibodies_ab",
         groupby_column="groupby",
         household_population_column="num_hh",
     )

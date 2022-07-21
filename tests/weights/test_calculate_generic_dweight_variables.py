@@ -70,9 +70,9 @@ def test_calculate_generic_design_weight_variables(spark_session):
     window = Window.partitionBy("window")
     output_df = calculate_combined_design_weights(
         df=input_df,
+        column_name_to_assign="combined_design_weight_type1",
         design_weight_column="weight",
         groupby_columns=["groupby"],
-        test_type="type1",
         eligible_household_count_column="number_eligible_household_sample",
         cis_window=window,
     )
