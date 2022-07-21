@@ -69,7 +69,8 @@ def calculate_design_weights(
 
     df = assign_sample_new_previous(df, "sample_new_previous", "date_sample_created", "batch_number")
 
-    if tranche_df is not None:
+    tranche_provided = tranche_df is not None
+    if tranche_provided:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 
@@ -98,7 +99,7 @@ def calculate_design_weights(
     )
 
     higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
-    new_antibody_enrolment = higher_eligibility and tranche_df is None
+    new_antibody_enrolment = higher_eligibility and not tranche_provided
     df = calculate_scaled_antibody_design_weights(
         df, "scaled_design_weight_antibodies_non_adjusted", cis_area_window, new_antibody_enrolment
     )
