@@ -646,18 +646,18 @@ def _validate_donor_group_variables(
             if var_dtype != df_dtypes[var]:
                 logging.warning(f"{var} dtype is {df_dtypes[var]} and not the required {var_dtype}")
 
-        # if var_min is not None:
-        #     var_min_count = df.filter(F.col(var) > var_min).count()
-        #     if var_min_count > 0:
-        #         logging.warning(f"{var_min_count} rows have {var} below {var_min}" % (var_min_count, var, var_min))
+        if var_min is not None:
+            var_min_count = df.filter(F.col(var) > var_min).count()
+            if var_min_count > 0:
+                logging.warning(f"{var_min_count} rows have {var} below {var_min}" % (var_min_count, var, var_min))
 
-        # if var_max is not None:
-        #     var_max_count = df.filter(F.col(var) < var_max).count()
-        #     if var_max_count > 0:
-        #         logging.warning(f"{var_max_count} rows have {var} above {var_max}")
+        if var_max is not None:
+            var_max_count = df.filter(F.col(var) < var_max).count()
+            if var_max_count > 0:
+                logging.warning(f"{var_max_count} rows have {var} above {var_max}")
 
     logging.info("Summary statistics for donor group variables:")
-    # logging.info(df.select(donor_group_columns).summary().toPandas())
+    logging.info(df.select(donor_group_columns).summary().toPandas())
 
 
 def weighted_distance(df, group_id, donor_group_columns, donor_group_column_weights):
@@ -771,13 +771,13 @@ def impute_by_k_nearest_neighbours(
     #     logging.warning(message)
     #     raise ValueError(message)
 
-    if donor_group_column_weights is None:
-        donor_group_column_weights = [1] * len(donor_group_columns)
-        logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
+    # if donor_group_column_weights is None:
+    #     donor_group_column_weights = [1] * len(donor_group_columns)
+    #     logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
-    if donor_group_column_conditions is None:
-        donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
-        logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
+    # if donor_group_column_conditions is None:
+    #     donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
+    #     logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
     # _validate_donor_group_variables(
     #     df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
@@ -812,29 +812,29 @@ def impute_by_k_nearest_neighbours(
 
     # frequencies.cache().count()
 
-    no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
-    no_donors_count = no_donors.count()
-    if no_donors_count != 0:
-        message = f"{no_donors_count} donor pools with no donors"
-        logging.error(message)
-        # logging.error(no_donors.toPandas())
-        raise ValueError(message)
+    # no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
+    # no_donors_count = no_donors.count()
+    # if no_donors_count != 0:
+    #     message = f"{no_donors_count} donor pools with no donors"
+    #     logging.error(message)
+    #     logging.error(no_donors.toPandas())
+    #     raise ValueError(message)
 
     unique_imputation_group_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
         "total_donor_pool_size", F.sum("donor_group_value_frequency").over(unique_imputation_group_window)
     )
 
-    below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
-    below_minimum_donor_count_count = below_minimum_donor_count.count()
-    if below_minimum_donor_count_count > 0:
-        message = (
-            f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
-            "minimum donor(s)"
-        )
-        logging.error(message)
-        # logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
-        raise ValueError(message)
+    # below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
+    # below_minimum_donor_count_count = below_minimum_donor_count.count()
+    # if below_minimum_donor_count_count > 0:
+    #     message = (
+    #         f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
+    #         "minimum donor(s)"
+    #     )
+    #     logging.error(message)
+    #     logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
+    #     raise ValueError(message)
 
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
@@ -915,9 +915,9 @@ def impute_by_k_nearest_neighbours(
     )
 
     # output_df_length = df.cache().count()
-    logging.info(
-        f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
-    )
+    # logging.info(
+    #     f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
+    # )
     # logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
     # if output_df_length != input_df_length:
     #     raise ValueError(
@@ -929,7 +929,7 @@ def impute_by_k_nearest_neighbours(
     # if missing_count != 0:
     #     raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
 
-    logging.info("KNN imputation completed\n")
+    # logging.info("KNN imputation completed\n")
     return df
 
 
