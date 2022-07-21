@@ -2676,9 +2676,10 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
                         "Furloughed (temporarily not working)",
                         "Not working (unemployed, retired, long-term sick etc.)",
                         "Student",
-                    )
-                ).otherwise(F.col("work_location"))
-            ),
+                    ),
+                ),
+                F.lit("Not applicable, not currently working"),
+            ).otherwise(F.col("work_location")),
         )
     )
 
