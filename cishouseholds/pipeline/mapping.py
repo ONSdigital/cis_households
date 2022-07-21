@@ -2146,7 +2146,7 @@ _welsh_blood_sample_not_taken_categories = {
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf gwaed wedi cyrraedd": "I am near the end of my testing window and my blood test kit has not arrived",  # noqa: E501
 }
 
-
+# Resolved in high level transformation using map_options_to_bool_columns
 _welsh_blood_kit_missing_categories = {
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
     "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
@@ -2161,7 +2161,7 @@ _welsh_blood_kit_missing_categories = {
     "Arall, nodwch": "Other please specify",
 }
 
-
+# Resolved in high level transformation using map_options_to_bool_columns
 _welsh_blood_not_taken_reason_categories = {
     "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "I couldn't get enough blood into the pot",
     "Daeth yr hylif allan o'r pot": "The pot spilled",

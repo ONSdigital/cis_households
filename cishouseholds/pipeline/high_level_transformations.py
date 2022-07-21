@@ -1111,6 +1111,52 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         ";",
     )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_missing_parts",
+        {
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_small_sample_tube",  # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_large_sample_carrier",  # noqa: E501
+            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_biohazard_bag",
+            "Copy of your blood barcode": "blood_not_taken_missing_blood_barcode",
+            "Lancets": "blood_not_taken_missing_lancets",
+            "Plasters": "blood_not_taken_missing_plasters",
+            "Alcohol wipes": "blood_not_taken_missing_alcohol_wipes",
+            "Cleansing wipe": "blood_not_taken_missing_cleansing_wipe",
+            "Sample box": "blood_not_taken_missing_sample_box",
+            "Sample return bag with a return label on": "blood_not_taken_missing_sample_return_bag",
+            "Other please specify": "blood_not_taken_missing_other",
+            "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "blood_not_taken_missing_small_sample_tube",  # noqa: E501
+            "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "blood_not_taken_missing_large_sample_carrier",  # noqa: E501
+            "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "blood_not_taken_missing_biohazard_bag",
+            "Copi o'ch cod bar gwaed": "blood_not_taken_missing_blood_barcode",
+            "Lawnsedi": "blood_not_taken_missing_lancets",
+            "Plasteri": "blood_not_taken_missing_plasters",
+            "Weips alcohol": "blood_not_taken_missing_alcohol_wipes",
+            "Weip glanhau": "blood_not_taken_missing_cleansing_wipe",
+            "Blwch sampl": "blood_not_taken_missing_sample_box",
+            "Bag i ddychwelyd y sampl â label parod arno": "blood_not_taken_missing_sample_return_bag",
+            "Arall, nodwch": "blood_not_taken_missing_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_could_not_reason",
+        {
+            "I couldn't get enough blood into the pot": "blood_not_taken_reason_not_enough_blood",
+            "The pot spilled": "blood_not_taken_reason_pot_spilled",
+            "I had bruising or pain": "blood_not_taken_reason_had_bruising",
+            "I felt unwell": "blood_not_taken_reason_unwell",
+            "Other please specify": "blood_not_taken_reason_other",
+            "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "blood_not_taken_reason_not_enough_blood",
+            "Daeth yr hylif allan o'r pot": "blood_not_taken_reason_pot_spilled",
+            "Roedd gen i glais neu roeddwn i mewn poen": "blood_not_taken_reason_had_bruising",
+            "Nid oeddwn i'n teimlo'n dda": "blood_not_taken_reason_unwell",
+            "Arall, nodwch": "blood_not_taken_reason_other",
+        },
+        ";",
+    )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",
