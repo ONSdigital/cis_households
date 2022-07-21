@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.design_weights import calculate_generic_design_weight_variables
+from cishouseholds.weights.design_weights import calculate_combined_design_weights
 
 
 def test_calculate_generic_design_weight_variables(spark_session):
@@ -68,12 +68,12 @@ def test_calculate_generic_design_weight_variables(spark_session):
             """,
     )
     window = Window.partitionBy("window")
-    output_df = calculate_generic_design_weight_variables(
+    output_df = calculate_combined_design_weights(
         df=input_df,
         design_weight_column="weight",
         groupby_columns=["groupby"],
         test_type="type1",
-        num_eligible_household_column="number_eligible_household_sample",
+        eligible_household_count_column="number_eligible_household_sample",
         cis_window=window,
     )
 

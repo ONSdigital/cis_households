@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.design_weights import calculate_combined_design_weight_swabs
+from cishouseholds.weights.design_weights import scale_swab_design_weight
 
 
 def test_calculate_combined_design_weight_swabs(spark_session):
@@ -28,10 +28,10 @@ def test_calculate_combined_design_weight_swabs(spark_session):
         """,
     )
     window = Window.partitionBy("window")
-    output_df = calculate_combined_design_weight_swabs(
+    output_df = scale_swab_design_weight(
         df=input_df,
         design_weight_column="combined_design_weight_swab",
-        num_households_column="number_of_households_by_cis_area",
+        household_count_column="number_of_households_by_cis_area",
         cis_window=window,
     )
 
