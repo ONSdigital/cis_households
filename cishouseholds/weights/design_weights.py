@@ -99,7 +99,7 @@ def calculate_design_weights(
     )
 
     higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
-    new_migration_to_antibody = higher_eligibility and not tranche_provided
+    new_migration_to_antibody = higher_eligibility and tranche_provided
     df = calculate_scaled_antibody_design_weights(
         df,
         "scaled_design_weight_antibodies_non_adjusted",
@@ -108,18 +108,15 @@ def calculate_design_weights(
         new_migration_to_antibody,
     )
 
-    try:
-        validate_design_weights(
-            df=df,
-            num_households_by_cis_column="number_of_households_by_cis_area",
-            num_households_by_country_column="number_of_households_by_country",
-            swab_desing_weight_column="scaled_design_weight_swab_non_adjusted",
-            antibody_design_weight_column="scaled_design_weight_antibodies_non_adjusted",
-            cis_area_column="cis_area_code_20",
-            country_column="country_code_12",
-        )
-    except Exception as e:
-        print(repr(e))  # functional
+    validate_design_weights(
+        df=df,
+        num_households_by_cis_column="number_of_households_by_cis_area",
+        num_households_by_country_column="number_of_households_by_country",
+        swab_desing_weight_column="scaled_design_weight_swab_non_adjusted",
+        antibody_design_weight_column="scaled_design_weight_antibodies_non_adjusted",
+        cis_area_column="cis_area_code_20",
+        country_column="country_code_12",
+    )
     return df
 
 
