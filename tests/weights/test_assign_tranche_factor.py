@@ -6,32 +6,27 @@ from cishouseholds.weights.derive import assign_tranche_factor
 def test_assign_tranche_factor(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            ("A", "J1", 1, "Yes", 2, 0, None),
-            ("B", "J2", 2, "Yes", 2, 2, 1.0),
-            ("C", "J2", 2, "Yes", 2, 2, 1.0),
-            ("D", "J1", 2, "Yes", 2, 1, 2.0),
-            (None, "J1", 1, "No", 0, 0, None),
+            ("A", "S1", 1, "Yes", None),
+            ("B", "S1", 1, "Yes", None),
+            ("C", "S1", 2, "Yes", 2.0),  # 4 eligible / 2 max tranche
+            ("D", "S1", 2, "Yes", 2.0),  # 4 eligible / 2 max tranche
+            ("D", "S2", 2, "Yes", 1.0),  # 1 elibgible / 1 max tranche
+            (None, "S2", None, "No", None),
         ],
         schema="""
-            barcode string,
-            groupby string,
+            id string,
+            stratum string,
             tranche_number_indicator integer,
             tranche_eligible_households string,
-            number_eligible_households_tranche_by_strata_enrolment integer,
-            number_sampled_households_tranche_by_strata_enrolment integer,
             tranche_factor double""",
     )
     output_df = assign_tranche_factor(
-        df=expected_df.drop(
-            "tranche_factor",
-            "tranche_eligible_households",
-            "number_eligible_households_tranche_by_strata_enrolment",
-            "number_sampled_households_tranche_by_strata_enrolment",
-        ),
+        df=expected_df.drop("tranche_factor"),
         column_name_to_assign="tranche_factor",
         tranche_column="tranche_number_indicator",
-        strata_columns=["groupby"],
-        household_id_column="barcode",
+        elibility_column="tranche_eligible_households",
+        strata_columns=["stratum"],
+        household_id_column="id",
     )
     assert_df_equality(
         output_df,

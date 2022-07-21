@@ -1,12 +1,9 @@
 import re
-from typing import Any
 from typing import List
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-
-from cishouseholds.derive import assign_distinct_count_in_group
 
 
 def assign_ethnicity_white(
@@ -120,67 +117,30 @@ def assign_sample_new_previous(df: DataFrame, column_name_to_assign: str, date_c
     return df.drop("MAX_DATE", "MAX_BATCH_NUMBER")
 
 
-def count_distinct_in_filtered_df(
-    df: DataFrame,
-    column_name_to_assign: str,
-    column_to_count: str,
-    filter_positive: Any,
-    group_by_columns: List[str],
-):
-    """
-    Count distinct rows that meet a given condition over a predefined window (window)
-    """
-    eligible_df = df.filter(filter_positive)
-    eligible_df = assign_distinct_count_in_group(
-        eligible_df, column_name_to_assign, [column_to_count], group_by_columns
-    )
-    ineligible_df = df.filter(~filter_positive).withColumn(column_name_to_assign, F.lit(0))
-    df = eligible_df.unionByName(ineligible_df)
-    return df
-
-
 def assign_tranche_factor(
     df: DataFrame,
     column_name_to_assign: str,
     household_id_column: str,
     tranche_column: str,
+    elibility_column: str,
     strata_columns: List[str],
 ):
     """
-    Assign a variable tranche factor as the ratio between 2 derived columns
-    (number_eligible_households_tranche_by_strata_enrolment),
-    (number_sampled_households_tranche_by_strata_enrolment) when the household is eligible to be sampled
-    as the barcode column is not null and the tranche
-    value is maximum within the predefined window (window)
+    Assign tranche factor as the ratio between the number of eligible households in the strata
+    by the number of eligible households with the maximum tranche value in the strata.
+
+    Outcome is Null for uneligible households.
     """
-    df = df.withColumn(
-        "tranche_eligible_households", F.when(F.col(household_id_column).isNull(), "No").otherwise("Yes")
-    )
-    df = count_distinct_in_filtered_df(
-        df=df,
-        column_name_to_assign="number_eligible_households_tranche_by_strata_enrolment",
-        column_to_count=household_id_column,
-        filter_positive=F.col("tranche_eligible_households") == "Yes",
-        group_by_columns=strata_columns,
-    )
+    eligible_window = Window.partitionBy(elibility_column, *strata_columns)
+    eligible_households_by_strata = F.count(F.col(household_id_column)).over(eligible_window)
+
+    tranche_window = Window.partitionBy(elibility_column, tranche_column, *strata_columns)
+    latest_tranche_households_by_strata = F.count(F.col(household_id_column)).over(tranche_window)
 
     df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
-    filter_max_condition = (F.col("tranche_eligible_households") == "Yes") & (
-        F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER")
-    )
-    df = count_distinct_in_filtered_df(
-        df=df,
-        column_name_to_assign="number_sampled_households_tranche_by_strata_enrolment",
-        column_to_count=household_id_column,
-        filter_positive=filter_max_condition,
-        group_by_columns=strata_columns,
-    )
+    latest_tranche = (F.col(elibility_column) == "Yes") & (F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER"))
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            filter_max_condition,
-            F.col("number_eligible_households_tranche_by_strata_enrolment")
-            / F.col("number_sampled_households_tranche_by_strata_enrolment"),
-        ).otherwise(None),
+        F.when(latest_tranche, eligible_households_by_strata / latest_tranche_households_by_strata),
     )
     return df.drop("MAX_TRANCHE_NUMBER")

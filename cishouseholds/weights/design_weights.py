@@ -71,12 +71,19 @@ def calculate_design_weights(
 
     if tranche_df is not None:
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
+        tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
+
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
+        df = tranche_df.withColumn(
+            "tranche_eligible_households",
+            F.when(F.col("tranche_eligible_households").isNull(), "No").otherwise(F.col("tranche_eligible_households")),
+        )
         df = assign_tranche_factor(
             df=df,
             column_name_to_assign="tranche_factor",
             household_id_column="ons_household_id",
             tranche_column="tranche_number_indicator",
+            elibility_column="tranche_eligible_households",
             strata_columns=tranche_strata_columns,
         )
     else:
