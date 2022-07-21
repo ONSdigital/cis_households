@@ -810,7 +810,7 @@ def impute_by_k_nearest_neighbours(
         on="unique_imputation_group",
     )
 
-    frequencies.cache().count()
+    # frequencies.cache().count()
 
     no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
     no_donors_count = no_donors.count()
@@ -871,7 +871,6 @@ def impute_by_k_nearest_neighbours(
         "don_" + reference_column,
         "required_decimal_donor_count",
     )
-
     rescale_window = Window.partitionBy("unique_imputation_group")
 
     decimal_part_donors = decimal_part_donors.withColumn(
