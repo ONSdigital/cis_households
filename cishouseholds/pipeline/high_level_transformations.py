@@ -2667,4 +2667,19 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
             ).otherwise(F.col("work_status_v2")),
         )
         .withColumn("work_status_v2_edited", update_work_status_student_v2_c)
+        .withColumn(
+            "work_location",
+            F.when(
+                F.col("work_location").isNull
+                & (
+                    F.col("work_status_v0").isin(
+                        "Furloughed (temporarily not working)",
+                        "Not working (unemployed, retired, long-term sick etc.)",
+                        "Student",
+                    )
+                ).otherwise(F.col("work_location"))
+            ),
+        )
     )
+
+    return df
