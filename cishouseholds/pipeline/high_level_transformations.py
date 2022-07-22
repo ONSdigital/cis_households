@@ -2454,6 +2454,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     )
+    deduplicated_df.checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2471,6 +2472,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     )
+    deduplicated_df.checkpoint()
 
     return deduplicated_df.select(
         unique_id_column,
