@@ -80,7 +80,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.design_weights import generate_weights
+from cishouseholds.weights.design_weights import calculate_design_weights
 from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
@@ -1569,7 +1569,7 @@ def sample_file_ETL(
         )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(
+    design_weights = calculate_design_weights(
         household_level_populations_df,
         master_sample_df,
         old_sample_df,
