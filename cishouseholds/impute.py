@@ -771,12 +771,12 @@ def impute_by_k_nearest_neighbours(
     #     logging.warning(message)
     #     raise ValueError(message)
 
-    # if donor_group_column_weights is None:
-    #     donor_group_column_weights = [1] * len(donor_group_columns)
+    if donor_group_column_weights is None:
+        donor_group_column_weights = [1] * len(donor_group_columns)
     #     logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
-    # if donor_group_column_conditions is None:
-    #     donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
+    if donor_group_column_conditions is None:
+        donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
     #     logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
     # _validate_donor_group_variables(
