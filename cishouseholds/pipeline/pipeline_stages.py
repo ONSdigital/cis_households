@@ -945,10 +945,10 @@ def impute_demographic_columns(
     imputed_columns = [
         column.replace("_imputation_method", "")
         for column in key_columns_imputed_df.columns
-        if column.endsswith("_imputation_method")
+        if column.endswith("_imputation_method")
     ]
     imputed_values_df = key_columns_imputed_df.filter(
-        any_column_not_null([F.col(f"{column}_imputation_method") for column in imputed_columns])
+        any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
     )
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
     new_imputed_value_lookup = imputed_values_df.select(
