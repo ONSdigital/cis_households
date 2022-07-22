@@ -459,6 +459,14 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+# def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+#    """
+#    Call functions to translate welsh survey responses from the cis digital questionnaire
+#    """
+#    column_editing_map = {}
+#    df = apply_value_map_multiple_columns(df, column_editing_map)
+
+
 def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process digital specific variable transformations.
@@ -503,8 +511,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Don&#39;t know": None,
         "Do not know": None,
         "Don&amp;#39;t Know": None,
-        "Byddai'n well gen i beidio â dweud": None,
-        "Ddim yn gwybod": None,
     }
     df = apply_value_map_multiple_columns(
         df,
@@ -521,13 +527,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             ],
             [
                 "Yes, you have/have had symptoms",
-                [
-                    "Yes",
-                    [
-                        "I have or have had symptoms of COVID-19 or a positive test",
-                        "Mae gen i symptomau COVID-19 neu rwyf wedi cael symptomau COVID-19 neu brawf positif",
-                    ],
-                ],
+                ["Yes", "I have or have had symptoms of COVID-19 or a positive test"],
             ],
             [
                 "Yes, someone you live with had symptoms",
@@ -537,7 +537,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                         "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
                         # TODO: Remove once encoding fixed in raw data
                         "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-                        "Nid wyf wedi cael symptomau ond rwy'n byw gyda rhywun sydd â symptomau neu sydd wedi cael symptomau neu brawf positif",
                     ],
                 ],
             ],
@@ -545,20 +544,14 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Yes, for other reasons (e.g. going into hospital, quarantining)",
                 [
                     "Yes",
-                    [
-                        "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
-                        "Oherwydd risg uwch o gael COVID-19, er enghraifft rwyf wedi bod mewn cysylltiad ag achos hysbys neu rwyf mewn cwarantîn ar ôl teithio dramor",
-                    ],
+                    "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
                 ],  # noqa: E501
             ],
             [
                 "Yes, for other reasons (e.g. going into hospital, quarantining)",
                 [
                     "Yes",
-                    [
-                        "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
-                        "Er mwyn lleihau fy risg o gael COVID-19, er enghraifft cyn mynd i'r ysbyty neu rwy'n cael fy ngwarchod",
-                    ],
+                    "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
                 ],  # noqa: E501
             ],
         ],
@@ -573,11 +566,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Employed and currently working",
                 [
-                    ["Employed", "Cyflogedig"],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",  # noqa: E501
-                    ],
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
@@ -585,14 +575,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Employed and currently not working",
                 [
-                    [
-                        "Employed",
-                        "Cyflogedig",
-                    ],
+                    "Employed",
                     [
                         "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                         "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
                     ],
                     None,
                     None,
@@ -601,14 +587,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",  # noqa: E501
-                    ],
+                    "Self-employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
@@ -616,13 +596,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently not working",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
+                    "Self-employed",
                     [
                         "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
                     ],
                     None,
                     None,
@@ -631,122 +608,73 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Looking for paid work and able to start",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Looking for paid work and able to start",
-                        "Yn chwilio am waith â thâl ac yn gallu dechrau",
-                    ],
+                    "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
                 "Not working and not looking for work",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-                        "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir",  # noqa: E501
-                    ],
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             [
                 "Retired",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    ["Retired", "Or retired?", "Wedi ymddeol"],
+                    ["Retired", "Or retired?"],
                     None,
                 ],
             ],
             [
                 "Child under 4-5y not attending child care",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "A child below school age and not attending a nursery or pre-school or childminder",
-                        "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant",
-                    ],
+                    "A child below school age and not attending a nursery or pre-school or childminder",
                 ],
             ],
             [
                 "Child under 4-5y attending child care",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "A child below school age and attending a nursery or a pre-school or childminder",
-                        "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant",
-                    ],
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
                 "4-5y and older at school/home-school",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "A child aged 4 or over at school",
-                        "A child aged 4 or over at home-school",
-                        "Plentyn 4 oed neu drosodd yn yr ysgol",
-                        "Plentyn 4 oed neu drosodd sy'n cael addysg gartref",
-                    ],
+                    ["A child aged 4 or over at school", "A child aged 4 or over at home-school"],
                 ],
             ],
             [
                 "Attending college or FE (including if temporarily absent)",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "Attending a college or other further education provider including apprenticeships",
-                        "Mynychu coleg neu ddarparwr addysg bellach arall gan gynnwys prentisiaethau",
-                    ],
+                    "Attending a college or other further education provider including apprenticeships",
                 ],
             ],
             [
                 "Attending university (including if temporarily absent)",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    ["Attending university", "Or attending university?", "Mynychu prifysgol"],
+                    ["Attending university", "Or attending university?"],
                 ],
             ],
         ],
@@ -759,11 +687,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Employed and currently working",
                 [
-                    ["Employed", "Cyflogedig"],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",  # noqa: E501
-                    ],
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
@@ -771,11 +696,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Employed and currently not working",
                 [
-                    ["Employed", "Cyflogedig"],
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
-                    ],
+                    "Employed",
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
@@ -783,14 +705,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently working",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",  # noqa: E501
-                    ],
+                    "Self-employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
@@ -798,14 +714,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Self-employed and currently not working",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
-                    ],
+                    "Self-employed",
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
                     None,
                     None,
                 ],
@@ -813,85 +723,52 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Looking for paid work and able to start",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Looking for paid work and able to start",
-                        "Yn chwilio am waith â thâl ac yn gallu dechrau",
-                    ],
+                    "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
                 "Not working and not looking for work",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-                        "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir",  # noqa: E501
-                    ],
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
                     None,
                 ],
             ],
             [
                 "Retired",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    ["Retired", "Or retired?", "Wedi ymddeol"],
+                    ["Or retired?", "Retired"],
                     None,
                 ],
             ],
             [
                 "Child under 5y not attending child care",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "A child below school age and not attending a nursery or pre-school or childminder",
-                        "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant",
-                    ],
+                    "A child below school age and not attending a nursery or pre-school or childminder",
                 ],
             ],
             [
                 "Child under 5y attending child care",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
-                    [
-                        "A child below school age and attending a nursery or pre-school or childminder",
-                        "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant",
-                    ],
+                    "A child below school age and attending a nursery or pre-school or childminder",
                 ],
             ],
             [
                 "5y and older in full-time education",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
                     [
@@ -899,10 +776,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
                         "Attending university",
-                        "Plentyn 4 oed neu drosodd yn yr ysgol",
-                        "Plentyn 4 oed neu drosodd sy'n cael addysg gartref",
-                        "Mynychu coleg neu ddarparwr addysg bellach arall gan gynnwys prentisiaethau",
-                        "Mynychu prifysgol",
                     ],
                 ],
             ],
@@ -916,14 +789,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Employed",
                 [
-                    [
-                        "Employed",
-                        "Cyflogedig",
-                    ],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",
-                    ],
+                    "Employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
@@ -931,53 +798,28 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Employed",
-                        "Cyflogedig",
-                    ],
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
-                    ],
+                    "Employed",
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
                     None,
                     None,
                 ],
             ],
-            [
-                "Employed",
-                [
-                    [
-                        "Employed",
-                        "Cyflogedig",
-                    ],
-                    None,
-                    None,
-                    None,
-                ],
-            ],
+            ["Employed", ["Employed", None, None, None]],
             [
                 "Self-employed",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    [
-                        "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
-                        "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos",
-                    ],
+                    "Self-employed",
+                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
                     None,
                     None,
                 ],
             ],
+            ["Self-employed", ["Self-employed", None, None, None]],
             [
-                "Self-employed",
+                "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    None,
+                    "Self-employed",
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
                     None,
                     None,
                 ],
@@ -985,67 +827,34 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Self-employed",
-                        "Hunangyflogedig",
-                    ],
-                    [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos",  # noqa: E501
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
+                    "Looking for paid work and able to start",
                     None,
                 ],
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Looking for paid work and able to start",
-                        "Yn chwilio am waith â thâl ac yn gallu dechrau",
-                    ],
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
                     None,
                 ],
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    [
-                        "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-                        "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir",  # noqa: E501
-                    ],
+                    ["Retired", "Or retired?"],
                     None,
                 ],
             ],
             [
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
-                    None,
-                    ["Retired", "Or retired?", "Wedi ymddeol"],
-                    None,
-                ],
-            ],
-            [
-                "Not working (unemployed, retired, long-term sick etc.)",
-                [
-                    [
-                        "Not in paid work. This includes being unemployed or retired or doing voluntary work",
-                        "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol",
-                    ],
+                    "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
                     None,
                     None,
@@ -1054,11 +863,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             [
                 "Student",
                 [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                        None,
-                    ],
+                    ["In education", None],
                     None,
                     None,
                     [
@@ -1068,27 +873,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
                         "Attending university",
-                        "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant",
-                        "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant",
-                        "Plentyn 4 oed neu drosodd yn yr ysgol",
-                        "Plentyn 4 oed neu drosodd sy'n cael addysg gartref",
-                        "Mynychu coleg neu ddarparwr addysg bellach arall gan gynnwys prentisiaethau",
-                        "Mynychu prifysgol",
                     ],
                 ],
             ],
-            [
-                "Student",
-                [
-                    [
-                        "In education",
-                        "Mewn addysg",
-                    ],
-                    None,
-                    None,
-                    None,
-                ],
-            ],
+            ["Student", ["In education", None, None, None]],
         ],
         column_list,
     )
@@ -1200,10 +988,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "11 to 20": "11-20",
         "Don't know": None,
         "Prefer not to say": None,
-        "1 i 5": "1-5",
-        "6 i 10": "6-10",
-        "11 i 20": "11-20",
-        "21 neu fwy": "21 or more",
     }
     times_value_map = {
         "1": 1,
@@ -1216,10 +1000,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Don't know": None,
         "None": 0,
         "Prefer not to say": None,
-        "7 gwaith neu fwy": 7,
-        "Ddim yn gwybod": None,
-        "Byddai'n well gen i beidio â dweud": None,
-        "Dim": 0,
     }
     vaccine_type_map = {
         "Pfizer / BioNTech": "Pfizer/BioNTech",
@@ -1227,10 +1007,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
-        "Prifysgol Rhydychen / AstraZeneca": "Oxford/AstraZeneca",
-        "O astudiaeth ymchwil/treial": "From a research study/trial",
-        "Brechlyn arall, nodwch": "Other / specify",
-        "Ddim yn gwybod pa fath": "Don't know type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1252,21 +1028,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Civil Service or Local Government": "Civil service or Local Government",
             "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
             "Other employment sector please specify": "Other occupation sector",
-            "Addysgu ac addysg": "Teaching and education",
-            "Gofal iechyd": "Healthcare",
-            "Gofal Cymdeithasol": "Social care",
-            "Cludiant. Mae hyn yn cynnwys storio a logisteg": "Transport (incl. storage, logistic)",
-            "Sector manwerthu. Mae hyn yn cynnwys cyfanwerthu": "Retail sector (incl. wholesale)",
-            "Lletygarwch - er enghraifft gwestai neu fwytai neu gaffi": "Hospitality (e.g. hotel, restaurant)",
-            "Cynhyrchu bwyd ac amaethyddiaeth. Mae hyn yn cynnwys ffermio": "Food production, agriculture, farming",
-            "Gwasanaethau Personol - er enghraifft siop trin gwallt neu datŵs": "Personal services (e.g. hairdressers)",
-            "Technoleg gwybodaeth a chyfathrebu": "Information technology and communication",
-            "Gwasanaethau ariannol. Mae hyn yn cynnwys yswiriant": "Financial services incl. insurance",
-            "Gweithgynhyrchu neu adeiladu": "Manufacturing or construction",
-            "Gwasanaeth Sifil neu Lywodraeth Leol": "Civil service or Local Government",
-            "Lluoedd arfog": "Armed forces",
-            "Y celfyddydau neu adloniant neu hamdden": "Arts,Entertainment or Recreation",
-            "Sector cyflogaeth arall, nodwch": "Other occupation sector",
         },
         "work_health_care_area": {
             "Primary care - for example in a GP or dentist": "Yes, in primary care, e.g. GP, dentist",
@@ -1276,62 +1037,31 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "illness_reduces_activity_or_ability": {
             "Yes a little": "Yes, a little",
             "Yes a lot": "Yes, a lot",
-            "Ydy  llawer": "Yes, a lot",  # TODO Double space in the IQVIA spec, check when we receive extract
-            "Ydy llawer": "Yes, a lot",
-            "Ydy, llawer": "Yes, a lot",
-            "Ydy  ychydig": "Yes, a little",  # TODO Double space in the IQVIA spec, check when we receive extract
-            "Ydy ychydig": "Yes, a little",
-            "Ydy, ychydig": "Yes, a little",
-            "Ddim o gwbl": "Not at all",
         },
         "work_location": {
             "From home meaning in the same grounds or building as your home": "Working from home",
             "Somewhere else meaning not at your home)": "Working somewhere else (not your home)",
             "Both from home and work somewhere else": "Both (from home and somewhere else)",
-            "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "Working from home",
-            "Yn rhywle arall, gan olygu nid yn eich cartref": "Working somewhere else (not your home)",
-            "Gartref ac yn rhywle arall": "Both (from home and somewhere else)",
         },
         "transport_to_work_or_education": {
             "Bus or minibus or coach": "Bus, minibus, coach",
             "Motorbike or scooter or moped": "Motorbike, scooter or moped",
             "Taxi or minicab": "Taxi/minicab",
             "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
-            "Trên Tanddaearol neu Fetro neu Reilffordd Ysgafn neu Dram": "Underground, metro, light rail, tram",
-            "Trên": "Train",
-            "Bws neu fws mini neu goets": "Bus, minibus, coach",
-            "Beic modur neu sgwter neu foped": "Motorbike or scooter or moped",
-            "Car neu fan": "Car or van",
-            "Tacsi neu gab mini": "Taxi/minicab",
-            "Beic": "Bicycle",
-            "Cerdded": "On foot",
-            "Dull arall": "Other method",
         },
         "ability_to_socially_distance_at_work_or_education": {
             "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",  # noqa: E501
             "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",  # noqa: E501
             "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",  # noqa: E501
-            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",  # noqa: E501
-            "Anodd cadw 2 fetr ar wahân. Ond gallwch chi fod o leiaf 1 metr i ffwrdd oddi wrth bobl eraill fel arfer": "Difficult to maintain 2m, but can be 1m",  # noqa: E501
-            "Hawdd cadw 2 fetr ar wahân. Nid yw'n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2m",  # noqa: E501
-            "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf o'r amser": "Relatively easy to maintain 2m",  # noqa: E501
-            "Anodd iawn bod mwy nag 1 metr i ffwrdd. Mae eich gwaith yn golygu eich bod chi mewn cysylltiad agos ag eraill yn rheolaidd": "Very difficult to be more than 1m away",  # noqa: E501
+            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
         },
         "last_covid_contact_type": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
-            "Someone you live with": "Living in your own home",
-            "Someone you do not live with": "Outside your home",
-            "Rhywun rwy'n byw gydag ef": "Living in your own home",
-            "Rhywun nad wyf yn byw gydag ef": "Outside your home",
         },
         "last_suspected_covid_contact_type": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
-            "Someone you live with": "Living in your own home",
-            "Someone you do not live with": "Outside your home",
-            "Rhywun rwy'n byw gydag ef": "Living in your own home",
-            "Rhywun nad wyf yn byw gydag ef": "Outside your home",
         },
         "physical_contact_under_18_years": contact_people_value_map,
         "physical_contact_18_to_69_years": contact_people_value_map,
@@ -1349,11 +1079,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Yes always": "Yes, always",
             "I am not going to my place of work or education": "Not going to place of work or education",
             "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",  # noqa: E501
-            "Byddai'n well gen i beidio â dweud": None,
-            "Ydw, weithiau": "Yes, sometimes",
-            "Ydw, bob amser": "Yes, always",
-            "Nid wyf yn mynd i fy ngweithle na fy man addysg": "Not going to place of work or education",
-            "Rwy'n gorchuddio fy wyneb am resymau eraill - er enghraifft am resymau crefyddol neu ddiwylliannol": "My face is already covered",  # noqa: E501
         },
         "face_covering_other_enclosed_places": {
             "Prefer not to say": None,
@@ -1361,29 +1086,16 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Yes always": "Yes, always",
             "I am not going to other enclosed public spaces or using public transport": "Not going to other enclosed public spaces or using public transport",  # noqa: E501
             "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",  # noqa: E501
-            "Byddai'n well gen i beidio â dweud": None,
-            "Ydw, weithiau": "Yes, sometimes",
-            "Ydw, bob amser": "Yes, always",
-            "Nid wyf yn mynd i fannau cyhoeddus caeedig eraill nac yn defnyddio trafnidiaeth gyhoeddus": "Not going to other enclosed public spaces or using public transport",  # noqa: E501
-            "Rwy'n gorchuddio fy wyneb am resymau eraill - er enghraifft am resymau crefyddol neu ddiwylliannol": "My face is already covered",  # noqa: E501
         },
         "other_covid_infection_test_results": {
             "All tests failed": "All Tests failed",
             "One or more tests were negative and none were positive": "Any tests negative, but none positive",
             "One or more tests were positive": "One or more positive test(s)",
-            "Pob prawf wedi methu": "All Tests failed",
-            "Un neu fwy o brofion yn negatif a dim un yn bositif": "Any tests negative, but none positive",
-            "Un neu fwy o brofion yn bositif": "One or more positive test(s)",
-            "Aros am yr holl ganlyniadau": "Waiting for all results",
         },
         "other_antibody_test_results": {
             "All tests failed": "All Tests failed",
             "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",  # noqa: E501
             "One or more tests were positive for antibodies": "One or more positive test(s)",
-            "Pob prawf wedi methu": "All Tests failed",
-            "Un neu fwy o brofion negyddol ar gyfer gwrthgyrff a dim yn bositif": "Any tests negative, but none positive",
-            "Un neu fwy o brofion yn bositif": "One or more positive test(s)",
-            "Aros am yr holl ganlyniadau": "Waiting for all results",
         },
         "cis_covid_vaccine_type": vaccine_type_map,
         "cis_covid_vaccine_number_of_doses": {
@@ -1393,12 +1105,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "4 doses": "3 or more",
             "5 doses": "3 or more",
             "6 doses or more": "3 or more",
-            "1 dos": "1",
-            "2 dos": "2",
-            "3 dos": "3 or more",
-            "4 dos": "3 or more",
-            "5 dos": "3 or more",
-            "6 dos neu fwy": "3 or more",
         },
         "cis_covid_vaccine_type_1": vaccine_type_map,
         "cis_covid_vaccine_type_2": vaccine_type_map,
