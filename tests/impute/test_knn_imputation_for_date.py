@@ -33,8 +33,6 @@ def test_impute_date_by_k_nearest_neighbours(spark_session):
             year integer
         """,
     )
-    input_df = input_df.withColumn("month", F.month("date"))
-    input_df = input_df.withColumn("year", F.year("date"))
 
     output_df = impute_date_by_k_nearest_neighbours(
         df=input_df,
@@ -43,6 +41,9 @@ def test_impute_date_by_k_nearest_neighbours(spark_session):
         donor_group_columns=["group"],
         log_file_path="/",
     )
+
+    output_df = output_df.withColumn("month", F.month("date"))
+    output_df = output_df.withColumn("year", F.year("date"))
     assert_df_equality(
         output_df.drop("date"),  # Day part varies
         expected_df,
