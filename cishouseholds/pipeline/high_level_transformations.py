@@ -1,4 +1,6 @@
 # flake8: noqa
+from itertools import chain
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -92,6 +94,7 @@ from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
@@ -2200,6 +2203,48 @@ def fill_forwards_travel_column(df):
         record_changed_value="Yes",
     )
     return df
+
+
+def impute_demographic_columns_integration(
+    df,
+    imputed_value_lookup_df,
+    log_directory,
+):
+    """
+    Imputes values for key demographic columns.
+    Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey responses for imputation, containing `key_columns`
+    imputed_values_table
+        name of HIVE table containing previously imputed values
+    survey_responses_imputed_table
+        name of HIVE table to write survey responses following imputation
+    """
+
+    key_columns_imputed_df = impute_key_columns(
+        df,
+        imputed_value_lookup_df,
+        log_directory,
+    )
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endswith("_imputation_method")
+    ]
+    imputed_values_df = key_columns_imputed_df.filter(
+        any_column_not_null([F.col(f"{column}_imputation_method") for column in imputed_columns])
+    )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
+    new_imputed_value_lookup = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+    df_with_imputed_values = df.drop(*imputed_columns).join(key_columns_imputed_df, on="participant_id", how="left")
+
+    return df_with_imputed_values, new_imputed_value_lookup
 
 
 def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):

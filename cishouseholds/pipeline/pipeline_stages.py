@@ -652,7 +652,7 @@ def imputation_depdendent_transformations(
     output_table_name: str,
 ):
     """
-    Processing that depends on geographies and and imputed demographic infromation.
+    Processing that depends on geographies and and imputed demographic information.
 
     Parameters
     ----------
@@ -919,7 +919,7 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
 
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(
-    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
+    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str, test_mode: bool = False
 ):
     """
     Imputes values for key demographic columns.
@@ -934,11 +934,12 @@ def impute_demographic_columns(
     survey_responses_imputed_table
         name of HIVE table to write survey responses following imputation
     """
-    imputed_value_lookup_df = None
-    if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+    if not test_mode:
+        imputed_value_lookup_df = None
+        if check_table_exists(imputed_values_table):
+            imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+        df = extract_from_table(survey_responses_table)
 
-    df = extract_from_table(survey_responses_table)
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
@@ -957,8 +958,11 @@ def impute_demographic_columns(
     )
     df_with_imputed_values = df.drop(*imputed_columns).join(key_columns_imputed_df, on="participant_id", how="left")
 
-    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
-    update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+    if test_mode:
+        return df_with_imputed_values, new_imputed_value_lookup
+    else:
+        update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
+        update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
 @register_pipeline_stage("calculate_household_level_populations")
