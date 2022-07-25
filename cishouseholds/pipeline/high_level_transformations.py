@@ -110,6 +110,7 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
@@ -463,7 +464,9 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
 #    """
 #    Call functions to translate welsh survey responses from the cis digital questionnaire
 #    """
-#    column_editing_map = {}
+#    column_editing_map = {
+#                        "household_invited_to_digital"; _welsh_yes_no_categories,
+#                }
 #    df = apply_value_map_multiple_columns(df, column_editing_map)
 
 
