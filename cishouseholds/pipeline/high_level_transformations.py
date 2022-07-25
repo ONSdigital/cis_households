@@ -2521,9 +2521,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn("work_status_v0_edited", update_work_status_furlough_v0)
         .withColumn(
             "work_status_v1",
-            F.when(
-                update_work_status_furlough_v1_a,
-                F.lit("Employed and currently not working").otherwise(F.col("work_status_v1")),
+            F.when(update_work_status_furlough_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
             ),
         )
         .withColumn("work_status_v1_edited", update_work_status_furlough_v1_a)
@@ -2536,9 +2535,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn("work_status_v1_edited", update_work_status_furlough_v1_b)
         .withColumn(
             "work_status_v2",
-            F.when(
-                update_work_status_furlough_v2_a,
-                F.lit("Employed and currently not working").otherwise(F.col("work_status_v2")),
+            F.when(update_work_status_furlough_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
             ),
         )
         .withColumn("work_status_v2_edited", update_work_status_furlough_v2_a)
@@ -2555,9 +2553,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn("work_status_v0_edited", self_employed_regex_hit)
         .withColumn(
             "work_status_v1",
-            F.when(
-                update_work_status_self_employed_v1_a,
-                F.lit("Self-employed and currently working").otherwise(F.col("work_status_v1")),
+            F.when(update_work_status_self_employed_v1_a, F.lit("Self-employed and currently working")).otherwise(
+                F.col("work_status_v1")
             ),
         )
         .withColumn("work_status_v1_edited", update_work_status_self_employed_v1_a)
@@ -2572,8 +2569,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
             "work_status_v2",
             F.when(
                 update_work_status_self_employed_v2_a,
-                F.lit("Self-employed and currently working").otherwise(F.col("work_status_v2")),
-            ),
+                F.lit("Self-employed and currently working"),
+            ).otherwise(F.col("work_status_v2")),
         )
         .withColumn("work_status_v2_edited", update_work_status_self_employed_v2_a)
         .withColumn(
@@ -2591,11 +2588,11 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         )
         .withColumn("work_status_v0_edited", update_work_status_retired)
         .withColumn(
-            "work_status_v1", F.when(update_work_status_retired, F.lit("Retired").otherwise(F.col("work_status_v1")))
+            "work_status_v1", F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v1"))
         )
         .withColumn("work_status_v1_edited", update_work_status_retired)
         .withColumn(
-            "work_status_v2", F.when(update_work_status_retired, F.lit("Retired").otherwise(F.col("work_status_v2")))
+            "work_status_v2", F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2"))
         )
         .withColumn("work_status_v2_edited", update_work_status_retired)
         .withColumn(
@@ -2607,9 +2604,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn("work_status_v0_edited", update_work_status_not_working_v0)
         .withColumn(
             "work_status_v1",
-            F.when(
-                update_work_status_not_working_v1_a,
-                F.lit("Employed and currently not working").otherwise(F.col("work_status_v1")),
+            F.when(update_work_status_not_working_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
             ),
         )
         .withColumn("work_status_v1_edited", update_work_status_not_working_v1_a)
@@ -2622,9 +2618,8 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn("work_status_v1_edited", update_work_status_not_working_v1_b)
         .withColumn(
             "work_status_v2",
-            F.when(
-                update_work_status_not_working_v2_a,
-                F.lit("Employed and currently not working").otherwise(F.col("work_status_v2")),
+            F.when(update_work_status_not_working_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
             ),
         )
         .withColumn("work_status_v2_edited", update_work_status_not_working_v2_a)
@@ -2670,13 +2665,13 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         .withColumn(
             "work_location",
             F.when(
-                F.col("work_location").isNull
+                F.col("work_location").isNull()
                 & (
                     F.col("work_status_v0").isin(
                         "Furloughed (temporarily not working)",
                         "Not working (unemployed, retired, long-term sick etc.)",
                         "Student",
-                    ),
+                    )
                 ),
                 F.lit("Not applicable, not currently working"),
             ).otherwise(F.col("work_location")),
