@@ -106,6 +106,8 @@ from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
 from cishouseholds.impute import impute_date_by_k_nearest_neighbours
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours_month
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours_year
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -2258,6 +2260,201 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     return deduplicated_df.select(
         unique_id_column,
         *["ethnicity_white", "sex", "date_of_birth"],
+        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+    )
+
+
+def impute_key_columns_sex_ethnicity(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
+    """
+    Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the response records.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
+    """
+    unique_id_column = "participant_id"
+
+    # Get latest record for each participant, assumes that they have been filled forwards
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
+
+    if imputed_value_lookup_df is not None:
+        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        imputation_function=impute_by_mode,
+        reference_column="ethnicity_white",
+        group_by_column="ons_household_id",
+    )
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="ethnicity_white",
+        donor_group_columns=["cis_area_code_20"],
+        donor_group_column_weights=[5000],
+        log_file_path=log_directory,
+    )
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        imputation_function=impute_by_distribution,
+        reference_column="sex",
+        group_by_columns=["ethnicity_white", "region_code"],
+        first_imputation_value="Female",
+        second_imputation_value="Male",
+    )
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_date_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+    #     log_file_path=log_directory,
+    # )
+
+    return deduplicated_df.select(
+        unique_id_column,
+        *[
+            "ethnicity_white",
+            "sex",
+            # "date_of_birth"
+        ],
+        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+    )
+
+
+def impute_key_columns_dob_month(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
+    """
+    Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the response records.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
+    """
+    unique_id_column = "participant_id"
+
+    # Get latest record for each participant, assumes that they have been filled forwards
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
+
+    if imputed_value_lookup_df is not None:
+        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     imputation_function=impute_by_mode,
+    #     reference_column="ethnicity_white",
+    #     group_by_column="ons_household_id",
+    # )
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="ethnicity_white",
+    #     donor_group_columns=["cis_area_code_20"],
+    #     donor_group_column_weights=[5000],
+    #     log_file_path=log_directory,
+    # )
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     imputation_function=impute_by_distribution,
+    #     reference_column="sex",
+    #     group_by_columns=["ethnicity_white", "region_code"],
+    #     first_imputation_value="Female",
+    #     second_imputation_value="Male",
+    # )
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_date_by_k_nearest_neighbours_month,
+        reference_column="date_of_birth",
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+        log_file_path=log_directory,
+    )
+
+    return deduplicated_df.select(
+        unique_id_column,
+        *[
+            # "ethnicity_white",
+            # "sex",
+            "date_of_birth"
+        ],
+        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+    )
+
+
+def impute_key_columns_dob_year(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
+    """
+    Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the response records.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
+    """
+    unique_id_column = "participant_id"
+
+    # Get latest record for each participant, assumes that they have been filled forwards
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
+
+    if imputed_value_lookup_df is not None:
+        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     imputation_function=impute_by_mode,
+    #     reference_column="ethnicity_white",
+    #     group_by_column="ons_household_id",
+    # )
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_by_k_nearest_neighbours,
+    #     reference_column="ethnicity_white",
+    #     donor_group_columns=["cis_area_code_20"],
+    #     donor_group_column_weights=[5000],
+    #     log_file_path=log_directory,
+    # )
+
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     imputation_function=impute_by_distribution,
+    #     reference_column="sex",
+    #     group_by_columns=["ethnicity_white", "region_code"],
+    #     first_imputation_value="Female",
+    #     second_imputation_value="Male",
+    # )
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_date_by_k_nearest_neighbours_year,
+        reference_column="date_of_birth",
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+        log_file_path=log_directory,
+    )
+
+    return deduplicated_df.select(
+        unique_id_column,
+        *[
+            # "ethnicity_white",
+            # "sex",
+            "date_of_birth"
+        ],
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
         *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )

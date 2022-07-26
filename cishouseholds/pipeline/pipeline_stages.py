@@ -17,6 +17,7 @@ from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
@@ -47,6 +48,9 @@ from cishouseholds.pipeline.high_level_transformations import create_formatted_d
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
+from cishouseholds.pipeline.high_level_transformations import impute_key_columns_dob_month
+from cishouseholds.pipeline.high_level_transformations import impute_key_columns_dob_year
+from cishouseholds.pipeline.high_level_transformations import impute_key_columns_sex_ethnicity
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
@@ -917,8 +921,8 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
     update_table(participant_df, vaccination_data_table, write_mode="overwrite")
 
 
-@register_pipeline_stage("impute_demographic_columns")
-def impute_demographic_columns(
+@register_pipeline_stage("impute_demographic_columns_sex_ethnicity")
+def impute_demographic_columns_sex_ethnicity(
     survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
 ):
     """
@@ -939,9 +943,98 @@ def impute_demographic_columns(
         imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
 
     df = extract_from_table(survey_responses_table)
-    key_columns_imputed_df = impute_key_columns(
+    key_columns_imputed_df = impute_key_columns_sex_ethnicity(
         df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endswith("_imputation_method")
+    ]
+    imputed_values_df = key_columns_imputed_df.filter(
+        any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
+    )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
+    new_imputed_value_lookup = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+    # df_with_imputed_values = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"]).join(key_columns_imputed_df, on="participant_id", how="left")  # noqa: E501
+
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
+    # update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+
+
+@register_pipeline_stage("impute_demographic_columns_dob_month")
+def impute_demographic_columns_dob_month(
+    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
+):
+    """
+    Imputes values for key demographic columns.
+    Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey responses for imputation, containing `key_columns`
+    imputed_values_table
+        name of HIVE table containing previously imputed values
+    survey_responses_imputed_table
+        name of HIVE table to write survey responses following imputation
+    """
+    imputed_value_lookup_df = None
+    if check_table_exists(imputed_values_table):
+        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+
+    df = extract_from_table(survey_responses_table)
+    key_columns_imputed_df = impute_key_columns_dob_month(
+        df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
+    )
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endswith("_imputation_method")
+    ]
+    imputed_values_df = key_columns_imputed_df.filter(
+        any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
+    )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
+    new_imputed_value_lookup = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+    # df_with_imputed_values = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"]).join(key_columns_imputed_df, on="participant_id", how="left")  # noqa: E501
+
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
+    # update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
+
+
+@register_pipeline_stage("impute_demographic_columns_dob_year")
+def impute_demographic_columns_dob_year(
+    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
+):
+    """
+    Imputes values for key demographic columns.
+    Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.
+
+    Parameters
+    ----------
+    survey_responses_table
+        name of HIVE table containing survey responses for imputation, containing `key_columns`
+    imputed_values_table
+        name of HIVE table containing previously imputed values
+    survey_responses_imputed_table
+        name of HIVE table to write survey responses following imputation
+    """
+    imputed_value_lookup_df = None
+    if check_table_exists(imputed_values_table):
+        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
+
+    df = extract_from_table(survey_responses_table)
+    key_columns_imputed_df = impute_key_columns_dob_year(
+        df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
+    )
+
     imputed_columns = [
         column.replace("_imputation_method", "")
         for column in key_columns_imputed_df.columns
