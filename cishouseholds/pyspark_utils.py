@@ -10,29 +10,40 @@ from pyspark.sql.types import StructType
 from cishouseholds.pipeline.config import get_config
 
 session_options = {
-    "l": {
-        "spark.executor.memory": "64g",
+    "test": {
+        "spark.executor.memory": "32g",
         "spark.executor.cores": 4,
-        "spark.dynamicAllocation.maxExecutors": 15,
-        "spark.sql.shuffle.partitions": 1000,
+        "spark.dynamicAllocation.maxExecutors": 8,
+        "spark.sql.shuffle.partitions": 128,
+        "spark.task.cpus": 4,
+    },
+    "l": {
+        "spark.executor.memory": "32g",
+        "spark.executor.cores": 4,
+        "spark.dynamicAllocation.maxExecutors": 16,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
     },
     "m": {
         "spark.executor.memory": "32g",
-        "spark.executor.cores": 5,
-        "spark.dynamicAllocation.maxExecutors": 12,
-        "spark.sql.shuffle.partitions": 200,
+        "spark.executor.cores": 4,
+        "spark.dynamicAllocation.maxExecutors": 8,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
     },
     "s": {
         "spark.executor.memory": "16g",
-        "spark.executor.cores": 5,
-        "spark.dynamicAllocation.maxExecutors": 5,
-        "spark.sql.shuffle.partitions": 50,
+        "spark.executor.cores": 2,
+        "spark.dynamicAllocation.maxExecutors": 4,
+        "spark.sql.shuffle.partitions": 128,
+        "spark.task.cpus": 1,
     },
     "xs": {
         "spark.executor.memory": "1g",
         "spark.executor.cores": 1,
-        "spark.dynamicAllocation.maxExecutors": 3,
-        "spark.sql.shuffle.partitions": 12,
+        "spark.dynamicAllocation.maxExecutors": 4,
+        "spark.sql.shuffle.partitions": 128,
+        "spark.task.cpus": 1,
     },
 }
 
@@ -85,6 +96,7 @@ def get_or_create_spark_session() -> SparkSession:
         .config("spark.shuffle.service.enabled", "true")
         .config("spark.sql.crossJoin.enabled", "true")
         .config("spark.sql.adaptive.enabled", "true")
+        .config("spark.task.cpus", spark_session_options["spark.task.cpus"])
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
