@@ -764,15 +764,15 @@ def impute_by_k_nearest_neighbours(
 
     if donor_group_column_weights is None:
         donor_group_column_weights = [1] * len(donor_group_columns)
-        logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
+        # logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
     if donor_group_column_conditions is None:
         donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
-        logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
+        # logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
-    _validate_donor_group_variables(
-        df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
-    )
+    # _validate_donor_group_variables(
+    #     df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
+    # )
 
     imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(
         donor_group_columns + ["unique_imputation_group"]
