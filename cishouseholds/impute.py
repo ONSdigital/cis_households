@@ -742,25 +742,25 @@ def impute_by_k_nearest_neighbours(
     df = df.withColumn("unique_imputation_group", F.when(to_impute_condition, F.concat_ws("-", *donor_group_columns)))
     imputing_df = df.filter(to_impute_condition)
 
-    input_df_length = df.count()
-    impute_count = imputing_df.count()
-    donor_count = donor_df.count()
+    # input_df_length = df.count()
+    # impute_count = imputing_df.count()
+    # donor_count = donor_df.count()
 
-    assert impute_count + donor_count == input_df_length, "Donor and imputing records don't sum to the whole df length"
+    # assert impute_count + donor_count == input_df_length, "Donor and imputing records don't sum to the whole df length" # noqa: E501
 
-    if impute_count == 0:
-        return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
-    _create_log(start_time=datetime.now(), log_path=log_file_path)
-    logging.info(f"Function parameters:\n{locals()}")
+    # if impute_count == 0:
+    #     return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
+    # _create_log(start_time=datetime.now(), log_path=log_file_path)
+    # logging.info(f"Function parameters:\n{locals()}")
 
-    logging.info(f"Input dataframe length: {input_df_length}")
-    logging.info(f"Records to impute: {impute_count}")
-    logging.info(f"Donor records: {donor_count}")
+    # logging.info(f"Input dataframe length: {input_df_length}")
+    # logging.info(f"Records to impute: {impute_count}")
+    # logging.info(f"Donor records: {donor_count}")
 
-    if donor_count < impute_count:
-        message = "Overall number of donor records is less than the number of records to impute."
-        logging.warning(message)
-        raise ValueError(message)
+    # if donor_count < impute_count:
+    #     message = "Overall number of donor records is less than the number of records to impute."
+    #     logging.warning(message)
+    #     raise ValueError(message)
 
     if donor_group_column_weights is None:
         donor_group_column_weights = [1] * len(donor_group_columns)
@@ -784,7 +784,11 @@ def impute_by_k_nearest_neighbours(
         donor_df = donor_df.withColumnRenamed(var, "don_" + var)
 
     joined_uniques = imputing_df_unique.crossJoin(donor_df_unique)
-    joined_uniques = joined_uniques.repartition("unique_imputation_group")
+    joined_uniques = joined_uniques.repartition(
+        "unique_imputation_group"
+    )  # TODO: check with david of need of this # noqa: E501
+
+    # TODO: add a checkpoint with joined_uniques ??
 
     candidates = weighted_distance(
         joined_uniques, "unique_imputation_group", donor_group_columns, donor_group_column_weights
@@ -796,36 +800,39 @@ def impute_by_k_nearest_neighbours(
         F.count("*").alias("donor_group_value_frequency")
     )
     frequencies = frequencies.join(candidates, on="unique_donor_group")
+
+    # TODO: checkpoint frequencies ??
+
     frequencies = frequencies.join(
         imputing_df.groupby("unique_imputation_group").agg(F.count("*").alias("imputation_group_size")),
         on="unique_imputation_group",
     )
 
-    frequencies.cache().count()
+    # frequencies.cache().count()
 
-    no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
-    no_donors_count = no_donors.count()
-    if no_donors_count != 0:
-        message = f"{no_donors_count} donor pools with no donors"
-        logging.error(message)
-        logging.error(no_donors.toPandas())
-        raise ValueError(message)
+    # no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
+    # no_donors_count = no_donors.count()
+    # if no_donors_count != 0:
+    #     message = f"{no_donors_count} donor pools with no donors"
+    #     logging.error(message)
+    #     logging.error(no_donors.toPandas())
+    #     raise ValueError(message)
 
     unique_imputation_group_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
         "total_donor_pool_size", F.sum("donor_group_value_frequency").over(unique_imputation_group_window)
     )
 
-    below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
-    below_minimum_donor_count_count = below_minimum_donor_count.count()
-    if below_minimum_donor_count_count > 0:
-        message = (
-            f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
-            "minimum donor(s)"
-        )
-        logging.error(message)
-        logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
-        raise ValueError(message)
+    # below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
+    # below_minimum_donor_count_count = below_minimum_donor_count.count()
+    # if below_minimum_donor_count_count > 0:
+    #     message = (
+    #         f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
+    #         "minimum donor(s)"
+    #     )
+    #     logging.error(message)
+    #     logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
+    #     raise ValueError(message)
 
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
@@ -906,19 +913,19 @@ def impute_by_k_nearest_neighbours(
         "unique_imputation_group", "donor_row_id"
     )
 
-    output_df_length = df.cache().count()
-    logging.info(
-        f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
-    )
-    logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
-    if output_df_length != input_df_length:
-        raise ValueError(
-            f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."
-        )
+    # output_df_length = df.cache().count()
+    # logging.info(
+    #     f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
+    # )
+    # logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
+    # if output_df_length != input_df_length:
+    #     raise ValueError(
+    #         f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input." # noqa: E501
+    #     )
 
-    missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
-    if missing_count != 0:
-        raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
+    # missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
+    # if missing_count != 0:
+    #     raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
 
     logging.info("KNN imputation completed\n")
     return df
