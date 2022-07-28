@@ -7,7 +7,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_age_at_date,assign_random_day_in_month
+from cishouseholds.derive import assign_age_at_date
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -29,6 +29,7 @@ from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
@@ -2216,13 +2217,12 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     # Get latest record for each participant, assumes that they have been filled forwards
     participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
     deduplicated_df = (
-        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window)).filter(F.col("ROW_NUMBER") == 1)
-        # .withColumn(unique_id_column,F.monotonically_increasing_id())
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-    print("CREATED deduplicated df")
-    # if imputed_value_lookup_df is not None:
-    #     deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
+    if imputed_value_lookup_df is not None:
+        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
     deduplicated_df = deduplicated_df.drop("ethnicity_white").join(
         impute_and_flag(
@@ -2235,7 +2235,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         on=unique_id_column,
         how="left",
     )
-    print("impute sex")
     imputed_sex_columns = impute_and_flag(
         deduplicated_df,
         id_column=unique_id_column,
@@ -2245,7 +2244,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         first_imputation_value="Female",
         second_imputation_value="Male",
     )
-    print("CHECK 1")
     imputed_ethnicity_columns = impute_and_flag(
         deduplicated_df,
         id_column=unique_id_column,
@@ -2255,7 +2253,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     ).checkpoint()
-    print("CHECK 2")
     imputed_month_columns = impute_and_flag(
         deduplicated_df.withColumn("_month", F.month("date_of_birth")),
         id_column=unique_id_column,
@@ -2264,7 +2261,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     ).checkpoint()
-    print("CHECK 3")
     imputed_year_columns = impute_and_flag(
         deduplicated_df.withColumn("_year", F.year("date_of_birth")),
         id_column=unique_id_column,
@@ -2273,41 +2269,22 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     ).checkpoint()
-
-    # imputed_ethnicity_columns = impute_and_flag(
-    #     deduplicated_df,
-    #     impute_date_by_k_nearest_neighbours,
-    #     reference_column="date_of_birth",
-    #     donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
-    #     log_file_path=log_directory,
-    # )
     dfs = [imputed_sex_columns, imputed_month_columns, imputed_year_columns]
-    print("EXECUTING JOIN")
     for imputed_df in dfs:
         imputed_ethnicity_columns = imputed_ethnicity_columns.join(imputed_df, on=[unique_id_column], how="left")
-        print("new COLS: ", set(imputed_df.columns))
     imputed_result_df = imputed_ethnicity_columns
-    print("COLS: ",imputed_result_df.columns)
     imputed_result_df = assign_random_day_in_month(
-
         df=imputed_result_df,
-
         column_name_to_assign="date_of_birth",
-
         month_column="_month",
-
         year_column="_year",
-
-    ).drop("_month","_year")
-    imputed_result_df = imputed_result_df.withColumnRenamed("_month_is_imputed","date_of_birth_is_imputed").withColumnRenamed("_month_imputation_method","date_of_birth_imputation_method").drop("_year_is_imputed","_year_imputation_method")
-    print("COMPLETED JOINS")
+    ).drop("_month", "_year")
+    imputed_result_df = (
+        imputed_result_df.withColumnRenamed("_month_is_imputed", "date_of_birth_is_imputed")
+        .withColumnRenamed("_month_imputation_method", "date_of_birth_imputation_method")
+        .drop("_year_is_imputed", "_year_imputation_method")
+    )
     return imputed_result_df
-    # return deduplicated_df.select(
-    #     unique_id_column,
-    #     *["ethnicity_white", "sex", "date_of_birth"],
-    #     *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
-    #     *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
-    # ).drop(unique_id_column)
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:
