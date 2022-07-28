@@ -56,6 +56,33 @@ def extract_validate_transform_input_data(
     include_hadoop_read_write: bool = False,
     dataset_version: str = None,
 ):
+    """
+    Calls appropriate functions to extract a set of csv files into a single dataframe,
+    log the source file name, save a "raw" table that acts as an unaltered archive of the input
+    table. After this any manual filtering and editing steps are applied to the table before the correct
+    column timestamp formats are applied to the data and the main transformation function is finally executed.
+
+    Parameters
+    ----------
+    dataset_name
+        name for the group of files being read in
+    id_column
+        column on the table which acts as unique id for the particular dataset
+    resource_path
+        hdfs file pattern to the input data
+    datetime_map
+        dictionary of datetime columns to format mapping
+    validation_schema
+        
+    transformation_functions: List[Callable],
+    source_file_column: str,
+    write_mode: str,
+    variable_name_map: dict = None,
+    sep: str = ",",
+    cast_to_double_columns_list: list = [],
+    include_hadoop_read_write: bool = False,
+    dataset_version: str = None,
+    """
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
         record_editing_config_path = storage_config["record_editing_config_file"]
@@ -89,6 +116,10 @@ def extract_validate_transform_input_data(
 
 
 def extract_input_data(file_paths: Union[List[str], str], validation_schema: Union[dict, None], sep: str) -> DataFrame:
+    """
+    Converts a validation schema in cerberus format into a pyspsark readable schema and uses it to read a csv filepath into
+    a dataframe.
+    """
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     return spark_session.read.csv(
