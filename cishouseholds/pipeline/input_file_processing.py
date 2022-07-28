@@ -117,8 +117,8 @@ def extract_validate_transform_input_data(
 
 def extract_input_data(file_paths: Union[List[str], str], validation_schema: Union[dict, None], sep: str) -> DataFrame:
     """
-    Converts a validation schema in cerberus format into a pyspsark readable schema and uses it to read a csv filepath into
-    a dataframe.
+    Converts a validation schema in cerberus format into a pyspsark readable schema and uses it to read
+    a csv filepath into a dataframe.
     """
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
