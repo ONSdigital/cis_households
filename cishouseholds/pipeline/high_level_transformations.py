@@ -1,5 +1,6 @@
 # flake8: noqa
 from functools import reduce
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -2215,8 +2216,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     # Get latest record for each participant, assumes that they have been filled forwards
     participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
     deduplicated_df = (
-        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
-        .filter(F.col("ROW_NUMBER") == 1)
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window)).filter(F.col("ROW_NUMBER") == 1)
         # .withColumn(unique_id_column,F.monotonically_increasing_id())
         .drop("ROW_NUMBER")
     )
@@ -2224,13 +2224,17 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     # if imputed_value_lookup_df is not None:
     #     deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
-    deduplicated_df = deduplicated_df.drop("ethnicity_white").join(impute_and_flag(
-        deduplicated_df,
-        id_column=unique_id_column,
-        imputation_function=impute_by_mode,
-        reference_column="ethnicity_white",
-        group_by_column="ons_household_id",
-    ),on=unique_id_column,how="left")
+    deduplicated_df = deduplicated_df.drop("ethnicity_white").join(
+        impute_and_flag(
+            deduplicated_df,
+            id_column=unique_id_column,
+            imputation_function=impute_by_mode,
+            reference_column="ethnicity_white",
+            group_by_column="ons_household_id",
+        ),
+        on=unique_id_column,
+        how="left",
+    )
     print("impute sex")
     imputed_sex_columns = impute_and_flag(
         deduplicated_df,
@@ -2258,7 +2262,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="_month",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
-        log_file_path=log_directory
+        log_file_path=log_directory,
     ).checkpoint()
     print("CHECK 3")
     imputed_year_columns = impute_and_flag(
@@ -2267,7 +2271,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="_year",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
-        log_file_path=log_directory
+        log_file_path=log_directory,
     ).checkpoint()
 
     # imputed_ethnicity_columns = impute_and_flag(
@@ -2277,21 +2281,24 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     #     donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
     #     log_file_path=log_directory,
     # )
-    dfs = [imputed_ethnicity_columns,imputed_sex_columns,imputed_month_columns,imputed_year_columns]
+    dfs = [imputed_sex_columns, imputed_month_columns, imputed_year_columns]
     print("EXECUTING JOIN")
     for imputed_df in dfs:
-        deduplicated_df = deduplicated_df.join(imputed_df,on=[unique_id_column],how="left")
-        print("new COLS: ",set(imputed_df.columns))
+        imputed_ethnicity_columns = imputed_ethnicity_columns.join(imputed_df, on=[unique_id_column], how="left")
+        print("new COLS: ", set(imputed_df.columns))
+    imputed_result_df = imputed_ethnicity_columns
+    print("COLS: ",imputed_result_df.columns)
     # #reduce(deduplicated_df.join(df, on='MASTER_ID', how="left"), dfs)
     # deduplicated_df = deduplicated_df.join(imputed_ethnicity_columns,on=unique_id_column,how="left")
     # deduplicated_df = deduplicated_df.join(imputed_ethnicity_mode_columns,on=unique_id_column,how="left")
     print("COMPLETED JOINS")
-    return deduplicated_df.select(
-        unique_id_column,
-        *["ethnicity_white", "sex", "date_of_birth"],
-        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
-        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
-    ).drop(unique_id_column)
+    return imputed_result_df
+    # return deduplicated_df.select(
+    #     unique_id_column,
+    #     *["ethnicity_white", "sex", "date_of_birth"],
+    #     *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+    #     *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+    # ).drop(unique_id_column)
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:

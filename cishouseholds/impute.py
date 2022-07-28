@@ -419,7 +419,9 @@ def impute_by_distribution(
     return df.drop("proportion", "random", "denominator", "numerator", "individual_impute_value")
 
 
-def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_column: str, id_column:str, **kwargs) -> DataFrame:
+def impute_and_flag(
+    df: DataFrame, imputation_function: Callable, reference_column: str, id_column: str, **kwargs
+) -> DataFrame:
     """
     Wrapper function for calling imputations, flagging imputed records and recording imputation methods.
 
@@ -456,7 +458,9 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         method_column,
         F.when(imputed_this_run, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
-    imputed_survey_columns = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values")).select(id_column,reference_column,status_column,method_column)
+    imputed_survey_columns = df.withColumn(
+        reference_column, F.coalesce(reference_column, "temporary_imputation_values")
+    ).select(id_column, reference_column, status_column, method_column)
 
     return imputed_survey_columns
 

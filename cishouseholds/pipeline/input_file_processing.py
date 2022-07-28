@@ -73,7 +73,7 @@ def extract_validate_transform_input_data(
     datetime_map
         dictionary of datetime columns to format mapping
     validation_schema
-        
+
     transformation_functions: List[Callable],
     source_file_column: str,
     write_mode: str,
