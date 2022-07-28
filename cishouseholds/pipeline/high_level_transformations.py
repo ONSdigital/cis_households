@@ -7,7 +7,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_age_at_date,assign_random_day_in_month
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -2288,9 +2288,18 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         print("new COLS: ", set(imputed_df.columns))
     imputed_result_df = imputed_ethnicity_columns
     print("COLS: ",imputed_result_df.columns)
-    # #reduce(deduplicated_df.join(df, on='MASTER_ID', how="left"), dfs)
-    # deduplicated_df = deduplicated_df.join(imputed_ethnicity_columns,on=unique_id_column,how="left")
-    # deduplicated_df = deduplicated_df.join(imputed_ethnicity_mode_columns,on=unique_id_column,how="left")
+    imputed_result_df = assign_random_day_in_month(
+
+        df=imputed_result_df,
+
+        column_name_to_assign="date_of_birth",
+
+        month_column="_month",
+
+        year_column="_year",
+
+    ).drop("_month","_year")
+    imputed_result_df = imputed_result_df.withColumnRenamed("_month_is_imputed","date_of_birth_is_imputed").withColumnRenamed("_month_imputation_method","date_of_birth_imputation_method").drop("_year_is_imputed","_year_imputation_method")
     print("COMPLETED JOINS")
     return imputed_result_df
     # return deduplicated_df.select(
