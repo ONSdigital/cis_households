@@ -81,10 +81,6 @@ def test_post_imputation_wrapper(spark_session):
     df_imputed_values_output, imputed_lookup_output = post_imputation_wrapper(
         df=survey_df_input, key_columns_imputed_df=key_columns_imputed_df_input
     )
-    # import pdb; pdb.set_trace()
     assert_df_equality(
         df_imputed_values_expected, df_imputed_values_output, ignore_row_order=True, ignore_column_order=True
     )
-    # assert_df_equality(
-    #    imputed_lookup_expected, imputed_lookup_output, ignore_row_order=True, ignore_column_order=True
-    # )

@@ -1093,7 +1093,7 @@ def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
     df
     key_columns_imputed_df
     """
-    # step 1
+    # step 1: imputation columns from all columns that ends with _imputation_method.
     imputed_columns = [
         column.replace("_imputation_method", "")
         for column in key_columns_imputed_df.columns
@@ -1102,13 +1102,14 @@ def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
     imputed_values_df = key_columns_imputed_df.filter(
         any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
     )
-    # step 2
+    # step 2: puts together all imputed columns one without _imputed_method, and with imputed_method.
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
     new_imputed_value_lookup = imputed_values_df.select(
         "participant_id",
         *lookup_columns,
     )
-    # step 3
+    # step 3. For main df (survey), removes all imputed columns and imputed column flags and
+    # joins with the lookup value table that has all the imputed columns.
     df_no_imputation_col = df.drop(
         *[col for col in key_columns_imputed_df.columns if col != "participant_id"]  # gets rid of all imputed columns
     )
