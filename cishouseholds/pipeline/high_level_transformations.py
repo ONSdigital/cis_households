@@ -1,4 +1,7 @@
 # flake8: noqa
+import os
+from functools import reduce
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -27,6 +30,7 @@ from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
@@ -105,7 +109,6 @@ from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_by_ordered_fill_forward
-from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
@@ -120,6 +123,18 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+
+def custom_checkpoint(self, *args, **kwargs):
+    """
+    Custom checkpoint wrapper to only call checkpoints outside local deployments
+    """
+    if os.environ["deployment"] != "local":
+        return self.checkpoint(*args, **kwargs)
+    return DataFrame(self._jdf, self.sql_ctx)
+
+
+DataFrame.custom_checkpoint = custom_checkpoint
 
 
 def transform_cis_soc_data(df: DataFrame) -> DataFrame:
@@ -2218,28 +2233,25 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
-    deduplicated_df = impute_and_flag(
+    imputed_ethnicity_mode_columns = impute_and_flag(
         deduplicated_df,
         imputation_function=impute_by_mode,
         reference_column="ethnicity_white",
         group_by_column="ons_household_id",
     )
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_by_k_nearest_neighbours,
+    imputed_ethnicity_columns = impute_and_flag(  # 2nd one ensure result carried forward from first
+        imputed_ethnicity_mode_columns,
+        imputation_function=impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
         donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
-    )
-
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
+    ).custom_checkpoint()
+    imputed_sex_columns = impute_and_flag(
+        imputed_ethnicity_columns,
         imputation_function=impute_by_distribution,
         reference_column="sex",
         group_by_columns=["ethnicity_white", "region_code"],
@@ -2247,20 +2259,44 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         second_imputation_value="Male",
     )
 
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_date_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
+    imputed_month_columns = impute_and_flag(
+        deduplicated_df.withColumn("_month", F.month("date_of_birth")),
+        imputation_function=impute_by_k_nearest_neighbours,
+        reference_column="_month",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
+    ).custom_checkpoint()
+    imputed_year_columns = impute_and_flag(
+        deduplicated_df.withColumn("_year", F.year("date_of_birth")),
+        imputation_function=impute_by_k_nearest_neighbours,
+        reference_column="_year",
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+        log_file_path=log_directory,
+    ).custom_checkpoint()
+    imputed_date_df = imputed_month_columns.select(
+        unique_id_column, "_month_imputation_method", "_month_is_imputed", "_month"
+    ).join(
+        imputed_year_columns.select(unique_id_column, "_year_imputation_method", "_year_is_imputed", "_year"),
+        on=unique_id_column,
+        how="left",
     )
-
-    return deduplicated_df.select(
+    imputed_date_df = assign_random_day_in_month(
+        df=imputed_date_df,
+        column_name_to_assign="date_of_birth",
+        month_column="_month",
+        year_column="_year",
+    )
+    imputed_sex_columns = imputed_sex_columns.select(
         unique_id_column,
-        *["ethnicity_white", "sex", "date_of_birth"],
-        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
-        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+        "ethnicity_white",
+        "sex",
+        "sex_imputation_method",
+        "sex_is_imputed",
+        "ethnicity_white_is_imputed",
+        "ethnicity_white_imputation_method",
     )
+    imputed_result_df = imputed_date_df.join(imputed_sex_columns, how="left", on=unique_id_column)
+    return imputed_result_df
 
 
 def nims_transformations(df: DataFrame) -> DataFrame:

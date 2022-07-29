@@ -10,7 +10,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 
@@ -456,9 +455,11 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         method_column,
         F.when(imputed_this_run, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
-    df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
+    imputed_survey_columns = df.withColumn(
+        reference_column, F.coalesce(reference_column, "temporary_imputation_values")
+    )  # .select(id_column, reference_column, status_column, method_column)
 
-    return df.drop("temporary_imputation_values")
+    return imputed_survey_columns.drop("temporary_imputation_values")
 
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
@@ -1026,58 +1027,3 @@ def edit_multiple_columns_fill_forward(
         )
 
     return df
-
-
-def impute_date_by_k_nearest_neighbours(
-    df: DataFrame,
-    column_name_to_assign: str,
-    reference_column: str,
-    donor_group_columns: List[str],
-    log_file_path: str,
-    minimum_donors: int = 1,
-    donor_group_column_weights: list = None,
-    donor_group_column_conditions: dict = None,
-    maximum_distance: int = 4999,
-) -> DataFrame:
-    """
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    donor_group_columns
-    log_file_path
-    """
-    df = df.withColumn("_month", F.month(reference_column))
-    df = df.withColumn("_year", F.year(reference_column))
-
-    df = impute_by_k_nearest_neighbours(
-        df=df,
-        column_name_to_assign="_IMPUTED_month",
-        reference_column="_month",
-        donor_group_columns=donor_group_columns,
-        log_file_path=log_file_path,
-        minimum_donors=minimum_donors,
-        donor_group_column_weights=donor_group_column_weights,
-        donor_group_column_conditions=donor_group_column_conditions,
-        maximum_distance=maximum_distance,
-    )
-    df = impute_by_k_nearest_neighbours(
-        df=df,
-        column_name_to_assign="_IMPUTED_year",
-        reference_column="_year",
-        donor_group_columns=donor_group_columns,
-        log_file_path=log_file_path,
-        minimum_donors=minimum_donors,
-        donor_group_column_weights=donor_group_column_weights,
-        donor_group_column_conditions=donor_group_column_conditions,
-        maximum_distance=maximum_distance,
-    )
-    df = df.drop("_month", "_year")
-
-    df = assign_random_day_in_month(
-        df=df,
-        column_name_to_assign=column_name_to_assign,
-        month_column="_IMPUTED_month",
-        year_column="_IMPUTED_year",
-    )
-    return df.drop("_IMPUTED_month", "_IMPUTED_year")
