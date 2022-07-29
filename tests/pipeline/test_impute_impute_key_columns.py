@@ -34,20 +34,13 @@ def test_impute_key_columns(spark_session):
     )
 
     expected_data = [
-        (
-            "A-A",
-            "white",
-            "Female",
-            "1",
-            "1990",
-            None,
-            None,
-            "impute_by_k_nearest_neighbours",
-            "impute_by_k_nearest_neighbours",
-        ),
-        ("A-B", "white", "Female", "1", "1990", "impute_by_mode", "impute_by_distribution", None, None),
-        ("B-A", "other", "Female", "1", "1990", None, None, None, None),
-        ("C-A", "other", "Female", "1", "1990", "impute_by_k_nearest_neighbours", None, None, None),  # Impute by KNN
+        # fmt: off
+        ("A-A", "white", "Female", "1", "1990",     None,                               None,                       "impute_by_k_nearest_neighbours",   "impute_by_k_nearest_neighbours",),
+        ("A-B", "white", "Female", "1", "1990",     "impute_by_mode",                   "impute_by_distribution",   None,                               None),
+        ("B-A", "other", "Female", "1", "1990",     None,                               None,                       None,                               None),
+        ("C-A", "other", "Female", "1", "1990",     "impute_by_k_nearest_neighbours",   None,                       None,                               None),
+        # Impute by KNN
+        # fmt: on
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
