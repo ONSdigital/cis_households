@@ -2265,11 +2265,8 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     ).checkpoint()
-    print("MONTH COLS: ",imputed_month_columns.columns)
-    print("Year COLS: ",imputed_year_columns.columns)
     imputed_date_df = (
-        imputed_month_columns#.withColumnRenamed("_month_is_imputed", "date_of_birth_is_imputed")
-        #.withColumnRenamed("_month_imputation_method", "date_of_birth_imputation_method")
+        imputed_month_columns
         .select(unique_id_column, "_month_imputation_method", "_month_is_imputed", "_month")
         .join(imputed_year_columns.select(unique_id_column,"_year_imputation_method", "_year_is_imputed", "_year"), on=unique_id_column, how="left")
     )  
@@ -2279,14 +2276,10 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         month_column="_month",
         year_column="_year",
     )
-    print("HGHGHG",imputed_date_df.columns)
     imputed_sex_columns = imputed_sex_columns.select(
         unique_id_column,"ethnicity_white","sex","sex_imputation_method","sex_is_imputed","ethnicity_white_is_imputed","ethnicity_white_imputation_method"
     )
-    print("SEX COLS: ", imputed_sex_columns.columns)
     imputed_result_df = imputed_date_df.join(imputed_sex_columns, how="left", on=unique_id_column)
-    print("COLS: ", imputed_result_df.columns)
-    imputed_result_df.show()
     return imputed_result_df
 
 
