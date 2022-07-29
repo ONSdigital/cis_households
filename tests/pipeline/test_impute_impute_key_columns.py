@@ -12,10 +12,7 @@ from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 def test_impute_key_columns(spark_session):
     """Test that high level imputation fills all missing values and reduces
     to one record per participant."""
-    if os.path.exists("temp_checkpoint_dir"):
-        shutil.rmtree("temp_checkpoint_dir")
-    os.mkdir("temp_checkpoint_dir")
-    spark_session.sparkContext.setCheckpointDir("temp_checkpoint_dir")
+    os.environ["deployment"] = "local"
     input_data = [
         ("A", "A-A", "1", "A", "g1", "3", "white", "Female", "1990-01-01", "1990-01-01"),
         ("A", "A-A", "1", "B", "g1", "3", "white", "Female", None, "1990-01-02"),  # Fill forward
@@ -48,9 +45,7 @@ def test_impute_key_columns(spark_session):
                 ethnicity_white_imputation_method string, sex_imputation_method string,
                 date_of_birth_imputation_method string""",
     )
-    expected_df = expected_df.withColumn(
-        "date_of_birth", F.to_timestamp(F.col("date_of_birth"), format="yyyy-MM-dd HH:mm:ss")
-    )
+    expected_df = expected_df.withColumn("date_of_birth", F.to_timestamp(F.col("date_of_birth"), format="yyyy-MM-dd"))
 
     value_columns = [
         "participant_id",
@@ -65,7 +60,6 @@ def test_impute_key_columns(spark_session):
         "date_of_birth_imputation_method",
     ]
     output_df = impute_key_columns(input_df, lookup_df, log_directory="./")
-    output_df.show()
     for columns in [value_columns, method_columns]:
         assert_df_equality(
             output_df.select(*columns),
@@ -75,5 +69,3 @@ def test_impute_key_columns(spark_session):
 
     for demographic_variable in ["ethnicity_white", "sex", "date_of_birth"]:
         assert output_df.where(F.col(demographic_variable).isNull()).count() == 0
-
-    shutil.rmtree("temp_checkpoint_dir")

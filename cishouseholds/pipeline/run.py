@@ -52,6 +52,7 @@ def run_from_config(config_file_path: str = None):
       resource_path: "path_to.csv"
     """
     spark = get_or_create_spark_session()
+    os.environ["deployment"] = "hdfs"
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     if config_file_path is not None:
         os.environ["PIPELINE_CONFIG_LOCATION"] = config_file_path

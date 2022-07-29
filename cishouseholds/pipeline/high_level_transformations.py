@@ -1,4 +1,5 @@
 # flake8: noqa
+import os
 from functools import reduce
 
 import pyspark.sql.functions as F
@@ -122,6 +123,18 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+
+def custom_checkpoint(self, *args, **kwargs):
+    """
+    Custom checkpoint wrapper to only call checkpoints outside local deployments
+    """
+    if os.environ["deployment"] != "local":
+        return self.checkpoint(*args, **kwargs)
+    return DataFrame(self._jdf, self.sql_ctx)
+
+
+DataFrame.custom_checkpoint = custom_checkpoint
 
 
 def transform_cis_soc_data(df: DataFrame) -> DataFrame:
@@ -2238,7 +2251,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
-    ).checkpoint()
+    ).custom_checkpoint()
     imputed_sex_columns = impute_and_flag(
         imputed_ethnicity_columns,
         id_column=unique_id_column,
@@ -2256,7 +2269,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         reference_column="_month",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
-    ).checkpoint()
+    ).custom_checkpoint()
     imputed_year_columns = impute_and_flag(
         deduplicated_df.withColumn("_year", F.year("date_of_birth")),
         id_column=unique_id_column,
@@ -2264,12 +2277,14 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         reference_column="_year",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
-    ).checkpoint()
-    imputed_date_df = (
-        imputed_month_columns
-        .select(unique_id_column, "_month_imputation_method", "_month_is_imputed", "_month")
-        .join(imputed_year_columns.select(unique_id_column,"_year_imputation_method", "_year_is_imputed", "_year"), on=unique_id_column, how="left")
-    )  
+    ).custom_checkpoint()
+    imputed_date_df = imputed_month_columns.select(
+        unique_id_column, "_month_imputation_method", "_month_is_imputed", "_month"
+    ).join(
+        imputed_year_columns.select(unique_id_column, "_year_imputation_method", "_year_is_imputed", "_year"),
+        on=unique_id_column,
+        how="left",
+    )
     imputed_date_df = assign_random_day_in_month(
         df=imputed_date_df,
         column_name_to_assign="date_of_birth",
@@ -2277,7 +2292,13 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         year_column="_year",
     )
     imputed_sex_columns = imputed_sex_columns.select(
-        unique_id_column,"ethnicity_white","sex","sex_imputation_method","sex_is_imputed","ethnicity_white_is_imputed","ethnicity_white_imputation_method"
+        unique_id_column,
+        "ethnicity_white",
+        "sex",
+        "sex_imputation_method",
+        "sex_is_imputed",
+        "ethnicity_white_is_imputed",
+        "ethnicity_white_imputation_method",
     )
     imputed_result_df = imputed_date_df.join(imputed_sex_columns, how="left", on=unique_id_column)
     return imputed_result_df
