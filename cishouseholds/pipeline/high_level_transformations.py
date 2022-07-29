@@ -2223,28 +2223,15 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
-    deduplicated_df = deduplicated_df.drop("ethnicity_white").join(
-        impute_and_flag(
-            deduplicated_df,
-            id_column=unique_id_column,
-            imputation_function=impute_by_mode,
-            reference_column="ethnicity_white",
-            group_by_column="ons_household_id",
-        ),
-        on=unique_id_column,
-        how="left",
-    )
-    imputed_sex_columns = impute_and_flag(
+    imputed_ethnicity_mode_columns = impute_and_flag(
         deduplicated_df,
         id_column=unique_id_column,
-        imputation_function=impute_by_distribution,
-        reference_column="sex",
-        group_by_columns=["ethnicity_white", "region_code"],
-        first_imputation_value="Female",
-        second_imputation_value="Male",
+        imputation_function=impute_by_mode,
+        reference_column="ethnicity_white",
+        group_by_column="ons_household_id",
     )
-    imputed_ethnicity_columns = impute_and_flag(
-        deduplicated_df,
+    imputed_ethnicity_columns = impute_and_flag(  # 2nd one ensure result carried forward from first
+        imputed_ethnicity_mode_columns,
         id_column=unique_id_column,
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
@@ -2252,6 +2239,16 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     ).checkpoint()
+    imputed_sex_columns = impute_and_flag(
+        imputed_ethnicity_columns,
+        id_column=unique_id_column,
+        imputation_function=impute_by_distribution,
+        reference_column="sex",
+        group_by_columns=["ethnicity_white", "region_code"],
+        first_imputation_value="Female",
+        second_imputation_value="Male",
+    )
+
     imputed_month_columns = impute_and_flag(
         deduplicated_df.withColumn("_month", F.month("date_of_birth")),
         id_column=unique_id_column,
@@ -2268,21 +2265,28 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     ).checkpoint()
-    dfs = [imputed_sex_columns, imputed_month_columns, imputed_year_columns]
-    for imputed_df in dfs:
-        imputed_ethnicity_columns = imputed_ethnicity_columns.join(imputed_df, on=[unique_id_column], how="left")
-    imputed_result_df = imputed_ethnicity_columns
-    imputed_result_df = assign_random_day_in_month(
-        df=imputed_result_df,
+    print("MONTH COLS: ",imputed_month_columns.columns)
+    print("Year COLS: ",imputed_year_columns.columns)
+    imputed_date_df = (
+        imputed_month_columns#.withColumnRenamed("_month_is_imputed", "date_of_birth_is_imputed")
+        #.withColumnRenamed("_month_imputation_method", "date_of_birth_imputation_method")
+        .select(unique_id_column, "_month_imputation_method", "_month_is_imputed", "_month")
+        .join(imputed_year_columns.select(unique_id_column,"_year_imputation_method", "_year_is_imputed", "_year"), on=unique_id_column, how="left")
+    )  
+    imputed_date_df = assign_random_day_in_month(
+        df=imputed_date_df,
         column_name_to_assign="date_of_birth",
         month_column="_month",
         year_column="_year",
-    ).drop("_month", "_year")
-    imputed_result_df = (
-        imputed_result_df.withColumnRenamed("_month_is_imputed", "date_of_birth_is_imputed")
-        .withColumnRenamed("_month_imputation_method", "date_of_birth_imputation_method")
-        .drop("_year_is_imputed", "_year_imputation_method")
     )
+    print("HGHGHG",imputed_date_df.columns)
+    imputed_sex_columns = imputed_sex_columns.select(
+        unique_id_column,"ethnicity_white","sex","sex_imputation_method","sex_is_imputed","ethnicity_white_is_imputed","ethnicity_white_imputation_method"
+    )
+    print("SEX COLS: ", imputed_sex_columns.columns)
+    imputed_result_df = imputed_date_df.join(imputed_sex_columns, how="left", on=unique_id_column)
+    print("COLS: ", imputed_result_df.columns)
+    imputed_result_df.show()
     return imputed_result_df
 
 

@@ -459,9 +459,9 @@ def impute_and_flag(
     )
     imputed_survey_columns = df.withColumn(
         reference_column, F.coalesce(reference_column, "temporary_imputation_values")
-    ).select(id_column, reference_column, status_column, method_column)
+    )  # .select(id_column, reference_column, status_column, method_column)
 
-    return imputed_survey_columns
+    return imputed_survey_columns.drop("temporary_imputation_values")
 
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
