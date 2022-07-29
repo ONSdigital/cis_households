@@ -418,9 +418,7 @@ def impute_by_distribution(
     return df.drop("proportion", "random", "denominator", "numerator", "individual_impute_value")
 
 
-def impute_and_flag(
-    df: DataFrame, imputation_function: Callable, reference_column: str, id_column: str, **kwargs
-) -> DataFrame:
+def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_column: str, **kwargs) -> DataFrame:
     """
     Wrapper function for calling imputations, flagging imputed records and recording imputation methods.
 

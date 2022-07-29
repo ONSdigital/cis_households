@@ -2238,14 +2238,12 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
 
     imputed_ethnicity_mode_columns = impute_and_flag(
         deduplicated_df,
-        id_column=unique_id_column,
         imputation_function=impute_by_mode,
         reference_column="ethnicity_white",
         group_by_column="ons_household_id",
     )
     imputed_ethnicity_columns = impute_and_flag(  # 2nd one ensure result carried forward from first
         imputed_ethnicity_mode_columns,
-        id_column=unique_id_column,
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="ethnicity_white",
         donor_group_columns=["cis_area_code_20"],
@@ -2254,7 +2252,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     ).custom_checkpoint()
     imputed_sex_columns = impute_and_flag(
         imputed_ethnicity_columns,
-        id_column=unique_id_column,
         imputation_function=impute_by_distribution,
         reference_column="sex",
         group_by_columns=["ethnicity_white", "region_code"],
@@ -2264,7 +2261,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
 
     imputed_month_columns = impute_and_flag(
         deduplicated_df.withColumn("_month", F.month("date_of_birth")),
-        id_column=unique_id_column,
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="_month",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
@@ -2272,7 +2268,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     ).custom_checkpoint()
     imputed_year_columns = impute_and_flag(
         deduplicated_df.withColumn("_year", F.year("date_of_birth")),
-        id_column=unique_id_column,
         imputation_function=impute_by_k_nearest_neighbours,
         reference_column="_year",
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
