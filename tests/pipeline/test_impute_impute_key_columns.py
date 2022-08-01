@@ -43,12 +43,7 @@ def test_impute_key_columns(spark_session):
                 date_of_birth_imputation_method string""",
     )
 
-    value_columns = [
-        "participant_id",
-        "ethnicity_white",
-        "sex",
-        "date_of_birth",
-    ]
+    value_columns = ["participant_id", "ethnicity_white", "sex", "YEAR", "MONTH"]
     method_columns = [
         "participant_id",
         "ethnicity_white_imputation_method",
