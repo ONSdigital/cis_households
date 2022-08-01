@@ -2227,7 +2227,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         imputation_function=impute_by_mode,
         reference_column="ethnicity_white",
         group_by_column="ons_household_id",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2236,7 +2236,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2245,7 +2245,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,

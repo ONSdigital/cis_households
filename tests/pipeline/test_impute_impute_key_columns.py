@@ -9,6 +9,7 @@ from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 def test_impute_key_columns(spark_session):
     """Test that high level imputation fills all missing values and reduces
     to one record per participant."""
+    os.environ["deployment"] = "local"
     input_data = [
         ("A", "A-A", "1", "A", "g1", "3", "white", "Female", "1990-01-01", "1990-01-01"),
         ("A", "A-A", "1", "B", "g1", "3", "white", "Female", None, "1990-01-02"),  # Fill forward
@@ -30,14 +31,14 @@ def test_impute_key_columns(spark_session):
     )
 
     expected_data = [
-        ("A-A", "white", "Female", "1990-01-01", None, None, None),
-        ("A-B", "white", "Female", "1990-01-01", "impute_by_mode", "impute_by_distribution", None),
-        ("B-A", "other", "Female", "1990-01-02", None, None, "method"),
-        ("C-A", "other", "Female", "1990-01-01", "impute_by_k_nearest_neighbours", None, None),  # Impute by KNN
+        ("A-A", "white", "Female", 1990, 1, None, None, None),
+        ("A-B", "white", "Female", 1990, 1, "impute_by_mode", "impute_by_distribution", None),
+        ("B-A", "other", "Female", 1990, 1, None, None, "method"),
+        ("C-A", "other", "Female", 1990, 1, "impute_by_k_nearest_neighbours", None, None),  # Impute by KNN
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
-        schema="""participant_id string, ethnicity_white string, sex string, date_of_birth string,
+        schema="""participant_id string, ethnicity_white string, sex string, YEAR integer, MONTH integer,
                 ethnicity_white_imputation_method string, sex_imputation_method string,
                 date_of_birth_imputation_method string""",
     )
@@ -55,6 +56,7 @@ def test_impute_key_columns(spark_session):
         "date_of_birth_imputation_method",
     ]
     output_df = impute_key_columns(input_df, lookup_df, log_directory="./")
+    output_df = output_df.withColumn("YEAR", F.year("date_of_birth")).withColumn("MONTH", F.month("date_of_birth"))
     for columns in [value_columns, method_columns]:
         assert_df_equality(
             output_df.select(*columns),
