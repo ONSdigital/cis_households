@@ -2218,9 +2218,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-    import pdb
-
-    pdb.set_trace()
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
 
@@ -2239,7 +2236,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
     ).custom_checkpoint()
-    pdb.set_trace()
+
     deduplicated_df = impute_and_flag(
         deduplicated_df,
         imputation_function=impute_by_distribution,
@@ -2256,7 +2253,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
         log_file_path=log_directory,
     )
-    pdb.set_trace()
     return deduplicated_df.select(
         unique_id_column,
         *["ethnicity_white", "sex", "date_of_birth"],

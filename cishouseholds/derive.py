@@ -463,6 +463,7 @@ def assign_random_day_in_month(
             format="yyyy-MM-dd",
         ),
     )
+    df.show()
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
 
