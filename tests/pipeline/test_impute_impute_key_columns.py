@@ -54,6 +54,7 @@ def test_impute_key_columns(spark_session):
     ]
     output_df = impute_key_columns(input_df, lookup_df, log_directory="./")
     output_df = output_df.withColumn("YEAR", F.year("date_of_birth")).withColumn("MONTH", F.month("date_of_birth"))
+
     for columns in [value_columns, method_columns]:
         assert_df_equality(
             output_df.select(*columns),
