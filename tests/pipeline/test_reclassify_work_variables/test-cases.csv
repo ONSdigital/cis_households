@@ -1,0 +1,37 @@
+row_id,rule,record_type,main_job,main_resp,work_main_job_title,work_main_job_role,age_at_visit,work_location,work_status_v0,work_status_v1,work_status_v2,work_location_edited,work_status_v0_edited,work_status_v1_edited,work_status_v2_edited
+0,wfh_rules=1,input,NOT AVAIL,NOT AVAIL,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,Employed,Employed and currently working,Employed and currently working,,,,
+0,wfh_rules=1,expected,NOT AVAIL,NOT AVAIL,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,Working from home,Employed,Employed and currently working,Employed and currently working,TRUE,FALSE,FALSE,FALSE
+1,furlough_rules_v0 = 1,input,NOT AVAIL,NOT AVAIL,ASSISTANT SCHOOL TEACHER,FURLOWED,70,OFFICE,Employed,Employed and currently not working,Employed and currently not working,,,,
+1,furlough_rules_v0 = 1,expected,NOT AVAIL,NOT AVAIL,ASSISTANT SCHOOL TEACHER,FURLOWED,70,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working,FALSE,TRUE,FALSE,FALSE
+2,furlough_rules_v1_a = 1,input,NOT AVAIL,NOT AVAIL,ASSISTANT SCHOOL TEACHER,FURLOWED,70,OFFICE,Furloughed (temporarily not working),Looking for paid work and able to start,Employed and currently not working,,,,
+2,furlough_rules_v1_a = 1,expected,NOT AVAIL,NOT AVAIL,ASSISTANT SCHOOL TEACHER,FURLOWED,70,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working,FALSE,FALSE,TRUE,FALSE
+3,furlough_rules_v1_b = 1,input,NOT AVAIL,NOT AVAIL,SELF-EMPLOYED PLUMBER,FURLOWED,70,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently working,,,,
+3,furlough_rules_v1_b = 1,expected,NOT AVAIL,NOT AVAIL,SELF-EMPLOYED PLUMBER,FURLOWED,70,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Self-employed and currently not working,FALSE,FALSE,TRUE,FALSE
+4,furlough_rules_v2_a = 1,input,NOT AVAIL,NOT AVAIL,DOCTOR,FURLOWED,30,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently working,,,,
+4,furlough_rules_v2_a = 1,expected,NOT AVAIL,NOT AVAIL,DOCTOR,FURLOWED,30,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working,FALSE,FALSE,FALSE,TRUE
+5,furlough_rules_v2_b = 1,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,FURLOWED,30,RESTAURANT,Furloughed (temporarily not working),Employed and currently not working,Not working and not looking for work,,,,
+5,furlough_rules_v2_b = 1,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,FURLOWED,30,RESTAURANT,Furloughed (temporarily not working),Employed and currently not working,Self-employed and currently not working,FALSE,FALSE,FALSE,TRUE
+6,self_employed_rules_regex_only,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Employed,Employed and currently working,Employed and currently working,,,,
+6,self_employed_rules_regex_only,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Employed and currently working,Employed and currently working,FALSE,TRUE,FALSE,FALSE
+7,self_employed_rules_v1_a= 1,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Employed and currently working,Self-employed and currently working,,,,
+7,self_employed_rules_v1_a= 1,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working,FALSE,FALSE,TRUE,FALSE
+8,self_employed_rules_v1_b= 1,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Employed and currently not working,Self-employed and currently not working,,,,
+8,self_employed_rules_v1_b= 1,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working,FALSE,FALSE,TRUE,FALSE
+9,self_employed_rules_v2_a= 1,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently working,Employed and currently working,,,,
+9,self_employed_rules_v2_a= 1,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working,FALSE,FALSE,FALSE,TRUE
+10,self_employed_rules_v2_b= 1,input,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently working,Not working and not looking for work,,,,
+10,self_employed_rules_v2_b= 1,expected,NOT AVAIL,NOT AVAIL,SELFEMPLOYED CHEF,CHEF,25,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working,FALSE,FALSE,FALSE,TRUE
+11,retired,input,,,RETIRED,RETIRED,78,,Employed,,,,,,
+11,retired,expected,,,RETIRED,RETIRED,78,,"Not working (unemployed, retired, long-term sick etc.)",Retired,Retired,FALSE,TRUE,TRUE,TRUE
+12,no_working_rules_v0=1,input,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,Employed,Employed and currently not working,Employed and currently not working,,,,
+12,no_working_rules_v0=1,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working,FALSE,TRUE,FALSE,FALSE
+13,no_working_rules_v1_a=1,input,NOT AVAIL,NOT AVAIL,NOT WORKING,UNEMPLOYED,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed,Employed and currently not working,,,,
+13,no_working_rules_v1_a=1,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,UNEMPLOYED,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working,FALSE,FALSE,TRUE,FALSE
+14,no_working_rules_v1_b=1,input,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed,Employed and currently not working,,,,
+14,no_working_rules_v1_b=1,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Employed and currently not working,FALSE,FALSE,TRUE,FALSE
+15,no_working_rules_v2_a=1,input,NOT AVAIL,NOT AVAIL,NOT WORKING,UNEMPLOYED,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed,Employed and currently not working,,,,
+15,no_working_rules_v2_a=1,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,UNEMPLOYED,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working,FALSE,FALSE,FALSE,TRUE
+16,no_working_rules_v2_b=1,input,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed,Employed and currently not working,,,,
+16,no_working_rules_v2_b=1,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,45,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Employed and currently not working,FALSE,FALSE,FALSE,TRUE
+17,school/student v0,input,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,15,OFFICE,Employed,Not working and not looking for work,Not working and not looking for work,,,,
+17,school/student v0,expected,NOT AVAIL,NOT AVAIL,NOT WORKING,NOT WORKING,15,OFFICE,Student,Not working and not looking for work,Not working and not looking for work,FALSE,TRUE,FALSE,FALSE

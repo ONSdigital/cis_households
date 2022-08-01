@@ -2,6 +2,7 @@
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import SparkSession
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
@@ -2409,7 +2410,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     return df
 
 
-def reclassify_work_variables(df: DataFrame) -> DataFrame:
+def reclassify_work_variables(df: DataFrame, spark_session: SparkSession) -> DataFrame:
     """
     Reclassify work-related variables based on rules & regex patterns
     """
@@ -2507,64 +2508,67 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
 
     update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
 
-    df = (
-        df.withColumn(
+    # Please note the order of *_edited columns, these must come before the in-place updates
+
+    _df = (
+        df.withColumn("work_location_edited", update_work_location)
+        .withColumn(
             "work_location", F.when(update_work_location, F.lit("Working from home")).otherwise(F.col("work_location"))
         )
-        .withColumn("work_location_edited", update_work_location)
+        .withColumn("work_status_v0_edited", update_work_status_furlough_v0)
         .withColumn(
             "work_status_v0",
             F.when(update_work_status_furlough_v0, F.lit("Furloughed (temporarily not working)")).otherwise(
                 F.col("work_status_v0")
             ),
         )
-        .withColumn("work_status_v0_edited", update_work_status_furlough_v0)
+        .withColumn("work_status_v1_edited", update_work_status_furlough_v1_a)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_furlough_v1_a, F.lit("Employed and currently not working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_furlough_v1_a)
+        .withColumn("work_status_v1_edited", update_work_status_furlough_v1_b)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_furlough_v1_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_furlough_v1_b)
+        .withColumn("work_status_v2_edited", update_work_status_furlough_v2_a)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_furlough_v2_a, F.lit("Employed and currently not working")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_furlough_v2_a)
+        .withColumn("work_status_v2_edited", update_work_status_furlough_v2_b)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_furlough_v2_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_furlough_v2_b)
+        .withColumn("work_status_v0_edited", self_employed_regex_hit)
         .withColumn(
             "work_status_v0", F.when(self_employed_regex_hit, F.lit("Self-employed")).otherwise(F.col("work_status_v0"))
         )
-        .withColumn("work_status_v0_edited", self_employed_regex_hit)
+        .withColumn("work_status_v1_edited", update_work_status_self_employed_v1_a)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_self_employed_v1_a, F.lit("Self-employed and currently working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_self_employed_v1_a)
+        .withColumn("work_status_v1_edited", update_work_status_self_employed_v1_b)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_self_employed_v1_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_self_employed_v1_b)
+        .withColumn("work_status_v2_edited", update_work_status_self_employed_v2_a)
         .withColumn(
             "work_status_v2",
             F.when(
@@ -2572,96 +2576,100 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
                 F.lit("Self-employed and currently working"),
             ).otherwise(F.col("work_status_v2")),
         )
-        .withColumn("work_status_v2_edited", update_work_status_self_employed_v2_a)
+        .withColumn("work_status_v2_edited", update_work_status_self_employed_v2_b)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_self_employed_v2_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_self_employed_v2_b)
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
+
+    _df3 = (
+        _df2.withColumn("work_status_v0_edited", update_work_status_retired)
         .withColumn(
             "work_status_v0",
             F.when(
                 update_work_status_retired, F.lit("Not working (unemployed, retired, long-term sick etc.)")
             ).otherwise(F.col("work_status_v0")),
         )
-        .withColumn("work_status_v0_edited", update_work_status_retired)
+        .withColumn("work_status_v1_edited", update_work_status_retired)
         .withColumn(
             "work_status_v1", F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v1"))
         )
-        .withColumn("work_status_v1_edited", update_work_status_retired)
+        .withColumn("work_status_v2_edited", update_work_status_retired)
         .withColumn(
             "work_status_v2", F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2"))
         )
-        .withColumn("work_status_v2_edited", update_work_status_retired)
+        .withColumn("work_status_v0_edited", update_work_status_not_working_v0)
         .withColumn(
             "work_status_v0",
             F.when(
                 update_work_status_not_working_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
             ).otherwise(F.col("work_status_v0")),
         )
-        .withColumn("work_status_v0_edited", update_work_status_not_working_v0)
+        .withColumn("work_status_v1_edited", update_work_status_not_working_v1_a)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_not_working_v1_a, F.lit("Employed and currently not working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_not_working_v1_a)
+        .withColumn("work_status_v1_edited", update_work_status_not_working_v1_b)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_not_working_v1_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_not_working_v1_b)
+        .withColumn("work_status_v2_edited", update_work_status_not_working_v2_a)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_not_working_v2_a, F.lit("Employed and currently not working")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_not_working_v2_a)
+        .withColumn("work_status_v2_edited", update_work_status_not_working_v2_b)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_not_working_v2_b, F.lit("Self-employed and currently not working")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_not_working_v2_b)
+        .withColumn("work_status_v0_edited", update_work_status_student_v0)
         .withColumn(
             "work_status_v0", F.when(update_work_status_student_v0, F.lit("Student")).otherwise(F.col("work_status_v0"))
         )
-        .withColumn("work_status_v0_edited", update_work_status_student_v0)
+        .withColumn("work_status_v1_edited", update_work_status_student_v1)
         .withColumn(
             "work_status_v1",
             F.when(update_work_status_student_v1, F.lit("5y and older in full-time education")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn("work_status_v1_edited", update_work_status_student_v1)
+        .withColumn("work_status_v2_edited", update_work_status_student_v2_a)
         .withColumn(
             "work_status_v2",
             F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn("work_status_v2_edited", update_work_status_student_v2_a)
+        .withColumn("work_status_v2_edited", update_work_status_student_v2_b)
         .withColumn(
             "work_status_v2",
             F.when(
                 update_work_status_student_v2_b, F.lit("Attending college or FE (including if temporarily absent)")
             ).otherwise(F.col("work_status_v2")),
         )
-        .withColumn("work_status_v2_edited", update_work_status_student_v2_b)
+        .withColumn("work_status_v2_edited", update_work_status_student_v2_c)
         .withColumn(
             "work_status_v2",
             F.when(
                 update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
             ).otherwise(F.col("work_status_v2")),
         )
-        .withColumn("work_status_v2_edited", update_work_status_student_v2_c)
         .withColumn(
             "work_location",
             F.when(
@@ -2678,4 +2686,4 @@ def reclassify_work_variables(df: DataFrame) -> DataFrame:
         )
     )
 
-    return df
+    return _df3

@@ -111,7 +111,7 @@ def test_reclassify_work_variables(spark_session):
         .drop("record_type", *[col for col in expected_df.columns if col.endswith("edited")])
     )
 
-    actual_df = reclassify_work_variables(input_df)
+    actual_df = reclassify_work_variables(input_df, spark_session=spark_session)
 
     assert_df_equality(
         actual_df,
