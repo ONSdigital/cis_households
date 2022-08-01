@@ -64,10 +64,7 @@ def test_impute_key_columns(spark_session):
     output_df.show()
     for columns in [value_columns, method_columns]:
         assert_df_equality(
-            output_df.select(*columns),
-            expected_df.select(*columns),
-            ignore_row_order=True,
-            ignore_column_order=True
+            output_df.select(*columns), expected_df.select(*columns), ignore_row_order=True, ignore_column_order=True
         )
 
     for demographic_variable in ["ethnicity_white", "sex", "date_of_birth"]:
