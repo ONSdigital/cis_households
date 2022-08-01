@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from chispa.dataframe_comparer import assert_df_equality
 from pyspark.sql import functions as F

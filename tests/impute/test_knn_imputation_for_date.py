@@ -1,3 +1,5 @@
+import os
+
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
@@ -5,6 +7,7 @@ from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 
 
 def test_impute_date_by_k_nearest_neighbours(spark_session):
+    os.environ["deployment"] = "local"
     input_df = spark_session.createDataFrame(
         data=[
             # fmt:off
@@ -22,7 +25,7 @@ def test_impute_date_by_k_nearest_neighbours(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt:off
-            (1, 'A', 1, 2020),
+            (1, 'A', None, None),
             (2, 'A', 1, 2020),
             # fmt:on
         ],
@@ -41,9 +44,8 @@ def test_impute_date_by_k_nearest_neighbours(spark_session):
         donor_group_columns=["group"],
         log_file_path="/",
     )
-
-    output_df = output_df.withColumn("month", F.month("date"))
-    output_df = output_df.withColumn("year", F.year("date"))
+    output_df = output_df.withColumn("month", F.month(F.col("date")))
+    output_df = output_df.withColumn("year", F.year(F.col("date")))
     assert_df_equality(
         output_df.drop("date"),  # Day part varies
         expected_df,

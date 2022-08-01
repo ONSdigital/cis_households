@@ -1063,6 +1063,7 @@ def impute_date_by_k_nearest_neighbours(
         donor_group_column_conditions=donor_group_column_conditions,
         maximum_distance=maximum_distance,
     ).custom_checkpoint()
+
     df = impute_by_k_nearest_neighbours(
         df=df,
         column_name_to_assign="_IMPUTED_year",
@@ -1074,6 +1075,7 @@ def impute_date_by_k_nearest_neighbours(
         donor_group_column_conditions=donor_group_column_conditions,
         maximum_distance=maximum_distance,
     ).custom_checkpoint()
+
     df = df.drop("_month", "_year")
 
     df = assign_random_day_in_month(
