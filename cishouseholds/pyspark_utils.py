@@ -14,8 +14,8 @@ session_options = {
         "spark.executor.memory": "32g",
         "spark.executor.cores": 4,
         "spark.dynamicAllocation.maxExecutors": 8,
-        "spark.sql.shuffle.partitions": 128,
-        "spark.task.cpus": 4,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
     },
     "l": {
         "spark.executor.memory": "32g",
