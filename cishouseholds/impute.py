@@ -1,6 +1,7 @@
 import logging
 import sys
 from datetime import datetime
+from itertools import chain
 from typing import Callable
 from typing import List
 from typing import Union
@@ -10,7 +11,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_random_day_in_month
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 
@@ -456,9 +457,11 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         method_column,
         F.when(imputed_this_run, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
-    df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
+    imputed_survey_columns = df.withColumn(
+        reference_column, F.coalesce(reference_column, "temporary_imputation_values")
+    )  # .select(id_column, reference_column, status_column, method_column)
 
-    return df.drop("temporary_imputation_values")
+    return imputed_survey_columns.drop("temporary_imputation_values")
 
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
@@ -1028,56 +1031,42 @@ def edit_multiple_columns_fill_forward(
     return df
 
 
-def impute_date_by_k_nearest_neighbours(
-    df: DataFrame,
-    column_name_to_assign: str,
-    reference_column: str,
-    donor_group_columns: List[str],
-    log_file_path: str,
-    minimum_donors: int = 1,
-    donor_group_column_weights: list = None,
-    donor_group_column_conditions: dict = None,
-    maximum_distance: int = 4999,
-) -> DataFrame:
+def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
     """
+    Post imputation transformations step 1, step 2, step 3
     Parameters
     ----------
     df
-    column_name_to_assign
-    donor_group_columns
-    log_file_path
+    key_columns_imputed_df
     """
-    df = df.withColumn("_month", F.month(reference_column))
-    df = df.withColumn("_year", F.year(reference_column))
+    # step 1: imputation columns from all columns that ends with _imputation_method.
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endswith("_imputation_method")
+    ]
+    imputed_values_df = key_columns_imputed_df.filter(
+        any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
+    )
+    # step 2: puts together all imputed columns one without _imputed_method, and with imputed_method.
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
+    new_imputed_value_lookup = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+    # step 3. For main df (survey), removes all imputed columns and imputed column flags and
+    # joins with the lookup value table that has all the imputed columns.
+    df_no_imputation_col = df.drop(
+        *[col for col in key_columns_imputed_df.columns if col != "participant_id"]  # gets rid of all imputed columns
+    )
+    # TODO: add validation that lookup_imputation_table has one participant_id.
 
-    df = impute_by_k_nearest_neighbours(
-        df=df,
-        column_name_to_assign="_IMPUTED_month",
-        reference_column="_month",
-        donor_group_columns=donor_group_columns,
-        log_file_path=log_file_path,
-        minimum_donors=minimum_donors,
-        donor_group_column_weights=donor_group_column_weights,
-        donor_group_column_conditions=donor_group_column_conditions,
-        maximum_distance=maximum_distance,
-    )
-    df = impute_by_k_nearest_neighbours(
-        df=df,
-        column_name_to_assign="_IMPUTED_year",
-        reference_column="_year",
-        donor_group_columns=donor_group_columns,
-        log_file_path=log_file_path,
-        minimum_donors=minimum_donors,
-        donor_group_column_weights=donor_group_column_weights,
-        donor_group_column_conditions=donor_group_column_conditions,
-        maximum_distance=maximum_distance,
-    )
-    df = df.drop("_month", "_year")
-
-    df = assign_random_day_in_month(
-        df=df,
-        column_name_to_assign=column_name_to_assign,
-        month_column="_IMPUTED_month",
-        year_column="_IMPUTED_year",
-    )
-    return df.drop("_IMPUTED_month", "_IMPUTED_year")
+    df_with_imputed_values = df_no_imputation_col.join(
+        new_imputed_value_lookup, on="participant_id", how="left"
+    )  # noqa: E501
+    # IMPORTANT CHANGE to review: in join() substituted key_columns_imputed_df for new_imputed_value_lookup
+    # reason: not_wanted_col in test is passing, it should be filtered out.
+    # df_with_imputed_values = df.drop(
+    #     *[col for col in key_columns_imputed_df.columns if col != "participant_id"]
+    #     ).join(key_columns_imputed_df, on="participant_id", how="left")
+    return df_with_imputed_values, new_imputed_value_lookup
