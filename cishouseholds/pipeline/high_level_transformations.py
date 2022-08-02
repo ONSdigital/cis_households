@@ -1568,6 +1568,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_work_status_columns(df)
+    return df
+
+
+def assign_has_been_columns(df):
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
@@ -1580,7 +1585,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         individual_response_column="hospital_last_28_days",
         household_response_column="other_household_member_hospital_last_28_days",
     )
-    df = derive_work_status_columns(df)
     return df
 
 

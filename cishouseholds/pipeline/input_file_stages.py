@@ -1,5 +1,6 @@
 from cishouseholds.pipeline.high_level_transformations import add_fields
 from cishouseholds.pipeline.high_level_transformations import add_historical_fields
+from cishouseholds.pipeline.high_level_transformations import assign_has_been_columns
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_1
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
@@ -72,6 +73,7 @@ survey_responses_v2_parameters = {
         clean_survey_responses_version_2,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
+        assign_has_been_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,
@@ -145,6 +147,7 @@ cis_digital_parameters = {
         pre_generic_digital_transformations,
         transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
+        assign_has_been_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
