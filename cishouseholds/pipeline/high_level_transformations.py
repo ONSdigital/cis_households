@@ -1129,6 +1129,27 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         ";",
     )
+    df = map_options_to_bool_columns(
+        df,
+        "swab_not_taken_missing_parts",
+        {
+            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_sample_pot",
+            "Swab stick": "swab_not_taken_missing_swab_stick",
+            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_biohazard_bag",
+            "Copy of your swab barcode": "swab_not_taken_missing_swab_barcode",
+            "Sample box": "swab_not_taken_missing_sample_box",
+            "Sample return bag with a return label on": "swab_not_taken_missing_return_bag",
+            "Other please specify": "swab_not_taken_missing_other",
+            "Pot sampl â hylif yn y gwaelod a chod bar arno": "swab_not_taken_missing_sample_pot",
+            "Ffon swab": "swab_not_taken_missing_swab_stick",
+            "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "swab_not_taken_missing_biohazard_bag",
+            "Copi o'ch cod bar ar gyfer y swab": "swab_not_taken_missing_swab_barcode",
+            "Blwch sampl": "swab_not_taken_missing_sample_box",
+            "Bag i ddychwelyd y sampl â label parod arno": "swab_not_taken_missing_return_bag",
+            "Arall, nodwch": "swab_not_taken_missing_other",
+        },
+        ";",
+    )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",
