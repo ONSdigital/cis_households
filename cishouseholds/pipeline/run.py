@@ -1,3 +1,4 @@
+import os
 import time
 import traceback
 from contextlib import contextmanager
@@ -16,6 +17,7 @@ from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.pyspark_utils import get_spark_application_id
 from cishouseholds.pyspark_utils import get_spark_ui_url
+from cishouseholds.validate import validate_config_stages
 
 
 @contextmanager
@@ -38,7 +40,7 @@ def check_conditions(stage_responses: dict, stage_config: dict):
     return False
 
 
-def run_from_config():
+def run_from_config(config_file_path: str = None):
     """
     Run ordered pipeline stages, from pipeline configuration. Config file location must be specified in the environment
     variable ``PIPELINE_CONFIG_LOCATION``.
@@ -51,8 +53,10 @@ def run_from_config():
     """
     spark = get_or_create_spark_session()
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
-
+    if config_file_path is not None:
+        os.environ["PIPELINE_CONFIG_LOCATION"] = config_file_path
     config = get_config()
+
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
     with spark_description_set("adding run log entry"):
@@ -61,11 +65,14 @@ def run_from_config():
     with spark_description_set("adding run status"):
         add_run_status(run_id, "started")
     pipeline_error_count = None
+
     try:
+        validate_config_stages(all_object_function_dict=pipeline_stages, config_arguments_list_of_dict=config["stages"])
+        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         splunk_logger.log(status="start")
-        pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
+
         pipeline_error_count = run_pipeline_stages(
             pipeline_stage_list,
             run_id,
@@ -102,7 +109,28 @@ def run_pipeline_stages(
     retry_count: int = 1,
     retry_wait_time: int = 1,
 ):
-    """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
+    """
+    Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run.
+    Any failing stages will be retried `retry_times_on_fail` times as set in the config file.
+    Whether a stage runs can also be set conditionally by using
+    when, operator, condition configuration in the config file.
+
+    Example
+    -------------
+    - function: example
+      run: True
+      when:
+        operator: all (possible values All, Any)
+        conditions:
+            (a stage name that returns a status string): the desired status string
+            stage_A: updated
+            stage_B: updated
+
+    Notes
+    -------------
+    Ensure that the stages referenced in any condition do return a status.
+    A status can be added by adding a return string to the stage function.
+    """
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
@@ -113,21 +141,17 @@ def run_pipeline_stages(
         attempt = 0
         complete_status_string = "successfully"
         stage_name = stage_config.pop("function")
-        stage_description = stage_name
-        for key, val in stage_config.items():
-            stage_description += f"{key}:{val}, "
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
             stage_config.pop("when", None)
             while not stage_success and attempt < retry_count + 1:
-                # TODO: log the retry event with run status and no traceback
                 if attempt != 0:
                     with spark_description_set("adding run status"):
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
                 try:
-                    with spark_description_set(stage_description):
+                    with spark_description_set(stage_name):
                         stage_responses[stage_name] = pipeline_stages[stage_name](**stage_config)
                     stage_success = True
                     with spark_description_set("adding run status"):

@@ -74,6 +74,7 @@ from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
+from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import fill_forward_only_to_nulls_in_dataset_based_on_column
 from cishouseholds.impute import impute_and_flag
@@ -91,7 +92,9 @@ from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex_patterns import at_school_pattern
 from cishouseholds.regex_patterns import at_university_pattern
+from cishouseholds.regex_patterns import not_working_pattern
 from cishouseholds.regex_patterns import retired_regex_pattern
+from cishouseholds.regex_patterns import self_employed_regex
 from cishouseholds.regex_patterns import work_from_home_pattern
 from cishouseholds.validate_class import SparkValidate
 
@@ -475,6 +478,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "I don't know the type": "Don't know type",
         "Dont know": None,
         "Don&#39;t know": None,
+        "Do not know": None,
+        "Don&amp;#39;t Know": None,
     }
     df = apply_value_map_multiple_columns(
         df,
@@ -2079,14 +2084,10 @@ def transform_from_lookups(
 
 
 def fill_forwards_transformations(df):
-    df = fill_forward_only_to_nulls_in_dataset_based_on_column(
+
+    df = fill_forward_from_last_change_marked_subset(
         df=df,
-        id="participant_id",
-        date="visit_datetime",
-        changed="work_main_job_changed",
-        dataset="survey_response_dataset_major_version",
-        dataset_value=2,
-        list_fill_forward=[
+        fill_forward_columns=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
@@ -2097,29 +2098,13 @@ def fill_forwards_transformations(df):
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="work_main_job_changed",
+        record_changed_value="Yes",
+        dateset_version_column="survey_response_dataset_major_version",
+        minimum_dateset_version=2,
     )
-
-    # TODO: Replace above with this + 2336 after initial digital release
-    # df = fill_forward_from_last_change(
-    #     df=df,
-    #     fill_forward_columns=[
-    #         "work_main_job_title",
-    #         "work_main_job_role",
-    #         "work_sector",
-    #         "work_sector_other",
-    #         "work_social_care",
-    #         "work_health_care_patient_facing",
-    #         "work_health_care_area",
-    #         "work_nursing_or_residential_care_home",
-    #         "work_direct_contact_patients_or_clients",
-    #     ],
-    #     participant_id_column="participant_id",
-    #     visit_datetime_column="visit_datetime",
-    #     record_changed_column="work_main_job_changed",
-    #     record_changed_value="Yes",
-    #     dateset_version_column="survey_response_dataset_major_version",
-    #     minimum_dateset_version=2,
-    # )
 
     # TODO: uncomment for releases after R1
     # df = fill_backwards_overriding_not_nulls(
@@ -2378,6 +2363,23 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
         negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
         column_name_to_assign="is_retired",
+        debug_mode=False,
+    )
+
+    # add not-working flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+        column_name_to_assign="not_working",
+    )
+    # add self-employed flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        column_name_to_assign="is_self_employed",
         debug_mode=False,
     )
 

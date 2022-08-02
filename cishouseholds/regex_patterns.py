@@ -56,6 +56,20 @@ at_university_pattern = RegexPattern(
     ),
 )
 
+not_working_pattern = RegexPattern(
+    positive_regex_pattern="|".join(
+        [
+            r"(NONE|NOTHING|NIL|AT HOME)",
+            r"(NO.{0,}WORK)|(^UN(ABLE|EMPLOY))",
+            r"((SONS|TERS|THERS|'S).CARER)",
+            r"(TERNITY.LEAVE$)|((HOME|HOUSE)\w)",
+            r"(FULL TIME.{0,}(MOM|MOTHER|DAD|FATHER))",
+        ]
+    ),
+    negative_regex_pattern="|".join(["MASTER", "MISTRESS"]),
+)
+
+self_employed_regex = RegexPattern(positive_regex_pattern="SELF.?EMPLOYED", negative_regex_pattern=None)
 retired_regex_pattern = RegexPattern(
     positive_regex_pattern="RE[TFIER]{2,}(ED|RD)(?!( (PEOPLE|MILITARY)))",
     negative_regex_pattern="(SEMI|PART[a-zA-Z]{3,}).?RE[TFIER]{2,}(ED|RD)(?!( (PEOPLE|MILITARY)))",
@@ -64,4 +78,12 @@ retired_regex_pattern = RegexPattern(
 furloughed_pattern = RegexPattern(
     positive_regex_pattern="FU[RL]{1,3}O[UW]{0,1}[GHE]{1,}D?",
     negative_regex_pattern="|".join(["NOT ON FURLOUGH", "FURLOUGHED ON AND OFF CURRENTLY WORKING"]),
+)
+
+
+in_college_or_further_education_pattern = RegexPattern(
+    positive_regex_pattern="|".join(
+        ["[AT].?LEVELS?", "YEAR \\d{2}", "APPRENTICE", "VOCATION", "QUALIFICATION", "SIXTH FORM", "COLLEGE"]
+    ),
+    negative_regex_pattern="|".join(["ASSISTANT", "LECTURER", "PROFESSOR" "SCHOOL", "INTERN", "TEACHER", "WORKER"]),
 )
