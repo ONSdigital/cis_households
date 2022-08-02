@@ -6,6 +6,24 @@ yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
 times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know", "None", "Prefer not to say", None]
+consolidation_points = [
+    "Consolidation.box_empty",
+    "Consolidation.sample_leaked",
+    "Consolidation.sample_uncompleted",
+    "Consolidation.kpa_overpacked_different_ref_different_type",
+    "Consolidation.kpa_overpacked",
+    "Consolidation.kpa_overpacked_different_ref_same_type",
+    "Consolidation.sample_mismatched",
+    "Consolidation.sample_bagged_ziplock",
+    "Consolidation.sample_unbagged",
+    "Consolidation.sample_unbagged_no_kpa",
+    "Consolidation.box_multipacked",
+    "Consolidation.tube_carrier_unbagged",
+    "Consolidation.tube_carrier_unbagged_unboxed",
+    "Consolidation.kpa_unboxed",
+    "Consolidation.kpa_unscanned",
+    "Consolidation.exception_undefined",
+]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -2023,6 +2041,47 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.9, 0.1],
         ),
         "blood_sample_received_lab_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "form_started_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "swab_consolidation_point_error": _("discrete_distribution", population=consolidation_points),
+        "blood_consolidation_point_error": _("discrete_distribution", population=consolidation_points),
+        "swab_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_consolidation_point_error_datetime": _(
             "discrete_distribution",
             population=[
                 _(
