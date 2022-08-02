@@ -98,7 +98,9 @@ def calculate_design_weights(
         cis_window=cis_area_window,
     )
 
-    higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
+    higher_eligibility = False
+    if tranche_provided:
+        higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
     new_migration_to_antibody = higher_eligibility and tranche_provided
     df = calculate_scaled_antibody_design_weights(
         df,

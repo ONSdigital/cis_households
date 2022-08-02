@@ -453,7 +453,15 @@ def assign_random_day_in_month(
     df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
+        F.to_timestamp(
+            F.concat_ws(
+                "-",
+                F.col(year_column),
+                F.lpad(F.col(month_column).cast("string"), 2, "0"),
+                F.lpad(F.ceil(F.col("TEMP_DAY")).cast("string"), 2, "0"),
+            ),
+            format="yyyy-MM-dd",
+        ),
     )
     return df.drop("TEMP_DATE", "TEMP_DAY")
 

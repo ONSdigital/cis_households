@@ -2053,7 +2053,7 @@ _welsh_contact_type_by_age_group_categories = {
     "11 i 20": "11 to 20",
     "21 neu fwy": "21 or more",
 }
-
+# Extra fields
 # Incorporated into times_value_map in high_level_transformations
 _welsh_number_of_types_categories = {
     "Dim": "None",
@@ -2061,7 +2061,7 @@ _welsh_number_of_types_categories = {
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
 }
-
+# Extra fields
 # Incorporated into vaccine_type_map in high_level_transformations
 _welsh_vaccination_type_categories = {
     "Prifysgol Rhydychen / AstraZeneca": "Oxford / AstraZeneca",
@@ -2098,7 +2098,6 @@ _welsh_face_covering_categories = {
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
 }
 
-
 _welsh_swab_sample_not_taken_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
     "Nid oeddwin i am ei chymryd y mis hwn": "I did not want to take it this month",
@@ -2129,7 +2128,7 @@ _welsh_blood_sample_not_taken_categories = {
     "Roedd y pecyn prawf gwaed wedi'i ddifrodi ac roedd darnau ar goll": "The blood test kit arrived both damaged and with parts missing",  # noqa: E501
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf gwaed wedi cyrraedd": "I am near the end of my testing window and my blood test kit has not arrived",  # noqa: E501
 }
-
+#
 # Resolved in high level transformation using map_options_to_bool_columns
 _welsh_blood_kit_missing_categories = {
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
@@ -2174,10 +2173,10 @@ _welsh_work_status_unemployment_categories = {
     "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
     "Wedi ymddeol": "Retired",
 }
-
+# No a in the first two options in schema
 # Incorporated into existing work_status_vX column_value_from_multiple_column_map functions in high_level_transformations  # noqa: E501
 _welsh_work_status_education_categories = {
-    "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant": "A child below school age and not attending a nursery or pre-school or childminder",  # noqa: E501
+    "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant": "A child below school age and not attending a nursery or a pre-school or childminder",  # noqa: E501
     "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant": "A child below school age and attending a nursery or a pre-school or childminder",  # noqa: E501
     "Plentyn 4 oed neu drosodd yn yr ysgol": "A child aged 4 or over at school",
     "Plentyn 4 oed neu drosodd sy'n cael addysg gartref": "A child aged 4 or over at home-school",
@@ -2206,7 +2205,7 @@ _welsh_work_sector_categories = {
 
 # Incorporated into work_location in high_level_transformation
 _welsh_work_location_categories = {
-    "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home  meaning in the same grounds or building as your home",  # noqa: E501
+    "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Yn rhywle arall, gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Gartref ac yn rhywle arall": "Both from home and somewhere else",
 }

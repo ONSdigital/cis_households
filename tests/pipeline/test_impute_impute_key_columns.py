@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pytest
 from chispa.dataframe_comparer import assert_df_equality
 from pyspark.sql import functions as F
@@ -9,6 +12,7 @@ from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 def test_impute_key_columns(spark_session):
     """Test that high level imputation fills all missing values and reduces
     to one record per participant."""
+    os.environ["deployment"] = "local"
     input_data = [
         ("A", "A-A", "1", "A", "g1", "3", "white", "Female", "1990-01-01", "1990-01-01"),
         ("A", "A-A", "1", "B", "g1", "3", "white", "Female", None, "1990-01-02"),  # Fill forward
@@ -30,29 +34,27 @@ def test_impute_key_columns(spark_session):
     )
 
     expected_data = [
-        ("A-A", "white", "Female", "1990-01-01", None, None, None),
-        ("A-B", "white", "Female", "1990-01-01", "impute_by_mode", "impute_by_distribution", None),
-        ("B-A", "other", "Female", "1990-01-02", None, None, "method"),
-        ("C-A", "other", "Female", "1990-01-01", "impute_by_k_nearest_neighbours", None, None),  # Impute by KNN
+        # fmt: off
+        ("A-A", "white", "Female", "1", "1990",     None,                               None,                       "impute_by_k_nearest_neighbours",   "impute_by_k_nearest_neighbours",),
+        ("A-B", "white", "Female", "1", "1990",     "impute_by_mode",                   "impute_by_distribution",   None,                               None),
+        ("B-A", "other", "Female", "1", "1990",     None,                               None,                       None,                               None),
+        ("C-A", "other", "Female", "1", "1990",     "impute_by_k_nearest_neighbours",   None,                       None,                               None),
+        # Impute by KNN
+        # fmt: on
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
-        schema="""participant_id string, ethnicity_white string, sex string, date_of_birth string,
+        schema="""participant_id string, ethnicity_white string, sex string, _month string, _year string,
                 ethnicity_white_imputation_method string, sex_imputation_method string,
-                date_of_birth_imputation_method string""",
+                _month_imputation_method string, _year_imputation_method string""",
     )
-
-    value_columns = [
-        "participant_id",
-        "ethnicity_white",
-        "sex",
-        "date_of_birth",
-    ]
+    value_columns = ["participant_id", "ethnicity_white", "sex", "_month", "_year"]
     method_columns = [
         "participant_id",
         "ethnicity_white_imputation_method",
         "sex_imputation_method",
-        "date_of_birth_imputation_method",
+        "_month_imputation_method",
+        "_year_imputation_method",
     ]
     output_df = impute_key_columns(input_df, lookup_df, log_directory="./")
     for columns in [value_columns, method_columns]:
