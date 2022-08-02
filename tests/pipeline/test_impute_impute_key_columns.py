@@ -39,9 +39,9 @@ def test_impute_key_columns(spark_session):
 
     expected_data = [
         # fmt: off
-        ("A-A", "white", "Female", None, None, None),
-        ("A-B", "white", "Female", "impute_by_mode", "impute_by_distribution", None),
-        ("B-A", "other", "Female", None, None, "lookup_method"),
+        ("A-A", "white", "Female", "1990-01-01" , None, None, None),
+        ("A-B", "white", "Female", "1990-01-01","impute_by_mode", "impute_by_distribution", None),
+        ("B-A", "other", "Female", "1990-01-02" , None, None, "lookup_method"),
         # fmt: on
     ]
     expected_df = spark_session.createDataFrame(
