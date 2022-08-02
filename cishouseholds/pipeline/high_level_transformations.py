@@ -2274,19 +2274,6 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     return df
 
 
-def extra_cleaning(df):
-    """
-    To be appplied in generic job title and role cleaning
-    """
-    # Also make sure empty strings are Null in cleaning
-    F.regexp_replace(
-        F.col(),
-        r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$",
-        None,
-    )
-    return df
-
-
 # def assign_health_care_classification(df: DataFrame) -> DataFrame:
 #     """
 #     postive:
