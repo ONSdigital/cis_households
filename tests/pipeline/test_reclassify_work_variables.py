@@ -6,15 +6,17 @@ from pyspark.sql import types as t
 
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 
+# untested: [5]
+
 
 @pytest.fixture
 def load_test_cases():
     test_data = pd.read_csv("tests/pipeline/test_reclassify_work_variables/test-cases.csv")
 
-    expected_data = test_data.query("record_type=='expected' and row_id==1").drop(columns=["record_type"])
+    expected_data = test_data.query("record_type=='expected' and row_id==6").drop(columns=["record_type"])
 
-    input_data = test_data.query("record_type=='input' and row_id==1").drop(
-        columns=["record_type"] + [col for col in test_data.columns if col.endswith("edited")]
+    input_data = test_data.query("record_type=='input' and row_id==6").drop(
+        columns=["record_type"] + [col for col in test_data.columns if "_edited_" in col]
     )
 
     return input_data, expected_data
@@ -55,10 +57,31 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
             t.StructField("work_status_v0", t.StringType()),
             t.StructField("work_status_v1", t.StringType()),
             t.StructField("work_status_v2", t.StringType()),
-            t.StructField("work_location_edited", t.BooleanType(), False),
-            t.StructField("work_status_v0_edited", t.BooleanType()),
-            t.StructField("work_status_v1_edited", t.BooleanType()),
-            t.StructField("work_status_v2_edited", t.BooleanType()),
+            t.StructField("work_location_edited_working_from_home", t.BooleanType(), False),
+            t.StructField("work_status_v0_edited_furlough_v0", t.BooleanType()),
+            t.StructField("work_status_v1_edited_furlough_v1_a", t.BooleanType()),
+            t.StructField("work_status_v1_edited_furlough_v1_b", t.BooleanType()),
+            t.StructField("work_status_v2_edited_furlough_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_edited_furlough_v2_b", t.BooleanType()),
+            t.StructField("work_status_v0_edited_self_employed", t.BooleanType(), False),
+            t.StructField("work_status_v1_edited_self_employed_v1_a", t.BooleanType()),
+            t.StructField("work_status_v1_edited__self_employed_v1_b", t.BooleanType()),
+            t.StructField("work_status_v2_edited_self_employed_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_edited_self_employed_v2_b", t.BooleanType()),
+            t.StructField("work_status_v0_edited_retired", t.BooleanType()),
+            t.StructField("work_status_v1_edited_retired", t.BooleanType()),
+            t.StructField("work_status_v2_edited_retired", t.BooleanType()),
+            t.StructField("work_status_v0_edited_not_working_v0", t.BooleanType()),
+            t.StructField("work_status_v1_edited_not_working_v1_a", t.BooleanType()),
+            t.StructField("work_status_v1_edited_not_working_v1_b", t.BooleanType()),
+            t.StructField("work_status_v2_edited_not_working_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_edited_not_working_v2_b", t.BooleanType()),
+            t.StructField("work_status_v0_edited_student_v0", t.BooleanType()),
+            t.StructField("work_status_v1_edited_status_student_v1", t.BooleanType()),
+            t.StructField("work_status_v2_edited_student_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_edited_student_v2_b", t.BooleanType()),
+            t.StructField("work_status_v2_edited_student_v2_c", t.BooleanType()),
+            t.StructField("work_location_edited_general", t.BooleanType()),
         ]
     )
 
