@@ -754,7 +754,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
@@ -860,7 +860,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     [
                         "A child below school age and not attending a nursery or pre-school or childminder",
-                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or a pre-school or childminder",
                         "A child aged 4 or over at school",
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
