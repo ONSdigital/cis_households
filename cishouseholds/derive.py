@@ -302,7 +302,7 @@ def assign_multigeneration(
             ("England", "09", "01", "09", "01"),
             ("Wales", "09", "01", "09", "01"),
             ("Scotland", "08", "15", "03", "01"),
-            ("NI", "09", "01", "07", "02"),
+            ("Northern Ireland", "09", "01", "07", "02"),
         ],
         schema=[
             country_column,
@@ -985,7 +985,7 @@ def assign_age_group_school_year(
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             ),
@@ -998,7 +998,7 @@ def assign_age_group_school_year(
                 & (F.col(school_year_column) >= 12)
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
                 & (F.col(school_year_column) >= 12)
             ),
@@ -1159,7 +1159,7 @@ def assign_school_year(
         )
         # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
         #  though need to confirm if this is accurate
-        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("NI")) /
+        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("Northern Ireland")) /
         # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
         #                                     .otherwise(F.col(column_name_to_assign)))
         .withColumn(
