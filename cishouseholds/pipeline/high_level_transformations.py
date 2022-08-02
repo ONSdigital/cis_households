@@ -623,9 +623,14 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         "times_hour_or_longer_another_person_your_home_last_7_days": _welsh_number_of_types_categories,
         "times_shopping_last_7_days": _welsh_number_of_types_categories,
         "times_socialising_last_7_days": _welsh_number_of_types_categories,
-        "Type_Of_Vaccination": _welsh_vaccination_type_categories,
-        "type_of_vaccination": _welsh_vaccination_type_categories,
-        "Long_Covid_Reduce_Activities": _welsh_lot_little_not_categories,
+        "cis_covid_vaccine_type": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_1": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_2": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_3": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_4": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_5": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_6": _welsh_vaccination_type_categories,
         "illness_reduces_activity_or_ability": _welsh_lot_little_not_categories,
         "think_have_long_covid_symptom_reduced_ability": _welsh_lot_little_not_categories,
         "last_covid_contact_type": _welsh_live_with_categories,
@@ -634,7 +639,6 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         "face_covering_other_enclosed_places": _welsh_face_covering_categories,
         "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
         "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
-        "blood_not_taken_could_not_reason": _welsh_blood_not_taken_reason_categories,
         "work_status_digital": _welsh_work_status_digital_categories,
         "work_status_employment": _welsh_work_status_employment_categories,
         "work_status_unemployment": _welsh_work_status_unemployment_categories,
@@ -643,11 +647,10 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         "work_location": _welsh_work_location_categories,
         "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
         "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
-        "self_isolating_reasons": _welsh_self_isolating_reason_detailed_categories,
-        "currently_smokes_or_vapes_description": _welsh_currently_smokes_or_vapes_description_categories,
+        "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
         "cis_covid_vaccine_number_of_doses": _welsh_cis_covid_vaccine_number_of_doses_categories,
         "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
-        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,
+        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
 
@@ -958,7 +961,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
@@ -1064,7 +1067,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     [
                         "A child below school age and not attending a nursery or pre-school or childminder",
-                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or a pre-school or childminder",
                         "A child aged 4 or over at school",
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
@@ -1108,7 +1111,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         ";",
     )
-    df = concat_fields_if_true(df, "blood_not_taken_missing_parts", "blood_not_taken_missing_parts_", "Yes", ";")
     df = map_options_to_bool_columns(
         df,
         "blood_not_taken_could_not_reason",
@@ -1121,7 +1123,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         ";",
     )
-    df = concat_fields_if_true(df, "blood_not_taken_could_not_reason", "blood_not_taken_could_not_reason_", "Yes", ";")
     df = map_options_to_bool_columns(
         df,
         "swab_not_taken_missing_parts",
@@ -1136,7 +1137,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         ";",
     )
-    df = concat_fields_if_true(df, "swab_not_taken_missing_parts", "swab_not_taken_missing_parts_", "Yes", ";")
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",

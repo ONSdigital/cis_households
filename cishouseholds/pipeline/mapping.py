@@ -2162,7 +2162,7 @@ _welsh_work_status_unemployment_categories = {
 }
 
 _welsh_work_status_education_categories = {
-    "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant": "A child below school age and not attending a nursery or a pre-school or childminder",  # noqa: E501
+    "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant": "A child below school age and not attending a nursery or pre-school or childminder",  # noqa: E501
     "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant": "A child below school age and attending a nursery or a pre-school or childminder",  # noqa: E501
     "Plentyn 4 oed neu drosodd yn yr ysgol": "A child aged 4 or over at school",
     "Plentyn 4 oed neu drosodd sy'n cael addysg gartref": "A child aged 4 or over at home-school",
