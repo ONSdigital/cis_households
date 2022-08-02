@@ -2066,8 +2066,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "swab_consolidation_point_error": _("discrete_distribution", population=consolidation_points),
-        "blood_consolidation_point_error": _("discrete_distribution", population=consolidation_points),
+        "swab_consolidation_point_error": _("choice", items=consolidation_points),
+        "blood_consolidation_point_error": _("choice", items=consolidation_points),
         "swab_consolidation_point_error_datetime": _(
             "discrete_distribution",
             population=[
