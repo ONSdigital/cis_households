@@ -71,6 +71,7 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
@@ -650,6 +651,17 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
 
+    df = translate_column_regex_replace(
+        df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
+    )
+    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
+    df = translate_column_regex_replace(
+        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
+    )
+    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+
+    return df
+
 
 def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
     """
@@ -1075,11 +1087,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Pipe": "smokes_pipe",
             "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
             "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
-            "Sigaréts": "smoke_cigarettes",
-            "Sigârs": "smokes_cigar",
-            "Pib/cetyn": "smokes_pipe",
-            "Fêp neu E-sigaréts": "smokes_vape_e_cigarettes",
-            "Hookah neu bibau shisha": "smokes_hookah_shisha_pipes",
         },
         ";",
     )
@@ -1087,69 +1094,49 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "blood_not_taken_missing_parts",
         {
-            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_small_sample_tube",  # noqa: E501
-            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_large_sample_carrier",  # noqa: E501
-            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_biohazard_bag",
-            "Copy of your blood barcode": "blood_not_taken_missing_blood_barcode",
-            "Lancets": "blood_not_taken_missing_lancets",
-            "Plasters": "blood_not_taken_missing_plasters",
-            "Alcohol wipes": "blood_not_taken_missing_alcohol_wipes",
-            "Cleansing wipe": "blood_not_taken_missing_cleansing_wipe",
-            "Sample box": "blood_not_taken_missing_sample_box",
-            "Sample return bag with a return label on": "blood_not_taken_missing_sample_return_bag",
-            "Other please specify": "blood_not_taken_missing_other",
-            "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "blood_not_taken_missing_small_sample_tube",  # noqa: E501
-            "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "blood_not_taken_missing_large_sample_carrier",  # noqa: E501
-            "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "blood_not_taken_missing_biohazard_bag",
-            "Copi o'ch cod bar gwaed": "blood_not_taken_missing_blood_barcode",
-            "Lawnsedi": "blood_not_taken_missing_lancets",
-            "Plasteri": "blood_not_taken_missing_plasters",
-            "Weips alcohol": "blood_not_taken_missing_alcohol_wipes",
-            "Weip glanhau": "blood_not_taken_missing_cleansing_wipe",
-            "Blwch sampl": "blood_not_taken_missing_sample_box",
-            "Bag i ddychwelyd y sampl â label parod arno": "blood_not_taken_missing_sample_return_bag",
-            "Arall, nodwch": "blood_not_taken_missing_other",
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",  # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",  # noqa: E501
+            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_parts_biohazard_bag",
+            "Copy of your blood barcode": "blood_not_taken_missing_parts_blood_barcode",
+            "Lancets": "blood_not_taken_missing_parts_lancets",
+            "Plasters": "blood_not_taken_missing_parts_plasters",
+            "Alcohol wipes": "blood_not_taken_missing_parts_alcohol_wipes",
+            "Cleansing wipe": "blood_not_taken_missing_parts_cleansing_wipe",
+            "Sample box": "blood_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "blood_not_taken_missing_parts_sample_return_bag",
+            "Other please specify": "blood_not_taken_missing_parts_other",
         },
         ";",
     )
+    df = concat_fields_if_true(df, "blood_not_taken_missing_parts", "blood_not_taken_missing_parts_", "Yes", ";")
     df = map_options_to_bool_columns(
         df,
         "blood_not_taken_could_not_reason",
         {
-            "I couldn't get enough blood into the pot": "blood_not_taken_reason_not_enough_blood",
-            "The pot spilled": "blood_not_taken_reason_pot_spilled",
-            "I had bruising or pain": "blood_not_taken_reason_had_bruising",
-            "I felt unwell": "blood_not_taken_reason_unwell",
-            "Other please specify": "blood_not_taken_reason_other",
-            "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "blood_not_taken_reason_not_enough_blood",
-            "Daeth yr hylif allan o'r pot": "blood_not_taken_reason_pot_spilled",
-            "Roedd gen i glais neu roeddwn i mewn poen": "blood_not_taken_reason_had_bruising",
-            "Nid oeddwn i'n teimlo'n dda": "blood_not_taken_reason_unwell",
-            "Arall, nodwch": "blood_not_taken_reason_other",
+            "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+            "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+            "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+            "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+            "Other please specify": "blood_not_taken_could_not_reason_other",
         },
         ";",
     )
+    df = concat_fields_if_true(df, "blood_not_taken_could_not_reason", "blood_not_taken_could_not_reason_", "Yes", ";")
     df = map_options_to_bool_columns(
         df,
         "swab_not_taken_missing_parts",
         {
-            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_sample_pot",
-            "Swab stick": "swab_not_taken_missing_swab_stick",
-            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_biohazard_bag",
-            "Copy of your swab barcode": "swab_not_taken_missing_swab_barcode",
-            "Sample box": "swab_not_taken_missing_sample_box",
-            "Sample return bag with a return label on": "swab_not_taken_missing_return_bag",
-            "Other please specify": "swab_not_taken_missing_other",
-            "Pot sampl â hylif yn y gwaelod a chod bar arno": "swab_not_taken_missing_sample_pot",
-            "Ffon swab": "swab_not_taken_missing_swab_stick",
-            "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "swab_not_taken_missing_biohazard_bag",
-            "Copi o'ch cod bar ar gyfer y swab": "swab_not_taken_missing_swab_barcode",
-            "Blwch sampl": "swab_not_taken_missing_sample_box",
-            "Bag i ddychwelyd y sampl â label parod arno": "swab_not_taken_missing_return_bag",
-            "Arall, nodwch": "swab_not_taken_missing_other",
+            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_parts_sample_pot",
+            "Swab stick": "swab_not_taken_missing_parts_swab_stick",
+            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_parts_biohazard_bag",
+            "Copy of your swab barcode": "swab_not_taken_missing_parts_swab_barcode",
+            "Sample box": "swab_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "swab_not_taken_missing_parts_return_bag",
+            "Other please specify": "swab_not_taken_missing_parts_other",
         },
         ";",
     )
+    df = concat_fields_if_true(df, "swab_not_taken_missing_parts", "swab_not_taken_missing_parts_", "Yes", ";")
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",
