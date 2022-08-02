@@ -415,7 +415,7 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
     country_column
     id_column
     """
-    countries = [["England", "Wales"], ["Scotland"], ["NI"]]
+    countries = [["England", "Wales"], ["Scotland"], ["Northern Ireland"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
     for column_name, country_set in zip(column_names, countries):
         df = df.withColumn(
