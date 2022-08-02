@@ -32,38 +32,40 @@ def test_post_imputation_wrapper(spark_session):
     key_columns_imputed_df_input = spark_session.createDataFrame(
         data=[
             # fmt:off
-            ('xx',  'id1',     'White',    "type_imputation_1e",      'Male',     "type_imputation_1s",   '1999-01-01',     "type_imputation_1d"),
-            (None,  'id2',     'purple',   "type_imputation_2e",      'Male',     "type_imputation_2s",   '1999-01-01',     "type_imputation_2d"), # testing that id1 gets filled in on multiple imputation column
+            ('id1',     'White',    "type_imputation_1e", 1,      'Male',     "type_imputation_1s", 1,   '1999-01-01',     "type_imputation_1d", 1),
+            ('id2',     'purple',   "type_imputation_2e", 1,      'Male',     "type_imputation_2s", 1,   '1999-01-01',     "type_imputation_2d" ,1), # testing that id1 gets filled in on multiple imputation column
 
             # testing that step 1 in post_imputation_wrapper is included correctly for id3 for 2 non inputed cases
-            ('xx',  'id3',     'green',    None,                      'female',   "type_imputation_3s",   '1989-01-01',     None),
+            ('id3',     'green',    None, None,                      'female',   "type_imputation_3s", 1,   '1989-01-01',     None, None),
 
             # testing that step 1 in post_imputation_wrapper gets filtered out for id4 for all non inputed cases
-            (None,  'id4',     'green',    None,                      'female',   None,                   '1989-01-01',     None),
+            ('id4',     'green',    None,   None,                     'female',   None, None,                  '1989-01-01',     None, None),
             # fmt:on
         ],
         # not_wanted_col to make sure its filtered out in step 2
         schema="""
-            not_wanted_col string,
             participant_id string,
             ethnicity_white string,
             ethnicity_white_imputation_method string,
+            ethnicity_white_is_imputed integer,
             sex string,
             sex_imputation_method string,
+            sex_is_imputed integer,
             date_of_birth string,
-            date_of_birth_imputation_method string
+            date_of_birth_imputation_method string,
+            date_of_birth_is_imputed integer
         """,
     )
     df_imputed_values_expected = spark_session.createDataFrame(
         data=[
             # fmt:off
-            ('id1',	'2020-01-01',	'hid1',		'White',		'type_imputation_1e',	'Male',   	'type_imputation_1s',   '1999-01-01',        	'type_imputation_1d'),
-            ('id1',	'2020-01-02',	'hid1',		'White',		'type_imputation_1e',	'Male',   	'type_imputation_1s',   '1999-01-01',        	'type_imputation_1d'),
-            ('id1',	'2020-01-03',	'hid1',		'White',		'type_imputation_1e',	'Male',   	'type_imputation_1s',   '1999-01-01',        	'type_imputation_1d'),
-            ('id2',	'2020-01-01',	'hid1',		'purple',	'type_imputation_2e',	'Male',   	'type_imputation_2s',   '1999-01-01',        	'type_imputation_2d'),
-            ('id2',	'2020-01-02',	'hid1',		'purple',	'type_imputation_2e',	'Male',   	'type_imputation_2s',   '1999-01-01',        	'type_imputation_2d'),
-            ('id2',	'2020-01-03',	'hid1',		'purple',	'type_imputation_2e',	'Male',   	'type_imputation_2s',   '1999-01-01',        	'type_imputation_2d'),
-            ('id5',	'2020-01-03',	'hid1',		None,			None,                   None,       None,                   None,                   None),
+            ('id1',	'2020-01-01',	'hid1',		'White',		'type_imputation_1e', 1,	'Male',   	'type_imputation_1s', 1,   '1999-01-01',        	'type_imputation_1d', 1),
+            ('id1',	'2020-01-02',	'hid1',		'White',		'type_imputation_1e', 1,	'Male',   	'type_imputation_1s', 1,   '1999-01-01',        	'type_imputation_1d', 1),
+            ('id1',	'2020-01-03',	'hid1',		'White',		'type_imputation_1e', 1,	'Male',   	'type_imputation_1s', 1,   '1999-01-01',        	'type_imputation_1d', 1),
+            ('id2',	'2020-01-01',	'hid1',		'purple',	'type_imputation_2e', 1,	'Male',   	'type_imputation_2s', 1,   '1999-01-01',        	'type_imputation_2d', 1),
+            ('id2',	'2020-01-02',	'hid1',		'purple',	'type_imputation_2e', 1,	'Male',   	'type_imputation_2s', 1,   '1999-01-01',        	'type_imputation_2d', 1),
+            ('id2',	'2020-01-03',	'hid1',		'purple',	'type_imputation_2e', 1,	'Male',   	'type_imputation_2s', 1,   '1999-01-01',        	'type_imputation_2d', 1),
+            ('id5',	'2020-01-03',	'hid1',		None,			None, None,                   None,       None, None,                   None,                   None, None),
             # fmt:on
         ],
         schema="""
@@ -72,15 +74,40 @@ def test_post_imputation_wrapper(spark_session):
             ons_household_id string,
             ethnicity_white string,
             ethnicity_white_imputation_method string,
+            ethnicity_white_is_imputed integer,
+            sex string,
+            sex_imputation_method string,
+            sex_is_imputed integer,
+            date_of_birth string,
+            date_of_birth_imputation_method string,
+            date_of_birth_is_imputed integer
+        """,
+    )
+
+    expected_lookup_df = spark_session.createDataFrame(
+        data=[
+            # fmt:off
+            ('id1',     'White',    "type_imputation_1e",     'Male',     "type_imputation_1s",  '1999-01-01',     "type_imputation_1d"),
+            ('id2',     'purple',   "type_imputation_2e",     'Male',     "type_imputation_2s",  '1999-01-01',     "type_imputation_2d"), # testing that id1 gets filled in on multiple imputation column
+            ('id3',     'green',    None,                      'female',   "type_imputation_3s",   '1989-01-01',     None),
+            # fmt:on
+        ],
+        # not_wanted_col to make sure its filtered out in step 2
+        schema="""
+            participant_id string,
+            ethnicity_white string,
+            ethnicity_white_imputation_method string,
             sex string,
             sex_imputation_method string,
             date_of_birth string,
             date_of_birth_imputation_method string
         """,
     )
+
     df_imputed_values_output, imputed_lookup_output = post_imputation_wrapper(
         df=survey_df_input, key_columns_imputed_df=key_columns_imputed_df_input
     )
     assert_df_equality(
         df_imputed_values_expected, df_imputed_values_output, ignore_row_order=True, ignore_column_order=True
     )
+    assert_df_equality(expected_lookup_df, imputed_lookup_output, ignore_row_order=True, ignore_column_order=True)
