@@ -6,6 +6,8 @@ import subprocess
 def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False):
     """
     Run shell command in subprocess returning exit code or full string output.
+    _perform() will build the command that will be put into HDFS.
+    This will also be used for the functions below.
     Parameters
     ----------
     shell

@@ -1,4 +1,6 @@
 from typing import Any
+from typing import Callable
+from typing import Dict
 from typing import List
 
 import pyspark.sql.functions as F
@@ -75,6 +77,7 @@ class SparkValidate:
     def produce_error_column(self):
         """
         Creates the error column in which all the errors will be listed in an array.
+        NOTE: error_column name is specified in init()
         """
         self.dataframe = self.dataframe.withColumn(
             self.error_column, F.concat(F.col(self.error_column), F.array([col for col in self.error_column_list]))
@@ -117,7 +120,7 @@ class SparkValidate:
             return passed_df, failed_df
         return passed_df
 
-    def validate_column(self, operations: dict):
+    def validate_column(self, operations: Dict[str, Dict[str, Callable]]):
         """
         Executes validation by given number of columns and logic validation.
         Parameters
@@ -144,7 +147,7 @@ class SparkValidate:
                 else:
                     self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-    def validate(self, operations: dict):
+    def validate_all_columns_in_df(self, operations: dict):
         """
         Executes validation by given logic validation to all columns.
         Parameters
@@ -159,7 +162,7 @@ class SparkValidate:
             for p in params:
                 self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
 
-    def validate_udl(self, logic: Any, error_message: str, columns: List[str]):
+    def validate_user_defined_logic(self, logic: Any, error_message: str, columns: List[str]):
         """
         Specific user defined validation by given logic on provided list of columns.
         Parameters
@@ -182,6 +185,8 @@ class SparkValidate:
     def execute_check(self, check, error_message: object, *params, subset=None, **kwargs):
         """
         Validates check provided by a given instance of SparkValidate Class.
+        Can be used separately but this method will be used as part of validate_column,
+        validate_all_columns or validate_user_defined_logic.
         Parameters
         ----------
         check
