@@ -59,7 +59,7 @@ def pre_calibration_high_level(
         df=df,
         num_households_by_cis_column="number_of_households_by_cis_area",
         num_households_by_country_column="number_of_households_by_country",
-        swab_desing_weight_column="scaled_design_weight_adjusted_swab",
+        swab_design_weight_column="scaled_design_weight_adjusted_swab",
         antibody_design_weight_column="scaled_design_weight_adjusted_antibody",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
