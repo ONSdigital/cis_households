@@ -2210,18 +2210,8 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
     Returns a single record per participant, with response values (when available) and missing values imputed.
     """
     unique_id_column = "participant_id"
-    impute_columns = ["ethnicity_white", "sex", "date_of_birth"]
-    for column in impute_columns:
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="asc",
-        )
 
-    # Get latest record for each participant
+    # Get latest record for each participant, assumes that they have been filled forwards
     participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
     deduplicated_df = (
         df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
@@ -2237,7 +2227,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         imputation_function=impute_by_mode,
         reference_column="ethnicity_white",
         group_by_column="ons_household_id",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2246,7 +2236,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2255,7 +2245,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2267,7 +2257,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
 
     return deduplicated_df.select(
         unique_id_column,
-        *impute_columns,
+        *["ethnicity_white", "sex", "date_of_birth"],
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
         *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )

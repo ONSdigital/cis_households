@@ -23,12 +23,10 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
     return df
 
 
-def null_to_value(df: DataFrame, column_name_to_update: str, value: int = 0):
-    return df.withColumn(
-        column_name_to_update,
-        F.when((F.col(column_name_to_update).isNull()) | (F.isnan(F.col(column_name_to_update))), value).otherwise(
-            F.col(column_name_to_update)
-        ),
+def fill_nulls(column_name_to_update, fill_value: int = 0):
+    """Fill Null and NaN values with a constant integer."""
+    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
+        column_name_to_update
     )
 
 

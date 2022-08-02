@@ -2,7 +2,6 @@ from datetime import datetime
 from datetime import timedelta
 from functools import reduce
 from io import BytesIO
-from itertools import chain
 from operator import and_
 from pathlib import Path
 from typing import List
@@ -21,7 +20,6 @@ from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.expressions import any_column_not_null
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -29,6 +27,7 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
+from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -80,7 +79,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.design_weights import generate_weights
+from cishouseholds.weights.design_weights import calculate_design_weights
 from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
@@ -937,27 +936,12 @@ def impute_demographic_columns(
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
         imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
-
     df = extract_from_table(survey_responses_table)
+
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
-    imputed_columns = [
-        column.replace("_imputation_method", "")
-        for column in key_columns_imputed_df.columns
-        if column.endsswith("_imputation_method")
-    ]
-    imputed_values_df = key_columns_imputed_df.filter(
-        any_column_not_null([F.col(f"{column}_imputation_method") for column in imputed_columns])
-    )
-    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
-    new_imputed_value_lookup = imputed_values_df.select(
-        "participant_id",
-        *lookup_columns,
-    )
-    df_with_imputed_values = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"]).join(
-        key_columns_imputed_df, on="participant_id", how="left"
-    )  # noqa: E501
+    df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
     update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
@@ -1571,7 +1555,7 @@ def sample_file_ETL(
         )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(
+    design_weights = calculate_design_weights(
         household_level_populations_df,
         master_sample_df,
         old_sample_df,
