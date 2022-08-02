@@ -24,7 +24,7 @@ def test_assign_tranche_factor(spark_session):
         df=expected_df.drop("tranche_factor"),
         column_name_to_assign="tranche_factor",
         tranche_column="tranche_number_indicator",
-        elibility_column="tranche_eligible_households",
+        eligibility_column="tranche_eligible_households",
         strata_columns=["stratum"],
         household_id_column="id",
     )
