@@ -46,26 +46,27 @@ def test_impute_key_columns(spark_session):
     ]
     expected_df = spark_session.createDataFrame(
         expected_data,
-        schema="""participant_id string, ethnicity_white string, sex string,
+        schema="""participant_id string, ethnicity_white string, sex string, date_of_birth string,
                 ethnicity_white_imputation_method string, sex_imputation_method string,
                 date_of_birth_imputation_method string""",
     )
 
-    value_columns = ["participant_id", "ethnicity_white", "sex"]
-    method_columns = [
+    imputation_columns = [
         "participant_id",
+        "ethnicity_white",
+        "sex",
+        "date_of_birth",
         "ethnicity_white_imputation_method",
         "sex_imputation_method",
         "date_of_birth_imputation_method",
     ]
-    output_df = impute_key_columns(input_df, lookup_df, log_directory="./")
+    output_df = impute_key_columns(input_df, lookup_df, log_directory="./").cache()
 
-    for columns in [value_columns, method_columns]:
-        assert_df_equality(
-            output_df.select(*columns),
-            expected_df.select(*columns),
-            ignore_row_order=True,
-        )
+    assert_df_equality(
+        output_df.select(*imputation_columns),
+        expected_df.select(*imputation_columns),
+        ignore_row_order=True,
+    )
 
     for demographic_variable in ["ethnicity_white", "sex", "date_of_birth"]:
         assert output_df.where(F.col(demographic_variable).isNull()).count() == 0
