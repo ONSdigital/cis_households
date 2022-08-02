@@ -2045,7 +2045,6 @@ _welsh_yes_no_categories = {
     "Ddim yn gwybod": "Don't know",
 }
 
-# Incorporated into contact_people_value_map in high_level_transformations
 _welsh_contact_type_by_age_group_categories = {
     "Dim": "None",
     "1 i 5": "1 to 5",
@@ -2053,16 +2052,14 @@ _welsh_contact_type_by_age_group_categories = {
     "11 i 20": "11 to 20",
     "21 neu fwy": "21 or more",
 }
-# Extra fields
-# Incorporated into times_value_map in high_level_transformations
+
 _welsh_number_of_types_categories = {
     "Dim": "None",
     "7 gwaith neu fwy": "7 times or more",
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
 }
-# Extra fields
-# Incorporated into vaccine_type_map in high_level_transformations
+
 _welsh_vaccination_type_categories = {
     "Prifysgol Rhydychen / AstraZeneca": "Oxford / AstraZeneca",
     "O astudiaeth ymchwil/treial": "From a research study/trial",
@@ -2070,7 +2067,6 @@ _welsh_vaccination_type_categories = {
     "Ddim yn gwybod pa fath": "I don't know the type",
 }
 
-# Incorporated into illness_reduces_activity_or_ability in high_level_transformations
 _welsh_lot_little_not_categories = {
     "Ydy  llawer": "Yes a lot",  # TODO Double space in the IQVIA spec, check when we receive extract
     "Ydy llawer": "Yes a lot",
@@ -2081,13 +2077,11 @@ _welsh_lot_little_not_categories = {
     "Ddim o gwbl": "Not at all",
 }
 
-# Incorporated into last_covid_contact_type and last_suspected_covid_contact_type in high_level_transformations
 _welsh_live_with_categories = {
     "Rhywun rwy'n byw gydag ef": "Someone I live with",
     "Rhywun nad wyf yn byw gydag ef": "Someone I do not live with",
 }
 
-# Incorporated into face_covering_work_or_education and face_covering_other_enclosed_places in high_level_transformations  # noqa: E501
 _welsh_face_covering_categories = {
     "Nid wyf yn mynd i fy ngweithle na fy man addysg": "I am not going to my place of work or education",
     "Nid wyf yn mynd i fannau cyhoeddus caeedig eraill nac yn defnyddio trafnidiaeth gyhoeddus": "I am not going to other enclosed public spaces or using public transport",  # noqa: E501
@@ -2107,7 +2101,6 @@ _welsh_swab_sample_not_taken_categories = {
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf swab wedi cyrraedd": "I am near the end of my testing window and my swab test kit has not arrived",  # noqa: E501
 }
 
-#
 _welsh_swab_kit_missing_categories = {
     "Pot sampl â hylif yn y gwaelod a chod bar arno": "Sample pot with fluid in the bottom and barcode on",
     "Ffon swab": "Swab stick",
@@ -2118,7 +2111,6 @@ _welsh_swab_kit_missing_categories = {
     "Arall, nodwch": "Other please specify",
 }
 
-
 _welsh_blood_sample_not_taken_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
     "Gofynnais am beidio â chael pecyn prawf gwaed y mis hwn": "I asked not to receive a blood test kit this month",
@@ -2128,8 +2120,7 @@ _welsh_blood_sample_not_taken_categories = {
     "Roedd y pecyn prawf gwaed wedi'i ddifrodi ac roedd darnau ar goll": "The blood test kit arrived both damaged and with parts missing",  # noqa: E501
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf gwaed wedi cyrraedd": "I am near the end of my testing window and my blood test kit has not arrived",  # noqa: E501
 }
-#
-# Resolved in high level transformation using map_options_to_bool_columns
+
 _welsh_blood_kit_missing_categories = {
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
     "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
@@ -2144,7 +2135,6 @@ _welsh_blood_kit_missing_categories = {
     "Arall, nodwch": "Other please specify",
 }
 
-# Resolved in high level transformation using map_options_to_bool_columns
 _welsh_blood_not_taken_reason_categories = {
     "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "I couldn't get enough blood into the pot",
     "Daeth yr hylif allan o'r pot": "The pot spilled",
@@ -2153,7 +2143,6 @@ _welsh_blood_not_taken_reason_categories = {
     "Arall, nodwch": "Other please specify",
 }
 
-# Incorporated into existing work_status_vX column_value_from_multiple_column_map functions in high_level_transformations  # noqa: E501
 _welsh_work_status_digital_categories = {
     "Cyflogedig": "Employed",
     "Hunangyflogedig": "Self-employed",
@@ -2161,20 +2150,17 @@ _welsh_work_status_digital_categories = {
     "Mewn addysg": "In education",
 }
 
-# Incorporated into existing work_status_vX column_value_from_multiple_column_map functions in high_level_transformations  # noqa: E501
 _welsh_work_status_employment_categories = {
     "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos": "Currently working. This includes if you are on sick or other leave for less than 4 weeks",  # noqa: E501
     "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos": "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
 }
 
-# Incorporated into existing work_status_vX column_value_from_multiple_column_map functions in high_level_transformations  # noqa: E501
 _welsh_work_status_unemployment_categories = {
     "Yn chwilio am waith â thâl ac yn gallu dechrau": "Looking for paid work and able to start",
     "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
     "Wedi ymddeol": "Retired",
 }
-# No a in the first two options in schema
-# Incorporated into existing work_status_vX column_value_from_multiple_column_map functions in high_level_transformations  # noqa: E501
+
 _welsh_work_status_education_categories = {
     "Plentyn o dan oedran ysgol heb fod yn mynychu meithrinfa na lleoliad cyn ysgol na gwarchodwr plant": "A child below school age and not attending a nursery or a pre-school or childminder",  # noqa: E501
     "Plentyn o dan oedran ysgol ac yn mynychu meithrinfa neu leoliad cyn ysgol neu warchodwr plant": "A child below school age and attending a nursery or a pre-school or childminder",  # noqa: E501
@@ -2184,7 +2170,6 @@ _welsh_work_status_education_categories = {
     "Mynychu prifysgol": "Attending university",
 }
 
-# Incorporated into work_sector in high_level_transformations
 _welsh_work_sector_categories = {
     "Addysgu ac addysg": "Teaching and education",
     "Gofal iechyd": "Healthcare",
@@ -2203,14 +2188,12 @@ _welsh_work_sector_categories = {
     "Sector cyflogaeth arall, nodwch": "Other employment sector please specify",
 }
 
-# Incorporated into work_location in high_level_transformation
 _welsh_work_location_categories = {
     "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Yn rhywle arall, gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Gartref ac yn rhywle arall": "Both from home and somewhere else",
 }
 
-# Incorporated with transport_to_work_or_education in high_level_transformation
 _welsh_transport_to_work_education_categories = {
     "Trên Tanddaearol neu Fetro neu Reilffordd Ysgafn neu Dram": "Underground or Metro or Light Rail or Tram",
     "Trên": "Train",
@@ -2223,7 +2206,6 @@ _welsh_transport_to_work_education_categories = {
     "Dull arall": "Other method",
 }
 
-# Incorporated into ability_to_socially_distance_at_work_or_education in high_level_transformations
 _welsh_ability_to_socially_distance_at_work_or_education_categories = {
     "Hawdd cadw 2 fetr ar wahân. Nid yw'n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",  # noqa: E501
     "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf o'r amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
@@ -2231,7 +2213,6 @@ _welsh_ability_to_socially_distance_at_work_or_education_categories = {
     "Anodd iawn bod mwy nag 1 metr i ffwrdd. Mae eich gwaith yn golygu eich bod chi mewn cysylltiad agos ag eraill yn rheolaidd": "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis",  # noqa: E501
 }
 
-# Incorporated into self_isolating_reason in high_level_transformations
 _welsh_self_isolating_reason_detailed_categories = {
     "Mae gen i symptomau COVID-19 neu rwyf wedi cael symptomau COVID-19 neu brawf positif": "I have or have had symptoms of COVID-19 or a positive test",  # noqa: E501
     "Nid wyf wedi cael symptomau ond rwy'n byw gyda rhywun sydd â symptomau neu sydd wedi cael symptomau neu brawf positif": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
@@ -2239,7 +2220,6 @@ _welsh_self_isolating_reason_detailed_categories = {
     "Er mwyn lleihau fy risg o gael COVID-19, er enghraifft cyn mynd i'r ysbyty neu rwy'n cael fy ngwarchod": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
 }
 
-# Incorporated into currently_smokes_or_vapes_description in high_level_transformations
 _welsh_currently_smokes_or_vapes_description_categories = {
     "Sigaréts": "Cigarettes",
     "Sigârs": "Cigars",
@@ -2248,7 +2228,6 @@ _welsh_currently_smokes_or_vapes_description_categories = {
     "Hookah neu bibau shisha": "Hookah or shisha pipes",
 }
 
-# Incorporated into cis_covid_vaccine_number_of_doses in high_level_transformations
 _welsh_cis_covid_vaccine_number_of_doses_categories = {
     "1 dos": "1 dose",
     "2 ddos": "2 doses",  # TODO Specified as such in IQVIA extract
@@ -2259,7 +2238,6 @@ _welsh_cis_covid_vaccine_number_of_doses_categories = {
     "6 dos neu fwy": "6 doses or more",
 }
 
-# Incorporated into other_covid_infection_test_results and other_antibody_test_results in high_level_transformations
 _welsh_other_covid_infection_test_result_categories = {
     "Un neu fwy o brofion yn bositif": "One or more tests were positive",
     "Un neu fwy o brofion yn negatif a dim un yn bositif": "One or more tests were negative and none were positive",
