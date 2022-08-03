@@ -494,11 +494,13 @@ def translate_freetext_columns(df: DataFrame, translated_values_lookup_df: DataF
 
     translated_values_lookup_df
         is a lookup in the same location as the other lookups specified in the pipeline_config file
-        contains the translated non-null free text fields with unique identifiers  (participant_id, participant_completion_window_id)
+        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
 
     needs_translation_df
-        contains the non-null free text fields requiring translation by unique identifiers (participant_id, participant_completion_window_id)
+        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
     """
+
+    unique_identifiers = ["participant_id", "digital_free_text_columns"]
 
     digital_free_text_columns = [
         "reason_for_not_consenting_1",
