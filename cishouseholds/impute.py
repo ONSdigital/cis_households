@@ -1109,6 +1109,6 @@ def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
 
     df_no_imputation_col = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"])
 
-    df_with_imputed_values = df_no_imputation_col.join(imputed_values_df, on="participant_id", how="left")
+    df_with_imputed_values = df_no_imputation_col.join(key_columns_imputed_df, on="participant_id", how="left")
 
     return df_with_imputed_values, new_imputed_value_lookup

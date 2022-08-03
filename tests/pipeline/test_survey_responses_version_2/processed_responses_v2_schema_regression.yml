@@ -1124,10 +1124,6 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
-  name: outward_postcode
-  nullable: true
-  type: string
-- metadata: {}
   name: consent_summary
   nullable: true
   type: double

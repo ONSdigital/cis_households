@@ -12,9 +12,26 @@
   blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Do you have any idea why this is not working?
   blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Haskell features a type system with type inference
     and lazy evaluation.
-  blood_not_taken_missing_parts: Large sample carrier tube with barcode on
+  blood_not_taken_missing_parts: Large sample carrier tube with barcode on. This is
+    the tube that you put the small sample test tube in to after collecting blood.
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: 'Yes'
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Erlang is known for its designs that are well suited for
     systems.
   blood_not_taken_reason: The blood test kit arrived with parts missing
@@ -171,7 +188,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: SE3Z
   participant_completion_window_end_datetime: '2022-08-18 22:27:35.000000'
   participant_completion_window_id: '0563'
   participant_completion_window_start_datetime: '2020-06-25 04:40:16.000000'
@@ -264,6 +280,13 @@
   swab_not_taken_damage_description: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   swab_not_taken_missing_parts: Sample box
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: 'Yes'
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: Erlang is known for its designs that are well suited for systems.
   swab_not_taken_reason: The swab test kit arrived with parts missing
   swab_return_date: '2022-01-01 00:00:00.000000'
@@ -423,10 +446,25 @@
   blood_not_taken_could_not_other: Initially composing light-hearted and irreverent
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Ports are used to communicate with the external
     world.
-  blood_not_taken_missing_parts: This is the tube that you put the small sample test
-    tube in to after collecting blood
+  blood_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: 'Yes'
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Erlang is known for its designs that are well suited for
     systems.
   blood_not_taken_reason: I asked not to receive a blood test kit this month
@@ -585,7 +623,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-11-24 05:39:36.000000'
   participant_completion_window_id: '1652'
   participant_completion_window_start_datetime: '2021-09-05 06:26:42.000000'
@@ -679,6 +716,13 @@
   swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Do you have any idea why this is not working?
   swab_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
+  swab_not_taken_missing_parts_biohazard_bag: 'Yes'
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: Do you have any idea why this is not working?
   swab_not_taken_reason: null
   swab_return_date: '2022-01-03 00:00:00.000000'
@@ -840,9 +884,25 @@
   blood_not_taken_could_not_other: Tuples are containers for a fixed number of Erlang
     data types.
   blood_not_taken_could_not_reason: The pot spilled
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: 'Yes'
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Tuples are containers for a fixed number of
     Erlang data types.
-  blood_not_taken_missing_parts: Plasters
+  blood_not_taken_missing_parts: Alcohol wipes
+  blood_not_taken_missing_parts_alcohol_wipes: 'Yes'
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: It is also a garbage-collected runtime system.
   blood_not_taken_reason: I decided not to take it this month
   blood_return_date: '2022-01-06 00:00:00.000000'
@@ -999,7 +1059,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-05-14 05:29:00.000000'
   participant_completion_window_id: '2206'
   participant_completion_window_start_datetime: '2022-09-25 08:49:41.000000'
@@ -1092,6 +1151,13 @@
   swab_manual_entry: 'Yes'
   swab_not_taken_damage_description: Where are my pants?
   swab_not_taken_missing_parts: Sample pot with fluid in the bottom and barcode on
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: 'Yes'
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: She spent her earliest years reading classic literature, and
     writing poetry.
   swab_not_taken_reason: The swab test kit arrived damaged
@@ -1257,9 +1323,25 @@
   blood_not_taken_could_not_other: Any element of a tuple can be accessed in constant
     time.
   blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
-  blood_not_taken_missing_parts: Cleansing wipe
+  blood_not_taken_missing_parts: Sample box
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: 'Yes'
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
   blood_not_taken_reason: I asked not to receive a blood test kit this month
@@ -1419,7 +1501,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
-  outward_postcode: NC0C
   participant_completion_window_end_datetime: '2020-08-05 14:42:33.000000'
   participant_completion_window_id: '2738'
   participant_completion_window_start_datetime: '2020-12-17 14:03:35.000000'
@@ -1509,6 +1590,13 @@
   swab_not_taken_damage_description: Erlang is known for its designs that are well
     suited for systems.
   swab_not_taken_missing_parts: null
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
@@ -1671,15 +1759,32 @@
   blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
-  blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
+  blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Haskell is a standardized, general-purpose purely
     functional programming language, with non-strict semantics and strong static typing.
-  blood_not_taken_missing_parts: null
+  blood_not_taken_missing_parts: Small sample test tube. This is the tube that is
+    used to collect the blood.
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: 'Yes'
   blood_not_taken_other: Type classes first appeared in the Haskell programming language.
   blood_not_taken_reason: The blood test kit arrived both damaged and with parts missing
   blood_return_date: '2022-01-06 00:00:00.000000'
   blood_return_future_date: '2022-01-07 00:00:00.000000'
-  blood_returned: null
+  blood_returned: 'No'
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_raw: ONS00000000
@@ -1837,7 +1942,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
   participant_completion_window_id: '3586'
   participant_completion_window_start_datetime: '2022-12-18 13:14:28.000000'
@@ -1928,6 +2032,13 @@
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: Swab stick
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: 'Yes'
   swab_not_taken_other: Haskell features a type system with type inference and lazy
     evaluation.
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
@@ -2047,8 +2158,8 @@
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
-  work_in_additional_paid_employment: 'Yes'
-  work_in_additional_paid_employment_raw: 'Yes'
+  work_in_additional_paid_employment: null
+  work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: 'Yes'
@@ -2064,11 +2175,11 @@
   work_sector: Personal services (e.g. hairdressers)
   work_sector_other: Do you come here often?
   work_sector_raw: Personal Services - for example hairdressers or tattooists
-  work_status_digital: Self-employed
-  work_status_education: A child below school age and not attending a nursery or pre-school
-    or childminder
-  work_status_employment: null
-  work_status_unemployment: Looking for paid work and able to start
+  work_status_digital: null
+  work_status_education: A child aged 4 or over at home-school
+  work_status_employment: Currently not working -  for example on sick or other leave
+    such as maternity or paternity for longer than 4 weeks
+  work_status_unemployment: null
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
@@ -2088,9 +2199,25 @@
   blood_manual_entry: 'Yes'
   blood_not_taken_could_not_other: Make me a sandwich.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: 'Yes'
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Any element of a tuple can be accessed in constant
     time.
-  blood_not_taken_missing_parts: Alcohol wipes
+  blood_not_taken_missing_parts: Cleansing wipe
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: 'Yes'
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   blood_not_taken_reason: null
@@ -2251,7 +2378,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-07-05 21:41:19.000000'
   participant_completion_window_id: '3892'
   participant_completion_window_start_datetime: '2021-05-07 21:45:20.000000'
@@ -2342,6 +2468,13 @@
   swab_not_taken_damage_description: The arguments can be primitive data types or
     compound data types.
   swab_not_taken_missing_parts: Sample box
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: 'Yes'
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: It is also a garbage-collected runtime system.
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-02 00:00:00.000000'
@@ -2502,9 +2635,25 @@
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: 'Yes'
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Haskell features a type system with type inference
     and lazy evaluation.
-  blood_not_taken_missing_parts: Lancets
+  blood_not_taken_missing_parts: Plasters
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: 'Yes'
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   blood_not_taken_reason: The blood test kit arrived with parts missing
@@ -2667,7 +2816,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: 'No'
   other_household_member_hospital_last_28_days_raw: 'No'
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-02-25 07:10:26.000000'
   participant_completion_window_id: '6249'
   participant_completion_window_start_datetime: '2021-09-04 01:41:34.000000'
@@ -2758,6 +2906,13 @@
   swab_not_taken_damage_description: Type classes first appeared in the Haskell programming
     language.
   swab_not_taken_missing_parts: null
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: In 1989 the building was heavily damaged by fire, but it has
     since been restored.
   swab_not_taken_reason: null
@@ -2917,9 +3072,26 @@
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Ports are created with the built-in function
     open_port.
-  blood_not_taken_missing_parts: Large sample carrier tube with barcode on
+  blood_not_taken_missing_parts: Large sample carrier tube with barcode on. This is
+    the tube that you put the small sample test tube in to after collecting blood.
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: 'Yes'
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Any element of a tuple can be accessed in constant time.
   blood_not_taken_reason: The blood test kit arrived damaged
   blood_return_date: '2022-01-07 00:00:00.000000'
@@ -3083,7 +3255,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: UK0X
   participant_completion_window_end_datetime: '2020-07-11 08:55:04.000000'
   participant_completion_window_id: '7045'
   participant_completion_window_start_datetime: '2021-05-27 07:14:01.000000'
@@ -3175,6 +3346,13 @@
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: 'Yes'
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: Any element of a tuple can be accessed in constant time.
   swab_not_taken_reason: I tried but could not take it
   swab_return_date: '2022-01-02 00:00:00.000000'
@@ -3333,9 +3511,25 @@
   blood_not_taken_could_not_other: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   blood_not_taken_could_not_reason: I had bruising or pain
+  blood_not_taken_could_not_reason_had_bruising: 'Yes'
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_damage_description: Atoms are used within a program to denote distinguished
     values.
-  blood_not_taken_missing_parts: Alcohol wipes
+  blood_not_taken_missing_parts: Cleansing wipe
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: null
+  blood_not_taken_missing_parts_cleansing_wipe: 'Yes'
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Type classes first appeared in the Haskell programming language.
   blood_not_taken_reason: null
   blood_return_date: '2022-01-06 00:00:00.000000'
@@ -3493,7 +3687,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-04-08 02:21:01.000000'
   participant_completion_window_id: '9557'
   participant_completion_window_start_datetime: '2022-11-12 14:57:33.000000'
@@ -3588,6 +3781,13 @@
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   swab_not_taken_missing_parts: Other please specify
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: 'Yes'
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: null
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   swab_not_taken_reason: null
@@ -3749,9 +3949,25 @@
   blood_not_taken_could_not_other: Atoms are used within a program to denote distinguished
     values.
   blood_not_taken_could_not_reason: I felt unwell
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: 'Yes'
   blood_not_taken_damage_description: Tuples are containers for a fixed number of
     Erlang data types.
-  blood_not_taken_missing_parts: Re-sealable biohazard bag with absorbent pad
+  blood_not_taken_missing_parts: Copy of your blood barcode
+  blood_not_taken_missing_parts_alcohol_wipes: null
+  blood_not_taken_missing_parts_biohazard_bag: null
+  blood_not_taken_missing_parts_blood_barcode: 'Yes'
+  blood_not_taken_missing_parts_cleansing_wipe: null
+  blood_not_taken_missing_parts_lancets: null
+  blood_not_taken_missing_parts_large_sample_carrier: null
+  blood_not_taken_missing_parts_other: null
+  blood_not_taken_missing_parts_plasters: null
+  blood_not_taken_missing_parts_sample_box: null
+  blood_not_taken_missing_parts_sample_return_bag: null
+  blood_not_taken_missing_parts_small_sample_tube: null
   blood_not_taken_other: Do you come here often?
   blood_not_taken_reason: null
   blood_return_date: '2022-01-08 00:00:00.000000'
@@ -3912,7 +4128,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
-  outward_postcode: FN0F
   participant_completion_window_end_datetime: '2022-04-22 10:53:49.000000'
   participant_completion_window_id: '9598'
   participant_completion_window_start_datetime: '2020-08-13 08:59:40.000000'
@@ -4007,6 +4222,13 @@
   swab_not_taken_damage_description: Tuples are containers for a fixed number of Erlang
     data types.
   swab_not_taken_missing_parts: Copy of your swab barcode
+  swab_not_taken_missing_parts_biohazard_bag: null
+  swab_not_taken_missing_parts_other: null
+  swab_not_taken_missing_parts_return_bag: null
+  swab_not_taken_missing_parts_sample_box: null
+  swab_not_taken_missing_parts_sample_pot: null
+  swab_not_taken_missing_parts_swab_barcode: 'Yes'
+  swab_not_taken_missing_parts_swab_stick: null
   swab_not_taken_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
