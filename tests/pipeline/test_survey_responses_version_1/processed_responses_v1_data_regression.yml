@@ -70,7 +70,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  outward_postcode: FN0F
   participant_id: DHR-942252583295
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: Moving location
@@ -275,7 +274,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  outward_postcode: null
   participant_id: DHR-421496963502
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Moving location
@@ -487,7 +485,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-049902298831
   participant_visit_status: Completed
   participant_withdrawal_reason: null
@@ -695,7 +692,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: SE3Z
   participant_id: DHR-400895851138
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Swab / blood process to distressing
@@ -904,7 +900,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
@@ -1113,7 +1108,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-757503098830
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: Moving location
@@ -1316,7 +1310,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  outward_postcode: null
   participant_id: DHR-392744995712
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
@@ -1525,7 +1518,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-802621954781
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Too many visits
@@ -1734,7 +1726,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-771419502848
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
@@ -1939,7 +1930,6 @@
   other_covid_infection_test_first_positive_date: null
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: 'No'
-  outward_postcode: null
   participant_id: DHR-720138926395
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Moving location

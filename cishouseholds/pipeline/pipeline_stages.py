@@ -16,6 +16,7 @@ from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
@@ -1040,6 +1041,8 @@ def geography_and_imputation_dependent_processing(
         how="left",
         on="lower_super_output_area_code_11",
     )
+
+    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     df = assign_multigeneration(
         df=df,
