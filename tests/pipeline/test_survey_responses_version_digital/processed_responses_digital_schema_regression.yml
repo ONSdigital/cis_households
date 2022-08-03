@@ -1316,10 +1316,6 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
-  name: outward_postcode
-  nullable: true
-  type: string
-- metadata: {}
   name: days_since_think_had_covid
   nullable: true
   type: integer
