@@ -33,7 +33,7 @@ def extract_lookup_csv(
     Parameters
     ----------
     validation_schema
-        schema to map column names to required data type
+        schema to map column names to required data type, if type not compatible value set to null
     column_name_map
         map of current column names to new pipeline names
     drop_not_found
@@ -67,8 +67,8 @@ def extract_validate_transform_input_data(
     dataset_version: str = None,
 ):
     """
-    Calls appropriate functions to extract a set of csv files into a single dataframe,
-    log the source file name, save a "raw" table that acts as an unaltered archive of the input
+    Wraps the extract input data function reading a set of csv files into a single dataframe,
+    logs the source file name, creates and saves a "raw" table that acts as an unaltered archive of the input
     table. After this any manual filtering and editing steps are applied to the table before the correct
     column timestamp formats are applied to the data and the main transformation function is finally executed.
 
