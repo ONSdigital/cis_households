@@ -8,39 +8,39 @@ def test_configure_outputs(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             ("England", 6, 2, "02-6SY"),
-            ("NI", 9, 5, "02-6SY"),
+            ("Northern Ireland", 9, 5, "02-6SY"),
             ("Scotland", 11, 7, "07SY-11SY"),
             ("Wales", 15, 10, "07SY-11SY"),
             ("Wales", 15, 6, "07SY-11SY"),
             ("Scotland", 15, 6, None),
             ("England", 17, 12, "12SY-24"),
-            ("NI", 18, 13, "12SY-24"),
+            ("Northern Ireland", 18, 13, "12SY-24"),
             ("England", 25, 12, "25-34"),
-            ("NI", 55, 79, "50-69"),
-            ("NI", 88, 1, "70+"),
+            ("Northern Ireland", 55, 79, "50-69"),
+            ("Northern Ireland", 88, 1, "70+"),
         ],
         schema="country string, age integer, school_year integer, output string",
     )
     expected_df1 = spark_session.createDataFrame(
         data=[
             ("England", 6, 2, "trumpet"),
-            ("NI", 9, 5, "trumpet"),
+            ("Northern Ireland", 9, 5, "trumpet"),
             ("Scotland", 11, 7, "07SY-11SY"),
             ("Wales", 15, 10, "07SY-11SY"),
             ("Wales", 15, 6, "07SY-11SY"),
             ("Scotland", 15, 6, None),
             ("England", 17, 12, "12SY-24"),
-            ("NI", 18, 13, "12SY-24"),
+            ("Northern Ireland", 18, 13, "12SY-24"),
             ("England", 25, 12, "25-34"),
-            ("NI", 55, 79, "50-69"),
-            ("NI", 88, 1, "gibberish"),
+            ("Northern Ireland", 55, 79, "50-69"),
+            ("Northern Ireland", 88, 1, "gibberish"),
         ],
         schema="country string, age integer, renamed integer, output string",
     )
     expected_df2 = spark_session.createDataFrame(
         data=[
             ("Wales", 2),
-            ("NI", 4),
+            ("Northern Ireland", 4),
             ("England", 3),
             ("Scotland", 2),
         ],
@@ -68,7 +68,7 @@ def test_configure_outputs(spark_session):
         group_by_columns="country",
         aggregate_function="count",
         aggregate_column_name="test",
-        value_map={"country": {"NI": 1, "England": 2, "Wales": 3, "Scotland": 4}},
+        value_map={"country": {"Northern Ireland": 1, "England": 2, "Wales": 3, "Scotland": 4}},
         complete_map=True,
     )
     # test correct grouping functionality

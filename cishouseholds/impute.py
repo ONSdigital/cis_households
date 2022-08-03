@@ -11,6 +11,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
@@ -457,11 +458,9 @@ def impute_and_flag(df: DataFrame, imputation_function: Callable, reference_colu
         method_column,
         F.when(imputed_this_run, imputation_function.__name__).otherwise(method_other).cast("string"),
     )
-    imputed_survey_columns = df.withColumn(
-        reference_column, F.coalesce(reference_column, "temporary_imputation_values")
-    )  # .select(id_column, reference_column, status_column, method_column)
+    df = df.withColumn(reference_column, F.coalesce(reference_column, "temporary_imputation_values"))
 
-    return imputed_survey_columns.drop("temporary_imputation_values")
+    return df.drop("temporary_imputation_values")
 
 
 def impute_by_mode(df: DataFrame, column_name_to_assign: str, reference_column: str, group_by_column: str) -> DataFrame:
@@ -751,37 +750,39 @@ def impute_by_k_nearest_neighbours(
     df = df.withColumn("unique_imputation_group", F.when(to_impute_condition, F.concat_ws("-", *donor_group_columns)))
     imputing_df = df.filter(to_impute_condition)
 
-    # input_df_length = df.count()
-    # impute_count = imputing_df.count()
-    # donor_count = donor_df.count()
+    input_df_length = df.count()
+    impute_count = imputing_df.count()
+    donor_count = donor_df.count()
 
-    # assert impute_count + donor_count == input_df_length, "Donor and imputing records don't sum to the whole df length"  # noqa: E501
+    assert (
+        impute_count + donor_count == input_df_length
+    ), "Donor and imputing records don't sum to the whole df length"  # noqa: E501
 
-    # if impute_count == 0:
-    #     return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
-    # _create_log(start_time=datetime.now(), log_path=log_file_path)
-    # logging.info(f"Function parameters:\n{locals()}")
+    if impute_count == 0:
+        return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
+    _create_log(start_time=datetime.now(), log_path=log_file_path)
+    logging.info(f"Function parameters:\n{locals()}")
 
-    # logging.info(f"Input dataframe length: {input_df_length}")
-    # logging.info(f"Records to impute: {impute_count}")
-    # logging.info(f"Donor records: {donor_count}")
+    logging.info(f"Input dataframe length: {input_df_length}")
+    logging.info(f"Records to impute: {impute_count}")
+    logging.info(f"Donor records: {donor_count}")
 
-    # if donor_count < impute_count:
-    #     message = "Overall number of donor records is less than the number of records to impute."
-    #     logging.warning(message)
-    #     raise ValueError(message)
+    if donor_count < impute_count:
+        message = "Overall number of donor records is less than the number of records to impute."
+        logging.warning(message)
+        raise ValueError(message)
 
     if donor_group_column_weights is None:
         donor_group_column_weights = [1] * len(donor_group_columns)
-        # logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
+        logging.warning(f"No imputation weights specified, using default: {donor_group_column_weights}")
 
     if donor_group_column_conditions is None:
         donor_group_column_conditions = {var: [None, None, None] for var in donor_group_columns}
-        # logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
+        logging.warning(f"No bounds for impute variables specified, using default: {donor_group_column_conditions}")
 
-    # _validate_donor_group_variables(
-    #     df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
-    # )
+    _validate_donor_group_variables(
+        df, reference_column, donor_group_columns, donor_group_column_weights, donor_group_column_conditions
+    )
 
     imputing_df_unique = imputing_df.dropDuplicates(donor_group_columns).select(
         donor_group_columns + ["unique_imputation_group"]
@@ -810,31 +811,31 @@ def impute_by_k_nearest_neighbours(
         on="unique_imputation_group",
     )
 
-    # frequencies.cache().count()
+    frequencies.cache().count()
 
-    # no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
-    # no_donors_count = no_donors.count()
-    # if no_donors_count != 0:
-    #     message = f"{no_donors_count} donor pools with no donors"
-    #     logging.error(message)
-    #     logging.error(no_donors.toPandas())
-    #     raise ValueError(message)
+    no_donors = imputing_df_unique.join(frequencies, on="unique_imputation_group", how="left_anti")
+    no_donors_count = no_donors.count()
+    if no_donors_count != 0:
+        message = f"{no_donors_count} donor pools with no donors"
+        logging.error(message)
+        logging.error(no_donors.toPandas())
+        raise ValueError(message)
 
     unique_imputation_group_window = Window.partitionBy("unique_imputation_group")
     frequencies = frequencies.withColumn(
         "total_donor_pool_size", F.sum("donor_group_value_frequency").over(unique_imputation_group_window)
     )
 
-    # below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
-    # below_minimum_donor_count_count = below_minimum_donor_count.count()
-    # if below_minimum_donor_count_count > 0:
-    #     message = (
-    #         f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
-    #         "minimum donor(s)"
-    #     )
-    #     logging.error(message)
-    #     logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
-    #     raise ValueError(message)
+    below_minimum_donor_count = frequencies.filter(F.col("total_donor_pool_size") < minimum_donors)
+    below_minimum_donor_count_count = below_minimum_donor_count.count()
+    if below_minimum_donor_count_count > 0:
+        message = (
+            f"{below_minimum_donor_count_count} donor pools found with less than the required {minimum_donors} "
+            "minimum donor(s)"
+        )
+        logging.error(message)
+        logging.error(frequencies.filter(F.col("donor_group_value_frequency") < minimum_donors).toPandas())
+        raise ValueError(message)
 
     frequencies = frequencies.withColumn(
         "probability", F.col("donor_group_value_frequency") / F.col("total_donor_pool_size")
@@ -915,21 +916,21 @@ def impute_by_k_nearest_neighbours(
         "unique_imputation_group", "donor_row_id"
     )
 
-    # output_df_length = df.cache().count()
-    # logging.info(
-    #     f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
-    # )
-    # logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
-    # if output_df_length != input_df_length:
-    #     raise ValueError(
-    #         f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input." # noqa: E501
-    #     )
+    output_df_length = df.cache().count()
+    logging.info(
+        f"Summary statistics for imputed values ({column_name_to_assign}) and donor values ({reference_column}):"
+    )
+    logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
+    if output_df_length != input_df_length:
+        raise ValueError(
+            f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."  # noqa: E501
+        )
 
-    # missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
-    # if missing_count != 0:
-    #     raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
+    missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
+    if missing_count != 0:
+        raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
 
-    # logging.info("KNN imputation completed\n")
+    logging.info("KNN imputation completed\n")
     return df
 
 
@@ -1031,15 +1032,67 @@ def edit_multiple_columns_fill_forward(
     return df
 
 
-def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
+def impute_date_by_k_nearest_neighbours(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    donor_group_columns: List[str],
+    log_file_path: str,
+    minimum_donors: int = 1,
+    donor_group_column_weights: list = None,
+    donor_group_column_conditions: dict = None,
+    maximum_distance: int = 4999,
+) -> DataFrame:
     """
-    Post imputation transformations step 1, step 2, step 3
     Parameters
     ----------
     df
-    key_columns_imputed_df
+    column_name_to_assign
+    donor_group_columns
+    log_file_path
     """
-    # step 1: imputation columns from all columns that ends with _imputation_method.
+    df = df.withColumn("_month", F.month(reference_column))
+    df = df.withColumn("_year", F.year(reference_column))
+
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_month",
+        reference_column="_month",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    ).custom_checkpoint()
+
+    df = impute_by_k_nearest_neighbours(
+        df=df,
+        column_name_to_assign="_IMPUTED_year",
+        reference_column="_year",
+        donor_group_columns=donor_group_columns,
+        log_file_path=log_file_path,
+        minimum_donors=minimum_donors,
+        donor_group_column_weights=donor_group_column_weights,
+        donor_group_column_conditions=donor_group_column_conditions,
+        maximum_distance=maximum_distance,
+    ).custom_checkpoint()
+
+    df = df.drop("_month", "_year")
+
+    df = assign_random_day_in_month(
+        df=df,
+        column_name_to_assign=column_name_to_assign,
+        month_column="_IMPUTED_month",
+        year_column="_IMPUTED_year",
+    )
+    return df.drop("_IMPUTED_month", "_IMPUTED_year")
+
+
+def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
+    """
+    Prepare imputed value lookup and join imputed values onto survey responses.
+    """
     imputed_columns = [
         column.replace("_imputation_method", "")
         for column in key_columns_imputed_df.columns
@@ -1048,25 +1101,14 @@ def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
     imputed_values_df = key_columns_imputed_df.filter(
         any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
     )
-    # step 2: puts together all imputed columns one without _imputed_method, and with imputed_method.
     lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
     new_imputed_value_lookup = imputed_values_df.select(
         "participant_id",
         *lookup_columns,
     )
-    # step 3. For main df (survey), removes all imputed columns and imputed column flags and
-    # joins with the lookup value table that has all the imputed columns.
-    df_no_imputation_col = df.drop(
-        *[col for col in key_columns_imputed_df.columns if col != "participant_id"]  # gets rid of all imputed columns
-    )
-    # TODO: add validation that lookup_imputation_table has one participant_id.
 
-    df_with_imputed_values = df_no_imputation_col.join(
-        new_imputed_value_lookup, on="participant_id", how="left"
-    )  # noqa: E501
-    # IMPORTANT CHANGE to review: in join() substituted key_columns_imputed_df for new_imputed_value_lookup
-    # reason: not_wanted_col in test is passing, it should be filtered out.
-    # df_with_imputed_values = df.drop(
-    #     *[col for col in key_columns_imputed_df.columns if col != "participant_id"]
-    #     ).join(key_columns_imputed_df, on="participant_id", how="left")
+    df_no_imputation_col = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"])
+
+    df_with_imputed_values = df_no_imputation_col.join(key_columns_imputed_df, on="participant_id", how="left")
+
     return df_with_imputed_values, new_imputed_value_lookup
