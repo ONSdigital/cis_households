@@ -101,6 +101,8 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
         column containing multiple choice values
     multiple_choice_dict
         dictionary containing lookup values for translation of values within reference column
+            the robustness of the regex pattern matching depends on what is included as the lookup_val in
+            the multiple_choice_dict
     """
     for lookup_val, translation_val in multiple_choice_dict.items():
         df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
