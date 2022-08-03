@@ -70,6 +70,7 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
@@ -109,6 +110,30 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_cis_covid_vaccine_number_of_doses_categories
+from cishouseholds.pipeline.mapping import _welsh_contact_type_by_age_group_categories
+from cishouseholds.pipeline.mapping import _welsh_currently_smokes_or_vapes_description_categories
+from cishouseholds.pipeline.mapping import _welsh_face_covering_categories
+from cishouseholds.pipeline.mapping import _welsh_live_with_categories
+from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
+from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
+from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
+from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_transport_to_work_education_categories
+from cishouseholds.pipeline.mapping import _welsh_vaccination_type_categories
+from cishouseholds.pipeline.mapping import _welsh_work_location_categories
+from cishouseholds.pipeline.mapping import _welsh_work_sector_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_digital_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_education_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_employment_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_unemployment_categories
+from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
@@ -455,6 +480,188 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
+    return df
+
+
+def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    """
+    Call functions to translate welsh survey responses from the cis digital questionnaire
+    """
+    digital_yes_no_columns = [
+        "household_invited_to_digital",
+        "household_members_under_2_years_count",
+        "consent_nhs_data_share_yn",
+        "consent_contact_extra_research_yn",
+        "consent_use_of_surplus_blood_samples_yn",
+        "consent_blood_samples_if_positive_yn",
+        "participant_invited_to_digital",
+        "participant_enrolled_digital",
+        "opted_out_of_next_window",
+        "opted_out_of_blood_next_window",
+        "swab_taken",
+        "questionnaire_started_no_incentive",
+        "swab_returned",
+        "blood_taken",
+        "blood_returned",
+        "work_in_additional_paid_employment",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+        "think_have_covid_symptom_more_trouble_sleeping",
+        "think_have_covid_symptom_loss_of_appetite",
+        "think_have_covid_symptom_runny_nose_or_sneezing",
+        "think_have_covid_symptom_noisy_breathing",
+        "think_have_covid_symptom_chest_pain",
+        "think_have_covid_symptom_palpitations",
+        "think_have_covid_symptom_vertigo_or_dizziness",
+        "think_have_covid_symptom_anxiety",
+        "think_have_covid_symptom_low_mood",
+        "think_have_covid_symptom_memory_loss_or_confusion",
+        "think_have_covid_symptom_difficulty_concentrating",
+        "self_isolating",
+        "think_have_covid",
+        "illness_lasting_over_12_months",
+        "ever_smoked_regularly",
+        "currently_smokes_or_vapes",
+        "cis_covid_vaccine_received",
+        "cis_covid_vaccine_type_1",
+        "cis_covid_vaccine_type_2",
+        "cis_covid_vaccine_type_3",
+        "cis_covid_vaccine_type_4",
+        "cis_covid_vaccine_type_5",
+        "cis_covid_vaccine_type_6",
+        "cis_flu_vaccine_received",
+        "been_outside_uk",
+        "think_had_covid",
+        "think_had_covid_any_symptoms",
+        "think_had_covid_symptom_fever",
+        "think_had_covid_symptom_headache",
+        "think_had_covid_symptom_muscle_ache",
+        "think_had_covid_symptom_fatigue",
+        "think_had_covid_symptom_nausea_or_vomiting",
+        "think_had_covid_symptom_abdominal_pain",
+        "think_had_covid_symptom_diarrhoea",
+        "think_had_covid_symptom_sore_throat",
+        "think_had_covid_symptom_cough",
+        "think_had_covid_symptom_shortness_of_breath",
+        "think_had_covid_symptom_loss_of_taste",
+        "think_had_covid_symptom_loss_of_smell",
+        "think_had_covid_symptom_more_trouble_sleeping",
+        "think_had_covid_symptom_loss_of_appetite",
+        "think_had_covid_symptom_runny_nose_or_sneezing",
+        "think_had_covid_symptom_noisy_breathing",
+        "think_had_covid_symptom_chest_pain",
+        "think_had_covid_symptom_palpitations",
+        "think_had_covid_symptom_vertigo_or_dizziness",
+        "think_had_covid_symptom_anxiety",
+        "think_had_covid_symptom_low_mood",
+        "think_had_covid_symptom_memory_loss_or_confusion",
+        "think_had_covid_symptom_difficulty_concentrating",
+        "think_had_covid_contacted_nhs",
+        "think_had_covid_admitted_to_hospital",
+        "other_covid_infection_test",
+        "regularly_lateral_flow_testing",
+        "other_antibody_test",
+        "think_have_long_covid",
+        "think_have_long_covid_symptom_fever",
+        "think_have_long_covid_symptom_headache",
+        "think_have_long_covid_symptom_muscle_ache",
+        "think_have_long_covid_symptom_fatigue",
+        "think_have_long_covid_symptom_nausea_or_vomiting",
+        "think_have_long_covid_symptom_abdominal_pain",
+        "think_have_long_covid_symptom_diarrhoea",
+        "think_have_long_covid_symptom_loss_of_taste",
+        "think_have_long_covid_symptom_loss_of_smell",
+        "think_have_long_covid_symptom_sore_throat",
+        "think_have_long_covid_symptom_cough",
+        "think_have_long_covid_symptom_shortness_of_breath",
+        "think_have_long_covid_symptom_loss_of_appetite",
+        "think_have_long_covid_symptom_chest_pain",
+        "think_have_long_covid_symptom_palpitations",
+        "think_have_long_covid_symptom_vertigo_or_dizziness",
+        "think_have_long_covid_symptom_anxiety",
+        "think_have_long_covid_symptom_low_mood",
+        "think_have_long_covid_symptom_more_trouble_sleeping",
+        "think_have_long_covid_symptom_memory_loss_or_confusion",
+        "think_have_long_covid_symptom_difficulty_concentrating",
+        "think_have_long_covid_symptom_runny_nose_or_sneezing",
+        "think_have_long_covid_symptom_noisy_breathing",
+        "contact_known_positive_covid_last_28_days",
+        "hospital_last_28_days",
+        "other_household_member_hospital_last_28_days",
+        "care_home_last_28_days",
+        "other_household_member_care_home_last_28_days",
+        "work_main_job_changed",
+        "swab_sample_barcode_correct",
+        "blood_sample_barcode_correct",
+        "think_have_covid_symptoms",
+    ]
+    df = apply_value_map_multiple_columns(
+        df,
+        {k: _welsh_yes_no_categories for k in digital_yes_no_columns},
+    )
+    column_editing_map = {
+        "physical_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "times_hour_or_longer_another_home_last_7_days": _welsh_number_of_types_categories,
+        "times_hour_or_longer_another_person_your_home_last_7_days": _welsh_number_of_types_categories,
+        "times_shopping_last_7_days": _welsh_number_of_types_categories,
+        "times_socialising_last_7_days": _welsh_number_of_types_categories,
+        "cis_covid_vaccine_type": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_1": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_2": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_3": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_4": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_5": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_6": _welsh_vaccination_type_categories,
+        "illness_reduces_activity_or_ability": _welsh_lot_little_not_categories,
+        "think_have_long_covid_symptom_reduced_ability": _welsh_lot_little_not_categories,
+        "last_covid_contact_type": _welsh_live_with_categories,
+        "last_suspected_covid_contact_type": _welsh_live_with_categories,
+        "face_covering_work_or_education": _welsh_face_covering_categories,
+        "face_covering_other_enclosed_places": _welsh_face_covering_categories,
+        "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
+        "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
+        "work_status_digital": _welsh_work_status_digital_categories,
+        "work_status_employment": _welsh_work_status_employment_categories,
+        "work_status_unemployment": _welsh_work_status_unemployment_categories,
+        "work_status_education": _welsh_work_status_education_categories,
+        "work_sector": _welsh_work_sector_categories,
+        "work_location": _welsh_work_location_categories,
+        "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
+        "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
+        "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_cis_covid_vaccine_number_of_doses_categories,
+        "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
+        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+
+    df = translate_column_regex_replace(
+        df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
+    )
+    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
+    df = translate_column_regex_replace(
+        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
+    )
+    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+
     return df
 
 
@@ -882,6 +1089,50 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Pipe": "smokes_pipe",
             "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
             "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_missing_parts",
+        {
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",  # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",  # noqa: E501
+            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_parts_biohazard_bag",
+            "Copy of your blood barcode": "blood_not_taken_missing_parts_blood_barcode",
+            "Lancets": "blood_not_taken_missing_parts_lancets",
+            "Plasters": "blood_not_taken_missing_parts_plasters",
+            "Alcohol wipes": "blood_not_taken_missing_parts_alcohol_wipes",
+            "Cleansing wipe": "blood_not_taken_missing_parts_cleansing_wipe",
+            "Sample box": "blood_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "blood_not_taken_missing_parts_sample_return_bag",
+            "Other please specify": "blood_not_taken_missing_parts_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_could_not_reason",
+        {
+            "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+            "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+            "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+            "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+            "Other please specify": "blood_not_taken_could_not_reason_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "swab_not_taken_missing_parts",
+        {
+            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_parts_sample_pot",
+            "Swab stick": "swab_not_taken_missing_parts_swab_stick",
+            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_parts_biohazard_bag",
+            "Copy of your swab barcode": "swab_not_taken_missing_parts_swab_barcode",
+            "Sample box": "swab_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "swab_not_taken_missing_parts_return_bag",
+            "Other please specify": "swab_not_taken_missing_parts_other",
         },
         ";",
     )
