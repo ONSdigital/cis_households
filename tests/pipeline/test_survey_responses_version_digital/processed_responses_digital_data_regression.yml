@@ -169,7 +169,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: SE3Z
   participant_completion_window_end_datetime: '2022-08-18 22:27:35.000000'
   participant_completion_window_id: '0563'
   participant_completion_window_start_datetime: '2020-06-25 04:40:16.000000'
@@ -581,7 +580,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-11-24 05:39:36.000000'
   participant_completion_window_id: '1652'
   participant_completion_window_start_datetime: '2021-09-05 06:26:42.000000'
@@ -993,7 +991,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-05-14 05:29:00.000000'
   participant_completion_window_id: '2206'
   participant_completion_window_start_datetime: '2022-09-25 08:49:41.000000'
@@ -1411,7 +1408,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
-  outward_postcode: NC0C
   participant_completion_window_end_datetime: '2020-08-05 14:42:33.000000'
   participant_completion_window_id: '2738'
   participant_completion_window_start_datetime: '2020-12-17 14:03:35.000000'
@@ -1826,7 +1822,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
   participant_completion_window_id: '3586'
   participant_completion_window_start_datetime: '2022-12-18 13:14:28.000000'
@@ -2238,7 +2233,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: null
   participant_completion_window_end_datetime: '2021-07-05 21:41:19.000000'
   participant_completion_window_id: '3892'
   participant_completion_window_start_datetime: '2021-05-07 21:45:20.000000'
@@ -2652,7 +2646,6 @@
   other_household_member_care_home_last_28_days_raw: null
   other_household_member_hospital_last_28_days: 'No'
   other_household_member_hospital_last_28_days_raw: 'No'
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-02-25 07:10:26.000000'
   participant_completion_window_id: '6249'
   participant_completion_window_start_datetime: '2021-09-04 01:41:34.000000'
@@ -3066,7 +3059,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: Don't know
   other_household_member_hospital_last_28_days_raw: Don't know
-  outward_postcode: UK0X
   participant_completion_window_end_datetime: '2020-07-11 08:55:04.000000'
   participant_completion_window_id: '7045'
   participant_completion_window_start_datetime: '2021-05-27 07:14:01.000000'
@@ -3474,7 +3466,6 @@
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: null
-  outward_postcode: null
   participant_completion_window_end_datetime: '2020-04-08 02:21:01.000000'
   participant_completion_window_id: '9557'
   participant_completion_window_start_datetime: '2022-11-12 14:57:33.000000'
@@ -3891,7 +3882,6 @@
   other_household_member_care_home_last_28_days_raw: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days_raw: 'Yes'
-  outward_postcode: FN0F
   participant_completion_window_end_datetime: '2022-04-22 10:53:49.000000'
   participant_completion_window_id: '9598'
   participant_completion_window_start_datetime: '2020-08-13 08:59:40.000000'
