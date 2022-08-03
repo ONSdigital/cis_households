@@ -1198,6 +1198,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
