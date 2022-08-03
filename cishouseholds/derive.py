@@ -92,6 +92,21 @@ def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order
     return df
 
 
+def translate_column_regex_replace(df: DataFrame, reference_column: str, multiple_choice_dict: dict):
+    """
+    translate a multiple choice column from welsh to english for downstream transformation based on multiple_choice_dict
+    Parameters
+    df
+    reference_column
+        column containing multiple choice values
+    multiple_choice_dict
+        dictionary containing lookup values for translation of values within reference column
+    """
+    for lookup_val, translation_val in multiple_choice_dict.items():
+        df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
+    return df
+
+
 def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
     """
     map column containing multiple value options to new columns containing true/false based on if their

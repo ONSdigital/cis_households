@@ -12,6 +12,7 @@ from cishouseholds.pipeline.high_level_transformations import transform_survey_r
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_digital_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta_testKit
+from cishouseholds.pipeline.high_level_transformations import translate_welsh_survey_responses_version_digital
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import survey_response_cast_to_double
 from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
@@ -142,6 +143,7 @@ cis_digital_parameters = {
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
+        translate_welsh_survey_responses_version_digital,
         pre_generic_digital_transformations,
         transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
