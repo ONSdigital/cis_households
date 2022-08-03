@@ -92,6 +92,21 @@ def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order
     return df
 
 
+def translate_column_regex_replace(df: DataFrame, reference_column: str, multiple_choice_dict: dict):
+    """
+    translate a multiple choice column from welsh to english for downstream transformation based on multiple_choice_dict
+    Parameters
+    df
+    reference_column
+        column containing multiple choice values
+    multiple_choice_dict
+        dictionary containing lookup values for translation of values within reference column
+    """
+    for lookup_val, translation_val in multiple_choice_dict.items():
+        df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
+    return df
+
+
 def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
     """
     map column containing multiple value options to new columns containing true/false based on if their
@@ -302,7 +317,7 @@ def assign_multigeneration(
             ("England", "09", "01", "09", "01"),
             ("Wales", "09", "01", "09", "01"),
             ("Scotland", "08", "15", "03", "01"),
-            ("NI", "09", "01", "07", "02"),
+            ("Northern Ireland", "09", "01", "07", "02"),
         ],
         schema=[
             country_column,
@@ -453,7 +468,15 @@ def assign_random_day_in_month(
     df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
+        F.to_timestamp(
+            F.concat_ws(
+                "-",
+                F.col(year_column),
+                F.lpad(F.col(month_column).cast("string"), 2, "0"),
+                F.lpad(F.ceil(F.col("TEMP_DAY")).cast("string"), 2, "0"),
+            ),
+            format="yyyy-MM-dd",
+        ),
     )
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
@@ -977,7 +1000,7 @@ def assign_age_group_school_year(
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             ),
@@ -990,7 +1013,7 @@ def assign_age_group_school_year(
                 & (F.col(school_year_column) >= 12)
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
                 & (F.col(school_year_column) >= 12)
             ),
@@ -1151,7 +1174,7 @@ def assign_school_year(
         )
         # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
         #  though need to confirm if this is accurate
-        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("NI")) /
+        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("Northern Ireland")) /
         # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
         #                                     .otherwise(F.col(column_name_to_assign)))
         .withColumn(
