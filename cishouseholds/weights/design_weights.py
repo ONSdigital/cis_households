@@ -502,12 +502,12 @@ def validate_design_weights(
         column containing number of households in each cis area
     num_households_by_country_column
         column containing number of households in each country
-    rounding_value
-        number of decimal places to which to round
     swab_design_weight_column
     antibody_design_weight_column
     cis_area_column
     country_column
+    rounding_value
+        number of decimal places to which to round
     """
     cis_area_window = Window.partitionBy(cis_area_column)
     country_window = Window.partitionBy(country_column)
