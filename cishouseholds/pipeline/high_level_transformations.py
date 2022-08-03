@@ -26,6 +26,7 @@ from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
@@ -481,6 +482,46 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
     return df
+
+
+def translate_freetext_columns(df: DataFrame, translated_values_lookup_df: DataFrame) -> DataFrame:
+    """
+    1. Checks if translated_values_lookup_df already exists
+    2. If 1 is True then overwrites existing values with translated_values_lookup
+    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
+    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
+    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
+
+    translated_values_lookup_df
+        is a lookup in the same location as the other lookups specified in the pipeline_config file
+        contains the translated non-null free text fields with unique identifiers  (participant_id, participant_completion_window_id)
+
+    needs_translation_df
+        contains the non-null free text fields requiring translation by unique identifiers (participant_id, participant_completion_window_id)
+    """
+
+    digital_free_text_columns = [
+        "reason_for_not_consenting_1",
+        "reason_for_not_consenting_2",
+        "reason_for_not_consenting_3",
+        "reason_for_not_consenting_4",
+        "reason_for_not_consenting_5",
+        "reason_for_not_consenting_6",
+        "reason_for_not_consenting_7",
+        "reason_for_not_consenting_8",
+        "ethnicity_other",
+        "swab_not_taken_damage_description",
+        "swab_not_taken_other",
+        "blood_not_taken_damage_description",
+        "blood_not_taken_other",
+        "blood_not_taken_could_not_other",
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector_other",
+        "cis_covid_vaccine_type_other",
+    ]
+    # if translated_values_lookup_df is not None:
+    #    translated_df = update_column_if_ref_in_list(df, translated_values_lookup_df, unique_id_column)
 
 
 def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
@@ -1387,6 +1428,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
+    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
