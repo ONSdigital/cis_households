@@ -6,16 +6,16 @@ from pyspark.sql import types as t
 
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 
-# untested: [5]
+# tests that break & need more review: [5, ]
 
 
 @pytest.fixture
 def load_test_cases():
     test_data = pd.read_csv("tests/pipeline/test_reclassify_work_variables/test-cases.csv")
 
-    expected_data = test_data.query("record_type=='expected' and row_id==7").drop(columns=["record_type"])
+    expected_data = test_data.query("record_type=='expected' and row_id==13").drop(columns=["record_type"])
 
-    input_data = test_data.query("record_type=='input' and row_id==7").drop(
+    input_data = test_data.query("record_type=='input' and row_id==13").drop(
         columns=["record_type"] + [col for col in test_data.columns if "_hit_" in col]
     )
 
@@ -58,16 +58,16 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
             t.StructField("work_status_v1", t.StringType()),
             t.StructField("work_status_v2", t.StringType()),
             t.StructField("work_location_hit_working_from_home", t.BooleanType(), False),
-            t.StructField("work_status_v0_hit_furlough_v0", t.BooleanType()),
-            t.StructField("work_status_v1_hit_furlough_v1_a", t.BooleanType()),
-            t.StructField("work_status_v1_hit_furlough_v1_b", t.BooleanType()),
-            t.StructField("work_status_v2_hit_furlough_v2_a", t.BooleanType()),
-            t.StructField("work_status_v2_hit_furlough_v2_b", t.BooleanType()),
             t.StructField("work_status_v0_hit_self_employed", t.BooleanType(), False),
             t.StructField("work_status_v1_hit_self_employed_v1_a", t.BooleanType()),
             t.StructField("work_status_v1_hit_self_employed_v1_b", t.BooleanType()),
             t.StructField("work_status_v2_hit_self_employed_v2_a", t.BooleanType()),
             t.StructField("work_status_v2_hit_self_employed_v2_b", t.BooleanType()),
+            t.StructField("work_status_v0_hit_student_v0", t.BooleanType()),
+            t.StructField("work_status_v1_hit_status_student_v1", t.BooleanType()),
+            t.StructField("work_status_v2_hit_student_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_hit_student_v2_b", t.BooleanType()),
+            t.StructField("work_status_v2_hit_student_v2_c", t.BooleanType()),
             t.StructField("work_status_v0_hit_retired", t.BooleanType()),
             t.StructField("work_status_v1_hit_retired", t.BooleanType()),
             t.StructField("work_status_v2_hit_retired", t.BooleanType()),
@@ -76,11 +76,11 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
             t.StructField("work_status_v1_hit_not_working_v1_b", t.BooleanType()),
             t.StructField("work_status_v2_hit_not_working_v2_a", t.BooleanType()),
             t.StructField("work_status_v2_hit_not_working_v2_b", t.BooleanType()),
-            t.StructField("work_status_v0_hit_student_v0", t.BooleanType()),
-            t.StructField("work_status_v1_hit_status_student_v1", t.BooleanType()),
-            t.StructField("work_status_v2_hit_student_v2_a", t.BooleanType()),
-            t.StructField("work_status_v2_hit_student_v2_b", t.BooleanType()),
-            t.StructField("work_status_v2_hit_student_v2_c", t.BooleanType()),
+            t.StructField("work_status_v0_hit_furlough_v0", t.BooleanType()),
+            t.StructField("work_status_v1_hit_furlough_v1_a", t.BooleanType()),
+            t.StructField("work_status_v1_hit_furlough_v1_b", t.BooleanType()),
+            t.StructField("work_status_v2_hit_furlough_v2_a", t.BooleanType()),
+            t.StructField("work_status_v2_hit_furlough_v2_b", t.BooleanType()),
             t.StructField("work_location_hit_general", t.BooleanType()),
         ]
     )
