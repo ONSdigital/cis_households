@@ -368,7 +368,7 @@ def generate_input_processing_function(
             resource_path=file_path_list,
             dataset_name=dataset_name,
             id_column=id_column,
-            variable_name_map=column_name_map,
+            column_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
             transformation_functions=transformation_functions,
