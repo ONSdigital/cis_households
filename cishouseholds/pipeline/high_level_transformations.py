@@ -2649,7 +2649,7 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     return df
 
 
-def reclassify_work_variables(df: DataFrame, spark_session: SparkSession) -> DataFrame:
+def reclassify_work_variables(df: DataFrame, spark_session: SparkSession, debug_mode: bool = False) -> DataFrame:
     """
     Reclassify work-related variables based on rules & regex patterns
     """
@@ -2931,5 +2931,22 @@ def reclassify_work_variables(df: DataFrame, spark_session: SparkSession) -> Dat
             ).otherwise(F.col("work_location")),
         )
     )
+
+    if not debug_mode:
+        columns_to_drop = [col for col in _df3.columns if "_hit_" in col] + [
+            "work_location",
+            "work_status_v0",
+            "work_status_v1",
+            "work_status_v2",
+        ]
+
+        # drop debug columns and replace original versions with their cleaned versions
+        _df3 = (
+            _df3.drop(*columns_to_drop)
+            .withColumnRenamed("work_location_cleaned", "work_location")
+            .withColumnRenamed("work_status_v0_cleaned", "work_status_v0")
+            .withColumnRenamed("work_status_v1_cleaned", "work_status_v1")
+            .withColumnRenamed("work_status_v2_cleaned", "work_status_v2")
+        )
 
     return _df3
