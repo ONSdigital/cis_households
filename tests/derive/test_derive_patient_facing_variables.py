@@ -39,8 +39,4 @@ def test_derive_patient_facing_variables(spark_session):
         job_title_column_name="job_title",
         job_role_column_name="job_role",
     )
-    import pdb
-
-    pdb.set_trace()
-
     assert_df_equality(df_expected, df_output, ignore_column_order=True, ignore_row_order=True)
