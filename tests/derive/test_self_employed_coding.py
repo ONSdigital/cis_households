@@ -3,7 +3,7 @@ import yaml
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
-from cishouseholds.regex_patterns import self_employed_regex
+from cishouseholds.pipeline.regex_patterns import self_employed_regex
 
 
 # A list of positive test cases which need to be interpreted as "Self Employed" &

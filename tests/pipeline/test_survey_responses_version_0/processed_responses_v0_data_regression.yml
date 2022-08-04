@@ -48,7 +48,6 @@
   ons_household_id: '212633229661'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-422525832950
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: No longer wants to take part
@@ -205,7 +204,6 @@
   ons_household_id: '558190156218'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-229883187696
   participant_visit_status: Patient did not attend
   participant_withdrawal_reason: Moving location
@@ -357,7 +355,6 @@
   ons_household_id: '167403959807'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
-  outward_postcode: TE4H
   participant_id: DHR-750309883089
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Too many visits
@@ -516,7 +513,6 @@
   ons_household_id: '846198988073'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'No'
-  outward_postcode: null
   participant_id: DHR-263959191921
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
@@ -674,7 +670,6 @@
   ons_household_id: '602276804025'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-593586857022
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
@@ -829,7 +824,6 @@
   ons_household_id: '769043821442'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-449957129557
   participant_visit_status: Completed
   participant_withdrawal_reason: null
@@ -985,7 +979,6 @@
   ons_household_id: '105638762102'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
-  outward_postcode: NC0C
   participant_id: DHR-848695986758
   participant_visit_status: Completed
   participant_withdrawal_reason: Moving location
@@ -1143,7 +1136,6 @@
   ons_household_id: '826911152672'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-851138788221
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
@@ -1298,7 +1290,6 @@
   ons_household_id: '407714528425'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: 'Yes'
-  outward_postcode: null
   participant_id: DHR-621954781044
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
@@ -1454,7 +1445,6 @@
   ons_household_id: '736535270957'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
-  outward_postcode: null
   participant_id: DHR-350245644249
   participant_visit_status: Completed
   participant_withdrawal_reason: null

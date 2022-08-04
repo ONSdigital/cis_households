@@ -1,6 +1,7 @@
 import logging
 import sys
 from datetime import datetime
+from itertools import chain
 from typing import Callable
 from typing import List
 from typing import Union
@@ -11,6 +12,7 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_random_day_in_month
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 
@@ -567,6 +569,8 @@ def merge_previous_imputed_values(
     Retrieve and coalesce imputed values and associated flags from a lookup table.
     Includes the imputed value, imputation status and imputation method.
 
+    Keeps raw value if available, otherwise takes lookup value if it has been previously imputed.
+
     Parameters
     ----------
     df
@@ -587,7 +591,11 @@ def merge_previous_imputed_values(
         if column.endswith("_imputation_method")
     ]
     for value_column, status_column, method_column in columns_for_editing:
-        fill_condition = F.col(value_column[1:]).isNull() & F.col(value_column).isNotNull()
+        fill_condition = (
+            F.col(value_column[1:]).isNull()
+            & F.col(value_column).isNotNull()
+            & F.col(f"{value_column}_imputation_method").isNotNull()
+        )
         df = df.withColumn(status_column[1:], F.when(fill_condition, F.lit(1)).otherwise(F.lit(0)))
         df = df.withColumn(
             method_column[1:], F.when(fill_condition, F.col(method_column)).otherwise(F.lit(None)).cast("string")
@@ -746,7 +754,9 @@ def impute_by_k_nearest_neighbours(
     impute_count = imputing_df.count()
     donor_count = donor_df.count()
 
-    assert impute_count + donor_count == input_df_length, "Donor and imputing records don't sum to the whole df length"
+    assert (
+        impute_count + donor_count == input_df_length
+    ), "Donor and imputing records don't sum to the whole df length"  # noqa: E501
 
     if impute_count == 0:
         return df.withColumn(column_name_to_assign, F.lit(None).cast(df.schema[reference_column].dataType))
@@ -913,7 +923,7 @@ def impute_by_k_nearest_neighbours(
     logging.info(df.select(column_name_to_assign, reference_column).summary().toPandas())
     if output_df_length != input_df_length:
         raise ValueError(
-            f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."
+            f"{output_df_length} records are found in the output, which is not equal to {input_df_length} in the input."  # noqa: E501
         )
 
     missing_count = df.filter(F.col(reference_column).isNull() & F.col(column_name_to_assign).isNull()).count()
@@ -1054,7 +1064,8 @@ def impute_date_by_k_nearest_neighbours(
         donor_group_column_weights=donor_group_column_weights,
         donor_group_column_conditions=donor_group_column_conditions,
         maximum_distance=maximum_distance,
-    )
+    ).custom_checkpoint()
+
     df = impute_by_k_nearest_neighbours(
         df=df,
         column_name_to_assign="_IMPUTED_year",
@@ -1065,7 +1076,8 @@ def impute_date_by_k_nearest_neighbours(
         donor_group_column_weights=donor_group_column_weights,
         donor_group_column_conditions=donor_group_column_conditions,
         maximum_distance=maximum_distance,
-    )
+    ).custom_checkpoint()
+
     df = df.drop("_month", "_year")
 
     df = assign_random_day_in_month(
@@ -1075,3 +1087,28 @@ def impute_date_by_k_nearest_neighbours(
         year_column="_IMPUTED_year",
     )
     return df.drop("_IMPUTED_month", "_IMPUTED_year")
+
+
+def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
+    """
+    Prepare imputed value lookup and join imputed values onto survey responses.
+    """
+    imputed_columns = [
+        column.replace("_imputation_method", "")
+        for column in key_columns_imputed_df.columns
+        if column.endswith("_imputation_method")
+    ]
+    imputed_values_df = key_columns_imputed_df.filter(
+        any_column_not_null([f"{column}_imputation_method" for column in imputed_columns])
+    )
+    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in imputed_columns])
+    new_imputed_value_lookup = imputed_values_df.select(
+        "participant_id",
+        *lookup_columns,
+    )
+
+    df_no_imputation_col = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"])
+
+    df_with_imputed_values = df_no_imputation_col.join(key_columns_imputed_df, on="participant_id", how="left")
+
+    return df_with_imputed_values, new_imputed_value_lookup

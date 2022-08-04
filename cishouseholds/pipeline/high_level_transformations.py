@@ -26,7 +26,6 @@ from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
@@ -47,8 +46,31 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
+from cishouseholds.derive import flag_records_for_college_v2_rules
+from cishouseholds.derive import flag_records_for_furlough_rules_v0
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v1_b
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_a
+from cishouseholds.derive import flag_records_for_furlough_rules_v2_b
+from cishouseholds.derive import flag_records_for_not_working_rules_v0
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v1_b
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_a
+from cishouseholds.derive import flag_records_for_not_working_rules_v2_b
+from cishouseholds.derive import flag_records_for_retired_rules
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v1_b
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_a
+from cishouseholds.derive import flag_records_for_self_employed_rules_v2_b
+from cishouseholds.derive import flag_records_for_student_v0_rules
+from cishouseholds.derive import flag_records_for_student_v1_rules
+from cishouseholds.derive import flag_records_for_student_v2_rules
+from cishouseholds.derive import flag_records_for_uni_v2_rules
+from cishouseholds.derive import flag_records_for_work_from_home_rules
+from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
@@ -70,6 +92,7 @@ from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -87,15 +110,39 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
-from cishouseholds.mapping import column_name_maps
+from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_cis_covid_vaccine_number_of_doses_categories
+from cishouseholds.pipeline.mapping import _welsh_contact_type_by_age_group_categories
+from cishouseholds.pipeline.mapping import _welsh_currently_smokes_or_vapes_description_categories
+from cishouseholds.pipeline.mapping import _welsh_face_covering_categories
+from cishouseholds.pipeline.mapping import _welsh_live_with_categories
+from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
+from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
+from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
+from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_transport_to_work_education_categories
+from cishouseholds.pipeline.mapping import _welsh_vaccination_type_categories
+from cishouseholds.pipeline.mapping import _welsh_work_location_categories
+from cishouseholds.pipeline.mapping import _welsh_work_sector_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_digital_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_education_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_employment_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_unemployment_categories
+from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.regex_patterns import at_school_pattern
+from cishouseholds.pipeline.regex_patterns import at_university_pattern
+from cishouseholds.pipeline.regex_patterns import not_working_pattern
+from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
+from cishouseholds.pipeline.regex_patterns import self_employed_regex
+from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.regex_patterns import at_school_pattern
-from cishouseholds.regex_patterns import at_university_pattern
-from cishouseholds.regex_patterns import not_working_pattern
-from cishouseholds.regex_patterns import retired_regex_pattern
-from cishouseholds.regex_patterns import self_employed_regex
-from cishouseholds.regex_patterns import work_from_home_pattern
 from cishouseholds.validate_class import SparkValidate
 
 
@@ -436,6 +483,188 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    """
+    Call functions to translate welsh survey responses from the cis digital questionnaire
+    """
+    digital_yes_no_columns = [
+        "household_invited_to_digital",
+        "household_members_under_2_years_count",
+        "consent_nhs_data_share_yn",
+        "consent_contact_extra_research_yn",
+        "consent_use_of_surplus_blood_samples_yn",
+        "consent_blood_samples_if_positive_yn",
+        "participant_invited_to_digital",
+        "participant_enrolled_digital",
+        "opted_out_of_next_window",
+        "opted_out_of_blood_next_window",
+        "swab_taken",
+        "questionnaire_started_no_incentive",
+        "swab_returned",
+        "blood_taken",
+        "blood_returned",
+        "work_in_additional_paid_employment",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+        "think_have_covid_symptom_more_trouble_sleeping",
+        "think_have_covid_symptom_loss_of_appetite",
+        "think_have_covid_symptom_runny_nose_or_sneezing",
+        "think_have_covid_symptom_noisy_breathing",
+        "think_have_covid_symptom_chest_pain",
+        "think_have_covid_symptom_palpitations",
+        "think_have_covid_symptom_vertigo_or_dizziness",
+        "think_have_covid_symptom_anxiety",
+        "think_have_covid_symptom_low_mood",
+        "think_have_covid_symptom_memory_loss_or_confusion",
+        "think_have_covid_symptom_difficulty_concentrating",
+        "self_isolating",
+        "think_have_covid",
+        "illness_lasting_over_12_months",
+        "ever_smoked_regularly",
+        "currently_smokes_or_vapes",
+        "cis_covid_vaccine_received",
+        "cis_covid_vaccine_type_1",
+        "cis_covid_vaccine_type_2",
+        "cis_covid_vaccine_type_3",
+        "cis_covid_vaccine_type_4",
+        "cis_covid_vaccine_type_5",
+        "cis_covid_vaccine_type_6",
+        "cis_flu_vaccine_received",
+        "been_outside_uk",
+        "think_had_covid",
+        "think_had_covid_any_symptoms",
+        "think_had_covid_symptom_fever",
+        "think_had_covid_symptom_headache",
+        "think_had_covid_symptom_muscle_ache",
+        "think_had_covid_symptom_fatigue",
+        "think_had_covid_symptom_nausea_or_vomiting",
+        "think_had_covid_symptom_abdominal_pain",
+        "think_had_covid_symptom_diarrhoea",
+        "think_had_covid_symptom_sore_throat",
+        "think_had_covid_symptom_cough",
+        "think_had_covid_symptom_shortness_of_breath",
+        "think_had_covid_symptom_loss_of_taste",
+        "think_had_covid_symptom_loss_of_smell",
+        "think_had_covid_symptom_more_trouble_sleeping",
+        "think_had_covid_symptom_loss_of_appetite",
+        "think_had_covid_symptom_runny_nose_or_sneezing",
+        "think_had_covid_symptom_noisy_breathing",
+        "think_had_covid_symptom_chest_pain",
+        "think_had_covid_symptom_palpitations",
+        "think_had_covid_symptom_vertigo_or_dizziness",
+        "think_had_covid_symptom_anxiety",
+        "think_had_covid_symptom_low_mood",
+        "think_had_covid_symptom_memory_loss_or_confusion",
+        "think_had_covid_symptom_difficulty_concentrating",
+        "think_had_covid_contacted_nhs",
+        "think_had_covid_admitted_to_hospital",
+        "other_covid_infection_test",
+        "regularly_lateral_flow_testing",
+        "other_antibody_test",
+        "think_have_long_covid",
+        "think_have_long_covid_symptom_fever",
+        "think_have_long_covid_symptom_headache",
+        "think_have_long_covid_symptom_muscle_ache",
+        "think_have_long_covid_symptom_fatigue",
+        "think_have_long_covid_symptom_nausea_or_vomiting",
+        "think_have_long_covid_symptom_abdominal_pain",
+        "think_have_long_covid_symptom_diarrhoea",
+        "think_have_long_covid_symptom_loss_of_taste",
+        "think_have_long_covid_symptom_loss_of_smell",
+        "think_have_long_covid_symptom_sore_throat",
+        "think_have_long_covid_symptom_cough",
+        "think_have_long_covid_symptom_shortness_of_breath",
+        "think_have_long_covid_symptom_loss_of_appetite",
+        "think_have_long_covid_symptom_chest_pain",
+        "think_have_long_covid_symptom_palpitations",
+        "think_have_long_covid_symptom_vertigo_or_dizziness",
+        "think_have_long_covid_symptom_anxiety",
+        "think_have_long_covid_symptom_low_mood",
+        "think_have_long_covid_symptom_more_trouble_sleeping",
+        "think_have_long_covid_symptom_memory_loss_or_confusion",
+        "think_have_long_covid_symptom_difficulty_concentrating",
+        "think_have_long_covid_symptom_runny_nose_or_sneezing",
+        "think_have_long_covid_symptom_noisy_breathing",
+        "contact_known_positive_covid_last_28_days",
+        "hospital_last_28_days",
+        "other_household_member_hospital_last_28_days",
+        "care_home_last_28_days",
+        "other_household_member_care_home_last_28_days",
+        "work_main_job_changed",
+        "swab_sample_barcode_correct",
+        "blood_sample_barcode_correct",
+        "think_have_covid_symptoms",
+    ]
+    df = apply_value_map_multiple_columns(
+        df,
+        {k: _welsh_yes_no_categories for k in digital_yes_no_columns},
+    )
+    column_editing_map = {
+        "physical_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "times_hour_or_longer_another_home_last_7_days": _welsh_number_of_types_categories,
+        "times_hour_or_longer_another_person_your_home_last_7_days": _welsh_number_of_types_categories,
+        "times_shopping_last_7_days": _welsh_number_of_types_categories,
+        "times_socialising_last_7_days": _welsh_number_of_types_categories,
+        "cis_covid_vaccine_type": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_1": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_2": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_3": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_4": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_5": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_6": _welsh_vaccination_type_categories,
+        "illness_reduces_activity_or_ability": _welsh_lot_little_not_categories,
+        "think_have_long_covid_symptom_reduced_ability": _welsh_lot_little_not_categories,
+        "last_covid_contact_type": _welsh_live_with_categories,
+        "last_suspected_covid_contact_type": _welsh_live_with_categories,
+        "face_covering_work_or_education": _welsh_face_covering_categories,
+        "face_covering_other_enclosed_places": _welsh_face_covering_categories,
+        "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
+        "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
+        "work_status_digital": _welsh_work_status_digital_categories,
+        "work_status_employment": _welsh_work_status_employment_categories,
+        "work_status_unemployment": _welsh_work_status_unemployment_categories,
+        "work_status_education": _welsh_work_status_education_categories,
+        "work_sector": _welsh_work_sector_categories,
+        "work_location": _welsh_work_location_categories,
+        "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
+        "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
+        "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_cis_covid_vaccine_number_of_doses_categories,
+        "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
+        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+
+    df = translate_column_regex_replace(
+        df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
+    )
+    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
+    df = translate_column_regex_replace(
+        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
+    )
+    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+
+    return df
+
+
 def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process digital specific variable transformations.
@@ -731,7 +960,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
@@ -837,7 +1066,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     [
                         "A child below school age and not attending a nursery or pre-school or childminder",
-                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or a pre-school or childminder",
                         "A child aged 4 or over at school",
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
@@ -860,6 +1089,50 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Pipe": "smokes_pipe",
             "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
             "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_missing_parts",
+        {
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",  # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",  # noqa: E501
+            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_parts_biohazard_bag",
+            "Copy of your blood barcode": "blood_not_taken_missing_parts_blood_barcode",
+            "Lancets": "blood_not_taken_missing_parts_lancets",
+            "Plasters": "blood_not_taken_missing_parts_plasters",
+            "Alcohol wipes": "blood_not_taken_missing_parts_alcohol_wipes",
+            "Cleansing wipe": "blood_not_taken_missing_parts_cleansing_wipe",
+            "Sample box": "blood_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "blood_not_taken_missing_parts_sample_return_bag",
+            "Other please specify": "blood_not_taken_missing_parts_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_could_not_reason",
+        {
+            "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+            "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+            "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+            "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+            "Other please specify": "blood_not_taken_could_not_reason_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "swab_not_taken_missing_parts",
+        {
+            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_parts_sample_pot",
+            "Swab stick": "swab_not_taken_missing_parts_swab_stick",
+            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_parts_biohazard_bag",
+            "Copy of your swab barcode": "swab_not_taken_missing_parts_swab_barcode",
+            "Sample box": "swab_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "swab_not_taken_missing_parts_return_bag",
+            "Other please specify": "swab_not_taken_missing_parts_other",
         },
         ";",
     )
@@ -1114,7 +1387,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
@@ -1765,7 +2037,12 @@ def union_dependent_derivations(df):
     Transformations that must be carried out after the union of the different survey response schemas.
     """
     df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
-    df = assign_visit_order(df, "visit_order", "visit_datetime", "participant_id")
+    df = assign_visit_order(
+        df=df,
+        column_name_to_assign="visit_order",
+        id="participant_id",
+        order_list=["visit_datetime", "visit_id"],
+    )
     df = symptom_column_transformations(df)
     df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
@@ -2174,31 +2451,22 @@ def fill_forwards_travel_column(df):
     return df
 
 
-def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, columns_to_fill: list, log_directory: str):
+def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str):
     """
     Impute missing values for key variables that are required for weight calibration.
     Most imputations require geographic data being joined onto the response records.
-    Returns a single record per participant.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
     """
     unique_id_column = "participant_id"
-    for column in columns_to_fill:
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="asc",
-        )
-        df = impute_and_flag(
-            df,
-            imputation_function=impute_by_ordered_fill_forward,
-            reference_column=column,
-            column_identity=unique_id_column,
-            order_by_column="visit_datetime",
-            order_type="desc",
-        )
-    deduplicated_df = df.dropDuplicates([unique_id_column] + columns_to_fill)
+
+    # Get latest record for each participant, assumes that they have been filled forwards
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
 
     if imputed_value_lookup_df is not None:
         deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
@@ -2208,7 +2476,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         imputation_function=impute_by_mode,
         reference_column="ethnicity_white",
         group_by_column="ons_household_id",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2217,7 +2485,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         donor_group_columns=["cis_area_code_20"],
         donor_group_column_weights=[5000],
         log_file_path=log_directory,
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2226,7 +2494,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
         group_by_columns=["ethnicity_white", "region_code"],
         first_imputation_value="Female",
         second_imputation_value="Male",
-    )
+    ).custom_checkpoint()
 
     deduplicated_df = impute_and_flag(
         deduplicated_df,
@@ -2238,7 +2506,7 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, column
 
     return deduplicated_df.select(
         unique_id_column,
-        *columns_to_fill,
+        *["ethnicity_white", "sex", "date_of_birth"],
         *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
         *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
     )
@@ -2382,5 +2650,61 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="is_self_employed",
         debug_mode=False,
     )
+
+    return df
+
+
+def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
+    """
+    Adds various flags to indicate which rules were triggered for a given record.
+    """
+    # Work from Home rules
+    df = df.withColumn("wfh_rules", flag_records_for_work_from_home_rules())
+
+    # Furlough rules
+    df = df.withColumn("furlough_rules_v0", flag_records_for_furlough_rules_v0())
+
+    df = df.withColumn("furlough_rules_v1_a", flag_records_for_furlough_rules_v1_a())
+
+    df = df.withColumn("furlough_rules_v1_b", flag_records_for_furlough_rules_v1_b())
+
+    df = df.withColumn("furlough_rules_v2_a", flag_records_for_furlough_rules_v2_a())
+
+    df = df.withColumn("furlough_rules_v2_b", flag_records_for_furlough_rules_v2_b())
+
+    # Self-employed rules
+    df = df.withColumn("self_employed_rules_v1_a", flag_records_for_self_employed_rules_v1_a())
+
+    df = df.withColumn("self_employed_rules_v1_b", flag_records_for_self_employed_rules_v1_b())
+
+    df = df.withColumn("self_employed_rules_v2_a", flag_records_for_self_employed_rules_v2_a())
+
+    df = df.withColumn("self_employed_rules_v2_b", flag_records_for_self_employed_rules_v2_b())
+
+    # Retired rules
+    df = df.withColumn("retired_rules_generic", flag_records_for_retired_rules())
+
+    # Not-working rules
+    df = df.withColumn("not_working_rules_v0", flag_records_for_not_working_rules_v0())
+
+    df = df.withColumn("not_working_rules_v1_a", flag_records_for_not_working_rules_v1_a())
+
+    df = df.withColumn("not_working_rules_v1_b", flag_records_for_not_working_rules_v1_b())
+
+    df = df.withColumn("not_working_rules_v2_a", flag_records_for_not_working_rules_v2_a())
+
+    df = df.withColumn("not_working_rules_v2_b", flag_records_for_not_working_rules_v2_b())
+
+    # Student rules
+    df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
+
+    df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
+
+    df = df.withColumn("school_rules_v2", flag_records_for_student_v2_rules())
+
+    # University rules
+    df = df.withColumn("uni_rules_v2", flag_records_for_uni_v2_rules())
+
+    df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
 
     return df

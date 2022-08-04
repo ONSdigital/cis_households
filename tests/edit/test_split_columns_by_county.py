@@ -7,10 +7,10 @@ def test_split_school_year_by_country(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             (1, "England", 2),
-            (2, "NI", 2),
+            (2, "Northern Ireland", 2),
             (3, "Scotland", 2),
             (4, "Wales", 1),
-            (5, "NI", 1),
+            (5, "Northern Ireland", 1),
             (6, "Scotland", 2),
         ],
         schema="id integer, country string, school_year integer",
@@ -18,10 +18,10 @@ def test_split_school_year_by_country(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, "England", 2, 2, None, None),
-            (2, "NI", 2, None, None, 2),
+            (2, "Northern Ireland", 2, None, None, 2),
             (3, "Scotland", 2, None, 2, None),
             (4, "Wales", 1, 1, None, None),
-            (5, "NI", 1, None, None, 1),
+            (5, "Northern Ireland", 1, None, None, 1),
             (6, "Scotland", 2, None, 2, None),
         ],
         schema="id integer, country string, school_year integer, school_year_england_wales integer, \

@@ -110,6 +110,9 @@ def calculate_additional_population_columns(
     age_group_swab_column: str,
     age_group_antibody_column: str,
 ):
+    """
+    Apply preset logic to derive p_x columns depending on values of input columns
+    """
     df = df.withColumn(
         "p1_for_swab_longcovid",
         F.when(
@@ -152,6 +155,10 @@ def calculate_additional_population_columns(
 def calculate_population_totals(
     df: DataFrame, group_by_column: str, population_column: str, white_proportion_column: str
 ):
+    """
+    Derive the sum to total of selected cells of the population column depending on certain conditions
+    to produce population_x columns.
+    """
     window = Window.partitionBy(group_by_column)
     df = df.withColumn(
         "population_country_swab",
@@ -177,6 +184,10 @@ def calibarate_df(
     age_column: str,
     additional_columns: List[str] = [],
 ):
+    """
+    Execute reformat_calibration_df_simple function depending upon whether any rows in the dataframe
+    meet a certain criteria.
+    """
     df = df.filter((F.col(country_column) == country) & (F.col(age_column) >= min_age))
     if "p1_for_swab_longcovid" in groupby_columns:
         df = df.filter((F.col("p1_for_swab_longcovid").isNotNull()))
