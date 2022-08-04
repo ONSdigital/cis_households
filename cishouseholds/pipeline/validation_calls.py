@@ -92,7 +92,7 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_all_columns_in_df(dataset_calls)
 
-    SparkVal.validate_udl(
+    SparkVal.validate_user_defined_logic(
         logic=(
             ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
             | (F.col("cis_covid_vaccine_type") != "Other / specify")
@@ -101,7 +101,7 @@ def validation_calls(SparkVal):
         columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
 
-    SparkVal.validate_udl(
+    SparkVal.validate_user_defined_logic(
         logic=(
             (
                 (F.col("work_social_care") == "Yes")
@@ -120,7 +120,7 @@ def validation_calls(SparkVal):
         ],
     )
 
-    SparkVal.validate_udl(
+    SparkVal.validate_user_defined_logic(
         logic=(
             (
                 (
@@ -139,7 +139,7 @@ def validation_calls(SparkVal):
         ],
     )
 
-    SparkVal.validate_udl(  # Sample_taken_out_of_range
+    SparkVal.validate_user_defined_logic(  # Sample_taken_out_of_range
         logic=(
             ((F.col("visit_datetime") <= F.lit(datetime.now())) & (F.col("visit_datetime") >= F.lit("2020/04/26")))
             | (
@@ -152,7 +152,7 @@ def validation_calls(SparkVal):
         columns=["visit_datetime", "samples_taken_datetime"],
     )
 
-    SparkVal.validate_udl(  # No_blood_match_mismatching
+    SparkVal.validate_user_defined_logic(  # No_blood_match_mismatching
         logic=(
             ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) <= 2))
             | ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) >= 11))
@@ -161,7 +161,7 @@ def validation_calls(SparkVal):
         columns=["blood_sample_received_date", "visit_datetime"],
     )
 
-    SparkVal.validate_udl(
+    SparkVal.validate_user_defined_logic(
         logic=((F.col("pcr_result_recorded_datetime") >= F.col("visit_datetime")) & (F.col("diff_vs_visit_hr") <= 240)),
         error_message="the swab result should be recieved within 10 days after the visit",
         columns=["pcr_result_recorded_datetime", "visit_datetime", "diff_vs_visit_hr"],
