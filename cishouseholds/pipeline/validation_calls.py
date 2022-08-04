@@ -90,7 +90,7 @@ def validation_calls(SparkVal):
         ],
     }
 
-    SparkVal.validate(dataset_calls)
+    SparkVal.validate_all_columns_in_df(dataset_calls)
 
     SparkVal.validate_udl(
         logic=(
