@@ -15,7 +15,7 @@ from pyspark.sql import Window
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
@@ -1045,7 +1045,7 @@ def geography_and_imputation_dependent_processing(
 
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
-    df = assign_multigeneration(
+    df = assign_multigenerational(
         df=df,
         column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",

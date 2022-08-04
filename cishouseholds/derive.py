@@ -289,7 +289,7 @@ def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_co
     return df
 
 
-def assign_multigeneration(
+def assign_multigenerational(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column,
@@ -301,17 +301,7 @@ def assign_multigeneration(
     school_year_column_name_to_assign: str = "school_year",
 ):
     """
-    Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
-    Note: school year lookup dataframe must be amended to account for changes in school year start dates
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    participant_id_column
-    household_id_column
-    visit_date_column
-    date_of_birth_column
-    country_column
+    Assign a column to specify if a given household is multigenerational at the time one of its participants visited.
     """
     spark_session = get_or_create_spark_session()
     school_year_lookup_df = spark_session.createDataFrame(
@@ -364,7 +354,7 @@ def assign_multigeneration(
 
     transformed_df = transformed_df.withColumn(
         column_name_to_assign,
-        F.when(all([generation_1_present, generation_2_present, generation_3_present]), 1).otherwise(0),
+        F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
     df = df.join(
         transformed_df.select(
