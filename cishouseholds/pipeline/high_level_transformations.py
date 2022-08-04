@@ -2654,6 +2654,18 @@ def reclassify_work_variables(
 ) -> DataFrame:
     """
     Reclassify work-related variables based on rules & regex patterns
+
+    Parameters
+    ----------
+    df
+        The dataframe containing the work-status related variables we want to edit
+    spark_session
+        A active spark session - this is used to break lineage since the code generated
+        in this function is very verbose, you may encounter memory error if we don't break
+        lineage.
+    drop_original_variables
+        Set this to False if you want to retain the original variables so you can compare
+        before & after edits.
     """
     # Work from Home
     update_work_location = flag_records_for_work_from_home_rules() & regex_match_result(
