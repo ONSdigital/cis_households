@@ -2053,7 +2053,7 @@ def union_dependent_derivations(df):
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
         )
     ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
             "Asian or Asian British-Indian",
             "Asian or Asian British-Pakistani",
