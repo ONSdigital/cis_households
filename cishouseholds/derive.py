@@ -1741,7 +1741,7 @@ def aggregated_output_groupby(
     column_name_to_assign_list
     """
     function_object_list = [
-        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+        getattr(F, function)(column_name) for column_name, function in zip(column_name_list, apply_function_list)
     ]
     return df.groupBy(column_group).agg(
         *[
@@ -1772,7 +1772,7 @@ def aggregated_output_window(
     """
     window = Window.partitionBy(*column_window_list).orderBy(*order_column_list)
     function_object_list = [
-        getattr(F, function)(col_name) for col_name, function in zip(column_name_list, apply_function_list)
+        getattr(F, function)(column_name) for column_name, function in zip(column_name_list, apply_function_list)
     ]
     for apply_function, column_name_to_assign in zip(function_object_list, column_name_to_assign_list):
         df = df.withColumn(column_name_to_assign, apply_function.over(window))
@@ -1911,11 +1911,11 @@ def assign_regex_match_result(
 
 def derive_patient_facing_variables(
     df: DataFrame,
-    work_status_col_name: str,
-    patient_facing_orig_col_name: str,
-    work_direct_contact_patients_etc_col_name: str,
-    job_title_col_name: str,
-    main_resp_col_name: str,
+    work_status_column_name: str,
+    patient_facing_orig_column_name: str,
+    work_direct_contact_patients_etc_column_name: str,
+    job_title_column_name: str,
+    main_resp_column_name: str,
 ) -> DataFrame:
     """
     Creates regex logic to infer columns health_care_classification, patient_facing_classification,
@@ -1923,13 +1923,13 @@ def derive_patient_facing_variables(
     Parameters
     ----------
     df
-    work_status_col_name
-    patient_facing_orig_col_name
-    work_direct_contact_patients_etc_col_name
-    job_title_col_name
-    main_resp_col_name
+    work_status_column_name
+    patient_facing_orig_column_name
+    work_direct_contact_patients_etc_column_name
+    job_title_column_name
+    main_resp_column_name
     """
-    job_main_resp = F.concat(job_title_col_name, main_resp_col_name)
+    job_main_resp = F.concat(job_title_column_name, main_resp_column_name)
 
     flag_vet = F.col(job_main_resp).rlike(
         r"\bVETS*\b|\bVEN?T[A-Z]*(RY|IAN)\b|EQUIN|\b(DOG|CAT)\b|HEDGEHOG|ANIMAL"  # noqa: E501
@@ -2159,8 +2159,8 @@ def derive_patient_facing_variables(
     flag_apprentice = F.col(job_main_resp).rlike(r"AP*RENTI[CS]")
     flag_unemployed = F.col(job_main_resp).rlike(r"[AEIOU]N.?EMPLOYED|NOT WORKING|LOOKING FOR WORK|JOB.?SEEKING")
 
-    flag_unemployed_ind_columns = (F.col(job_title_col_name).rlike(r"^NO?NE$|^N(O$|O\s)")) | (
-        F.col(main_resp_col_name).rlike(r"^NO?NE$")
+    flag_unemployed_ind_columns = (F.col(job_title_column_name).rlike(r"^NO?NE$|^N(O$|O\s)")) | (
+        F.col(main_resp_column_name).rlike(r"^NO?NE$")
     )
 
     # Patient Facing Flags
@@ -2266,10 +2266,10 @@ def derive_patient_facing_variables(
             | flag_physiotherapist,
             "Yes",
         )
-        .when(F.col(patient_facing_orig_col_name) == "non-patient-facing", "No")
-        .when(F.col(patient_facing_orig_col_name) == "patient-facing", "Yes")
-        .when(F.col(work_direct_contact_patients_etc_col_name) == "No", "No")
-        .when(F.col(work_direct_contact_patients_etc_col_name) == "Yes", "Yes")
+        .when(F.col(patient_facing_orig_column_name) == "non-patient-facing", "No")
+        .when(F.col(patient_facing_orig_column_name) == "patient-facing", "Yes")
+        .when(F.col(work_direct_contact_patients_etc_column_name) == "No", "No")
+        .when(F.col(work_direct_contact_patients_etc_column_name) == "Yes", "Yes")
     )
     work_status_final = (
         F.when(
@@ -2283,11 +2283,11 @@ def derive_patient_facing_variables(
             ),
             "not_working",
         )
-        .when(flag_student | F.col(work_status_col_name) == "Student", "student")
-        .when(["Employed", "Self-employed"] in F.col(work_status_col_name) | flag_apprentice, "working")
+        .when(flag_student | F.col(work_status_column_name) == "Student", "student")
+        .when(["Employed", "Self-employed"] in F.col(work_status_column_name) | flag_apprentice, "working")
         .when(
             ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)"]
-            in F.col(work_status_col_name),
+            in F.col(work_status_column_name),
             "not_working",
         )
         .otherwise(None)
