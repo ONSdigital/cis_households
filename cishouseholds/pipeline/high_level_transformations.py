@@ -1437,11 +1437,10 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
@@ -2044,7 +2043,6 @@ def union_dependent_derivations(df):
         order_list=["visit_datetime", "visit_id"],
     )
     df = symptom_column_transformations(df)
-    df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
