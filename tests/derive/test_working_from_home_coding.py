@@ -3,7 +3,7 @@ import yaml
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
-from cishouseholds.regex_patterns import work_from_home_pattern
+from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 
 
 # A list of positive test cases which need to be interpreted as "Working from Home" &
