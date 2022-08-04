@@ -33,7 +33,7 @@ def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
 
 def multiple_visit_1_day(df: DataFrame, participant_id: str, visit_id: str, date_column: str, datetime_column: str):
     """
-    Tracks multiple visits by a participant
+    Returns a dataframe containing participants reported to have been visited multiple times in 1 day.
 
     Parameters
     ----------
@@ -63,8 +63,8 @@ def unmatching_antibody_to_swab_viceversa(
     swab_df: DataFrame, antibody_df: DataFrame, column_list: List[str]
 ) -> DataFrame:
     """
-    Identifies participants who are present in Swab dataframe but not in Antibody
-    dataframe and vice versa.
+    Returns a dataframe containing records from either swab or antibody which do not have
+    a counterpart barcode in the alternate datafram.
 
     Parameters
     ----------
@@ -84,7 +84,9 @@ def unmatching_antibody_to_swab_viceversa(
 
 def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame:
     """
-    Generates error tables
+    Generates tables of errors and their respective counts present in
+    current and previous pipeline run ordered by a custome priorty ranking
+    set in pipeline config.
 
     Parameters
     ----------
