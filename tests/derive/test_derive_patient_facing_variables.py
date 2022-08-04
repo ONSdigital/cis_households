@@ -31,8 +31,6 @@ def test_derive_patient_facing_variables(spark_session):
         "patient_facing_over_20_percent",
         "work_status_classification",
     )
-    # import pdb; pdb.set_trace()
-
     df_output = derive_patient_facing_variables(
         df=df_input,
         work_status_column_name="work_status",

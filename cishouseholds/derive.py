@@ -2006,7 +2006,7 @@ def derive_patient_facing_variables(
     )
     flag_nhc_secretary = flag_secretary & (
         job_main_resp.rlike(
-            r"LEGAL|LAW|SOLICITOR|PRODUCTION|PARISH|DOG|INTERNATIONAL|COMPANY|COMPANY|EDUCATION|UNIVERSITY|SCHOOL|TEACHER|FINANCE|BUILDER|BUSINESS|BANK|PROJECT|CHURCH|ESTATE AGENT|MANUFACT|SALE|SPORT|FARM|CLUB"
+            r"LEGAL|LAW|SOLICITOR|PRODUCTION|PARISH|DOG|INTERNATIONAL|COMPANY|COMPANY|EDUCATION|UNIVERSITY|SCHOOL|TEACHER|FINANCE|BUILDER|BUSINESS|BANK|PROJECT|CHURCH|ESTATE AGENT|MANUFACT|SALE|SPORT|FARM|CLUB"  # noqa: 501
         )
         | job_main_resp.rlike(r"CONTRACTOR|CIVIL SERV.*|CLERICAL|COUNCIL|MEDICAL SCHOOL|ACCOUNT|CARER|CHARITY")
     )
@@ -2102,7 +2102,8 @@ def derive_patient_facing_variables(
         & ~job_main_resp.rlike(r"CUSTOMER SERVICE|SALES")
     )
     flag_no_info = job_main_resp.rlike(
-        r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$"  # noqa: E501
+        r"^\s*$|^$|^N+[/\\ ]*[AONE]+[ N/\\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$"  # noqa: E501
+        # TODO: Illegal/unsupported escape sequence near index 30, need to keep double (/)
     )
 
     flag_exclude_manage_admin = job_main_resp.rlike(
@@ -2296,7 +2297,7 @@ def derive_patient_facing_variables(
             ),
             "not_working",
         )
-        .when(flag_student | F.col(work_status_column_name) == "Student", "student") # noqa: E501
+        .when(flag_student | F.col(work_status_column_name) == "Student", "student")  # noqa: E501
         .when(
             F.array_contains(F.col(work_status_column_name), "Employed")
             | F.array_contains(F.col(work_status_column_name), "Self-employed")
@@ -2323,8 +2324,8 @@ def derive_patient_facing_variables(
     col_object_name = {
         "health_care_classification": healthcare_binary,
         "patient_facing_classification": patient_facing_final,
-        # "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,
-        # "work_status_classification": work_status_final,
+        "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,  # noqa: 501 # TODO: issue pacient_facing_ever_never_20_perc
+        "work_status_classification": work_status_final,  # TODO: issue with work_status_final
     }
     for column_name, column_object in col_object_name.items():
         df = df.withColumn(column_name, column_object)
