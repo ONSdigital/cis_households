@@ -297,6 +297,8 @@ def assign_multigeneration(
     visit_date_column: str,
     date_of_birth_column: str,
     country_column: str,
+    age_column_name_to_assign: str = "age_at_visit",
+    school_year_column_name_to_assign: str = "school_year",
 ):
     """
     Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
@@ -335,23 +337,25 @@ def assign_multigeneration(
 
     transformed_df = assign_age_at_date(
         df=transformed_df,
-        column_name_to_assign="age_at_visit",
+        column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
     transformed_df = assign_school_year(
         df=transformed_df,
-        column_name_to_assign="school_year",
+        column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
         country_column=country_column,
         school_year_lookup=school_year_lookup_df,
     )
-    generation_1 = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
+    generation_1 = F.when((F.col(age_column_name_to_assign) > 49), 1).otherwise(0)
     generation_2 = F.when(
-        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+        ((F.col(age_column_name_to_assign) <= 49) & (F.col(age_column_name_to_assign) >= 17))
+        | (F.col(school_year_column_name_to_assign) >= 12),
+        1,
     ).otherwise(0)
-    generation_3 = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+    generation_3 = F.when((F.col(school_year_column_name_to_assign) <= 11), 1).otherwise(0)
 
     window = Window.partitionBy(household_id_column, visit_date_column)
     generation_1_present = F.sum(generation_1).over(window) >= 1
@@ -362,9 +366,13 @@ def assign_multigeneration(
         column_name_to_assign,
         F.when(all([generation_1_present, generation_2_present, generation_3_present]), 1).otherwise(0),
     )
-    df = df.drop("age_at_visit").join(
+    df = df.join(
         transformed_df.select(
-            "age_at_visit", "school_year", column_name_to_assign, participant_id_column, visit_date_column
+            column_name_to_assign,
+            age_column_name_to_assign,
+            school_year_column_name_to_assign,
+            participant_id_column,
+            visit_date_column,
         ),
         on=[participant_id_column, visit_date_column],
         how="left",
