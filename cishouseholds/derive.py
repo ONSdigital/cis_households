@@ -2296,7 +2296,7 @@ def derive_patient_facing_variables(
             ),
             "not_working",
         )
-        .when(flag_student | F.col(work_status_column_name) == "Student", "student") # noqa: E501
+        .when(flag_student | F.col(work_status_column_name) == "Student", "student")  # noqa: E501
         .when(
             F.array_contains(F.col(work_status_column_name), "Employed")
             | F.array_contains(F.col(work_status_column_name), "Self-employed")
