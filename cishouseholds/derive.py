@@ -1935,7 +1935,6 @@ def assign_regex_match_result(
     return df
 
 
-
 def derive_patient_facing_variables(
     df: DataFrame,
     work_status_col_name: str,
@@ -2336,7 +2335,6 @@ def derive_patient_facing_variables(
     for column_name, column_object in col_object_name.items():
         df = df.withColumn(column_name, column_object)
     return df
-
 
 
 def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
