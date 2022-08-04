@@ -1941,21 +1941,13 @@ def derive_patient_facing_variables(
     patient_facing_column_name: str,
     work_direct_contact_patients_column_name: str,
     job_title_column_name: str,
-    main_resp_column_name: str,
+    job_role_column_name: str,
 ) -> DataFrame:
     """
     Creates regex logic to infer columns health_care_classification, patient_facing_classification,
     patient_facing_over_20_percent, work_status_classification based on spark column object logic.
-    Parameters
-    ----------
-    df
-    work_status_column_name
-    patient_facing_column_name
-    work_direct_contact_patients_column_name
-    job_title_column_name
-    main_resp_column_name
     """
-    job_main_resp = F.concat(job_title_column_name, main_resp_column_name)
+    job_main_resp = F.concat(job_title_column_name, job_role_column_name)
 
     flag_vet = F.col(job_main_resp).rlike(
         r"\bVETS*\b|\bVEN?T[A-Z]*(RY|IAN)\b|EQUIN|\b(DOG|CAT)\b|HEDGEHOG|ANIMAL"  # noqa: E501
@@ -2186,7 +2178,7 @@ def derive_patient_facing_variables(
     flag_unemployed = F.col(job_main_resp).rlike(r"[AEIOU]N.?EMPLOYED|NOT WORKING|LOOKING FOR WORK|JOB.?SEEKING")
 
     flag_unemployed_ind_columns = (F.col(job_title_column_name).rlike(r"^NO?NE$|^N(O$|O\s)")) | (
-        F.col(main_resp_column_name).rlike(r"^NO?NE$")
+        F.col(job_role_column_name).rlike(r"^NO?NE$")
     )
 
     # Patient Facing Flags
