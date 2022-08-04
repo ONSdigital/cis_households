@@ -1947,235 +1947,231 @@ def derive_patient_facing_variables(
     Creates regex logic to infer columns health_care_classification, patient_facing_classification,
     patient_facing_over_20_percent, work_status_classification based on spark column object logic.
     """
-    job_main_resp = F.concat(job_title_column_name, job_role_column_name)
+    job_main_resp = F.concat(F.col(job_title_column_name), F.col(job_role_column_name))
 
-    flag_vet = F.col(job_main_resp).rlike(
-        r"\bVETS*\b|\bVEN?T[A-Z]*(RY|IAN)\b|EQUIN|\b(DOG|CAT)\b|HEDGEHOG|ANIMAL"  # noqa: E501
-    ) & ~F.col(job_main_resp).rlike(r"VET PEOPLE")
+    flag_vet = job_main_resp.rlike(
+        r"\bVETS*\b|\bVEN?T[A-Z]*(RY|IAN)\b|EQUIN|\b(DOG|CAT)\b|HEDGEHOG|ANIMAL"
+    ) & ~job_main_resp.rlike(r"VET PEOPLE")
 
     # Admin
-    flag_admin = F.col(job_main_resp, "\bADMIN(?!IST[EO]R)|ADM[A-Z]{2,}RAT[EO]R|CLERICAL|CLERK")
+    flag_admin = job_main_resp.rlike(r"\bADMIN(?!IST[EO]R)|ADM[A-Z]{2,}RAT[EO]R|CLERICAL|CLERK")
     flag_hc_admin = (
-        (flag_admin & F.col(job_main_resp).rlike(r"NHS|HOSPITAL|MEDICAL|SURG[EA]RY|CLINIC|HEALTH *CARE"))
-        | F.col(job_main_resp).rlike(r"CLINICAL *CODER|\bWARD *CLERK")
-    ) & ~F.col(job_main_resp).rlike(r"STATIST")
+        (flag_admin & job_main_resp.rlike(r"NHS|HOSPITAL|MEDICAL|SURG[EA]RY|CLINIC|HEALTH *CARE"))
+        | job_main_resp.rlike(r"CLINICAL *CODER|\bWARD *CLERK")
+    ) & ~job_main_resp.rlike(r"STATIST")
     flag_nhc_admin = (
         flag_admin
-        & F.col(job_main_resp).rlike(r"SCHOOL|LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|^BANK CLERK|\bCHURCH\b")
-        & (F.col(flag_hc_admin) is False)
+        & job_main_resp.rlike(r"SCHOOL|LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|^BANK CLERK|\bCHURCH\b")
+        & ~flag_hc_admin
     )
 
     # Counsellor
-    flag_nhc_counsellor = F.col(job_main_resp).rlike(r"COUNS|COUNC") & (
-        F.col(job_main_resp).rlike(
+    flag_nhc_counsellor = job_main_resp.rlike(r"COUNS|COUNC") & (
+        job_main_resp.rlike(
             r"REPRESENT|BUSINESS|POLI(C|T)|CAREER|DISTRICT|LOCAL|COUNTY|DEBT|CITY|COUNCIL\s|COUNCIL$|ACCOUNTANT|SOLICITOR|LAW|CHAPLAN|CHAPLAIN|DEFENCE|GOVERNMENT|PARISH|LAWYER|ASSESSOR|CURRICULUM|LEGAL|PRISONER|FARMER"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(r"CASEWORK|CARE WORK|SCHOOL|LECTURER|COLLEGE|TEACH")
+        | job_main_resp.rlike(r"CASEWORK|CARE WORK|SCHOOL|LECTURER|COLLEGE|TEACH")
     )
-    flag_hc_counsellor = F.col(job_main_resp).rlike(r"COUNS|COUNC") & F.col(job_main_resp).rlike(
+    flag_hc_counsellor = job_main_resp.rlike(r"COUNS|COUNC") & job_main_resp.rlike(
         r"ADDICT|VICTIM|TRAUMA|\sMENTAL HEALTH|DRUG|ALCOHOL|ABUSE|SUBSTANCE"
     )
     # Receptionist
     flag_receptionist = (
-        F.col(job_main_resp).rlike(r"RECEPTIONIST|OPTICAL ASSISTANT|RECEPTION *(WORK|DUTIES)")
-        | (F.col(job_main_resp).rlike("\bADMIN(?!IST[EO]R)") & F.col(job_main_resp).rlike("RECEPTION"))
-    ) & ~F.col(job_main_resp).rlike("\bTEACH")
-    flag_hc_receptionist = flag_receptionist & F.col(job_main_resp).rlike(
+        job_main_resp.rlike(r"RECEPTIONIST|OPTICAL ASSISTANT|RECEPTION *(WORK|DUTIES)")
+        | (job_main_resp.rlike(r"\bADMIN(?!IST[EO]R)") & job_main_resp.rlike("RECEPTION"))
+    ) & ~job_main_resp.rlike(r"\bTEACH")
+    flag_hc_receptionist = flag_receptionist & job_main_resp.rlike(
         r"NHS|HOSPITAL$|OSTEOPATH|OUTPATIENT|HOSPITAL(?!ITY)|MEDICAL|SURG[EA]RY|CLINIC|HEALTH *CARE|DENTAL|DENTIST|\bGP\b|\bDOCTOR|OPTICIAN|OPTICAL|CHIROPRAC|A&E"  # noqa: E501
     )
     flag_nhc_receptionist = (
         (
             flag_receptionist
             & (
-                F.col(job_main_resp).rlike(
+                job_main_resp.rlike(
                     r"SCHOOL|LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|\bCHURCH\b|\bHOTEL|\bCARE *HOME|\bVET[A-Z]*RY\b|HAIR *(SALON|DRESS)+|EDUCATION|SPORT[S ]*CENT|LEISURE|BEAUTY|COLLEGE"  # noqa: E501
                 )
-                | F.col(job_main_resp).rlike(r"\bSPA\b|RETAIL|\b\LAW\b\|\bLEGAL|\bBAR WORK|GARAGE|\bVET[S]*\b")
+                | job_main_resp.rlike(r"\bSPA\b|RETAIL|\b\LAW\b\|\bLEGAL|\bBAR WORK|GARAGE|\bVET[S]*\b")
             )
         )
         | (
-            F.col(job_main_resp).rlike(r"RECEPTION")
-            & F.col(job_main_resp).rlike(r"LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|\bCHURCH\b|\bHOTEL")
+            job_main_resp.rlike(r"RECEPTION")
+            & job_main_resp.rlike(r"LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|\bCHURCH\b|\bHOTEL")
         )
     ) & ~flag_hc_receptionist
 
     # Secretary
-    flag_secretary = F.col(job_main_resp).rlike(r"S.?C+R+.?T+.?R+Y|\sPA\s|P.?RS+.?N+.?L AS+IS+T+AN+")
-    flag_hc_secretary = flag_secretary & F.col(job_main_resp).rlike(
+    flag_secretary = job_main_resp.rlike(r"S.?C+R+.?T+.?R+Y|\sPA\s|P.?RS+.?N+.?L AS+IS+T+AN+")
+    flag_hc_secretary = flag_secretary & job_main_resp.rlike(
         r"MEDIC.*|HEALTH|NHS|HOSPITAL\s|HOSPITAL$|CLINIC PATIENT|CAMHS|X.?RAY|\sDR\s|DOCTOR|PAEDIATRIC|A&E|DENTIST|PATIENT|GP|DENTAL|SURGERY|OPTI.*|OPTICAL|OPTICIANS"  # noqa: E501
     )
     flag_nhc_secretary = flag_secretary & (
-        F.col(job_main_resp).rlike(
-            r"LEGAL|LAW|SOLICITOR|PRODUCTION|PARISH|DOG|INTERNATIONAL|COMPANY|COMPANY|EDUCATION|UNIVERSITY|SCHOOL|TEACHER|FINANCE|BUILDER|BUSINESS|BANK|PROJECT|CHURCH|ESTATE AGENT|MANUFACT|SALE|SPORT|FARM|CLUB"  # noqa: E501
+        job_main_resp.rlike(
+            r"LEGAL|LAW|SOLICITOR|PRODUCTION|PARISH|DOG|INTERNATIONAL|COMPANY|COMPANY|EDUCATION|UNIVERSITY|SCHOOL|TEACHER|FINANCE|BUILDER|BUSINESS|BANK|PROJECT|CHURCH|ESTATE AGENT|MANUFACT|SALE|SPORT|FARM|CLUB"
         )
-        | F.col(job_main_resp).rlike(r"CONTRACTOR|CIVIL SERV.*|CLERICAL|COUNCIL|MEDICAL SCHOOL|ACCOUNT|CARER|CHARITY")
+        | job_main_resp.rlike(r"CONTRACTOR|CIVIL SERV.*|CLERICAL|COUNCIL|MEDICAL SCHOOL|ACCOUNT|CARER|CHARITY")
     )
 
     # Support Worker
-    flag_support = F.col(job_main_resp).rlike(r"SUP+ORT *WORKER") & ~F.col(job_main_resp).rlike(r"BUISNESS SUPPORT")
+    flag_support = job_main_resp.rlike(r"SUP+ORT *WORKER") & ~job_main_resp.rlike(r"BUISNESS SUPPORT")
     flag_hc_support = (
         flag_support
-        & F.col(job_main_resp).rlike(
+        & job_main_resp.rlike(
             r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]"  # noqa: E501
         )
-        & ~F.col(job_main_resp).rlike(
+        & ~job_main_resp.rlike(
             r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS"
         )  # needed to exclude those who deal with discharged hospital patients
     )
-    flag_nhc_support = flag_support & ~flag_hc_support & ~F.col(job_main_resp).rlike(r"HEALTH *CARE ASSIST|\bHCA\b")
+    flag_nhc_support = flag_support & ~flag_hc_support & ~job_main_resp.rlike(r"HEALTH *CARE ASSIST|\bHCA\b")
 
     # Care
-    flag_house_care = F.col(job_main_resp).rlike(
+    flag_house_care = job_main_resp.rlike(
         r"(HOME|HOUSE|DOMESTIC) *CARE|CARER* OF HOME|HOUSE *WIFE|HOME *MAKER"
-    ) & ~F.col(job_main_resp).rlike(
-        r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*|HOSPITAL"
+    ) & ~job_main_resp.rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*|HOSPITAL")
+    flag_child_care = job_main_resp.rlike(r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR") & ~job_main_resp.rlike(
+        r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL"
     )
-    flag_child_care = F.col(job_main_resp).rlike(r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR") & ~F.col(
-        job_main_resp
-    ).rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL")
+
     flag_informal_care = (
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"(((CAR(ER|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)"  # noqa: E501
         )
-        & ~F.col(job_main_resp).rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL")
+        & ~job_main_resp.rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL")
         & ~(flag_child_care | flag_house_care)
     )
     flag_formal_care = (
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY)* *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING"  # noqa: E501
         )
-        & ~F.col(job_main_resp).rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL")
+        & ~job_main_resp.rlike(r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL")
         & ~(flag_informal_care | flag_child_care | flag_house_care)
     )
 
     # Pharmacy
-    flag_pharmacist = F.col(job_main_resp).rlike(r"PHARMA(?![CS][EU]*TIC)")
-    flag_nhc_pharmacist = flag_pharmacist & ~F.col(job_main_resp).rlike(
+    flag_pharmacist = job_main_resp.rlike(r"PHARMA(?![CS][EU]*TIC)")
+    flag_nhc_pharmacist = flag_pharmacist & ~job_main_resp.rlike(
         r"ANALYST|CARE HOME|ELECTRICAL|COMPAN(Y|IES)|INDUSTR|DIRECTOR|RESEARCH|WAREHOUSE|LAB|PROJECT|PRODUCTION|PROCESS|LAB|QA|QUALITY"  # noqa: E501
     )
-    flag_hc_pharmacist = flag_pharmacist & F.col(job_main_resp).rlike(
+    flag_hc_pharmacist = flag_pharmacist & job_main_resp.rlike(
         r"AS+IST|TECHN|RETAIL|DISPEN[SC]|SALES AS+IST|HOSPITAL|PRIMARY CARE|SERVE CUSTOM"  # noqa: E501
     )
-    flag_dietician = F.col(job_main_resp).rlike(
+    flag_dietician = job_main_resp.rlike(
         r"\bD[EIA]{0,2}[TC][EI]?[CT]+[AEIOU]*[NC(RY)]|\bDIET(RIST)?\b"
-    ) & ~F.col(job_main_resp).rlike(r"DETECTION")
-    flag_doctor = F.col(job_main_resp).rlike(
+    ) & ~job_main_resp.rlike(r"DETECTION")
+    flag_doctor = job_main_resp.rlike(
         r"DOCT[EO]R|\bGP\b|GENERAL PRACTI[CIAN|TION]|\bDR\b|CARDIAC|\A ?(&|AND) ?E\|PHYSI[CT]I[AO]"
-    ) & ~F.col(job_main_resp).rlike(r"LECTURER|DOCTORI*AL|RESEARCH|PHD|STAT|WAR|ANIMAL|SALES*|FINANCE")
-    flag_dentist = F.col(job_main_resp).rlike(r"DENTIS.*|\bDENTAL")
-    flag_midwife = F.col(job_main_resp).rlike(r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR")
-    flag_nurse = F.col(job_main_resp).rlike(r"N[IU]RS[EY]|MATRON|\bHCA\b") & ~F.col(job_main_resp).rlike(
+    ) & ~job_main_resp.rlike(r"LECTURER|DOCTORI*AL|RESEARCH|PHD|STAT|WAR|ANIMAL|SALES*|FINANCE")
+    flag_dentist = job_main_resp.rlike(r"DENTIS.*|\bDENTAL")
+    flag_midwife = job_main_resp.rlike(r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR")
+    flag_nurse = job_main_resp.rlike(r"N[IU]RS[EY]|MATRON|\bHCA\b") & ~job_main_resp.rlike(
         r"N[UI][RS]S[EA]R*[YIEU]+|(CARE|NURSING) *HOME|SCHOOL|TEACHER"
     )
-    flag_paramedic = F.col(job_main_resp).rlike(r"PARA *MEDIC|AMBUL[AE]NCE") & ~F.col(job_main_resp).rlike(r"LECTUR")
+    flag_paramedic = job_main_resp.rlike(r"PARA *MEDIC|AMBUL[AE]NCE") & ~job_main_resp.rlike(r"LECTUR")
     flag_additional_hc = (
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"SONOGRAPHER|RADIO(GRAPHER|LOGIST)|VAC+INAT[OE]R|(ORTHO(PAEDIC)?|\bENT CONSULTANT|ORAL|EYE)+ SURGEON|SURGEON SURGERY|(DIABETIC EYE|RETINAL) SCRE+NER|(PH|F)LEBOTOM|CLINICAL SCIEN"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(
+        | job_main_resp.rlike(
             r"MEDICAL PHYSICIST|CARDIAC PHYSIOLOG|OSTEOPATH|OPTOMOTRIST|PODIATRIST|OBSTETRI|GYNACOLOG|ORTHO[DOENT]+|OPTI[TC]I[AO]N|CRITICAL CARE PRACTITIONER|HOSPITAL PORTER|AN[AE]STHET[IST|IC|IA]"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(r"PALLIATIVE|DISTRICT NURS|PAEDIATRI[CT]I[AO]N|HAEMATOLOGIST")
-    ) & ~F.col(job_main_resp).rlike(r"LAB MANAGER")
+        | job_main_resp.rlike(r"PALLIATIVE|DISTRICT NURS|PAEDIATRI[CT]I[AO]N|HAEMATOLOGIST")
+    ) & ~job_main_resp.rlike(r"LAB MANAGER")
 
     flag_covid_test = (
-        F.col(job_main_resp).rlike(r"COVID")
-        & F.col(job_main_resp).rlike(r"TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD")
-        & ~F.col(job_main_resp).rlike(r"LAB|AN[AY]LIST|SCHOOL|MANAGER")
+        job_main_resp.rlike(r"COVID")
+        & job_main_resp.rlike(r"TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD")
+        & ~job_main_resp.rlike(r"LAB|AN[AY]LIST|SCHOOL|MANAGER")
     )
-    flag_physiotherapist = F.col(job_main_resp).rlike(
+    flag_physiotherapist = job_main_resp.rlike(
         r"PH[YI]+SIO|PH[YSIH]+IO\s*THERAPIST|PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY"
-    ) & ~F.col(job_main_resp).rlike(r"PHYSIOLOG|PHYSIOSIST")
-    flag_nhc_psychologist = F.col(job_main_resp).rlike(
+    ) & ~job_main_resp.rlike(r"PHYSIOLOG|PHYSIOSIST")
+    flag_nhc_psychologist = job_main_resp.rlike(
         r"PHSYCOLOGY|PHYCOLOGIST|PYCHLOLOGIST|PHYCOLOGIST|PSYCHOLOGOLOGIST|PHYCOLIGIST|PYSCOLOGIST|PHYSCHOLOGICAL|PSYCHOLOGICIST|PSYCHOLGIST|PSYCHOLOGIST|PSYCHOLOGY|PSYCHOLOGICAL"  # noqa: E501
     ) & (
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"EDUCATION|SCHOOL|BUSINESS|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|UNIVERSITY|TEACHING|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(r"PRISON|OCCUPATION|OCCUPATIONAL|FORENSICS|\bUCL\b")
+        | job_main_resp.rlike(r"PRISON|OCCUPATION|OCCUPATIONAL|FORENSICS|\bUCL\b")
     )
-    flag_social_worker = F.col(job_main_resp).rlike(r"SOCIAL.*WORK|FOSTER CARE")
+    flag_social_worker = job_main_resp.rlike(r"SOCIAL.*WORK|FOSTER CARE")
     flag_call_handler = (
-        F.col(job_main_resp).rlike(r"111|119|999|911|NHS|TRIAGE|EMERGENCY")
-        & F.col(job_main_resp).rlike(
+        job_main_resp.rlike(r"111|119|999|911|NHS|TRIAGE|EMERGENCY")
+        & job_main_resp.rlike(
             r"ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE|TELE(PHONE)?|COVID"
         )
-        & ~F.col(job_main_resp).rlike(r"CUSTOMER SERVICE|SALES")
+        & ~job_main_resp.rlike(r"CUSTOMER SERVICE|SALES")
     )
-    flag_no_info = F.col(job_main_resp).rlike(
+    flag_no_info = job_main_resp.rlike(
         r"^\s*$|^$|^N+[/\ ]*[AONE]+[ N/\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT *APPLICABLE$|^NOT *APPLICABLE *NOT *APPLICABLE$"  # noqa: E501
     )
 
-    flag_exclude_manage_admin = F.col(job_main_resp).rlike(
+    flag_exclude_manage_admin = job_main_resp.rlike(
         r"\bPA\b|PERSONAL ASSISTANT|ADVI[SC][EO]R*|BUSINESS|QUALITY|FINANC|INVOIC|PAY(MENT|ROLL)|COMMER|PR[OE]CURE|\bCEO\b|HEAD OF|COMPANY|DIRECT|SUPERVI[SC]|COMPL[YI]|INVENTORY"  # noqa: E501
-    ) | F.col(job_main_resp).rlike(
+    ) | job_main_resp.rlike(
         r"CO-*ORDIN|MANAG|\bMGR\b|OFFICER|CLER(IC|K)|ANAL*|AUDIT|BANKER|AD+MIN*|ACCOUN|\bH *R\b|HUMAN RESOUO*R[SC]"
     )
 
     # General exclusions
-    flag_exclude_catering = F.col(job_main_resp).rlike(
+    flag_exclude_catering = job_main_resp.rlike(
         r"CHEF|SOUS|COOK|CATER|BREWERY|CHEESE|KITCHEN|KFC|CULINARY|FARM(ER|ING)"
     )
-    flag_exclude_acad_edu = F.col(job_main_resp).rlike(
+    flag_exclude_acad_edu = job_main_resp.rlike(
         r"AC[AE]DEMIC|RESEAR*CH|SCIEN|LAB(ORATORY)?|DATA|ANAL|STATIST|EPIDEMI|EXAM|EDUCAT|EARLY YEARS|SCHOOL|COLL.GE|TEACH|LECTURE|PROFESS|HOUSE *(M[AI]ST(ER|RESS)|PARENT)|COACH|TRAIN"  # noqa: E501
-    ) | F.col(job_main_resp).rlike(r"INSTRUCT|TUTOR|LEARN")
-    flag_exclude_media = F.col(job_main_resp).rlike(
+    ) | job_main_resp.rlike(r"INSTRUCT|TUTOR|LEARN")
+    flag_exclude_media = job_main_resp.rlike(
         r"BROADCAST|JOURNALIST|CAMERA|WRIT|COMMUNICAT|CURAT(OR)*|MARKETING|MUSICIAN|ACT([OE]R|RESS)|ARTIST"
     )
-    flag_exclude_retail = F.col(job_main_resp).rlike(
+    flag_exclude_retail = job_main_resp.rlike(
         r"RETAIL|BUYER|SALE|BUY AND SELL|CUSTOMER|AGENT|BANK(ING|ER)|INSURANCE|BEAUT(Y|ICIAN)?|NAIL|HAIR|SHOP|PROPERTY|TRADE|SUPER *MARKET|WH *SMITH|TESCO"  # noqa: E501
     )
-    flag_exclude_domestic = F.col(job_main_resp).rlike(r"DOMESTIC|CLEAN|LAU*ND.*Y")
-    flag_exclude_construction = F.col(job_main_resp).rlike(
+    flag_exclude_domestic = job_main_resp.rlike(r"DOMESTIC|CLEAN|LAU*ND.*Y")
+    flag_exclude_construction = job_main_resp.rlike(
         r"BUILD|CONSTRUCT|RENOVAT|REFIT|ENGINE|PLANT|CR[AI]*NE*|SURVEY(OR)*|DESIGNER|ARCHITECT|TECHNICIAN|MECHAN|MANUFACT|ELECTRIC|CARPENTER"  # noqa: E501
-    ) | F.col(job_main_resp).rlike(
+    ) | job_main_resp.rlike(
         r"PLUMB|WELD(ER|ING)|PASTER(ER|ING)|\bEE\b|GARDE*N|FURNITURE|MAINT[AIE]*N*[EA]N*CE|\bGAS\b|JOINER"
     )
-    flag_exclude_religion = F.col(job_main_resp).rlike(r"CHAPL[AI]*N|VICAR|CLERGY|MINISTER|PREACH|CHURCH")
-    flag_exclude_computing = F.col(job_main_resp).rlike(
-        r"\bI[ \.]*T\.?\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM"
-    )
-    flag_exclude_public_serv = F.col(job_main_resp).rlike(
+    flag_exclude_religion = job_main_resp.rlike(r"CHAPL[AI]*N|VICAR|CLERGY|MINISTER|PREACH|CHURCH")
+    flag_exclude_computing = job_main_resp.rlike(r"\bI[ \.]*T\.?\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM")
+    flag_exclude_public_serv = job_main_resp.rlike(
         r"CHAIR|CHARITY|CITIZEN|CIVIL|VOLUNT|LIBRAR|TRANSLAT|INVESTIGAT|FIRE ?(WO)?(M[AE]N|FIGHT)|POLICE|POST *(WO)*MAN|PRISON|FIRST AID|SAFETY|\bTAX\b"  # noqa: E501
-    ) | F.col(job_main_resp).rlike(r"LI[CS][EA]N[CS]E|LEA*GAL|LAWYER|\bLAW\b|SO*LICITOR")
-    flag_exclude_transport = F.col(job_main_resp).rlike(
+    ) | job_main_resp.rlike(r"LI[CS][EA]N[CS]E|LEA*GAL|LAWYER|\bLAW\b|SO*LICITOR")
+    flag_exclude_transport = job_main_resp.rlike(
         r"DRIV(E|ER|ING)|PILOT|TRAIN DRIVE|TAXI|LORRY|TRANSPORT|DELIVER|SUPPLY"
     )
 
-    flag_exclude_always = F.col(job_main_resp).rlike(
+    flag_exclude_always = job_main_resp.rlike(
         r"AC[AE]DEMIC|LECTURE|DEAN|DOCTOR SCIENCE|DR LAB|DATA ANAL|AC?OUNT(ANT|ANCY)?|WARE *HOUSE|TRADE UNION|SALES (MANAGER|REP)|INVESTIGATION OF+ICE|AC+OUNT|PRISI?ON|DIRECT[OE]R"  # noqa: E501
     )
-    flag_include_always = F.col(job_main_resp).rlike(r"(PALLIATIVE|INTENSIVE) CARE|TRIAGE|CHIROPRACT")
+    flag_include_always = job_main_resp.rlike(r"(PALLIATIVE|INTENSIVE) CARE|TRIAGE|CHIROPRACT")
 
     # Work Status flags
-    flag_parental_leave = F.col(job_main_resp).rlike(
+    flag_parental_leave = job_main_resp.rlike(
         r"(.A(T|Y)(ERNITY)* LEAVE)|(ADOPTION LEAVE)|(^(.A(T|Y)ERNITY)$)|(ON .A(T|Y)ERNITY)"
-    ) & ~F.col(job_main_resp).rlike(r"(W|Q)ORK(.){0,2}ON .A(T|Y)ERNITY")
+    ) & ~job_main_resp.rlike(r"(W|Q)ORK(.){0,2}ON .A(T|Y)ERNITY")
     flag_retired = (
-        F.col(job_main_resp).rlike(r".E[TYRF]{1,2}[AIOU][RE][ERWD]")
-        & ~F.col(job_main_resp).rlike(r"SEMI|PART|BEFOR|CARE")
+        job_main_resp.rlike(r".E[TYRF]{1,2}[AIOU][RE][ERWD]") & ~job_main_resp.rlike(r"SEMI|PART|BEFOR|CARE")
     ) | (
-        F.col(job_main_resp).rlike(r".E[TYRF][AIOU][RE][ERWD]MENT")
-        & ~(F.col(job_main_resp).rlike(r".+.E[TYRF][AIOU][RE][ERWD]MENT|.E[TYRF][AIOU][RE][ERWD]MENT.+"))
-        & ~F.col(job_main_resp).rlike(r"EARLY")
+        job_main_resp.rlike(r".E[TYRF][AIOU][RE][ERWD]MENT")
+        & ~(job_main_resp.rlike(r".+.E[TYRF][AIOU][RE][ERWD]MENT|.E[TYRF][AIOU][RE][ERWD]MENT.+"))
+        & ~job_main_resp.rlike(r"EARLY")
     )
-    flag_furlough = F.col(job_main_resp).rlike(r"FURL") & ~F.col(job_main_resp).rlike(r"(PART|SEMI).+FURL")
-    flag_sick = F.col(job_main_resp).rlike(r"SICK|I'?LL") & ~(
-        F.col(job_main_resp).rlike(r"(CAR.|WELFARE|PAT|ANIMAL).*SICK|SICK.*(CHILDREN|FAMILIES|PAT|ANIMAL)")
-        & ~F.col(job_main_resp).rlike(r"OFF SICK|SICK LEAVE")
+    flag_furlough = job_main_resp.rlike(r"FURL") & ~job_main_resp.rlike(r"(PART|SEMI).+FURL")
+    flag_sick = job_main_resp.rlike(r"SICK|I'?LL") & ~(
+        job_main_resp.rlike(r"(CAR.|WELFARE|PAT|ANIMAL).*SICK|SICK.*(CHILDREN|FAMILIES|PAT|ANIMAL)")
+        & ~job_main_resp.rlike(r"OFF SICK|SICK LEAVE")
     )
-    flag_student = F.col(job_main_resp).rlike(
+    flag_student = job_main_resp.rlike(
         r"(YEAR)\s[:digit:]+|[:digit:]+Y|(6|6\s?TH|SIXTH) FORM|COLL.?EGE|SCHOOL|STUDY|EDUCATION|STUDENT|PUPIL"
     ) & ~(
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"CARE\s?TAKER|CONSULTANT|FINANCE|EXAM|SENCO|RECEPT|FACILIT|CEO|CLEAN|COMPANY|DIRECTOR|LEARNING SUPPORT|DINNER|COOK|MATRON|JANITOR|LIBRAR|CIVIL SERVANT"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(
+        | job_main_resp.rlike(
             r"CATERING|CHEF|ASSOCIATE|TUTOR|LECTURER|WRITER|TECHNICIAN|DRIV(I|ER)|ASSESSOR|TEACH|ACADEMIC|ACCOUNT|ADMIN|ACTIVITIES|ACCOM|ADULT|AFTER|YOUTH|MANAGER|COACH|PRINCIPAL|HEAD|PROF|WORK|ASSIST|OFFICE"  # noqa: E501
         )
     )
-    flag_apprentice = F.col(job_main_resp).rlike(r"AP*RENTI[CS]")
-    flag_unemployed = F.col(job_main_resp).rlike(r"[AEIOU]N.?EMPLOYED|NOT WORKING|LOOKING FOR WORK|JOB.?SEEKING")
+    flag_apprentice = job_main_resp.rlike(r"AP*RENTI[CS]")
+    flag_unemployed = job_main_resp.rlike(r"[AEIOU]N.?EMPLOYED|NOT WORKING|LOOKING FOR WORK|JOB.?SEEKING")
 
     flag_unemployed_ind_columns = (F.col(job_title_column_name).rlike(r"^NO?NE$|^N(O$|O\s)")) | (
         F.col(job_role_column_name).rlike(r"^NO?NE$")
@@ -2186,20 +2182,18 @@ def derive_patient_facing_variables(
         flag_admin
         | flag_secretary
         | flag_call_handler
-        | F.col(job_main_resp).rlike(
+        | job_main_resp.rlike(
             r"ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(
+        | job_main_resp.rlike(
             r"(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI"  # noqa: E501
         )
-    ) & ~F.col(job_main_resp).rlike(r"(?<!NOT )OFFICE BASED")
+    ) & ~job_main_resp.rlike(r"(?<!NOT )OFFICE BASED")
     flag_patient_facing = ~flag_non_patient_facing & (
-        F.col(job_main_resp).rlike(
+        job_main_resp.rlike(
             r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|(?<!NO )FACE TO FACE|(?<!NOT )FACE TO FACE"  # noqa: E501
         )
-        | F.col(job_main_resp).rlike(
-            r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE"
-        )
+        | job_main_resp.rlike(r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE")
         | flag_paramedic
         | flag_additional_hc
         | flag_covid_test
@@ -2246,7 +2240,7 @@ def derive_patient_facing_variables(
         | flag_paramedic
         | flag_physiotherapist
     )
-    healthcare_bin = (
+    healthcare_binary = (
         F.when((flag_nhc & ~flag_hc) | flag_vet | flag_exclude_always, "No")
         .when(
             (flag_hc & ~flag_nhc)
@@ -2262,14 +2256,14 @@ def derive_patient_facing_variables(
         )
         .when((flag_hc & flag_nhc) | flag_exclude_manage_admin, "No")
         .when(
-            flag_no_info | F.col(job_main_resp).isNull(),
+            flag_no_info | job_main_resp.isNull(),
             None,
         )
         .otherwise("No")
     )
     patient_facing_final = (
-        F.when(F.col(healthcare_bin) == "No", "Not healthcare")
-        .when(F.col(healthcare_bin).isNull(), None)
+        F.when(healthcare_binary == "No", "Not healthcare")
+        .when(healthcare_binary.isNull(), None)
         .when(flag_non_patient_facing, "No")
         .when(flag_patient_facing, "Yes")
         .when(flag_hc_receptionist | flag_hc_counsellor | flag_hc_support, "No")
@@ -2289,6 +2283,7 @@ def derive_patient_facing_variables(
         .when(F.col(work_direct_contact_patients_column_name) == "No", "No")
         .when(F.col(work_direct_contact_patients_column_name) == "Yes", "Yes")
     )
+
     work_status_final = (
         F.when(
             (
@@ -2301,28 +2296,35 @@ def derive_patient_facing_variables(
             ),
             "not_working",
         )
-        .when(flag_student | F.col(work_status_column_name) == "Student", "student")
-        .when(["Employed", "Self-employed"] in F.col(work_status_column_name) | flag_apprentice, "working")
+        .when(flag_student | F.col(work_status_column_name) == "Student", "student") # noqa: E501
         .when(
-            ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)"]
-            in F.col(work_status_column_name),
+            F.array_contains(F.col(work_status_column_name), "Employed")
+            | F.array_contains(F.col(work_status_column_name), "Self-employed")
+            | flag_apprentice,
+            "working",
+        )
+        .when(
+            F.array_contains(F.col(work_status_column_name), "Furloughed (temporarily not working)")
+            | F.array_contains(
+                F.col(work_status_column_name), "Not working (unemployed, retired, long-term sick etc.)"
+            ),
             "not_working",
         )
         .otherwise(None)
     )
 
-    pf_bin = F.when(patient_facing_final == "Yes", "Yes").otherwise("No")
-    pfYes = F.when(pf_bin == "Yes", F.count(pf_bin))
-    pfNo = F.when(pf_bin == "No", F.count(pf_bin))
+    pacient_facing_binary = F.when(patient_facing_final == "Yes", "Yes").otherwise("No")
+    pacient_facing_yes = F.when(pacient_facing_binary == "Yes", F.count(pacient_facing_binary))
+    pacient_facing_no = F.when(pacient_facing_binary == "No", F.count(pacient_facing_binary))
 
-    pfYes_perc = pfYes / (pfYes + pfNo)
-    pf_ever_never_20_perc = pfYes_perc >= 0.2
+    pacient_facing_yes_percent = pacient_facing_yes / (pacient_facing_yes + pacient_facing_no)
+    pacient_facing_ever_never_20_perc = pacient_facing_yes_percent >= 0.2
 
     col_object_name = {
-        "health_care_classification": healthcare_bin,
+        "health_care_classification": healthcare_binary,
         "patient_facing_classification": patient_facing_final,
-        "patient_facing_over_20_percent": pf_ever_never_20_perc,
-        "work_status_classification": work_status_final,
+        # "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,
+        # "work_status_classification": work_status_final,
     }
     for column_name, column_object in col_object_name.items():
         df = df.withColumn(column_name, column_object)
