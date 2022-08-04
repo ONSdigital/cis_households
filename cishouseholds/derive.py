@@ -1938,8 +1938,8 @@ def assign_regex_match_result(
 def derive_patient_facing_variables(
     df: DataFrame,
     work_status_column_name: str,
-    patient_facing_orig_column_name: str,
-    work_direct_contact_patients_etc_column_name: str,
+    patient_facing_column_name: str,
+    work_direct_contact_patients_column_name: str,
     job_title_column_name: str,
     main_resp_column_name: str,
 ) -> DataFrame:
@@ -1950,8 +1950,8 @@ def derive_patient_facing_variables(
     ----------
     df
     work_status_column_name
-    patient_facing_orig_column_name
-    work_direct_contact_patients_etc_column_name
+    patient_facing_column_name
+    work_direct_contact_patients_column_name
     job_title_column_name
     main_resp_column_name
     """
@@ -2292,10 +2292,10 @@ def derive_patient_facing_variables(
             | flag_physiotherapist,
             "Yes",
         )
-        .when(F.col(patient_facing_orig_column_name) == "non-patient-facing", "No")
-        .when(F.col(patient_facing_orig_column_name) == "patient-facing", "Yes")
-        .when(F.col(work_direct_contact_patients_etc_column_name) == "No", "No")
-        .when(F.col(work_direct_contact_patients_etc_column_name) == "Yes", "Yes")
+        .when(F.col(patient_facing_column_name) == "non-patient-facing", "No")
+        .when(F.col(patient_facing_column_name) == "patient-facing", "Yes")
+        .when(F.col(work_direct_contact_patients_column_name) == "No", "No")
+        .when(F.col(work_direct_contact_patients_column_name) == "Yes", "Yes")
     )
     work_status_final = (
         F.when(
