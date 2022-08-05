@@ -16,22 +16,20 @@ from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import sum_within_row
 
 
-def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
+def clean_work_main_job_role(df: DataFrame, column_name_to_update: str):
     """
-    Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase.
-    Also removes NA type responses.
+    Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase
     """
-    cleaned_string = F.regexp_replace(
-        F.regexp_replace(
-            F.regexp_replace(F.upper(F.col(column_name_to_assign)), r"(-)|(\s{2,})", " "),
-            r"([^a-zA-Z0-9&\s]{1,})|(^\s)|(\s$)",
-            "",
+    df = df.withColumn(
+        column_name_to_update,
+        F.upper(
+            F.regexp_replace(
+                F.regexp_replace(column_name_to_update, "(-)|(\s{2,})", " "),  # noqa:W605
+                "([^a-zA-Z0-9&\s]{1,})|(^\s)|(\s$)",  # noqa:W605
+                "",
+            )
         ),
-        r"^N+[/\ ]*[AONE]+[ N/\\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT APPLICABLE$|^(NOT APPLICABLE ?)*$",  # noqa: E501
-        "",
     )
-
-    df = df.withColumn(column_name_to_assign, F.when(cleaned_string != "", cleaned_string))
     return df
 
 
