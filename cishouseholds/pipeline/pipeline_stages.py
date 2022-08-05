@@ -15,7 +15,7 @@ from pyspark.sql import Window
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
@@ -44,6 +44,7 @@ from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
+from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
@@ -1044,7 +1045,7 @@ def geography_and_imputation_dependent_processing(
 
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
-    df = assign_multigeneration(
+    df = assign_multigenerational(
         df=df,
         column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
@@ -1052,7 +1053,9 @@ def geography_and_imputation_dependent_processing(
         visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
-    )  # Includes school year derivation
+    )  # Includes school year and age_at_visit derivations
+
+    df = derive_age_based_columns(df, "age_at_visit")
     update_table(df, output_table_name, write_mode="overwrite")
 
 
