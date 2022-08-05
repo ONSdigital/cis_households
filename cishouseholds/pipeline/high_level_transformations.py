@@ -153,8 +153,14 @@ def generate_lab_report(df: DataFrame) -> DataFrame:
     Generate lab report of latest 7 days of results
     """
     df = df.filter(F.date_sub(F.current_timestamp(), 7) < F.col("file_date"))
-    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime")
-    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime")
+    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
+        ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+        | F.col("swab_sample_barcode").isNull()
+    )
+    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
+        ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+        | F.col("blood_sample_barcode").isNull()
+    )
     return swab_df, blood_df
 
 
