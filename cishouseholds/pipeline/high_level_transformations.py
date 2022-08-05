@@ -75,9 +75,9 @@ from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
-from cishouseholds.edit import clean_work_main_job_role
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -150,8 +150,6 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     """
     transform and process cis soc data
     """
-    # clean columns
-    df = clean_work_main_job_role(df, "work_main_job_role")
     df = df.withColumn(
         "standard_occupational_classification_code",
         F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
@@ -1410,6 +1408,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
+
+    df = clean_job_description_string(df, "work_main_job_title")
+    df = clean_job_description_string(df, "work_main_job_role")
+    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
     return df
 
 
