@@ -16,13 +16,9 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from dummy_data_generation.helpers import code_mask
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
-from dummy_data_generation.schemas import get_blood_data_description
 from dummy_data_generation.schemas import get_cis_soc_data_description
-from dummy_data_generation.schemas import get_historical_blood_data_description
 from dummy_data_generation.schemas import get_nims_data_description
 from dummy_data_generation.schemas import get_survey_responses_digital_data_description
-from dummy_data_generation.schemas import get_swab_data_description
-from dummy_data_generation.schemas import get_unassayed_blood_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
 from dummy_data_generation.schemas import get_voyager_2_data_description
@@ -102,67 +98,6 @@ def generate_digital_data(directory, file_date, records, swab_barcodes, blood_ba
     survey_responses = pd.DataFrame(schema.create(iterations=records))
     write_output(survey_responses, directory / f"ONSE_CIS_Digital_v1_0_responses_{file_date}_000000.txt", "|")
     return survey_responses
-
-
-def generate_ons_gl_report_data(directory, file_date, records):
-
-    """
-    Generate dummy swab test results.
-    """
-    schema = Schema(schema=get_swab_data_description(_))
-    survey_ons_gl_report = pd.DataFrame(schema.create(iterations=records))
-
-    write_output(survey_ons_gl_report, directory / f"ONS_GL_Report_{file_date}_0000.csv")
-    return survey_ons_gl_report
-
-
-def generate_unioxf_medtest_data(directory, file_date, records):
-    """
-    Generate Oxford blood test data.
-    """
-    s_gene_description = get_blood_data_description(_, "S")
-    s_schema = Schema(schema=s_gene_description)
-    survey_unioxf_medtest_s = pd.DataFrame(s_schema.create(iterations=records))
-
-    n_gene_description = get_blood_data_description(_, "N")
-    n_schema = Schema(schema=n_gene_description)
-    survey_unioxf_medtest_n = pd.DataFrame(n_schema.create(iterations=records))
-
-    for row in range(0, records):
-        if _("integer_number", start=0, end=100) > 15:
-            for col in ["Serum Source ID", "Well ID"]:
-                survey_unioxf_medtest_n.at[row, col] = survey_unioxf_medtest_s.at[row, col]
-            survey_unioxf_medtest_n.at[row, "Plate Barcode"] = (
-                survey_unioxf_medtest_s.at[row, "Plate Barcode"][:-3]
-                + "N"
-                + survey_unioxf_medtest_s.at[row, "Plate Barcode"][-2:]
-            )
-
-    write_output(survey_unioxf_medtest_s, directory / f"Unioxf_medtestS_{file_date}.csv")
-    write_output(survey_unioxf_medtest_n, directory / f"Unioxf_medtestN_{file_date}.csv")
-    return survey_unioxf_medtest_s, survey_unioxf_medtest_n
-
-
-def generate_historic_bloods_data(directory, file_date, records, target):
-    """
-    Generate historic bloods file
-    """
-    schema = Schema(schema=get_historical_blood_data_description(_))
-    historic_bloods_data = pd.DataFrame(schema.create(iterations=records))
-
-    write_output(historic_bloods_data, directory / f"historical_bloods_{target}_{file_date}.csv")
-    return historic_bloods_data
-
-
-def generate_unassayed_bloods_data(directory, file_date, records):
-    """
-    generate unassayed bloods data
-    """
-    schema = Schema(schema=get_unassayed_blood_data_description(_))
-    unassayed_bloods_data = pd.DataFrame(schema.create(iterations=records))
-
-    write_output(unassayed_bloods_data, directory / f"Unioxf_medtest_unassayed_{file_date}.csv")
-    return unassayed_bloods_data
 
 
 def generate_northern_ireland_data(directory, file_date, records):
