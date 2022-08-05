@@ -1,4 +1,6 @@
 # flake8: noqa
+from datetime import datetime
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -144,6 +146,16 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+
+def generate_lab_report(df: DataFrame) -> DataFrame:
+    """
+    Generate lab report of latest 7 days of results
+    """
+    df = df.filter(F.date_sub(F.current_timestamp(), 7) < F.col("file_date"))
+    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime")
+    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime")
+    return swab_df, blood_df
 
 
 def transform_cis_soc_data(df: DataFrame) -> DataFrame:
