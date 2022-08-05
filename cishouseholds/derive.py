@@ -1933,6 +1933,7 @@ def assign_regex_match_result(
 
 def derive_patient_facing_variables(
     df: DataFrame,
+    id_column_name: str,
     work_status_column_name: str,
     patient_facing_column_name: str,
     work_direct_contact_patients_column_name: str,
@@ -2280,7 +2281,6 @@ def derive_patient_facing_variables(
         .when(F.col(work_direct_contact_patients_column_name) == "No", "No")
         .when(F.col(work_direct_contact_patients_column_name) == "Yes", "Yes")
     )
-
     work_status_final = (
         F.when(
             (
@@ -2293,37 +2293,36 @@ def derive_patient_facing_variables(
             ),
             "not_working",
         )
-        .when(flag_student | F.col(work_status_column_name) == "Student", "student")  # noqa: E501
+        .when(flag_student | (F.col(work_status_column_name) == "Student"), "student")  # noqa: E501
         .when(
-            F.array_contains(F.col(work_status_column_name), "Employed")
-            | F.array_contains(F.col(work_status_column_name), "Self-employed")
+            (F.col(work_status_column_name) == "Employed")
+            | (F.col(work_status_column_name) == "Self-employed")
             | flag_apprentice,
             "working",
         )
         .when(
-            F.array_contains(F.col(work_status_column_name), "Furloughed (temporarily not working)")
-            | F.array_contains(
-                F.col(work_status_column_name), "Not working (unemployed, retired, long-term sick etc.)"
-            ),
+            (F.col(work_status_column_name) == "Furloughed (temporarily not working)")
+            | (F.col(work_status_column_name) == "Not working (unemployed, retired, long-term sick etc.)"),
             "not_working",
         )
         .otherwise(None)
     )
+    window = Window.partitionBy(id_column_name)
 
     pacient_facing_binary = F.when(patient_facing_final == "Yes", "Yes").otherwise("No")
-    pacient_facing_yes = F.when(pacient_facing_binary == "Yes", F.count(pacient_facing_binary))
-    pacient_facing_no = F.when(pacient_facing_binary == "No", F.count(pacient_facing_binary))
+    pacient_facing_yes = F.when(pacient_facing_binary == "Yes", F.count(pacient_facing_binary).over(window))
+    pacient_facing_no = F.when(pacient_facing_binary == "No", F.count(pacient_facing_binary).over(window))
 
     pacient_facing_yes_percent = pacient_facing_yes / (pacient_facing_yes + pacient_facing_no)
     pacient_facing_ever_never_20_perc = pacient_facing_yes_percent >= 0.2
 
-    col_object_name = {
+    col_object_map = {
         "health_care_classification": healthcare_binary,
         "patient_facing_classification": patient_facing_final,
-        "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,  # noqa: 501 # TODO: issue pacient_facing_ever_never_20_perc
-        "work_status_classification": work_status_final,  # TODO: issue with work_status_final
+        "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,  # fix
+        "work_status_classification": work_status_final,
     }
-    for column_name, column_object in col_object_name.items():
+    for column_name, column_object in col_object_map.items():
         df = df.withColumn(column_name, column_object)
     return df
 
