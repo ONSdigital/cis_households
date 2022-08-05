@@ -164,14 +164,21 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    df = df.withColumn("LENGTH", F.length(F.col("standard_occupational_classification_code"))).orderBy(F.desc("LENGTH"))
+    df = df.withColumn(
+        "LENGTH",
+        F.length(
+            F.when(
+                F.col("standard_occupational_classification_code") != "uncodeable",
+                F.col("standard_occupational_classification_code"),
+            )
+        ),
+    ).orderBy(F.desc("LENGTH"))
 
-    window = Window.partitionBy(*join_on_columns).orderBy(F.desc("LENGTH"))
-    df = df.withColumn("ROW", F.row_number().over(window))
+    window = Window.partitionBy(*join_on_columns)
+    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
+    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
 
-    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (F.col("ROW") == 1))
-
-    return df.drop("ROW", "LENGTH")
+    return df.drop("DROP", "LENGTH")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:
