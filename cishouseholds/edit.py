@@ -23,7 +23,7 @@ def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
     """
     cleaned_string = F.regexp_replace(
         F.regexp_replace(
-            F.regexp_replace(F.upper(F.col(column_name_to_assign)), r"(-)|(\s{2,})", " "),
+            F.regexp_replace(F.regexp_replace(F.upper(F.col(column_name_to_assign)), r"-", " "), r"\s{2,}", " "),
             r"([^a-zA-Z0-9&\s]{1,})|(^\s)|(\s$)",
             "",
         ),
