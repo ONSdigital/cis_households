@@ -411,9 +411,11 @@
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: null
-  work_main_job_role: Type classes first appeared in the Haskell programming language.
+  work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: Type classes first appeared in the Haskell programming language.
+  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
+    LANGUAGE TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_title_raw: Type classes first appeared in the Haskell programming
     language.
   work_not_from_home_days_per_week: '4'
@@ -846,11 +848,14 @@
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: null
-  work_main_job_role: Initially composing light-hearted and irreverent works, he also
-    wrote serious, sombre and religious pieces beginning in the 1930s.
+  work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
+    WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
-  work_main_job_title: Ports are used to communicate with the external world.
+  work_main_job_title: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
+  work_main_job_title_and_role: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
+    INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO WROTE SERIOUS SOMBRE
+    AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_title_raw: Ports are used to communicate with the external world.
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
@@ -1283,11 +1288,14 @@
   work_location: null
   work_location_raw: null
   work_main_job_changed: null
-  work_main_job_role: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
+  work_main_job_role: THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION SINGLE
+    ASSIGNMENT AND DYNAMIC TYPING
   work_main_job_role_raw: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
-  work_main_job_title: Tuples are containers for a fixed number of Erlang data types.
+  work_main_job_title: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
+  work_main_job_title_and_role: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG
+    DATA TYPES THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION SINGLE ASSIGNMENT
+    AND DYNAMIC TYPING
   work_main_job_title_raw: Tuples are containers for a fixed number of Erlang data
     types.
   work_not_from_home_days_per_week: '2'
@@ -1722,11 +1730,14 @@
   work_location: null
   work_location_raw: null
   work_main_job_changed: 'Yes'
-  work_main_job_role: The arguments can be primitive data types or compound data types.
+  work_main_job_role: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA TYPES
   work_main_job_role_raw: The arguments can be primitive data types or compound data
     types.
-  work_main_job_title: Erlang is a general-purpose, concurrent, functional programming
-    language.
+  work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
+    LANGUAGE
+  work_main_job_title_and_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL
+    PROGRAMMING LANGUAGE THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA
+    TYPES
   work_main_job_title_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_not_from_home_days_per_week: '5'
@@ -2163,9 +2174,11 @@
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: 'Yes'
-  work_main_job_role: Ports are created with the built-in function open_port.
+  work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
-  work_main_job_title: Erlang is known for its designs that are well suited for systems.
+  work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
+  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
+    FOR SYSTEMS PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '2'
@@ -2599,10 +2612,12 @@
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: 'No'
-  work_main_job_role: Atoms are used within a program to denote distinguished values.
+  work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
-  work_main_job_title: Make me a sandwich.
+  work_main_job_title: MAKE ME A SANDWICH
+  work_main_job_title_and_role: MAKE ME A SANDWICH ATOMS ARE USED WITHIN A PROGRAM
+    TO DENOTE DISTINGUISHED VALUES
   work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
@@ -3037,10 +3052,12 @@
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: 'Yes'
-  work_main_job_role: Where are my pants?
+  work_main_job_role: WHERE ARE MY PANTS
   work_main_job_role_raw: Where are my pants?
-  work_main_job_title: Erlang is a general-purpose, concurrent, functional programming
-    language.
+  work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
+    LANGUAGE
+  work_main_job_title_and_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL
+    PROGRAMMING LANGUAGE WHERE ARE MY PANTS
   work_main_job_title_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_not_from_home_days_per_week: '7'
@@ -3476,10 +3493,12 @@
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: null
-  work_main_job_role: Erlang is known for its designs that are well suited for systems.
+  work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
-  work_main_job_title: Erlang is known for its designs that are well suited for systems.
+  work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
+  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
+    FOR SYSTEMS ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '2'
@@ -3912,10 +3931,12 @@
   work_location: Somewhere else meaning not at your home
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: 'Yes'
-  work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
+  work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
-  work_main_job_title: Do you have any idea why this is not working?
+  work_main_job_title: DO YOU HAVE ANY IDEA WHY THIS IS NOT WORKING
+  work_main_job_title_and_role: DO YOU HAVE ANY IDEA WHY THIS IS NOT WORKING HE LOOKED
+    INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_title_raw: Do you have any idea why this is not working?
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '2'
@@ -4353,12 +4374,15 @@
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
   work_main_job_changed: null
-  work_main_job_role: Haskell features a type system with type inference and lazy
-    evaluation.
+  work_main_job_role: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
+    EVALUATION
   work_main_job_role_raw: Haskell features a type system with type inference and lazy
     evaluation.
-  work_main_job_title: Initially composing light-hearted and irreverent works, he
-    also wrote serious, sombre and religious pieces beginning in the 1930s.
+  work_main_job_title: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
+    WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
+  work_main_job_title_and_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS
+    HE ALSO WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S HASKELL
+    FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY EVALUATION
   work_main_job_title_raw: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
   work_not_from_home_days_per_week: '0'
