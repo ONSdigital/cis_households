@@ -1,4 +1,6 @@
 # flake8: noqa
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -146,7 +148,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 
-def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
     """
     transform and process cis soc data
     """
@@ -162,10 +164,14 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-    df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
-    return df.drop("COUNT")
+    df = df.withColumn("LENGTH", F.length(F.col("standard_occupational_classification_code"))).orderBy(F.desc("LENGTH"))
+
+    window = Window.partitionBy(*join_on_columns).orderBy(F.desc("LENGTH"))
+    df = df.withColumn("ROW", F.row_number().over(window))
+
+    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (F.col("ROW") == 1))
+
+    return df.drop("ROW", "LENGTH")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:
