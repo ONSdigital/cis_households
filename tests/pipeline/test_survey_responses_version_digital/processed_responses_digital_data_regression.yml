@@ -132,6 +132,8 @@
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: '[15, 0, 18, 18, 2, 10, 4, 22]'
   hours_a_day_with_someone_else_at_home_raw: '[15, 0, 18, 18, 2, 10, 4, 22]'
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No, no one in my household has
   household_completion_window_id: HW-4564424971
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-02 23:38:10.000000'
@@ -566,6 +568,8 @@
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
   hours_a_day_with_someone_else_at_home_raw: Don't know
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: Yes, I have
   household_completion_window_id: HW-9367679101
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-01 11:05:50.000000'
@@ -1000,6 +1004,8 @@
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No, no one in my household has
   household_completion_window_id: HW-2396451235
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-01 15:18:18.000000'
@@ -1439,6 +1445,8 @@
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   hours_a_day_with_someone_else_at_home_raw: Don't know
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: No, no one in my household has
   household_completion_window_id: HW-8082463081
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-02 15:12:05.000000'
@@ -1877,6 +1885,9 @@
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   hours_a_day_with_someone_else_at_home_raw: Don't know
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No I haven’t, but someone else in my household
+    has
   household_completion_window_id: HW-9300868759
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-07 15:04:40.000000'
@@ -2312,6 +2323,8 @@
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: Don't know
   hours_a_day_with_someone_else_at_home_raw: Don't know
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No, no one in my household has
   household_completion_window_id: HW-8828437201
   household_completion_window_status: New
   household_digital_enrolment_datetime: '2022-01-06 16:42:54.000000'
@@ -2748,6 +2761,8 @@
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
   hours_a_day_with_someone_else_at_home_raw: Don't know
+  household_been_care_home_last_28_days: Yes, I have
+  household_been_hospital_last_28_days: Yes, I have
   household_completion_window_id: HW-6911152672
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: null
@@ -3184,6 +3199,8 @@
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: No, no one in my household has
   household_completion_window_id: HW-6202235126
   household_completion_window_status: Open
   household_digital_enrolment_datetime: '2022-01-09 15:31:48.000000'
@@ -3615,6 +3632,8 @@
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: Yes, I have
   household_completion_window_id: HW-2744995712
   household_completion_window_status: Closed
   household_digital_enrolment_datetime: '2022-01-09 09:53:47.000000'
@@ -4053,6 +4072,8 @@
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Prefer not to say
+  household_been_care_home_last_28_days: No, no one in my household has
+  household_been_hospital_last_28_days: Yes, I have
   household_completion_window_id: HW-9500167403
   household_completion_window_status: New
   household_digital_enrolment_datetime: '2022-01-04 14:16:13.000000'
