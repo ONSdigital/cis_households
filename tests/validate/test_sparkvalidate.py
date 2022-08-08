@@ -1,3 +1,5 @@
+from os import truncate
+
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 from pyspark.sql.types import ArrayType
@@ -119,6 +121,7 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     )
     df_input = df_expected.drop("error")
     validate_df = SparkValidate(df_input, "error")  # initialise dataframe
+    import pdb;pdb.set_trace()
     # user defined function external definition
     def function_add_up_to(error_message, column_1, column_2):
         return (F.col(column_1) + F.col(column_2)) < 10, error_message
@@ -132,11 +135,17 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     )
     # duplicate
     operations = {
-        "duplicated": {"check_columns": ["column_1", "column_3"]},
+        "duplicated_check_1": {"function": "duplicated", "check_columns": ["column_1", "column_3"]},
+        # TODO: for some reason, it only gets the last double validation type. SHOULD append instead.
+        "duplicated_check_2": {"function": "duplicated", "check_columns": ["column_1", "column_2", "column_3"]},
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate(operations=operations)
     validate_df.produce_error_column()
+
+    import pdb;pdb.set_trace()
+    # validate_df.dataframe.show(truncate=False); df_expected.show(truncate=False)
+
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
     )

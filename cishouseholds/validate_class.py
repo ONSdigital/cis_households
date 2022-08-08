@@ -93,11 +93,17 @@ class SparkValidate:
                     self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
     def validate(self, operations):
-        for method, params in operations.items():
-            if type(params) != list:
-                params = [params]
-            for p in params:
-                self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
+        for _, params in operations.items():
+            import pdb; pdb.set_trace()
+            if type(params["check_columns"]) != list:
+                params["check_columns"] = [params["check_columns"]]
+            for p in params["check_columns"]:
+                self.execute_check(
+                    self.functions[params["function"]]["function"],
+                    self.functions[params["function"]]["error_message"],
+                    **p,
+                )
+                import pdb; pdb.set_trace()
 
     def validate_udl(self, logic, error_message, columns):
         missing = list(set(columns).difference(set(self.dataframe.columns)))
