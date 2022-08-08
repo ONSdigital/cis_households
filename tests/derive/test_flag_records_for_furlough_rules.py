@@ -13,7 +13,7 @@ def test_flag_records_for_furlough_rules_v0(spark_session):
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v0']
     test_cases = [
         ("Employed", 1, True),
-        ("Self-employed", 2, False),
+        ("Self-employed", 2, True),
         ("Furloughed (temporarily not working)", 3, False),
         ("Not working (unemployed, retired, long-term sick etc.)", 4, True),
         ("Student", 5, False),
