@@ -1,4 +1,5 @@
 import pyspark.sql.functions as F
+import pytest
 from chispa import assert_df_equality
 from pyspark.sql.types import ArrayType
 from pyspark.sql.types import IntegerType
@@ -9,6 +10,7 @@ from pyspark.sql.types import StructType
 from cishouseholds.validate_class import SparkValidate
 
 
+@pytest.mark.integration
 def test_sparkvalidate(spark_session):
     df_expected = spark_session.createDataFrame(
         data=[
@@ -101,10 +103,11 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     df_expected = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     'yes',  'yes',  'yes',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'no',   'yes',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'yes',  'no',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'no',   'no',    ['column_1, column_3 should be unique']),
+                (1,     'yes',  'yes',  'yes',   ['column_2, column_4 should be unique']),
+                (1,     'yes',  'no',   'yes',   ['column_2, column_4 should be unique']),
+                (1,     'yes',  'yes',  'no',    ['column_2, column_4 should be unique']),
+                (1,     'yes',  'no',   'no',    ['column_2, column_4 should be unique','column_2, column_3, column_4 should be unique']),
+                (1,     'yes',  'no',   'no',    ['column_2, column_4 should be unique','column_2, column_3, column_4 should be unique']),
             # fmt: on
         ],
         schema=StructType(
@@ -132,7 +135,10 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     )
     # duplicate
     operations = {
-        "duplicated": {"check_columns": ["column_1", "column_3"]},
+        "duplicated": [
+            {"check_columns": ["column_2", "column_4"]},
+            {"check_columns": ["column_2", "column_3", "column_4"]},
+        ],
         "test_function": {"column_1": "column_2", "column_2": "column_3"},
     }
     validate_df.validate_all_columns_in_df(operations=operations)
