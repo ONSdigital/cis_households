@@ -1961,7 +1961,9 @@ def flag_records_for_work_from_home_rules() -> F.Column:
 
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules"""
-    return F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)")
+    return F.col("work_status_v0").isin(
+        "Employed", "Self-employed", "Not working (unemployed, retired, long-term sick etc.)"
+    )
 
 
 def flag_records_for_furlough_rules_v1_a() -> F.Column:
