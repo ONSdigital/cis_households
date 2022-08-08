@@ -14,7 +14,7 @@ from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
 
 
-def proccess_population_projection_df(
+def process_population_projection_df(
     previous_projection_df: DataFrame,
     population_projection_current_df: DataFrame,
     aps_lookup_df: DataFrame,

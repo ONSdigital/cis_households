@@ -85,7 +85,7 @@ from cishouseholds.weights.design_weights import calculate_design_weights
 from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
-from cishouseholds.weights.population_projections import proccess_population_projection_df
+from cishouseholds.weights.population_projections import process_population_projection_df
 from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
@@ -1604,7 +1604,7 @@ def population_projection(
         aps_lookup, validation_schemas["aps_schema"], column_name_maps["aps_column_map"], True
     )
     aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
-    populations_for_calibration, population_projections = proccess_population_projection_df(
+    populations_for_calibration, population_projections = process_population_projection_df(
         population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
     )
     update_table(populations_for_calibration, population_totals_table, write_mode="overwrite")
