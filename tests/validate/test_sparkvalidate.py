@@ -26,7 +26,7 @@ def test_sparkvalidate(spark_session):
                     "column_4 should be in ['no']",
                     'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10',
-                    'column_1, column_3 should be unique',
+                    'column_1, column_3 are duplicated.',
                     'larger_than_10'
                     ]
                 ),
@@ -34,7 +34,7 @@ def test_sparkvalidate(spark_session):
                     "column_4 should be in ['no']",
                     'column_3 should be between 8 (inclusive) and 9 (inclusive)',
                     'col_2 and col_3 should_be_within_interval 4 and 10',
-                    'column_1, column_3 should be unique',
+                    'column_1, column_3 are duplicated.',
                     'larger_than_10'
                     ]
                 ),
@@ -88,11 +88,11 @@ def test_sparkvalidate(spark_session):
         columns=["column_2", "column_3"],
     )
     # duplicate
-    operations = {
-        "duplicated": {"check_columns": ["column_1", "column_3"]},
-        "test_function": {"column_1": "column_2", "column_2": "column_3"},
-    }
-    validate_df.validate_all_columns_in_df(operations=operations)
+    operations_list = [
+        {"function": "duplicated", "check_columns": ["column_1", "column_3"]},
+        {"function": "test_function", "column_1": "column_2", "column_2": "column_3"},
+    ]
+    validate_df.validate_all_columns_in_df(operations_list=operations_list)
     validate_df.produce_error_column()
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
@@ -103,10 +103,31 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     df_expected = spark_session.createDataFrame(
         data=[
             # fmt: off
-                (1,     'yes',  'yes',  'yes',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'no',   'yes',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'yes',  'no',    ['column_1, column_3 should be unique']),
-                (1,     'yes',  'no',   'no',    ['column_1, column_3 should be unique']),
+                (
+                    1,     'yes',  'yes',  'yes',    None,   None,   [
+                    'column_1, column_3 are duplicated.',
+                    'column_1, column_2, column_3 are duplicated.',
+                    ]
+                ),
+                (
+                    1,     'yes',  'no',   'yes',    None,   None,   [
+                    'column_1, column_3 are duplicated.',
+                    'column_1, column_2, column_3 are duplicated.',
+                    ]
+                ),
+                (
+                    1,     'yes',  'yes',  'no',    None,   None,   [
+                    'column_1, column_3 are duplicated.',
+                    'column_1, column_2, column_3 are duplicated.',
+                    ]
+                ),
+                (
+                    1,     'yes',  'no',   'no',    None,   'string',   [
+                    'column_1, column_3 are duplicated.',
+                    'column_1, column_2, column_3 are duplicated.',
+                    "column_5, column_6 should all be null given condition Column<b'(NOT (column_2 = Yes))'>",
+                    ]
+                ),
             # fmt: on
         ],
         schema=StructType(
@@ -115,13 +136,14 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
                 StructField("column_2", StringType(), True),
                 StructField("column_3", StringType(), True),
                 StructField("column_4", StringType(), True),
+                StructField("column_5", StringType(), True),
+                StructField("column_6", StringType(), True),
                 StructField("error", ArrayType(StringType()), True),
             ]
         ),
     )
     df_input = df_expected.drop("error")
     validate_df = SparkValidate(df_input, "error")  # initialise dataframe
-    import pdb;pdb.set_trace()
     # user defined function external definition
     def function_add_up_to(error_message, column_1, column_2):
         return (F.col(column_1) + F.col(column_2)) < 10, error_message
@@ -134,17 +156,22 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
         columns=["column_2", "column_3"],
     )
     # duplicate
-    operations = {
-        "duplicated_check_1": {"function": "duplicated", "check_columns": ["column_1", "column_3"]},
-        # TODO: for some reason, it only gets the last double validation type. SHOULD append instead.
-        "duplicated_check_2": {"function": "duplicated", "check_columns": ["column_1", "column_2", "column_3"]},
-        "test_function": {"column_1": "column_2", "column_2": "column_3"},
-    }
-    validate_df.validate_all_columns_in_df(operations=operations)
+    operations_list = [
+        {"function": "duplicated", "check_columns": ["column_1", "column_3"]},
+        {"function": "duplicated", "check_columns": ["column_1", "column_2", "column_3"]},
+        {"function": "test_function", "column_1": "column_2", "column_2": "column_3"},
+        {"function": "test_function", "column_1": "column_2", "column_2": "column_3"},
+        {
+            "function": "check_all_null_given_condition",
+            "condition": F.col("column_2") != "Yes",
+            "null_columns": [
+                "column_5",
+                "column_6",
+            ],
+        },
+    ]
+    validate_df.validate_all_columns_in_df(operations_list=operations_list)
     validate_df.produce_error_column()
-
-    import pdb;pdb.set_trace()
-    # validate_df.dataframe.show(truncate=False); df_expected.show(truncate=False)
 
     assert_df_equality(
         validate_df.dataframe, df_expected, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True

@@ -37,7 +37,7 @@ class SparkValidate:
             "starts_with": {"function": self.contains, "error_message": "{} should start with '{}'"},
             "matches": {"function": self.contains, "error_message": "{} should match '{}'"},
             "isin": {"function": self.isin, "error_message": "{} should be in [{}]"},
-            "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
+            "duplicated": {"function": self.duplicated, "error_message": "{} are duplicated."},
             "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
             "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
@@ -147,7 +147,7 @@ class SparkValidate:
                 else:
                     self.execute_check(check["function"], check["error_message"], column_name, list(method.values())[0])
 
-    def validate_all_columns_in_df(self, operations: dict):
+    def validate_all_columns_in_df(self, operations_list: list):
         """
         Executes validation by given logic validation to all columns.
         Parameters
@@ -156,11 +156,17 @@ class SparkValidate:
             should be a dictionary with key being the name of the check and value should be another
             dictionary or list depending on the check.
         """
-        for method, params in operations.items():
+        for params in operations_list:
             if type(params) != list:
                 params = [params]
+
             for p in params:
-                self.execute_check(self.functions[method]["function"], self.functions[method]["error_message"], **p)
+                function_name = [v for k, v in p.items() if k == "function"][0]
+                kwarg = {k: v for k, v in p.items() if k != "function"}
+
+                self.execute_check(
+                    self.functions[function_name]["function"], self.functions[function_name]["error_message"], **kwarg
+                )
 
     def validate_user_defined_logic(self, logic: Any, error_message: str, columns: List[str]):
         """

@@ -57,40 +57,39 @@ def validation_calls(SparkVal):
         for number in range(1, 5):
             vaccine_columns.append(template.format(number))
 
-    dataset_calls = {
-        "null": {"check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
-        "duplicated": [
-            {"check_columns": SparkVal.dataframe.columns},
-            {"check_columns": ["participant_id", "visit_datetime"]},
-            {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
-            {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
-            {"check_columns": ["visit_id"]},
-        ],
-        "valid_file_date": {
+    dataset_calls_list = [
+        {"function": "null", "check_columns": ["ons_household_id", "visit_id", "visit_datetime"]},
+        {"function": "duplicated", "check_columns": SparkVal.dataframe.columns},
+        {"function": "duplicated", "check_columns": ["participant_id", "visit_datetime"]},
+        {"function": "duplicated", "check_columns": ["participant_id", "visit_id", "visit_datetime"]},
+        {"function": "duplicated", "check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
+        {"function": "duplicated", "check_columns": ["visit_id"]},
+        {
+            "function": "valid_file_date",
             "visit_datetime_column": "visit_datetime",
             "file_date_column": "file_date",
             "swab_barcode_column": "swab_sample_barcode",
             "blood_barcode_column": "blood_sample_barcode",
         },
-        "check_all_null_given_condition": [
-            {
-                "condition": F.col("work_main_job_changed") != "Yes",
-                "null_columns": [
-                    "work_main_job_title",
-                    "work_main_job_role",
-                    "work_sector",
-                    "work_sector_other",
-                    "work_location",
-                ],
-            },
-            {
-                "condition": F.col("survey_response_type") != "First Visit",
-                "null_columns": vaccine_columns,
-            },
-        ],
-    }
+        {
+            "function": "check_all_null_given_condition",
+            "condition": F.col("work_main_job_changed") != "Yes",
+            "null_columns": [
+                "work_main_job_title",
+                "work_main_job_role",
+                "work_sector",
+                "work_sector_other",
+                "work_location",
+            ],
+        },
+        {
+            "function": "check_all_null_given_condition",
+            "condition": F.col("survey_response_type") != "First Visit",
+            "null_columns": vaccine_columns,
+        },
+    ]
 
-    SparkVal.validate_all_columns_in_df(dataset_calls)
+    SparkVal.validate_all_columns_in_df(operations=dataset_calls_list)
 
     SparkVal.validate_user_defined_logic(
         logic=(
