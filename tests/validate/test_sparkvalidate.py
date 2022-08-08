@@ -158,8 +158,10 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     # duplicate
     operations_list = [
         {"function": "duplicated", "check_columns": ["column_1", "column_3"]},
-        {"function": "duplicated", "check_columns": ["column_1", "column_2", "column_3"]},
-        {"function": "test_function", "column_1": "column_2", "column_2": "column_3"},
+        {
+            "function": "duplicated",
+            "check_columns": ["column_1", "column_2", "column_3"],
+        },  # testing that two duplicated checks is possible in different subset of columns
         {"function": "test_function", "column_1": "column_2", "column_2": "column_3"},
         {
             "function": "check_all_null_given_condition",
