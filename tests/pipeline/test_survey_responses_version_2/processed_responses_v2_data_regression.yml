@@ -115,7 +115,6 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: PS0F
   participant_id: DHR-455927236237
   participant_survey_status: Active
   participant_testing_group: Fingerprick and Swab
@@ -418,7 +417,6 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'No'
-  outward_postcode: TE4H
   participant_id: DHR-077145284257
   participant_survey_status: Completed
   participant_testing_group: null
@@ -722,7 +720,6 @@
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: null
   participant_id: DHR-603506140323
   participant_survey_status: Withdrawn
   participant_testing_group: null
@@ -1025,7 +1022,6 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: null
   participant_id: DHR-144229485098
   participant_survey_status: Completed
   participant_testing_group: Fingerprick and Swab
@@ -1336,7 +1332,6 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: null
   participant_id: DHR-858742267562
   participant_survey_status: Active
   participant_testing_group: Fingerprick and Swab
@@ -1642,7 +1637,6 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: null
-  outward_postcode: null
   participant_id: DHR-329500167403
   participant_survey_status: Withdrawn
   participant_testing_group: Blood and Swab
@@ -1952,7 +1946,6 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
-  outward_postcode: SE3Z
   participant_id: DHR-389263959191
   participant_survey_status: Completed
   participant_testing_group: Fingerprick and Swab
@@ -2257,7 +2250,6 @@
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: Participant Would Not/Could Not Answer
   other_household_member_hospital_last_28_days: Participant Would Not/Could Not Answer
-  outward_postcode: null
   participant_id: DHR-593586857022
   participant_survey_status: Completed
   participant_testing_group: null
@@ -2561,7 +2553,6 @@
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: UK0X
   participant_id: DHR-456442497105
   participant_survey_status: Completed
   participant_testing_group: Blood and Swab
@@ -2874,7 +2865,6 @@
   other_covid_infection_test_results: All Tests failed
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: 'Yes'
-  outward_postcode: LV1J
   participant_id: DHR-627540089585
   participant_survey_status: Completed
   participant_testing_group: null

@@ -5,6 +5,7 @@ from operator import add
 from operator import and_
 from operator import or_
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
@@ -18,6 +19,7 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
+from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -71,21 +73,37 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     return df
 
 
-def assign_visit_order(df: DataFrame, column_name_to_assign: str, visit_date_column: str, id_column: str):
+def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order_list: List[str]):
     """
     assign an incremental count to each participants visit
 
     Parameters
     -------------
+    df
     column_name_to_assign
-        column_name_to_assign: column to show count
-    visit_date_column
-        visit_date_column: date column to base count on
+        column to show count
     id_column
-        id_column: The column where the window (subset) is based, then the count occurs
+        column from which window is created
+    order_list
+        counting order occurrence. This list should NOT have any possible repetition.
     """
-    window = Window.partitionBy(id_column).orderBy(visit_date_column)
+    window = Window.partitionBy(id).orderBy(order_list)
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
+    return df
+
+
+def translate_column_regex_replace(df: DataFrame, reference_column: str, multiple_choice_dict: dict):
+    """
+    translate a multiple choice column from welsh to english for downstream transformation based on multiple_choice_dict
+    Parameters
+    df
+    reference_column
+        column containing multiple choice values
+    multiple_choice_dict
+        dictionary containing lookup values for translation of values within reference column
+    """
+    for lookup_val, translation_val in multiple_choice_dict.items():
+        df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
     return df
 
 
@@ -271,7 +289,7 @@ def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_co
     return df
 
 
-def assign_multigeneration(
+def assign_multigenerational(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column,
@@ -279,19 +297,11 @@ def assign_multigeneration(
     visit_date_column: str,
     date_of_birth_column: str,
     country_column: str,
+    age_column_name_to_assign: str = "age_at_visit",
+    school_year_column_name_to_assign: str = "school_year",
 ):
     """
-    Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
-    Note: school year lookup dataframe must be amended to account for changes in school year start dates
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    participant_id_column
-    household_id_column
-    visit_date_column
-    date_of_birth_column
-    country_column
+    Assign a column to specify if a given household is multigenerational at the time one of its participants visited.
     """
     spark_session = get_or_create_spark_session()
     school_year_lookup_df = spark_session.createDataFrame(
@@ -299,7 +309,7 @@ def assign_multigeneration(
             ("England", "09", "01", "09", "01"),
             ("Wales", "09", "01", "09", "01"),
             ("Scotland", "08", "15", "03", "01"),
-            ("NI", "09", "01", "07", "02"),
+            ("Northern Ireland", "09", "01", "07", "02"),
         ],
         schema=[
             country_column,
@@ -309,51 +319,55 @@ def assign_multigeneration(
             "school_year_ref_day",
         ],
     )
-    transformed_df = df.groupBy(household_id_column, visit_date_column).count()
+    transformed_df = df.groupBy(household_id_column, visit_date_column).count().drop("count")
     transformed_df = transformed_df.join(
         df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
         on=household_id_column,
-    ).drop("count")
+    ).distinct()
+
     transformed_df = assign_age_at_date(
         df=transformed_df,
-        column_name_to_assign="age_at_visit",
+        column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
     transformed_df = assign_school_year(
         df=transformed_df,
-        column_name_to_assign="school_year",
+        column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
         country_column=country_column,
         school_year_lookup=school_year_lookup_df,
     )
-    generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
-    generation2_flag = F.when(
-        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    generation_1 = F.when((F.col(age_column_name_to_assign) > 49), 1).otherwise(0)
+    generation_2 = F.when(
+        ((F.col(age_column_name_to_assign) <= 49) & (F.col(age_column_name_to_assign) >= 17))
+        | (F.col(school_year_column_name_to_assign) >= 12),
+        1,
     ).otherwise(0)
-    generation3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+    generation_3 = F.when((F.col(school_year_column_name_to_assign) <= 11), 1).otherwise(0)
 
     window = Window.partitionBy(household_id_column, visit_date_column)
-    gen1_exists = F.when(F.sum(generation1_flag).over(window) >= 1, True).otherwise(False)
-    gen2_exists = F.when(F.sum(generation2_flag).over(window) >= 1, True).otherwise(False)
-    gen3_exists = F.when(F.sum(generation3_flag).over(window) >= 1, True).otherwise(False)
+    generation_1_present = F.sum(generation_1).over(window) >= 1
+    generation_2_present = F.sum(generation_2).over(window) >= 1
+    generation_3_present = F.sum(generation_3).over(window) >= 1
 
     transformed_df = transformed_df.withColumn(
-        column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
+        column_name_to_assign,
+        F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
-    transformed_df = (
-        df.drop("age_at_visit")
-        .join(
-            transformed_df.select(
-                "age_at_visit", "school_year", column_name_to_assign, participant_id_column, visit_date_column
-            ),
-            on=[participant_id_column, visit_date_column],
-            how="left",
-        )
-        .distinct()
+    df = df.join(
+        transformed_df.select(
+            column_name_to_assign,
+            age_column_name_to_assign,
+            school_year_column_name_to_assign,
+            participant_id_column,
+            visit_date_column,
+        ),
+        on=[participant_id_column, visit_date_column],
+        how="left",
     )
-    return transformed_df
+    return df
 
 
 def assign_household_participant_count(
@@ -450,7 +464,15 @@ def assign_random_day_in_month(
     df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat_ws("-", year_column, month_column, F.ceil("TEMP_DAY")), format="yyyy-MM-dd"),
+        F.to_timestamp(
+            F.concat_ws(
+                "-",
+                F.col(year_column),
+                F.lpad(F.col(month_column).cast("string"), 2, "0"),
+                F.lpad(F.ceil(F.col("TEMP_DAY")).cast("string"), 2, "0"),
+            ),
+            format="yyyy-MM-dd",
+        ),
     )
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
@@ -974,7 +996,7 @@ def assign_age_group_school_year(
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 12) & (F.col(age_column) <= 14))
                 & (((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())))
             ),
@@ -987,7 +1009,7 @@ def assign_age_group_school_year(
                 & (F.col(school_year_column) >= 12)
             )
             | (
-                (F.col(country_column).isin("Scotland", "NI"))
+                (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
                 & (F.col(school_year_column) >= 12)
             ),
@@ -1148,7 +1170,7 @@ def assign_school_year(
         )
         # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
         #  though need to confirm if this is accurate
-        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("NI")) /
+        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("Northern Ireland")) /
         # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
         #                                     .otherwise(F.col(column_name_to_assign)))
         .withColumn(
@@ -1907,3 +1929,174 @@ def assign_regex_match_result(
         df = df.withColumn(column_name_to_assign, match_result)
 
     return df
+
+
+def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
+    """
+    Returns a list of keys from the input dictionary if the dictionary's values are in the
+    given list of values.
+
+    Parameters
+    ----------
+    input_dict
+        the input dictionary
+    values_to_lookup
+        a list of values to search for in the `input_dict` and return matching keys
+
+    Raises
+    ------
+    ValueError
+        If none of the values in `values_to_lookup` are found as values of the `input_dict`.
+    """
+    result = [k for k, v in input_dict.items() if v in values_to_lookup]
+    if len(result) == 0:
+        raise ValueError("None of the values in `values_to_lookup` are found in `input_dict`")
+    return result
+
+
+def flag_records_for_work_from_home_rules() -> F.Column:
+    """Flag records for application of "Work From Home" rules"""
+    return F.col("work_location").isNull()
+
+
+def flag_records_for_furlough_rules_v0() -> F.Column:
+    """Flag records for application of "Furlough Rules V0" rules"""
+    return F.col("work_status_v0").isin(
+        "Employed", "Self-employed", "Not working (unemployed, retired, long-term sick etc.)"
+    )
+
+
+def flag_records_for_furlough_rules_v1_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-a" rules"""
+    return F.col("work_status_v1").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
+    )
+
+
+def flag_records_for_furlough_rules_v1_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Self-employed and currently working")
+
+
+def flag_records_for_furlough_rules_v2_a() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-a" rules"""
+    return F.col("work_status_v2").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
+    )
+
+
+def flag_records_for_furlough_rules_v2_b() -> F.Column:
+    """Flag records for application of "Furlough Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Self-employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v1_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-a" rules"""
+    return F.col("work_status_v1").isin("Employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v1_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Employed and currently not working")
+
+
+def flag_records_for_self_employed_rules_v2_a() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-a" rules"""
+    return F.col("work_status_v2").isin("Employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v2_b() -> F.Column:
+    """Flag records for application of "Self-employed Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Employed and currently not working")
+
+
+def flag_records_for_retired_rules() -> F.Column:
+    """Flag records for application of "Retired" rules"""
+    return (
+        any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
+        & F.col("main_job").isNull()
+        & F.col("main_resp").isNull()
+        & (F.col("age_at_visit") > F.lit(75))
+    )
+
+
+def flag_records_for_not_working_rules_v0() -> F.Column:
+    """Flag records for application of "Not working Rules V0" rules"""
+    return F.col("work_status_v0").isin("Employed", "Self-employed")
+
+
+def flag_records_for_not_working_rules_v1_a() -> F.Column:
+    """Flag records for application of "Not working Rules V1-a" rules"""
+    return F.col("work_status_v1").isin("Employed and currently working")
+
+
+def flag_records_for_not_working_rules_v1_b() -> F.Column:
+    """Flag records for application of "Not working Rules V1-b" rules"""
+    return F.col("work_status_v1").isin("Self-employed and currently working")
+
+
+def flag_records_for_not_working_rules_v2_a() -> F.Column:
+    """Flag records for application of "Not working Rules V2-a" rules"""
+    return F.col("work_status_v2").isin("Employed and currently working")
+
+
+def flag_records_for_not_working_rules_v2_b() -> F.Column:
+    """Flag records for application of "Not working Rules V2-b" rules"""
+    return F.col("work_status_v2").isin("Self-employed and currently working")
+
+
+def flag_records_for_student_v0_rules() -> F.Column:
+    """Flag records for application of "Student-v0" rules."""
+    return (F.col("age_at_visit") <= F.lit(18)) | (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
+        )
+    )
+
+
+def flag_records_for_student_v1_rules() -> F.Column:
+    """Flag records for application of "Student-v1" rules"""
+    return ((F.col("age_at_visit") >= F.lit(5)) & (F.col("age_at_visit") <= F.lit(18))) | (
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v1").isNull()
+            | F.col("work_status_v1").isin(
+                "Looking for paid work and able to start",
+                "Not working and not looking for work",
+                "Retired",
+                "Child under 5y not attending child care",
+                "Child under 5y attending child care",
+            )
+        )
+    )
+
+
+def flag_records_for_student_v2_rules() -> F.Column:
+    """Flag records for application of "Student-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
+
+
+def flag_records_for_uni_v2_rules() -> F.Column:
+    """Flag records for application of "Uni-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(17)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )
+
+
+def flag_records_for_college_v2_rules() -> F.Column:
+    """Flag records for application of "College-v2" rules"""
+    return (F.col("age_at_visit") >= F.lit(16)) & (
+        F.col("work_status_v2").isNull()
+        | F.col("work_status_v2").isin(
+            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+        )
+    )

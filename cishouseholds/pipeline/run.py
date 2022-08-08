@@ -52,6 +52,7 @@ def run_from_config(config_file_path: str = None):
       resource_path: "path_to.csv"
     """
     spark = get_or_create_spark_session()
+    os.environ["deployment"] = "hdfs"
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     if config_file_path is not None:
         os.environ["PIPELINE_CONFIG_LOCATION"] = config_file_path
@@ -109,7 +110,28 @@ def run_pipeline_stages(
     retry_count: int = 1,
     retry_wait_time: int = 1,
 ):
-    """Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run."""
+    """
+    Run each stage of the pipeline. Catches, prints and logs any errors, but continues the pipeline run.
+    Any failing stages will be retried `retry_times_on_fail` times as set in the config file.
+    Whether a stage runs can also be set conditionally by using
+    when, operator, condition configuration in the config file.
+
+    Example
+    -------------
+    - function: example
+      run: True
+      when:
+        operator: all (possible values All, Any)
+        conditions:
+            (a stage name that returns a status string): the desired status string
+            stage_A: updated
+            stage_B: updated
+
+    Notes
+    -------------
+    Ensure that the stages referenced in any condition do return a status.
+    A status can be added by adding a return string to the stage function.
+    """
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0

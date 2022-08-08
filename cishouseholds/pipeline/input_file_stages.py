@@ -1,8 +1,6 @@
-from cishouseholds.mapping import column_name_maps
-from cishouseholds.mapping import survey_response_cast_to_double
-from cishouseholds.mapping import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.high_level_transformations import add_fields
 from cishouseholds.pipeline.high_level_transformations import add_historical_fields
+from cishouseholds.pipeline.high_level_transformations import assign_has_been_columns
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_1
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
@@ -15,6 +13,10 @@ from cishouseholds.pipeline.high_level_transformations import transform_survey_r
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_digital_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta
 from cishouseholds.pipeline.high_level_transformations import transform_swab_delta_testKit
+from cishouseholds.pipeline.high_level_transformations import translate_welsh_survey_responses_version_digital
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.mapping import survey_response_cast_to_double
+from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -72,6 +74,7 @@ survey_responses_v2_parameters = {
         clean_survey_responses_version_2,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
+        assign_has_been_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,
@@ -142,9 +145,11 @@ cis_digital_parameters = {
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
+        translate_welsh_survey_responses_version_digital,
         pre_generic_digital_transformations,
         transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
+        assign_has_been_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,

@@ -2,7 +2,6 @@ from datetime import datetime
 from datetime import timedelta
 from functools import reduce
 from io import BytesIO
-from itertools import chain
 from operator import and_
 from pathlib import Path
 from typing import List
@@ -16,7 +15,8 @@ from pyspark.sql import Window
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_multigenerational
+from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_visits_in_day
 from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
@@ -28,9 +28,7 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
-from cishouseholds.mapping import category_maps
-from cishouseholds.mapping import column_name_maps
-from cishouseholds.mapping import soc_regex_map
+from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
@@ -46,6 +44,7 @@ from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
 from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
 from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
+from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
@@ -66,6 +65,9 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.manifest import Manifest
+from cishouseholds.pipeline.mapping import category_maps
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
@@ -79,7 +81,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.design_weights import generate_weights
+from cishouseholds.weights.design_weights import calculate_design_weights
 from cishouseholds.weights.design_weights import household_level_populations
 from cishouseholds.weights.edit import aps_value_map
 from cishouseholds.weights.edit import recode_column_values
@@ -367,7 +369,7 @@ def generate_input_processing_function(
             resource_path=file_path_list,
             dataset_name=dataset_name,
             id_column=id_column,
-            variable_name_map=column_name_map,
+            column_name_map=column_name_map,
             datetime_map=datetime_column_map,
             validation_schema=validation_schema,
             transformation_functions=transformation_functions,
@@ -918,10 +920,7 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
 
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(
-    survey_responses_table: str,
-    imputed_values_table: str,
-    survey_responses_imputed_table: str,
-    key_columns: List[str],
+    survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
 ):
     """
     Imputes values for key demographic columns.
@@ -935,34 +934,18 @@ def impute_demographic_columns(
         name of HIVE table containing previously imputed values
     survey_responses_imputed_table
         name of HIVE table to write survey responses following imputation
-    key_columns
-        names of key demographic columns to be filled forwards
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
         imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
-
     df = extract_from_table(survey_responses_table)
+
     key_columns_imputed_df = impute_key_columns(
-        df, imputed_value_lookup_df, key_columns, get_config().get("imputation_log_directory", "./")
+        df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
-    imputed_values_df = key_columns_imputed_df.filter(
-        reduce(
-            lambda col_1, col_2: col_1 | col_2,
-            (F.col(f"{column}_imputation_method").isNotNull() for column in key_columns),
-        )
-    )
+    df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
-    lookup_columns = chain(*[(column, f"{column}_imputation_method") for column in key_columns])
-    imputed_values = imputed_values_df.select(
-        "participant_id",
-        *lookup_columns,
-    )
-    df_with_imputed_values = df.drop(*key_columns).join(
-        F.broadcast(key_columns_imputed_df), on="participant_id", how="left"
-    )
-
-    update_table(imputed_values, imputed_values_table, "overwrite")
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
@@ -1060,7 +1043,9 @@ def geography_and_imputation_dependent_processing(
         on="lower_super_output_area_code_11",
     )
 
-    df = assign_multigeneration(
+    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
+
+    df = assign_multigenerational(
         df=df,
         column_name_to_assign="multigenerational_household",
         participant_id_column="participant_id",
@@ -1068,7 +1053,9 @@ def geography_and_imputation_dependent_processing(
         visit_date_column="visit_datetime",
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
-    )  # Includes school year derivation
+    )  # Includes school year and age_at_visit derivations
+
+    df = derive_age_based_columns(df, "age_at_visit")
     update_table(df, output_table_name, write_mode="overwrite")
 
 
@@ -1543,12 +1530,13 @@ def sample_file_ETL(
     old_sample_file,
     new_sample_file,
     new_sample_source_name,
-    tranche,
     postcode_lookup,
     master_sample_file,
     design_weight_table,
     country_lookup,
     lsoa_cis_lookup,
+    tranche_file_path=None,
+    tranche_strata_columns=None,
 ):
     first_run = not check_table_exists(design_weight_table)
 
@@ -1565,13 +1553,15 @@ def sample_file_ETL(
         True,
     )
     tranche_df = None
-    if tranche is not None:
+    if tranche_file_path is not None:
+        if tranche_strata_columns is None:
+            raise ValueError("`tranche_strata_columns` must be provided when a `tranche_file_path` has been provided")
         tranche_df = extract_lookup_csv(
-            tranche, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
+            tranche_file_path, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
         )
 
     household_level_populations_df = extract_from_table(household_level_populations_table)
-    design_weights = generate_weights(
+    design_weights = calculate_design_weights(
         household_level_populations_df,
         master_sample_df,
         old_sample_df,
@@ -1581,6 +1571,7 @@ def sample_file_ETL(
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
+        tranche_strata_columns,
         first_run,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
