@@ -1639,4 +1639,12 @@ fields:
   name: think_have_covid_symptom_any
   nullable: true
   type: string
+- metadata: {}
+  name: household_been_care_home_last_28_days
+  nullable: false
+  type: string
+- metadata: {}
+  name: household_been_hospital_last_28_days
+  nullable: false
+  type: string
 type: struct

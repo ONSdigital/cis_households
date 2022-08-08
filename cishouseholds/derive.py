@@ -291,7 +291,7 @@ def assign_count_by_group(df: DataFrame, column_name_to_assign: str, group_by_co
     return df
 
 
-def assign_multigeneration(
+def assign_multigenerational(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column,
@@ -299,19 +299,11 @@ def assign_multigeneration(
     visit_date_column: str,
     date_of_birth_column: str,
     country_column: str,
+    age_column_name_to_assign: str = "age_at_visit",
+    school_year_column_name_to_assign: str = "school_year",
 ):
     """
-    Assign a column to specify if a given household is multigeneration at the time one of its participants visited.
-    Note: school year lookup dataframe must be amended to account for changes in school year start dates
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    participant_id_column
-    household_id_column
-    visit_date_column
-    date_of_birth_column
-    country_column
+    Assign a column to specify if a given household is multigenerational at the time one of its participants visited.
     """
     spark_session = get_or_create_spark_session()
     school_year_lookup_df = spark_session.createDataFrame(
@@ -329,51 +321,55 @@ def assign_multigeneration(
             "school_year_ref_day",
         ],
     )
-    transformed_df = df.groupBy(household_id_column, visit_date_column).count()
+    transformed_df = df.groupBy(household_id_column, visit_date_column).count().drop("count")
     transformed_df = transformed_df.join(
         df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
         on=household_id_column,
-    ).drop("count")
+    ).distinct()
+
     transformed_df = assign_age_at_date(
         df=transformed_df,
-        column_name_to_assign="age_at_visit",
+        column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
     transformed_df = assign_school_year(
         df=transformed_df,
-        column_name_to_assign="school_year",
+        column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
         country_column=country_column,
         school_year_lookup=school_year_lookup_df,
     )
-    generation1_flag = F.when((F.col("age_at_visit") > 49), 1).otherwise(0)
-    generation2_flag = F.when(
-        ((F.col("age_at_visit") <= 49) & (F.col("age_at_visit") >= 17)) | (F.col("school_year") >= 12), 1
+    generation_1 = F.when((F.col(age_column_name_to_assign) > 49), 1).otherwise(0)
+    generation_2 = F.when(
+        ((F.col(age_column_name_to_assign) <= 49) & (F.col(age_column_name_to_assign) >= 17))
+        | (F.col(school_year_column_name_to_assign) >= 12),
+        1,
     ).otherwise(0)
-    generation3_flag = F.when((F.col("school_year") <= 11), 1).otherwise(0)
+    generation_3 = F.when((F.col(school_year_column_name_to_assign) <= 11), 1).otherwise(0)
 
     window = Window.partitionBy(household_id_column, visit_date_column)
-    gen1_exists = F.when(F.sum(generation1_flag).over(window) >= 1, True).otherwise(False)
-    gen2_exists = F.when(F.sum(generation2_flag).over(window) >= 1, True).otherwise(False)
-    gen3_exists = F.when(F.sum(generation3_flag).over(window) >= 1, True).otherwise(False)
+    generation_1_present = F.sum(generation_1).over(window) >= 1
+    generation_2_present = F.sum(generation_2).over(window) >= 1
+    generation_3_present = F.sum(generation_3).over(window) >= 1
 
     transformed_df = transformed_df.withColumn(
-        column_name_to_assign, F.when((gen1_exists) & (gen2_exists) & (gen3_exists), 1).otherwise(0)
+        column_name_to_assign,
+        F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
-    transformed_df = (
-        df.drop("age_at_visit")
-        .join(
-            transformed_df.select(
-                "age_at_visit", "school_year", column_name_to_assign, participant_id_column, visit_date_column
-            ),
-            on=[participant_id_column, visit_date_column],
-            how="left",
-        )
-        .distinct()
+    df = df.join(
+        transformed_df.select(
+            column_name_to_assign,
+            age_column_name_to_assign,
+            school_year_column_name_to_assign,
+            participant_id_column,
+            visit_date_column,
+        ),
+        on=[participant_id_column, visit_date_column],
+        how="left",
     )
-    return transformed_df
+    return df
 
 
 def assign_household_participant_count(
