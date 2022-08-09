@@ -1163,6 +1163,7 @@ def report(
     )
 
 
+@register_pipeline_stage("lab_report")
 def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
     """
     Generate reports of most recent 7 days of swab and blood data
