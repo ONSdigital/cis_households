@@ -156,7 +156,7 @@ def generate_lab_report(df: DataFrame, current_date=F.current_timestamp()) -> Da
     """
     Generate lab report of latest 7 days of results
     """
-    df = df.filter(F.date_sub(current_date, 7) < F.col("file_date"))
+    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
     swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
         ~(
             ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
