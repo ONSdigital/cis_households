@@ -2020,8 +2020,8 @@ def flag_records_for_retired_rules() -> F.Column:
     """Flag records for application of "Retired" rules"""
     return (
         any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
-        & F.col("main_job").isNull()
-        & F.col("main_resp").isNull()
+        & F.col("work_main_job_title").isNull()
+        & F.col("work_main_job_role").isNull()
         & (F.col("age_at_visit") > F.lit(75))
     )
 
