@@ -47,6 +47,7 @@ from cishouseholds.pipeline.high_level_transformations import create_formatted_d
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import generate_lab_report
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
@@ -1160,6 +1161,17 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("lab_report")
+def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
+    """
+    Generate reports of most recent 7 days of swab and blood data
+    """
+    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
+    swab_df, blood_df = generate_lab_report(survey_responses_df)
+    update_table(swab_df, swab_report_table, "overwrite")
+    update_table(blood_df, blood_report_table, "overwrite")
 
 
 @register_pipeline_stage("report_iqvia")
