@@ -17,11 +17,11 @@ def test_generate_lab_report(spark_session):
         schema="survey_completed_datetime string, swab_sample_barcode string, blood_taken_datetime string, blood_sample_barcode string, swab_taken_datetime string",
     )
     expected_swab_df = spark_session.createDataFrame(
-        data=[("2", "2", "2"), ("3", "3", "3")],
+        data=[("2", "2", "2022-08-01"), ("3", "3", "2022-08-11")],
         schema="swab_sample_barcode string, swab_taken_datetime string, survey_completed_datetime string",
     )
     expected_blood_df = spark_session.createDataFrame(
-        data=[("2", "2", "2"), ("3", None, "3"), ("4", "4", "4")],
+        data=[("2", "2", "2022-08-01"), ("3", None, "2022-08-11"), ("4", "4", "2022-08-09")],
         schema="blood_sample_barcode string, blood_taken_datetime string, survey_completed_datetime string",
     )
     input_df = input_df.withColumn(
