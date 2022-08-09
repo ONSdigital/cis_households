@@ -32,8 +32,6 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
         [
             t.StructField("row_id", t.IntegerType()),
             t.StructField("rule", t.StringType()),
-            t.StructField("main_job", t.StringType()),
-            t.StructField("main_resp", t.StringType()),
             t.StructField("work_main_job_title", t.StringType()),
             t.StructField("work_main_job_role", t.StringType()),
             t.StructField("age_at_visit", t.IntegerType()),
