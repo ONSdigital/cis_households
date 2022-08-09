@@ -12,9 +12,9 @@ def test_generate_lab_report(spark_session):
             ("2022-08-01", "2", "2", "2", "2"),
             ("2022-08-11", "3", None, "3", "3"),  # only 1 datetime present
             ("2022-08-09", None, "4", "4", None),  # blood only records
-            (None, "5", None, None, None, None),  # no datetime present
+            (None, "5", None, None, None),  # no datetime present
         ],
-        schema="survey_completed_datetime string, swab_sample_barcode string, blood_taken_datetime string, blood_sample_barcode string, swab_taken_datetime string, survey_completed_datetime string",
+        schema="survey_completed_datetime string, swab_sample_barcode string, blood_taken_datetime string, blood_sample_barcode string, swab_taken_datetime string",
     )
     expected_swab_df = spark_session.createDataFrame(
         data=[("2", "2", "2"), ("3", "3", "3")],
