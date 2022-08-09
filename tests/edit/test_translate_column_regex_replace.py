@@ -11,14 +11,13 @@ def test_translate_column_regex_replace(spark_session):
             # input,                                                                    # expected
             ("id1", "Byddai'n well gen i beidio â dweud;Blwch sampl;Plasteri;Lawnsedi", "Prefer not to say;Sample box;Plasters;Lancets"),       #id1 is testing special characters
             ("id2", "Byddai'n well gen i beidio â dweud;Lawnsedi",                      "Prefer not to say;Lancets"),                           #id2 is testing special characters
-            #("id3", "ByDdAi'N wElL gEn I bEiDiO â DwEuD;BlDcH sAmPl;PlAsTeRi;LaWnSeDi", "Prefer not to say;Sample box;Plasters;Lancets"),       #id3 id testing variant camelcase with special character beyond the scope of expected data
-            #("id4", "byddai'n well gen i beidio â dweud;blwch sampl;plasteri;lawnsedi", "Prefer not to say;Sample box;Plasters;Lancets"),       #id4 is testing forced lowercase with special character beyond the scope of expected data
-            ("id5", "Prefer not to say;Sample box;Plasters;Lancets",                    "Prefer not to say;Sample box;Plasters;Lancets"),       #id5 is testing english only choices beyond the scope of expected data
-            ("id6", "Prefer not to say;Lawnsedi;Plasteri",                              "Prefer not to say;Lancets;Plasters"),                  #id6 is testing mixed english and welsh choices beyond the scope of expected data
-            ("id7", "Prefer not to say; ;Lawnsedi",                                     "Prefer not to say; ;Lancets"),                         #id7 is testing erroneus blank entry with space beyond the scope of expected data
-            ("id8", "Prefer not to say;;Lawnsedi",                                      "Prefer not to say;;Lancets"),                          #id8 is testing erroneus blank entry beyond the scope of expected data
-            ("id9", None,                                                               None),
-            # id9 is testing null responses
+            ("id3", "Lawnsedi",                                                         "Lancets"),                                             #id3 id testing single responses
+            ("id4", None,                                                               None),                                                  #id4 is testing null responses
+            ("id5", "Prefer not to say;Sample box;Plasters;Lancets",                    "Prefer not to say;Sample box;Plasters;Lancets"),       #id5 is testing english only choices - this is beyond the scope of expected data
+            ("id6", "Prefer not to say;Lawnsedi;Plasteri",                              "Prefer not to say;Lancets;Plasters"),                  #id6 is testing mixed english and welsh choices - this is beyond the scope of expected data
+            ("id7", "Prefer not to say; ;Lawnsedi",                                     "Prefer not to say; ;Lancets"),                         #id7 is testing erroneus blank entry with space - this is beyond the scope of expected data
+            ("id8", "Prefer not to say;;Lawnsedi",                                      "Prefer not to say;;Lancets"),
+            # id8 is testing erroneus blank entry - this is beyond the scope of expected data
             # fmt: on
         ],
         schema="uid string, reference_choices string, expected_choices string",
