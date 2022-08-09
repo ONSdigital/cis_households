@@ -27,6 +27,12 @@ def test_generate_lab_report(spark_session):
     input_df = input_df.withColumn(
         "survey_completed_datetime", F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd")
     )
+    expected_blood_df = expected_blood_df.withColumn(
+        "survey_completed_datetime", F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd")
+    )
+    expected_swab_df = expected_swab_df.withColumn(
+        "survey_completed_datetime", F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd")
+    )
     output_swab_df, output_blood_df = generate_lab_report(
         input_df, F.to_timestamp(F.lit("2022-08-04"), format="yyyy-MM-dd")
     )
