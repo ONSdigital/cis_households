@@ -20,7 +20,7 @@ def test_flag_records_for_retired_rules(spark_session):
     expected_df = spark_session.createDataFrame(
         [(idx, *i) for idx, i in enumerate(test_cases)],
         schema=(
-            "row_id int, work_status_v0 string, work_status_v1 string, work_status_v2 string, main_job string, main_resp string, age_at_visit int, actual_flag boolean"
+            "row_id int, work_status_v0 string, work_status_v1 string, work_status_v2 string, work_main_job_role string, work_main_job_title string, age_at_visit int, actual_flag boolean"
         ),
     )
 
