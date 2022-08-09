@@ -1202,6 +1202,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1441,11 +1444,10 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
@@ -1821,6 +1823,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_work_status_columns(df)
+    return df
+
+
+def assign_has_been_columns(df):
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
@@ -1833,7 +1840,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         individual_response_column="hospital_last_28_days",
         household_response_column="other_household_member_hospital_last_28_days",
     )
-    df = derive_work_status_columns(df)
     return df
 
 
@@ -2048,7 +2054,6 @@ def union_dependent_derivations(df):
         order_list=["visit_datetime", "visit_id"],
     )
     df = symptom_column_transformations(df)
-    df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
