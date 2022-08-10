@@ -2739,23 +2739,27 @@ def reclassify_work_variables(
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
     )
-    under_16 = F.col("age_at_visit") < F.lit(16)
+    age_under_16 = F.col("age_at_visit") < F.lit(16)
+    age_four_or_over = F.col("age_at_visit") >= F.lit(4)
+    age_over_four = F.col("age_at_visit") > F.lit(4)
 
     update_work_status_student_v0 = (
         (school_regex_hit & flag_records_for_student_v0_rules())
         | (university_regex_hit & flag_records_for_student_v0_rules())
         | (college_regex_hit & flag_records_for_student_v0_rules())
-        | under_16
+        | (age_four_or_over & age_under_16)
     )
 
     update_work_status_student_v1 = (
         (school_regex_hit & flag_records_for_student_v1_rules())
         | (university_regex_hit & flag_records_for_student_v1_rules())
         | (college_regex_hit & flag_records_for_student_v1_rules())
-        | under_16
+        | (age_over_four & age_under_16)
     )
 
-    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | under_16
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | (
+        age_four_or_over & age_under_16
+    )
 
     update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
 
