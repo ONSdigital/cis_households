@@ -137,6 +137,8 @@ def assign_tranche_factor(
 
     tranche_window = Window.partitionBy(elibility_column, tranche_column, *strata_columns)
     latest_tranche_households_by_strata = F.count(F.col(household_id_column)).over(tranche_window)
+    df = df.withColumn("latest_tranche_households_by_strata", latest_tranche_households_by_strata)
+    df = df.withColumn("eligible_households_by_strata", eligible_households_by_strata)
 
     df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
     latest_tranche = (F.col(elibility_column) == "Yes") & (F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER"))
