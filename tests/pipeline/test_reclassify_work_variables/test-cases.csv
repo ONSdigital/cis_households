@@ -37,8 +37,8 @@ row_id,rule,record_type,work_main_job_title,work_main_job_role,age_at_visit,work
 17,school/student v0,expected,STUDENT,STUDYING,17,SCHOOL,Student,5y and older in full-time education,4-5y and older at school/home-school
 18,school/student v1,input,STUDENT,STUDYING,15,SCHOOL,Student,,4-5y and older at school/home-school
 18,school/student v1,expected,STUDENT,STUDYING,15,SCHOOL,Student,5y and older in full-time education,4-5y and older at school/home-school
-19,school/student v2,input,STUDENT,STUDYING,4,OFFICE,Student,Not working and not looking for work,Not working and not looking for work
-19,school/student v2,expected,STUDENT,STUDYING,4,OFFICE,Student,5y and older in full-time education,4-5y and older at school/home-school
+19,school/student v2,input,STUDENT,STUDYING,4,OFFICE,Student,Child under 5y attending child care,Not working and not looking for work
+19,school/student v2,expected,STUDENT,STUDYING,4,OFFICE,Student,Child under 5y attending child care,4-5y and older at school/home-school
 20,school/student v2_uni,input,STUDENT,STUDYING,20,College,Employed,,
 20,school/student v2_uni,expected,STUDENT,STUDYING,20,College,Student,5y and older in full-time education,Attending university (including if temporarily absent)
 21,school/student v2_college,input,STUDENT AT COLLEGE,STUDENT,22,OFFICE,Student,,Retired
