@@ -129,8 +129,9 @@ def calculate_scaled_antibody_design_weights(
     cis_area_window: Window,
     new_migration_to_antibody: bool,
 ):
-    design_weight_column = "antibody_design_weight"
+    design_weight_column = "intermediate_antibody_design_weight"
     if new_migration_to_antibody:
+        print("     Calculating antibody design weights with new migration to antibody group")  # functional
         df = calculate_raw_antibody_design_weights_with_migration(
             df=df,
             column_name_to_assign="raw_antibody_design_weight",
@@ -151,6 +152,7 @@ def calculate_scaled_antibody_design_weights(
         )
 
     else:
+        print("     Calculating antibody design weights with no new migration to antibody group")  # functional
         df = calculate_antibody_design_weights_without_migration(
             df=df,
             column_name_to_assign=design_weight_column,
@@ -167,7 +169,7 @@ def calculate_scaled_antibody_design_weights(
         household_population_column="number_of_households_by_cis_area",
     )
 
-    return df.drop(design_weight_column, "raw_antibody_design_weight")
+    return df  # .drop(design_weight_column, "raw_antibody_design_weight")
 
 
 def join_and_process_lookups(
@@ -568,7 +570,7 @@ def scale_antibody_design_weights(
     window = Window.partitionBy(groupby_column)
     sum_carry_forward_design_weight = F.sum(F.col(design_weight_column_to_scale)).over(window)
     scaling_factor = F.col(household_population_column) / sum_carry_forward_design_weight
-
+    df = df.withColumn("antibody_design_weight_scaling_factor", scaling_factor)
     df = df.withColumn(
         column_name_to_assign,
         (scaling_factor * F.col(design_weight_column_to_scale)).cast(DecimalType(38, 20)),

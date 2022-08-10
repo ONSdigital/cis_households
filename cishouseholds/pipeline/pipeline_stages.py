@@ -47,6 +47,7 @@ from cishouseholds.pipeline.high_level_transformations import create_formatted_d
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import generate_lab_report
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
@@ -646,49 +647,6 @@ def lookup_based_editing(
     update_table(df, edited_table, write_mode="overwrite")
 
 
-@register_pipeline_stage("imputation_depdendent_transformations")
-def imputation_depdendent_transformations(
-    input_table_name: str,
-    rural_urban_lookup_path: str,
-    output_table_name: str,
-):
-    """
-    Processing that depends on geographies and and imputed demographic infromation.
-
-    Parameters
-    ----------
-    input_table
-        name of the table containing data to be processed
-    rural_urban_lookup_path
-        path to the rural urban lookup to be joined onto responses
-    edited_table
-        name of table to write processed data to
-    """
-    df = extract_from_table(input_table_name)
-    rural_urban_lookup_df = (
-        get_or_create_spark_session()
-        .read.csv(
-            rural_urban_lookup_path,
-            header=True,
-            schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
-        )
-        .drop("rural_urban_classification_11")
-    )  # Prefer version from sample
-
-    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_table_name, write_mode="overwrite")
-
-
 @register_pipeline_stage("outer_join_antibody_results")
 def outer_join_antibody_results(
     antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
@@ -1056,6 +1014,7 @@ def geography_and_imputation_dependent_processing(
     )  # Includes school year and age_at_visit derivations
 
     df = derive_age_based_columns(df, "age_at_visit")
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
@@ -1160,6 +1119,17 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("lab_report")
+def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
+    """
+    Generate reports of most recent 7 days of swab and blood data
+    """
+    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
+    swab_df, blood_df = generate_lab_report(survey_responses_df)
+    update_table(swab_df, swab_report_table, "overwrite")
+    update_table(blood_df, blood_report_table, "overwrite")
 
 
 @register_pipeline_stage("report_iqvia")

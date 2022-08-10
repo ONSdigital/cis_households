@@ -101,6 +101,8 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
         column containing multiple choice values
     multiple_choice_dict
         dictionary containing lookup values for translation of values within reference column
+
+    function assumes that the lookup and translation values are already cleaned
     """
     for lookup_val, translation_val in multiple_choice_dict.items():
         df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
@@ -2357,7 +2359,9 @@ def flag_records_for_work_from_home_rules() -> F.Column:
 
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules"""
-    return F.col("work_status_v0").isin("Employed", "Not working (unemployed, retired, long-term sick etc.)")
+    return F.col("work_status_v0").isin(
+        "Employed", "Self-employed", "Not working (unemployed, retired, long-term sick etc.)"
+    )
 
 
 def flag_records_for_furlough_rules_v1_a() -> F.Column:
@@ -2412,8 +2416,8 @@ def flag_records_for_retired_rules() -> F.Column:
     """Flag records for application of "Retired" rules"""
     return (
         any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
-        & F.col("main_job").isNull()
-        & F.col("main_resp").isNull()
+        & F.col("work_main_job_title").isNull()
+        & F.col("work_main_job_role").isNull()
         & (F.col("age_at_visit") > F.lit(75))
     )
 
